@@ -70,6 +70,11 @@ class CalendarJSONDeserializer extends JSONDeserializer
             $calendar = $calendar->withStatus($status);
         }
 
+        $bookingAvailability = $this->calendarJSONParser->getBookingAvailability($data);
+        if ($bookingAvailability !== null) {
+            $calendar = $calendar->withBookingAvailability($bookingAvailability);
+        }
+
         return $calendar;
     }
 

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
+use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusValidator;
@@ -80,6 +81,8 @@ class EventControllerProvider implements ControllerProviderInterface
 
         $controllers->patch('/{eventId}/subEvents', UpdateSubEventsStatusRequestHandler::class . ':handle');
         $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class . ':handle');
+        $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class . ':handle');
+
         return $controllers;
     }
 }

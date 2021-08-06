@@ -85,4 +85,13 @@ final class ApiProblems
             )
             ->setStatus(400);
     }
+
+    public static function calendarTypeNotSupported(string $detail): ApiProblem
+    {
+        return (new ApiProblem())
+            ->setType('https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported')
+            ->setTitle('Calendar type not supported')
+            ->setDetail($detail)
+            ->setStatus(400);
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
@@ -72,6 +73,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
         $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class . ':handle');
+        $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
         return $controllers;
     }

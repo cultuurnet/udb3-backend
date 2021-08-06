@@ -1,0 +1,14 @@
+{
+  "type": "single",
+  "startDate": "2020-02-03T09:00:00+01:00",
+  "endDate": "2020-02-10T16:00:00+01:00",
+  "bookingAvailability": {
+    "type": "Unavailable"
+  },
+  "timeSpans": [
+    {
+      "start": "2020-02-03T09:00:00+01:00",
+      "end": "2020-02-10T16:00:00+01:00"
+    }
+  ]
+}

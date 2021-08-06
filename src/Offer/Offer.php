@@ -58,6 +58,7 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsDuplicate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsInappropriate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -212,6 +213,14 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         );
     }
 
+    public function updateBookingAvailability(BookingAvailability $bookingAvailability): void
+    {
+        $this->updateCalendar(
+            $this->calendar
+                ->withBookingAvailability($bookingAvailability)
+                ->withBookingAvailabilityOnTimestamps($bookingAvailability)
+        );
+    }
 
     public function updateTheme(Theme $theme)
     {

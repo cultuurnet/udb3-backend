@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
@@ -119,6 +120,17 @@ class CalendarJSONParserTest extends TestCase
     /**
      * @test
      */
+    public function it_can_get_the_booking_availability(): void
+    {
+        $this->assertEquals(
+            BookingAvailability::unavailable(),
+            $this->calendarJSONParser->getBookingAvailability($this->updateCalendarAsArray)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_get_the_timestamps()
     {
         $startDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
@@ -139,7 +151,7 @@ class CalendarJSONParserTest extends TestCase
                         new StatusReason(new Language('fr'), 'Reason in het Frans'),
                     ]
                 )
-            ),
+            )->withBookingAvailability(BookingAvailability::unavailable()),
             (new Timestamp(
                 $startDatePeriod2,
                 $endDatePeriod2
@@ -151,7 +163,7 @@ class CalendarJSONParserTest extends TestCase
                         new StatusReason(new Language('fr'), 'Reason in het Frans'),
                     ]
                 )
-            ),
+            )->withBookingAvailability(BookingAvailability::unavailable()),
         ];
 
         $this->assertEquals(

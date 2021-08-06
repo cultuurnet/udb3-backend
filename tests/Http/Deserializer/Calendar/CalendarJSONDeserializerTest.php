@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +30,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     private $calendarDataValidator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calendarDataValidator = $this->createMock(DataValidatorInterface::class);
     }
@@ -37,7 +38,7 @@ class CalendarJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_json_to_calendar()
+    public function it_can_deserialize_json_to_calendar(): void
     {
         $calendarAsJsonString = new StringLiteral(
             file_get_contents(__DIR__ . '/samples/calendar.json')
@@ -97,7 +98,7 @@ class CalendarJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_json_to_calendar_with_status()
+    public function it_can_deserialize_json_to_calendar_with_status(): void
     {
         $calendarAsJsonString = new StringLiteral(
             file_get_contents(__DIR__ . '/samples/calendar_with_status.json')
@@ -133,7 +134,39 @@ class CalendarJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_json_to_calendar_with_status_on_time_spans()
+    public function it_can_deserialize_json_to_calendar_with_booking_availability(): void
+    {
+        $calendarAsJsonString = new StringLiteral(
+            file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability.json')
+        );
+
+        $calendarJSONDeserializer = new CalendarJSONDeserializer(
+            new CalendarJSONParser(),
+            $this->calendarDataValidator
+        );
+
+        $expectedCalendar = (new Calendar(
+            CalendarType::SINGLE(),
+            null,
+            null,
+            [
+                (new TimeStamp(
+                    \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00'),
+                    \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00')
+                ))->withBookingAvailability(BookingAvailability::unavailable()),
+            ]
+        ))->withBookingAvailability(BookingAvailability::unavailable());
+
+        $this->assertEquals(
+            $expectedCalendar,
+            $calendarJSONDeserializer->deserialize($calendarAsJsonString)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_json_to_calendar_with_status_on_time_spans(): void
     {
         $calendarAsJsonString = new StringLiteral(
             file_get_contents(__DIR__ . '/samples/calendar_with_status_on_time_spans.json')
@@ -202,12 +235,56 @@ class CalendarJSONDeserializerTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_can_deserialize_json_to_calendar_with_booking_availability_on_time_spans(): void
+    {
+        $calendarAsJsonString = new StringLiteral(
+            file_get_contents(__DIR__ . '/samples/calendar_with_booking_availability_on_time_spans.json')
+        );
+
+        $calendarJSONDeserializer = new CalendarJSONDeserializer(
+            new CalendarJSONParser(),
+            $this->calendarDataValidator
+        );
+
+        $startDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
+        $endDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-01T16:00:00+01:00');
+
+        $startDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00');
+        $endDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
+
+        $timestamps = [
+            (new Timestamp(
+                $startDate1,
+                $endDate1
+            ))->withBookingAvailability(BookingAvailability::unavailable()),
+            (new Timestamp(
+                $startDate2,
+                $endDate2
+            ))->withBookingAvailability(BookingAvailability::unavailable()),
+        ];
+
+        $expectedCalendar = (new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            $timestamps
+        ))->withBookingAvailability(BookingAvailability::unavailable());
+
+        $this->assertEquals(
+            $expectedCalendar,
+            $calendarJSONDeserializer->deserialize($calendarAsJsonString)
+        );
+    }
+
+    /**
+     * @test
      * @dataProvider calendarDataProvider()
      */
     public function it_should_return_right_calendar_type_from_json_data(
         string $calendarData,
         CalendarType $expectedCalendarType
-    ) {
+    ): void {
         $calendarAsJsonString = new StringLiteral($calendarData);
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
@@ -220,7 +297,7 @@ class CalendarJSONDeserializerTest extends TestCase
         $this->assertEquals($expectedCalendarType, $calendar->getType());
     }
 
-    public function calendarDataProvider()
+    public function calendarDataProvider(): array
     {
         return [
             'calendar_of_type_PERMANENT_when_json_only_contains_opening_hours' => [

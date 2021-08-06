@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -147,51 +147,95 @@ class CalendarTest extends TestCase
 
     /**
      * @test
+     * @dataProvider calendarProvider
      */
-    public function it_determines_booking_availability_from_sub_events(): void
+    public function it_determines_booking_availability_from_sub_events(
+        Calendar $calendar,
+        BookingAvailability $expectedBookingAvailability
+    ): void {
+        $this->assertEquals($expectedBookingAvailability, $calendar->getBookingAvailability());
+    }
+
+    public function calendarProvider(): array
     {
-        $unavailableCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
-            null,
-            null,
-            [
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+        return [
+            'single available' => [
+                new Calendar(
+                    CalendarType::SINGLE(),
                     null,
-                    BookingAvailability::unavailable()
-                ),
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
                     null,
-                    BookingAvailability::unavailable()
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::available()
+                        ),
+                    ]
                 ),
-            ]
-        );
-
-        $availableCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
-            null,
-            null,
-            [
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                BookingAvailability::available(),
+            ],
+            'single unavailable' => [
+                new Calendar(
+                    CalendarType::SINGLE(),
                     null,
-                    BookingAvailability::unavailable()
-                ),
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
                     null,
-                    BookingAvailability::available()
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                    ]
                 ),
-            ]
-        );
-
-        $this->assertEquals(BookingAvailability::unavailable(), $unavailableCalendar->getBookingAvailability());
-        $this->assertEquals(BookingAvailability::available(), $availableCalendar->getBookingAvailability());
+                BookingAvailability::unavailable(),
+            ],
+            'multiple available' => [
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    null,
+                    null,
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::available()
+                        ),
+                    ]
+                ),
+                BookingAvailability::available(),
+            ],
+            'multiple unavailable' => [
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    null,
+                    null,
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                    ]
+                ),
+                BookingAvailability::unavailable(),
+            ],
+        ];
     }
 
     /**
@@ -249,7 +293,7 @@ class CalendarTest extends TestCase
     {
         $permanentCalendar = new Calendar(CalendarType::PERMANENT());
 
-        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $permanentCalendar->withBookingAvailability(BookingAvailability::unavailable());
     }
@@ -265,7 +309,7 @@ class CalendarTest extends TestCase
             new DateTime('2021-03-18T14:00:00+01:00')
         );
 
-        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $periodicCalendar->withBookingAvailability(BookingAvailability::unavailable());
     }
@@ -335,7 +379,7 @@ class CalendarTest extends TestCase
     {
         $permanentCalendar = new Calendar(CalendarType::PERMANENT());
 
-        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $permanentCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
     }
@@ -351,7 +395,7 @@ class CalendarTest extends TestCase
             new DateTime('2021-03-18T14:00:00+01:00')
         );
 
-        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $periodicCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
     }
