@@ -30,6 +30,12 @@ class JsonResponse extends Response
         parent::__construct($status, $headers, $body);
     }
 
+    /**
+     * @deprecated
+     *   Only use for backward compatibility with Symfony's HTTP foundation where we cannot use PSR7 yet.
+     *   For example Silex's middlewares, Symfony's security component, etc.
+     *   Controllers / request handlers can just be refactored to return PSR7 responses.
+     */
     public function toHttpFoundationResponse(): HttpFoundationResponse
     {
         return (new HttpFoundationFactory())
