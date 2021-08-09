@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\User\UserIdentityDetails;
@@ -42,17 +41,13 @@ class UserIdentityController
         try {
             $emailAddress = new EmailAddress($emailAddressString);
         } catch (InvalidNativeArgumentException $e) {
-            return new ApiProblemJsonResponse(
-                ApiProblem::invalidEmailAddress($emailAddressString)
-            );
+            throw ApiProblem::invalidEmailAddress($emailAddressString);
         }
 
         $userIdentity = $this->userIdentityResolver->getUserByEmail($emailAddress);
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
-            return new ApiProblemJsonResponse(
-                ApiProblem::userNotFound('No user found for the given email address.')
-            );
+            throw ApiProblem::userNotFound('No user found for the given email address.');
         }
 
         return (new JsonLdResponse($userIdentity));
@@ -61,16 +56,14 @@ class UserIdentityController
     public function getCurrentUser(): ResponseInterface
     {
         if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
-            return new ApiProblemJsonResponse(
-                ApiProblem::tokenNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.')
+            throw ApiProblem::tokenNotSupported(
+                'Client access tokens are not supported on this endpoint because a user is required to return user info.'
             );
         }
 
         $userIdentity = $this->jwt->getUserIdentityDetails($this->userIdentityResolver);
         if (!($userIdentity instanceof UserIdentityDetails)) {
-            return new ApiProblemJsonResponse(
-                ApiProblem::tokenNotSupported('No user found for the given token.')
-            );
+            throw ApiProblem::tokenNotSupported('No user found for the given token.');
         }
 
         $userIdentityAsArray = $userIdentity->jsonSerialize();

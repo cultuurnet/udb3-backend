@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -37,9 +36,7 @@ final class UpdateBookingAvailabilityRequestHandler
                 new UpdateBookingAvailability($offerId, BookingAvailability::fromNative($data['type']))
             );
         } catch (CalendarTypeNotSupported $exception) {
-            return new ApiProblemJsonResponse(
-                ApiProblem::calendarTypeNotSupported($exception->getMessage())
-            );
+            throw ApiProblem::calendarTypeNotSupported($exception->getMessage());
         }
 
         return new NoContentResponse();
