@@ -10,8 +10,6 @@ use Exception;
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
  * more easily avoid almost-the-same duplicates.
  *
- * Ideally only this class would construct new ApiProblem instances, and always using specifically named methods.
- *
  * See https://datatracker.ietf.org/doc/html/rfc7807 for info on API problems.
  *
  * Most important points to keep in mind:
