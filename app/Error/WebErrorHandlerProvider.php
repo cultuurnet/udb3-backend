@@ -40,10 +40,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             function (Exception $e) use ($app) {
                 $app[ErrorLogger::class]->log($e);
 
-                $defaultStatus = ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR;
-                if (ErrorLogger::isBadRequestException($e)) {
-                    $defaultStatus = ApiProblemJsonResponse::HTTP_BAD_REQUEST;
-                }
+                $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
                 $problem = $this::createNewApiProblem($e, $defaultStatus);
 
