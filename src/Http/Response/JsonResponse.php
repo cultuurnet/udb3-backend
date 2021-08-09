@@ -10,6 +10,8 @@ use JsonException;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Interfaces\HeadersInterface;
 use Slim\Psr7\Response;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class JsonResponse extends Response
 {
@@ -26,5 +28,11 @@ class JsonResponse extends Response
         }
 
         parent::__construct($status, $headers, $body);
+    }
+
+    public function toHttpFoundationResponse(): HttpFoundationResponse
+    {
+        return (new HttpFoundationFactory())
+            ->createResponse($this);
     }
 }
