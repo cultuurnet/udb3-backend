@@ -74,6 +74,8 @@ final class ApiProblem extends Exception
         // Exception properties.
         $problem->message = $title;
         $problem->code = $status;
+
+        return $problem;
     }
 
     public function getType(): string
