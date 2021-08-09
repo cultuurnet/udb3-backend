@@ -55,7 +55,7 @@ class ReadRestController
         }
 
         if (!$entity) {
-            throw ApiProblem::custom('about:blank', 'There is no label with identifier: ' . $id, 404);
+            throw ApiProblem::blank('There is no label with identifier: ' . $id, 404);
         }
 
         return new JsonResponse($entity);

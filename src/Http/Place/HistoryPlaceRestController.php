@@ -35,8 +35,7 @@ class HistoryPlaceRestController
     public function get(string $placeId): JsonResponse
     {
         if (!$this->userIsGodUser) {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 sprintf(self::HISTORY_ERROR_FORBIDDEN),
                 403
             );
@@ -56,8 +55,7 @@ class HistoryPlaceRestController
             $response->headers->set('Vary', 'Origin');
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 sprintf(self::HISTORY_ERROR_NOT_FOUND, $placeId),
                 404
             );

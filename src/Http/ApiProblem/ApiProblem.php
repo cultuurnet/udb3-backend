@@ -152,16 +152,15 @@ final class ApiProblem extends Exception
     /**
      * @deprecated
      *   Use a named method instead with a specific type.
-     *   Remove this method once all ApiProblem instances use a named method.
+     *   Remove this method once all ApiProblem instances use a method for a more specific type.
      */
-    public static function custom(
-        string $type,
+    public static function blank(
         string $title,
         int $status,
         ?string $detail = null,
         ?string $jsonPointer = null
     ): self {
-        return self::create($type, $title, $status, $detail, $jsonPointer);
+        return self::create('about:blank', $title, $status, $detail, $jsonPointer);
     }
 
     public static function internalServerError(string $detail = ''): self

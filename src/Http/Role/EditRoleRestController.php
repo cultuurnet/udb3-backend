@@ -177,7 +177,7 @@ class EditRoleRestController
         $labelId = $this->getLabelId($labelIdentifier);
 
         if (is_null($labelId)) {
-            throw ApiProblem::custom('about:blank', 'There is no label with identifier: ' . $labelIdentifier, 404);
+            throw ApiProblem::blank('There is no label with identifier: ' . $labelIdentifier, 404);
         }
 
         try {
@@ -196,7 +196,7 @@ class EditRoleRestController
         $labelId = $this->getLabelId($labelIdentifier);
 
         if (is_null($labelId)) {
-            throw ApiProblem::custom('about:blank', 'There is no label with identifier: ' . $labelIdentifier, 404);
+            throw ApiProblem::blank('There is no label with identifier: ' . $labelIdentifier, 404);
         }
 
         try {

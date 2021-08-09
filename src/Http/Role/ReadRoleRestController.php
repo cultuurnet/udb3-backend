@@ -72,7 +72,7 @@ class ReadRoleRestController
         $role = $this->service->getEntity($id);
 
         if (!$role) {
-            throw ApiProblem::custom('about:blank', 'There is no role with identifier: ' . $id, 404);
+            throw ApiProblem::blank('There is no role with identifier: ' . $id, 404);
         }
 
         $response = JsonResponse::create()

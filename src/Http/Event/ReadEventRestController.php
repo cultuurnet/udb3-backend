@@ -63,8 +63,7 @@ class ReadEventRestController
     public function history(string $cdbid): JsonResponse
     {
         if (!$this->userIsGodUser) {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 sprintf(self::HISTORY_ERROR_FORBIDDEN),
                 403
             );
@@ -84,8 +83,7 @@ class ReadEventRestController
 
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 sprintf(self::HISTORY_ERROR_NOT_FOUND, $cdbid),
                 404
             );
@@ -104,8 +102,7 @@ class ReadEventRestController
         $event = Offer::fromJsonLd($eventDocument->getRawBody());
 
         if ($style !== 'html' && $style !== 'text') {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 'No style found for ' . $cdbid,
                 404
             );
@@ -125,8 +122,7 @@ class ReadEventRestController
         try {
             return $this->jsonRepository->fetch($id, $includeMetadata);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 sprintf(self::GET_ERROR_NOT_FOUND, $id),
                 404
             );

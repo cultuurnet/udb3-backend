@@ -57,8 +57,7 @@ class ReadPlaceRestController
         $place = Offer::fromJsonLd($data->getRawBody());
 
         if ($style !== 'html' && $style !== 'text') {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 'No style found for ' . $style,
                 404
             );
@@ -78,8 +77,7 @@ class ReadPlaceRestController
         try {
             return $this->documentRepository->fetch($id, $includeMetadata);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 sprintf(self::GET_ERROR_NOT_FOUND, $id),
                 404
             );

@@ -80,11 +80,11 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                 );
 
             case $e instanceof DataValidationException:
-                $problem = ApiProblem::custom('about:blank', 'Invalid payload.', $e->getCode() ?: $defaultStatus);
+                $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
                 return $problem->withValidationMessages($e->getValidationMessages());
 
             case $e instanceof GroupedValidationException:
-                $problem = ApiProblem::custom('about:blank', $e->getMessage(), $e->getCode() ?: $defaultStatus);
+                $problem = ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
                 return $problem->withValidationMessages($e->getMessages());
 
             // Remove "URL CALLED" and everything after it.
@@ -97,10 +97,10 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             case $e instanceof CultureFeed_HttpException:
                 $title = $e->getMessage();
                 $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
-                return ApiProblem::custom('about:blank', $formattedTitle, $e->getCode() ?: $defaultStatus);
+                return ApiProblem::blank($formattedTitle, $e->getCode() ?: $defaultStatus);
 
             default:
-                return ApiProblem::custom('about:blank', $e->getMessage(), $e->getCode() ?: $defaultStatus);
+                return ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
         }
     }
 

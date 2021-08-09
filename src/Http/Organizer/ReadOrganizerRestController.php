@@ -42,8 +42,7 @@ class ReadOrganizerRestController
 
             $response->headers->set('Vary', 'Origin');
         } else {
-            throw ApiProblem::custom(
-                'about:blank',
+            throw ApiProblem::blank(
                 sprintf(self::GET_ERROR_NOT_FOUND, $cdbid),
                 404
             );
