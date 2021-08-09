@@ -10,15 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 {
-    /**
-     * @var UpdateBookingAvailabilityRequestBodyParser
-     */
-    private $updateBookingAvailabilityRequestBodyParser;
+    private UpdateBookingAvailabilityRequestBodyParser $updateBookingAvailabilityRequestBodyParser;
 
-    /**
-     * @var Psr7RequestBuilder
-     */
-    private $requestBuilder;
+    private Psr7RequestBuilder $requestBuilder;
 
     protected function setUp(): void
     {

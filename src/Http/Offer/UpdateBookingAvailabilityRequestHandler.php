@@ -16,15 +16,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class UpdateBookingAvailabilityRequestHandler
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var UpdateBookingAvailabilityRequestBodyParser
-     */
-    private $updateBookingAvailabilityParser;
+    private UpdateBookingAvailabilityRequestBodyParser $updateBookingAvailabilityParser;
 
     public function __construct(
         CommandBus $commandBus,

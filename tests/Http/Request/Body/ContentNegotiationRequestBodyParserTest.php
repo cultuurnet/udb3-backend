@@ -9,15 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 class ContentNegotiationRequestBodyParserTest extends TestCase
 {
-    /**
-     * @var ContentNegotiationRequestBodyParser
-     */
-    private $parser;
-
-    /**
-     * @var Psr7RequestBuilder
-     */
-    private $requestBuilder;
+    private ContentNegotiationRequestBodyParser $parser;
+    private Psr7RequestBuilder $requestBuilder;
 
     protected function setUp(): void
     {
