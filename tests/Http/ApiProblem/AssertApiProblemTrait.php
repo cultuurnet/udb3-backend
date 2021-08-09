@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\ApiProblem;
 
 use PHPUnit\Framework\TestCase;
 
-trait AssertApiProblemExceptionTrait
+trait AssertApiProblemTrait
 {
     private function assertCallableThrowsApiProblem(ApiProblem $expectedApiProblem, callable $callback): void
     {
