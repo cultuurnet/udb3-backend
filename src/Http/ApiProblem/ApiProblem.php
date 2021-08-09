@@ -32,6 +32,7 @@ final class ApiProblem
     private int $status;
     private ?string $detail;
     private ?string $jsonPointer;
+    private array $debugInfo = [];
 
     /**
      * @deprecated
@@ -90,6 +91,13 @@ final class ApiProblem
         return $c;
     }
 
+    public function withDebugInfo(array $debugInfo): self
+    {
+        $c = clone $this;
+        $c->debugInfo = $debugInfo;
+        return $c;
+    }
+
     public function toArray(): array
     {
         $json = [
@@ -108,6 +116,10 @@ final class ApiProblem
         /** @deprecated Remove once withValidationMessages() is removed. */
         if (count($this->validationMessages) > 0) {
             $json['validation_messages'] = $this->validationMessages;
+        }
+
+        if (count($this->debugInfo) > 0) {
+            $json['debug'] = $this->debugInfo;
         }
 
         return $json;

@@ -100,7 +100,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         }
 
         if (self::$debug) {
-            $problem['debug'] = ContextExceptionConverterProcessor::convertThrowableToArray($e);
+            $problem = $problem->withDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }
 
         return $problem;
