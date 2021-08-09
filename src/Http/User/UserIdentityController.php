@@ -10,10 +10,11 @@ use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Psr7\Headers;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Web\EmailAddress;
-use Zend\Diactoros\Response\JsonResponse;
 
 class UserIdentityController
 {
@@ -35,7 +36,7 @@ class UserIdentityController
         $this->jwt = $jsonWebToken;
     }
 
-    public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
+    public function getByEmailAddress(ServerRequestInterface $request): ResponseInterface
     {
         $emailAddressString = $request->getAttribute('emailAddress', '');
         try {
@@ -57,7 +58,7 @@ class UserIdentityController
         return (new JsonLdResponse($userIdentity));
     }
 
-    public function getCurrentUser(): JsonResponse
+    public function getCurrentUser(): ResponseInterface
     {
         if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
             return new ApiProblemJsonResponse(
@@ -77,6 +78,6 @@ class UserIdentityController
         $userIdentityAsArray['id'] = $userIdentity->getUserId();
         $userIdentityAsArray['nick'] = $userIdentity->getUserName();
 
-        return new JsonLdResponse($userIdentityAsArray, 200, ['Cache-Control' => 'private']);
+        return new JsonLdResponse($userIdentityAsArray, 200, new Headers(['Cache-Control' => 'private']));
     }
 }

@@ -7,6 +7,10 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar\Validators;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class TimeSpanValidator
 {
     public function validate(array $data): array

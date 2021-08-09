@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Response;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Slim\Psr7\Interfaces\HeadersInterface;
 
-class PagedCollectionResponse extends JsonResponse
+class PagedCollectionResponse extends JsonLdResponse
 {
     public function __construct(
         int $itemsPerPage,
         int $totalItems,
         array $members = [],
         $status = 200,
-        $headers = []
+        ?HeadersInterface $headers = null
     ) {
         $data = [
             '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',

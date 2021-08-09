@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,10 +66,7 @@ class ReadRestController
         }
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function search(Request $request)
+    public function search(Request $request): ResponseInterface
     {
         $query = $this->queryFactory->createFromRequest($request);
 

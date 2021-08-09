@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Http\Productions;
 use CultuurNet\UDB3\Event\Productions\Production;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Http\Response\PagedCollectionResponse;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProductionsSearchController
 {
@@ -25,7 +25,7 @@ class ProductionsSearchController
         $this->repository = $repository;
     }
 
-    public function search(Request $request): Response
+    public function search(Request $request): ResponseInterface
     {
         $keyword = $request->get('name', '');
         $start = (int) $request->get('start', self::DEFAULT_START);

@@ -66,6 +66,36 @@ final class ApiProblems
             ->setStatus(400);
     }
 
+    public static function bodyMissing(): ApiProblem
+    {
+        return (new ApiProblem())
+            ->setType('https://api.publiq.be/probs/body/missing')
+            ->setTitle('Body missing')
+            ->setStatus(400);
+    }
+
+    public static function bodyInvalidSyntax(string $format): ApiProblem
+    {
+        return (new ApiProblem())
+            ->setType('https://api.publiq.be/probs/body/invalid-syntax')
+            ->setTitle('Invalid body syntax')
+            ->setDetail('The given request body could not be parsed as ' . $format . '.')
+            ->setStatus(400);
+    }
+
+    public static function bodyInvalidData(string $detail, string $jsonPointer): ApiProblem
+    {
+        $problem = (new ApiProblem())
+            ->setType('https://api.publiq.be/probs/body/invalid-data')
+            ->setTitle('Invalid body data')
+            ->setDetail($detail)
+            ->setStatus(400);
+
+        $problem['jsonPointer'] = $jsonPointer;
+
+        return $problem;
+    }
+
     public static function userNotFound(string $detail): ApiProblem
     {
         return (new ApiProblem())

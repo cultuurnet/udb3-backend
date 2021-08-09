@@ -12,6 +12,10 @@ use CultuurNet\UDB3\Title;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class OrganizerCreationPayloadJSONDeserializer extends JSONDeserializer
 {
     /**

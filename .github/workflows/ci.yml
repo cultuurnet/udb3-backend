@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['7.1', '7.2', '7.3', '7.4']
+                php-versions: ['7.4']
         name: PHP ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -53,7 +53,7 @@ jobs:
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 7.1
+                  php-version: 7.4
                   extensions: tidy, zip
                   tools: composer
 
@@ -83,7 +83,7 @@ jobs:
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 7.1
+                  php-version: 7.4
                   extensions: tidy, zip
                   tools: composer
 

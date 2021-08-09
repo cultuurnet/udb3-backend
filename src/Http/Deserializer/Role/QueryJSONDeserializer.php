@@ -9,6 +9,10 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 use ValueObjects\StringLiteral\StringLiteral;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class QueryJSONDeserializer extends JSONDeserializer
 {
     /**

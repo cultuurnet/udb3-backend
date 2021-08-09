@@ -9,6 +9,10 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Title;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class TitleJSONDeserializer extends JSONDeserializer
 {
     /**

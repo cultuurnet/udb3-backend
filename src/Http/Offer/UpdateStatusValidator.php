@@ -9,6 +9,10 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class UpdateStatusValidator implements DataValidatorInterface
 {
     public function validate(array $data): void

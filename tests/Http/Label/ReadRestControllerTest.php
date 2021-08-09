@@ -142,7 +142,7 @@ class ReadRestControllerTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expectedJson, json_decode($jsonResponse->getContent(), true));
+        $this->assertEquals($expectedJson, json_decode((string) $jsonResponse->getBody(), true));
     }
 
     /**
@@ -176,7 +176,7 @@ class ReadRestControllerTest extends TestCase
         ];
 
         $this->assertEquals(200, $jsonResponse->getStatusCode());
-        $this->assertEquals($expectedJson, json_decode($jsonResponse->getContent(), true));
+        $this->assertEquals($expectedJson, json_decode((string) $jsonResponse->getBody(), true));
     }
 
     private function mockGetByUuid()

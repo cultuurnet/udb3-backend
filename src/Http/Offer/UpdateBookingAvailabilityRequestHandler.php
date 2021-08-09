@@ -6,39 +6,31 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
-use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class UpdateBookingAvailabilityRequestHandler
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var UpdateBookingAvailabilityValidator
-     */
-    private $updateBookingAvailabilityValidator;
+    private UpdateBookingAvailabilityRequestBodyParser $updateBookingAvailabilityParser;
 
     public function __construct(
         CommandBus $commandBus,
-        UpdateBookingAvailabilityValidator $updateBookingAvailabilityValidator
+        UpdateBookingAvailabilityRequestBodyParser $updateBookingAvailabilityParser
     ) {
         $this->commandBus = $commandBus;
-        $this->updateBookingAvailabilityValidator = $updateBookingAvailabilityValidator;
+        $this->updateBookingAvailabilityParser = $updateBookingAvailabilityParser;
     }
 
-    public function handle(Request $request, string $offerId): Response
+    public function handle(ServerRequestInterface $request, string $offerId): ResponseInterface
     {
-        $data = json_decode($request->getContent(), true);
-
-        $this->updateBookingAvailabilityValidator->validate($data);
+        $data = $this->updateBookingAvailabilityParser->parse($request);
 
         try {
             $this->commandBus->dispatch(
@@ -50,6 +42,6 @@ final class UpdateBookingAvailabilityRequestHandler
             );
         }
 
-        return new NoContent();
+        return new NoContentResponse();
     }
 }

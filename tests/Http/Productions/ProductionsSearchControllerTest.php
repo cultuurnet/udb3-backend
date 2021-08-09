@@ -47,7 +47,7 @@ class ProductionsSearchControllerTest extends TestCase
                 'totalItems' => 0,
                 'member' => [],
             ],
-            json_decode($response->getContent(), true)
+            json_decode((string) $response->getBody(), true)
         );
     }
 
@@ -68,7 +68,7 @@ class ProductionsSearchControllerTest extends TestCase
                 'totalItems' => 100,
                 'member' => [],
             ],
-            json_decode($response->getContent(), true)
+            json_decode((string) $response->getBody(), true)
         );
     }
 
@@ -104,7 +104,7 @@ class ProductionsSearchControllerTest extends TestCase
                     ],
                 ],
             ],
-            json_decode($response->getContent(), true)
+            json_decode((string) $response->getBody(), true)
         );
     }
 }

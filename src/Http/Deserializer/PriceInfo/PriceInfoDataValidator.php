@@ -8,6 +8,10 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class PriceInfoDataValidator implements DataValidatorInterface
 {
     /**
