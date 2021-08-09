@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
-use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -55,8 +54,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
     public static function createNewApiProblem(Throwable $e, int $defaultStatus): ApiProblem
     {
-        $problem = new ApiProblem($e->getMessage());
-        $problem->setStatus($e->getCode() ?: $defaultStatus);
+        $problem = ApiProblem::custom('about:blank', $e->getMessage(), $e->getCode() ?: $defaultStatus);
 
         if ($e instanceof Error) {
             $problem = ApiProblem::internalServerError();
