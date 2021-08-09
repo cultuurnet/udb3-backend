@@ -30,8 +30,7 @@ class ReadRestController
         );
 
         if (!$jobStatus) {
-            throw ApiProblem::custom('about:blank', 'No status for job with id: ' . $jobId, 400)
-                ->toException();
+            throw ApiProblem::custom('about:blank', 'No status for job with id: ' . $jobId, 400);
         }
 
         return new JsonResponse($jobStatus->toNative());

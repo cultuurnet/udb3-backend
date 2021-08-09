@@ -55,19 +55,4 @@ class ApiProblemTest extends TestCase
             $problem->toArray()
         );
     }
-
-    /**
-     * @test
-     */
-    public function it_can_be_converted_to_an_exception(): void
-    {
-        $given = ApiProblem::bodyInvalidData('Property mock should not be empty', '/mock');
-        $expected = new ApiProblemException($given);
-        $actual = $given->toException();
-
-        $this->assertEquals($expected, $actual);
-
-        $this->expectException(ApiProblemException::class);
-        throw $actual;
-    }
 }

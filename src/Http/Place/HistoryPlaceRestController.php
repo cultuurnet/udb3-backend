@@ -39,7 +39,7 @@ class HistoryPlaceRestController
                 'about:blank',
                 sprintf(self::HISTORY_ERROR_FORBIDDEN),
                 403
-            )->toException();
+            );
         }
 
         try {
@@ -60,7 +60,7 @@ class HistoryPlaceRestController
                 'about:blank',
                 sprintf(self::HISTORY_ERROR_NOT_FOUND, $placeId),
                 404
-            )->toException();
+            );
         }
     }
 }

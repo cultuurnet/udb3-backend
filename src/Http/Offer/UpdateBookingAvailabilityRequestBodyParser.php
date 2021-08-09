@@ -23,15 +23,13 @@ final class UpdateBookingAvailabilityRequestBodyParser implements RequestBodyPar
     private function validateType(array $data): void
     {
         if (!isset($data['type'])) {
-            throw ApiProblem::bodyInvalidData('Required property "type" not found.', '/type')
-                ->toException();
+            throw ApiProblem::bodyInvalidData('Required property "type" not found.', '/type');
         }
 
         try {
             BookingAvailability::fromNative($data['type']);
         } catch (InvalidArgumentException $e) {
-            throw ApiProblem::bodyInvalidData('Invalid type provided.', '/type')
-                ->toException();
+            throw ApiProblem::bodyInvalidData('Invalid type provided.', '/type');
         }
     }
 }

@@ -147,11 +147,6 @@ final class ApiProblem extends Exception
         return $json;
     }
 
-    public function toException(): ApiProblemException
-    {
-        return new ApiProblemException($this);
-    }
-
     /**
      * @deprecated
      *   Use a named method instead with a specific type.

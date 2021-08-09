@@ -67,7 +67,7 @@ class ReadEventRestController
                 'about:blank',
                 sprintf(self::HISTORY_ERROR_FORBIDDEN),
                 403
-            )->toException();
+            );
         }
 
         try {
@@ -88,7 +88,7 @@ class ReadEventRestController
                 'about:blank',
                 sprintf(self::HISTORY_ERROR_NOT_FOUND, $cdbid),
                 404
-            )->toException();
+            );
         }
     }
 
@@ -108,7 +108,7 @@ class ReadEventRestController
                 'about:blank',
                 'No style found for ' . $cdbid,
                 404
-            )->toException();
+            );
         }
         if ($style === 'html') {
             $calSum = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
@@ -129,7 +129,7 @@ class ReadEventRestController
                 'about:blank',
                 sprintf(self::GET_ERROR_NOT_FOUND, $id),
                 404
-            )->toException();
+            );
         }
     }
 }

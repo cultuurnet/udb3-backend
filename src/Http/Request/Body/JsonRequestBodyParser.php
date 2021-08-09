@@ -13,12 +13,12 @@ final class JsonRequestBodyParser implements RequestBodyParser
     {
         $body = (string) $request->getBody();
         if ($body === '') {
-            throw ApiProblem::bodyMissing()->toException();
+            throw ApiProblem::bodyMissing();
         }
 
         $decoded = json_decode($body, true);
         if (!is_array($decoded)) {
-            throw ApiProblem::bodyInvalidSyntax('JSON')->toException();
+            throw ApiProblem::bodyInvalidSyntax('JSON');
         }
 
         return $decoded;

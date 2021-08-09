@@ -61,7 +61,7 @@ class ReadPlaceRestController
                 'about:blank',
                 'No style found for ' . $style,
                 404
-            )->toException();
+            );
         }
 
         if ($style === 'html') {
@@ -82,7 +82,7 @@ class ReadPlaceRestController
                 'about:blank',
                 sprintf(self::GET_ERROR_NOT_FOUND, $id),
                 404
-            )->toException();
+            );
         }
     }
 }

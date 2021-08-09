@@ -46,7 +46,7 @@ class ReadOrganizerRestController
                 'about:blank',
                 sprintf(self::GET_ERROR_NOT_FOUND, $cdbid),
                 404
-            )->toException();
+            );
         }
 
         return $response;

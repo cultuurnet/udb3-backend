@@ -20,7 +20,7 @@ class JsonResponse extends Response
         try {
             $body = (new StreamFactory())->createStream(json_encode($data, JSON_THROW_ON_ERROR));
         } catch (JsonException $e) {
-            throw ApiProblem::internalServerError('Could not encode JSON response.')->toException();
+            throw ApiProblem::internalServerError('Could not encode JSON response.');
         }
 
         if ($headers instanceof HeadersInterface && !$headers->hasHeader('Content-Type')) {
