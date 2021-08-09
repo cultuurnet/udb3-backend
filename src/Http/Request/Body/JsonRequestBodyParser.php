@@ -22,7 +22,7 @@ final class JsonRequestBodyParser implements RequestBodyParser
         $decoded = json_decode($body, true);
         if (!is_array($decoded)) {
             throw new ApiProblemException(
-                ApiProblems::bodyInvalidSyntax('The given request body could not be parsed as JSON.')
+                ApiProblems::bodyInvalidSyntax('JSON')
             );
         }
 

@@ -74,12 +74,12 @@ final class ApiProblems
             ->setStatus(400);
     }
 
-    public static function bodyInvalidSyntax(string $detail): ApiProblem
+    public static function bodyInvalidSyntax(string $format): ApiProblem
     {
         return (new ApiProblem())
             ->setType('https://api.publiq.be/probs/body/invalid-syntax')
             ->setTitle('Invalid body syntax')
-            ->setDetail($detail)
+            ->setDetail('The given request body could not be parsed as ' . $format . '.')
             ->setStatus(400);
     }
 
