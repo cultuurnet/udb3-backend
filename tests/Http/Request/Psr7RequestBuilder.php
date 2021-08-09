@@ -15,30 +15,15 @@ use Slim\Psr7\Request;
 
 final class Psr7RequestBuilder
 {
-    /**
-     * @var UriFactory
-     */
-    private static $uriFactory;
+    private static UriFactory $uriFactory;
 
-    /**
-     * @var StreamFactory
-     */
-    private static $streamFactory;
+    private static StreamFactory $streamFactory;
 
-    /**
-     * @var HeadersInterface|null
-     */
-    private $headers;
+    private ?HeadersInterface $headers;
 
-    /**
-     * @var UriInterface|null
-     */
-    private $uri;
+    private ?UriInterface $uri;
 
-    /**
-     * @var StreamInterface|null
-     */
-    private $body;
+    private ?StreamInterface $body;
 
     public function withUriFromString(string $uri): self
     {
