@@ -43,7 +43,7 @@ class JsonRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblemException(
             ApiProblems::bodyMissing(),
-            fn() => $this->parser->parse($given)
+            fn () => $this->parser->parse($given)
         );
     }
 
@@ -56,7 +56,7 @@ class JsonRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblemException(
             ApiProblems::bodyInvalidSyntax('JSON'),
-            fn() => $this->parser->parse($given)
+            fn () => $this->parser->parse($given)
         );
     }
 }

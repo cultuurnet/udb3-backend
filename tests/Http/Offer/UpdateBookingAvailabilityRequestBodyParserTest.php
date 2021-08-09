@@ -47,7 +47,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblemException(
             ApiProblems::bodyMissing(),
-            fn() => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
 
@@ -60,7 +60,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblemException(
             ApiProblems::bodyInvalidSyntax('JSON'),
-            fn() => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
 
@@ -73,7 +73,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblemException(
             ApiProblems::bodyInvalidData('Required property "type" not found.', '/type'),
-            fn() => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
 
@@ -86,7 +86,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblemException(
             ApiProblems::bodyInvalidData('Invalid type provided.', '/type'),
-            fn() => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
 }
