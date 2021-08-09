@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -53,7 +53,7 @@ final class ErrorLogger
         AccessDeniedHttpException::class,
         AccessDeniedException::class,
         CalendarTypeNotSupported::class,
-        ApiProblemException::class,
+        ApiProblem::class,
     ];
 
     /**

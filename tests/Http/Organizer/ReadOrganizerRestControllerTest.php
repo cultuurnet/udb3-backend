@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -72,7 +72,7 @@ class ReadOrganizerRestControllerTest extends TestCase
 
     public function it_throws_an_api_problem_exception_for_a_non_existing_organizer()
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
         $this->organizerController->get(self::NON_EXISTING_ID);
     }
 }

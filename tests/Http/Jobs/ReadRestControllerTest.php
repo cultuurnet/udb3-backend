@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Jobs;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,7 +52,7 @@ class ReadRestControllerTest extends TestCase
      */
     public function it_throws_an_api_problem_exception_for_missing_job()
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
         $this->mockCreateFromJobId(null);
         $response = $this->readRestController->get('jobId');
     }

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex\Error;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
@@ -50,14 +49,14 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
     public static function createNewApiProblem(Throwable $e, int $defaultStatus): ApiProblem
     {
+        if ($e instanceof ApiProblem) {
+            return $e;
+        }
+
         $problem = ApiProblem::custom('about:blank', $e->getMessage(), $e->getCode() ?: $defaultStatus);
 
         if ($e instanceof Error) {
             $problem = ApiProblem::internalServerError();
-        }
-
-        if ($e instanceof ApiProblemException) {
-            $problem = $e->getApiProblem();
         }
 
         if ($e instanceof AccessDeniedException ||

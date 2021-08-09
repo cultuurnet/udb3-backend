@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -157,7 +157,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_throws_an_api_problem_exception_for_a_non_existing_event(): void
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(true);
         $controller->history(self::NON_EXISTING_ID);
     }
@@ -167,7 +167,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_throws_an_api_problem_exception_for_a_regular_user(): void
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(false);
         $controller->history(self::EXISTING_ID);
     }
@@ -205,7 +205,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_throws_an_api_problem_exception_for_getting_a_non_existing_event(): void
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
 
         $request = new Request();
 
@@ -231,7 +231,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_throws_an_api_problem_exception_for_calendar_summary_for_non_existing_event(): void
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
 
         $request = new Request(['style' => 'text', 'format' => 'lg']);
 

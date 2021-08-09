@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -296,7 +296,7 @@ class EditRoleRestControllerTest extends TestCase
             ->with(new StringLiteral($labelName))
             ->willReturn(null);
 
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
 
         $this->controller->addLabel($this->roleId, $labelName);
     }
@@ -361,7 +361,7 @@ class EditRoleRestControllerTest extends TestCase
             ->with(new StringLiteral($labelName))
             ->willReturn(null);
 
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
 
         $this->controller->removeLabel($this->roleId, $labelName);
     }

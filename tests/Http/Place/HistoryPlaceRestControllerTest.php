@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -90,7 +90,7 @@ class HistoryPlaceRestControllerTest extends TestCase
      */
     public function it_throws_an_api_problem_exception_for_a_non_existing_event(): void
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(true);
         $controller->get(self::NON_EXISTING_ID);
     }
@@ -100,7 +100,7 @@ class HistoryPlaceRestControllerTest extends TestCase
      */
     public function it_throws_an_api_problem_exception_for_a_regular_user(): void
     {
-        $this->expectException(ApiProblemException::class);
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(false);
         $controller->get(self::EXISTING_ID);
     }
