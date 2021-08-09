@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 trait AssertApiProblemExceptionTrait
 {
-    private function assertCallableThrowsApiProblemException(ApiProblem $expectedApiProblem, callable $callback): void
+    private function assertCallableThrowsApiProblem(ApiProblem $expectedApiProblem, callable $callback): void
     {
         /** @var TestCase $this */
         try {
             $callback();
-            $this->fail('No ' . ApiProblemException::class . ' thrown');
-        } catch (ApiProblemException $e) {
-            $this->assertEquals($expectedApiProblem, $e->getApiProblem());
+            $this->fail('No ' . ApiProblem::class . ' thrown');
+        } catch (ApiProblem $e) {
+            $this->assertEquals($expectedApiProblem, $e);
         }
     }
 }

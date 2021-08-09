@@ -45,7 +45,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
+        $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
@@ -58,7 +58,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
+        $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidSyntax('JSON'),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
@@ -71,7 +71,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('{}')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
+        $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData('Required property "type" not found.', '/type'),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
@@ -84,7 +84,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('{"type":"foo"}')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
+        $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData('Invalid type provided.', '/type'),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );

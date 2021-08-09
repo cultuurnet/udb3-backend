@@ -41,7 +41,7 @@ class JsonRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
+        $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
             fn () => $this->parser->parse($given)
         );
@@ -54,7 +54,7 @@ class JsonRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
+        $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidSyntax('JSON'),
             fn () => $this->parser->parse($given)
         );
