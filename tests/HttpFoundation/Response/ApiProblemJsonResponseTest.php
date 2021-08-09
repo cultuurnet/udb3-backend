@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\HttpFoundation\Response;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 class ApiProblemJsonResponseTest extends TestCase
 {
