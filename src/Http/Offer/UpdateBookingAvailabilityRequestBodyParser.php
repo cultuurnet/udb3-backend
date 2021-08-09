@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
-use CultuurNet\UDB3\Http\Request\Body\ContentMediationRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\ContentNegotiationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use InvalidArgumentException;
@@ -16,7 +16,7 @@ final class UpdateBookingAvailabilityRequestBodyParser implements RequestBodyPar
 {
     public function parse(ServerRequestInterface $request): array
     {
-        $data = (new ContentMediationRequestBodyParser())->parse($request);
+        $data = (new ContentNegotiationRequestBodyParser())->parse($request);
         $this->validateType($data);
         return $data;
     }

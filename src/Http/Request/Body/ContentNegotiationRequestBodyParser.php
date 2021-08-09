@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-final class ContentMediationRequestBodyParser implements RequestBodyParser
+final class ContentNegotiationRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): array
     {

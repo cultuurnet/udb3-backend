@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
-class ContentMediationRequestBodyParserTest extends TestCase
+class ContentNegotiationRequestBodyParserTest extends TestCase
 {
     /**
-     * @var ContentMediationRequestBodyParser
+     * @var ContentNegotiationRequestBodyParser
      */
     private $parser;
 
@@ -21,7 +21,7 @@ class ContentMediationRequestBodyParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->parser = new ContentMediationRequestBodyParser();
+        $this->parser = new ContentNegotiationRequestBodyParser();
         $this->requestBuilder = new Psr7RequestBuilder();
     }
 
