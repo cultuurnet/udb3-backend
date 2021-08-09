@@ -30,8 +30,13 @@ final class ApiProblem
     private ?string $detail;
     private ?string $jsonPointer;
 
-    private function __construct(string $type, string $title, int $status, ?string $detail, ?string $jsonPointer)
-    {
+    private function __construct(
+        string $type,
+        string $title,
+        int $status,
+        ?string $detail = null,
+        ?string $jsonPointer = null
+    ) {
         $this->type = $type;
         $this->title = $title;
         $this->status = $status;
@@ -99,100 +104,103 @@ final class ApiProblem
 
     public static function internalServerError(string $detail = ''): self
     {
-        return (new CrellApiProblem())
-            ->setType('about:blank')
-            ->setTitle('Internal Server Error')
-            ->setDetail($detail)
-            ->setStatus(500);
+        return new self(
+            'about:blank',
+            'Internal Server Error',
+            500,
+            $detail
+        );
     }
 
     public static function unauthorized(string $detail): self
     {
         // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
         // to fix this.
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/auth/unauthorized')
-            ->setTitle('Unauthorized')
-            ->setDetail($detail)
-            ->setStatus(401);
+        return new self(
+            'https://api.publiq.be/probs/auth/unauthorized',
+            'Unauthorized',
+            401,
+            $detail
+        );
     }
 
     public static function forbidden(string $detail = null): self
     {
-        // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
-        // to fix this.
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/auth/forbidden')
-            ->setTitle('Forbidden')
-            ->setDetail($detail)
-            ->setStatus(403);
+        return new self(
+            'https://api.publiq.be/probs/auth/forbidden',
+            'Forbidden',
+            403,
+            $detail
+        );
     }
 
     public static function tokenNotSupported(string $detail): self
     {
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/auth/token-not-supported')
-            ->setTitle('Token not supported')
-            ->setDetail($detail)
-            ->setStatus(400);
+        return new self(
+            'https://api.publiq.be/probs/auth/token-not-supported',
+            'Token not supported',
+            400,
+            $detail
+        );
     }
 
     public static function bodyMissing(): self
     {
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/body/missing')
-            ->setTitle('Body missing')
-            ->setStatus(400);
+        return new self(
+            'https://api.publiq.be/probs/body/missing',
+            'Body missing',
+            400
+        );
     }
 
     public static function bodyInvalidSyntax(string $format): self
     {
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/body/invalid-syntax')
-            ->setTitle('Invalid body syntax')
-            ->setDetail('The given request body could not be parsed as ' . $format . '.')
-            ->setStatus(400);
+        return new self(
+            'https://api.publiq.be/probs/body/invalid-syntax',
+            'Invalid body syntax',
+            400,
+            'The given request body could not be parsed as ' . $format . '.'
+        );
     }
 
     public static function bodyInvalidData(string $detail, string $jsonPointer): self
     {
-        $problem = (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/body/invalid-data')
-            ->setTitle('Invalid body data')
-            ->setDetail($detail)
-            ->setStatus(400);
-
-        $problem['jsonPointer'] = $jsonPointer;
-
-        return $problem;
+        return new self(
+            'https://api.publiq.be/probs/body/invalid-data',
+            'Invalid body data',
+            400,
+            $detail,
+            $jsonPointer
+        );
     }
 
     public static function userNotFound(string $detail): self
     {
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/uitdatabank/user-not-found')
-            ->setTitle('User not found')
-            ->setDetail($detail)
-            ->setStatus(404);
+        return new self(
+            'https://api.publiq.be/probs/uitdatabank/user-not-found',
+            'User not found',
+            404,
+            $detail
+        );
     }
 
     public static function invalidEmailAddress(string $email): self
     {
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/uitdatabank/invalid-email-address')
-            ->setTitle('Invalid email address')
-            ->setDetail(
-                sprintf('"%s" is not a valid email address', $email)
-            )
-            ->setStatus(400);
+        return new self(
+            'https://api.publiq.be/probs/uitdatabank/invalid-email-address',
+            'Invalid email address',
+            400,
+            sprintf('"%s" is not a valid email address', $email)
+        );
     }
 
     public static function calendarTypeNotSupported(string $detail): self
     {
-        return (new CrellApiProblem())
-            ->setType('https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported')
-            ->setTitle('Calendar type not supported')
-            ->setDetail($detail)
-            ->setStatus(400);
+        return new self(
+            'https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported',
+            'Calendar type not supported',
+            400,
+            $detail
+        );
     }
 }

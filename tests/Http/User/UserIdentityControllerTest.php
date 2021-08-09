@@ -80,8 +80,8 @@ class UserIdentityControllerTest extends TestCase
         $this->assertJsonResponse(
             new JsonResponse(
                 [
-                    'title' => 'Invalid email address',
                     'type' => 'https://api.publiq.be/probs/uitdatabank/invalid-email-address',
+                    'title' => 'Invalid email address',
                     'status' => 400,
                     'detail' => '"foo" is not a valid email address',
                 ],
@@ -115,8 +115,8 @@ class UserIdentityControllerTest extends TestCase
         $this->assertJsonResponse(
             new JsonResponse(
                 [
-                    'title' => 'User not found',
                     'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
+                    'title' => 'User not found',
                     'status' => 404,
                     'detail' => 'No user found for the given email address.',
                 ],
@@ -222,8 +222,8 @@ class UserIdentityControllerTest extends TestCase
         $this->assertJsonResponse(
             new JsonResponse(
                 [
-                    'title' => 'Token not supported',
                     'type' => 'https://api.publiq.be/probs/auth/token-not-supported',
+                    'title' => 'Token not supported',
                     'status' => 400,
                     'detail' => 'Client access tokens are not supported on this endpoint because a user is required to return user info.',
                 ],
@@ -255,8 +255,8 @@ class UserIdentityControllerTest extends TestCase
         $this->assertJsonResponse(
             new JsonResponse(
                 [
-                    'title' => 'Token not supported',
                     'type' => 'https://api.publiq.be/probs/auth/token-not-supported',
+                    'title' => 'Token not supported',
                     'status' => 400,
                     'detail' => 'No user found for the given token.',
                 ],
