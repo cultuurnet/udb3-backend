@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Deserializer;
 
+/**
+ * @deprecated
+ *   Use BodyRequestParser and ApiProblemException instead
+ */
 class DataValidationException extends \Exception
 {
     /**
