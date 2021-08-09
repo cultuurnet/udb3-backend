@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
-use Crell\ApiProblem\ApiProblem;
 use PHPUnit\Framework\TestCase;
 
 trait AssertApiProblemExceptionTrait
