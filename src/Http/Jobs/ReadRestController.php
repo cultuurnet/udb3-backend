@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Jobs;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ReadRestController
@@ -31,13 +29,11 @@ class ReadRestController
             new StringLiteral($jobId)
         );
 
-        if ($jobStatus) {
-            return new JsonResponse($jobStatus->toNative());
-        } else {
-            $apiProblem = new ApiProblem('No status for job with id: ' . $jobId);
-            $apiProblem->setStatus(Response::HTTP_BAD_REQUEST);
-
-            return new ApiProblemJsonResponse($apiProblem);
+        if (!$jobStatus) {
+            throw ApiProblem::custom('about:blank', 'No status for job with id: ' . $jobId, 400)
+                ->toException();
         }
+
+        return new JsonResponse($jobStatus->toNative());
     }
 }

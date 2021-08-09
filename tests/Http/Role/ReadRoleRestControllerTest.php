@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Role;
 
 use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
@@ -116,11 +117,10 @@ class ReadRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_role()
+    public function it_throws_an_api_problem_exception_for_getting_a_non_existing_role()
     {
-        $jsonResponse = $this->roleRestController->get(self::NON_EXISTING_ID);
-
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
+        $this->expectException(ApiProblemException::class);
+        $this->roleRestController->get(self::NON_EXISTING_ID);
     }
 
     /**
