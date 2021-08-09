@@ -96,7 +96,8 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             // might have implemented a comparison on the error message when this was introduced in udb3-uitpas-service
             // in the past.
             $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
-            $problem->setTitle($formattedTitle);
+
+            $problem = ApiProblem::custom('about:blank', $title, $e->getCode() ?: $defaultStatus);
         }
 
         if (self::$debug) {
