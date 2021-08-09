@@ -84,6 +84,21 @@ final class ApiProblem
         return $json;
     }
 
+    /**
+     * @deprecated
+     *   Use a named method instead with a specific type.
+     *   Remove this method once all ApiProblem instances use a named method.
+     */
+    public static function custom(
+        string $type,
+        string $title,
+        int $status,
+        ?string $detail = null,
+        ?string $jsonPointer = null
+    ): self {
+        return new self($type, $title, $status, $detail, $jsonPointer);
+    }
+
     public static function internalServerError(string $detail = ''): CrellApiProblem
     {
         return (new CrellApiProblem())
