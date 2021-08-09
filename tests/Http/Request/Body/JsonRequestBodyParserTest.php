@@ -10,15 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class JsonRequestBodyParserTest extends TestCase
 {
-    /**
-     * @var JsonRequestBodyParser
-     */
-    private $parser;
+    private JsonRequestBodyParser $parser;
 
-    /**
-     * @var Psr7RequestBuilder
-     */
-    private $requestBuilder;
+    private Psr7RequestBuilder $requestBuilder;
 
     protected function setUp(): void
     {
