@@ -7,6 +7,10 @@ namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class ContactPointDataValidator implements DataValidatorInterface
 {
     /**

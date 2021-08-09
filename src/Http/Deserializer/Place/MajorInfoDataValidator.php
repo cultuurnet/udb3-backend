@@ -13,6 +13,10 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValida
 use CultuurNet\UDB3\Http\Deserializer\Event\EventTypeDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeDataValidator;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class MajorInfoDataValidator implements DataValidatorInterface
 {
     /**

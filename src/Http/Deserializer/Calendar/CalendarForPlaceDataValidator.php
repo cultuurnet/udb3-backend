@@ -11,6 +11,10 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\TimeSpanValidator;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class CalendarForPlaceDataValidator implements DataValidatorInterface
 {
     use ThrowIfNotEmpty;

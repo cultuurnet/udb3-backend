@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3\Http\Deserializer\DataValidator;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 
+/**
+ * @deprecated
+ *   Implement RequestBodyParser instead and throw ApiProblemException
+ */
 interface DataValidatorInterface
 {
     /**
