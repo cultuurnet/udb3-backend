@@ -161,7 +161,7 @@ final class ApiProblem extends Exception
         ?string $detail = null,
         ?string $jsonPointer = null
     ): self {
-        return new self($type, $title, $status, $detail, $jsonPointer);
+        return self::create($type, $title, $status, $detail, $jsonPointer);
     }
 
     public static function internalServerError(string $detail = ''): self
