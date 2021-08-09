@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request\Body;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemExceptionTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
 class JsonRequestBodyParserTest extends TestCase
 {
+    use AssertApiProblemExceptionTrait;
+
     private JsonRequestBodyParser $parser;
 
     private Psr7RequestBuilder $requestBuilder;
@@ -37,8 +40,11 @@ class JsonRequestBodyParserTest extends TestCase
     public function it_throws_when_body_is_missing(): void
     {
         $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
-        $this->expectException(ApiProblemException::class);
-        $this->parser->parse($given);
+
+        $this->assertCallableThrowsApiProblemException(
+            ApiProblems::bodyMissing(),
+            fn() => $this->parser->parse($given)
+        );
     }
 
     /**
@@ -47,7 +53,10 @@ class JsonRequestBodyParserTest extends TestCase
     public function it_throws_when_body_is_invalid_json(): void
     {
         $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
-        $this->expectException(ApiProblemException::class);
-        $this->parser->parse($given);
+
+        $this->assertCallableThrowsApiProblemException(
+            ApiProblems::bodyInvalidSyntax('JSON'),
+            fn() => $this->parser->parse($given)
+        );
     }
 }
