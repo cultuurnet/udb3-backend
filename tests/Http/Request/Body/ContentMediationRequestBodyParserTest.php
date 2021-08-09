@@ -9,15 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class ContentMediationRequestBodyParserTest extends TestCase
 {
-    /**
-     * @var ContentMediationRequestBodyParser
-     */
-    private $parser;
+    private ContentMediationRequestBodyParser $parser;
 
-    /**
-     * @var Psr7RequestBuilder
-     */
-    private $requestBuilder;
+    private Psr7RequestBuilder $requestBuilder;
 
     protected function setUp(): void
     {
