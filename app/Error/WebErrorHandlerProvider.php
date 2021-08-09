@@ -79,7 +79,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         }
 
         if ($e instanceof DataValidationException) {
-            $problem->setTitle('Invalid payload.');
+            $problem = ApiProblem::custom('about:blank', 'Invalid payload.', $e->getCode() ?: $defaultStatus);
             $problem['validation_messages'] = $e->getValidationMessages();
         }
 
