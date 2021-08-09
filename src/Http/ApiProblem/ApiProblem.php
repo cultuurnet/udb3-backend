@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
-use CultuurNet\UDB3\Deserializer\DataValidationException;
-use Respect\Validation\Exceptions\GroupedValidationException;
+use Exception;
 
 /**
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
@@ -25,7 +24,7 @@ use Respect\Validation\Exceptions\GroupedValidationException;
  * - Avoid using "about:blank" in cases where extra documentation can be helpful
  *     (since the URIs will link to documentation on Stoplight)
  */
-final class ApiProblem
+final class ApiProblem extends Exception
 {
     private string $type;
     private string $title;
@@ -40,18 +39,43 @@ final class ApiProblem
      */
     private array $validationMessages = [];
 
-    private function __construct(
+    /**
+     * new ApiProblem() always creates a 500 Internal Server Error.
+     * For other problems, use a factory method instead.
+     * If there is no problem for your error, create a new one with a specific type.
+     * Make sure to also document it on the API documentation.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->type = 'about:blank';
+        $this->title = 'Internal Server Error';
+        $this->status = 500;
+
+        $this->message = $this->title;
+        $this->code = $this->status;
+    }
+
+    private static function create(
         string $type,
         string $title,
         int $status,
         ?string $detail = null,
         ?string $jsonPointer = null
-    ) {
-        $this->type = $type;
-        $this->title = $title;
-        $this->status = $status;
-        $this->detail = $detail;
-        $this->jsonPointer = $jsonPointer;
+    ): self {
+        $problem = new ApiProblem();
+
+        // Api problem properties.
+        $problem->type = $type;
+        $problem->title = $title;
+        $problem->status = $status;
+        $problem->detail = $detail;
+        $problem->jsonPointer = $jsonPointer;
+
+        // Exception properties.
+        $problem->message = $title;
+        $problem->code = $status;
     }
 
     public function getType(): string
@@ -147,19 +171,16 @@ final class ApiProblem
 
     public static function internalServerError(string $detail = ''): self
     {
-        return new self(
-            'about:blank',
-            'Internal Server Error',
-            500,
-            $detail
-        );
+        $problem = new self();
+        $problem->detail = $detail;
+        return $problem;
     }
 
     public static function unauthorized(string $detail): self
     {
         // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
         // to fix this.
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/auth/unauthorized',
             'Unauthorized',
             401,
@@ -169,7 +190,7 @@ final class ApiProblem
 
     public static function forbidden(string $detail = null): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/auth/forbidden',
             'Forbidden',
             403,
@@ -179,7 +200,7 @@ final class ApiProblem
 
     public static function tokenNotSupported(string $detail): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/auth/token-not-supported',
             'Token not supported',
             400,
@@ -189,7 +210,7 @@ final class ApiProblem
 
     public static function bodyMissing(): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/body/missing',
             'Body missing',
             400
@@ -198,7 +219,7 @@ final class ApiProblem
 
     public static function bodyInvalidSyntax(string $format): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/body/invalid-syntax',
             'Invalid body syntax',
             400,
@@ -208,7 +229,7 @@ final class ApiProblem
 
     public static function bodyInvalidData(string $detail, string $jsonPointer): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/body/invalid-data',
             'Invalid body data',
             400,
@@ -219,7 +240,7 @@ final class ApiProblem
 
     public static function userNotFound(string $detail): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/uitdatabank/user-not-found',
             'User not found',
             404,
@@ -229,7 +250,7 @@ final class ApiProblem
 
     public static function invalidEmailAddress(string $email): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/uitdatabank/invalid-email-address',
             'Invalid email address',
             400,
@@ -239,7 +260,7 @@ final class ApiProblem
 
     public static function calendarTypeNotSupported(string $detail): self
     {
-        return new self(
+        return self::create(
             'https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported',
             'Calendar type not supported',
             400,
