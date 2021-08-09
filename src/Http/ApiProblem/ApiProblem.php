@@ -26,6 +26,64 @@ use Crell\ApiProblem\ApiProblem as CrellApiProblem;
  */
 final class ApiProblem
 {
+    private string $type;
+    private string $title;
+    private int $status;
+    private ?string $detail;
+    private ?string $jsonPointer;
+
+    private function __construct(string $type, string $title, int $status, ?string $detail, ?string $jsonPointer)
+    {
+        $this->type = $type;
+        $this->title = $title;
+        $this->status = $status;
+        $this->detail = $detail;
+        $this->jsonPointer = $jsonPointer;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    public function getDetail(): ?string
+    {
+        return $this->detail;
+    }
+
+    public function getJsonPointer(): ?string
+    {
+        return $this->jsonPointer;
+    }
+
+    public function toJson(): array
+    {
+        $json = [
+            'type' => $this->type,
+            'title' => $this->title,
+            'status' => $this->status,
+        ];
+
+        if ($this->detail) {
+            $json['detail'] = $this->detail;
+        }
+        if ($this->jsonPointer) {
+            $json['jsonPointer'] = $this->jsonPointer;
+        }
+
+        return $json;
+    }
+
     public static function internalServerError(string $detail = ''): CrellApiProblem
     {
         return (new CrellApiProblem())
