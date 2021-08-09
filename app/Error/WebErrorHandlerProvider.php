@@ -9,7 +9,7 @@ use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
 use Exception;
@@ -43,7 +43,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                 $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
                 $problem = $this::createNewApiProblem($e, $defaultStatus);
-                return new ApiProblemJsonResponse($problem);
+                return (new ApiProblemJsonResponse($problem))->toHttpFoundationResponse();
             }
         );
     }
