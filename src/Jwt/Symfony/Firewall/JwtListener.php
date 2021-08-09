@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use InvalidArgumentException;
@@ -49,7 +49,7 @@ class JwtListener implements ListenerInterface
             $token = new JsonWebToken($jwtString);
         } catch (InvalidArgumentException $e) {
             $response = new ApiProblemJsonResponse(
-                ApiProblems::unauthorized('Could not parse the given JWT.')
+                ApiProblem::unauthorized('Could not parse the given JWT.')
             );
             $event->setResponse($response);
             return;
@@ -60,11 +60,11 @@ class JwtListener implements ListenerInterface
             $this->tokenStorage->setToken($authenticatedToken);
         } catch (AuthenticationException $e) {
             $response = new ApiProblemJsonResponse(
-                ApiProblems::unauthorized($e->getMessage())
+                ApiProblem::unauthorized($e->getMessage())
             );
             if ($e->getCode() === 403) {
                 $response = new ApiProblemJsonResponse(
-                    ApiProblems::forbidden($e->getMessage())
+                    ApiProblem::forbidden($e->getMessage())
                 );
             }
             $event->setResponse($response);

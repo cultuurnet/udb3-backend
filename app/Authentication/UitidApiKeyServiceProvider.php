@@ -14,7 +14,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -101,7 +101,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 try {
                     $apiKeyAuthenticator->authenticate($psr7Request);
                 } catch (RequestAuthenticationException $e) {
-                    return new ApiProblemJsonResponse(ApiProblems::unauthorized($e->getMessage()));
+                    return new ApiProblemJsonResponse(ApiProblem::unauthorized($e->getMessage()));
                 }
 
                 // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
@@ -116,7 +116,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                 if (!$permissionCheck->satisfiedBy($consumer)) {
                     return new ApiProblemJsonResponse(
-                        ApiProblems::forbidden('Given API key is not authorized to use EntryAPI.')
+                        ApiProblem::forbidden('Given API key is not authorized to use EntryAPI.')
                     );
                 }
 

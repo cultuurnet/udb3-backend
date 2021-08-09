@@ -9,7 +9,7 @@ use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
@@ -59,7 +59,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         $problem->setStatus($e->getCode() ?: $defaultStatus);
 
         if ($e instanceof Error) {
-            $problem = ApiProblems::internalServerError();
+            $problem = ApiProblem::internalServerError();
         }
 
         if ($e instanceof ApiProblemException) {
@@ -69,11 +69,11 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         if ($e instanceof AccessDeniedException ||
             $e instanceof AccessDeniedHttpException
         ) {
-            $problem = ApiProblems::forbidden();
+            $problem = ApiProblem::forbidden();
         }
 
         if ($e instanceof CommandAuthorizationException) {
-            $problem = ApiProblems::forbidden(
+            $problem = ApiProblem::forbidden(
                 sprintf(
                     'User %s has no permission "%s" on resource %s',
                     $e->getUserId()->toNative(),

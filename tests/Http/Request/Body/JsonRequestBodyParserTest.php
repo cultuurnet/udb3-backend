@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request\Body;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemExceptionTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +42,7 @@ class JsonRequestBodyParserTest extends TestCase
         $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
 
         $this->assertCallableThrowsApiProblemException(
-            ApiProblems::bodyMissing(),
+            ApiProblem::bodyMissing(),
             fn () => $this->parser->parse($given)
         );
     }
@@ -55,7 +55,7 @@ class JsonRequestBodyParserTest extends TestCase
         $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
 
         $this->assertCallableThrowsApiProblemException(
-            ApiProblems::bodyInvalidSyntax('JSON'),
+            ApiProblem::bodyInvalidSyntax('JSON'),
             fn () => $this->parser->parse($given)
         );
     }

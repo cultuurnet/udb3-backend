@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\User;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
@@ -43,7 +43,7 @@ class UserIdentityController
             $emailAddress = new EmailAddress($emailAddressString);
         } catch (InvalidNativeArgumentException $e) {
             return new ApiProblemJsonResponse(
-                ApiProblems::invalidEmailAddress($emailAddressString)
+                ApiProblem::invalidEmailAddress($emailAddressString)
             );
         }
 
@@ -51,7 +51,7 @@ class UserIdentityController
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
-                ApiProblems::userNotFound('No user found for the given email address.')
+                ApiProblem::userNotFound('No user found for the given email address.')
             );
         }
 
@@ -62,14 +62,14 @@ class UserIdentityController
     {
         if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
             return new ApiProblemJsonResponse(
-                ApiProblems::tokenNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.')
+                ApiProblem::tokenNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.')
             );
         }
 
         $userIdentity = $this->jwt->getUserIdentityDetails($this->userIdentityResolver);
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
-                ApiProblems::tokenNotSupported('No user found for the given token.')
+                ApiProblem::tokenNotSupported('No user found for the given token.')
             );
         }
 

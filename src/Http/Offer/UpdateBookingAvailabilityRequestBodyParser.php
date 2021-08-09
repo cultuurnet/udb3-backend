@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\ContentNegotiationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -25,7 +25,7 @@ final class UpdateBookingAvailabilityRequestBodyParser implements RequestBodyPar
     {
         if (!isset($data['type'])) {
             throw new ApiProblemException(
-                ApiProblems::bodyInvalidData('Required property "type" not found.', '/type')
+                ApiProblem::bodyInvalidData('Required property "type" not found.', '/type')
             );
         }
 
@@ -33,7 +33,7 @@ final class UpdateBookingAvailabilityRequestBodyParser implements RequestBodyPar
             BookingAvailability::fromNative($data['type']);
         } catch (InvalidArgumentException $e) {
             throw new ApiProblemException(
-                ApiProblems::bodyInvalidData('Invalid type provided.', '/type')
+                ApiProblem::bodyInvalidData('Invalid type provided.', '/type')
             );
         }
     }

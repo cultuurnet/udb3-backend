@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
-use Crell\ApiProblem\ApiProblem;
+use Crell\ApiProblem\ApiProblem as CrellApiProblem;
 
 /**
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
@@ -24,68 +24,68 @@ use Crell\ApiProblem\ApiProblem;
  * - Avoid using "about:blank" in cases where extra documentation can be helpful
  *     (since the URIs will link to documentation on Stoplight)
  */
-final class ApiProblems
+final class ApiProblem
 {
-    public static function internalServerError(string $detail = ''): ApiProblem
+    public static function internalServerError(string $detail = ''): CrellApiProblem
     {
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('about:blank')
             ->setTitle('Internal Server Error')
             ->setDetail($detail)
             ->setStatus(500);
     }
 
-    public static function unauthorized(string $detail): ApiProblem
+    public static function unauthorized(string $detail): CrellApiProblem
     {
         // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
         // to fix this.
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/auth/unauthorized')
             ->setTitle('Unauthorized')
             ->setDetail($detail)
             ->setStatus(401);
     }
 
-    public static function forbidden(string $detail = null): ApiProblem
+    public static function forbidden(string $detail = null): CrellApiProblem
     {
         // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
         // to fix this.
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/auth/forbidden')
             ->setTitle('Forbidden')
             ->setDetail($detail)
             ->setStatus(403);
     }
 
-    public static function tokenNotSupported(string $detail): ApiProblem
+    public static function tokenNotSupported(string $detail): CrellApiProblem
     {
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/auth/token-not-supported')
             ->setTitle('Token not supported')
             ->setDetail($detail)
             ->setStatus(400);
     }
 
-    public static function bodyMissing(): ApiProblem
+    public static function bodyMissing(): CrellApiProblem
     {
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/body/missing')
             ->setTitle('Body missing')
             ->setStatus(400);
     }
 
-    public static function bodyInvalidSyntax(string $format): ApiProblem
+    public static function bodyInvalidSyntax(string $format): CrellApiProblem
     {
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/body/invalid-syntax')
             ->setTitle('Invalid body syntax')
             ->setDetail('The given request body could not be parsed as ' . $format . '.')
             ->setStatus(400);
     }
 
-    public static function bodyInvalidData(string $detail, string $jsonPointer): ApiProblem
+    public static function bodyInvalidData(string $detail, string $jsonPointer): CrellApiProblem
     {
-        $problem = (new ApiProblem())
+        $problem = (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/body/invalid-data')
             ->setTitle('Invalid body data')
             ->setDetail($detail)
@@ -96,18 +96,18 @@ final class ApiProblems
         return $problem;
     }
 
-    public static function userNotFound(string $detail): ApiProblem
+    public static function userNotFound(string $detail): CrellApiProblem
     {
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/uitdatabank/user-not-found')
             ->setTitle('User not found')
             ->setDetail($detail)
             ->setStatus(404);
     }
 
-    public static function invalidEmailAddress(string $email): ApiProblem
+    public static function invalidEmailAddress(string $email): CrellApiProblem
     {
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/uitdatabank/invalid-email-address')
             ->setTitle('Invalid email address')
             ->setDetail(
@@ -116,9 +116,9 @@ final class ApiProblems
             ->setStatus(400);
     }
 
-    public static function calendarTypeNotSupported(string $detail): ApiProblem
+    public static function calendarTypeNotSupported(string $detail): CrellApiProblem
     {
-        return (new ApiProblem())
+        return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported')
             ->setTitle('Calendar type not supported')
             ->setDetail($detail)

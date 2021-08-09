@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Response;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use Fig\Http\Message\StatusCodeInterface;
 use JsonException;
 use Slim\Psr7\Factory\StreamFactory;
@@ -19,7 +19,7 @@ class JsonResponse extends Response
         try {
             $body = (new StreamFactory())->createStream(json_encode($data, JSON_THROW_ON_ERROR));
         } catch (JsonException $e) {
-            throw new ApiProblemException(ApiProblems::internalServerError('Could not encode JSON response.'));
+            throw new ApiProblemException(ApiProblem::internalServerError('Could not encode JSON response.'));
         }
 
         if ($headers instanceof HeadersInterface && !$headers->hasHeader('Content-Type')) {
