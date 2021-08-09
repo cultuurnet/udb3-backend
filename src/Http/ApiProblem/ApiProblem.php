@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
+use CultuurNet\UDB3\Deserializer\DataValidationException;
+use Respect\Validation\Exceptions\GroupedValidationException;
+
 /**
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
  * more easily avoid almost-the-same duplicates.
@@ -29,6 +32,12 @@ final class ApiProblem
     private int $status;
     private ?string $detail;
     private ?string $jsonPointer;
+
+    /**
+     * @deprecated
+     *   Remove once withValidationMessages() has been removed.
+     */
+    private array $validationMessages = [];
 
     private function __construct(
         string $type,
@@ -69,6 +78,18 @@ final class ApiProblem
         return $this->jsonPointer;
     }
 
+    /**
+     * @deprecated
+     *   Remove once all usages of this are removed
+     *   (i.e. when we don't throw DataValidationException and GroupedValidationException anymore)
+     */
+    public function withValidationMessages(array $validationMessages): self
+    {
+        $c = clone $this;
+        $c->validationMessages = $validationMessages;
+        return $c;
+    }
+
     public function toArray(): array
     {
         $json = [
@@ -82,6 +103,11 @@ final class ApiProblem
         }
         if ($this->jsonPointer) {
             $json['jsonPointer'] = $this->jsonPointer;
+        }
+
+        /** @deprecated Remove once withValidationMessages() is removed. */
+        if (count($this->validationMessages) > 0) {
+            $json['validation_messages'] = $this->validationMessages;
         }
 
         return $json;

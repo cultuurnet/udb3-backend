@@ -43,7 +43,6 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                 $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
                 $problem = $this::createNewApiProblem($e, $defaultStatus);
-
                 return new ApiProblemJsonResponse($problem);
             }
         );
@@ -80,11 +79,11 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
         if ($e instanceof DataValidationException) {
             $problem = ApiProblem::custom('about:blank', 'Invalid payload.', $e->getCode() ?: $defaultStatus);
-            $problem['validation_messages'] = $e->getValidationMessages();
+            $problem = $problem->withValidationMessages($e->getValidationMessages());
         }
 
         if ($e instanceof GroupedValidationException) {
-            $problem['validation_messages'] = $e->getMessages();
+            $problem = $problem->withValidationMessages($e->getMessages());
         }
 
         if ($e instanceof CultureFeed_Exception || $e instanceof CultureFeed_HttpException) {
