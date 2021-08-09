@@ -49,44 +49,43 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
     public static function createNewApiProblem(Throwable $e, int $defaultStatus): ApiProblem
     {
-        if ($e instanceof ApiProblem) {
-            return $e;
+        $problem = self::convertThrowableToApiProblem($e, $defaultStatus);
+        if (self::$debug) {
+            $problem = $problem->withDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }
+        return $problem;
+    }
 
-        $problem = ApiProblem::custom('about:blank', $e->getMessage(), $e->getCode() ?: $defaultStatus);
+    private static function convertThrowableToApiProblem(Throwable $e, int $defaultStatus): ApiProblem
+    {
+        switch (true) {
+            case $e instanceof ApiProblem:
+                return $e;
 
-        if ($e instanceof Error) {
-            $problem = ApiProblem::internalServerError();
-        }
+            case $e instanceof Error:
+                return ApiProblem::internalServerError();
 
-        if ($e instanceof AccessDeniedException ||
-            $e instanceof AccessDeniedHttpException
-        ) {
-            $problem = ApiProblem::forbidden();
-        }
+            case $e instanceof AccessDeniedException:
+            case $e instanceof AccessDeniedHttpException:
+                return ApiProblem::forbidden();
 
-        if ($e instanceof CommandAuthorizationException) {
-            $problem = ApiProblem::forbidden(
-                sprintf(
-                    'User %s has no permission "%s" on resource %s',
-                    $e->getUserId()->toNative(),
-                    $e->getCommand()->getPermission()->toNative(),
-                    $e->getCommand()->getItemId()
-                )
-            );
-        }
+            case $e instanceof CommandAuthorizationException:
+                return ApiProblem::forbidden(
+                    sprintf(
+                        'User %s has no permission "%s" on resource %s',
+                        $e->getUserId()->toNative(),
+                        $e->getCommand()->getPermission()->toNative(),
+                        $e->getCommand()->getItemId()
+                    )
+                );
 
-        if ($e instanceof DataValidationException) {
-            $problem = ApiProblem::custom('about:blank', 'Invalid payload.', $e->getCode() ?: $defaultStatus);
-            $problem = $problem->withValidationMessages($e->getValidationMessages());
-        }
+            case $e instanceof DataValidationException:
+                $problem = ApiProblem::custom('about:blank', 'Invalid payload.', $e->getCode() ?: $defaultStatus);
+                return $problem->withValidationMessages($e->getValidationMessages());
 
-        if ($e instanceof GroupedValidationException) {
-            $problem = $problem->withValidationMessages($e->getMessages());
-        }
-
-        if ($e instanceof CultureFeed_Exception || $e instanceof CultureFeed_HttpException) {
-            $title = $problem->getTitle();
+            case $e instanceof GroupedValidationException:
+                $problem = ApiProblem::custom('about:blank', $e->getMessage(), $e->getCode() ?: $defaultStatus);
+                return $problem->withValidationMessages($e->getMessages());
 
             // Remove "URL CALLED" and everything after it.
             // E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..."
@@ -94,16 +93,15 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             // The trailing space could easily be removed but it's there for backward compatibility with systems that
             // might have implemented a comparison on the error message when this was introduced in udb3-uitpas-service
             // in the past.
-            $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
+            case $e instanceof CultureFeed_Exception:
+            case $e instanceof CultureFeed_HttpException:
+                $title = $e->getMessage();
+                $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
+                return ApiProblem::custom('about:blank', $formattedTitle, $e->getCode() ?: $defaultStatus);
 
-            $problem = ApiProblem::custom('about:blank', $title, $e->getCode() ?: $defaultStatus);
+            default:
+                return ApiProblem::custom('about:blank', $e->getMessage(), $e->getCode() ?: $defaultStatus);
         }
-
-        if (self::$debug) {
-            $problem = $problem->withDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
-        }
-
-        return $problem;
     }
 
     public function boot(Application $app): void
