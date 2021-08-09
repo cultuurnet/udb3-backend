@@ -64,7 +64,7 @@ final class ApiProblem
         return $this->jsonPointer;
     }
 
-    public function toJson(): array
+    public function toArray(): array
     {
         $json = [
             'type' => $this->type,

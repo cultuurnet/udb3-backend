@@ -22,7 +22,7 @@ class ApiProblemJsonResponse extends JsonResponse
         $headers->setHeader('Content-Type', 'application/problem+json');
 
         $status = $problem->getStatus() ?? 400;
-        $data = $problem->asArray();
+        $data = $problem->toArray();
 
         parent::__construct(
             $data,
