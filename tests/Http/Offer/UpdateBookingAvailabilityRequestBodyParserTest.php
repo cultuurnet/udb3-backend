@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemExceptionTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 {
+    use AssertApiProblemExceptionTrait;
+
     private UpdateBookingAvailabilityRequestBodyParser $updateBookingAvailabilityRequestBodyParser;
 
     private Psr7RequestBuilder $requestBuilder;
@@ -20,16 +21,6 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $this->updateBookingAvailabilityRequestBodyParser = new UpdateBookingAvailabilityRequestBodyParser();
         $this->requestBuilder = new Psr7RequestBuilder();
-    }
-
-    private function assertCallableThrowsApiProblemException(ApiProblem $expectedApiProblem, callable $callback): void
-    {
-        try {
-            $callback();
-            $this->fail('No ' . ApiProblemException::class . ' thrown');
-        } catch (ApiProblemException $e) {
-            $this->assertEquals($expectedApiProblem, $e->getApiProblem());
-        }
     }
 
     /**
