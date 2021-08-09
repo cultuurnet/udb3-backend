@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
-use Crell\ApiProblem\ApiProblem as CrellApiProblem;
-
 /**
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
  * more easily avoid almost-the-same duplicates.
@@ -99,7 +97,7 @@ final class ApiProblem
         return new self($type, $title, $status, $detail, $jsonPointer);
     }
 
-    public static function internalServerError(string $detail = ''): CrellApiProblem
+    public static function internalServerError(string $detail = ''): self
     {
         return (new CrellApiProblem())
             ->setType('about:blank')
@@ -108,7 +106,7 @@ final class ApiProblem
             ->setStatus(500);
     }
 
-    public static function unauthorized(string $detail): CrellApiProblem
+    public static function unauthorized(string $detail): self
     {
         // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
         // to fix this.
@@ -119,7 +117,7 @@ final class ApiProblem
             ->setStatus(401);
     }
 
-    public static function forbidden(string $detail = null): CrellApiProblem
+    public static function forbidden(string $detail = null): self
     {
         // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
         // to fix this.
@@ -130,7 +128,7 @@ final class ApiProblem
             ->setStatus(403);
     }
 
-    public static function tokenNotSupported(string $detail): CrellApiProblem
+    public static function tokenNotSupported(string $detail): self
     {
         return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/auth/token-not-supported')
@@ -139,7 +137,7 @@ final class ApiProblem
             ->setStatus(400);
     }
 
-    public static function bodyMissing(): CrellApiProblem
+    public static function bodyMissing(): self
     {
         return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/body/missing')
@@ -147,7 +145,7 @@ final class ApiProblem
             ->setStatus(400);
     }
 
-    public static function bodyInvalidSyntax(string $format): CrellApiProblem
+    public static function bodyInvalidSyntax(string $format): self
     {
         return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/body/invalid-syntax')
@@ -156,7 +154,7 @@ final class ApiProblem
             ->setStatus(400);
     }
 
-    public static function bodyInvalidData(string $detail, string $jsonPointer): CrellApiProblem
+    public static function bodyInvalidData(string $detail, string $jsonPointer): self
     {
         $problem = (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/body/invalid-data')
@@ -169,7 +167,7 @@ final class ApiProblem
         return $problem;
     }
 
-    public static function userNotFound(string $detail): CrellApiProblem
+    public static function userNotFound(string $detail): self
     {
         return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/uitdatabank/user-not-found')
@@ -178,7 +176,7 @@ final class ApiProblem
             ->setStatus(404);
     }
 
-    public static function invalidEmailAddress(string $email): CrellApiProblem
+    public static function invalidEmailAddress(string $email): self
     {
         return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/uitdatabank/invalid-email-address')
@@ -189,7 +187,7 @@ final class ApiProblem
             ->setStatus(400);
     }
 
-    public static function calendarTypeNotSupported(string $detail): CrellApiProblem
+    public static function calendarTypeNotSupported(string $detail): self
     {
         return (new CrellApiProblem())
             ->setType('https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported')
