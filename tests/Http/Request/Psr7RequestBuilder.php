@@ -19,11 +19,11 @@ final class Psr7RequestBuilder
 
     private static StreamFactory $streamFactory;
 
-    private ?HeadersInterface $headers;
+    private ?HeadersInterface $headers = null;
 
-    private ?UriInterface $uri;
+    private ?UriInterface $uri = null;
 
-    private ?StreamInterface $body;
+    private ?StreamInterface $body = null;
 
     public function withUriFromString(string $uri): self
     {
