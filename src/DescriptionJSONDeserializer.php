@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
- * @todo Move to udb3-symfony-php.
- * @see https://jira.uitdatabank.be/browse/III-1436
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
  */
 class DescriptionJSONDeserializer extends JSONDeserializer
 {

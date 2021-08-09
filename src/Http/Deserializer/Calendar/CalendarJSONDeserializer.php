@@ -10,6 +10,10 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class CalendarJSONDeserializer extends JSONDeserializer
 {
     /**

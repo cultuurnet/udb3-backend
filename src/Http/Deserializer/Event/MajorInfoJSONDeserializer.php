@@ -14,6 +14,10 @@ use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeJSONDeserializer;
 use CultuurNet\UDB3\Title;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class MajorInfoJSONDeserializer extends JSONDeserializer
 {
     /**

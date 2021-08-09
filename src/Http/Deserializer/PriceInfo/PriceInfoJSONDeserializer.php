@@ -15,6 +15,10 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class PriceInfoJSONDeserializer extends JSONDeserializer
 {
     /**

@@ -9,6 +9,10 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class UrlJSONDeserializer extends JSONDeserializer
 {
     /**

@@ -9,6 +9,10 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Address\Address;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Refactor to implement RequestBodyParser and throw ApiProblemException
+ */
 class AddressJSONDeserializer extends JSONDeserializer
 {
     /**
