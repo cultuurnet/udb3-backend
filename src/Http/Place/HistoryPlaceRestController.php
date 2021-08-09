@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class HistoryPlaceRestController
 {
-    use ApiProblemJsonResponseTrait;
-
     private const HISTORY_ERROR_NOT_FOUND = 'An error occurred while getting the history of the place with id %s!';
     private const HISTORY_ERROR_FORBIDDEN = 'Forbidden to access place history.';
 
@@ -39,7 +35,11 @@ class HistoryPlaceRestController
     public function get(string $placeId): JsonResponse
     {
         if (!$this->userIsGodUser) {
-            return $this->forbiddenResponse($placeId);
+            throw ApiProblem::custom(
+                'about:blank',
+                sprintf(self::HISTORY_ERROR_FORBIDDEN),
+                403
+            )->toException();
         }
 
         try {
@@ -56,21 +56,11 @@ class HistoryPlaceRestController
             $response->headers->set('Vary', 'Origin');
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            return $this->notFoundResponse($placeId);
+            throw ApiProblem::custom(
+                'about:blank',
+                sprintf(self::HISTORY_ERROR_NOT_FOUND, $placeId),
+                404
+            )->toException();
         }
-    }
-
-    private function forbiddenResponse(string $eventId): ApiProblemJsonResponse
-    {
-        return $this->createApiProblemJsonResponse(
-            self::HISTORY_ERROR_FORBIDDEN,
-            $eventId,
-            Response::HTTP_FORBIDDEN
-        );
-    }
-
-    private function notFoundResponse(string $eventId): ApiProblemJsonResponse
-    {
-        return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $eventId);
     }
 }

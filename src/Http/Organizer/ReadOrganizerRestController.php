@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 
 class ReadOrganizerRestController
 {
-    use ApiProblemJsonResponseTrait;
     public const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     /**
@@ -43,7 +42,11 @@ class ReadOrganizerRestController
 
             $response->headers->set('Vary', 'Origin');
         } else {
-            $response = $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
+            throw ApiProblem::custom(
+                'about:blank',
+                sprintf(self::GET_ERROR_NOT_FOUND, $cdbid),
+                404
+            )->toException();
         }
 
         return $response;
