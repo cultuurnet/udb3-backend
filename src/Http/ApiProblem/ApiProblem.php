@@ -108,18 +108,14 @@ final class ApiProblem extends Exception
      *   Remove once all usages of this are removed
      *   (i.e. when we don't throw DataValidationException and GroupedValidationException anymore)
      */
-    public function withValidationMessages(array $validationMessages): self
+    public function setValidationMessages(array $validationMessages): void
     {
-        $c = clone $this;
-        $c->validationMessages = $validationMessages;
-        return $c;
+        $this->validationMessages = $validationMessages;
     }
 
-    public function withDebugInfo(array $debugInfo): self
+    public function setDebugInfo(array $debugInfo): void
     {
-        $c = clone $this;
-        $c->debugInfo = $debugInfo;
-        return $c;
+        $this->debugInfo = $debugInfo;
     }
 
     public function toArray(): array
