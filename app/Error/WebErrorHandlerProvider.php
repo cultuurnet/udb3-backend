@@ -51,7 +51,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
     {
         $problem = self::convertThrowableToApiProblem($e, $defaultStatus);
         if (self::$debug) {
-            $problem = $problem->withDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
+            $problem->setDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }
         return $problem;
     }
@@ -81,11 +81,13 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
             case $e instanceof DataValidationException:
                 $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
-                return $problem->withValidationMessages($e->getValidationMessages());
+                $problem->setValidationMessages($e->getValidationMessages());
+                return $problem;
 
             case $e instanceof GroupedValidationException:
                 $problem = ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
-                return $problem->withValidationMessages($e->getMessages());
+                $problem->setValidationMessages($e->getMessages());
+                return $problem;
 
             // Remove "URL CALLED" and everything after it.
             // E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..."
