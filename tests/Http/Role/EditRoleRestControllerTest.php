@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -287,7 +287,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_error_response_when_adding_an_unknown_label()
+    public function it_throws_an_api_problem_exception_when_adding_an_unknown_label()
     {
         $labelName = 'foo';
 
@@ -296,9 +296,9 @@ class EditRoleRestControllerTest extends TestCase
             ->with(new StringLiteral($labelName))
             ->willReturn(null);
 
-        $response = $this->controller->addLabel($this->roleId, $labelName);
+        $this->expectException(ApiProblem::class);
 
-        $this->assertInstanceOf(ApiProblemJsonResponse::class, $response);
+        $this->controller->addLabel($this->roleId, $labelName);
     }
 
     /**
@@ -352,7 +352,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_error_response_when_removing_an_unknown_label()
+    public function it_throws_an_api_problem_exception_when_removing_an_unknown_label()
     {
         $labelName = 'foo';
 
@@ -361,9 +361,9 @@ class EditRoleRestControllerTest extends TestCase
             ->with(new StringLiteral($labelName))
             ->willReturn(null);
 
-        $response = $this->controller->removeLabel($this->roleId, $labelName);
+        $this->expectException(ApiProblem::class);
 
-        $this->assertInstanceOf(ApiProblemJsonResponse::class, $response);
+        $this->controller->removeLabel($this->roleId, $labelName);
     }
 
     public function makeRequest($method, $file_name)

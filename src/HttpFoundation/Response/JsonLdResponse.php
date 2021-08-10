@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3\HttpFoundation\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * @deprecated
+ *   Use Use CultuurNet\UDB3\Http\Response\JsonLdResponse instead.
+ */
 class JsonLdResponse extends JsonResponse
 {
     public function __construct($data = null, $status = 200, $headers = [])

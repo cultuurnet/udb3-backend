@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -114,11 +115,10 @@ class ReadPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event(): void
+    public function it_throws_an_api_problem_exception_for_getting_a_non_existing_event(): void
     {
-        $jsonResponse = $this->placeRestController->get(self::NON_EXISTING_ID, new Request());
-
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
+        $this->expectException(ApiProblem::class);
+        $this->placeRestController->get(self::NON_EXISTING_ID, new Request());
     }
 
     /**

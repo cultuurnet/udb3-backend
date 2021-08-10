@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemExceptionTrait;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 {
-    use AssertApiProblemExceptionTrait;
+    use AssertApiProblemTrait;
 
     private UpdateBookingAvailabilityRequestBodyParser $updateBookingAvailabilityRequestBodyParser;
 
@@ -45,8 +45,8 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
-            ApiProblems::bodyMissing(),
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyMissing(),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
@@ -58,8 +58,8 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
-            ApiProblems::bodyInvalidSyntax('JSON'),
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidSyntax('JSON'),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
@@ -71,8 +71,8 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('{}')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
-            ApiProblems::bodyInvalidData('Required property "type" not found.', '/type'),
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData('Required property "type" not found.', '/type'),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
@@ -84,8 +84,8 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     {
         $given = $this->requestBuilder->withBodyFromString('{"type":"foo"}')->build('PUT');
 
-        $this->assertCallableThrowsApiProblemException(
-            ApiProblems::bodyInvalidData('Invalid type provided.', '/type'),
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData('Invalid type provided.', '/type'),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }

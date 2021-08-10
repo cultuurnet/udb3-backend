@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
-use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
@@ -178,9 +177,7 @@ class EditRoleRestController
         $labelId = $this->getLabelId($labelIdentifier);
 
         if (is_null($labelId)) {
-            $apiProblem = new ApiProblem('There is no label with identifier: ' . $labelIdentifier);
-            $apiProblem->setStatus(Response::HTTP_NOT_FOUND);
-            return new ApiProblemJsonResponse($apiProblem);
+            throw ApiProblem::blank('There is no label with identifier: ' . $labelIdentifier, 404);
         }
 
         try {
@@ -199,9 +196,7 @@ class EditRoleRestController
         $labelId = $this->getLabelId($labelIdentifier);
 
         if (is_null($labelId)) {
-            $apiProblem = new ApiProblem('There is no label with identifier: ' . $labelIdentifier);
-            $apiProblem->setStatus(Response::HTTP_NOT_FOUND);
-            return new ApiProblemJsonResponse($apiProblem);
+            throw ApiProblem::blank('There is no label with identifier: ' . $labelIdentifier, 404);
         }
 
         try {

@@ -7,17 +7,17 @@ namespace CultuurNet\UDB3\Http\Place;
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\CalendarSummaryV3\Offer\Offer;
-use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ReadPlaceRestController
 {
-    use ApiProblemJsonResponseTrait;
     private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     /**
@@ -35,11 +35,7 @@ class ReadPlaceRestController
     {
         $includeMetadata = (bool) $request->query->get('includeMetadata', false);
 
-        try {
-            $place = $this->documentRepository->fetch($cdbid, $includeMetadata);
-        } catch (DocumentDoesNotExist $e) {
-            return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
-        }
+        $place = $this->fetchPlaceJson($cdbid, $includeMetadata);
 
         $response = JsonLdResponse::create()
             ->setContent($place->getRawBody());
@@ -57,11 +53,14 @@ class ReadPlaceRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $data = $this->documentRepository->fetch($cdbid, false);
+        $data = $this->fetchPlaceJson($cdbid);
         $place = Offer::fromJsonLd($data->getRawBody());
 
         if ($style !== 'html' && $style !== 'text') {
-            return $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
+            throw ApiProblem::blank(
+                'No style found for ' . $style,
+                404
+            );
         }
 
         if ($style === 'html') {
@@ -71,5 +70,17 @@ class ReadPlaceRestController
         }
 
         return new Response($calSum->format($place, $format));
+    }
+
+    private function fetchPlaceJson(string $id, bool $includeMetadata = false): JsonDocument
+    {
+        try {
+            return $this->documentRepository->fetch($id, $includeMetadata);
+        } catch (DocumentDoesNotExist $e) {
+            throw ApiProblem::blank(
+                sprintf(self::GET_ERROR_NOT_FOUND, $id),
+                404
+            );
+        }
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -87,22 +88,20 @@ class HistoryPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_event(): void
+    public function it_throws_an_api_problem_exception_for_a_non_existing_event(): void
     {
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(true);
-        $jsonResponse = $controller->get(self::NON_EXISTING_ID);
-
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
+        $controller->get(self::NON_EXISTING_ID);
     }
 
     /**
      * @test
      */
-    public function returns_a_http_response_with_error_FORBIDDEN_for_a_regular_user(): void
+    public function it_throws_an_api_problem_exception_for_a_regular_user(): void
     {
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(false);
-        $jsonResponse = $controller->get(self::EXISTING_ID);
-
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $jsonResponse->getStatusCode());
+        $controller->get(self::EXISTING_ID);
     }
 }

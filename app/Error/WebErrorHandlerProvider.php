@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
-use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
 use Exception;
@@ -41,59 +39,53 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             function (Exception $e) use ($app) {
                 $app[ErrorLogger::class]->log($e);
 
-                $defaultStatus = ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR;
-                if (ErrorLogger::isBadRequestException($e)) {
-                    $defaultStatus = ApiProblemJsonResponse::HTTP_BAD_REQUEST;
-                }
+                $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
                 $problem = $this::createNewApiProblem($e, $defaultStatus);
-
-                return new ApiProblemJsonResponse($problem);
+                return (new ApiProblemJsonResponse($problem))->toHttpFoundationResponse();
             }
         );
     }
 
     public static function createNewApiProblem(Throwable $e, int $defaultStatus): ApiProblem
     {
-        $problem = new ApiProblem($e->getMessage());
-        $problem->setStatus($e->getCode() ?: $defaultStatus);
-
-        if ($e instanceof Error) {
-            $problem = ApiProblems::internalServerError();
+        $problem = self::convertThrowableToApiProblem($e, $defaultStatus);
+        if (self::$debug) {
+            $problem = $problem->withDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }
+        return $problem;
+    }
 
-        if ($e instanceof ApiProblemException) {
-            $problem = $e->getApiProblem();
-        }
+    private static function convertThrowableToApiProblem(Throwable $e, int $defaultStatus): ApiProblem
+    {
+        switch (true) {
+            case $e instanceof ApiProblem:
+                return $e;
 
-        if ($e instanceof AccessDeniedException ||
-            $e instanceof AccessDeniedHttpException
-        ) {
-            $problem = ApiProblems::forbidden();
-        }
+            case $e instanceof Error:
+                return ApiProblem::internalServerError();
 
-        if ($e instanceof CommandAuthorizationException) {
-            $problem = ApiProblems::forbidden(
-                sprintf(
-                    'User %s has no permission "%s" on resource %s',
-                    $e->getUserId()->toNative(),
-                    $e->getCommand()->getPermission()->toNative(),
-                    $e->getCommand()->getItemId()
-                )
-            );
-        }
+            case $e instanceof AccessDeniedException:
+            case $e instanceof AccessDeniedHttpException:
+                return ApiProblem::forbidden();
 
-        if ($e instanceof DataValidationException) {
-            $problem->setTitle('Invalid payload.');
-            $problem['validation_messages'] = $e->getValidationMessages();
-        }
+            case $e instanceof CommandAuthorizationException:
+                return ApiProblem::forbidden(
+                    sprintf(
+                        'User %s has no permission "%s" on resource %s',
+                        $e->getUserId()->toNative(),
+                        $e->getCommand()->getPermission()->toNative(),
+                        $e->getCommand()->getItemId()
+                    )
+                );
 
-        if ($e instanceof GroupedValidationException) {
-            $problem['validation_messages'] = $e->getMessages();
-        }
+            case $e instanceof DataValidationException:
+                $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
+                return $problem->withValidationMessages($e->getValidationMessages());
 
-        if ($e instanceof CultureFeed_Exception || $e instanceof CultureFeed_HttpException) {
-            $title = $problem->getTitle();
+            case $e instanceof GroupedValidationException:
+                $problem = ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
+                return $problem->withValidationMessages($e->getMessages());
 
             // Remove "URL CALLED" and everything after it.
             // E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..."
@@ -101,15 +93,15 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             // The trailing space could easily be removed but it's there for backward compatibility with systems that
             // might have implemented a comparison on the error message when this was introduced in udb3-uitpas-service
             // in the past.
-            $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
-            $problem->setTitle($formattedTitle);
-        }
+            case $e instanceof CultureFeed_Exception:
+            case $e instanceof CultureFeed_HttpException:
+                $title = $e->getMessage();
+                $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
+                return ApiProblem::blank($formattedTitle, $e->getCode() ?: $defaultStatus);
 
-        if (self::$debug) {
-            $problem['debug'] = ContextExceptionConverterProcessor::convertThrowableToArray($e);
+            default:
+                return ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
         }
-
-        return $problem;
     }
 
     public function boot(Application $app): void

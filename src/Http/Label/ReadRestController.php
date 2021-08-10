@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Label;
 
-use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\PagedCollectionResponse;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
@@ -56,14 +54,11 @@ class ReadRestController
             $entity = $this->readService->getByName(new StringLiteral($id));
         }
 
-        if ($entity) {
-            return new JsonResponse($entity);
-        } else {
-            $apiProblem = new ApiProblem('There is no label with identifier: ' . $id);
-            $apiProblem->setStatus(Response::HTTP_NOT_FOUND);
-
-            return new ApiProblemJsonResponse($apiProblem);
+        if (!$entity) {
+            throw ApiProblem::blank('There is no label with identifier: ' . $id, 404);
         }
+
+        return new JsonResponse($entity);
     }
 
     public function search(Request $request): ResponseInterface

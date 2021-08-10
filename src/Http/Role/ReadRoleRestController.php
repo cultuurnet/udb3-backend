@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Role;
 
-use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\Services\RoleReadingServiceInterface;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,17 +71,14 @@ class ReadRoleRestController
 
         $role = $this->service->getEntity($id);
 
-        if ($role) {
-            $response = JsonResponse::create()
-                ->setContent($role);
-
-            $response->headers->set('Vary', 'Origin');
-        } else {
-            $apiProblem = new ApiProblem('There is no role with identifier: ' . $id);
-            $apiProblem->setStatus(Response::HTTP_NOT_FOUND);
-
-            return new ApiProblemJsonResponse($apiProblem);
+        if (!$role) {
+            throw ApiProblem::blank('There is no role with identifier: ' . $id, 404);
         }
+
+        $response = JsonResponse::create()
+            ->setContent($role);
+
+        $response->headers->set('Vary', 'Origin');
 
         return $response;
     }

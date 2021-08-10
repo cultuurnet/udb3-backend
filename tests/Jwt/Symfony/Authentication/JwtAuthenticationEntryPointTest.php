@@ -30,8 +30,8 @@ class JwtAuthenticationEntryPointTest extends TestCase
 
         $expectedBody = json_encode(
             [
-                'title' => 'Unauthorized',
                 'type' => 'https://api.publiq.be/probs/auth/unauthorized',
+                'title' => 'Unauthorized',
                 'status' => 401,
                 'detail' => 'This endpoint requires a token but none found in the request.',
             ]

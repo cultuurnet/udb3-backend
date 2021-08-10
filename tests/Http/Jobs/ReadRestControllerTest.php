@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Jobs;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class ReadRestControllerTest extends TestCase
 {
@@ -52,17 +50,11 @@ class ReadRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_problem_response_for_missing_job()
+    public function it_throws_an_api_problem_exception_for_missing_job()
     {
+        $this->expectException(ApiProblem::class);
         $this->mockCreateFromJobId(null);
-
         $response = $this->readRestController->get('jobId');
-
-        $apiProblem = new ApiProblem('No status for job with id: jobId');
-        $apiProblem->setStatus(Response::HTTP_BAD_REQUEST);
-        $expectedResponse = new ApiProblemJsonResponse($apiProblem);
-
-        $this->assertEquals($expectedResponse, $response);
     }
 
     /**

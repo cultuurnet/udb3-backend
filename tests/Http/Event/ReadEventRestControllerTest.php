@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -154,23 +155,21 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_event(): void
+    public function it_throws_an_api_problem_exception_for_a_non_existing_event(): void
     {
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(true);
-        $jsonResponse = $controller->history(self::NON_EXISTING_ID);
-
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
+        $controller->history(self::NON_EXISTING_ID);
     }
 
     /**
      * @test
      */
-    public function returns_a_http_response_with_error_FORBIDDEN_for_a_regular_user(): void
+    public function it_throws_an_api_problem_exception_for_a_regular_user(): void
     {
+        $this->expectException(ApiProblem::class);
         $controller = $this->createController(false);
-        $jsonResponse = $controller->history(self::EXISTING_ID);
-
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $jsonResponse->getStatusCode());
+        $controller->history(self::EXISTING_ID);
     }
 
     /**
@@ -204,14 +203,14 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event(): void
+    public function it_throws_an_api_problem_exception_for_getting_a_non_existing_event(): void
     {
+        $this->expectException(ApiProblem::class);
+
         $request = new Request();
 
         $controller = $this->createController(true);
-        $jsonResponse = $controller->get(self::NON_EXISTING_ID, $request);
-
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
+        $controller->get(self::NON_EXISTING_ID, $request);
     }
 
     /**
@@ -230,9 +229,9 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_error_NOT_FOUND_for_calendar_summary_for_non_existing_event(): void
+    public function it_throws_an_api_problem_exception_for_calendar_summary_for_non_existing_event(): void
     {
-        $this->expectException(DocumentDoesNotExist::class);
+        $this->expectException(ApiProblem::class);
 
         $request = new Request(['style' => 'text', 'format' => 'lg']);
 

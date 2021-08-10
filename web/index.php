@@ -232,12 +232,12 @@ try {
     // weren't caught by Silex.
     $apiProblem = WebErrorHandlerProvider::createNewApiProblem(
         $throwable,
-        ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR
+        500
     );
 
     // We're outside of the Silex app, so we cannot use the standard way to return a Response object.
     http_response_code($apiProblem->getStatus());
     header('Content-Type: application/json');
-    echo $apiProblem->asJson();
+    echo json_encode($apiProblem->toArray());
     exit;
 }

@@ -7,17 +7,16 @@ namespace CultuurNet\UDB3\Http\Event;
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\CalendarSummaryV3\Offer\Offer;
-use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ReadEventRestController
 {
-    use ApiProblemJsonResponseTrait;
     private const HISTORY_ERROR_FORBIDDEN = 'Forbidden to access event history.';
     private const HISTORY_ERROR_NOT_FOUND = 'An error occurred while getting the history of the event with id %s!';
     private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
@@ -51,11 +50,7 @@ class ReadEventRestController
     {
         $includeMetadata = (bool) $request->query->get('includeMetadata', false);
 
-        try {
-            $event = $this->jsonRepository->fetch($cdbid, $includeMetadata);
-        } catch (DocumentDoesNotExist $e) {
-            return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
-        }
+        $event = $this->fetchEventJson($cdbid, $includeMetadata);
 
         $response = JsonLdResponse::create()
             ->setContent($event->getRawBody());
@@ -68,10 +63,9 @@ class ReadEventRestController
     public function history(string $cdbid): JsonResponse
     {
         if (!$this->userIsGodUser) {
-            return $this->createApiProblemJsonResponse(
-                self::HISTORY_ERROR_FORBIDDEN,
-                $cdbid,
-                Response::HTTP_FORBIDDEN
+            throw ApiProblem::blank(
+                sprintf(self::HISTORY_ERROR_FORBIDDEN),
+                403
             );
         }
 
@@ -89,7 +83,10 @@ class ReadEventRestController
 
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $cdbid);
+            throw ApiProblem::blank(
+                sprintf(self::HISTORY_ERROR_NOT_FOUND, $cdbid),
+                404
+            );
         }
     }
 
@@ -101,21 +98,34 @@ class ReadEventRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $eventDocument = $this->jsonRepository->fetch($cdbid);
+        $eventDocument = $this->fetchEventJson($cdbid);
         $event = Offer::fromJsonLd($eventDocument->getRawBody());
 
         if ($style !== 'html' && $style !== 'text') {
-            $response = $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
-        } else {
-            if ($style === 'html') {
-                $calSum = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
-            } else {
-                $calSum = new CalendarPlainTextFormatter($langCode, $hidePastDates, $timeZone);
-            }
-            $response = $calSum->format($event, $format);
+            throw ApiProblem::blank(
+                'No style found for ' . $cdbid,
+                404
+            );
         }
-
+        if ($style === 'html') {
+            $calSum = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
+        } else {
+            $calSum = new CalendarPlainTextFormatter($langCode, $hidePastDates, $timeZone);
+        }
+        $response = $calSum->format($event, $format);
 
         return $response;
+    }
+
+    private function fetchEventJson(string $id, bool $includeMetadata = false): JsonDocument
+    {
+        try {
+            return $this->jsonRepository->fetch($id, $includeMetadata);
+        } catch (DocumentDoesNotExist $e) {
+            throw ApiProblem::blank(
+                sprintf(self::GET_ERROR_NOT_FOUND, $id),
+                404
+            );
+        }
     }
 }
