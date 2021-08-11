@@ -134,7 +134,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     public function calendarProvider(): array
     {
         return [
-           'Update status on 1 sub event' => [
+            'Update status on 1 sub event' => [
                new EventCreated(
                    '1',
                    new Language('nl'),
