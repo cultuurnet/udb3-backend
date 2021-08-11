@@ -153,7 +153,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(1))->withStatus($status))
+                    (new SubEventUpdate(1))->withStatus($status)
+                )
             )
             ->then([
                 new CalendarUpdated(
@@ -173,7 +174,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             ))->withStatus($status),
                         ]
                     )
-                )
+                ),
             ]);
     }
 }
