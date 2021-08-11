@@ -116,65 +116,79 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
 
     /**
      * @test
+     * @dataProvider calendarProvider
      */
-    public function it_can_update_status_on_one_sub_event(): void
-    {
-        $multipleEventCreated = new EventCreated(
-            '1',
-            new Language('nl'),
-            new Title('Multiple Event'),
-            new EventType('0.50.4.0.0', 'concert'),
-            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(
-                CalendarType::MULTIPLE(),
-                null,
-                null,
-                [
-                    new Timestamp(
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-01 12:00:00')
-                    ),
-                    new Timestamp(
-                        new DateTime('2020-01-03 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00')
-                    ),
-                ]
-            )
-        );
-
-        $status = new Status(
-            StatusType::unavailable(),
-            [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
-        );
-
+    public function it_can_update_status_on_one_sub_event(
+        EventCreated $eventCreated,
+        UpdateSubEvents $updateSubEvents,
+        CalendarUpdated $calendarUpdated
+    ): void {
         $this->scenario
             ->withAggregateId('1')
-            ->given([$multipleEventCreated])
-            ->when(
-                new UpdateSubEvents(
-                    '1',
-                    (new SubEventUpdate(1))->withStatus($status)
-                )
-            )
-            ->then([
-                new CalendarUpdated(
-                    '1',
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00'),
-                        [
-                            new Timestamp(
-                                new DateTime('2020-01-01 10:00:00'),
-                                new DateTime('2020-01-01 12:00:00')
-                            ),
-                            (new Timestamp(
-                                new DateTime('2020-01-03 10:00:00'),
-                                new DateTime('2020-01-03 12:00:00')
-                            ))->withStatus($status),
-                        ]
-                    )
-                ),
-            ]);
+            ->given([$eventCreated])
+            ->when($updateSubEvents)
+            ->then([$calendarUpdated]);
+    }
+
+    public function calendarProvider(): array
+    {
+        return [
+           'Update status on 1 sub event' => [
+               new EventCreated(
+                   '1',
+                   new Language('nl'),
+                   new Title('Multiple Event'),
+                   new EventType('0.50.4.0.0', 'concert'),
+                   new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                   new Calendar(
+                       CalendarType::MULTIPLE(),
+                       null,
+                       null,
+                       [
+                           new Timestamp(
+                               new DateTime('2020-01-01 10:00:00'),
+                               new DateTime('2020-01-01 12:00:00')
+                           ),
+                           new Timestamp(
+                               new DateTime('2020-01-03 10:00:00'),
+                               new DateTime('2020-01-03 12:00:00')
+                           ),
+                       ]
+                   )
+               ),
+               new UpdateSubEvents(
+                   '1',
+                   (new SubEventUpdate(1))->withStatus(
+                       new Status(
+                           StatusType::unavailable(),
+                           [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                       )
+                   )
+               ),
+               new CalendarUpdated(
+                   '1',
+                   new Calendar(
+                       CalendarType::MULTIPLE(),
+                       new DateTime('2020-01-01 10:00:00'),
+                       new DateTime('2020-01-03 12:00:00'),
+                       [
+                           new Timestamp(
+                               new DateTime('2020-01-01 10:00:00'),
+                               new DateTime('2020-01-01 12:00:00')
+                           ),
+                           (new Timestamp(
+                               new DateTime('2020-01-03 10:00:00'),
+                               new DateTime('2020-01-03 12:00:00')
+                           ))->withStatus(
+                               new Status(
+                                   StatusType::unavailable(),
+                                   [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                               )
+                           ),
+                       ]
+                   )
+               ),
+           ],
+        ];
     }
 }
