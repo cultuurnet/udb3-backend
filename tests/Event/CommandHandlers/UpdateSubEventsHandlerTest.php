@@ -377,9 +377,9 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     '1',
                     (new SubEventUpdate(1))->withStatus(
                         new Status(
-                                StatusType::unavailable(),
-                                [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
-                            )
+                            StatusType::unavailable(),
+                            [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                        )
                     )->withBookingAvailability(BookingAvailability::unavailable())
                 ),
                 new CalendarUpdated(
