@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
@@ -65,6 +66,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
@@ -354,6 +356,49 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
                 $timestamp->getStartDate(),
                 $timestamp->getEndDate(),
                 $status
+            );
+
+            $timestamps[$index] = $updatedTimestamp;
+        }
+
+        $updatedCalendar = new Calendar(
+            $this->calendar->getType(),
+            $this->calendar->getStartDate(),
+            $this->calendar->getEndDate(),
+            $timestamps,
+            $this->calendar->getOpeningHours()
+        );
+
+        if (!$this->calendar->sameAs($updatedCalendar)) {
+            $this->apply(
+                new CalendarUpdated($this->eventId, $updatedCalendar)
+            );
+        }
+    }
+
+    public function updateSubEvents(SubEventUpdate ...$subEventUpdates): void
+    {
+        $timestamps = $this->calendar->getTimestamps();
+
+        if (empty($timestamps)) {
+            throw CalendarTypeNotSupported::forCalendarType($this->calendar->getType());
+        }
+
+        foreach ($subEventUpdates as $subEventUpdate) {
+            $index = $subEventUpdate->getSubEventIndex();
+
+            if (!isset($timestamps[$index])) {
+                // If the timestamp to update doesn't exist, it's most likely a concurrency issue.
+                continue;
+            }
+
+            $timestamp = $timestamps[$index];
+
+            $updatedTimestamp = new Timestamp(
+                $timestamp->getStartDate(),
+                $timestamp->getEndDate(),
+                $subEventUpdate->getStatus() ?: $timestamp->getStatus(),
+                $subEventUpdate->getBookingAvailability() ?: $timestamp->getBookingAvailability()
             );
 
             $timestamps[$index] = $updatedTimestamp;
