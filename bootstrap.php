@@ -5,6 +5,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
@@ -577,6 +578,8 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
                 $app['event_repository']
             )
         );
+
+        $commandBus->subscribe(new UpdateSubEventsHandler($app['event_repository']));
 
         $commandBus->subscribe($app['saved_searches_command_handler']);
 
