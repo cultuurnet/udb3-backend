@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
+use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestBodyParser;
+use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusRequestHandler;
@@ -53,6 +55,15 @@ class EventControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[UpdateSubEventsRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateSubEventsRequestHandler(
+                    $app['event_command_bus'],
+                    new UpdateSubEventsRequestBodyParser()
+                );
+            }
+        );
+
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -79,7 +90,7 @@ class EventControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
-        $controllers->patch('/{eventId}/subEvents', UpdateSubEventsStatusRequestHandler::class . ':handle');
+        $controllers->patch('/{eventId}/subEvents', UpdateSubEventsRequestHandler::class . ':handle');
         $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class . ':handle');
         $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
