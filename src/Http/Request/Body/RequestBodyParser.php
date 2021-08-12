@@ -15,10 +15,11 @@ interface RequestBodyParser
      * @param ServerRequestInterface $request
      *   The incoming (PSR-7) request of which the body has to be parsed.
      *
-     * @throws ApiProblem
+     * @return mixed
+     *   The decoded data as an array (if a list) or an stdClass (if an object) or a scalar type.
+     *   For optimal compatibility with decorators the data should not yet be converted to a value object.
      *
-     * @return array
-     *   The decoded data as an associative array.
+     * @throws ApiProblem
      */
-    public function parse(ServerRequestInterface $request): array;
+    public function parse(ServerRequestInterface $request);
 }

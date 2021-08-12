@@ -28,7 +28,7 @@ class ContentNegotiationRequestBodyParserTest extends TestCase
             ->withBodyFromString('{"foo":"bar"}')
             ->build('PUT');
 
-        $expected = ['foo' => 'bar'];
+        $expected = (object) ['foo' => 'bar'];
         $actual = $this->parser->parse($given);
 
         $this->assertEquals($expected, $actual);
@@ -44,7 +44,7 @@ class ContentNegotiationRequestBodyParserTest extends TestCase
             ->withBodyFromString('{"foo":"bar"}')
             ->build('PUT');
 
-        $expected = ['foo' => 'bar'];
+        $expected = (object) ['foo' => 'bar'];
         $actual = $this->parser->parse($given);
 
         $this->assertEquals($expected, $actual);
@@ -59,7 +59,7 @@ class ContentNegotiationRequestBodyParserTest extends TestCase
             ->withBodyFromString('{"foo":"bar"}')
             ->build('PUT');
 
-        $expected = ['foo' => 'bar'];
+        $expected = (object) ['foo' => 'bar'];
         $actual = $this->parser->parse($given);
 
         $this->assertEquals($expected, $actual);

@@ -29,7 +29,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     public function it_allows_valid_data(): void
     {
         $given = $this->requestBuilder->withBodyFromString('{"type":"Available"}')->build('PUT');
-        $expected = [
+        $expected = (object) [
             'type' => 'Available',
         ];
 

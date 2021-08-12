@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class UpdateSubEventsRequestBodyParser implements RequestBodyParser
 {
-    public function parse(ServerRequestInterface $request): array
+    public function parse(ServerRequestInterface $request)
     {
         return (new ContentNegotiationRequestBodyParser())->parse($request);
     }

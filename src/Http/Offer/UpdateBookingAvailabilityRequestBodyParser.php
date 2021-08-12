@@ -13,21 +13,21 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class UpdateBookingAvailabilityRequestBodyParser implements RequestBodyParser
 {
-    public function parse(ServerRequestInterface $request): array
+    public function parse(ServerRequestInterface $request)
     {
         $data = (new ContentNegotiationRequestBodyParser())->parse($request);
         $this->validateType($data);
         return $data;
     }
 
-    private function validateType(array $data): void
+    private function validateType($data): void
     {
-        if (!isset($data['type'])) {
+        if (!isset($data->type)) {
             throw ApiProblem::bodyInvalidData('Required property "type" not found.', '/type');
         }
 
         try {
-            BookingAvailability::fromNative($data['type']);
+            BookingAvailability::fromNative($data->type);
         } catch (InvalidArgumentException $e) {
             throw ApiProblem::bodyInvalidData('Invalid type provided.', '/type');
         }
