@@ -10,8 +10,6 @@ use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestBodyParser;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusValidator;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -42,15 +40,6 @@ class EventControllerProvider implements ControllerProviderInterface
                     $app['auth.api_key_reader'],
                     $app['auth.consumer_repository'],
                     $app['should_auto_approve_new_offer']
-                );
-            }
-        );
-
-        $app[UpdateSubEventsStatusRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateSubEventsStatusRequestHandler(
-                    $app['event_command_bus'],
-                    new UpdateSubEventsStatusValidator()
                 );
             }
         );
