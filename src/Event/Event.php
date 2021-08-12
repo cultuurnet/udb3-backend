@@ -338,7 +338,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
      * @param Status[] $statuses
      *   List of event status updates to apply to the timestamps in the event's calendar.
      *   The statuses should be keyed by the index number of the timestamp(s) to update.
-     * @see UpdateSubEventsStatus
      */
     public function updateSubEventsStatus(array $statuses): void
     {
