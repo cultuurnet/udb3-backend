@@ -8,15 +8,15 @@ use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 
 final class SubEventUpdate
 {
-    private int $subEventIndex;
+    private int $subEventId;
 
     private ?Status $status = null;
 
     private ?BookingAvailability $bookingAvailability = null;
 
-    public function __construct(int $subEventIndex)
+    public function __construct(int $subEventId)
     {
-        $this->subEventIndex = $subEventIndex;
+        $this->subEventId = $subEventId;
     }
 
     public function withStatus(Status $status): SubEventUpdate
@@ -33,9 +33,9 @@ final class SubEventUpdate
         return $clone;
     }
 
-    public function getSubEventIndex(): int
+    public function getSubEventId(): int
     {
-        return $this->subEventIndex;
+        return $this->subEventId;
     }
 
     public function getStatus(): ?Status

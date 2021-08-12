@@ -385,7 +385,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
 
         foreach ($subEventUpdates as $subEventUpdate) {
-            $index = $subEventUpdate->getSubEventIndex();
+            $index = $subEventUpdate->getSubEventId();
 
             if (!isset($timestamps[$index])) {
                 // If the timestamp to update doesn't exist, it's most likely a concurrency issue.
