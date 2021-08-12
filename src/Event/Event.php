@@ -406,8 +406,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
         $updatedCalendar = new Calendar(
             $this->calendar->getType(),
-            $this->calendar->getStartDate(),
-            $this->calendar->getEndDate(),
+            null,
+            null,
             $timestamps,
             $this->calendar->getOpeningHours()
         );
