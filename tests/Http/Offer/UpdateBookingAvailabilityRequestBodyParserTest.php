@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -72,7 +73,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
         $given = $this->requestBuilder->withBodyFromString('{}')->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData('Required property "type" not found.', '/type'),
+            ApiProblem::bodyInvalidData(new SchemaError('/type', 'Required property "type" not found.')),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
@@ -85,7 +86,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
         $given = $this->requestBuilder->withBodyFromString('{"type":"foo"}')->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData('Invalid type provided.', '/type'),
+            ApiProblem::bodyInvalidData(new SchemaError('/type', 'Invalid type provided.')),
             fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
         );
     }
