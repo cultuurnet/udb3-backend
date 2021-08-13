@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ValueObjects;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
 use PHPUnit\Framework\TestCase;
 
 final class BookingAvailabilityTest extends TestCase
@@ -52,5 +53,17 @@ final class BookingAvailabilityTest extends TestCase
         $this->assertFalse(
             BookingAvailability::fromNative('Unavailable')->equals(BookingAvailability::available())
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_created_from_an_imported_udb3_model_value(): void
+    {
+        $bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
+            Udb3ModelBookingAvailability::Unavailable()
+        );
+
+        $this->assertTrue(BookingAvailability::unavailable()->equals($bookingAvailability));
     }
 }
