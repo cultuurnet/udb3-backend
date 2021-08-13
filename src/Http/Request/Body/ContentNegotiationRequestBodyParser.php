@@ -8,6 +8,13 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class ContentNegotiationRequestBodyParser implements RequestBodyParser
 {
+    private JsonRequestBodyParser $jsonRequestBodyParser;
+
+    public function __construct()
+    {
+        $this->jsonRequestBodyParser = new JsonRequestBodyParser();
+    }
+
     public function parse(ServerRequestInterface $request)
     {
         $contentType = $this->parseContentType($request);
@@ -15,7 +22,7 @@ final class ContentNegotiationRequestBodyParser implements RequestBodyParser
         switch ($contentType) {
             case 'application/json':
             default:
-                return (new JsonRequestBodyParser())->parse($request);
+                return $this->jsonRequestBodyParser->parse($request);
         }
     }
 
