@@ -15,6 +15,13 @@ final class ContentNegotiationRequestBodyParser implements RequestBodyParser
         $this->jsonRequestBodyParser = new JsonRequestBodyParser();
     }
 
+    public function withJsonRequestBodyParser(JsonRequestBodyParser $jsonRequestBodyParser)
+    {
+        $c = clone $this;
+        $c->jsonRequestBodyParser = $jsonRequestBodyParser;
+        return $c;
+    }
+
     public function parse(ServerRequestInterface $request)
     {
         $contentType = $this->parseContentType($request);
