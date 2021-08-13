@@ -88,7 +88,7 @@ final class UpdateSubEventsRequestBodyParserTest extends TestCase
                             'reason' => (object) [
                                 'nl' => 'Geannuleerd wegens covid',
                                 'fr' => 'Franse tekst',
-                            ]
+                            ],
                         ],
                     ],
                 ],

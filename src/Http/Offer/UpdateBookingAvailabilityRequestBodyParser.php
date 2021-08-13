@@ -24,7 +24,7 @@ final class UpdateBookingAvailabilityRequestBodyParser implements RequestBodyPar
     private function validateType($data): void
     {
         if (!isset($data->type)) {
-            throw ApiProblem::bodyInvalidData(new SchemaError('/type','Required property "type" not found.'));
+            throw ApiProblem::bodyInvalidData(new SchemaError('/type', 'Required property "type" not found.'));
         }
 
         try {

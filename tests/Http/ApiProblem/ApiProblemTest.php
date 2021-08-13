@@ -56,7 +56,7 @@ class ApiProblemTest extends TestCase
                     [
                         'jsonPointer' => '/mock',
                         'error' => 'Property mock should not be empty',
-                    ]
+                    ],
                 ],
             ],
             $problem->toArray()
