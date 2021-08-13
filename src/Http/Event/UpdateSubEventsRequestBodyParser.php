@@ -25,7 +25,7 @@ final class UpdateSubEventsRequestBodyParser implements RequestBodyParser
      */
     private function validateSchema($data): void
     {
-        $validator = new Validator(null, 1);
+        $validator = new Validator(null, 100);
         $result = $validator->validate($data, file_get_contents(__DIR__ . '/UpdateSubEventsSchema.json'));
 
         if (!$result->isValid()) {
