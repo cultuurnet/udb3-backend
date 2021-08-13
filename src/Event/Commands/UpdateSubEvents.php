@@ -21,7 +21,7 @@ class UpdateSubEvents implements AuthorizableCommand
     public function __construct(string $eventId, SubEventUpdate ...$updateSubEvents)
     {
         if (empty($updateSubEvents)) {
-            throw new InvalidArgumentException('At least one UpdateSubEvent is required');
+            throw new InvalidArgumentException('At least one SubEventUpdate is required');
         }
 
         $this->eventId = $eventId;

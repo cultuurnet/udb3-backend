@@ -334,48 +334,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->locationId = $locationUpdated->getLocationId();
     }
 
-    /**
-     * @param Status[] $statuses
-     *   List of event status updates to apply to the timestamps in the event's calendar.
-     *   The statuses should be keyed by the index number of the timestamp(s) to update.
-     * @see UpdateSubEventsStatus
-     */
-    public function updateSubEventsStatus(array $statuses): void
-    {
-        $timestamps = $this->calendar->getTimestamps();
-
-        foreach ($statuses as $index => $status) {
-            if (!isset($timestamps[$index])) {
-                // If the timestamp to update doesn't exist, it's most likely a concurrency issue.
-                continue;
-            }
-
-            $timestamp = $timestamps[$index];
-
-            $updatedTimestamp = new Timestamp(
-                $timestamp->getStartDate(),
-                $timestamp->getEndDate(),
-                $status
-            );
-
-            $timestamps[$index] = $updatedTimestamp;
-        }
-
-        $updatedCalendar = new Calendar(
-            $this->calendar->getType(),
-            $this->calendar->getStartDate(),
-            $this->calendar->getEndDate(),
-            $timestamps,
-            $this->calendar->getOpeningHours()
-        );
-
-        if (!$this->calendar->sameAs($updatedCalendar)) {
-            $this->apply(
-                new CalendarUpdated($this->eventId, $updatedCalendar)
-            );
-        }
-    }
-
     public function updateSubEvents(SubEventUpdate ...$subEventUpdates): void
     {
         $timestamps = $this->calendar->getTimestamps();
@@ -385,7 +343,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
 
         foreach ($subEventUpdates as $subEventUpdate) {
-            $index = $subEventUpdate->getSubEventIndex();
+            $index = $subEventUpdate->getSubEventId();
 
             if (!isset($timestamps[$index])) {
                 // If the timestamp to update doesn't exist, it's most likely a concurrency issue.
@@ -406,8 +364,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
         $updatedCalendar = new Calendar(
             $this->calendar->getType(),
-            $this->calendar->getStartDate(),
-            $this->calendar->getEndDate(),
+            null,
+            null,
             $timestamps,
             $this->calendar->getOpeningHours()
         );

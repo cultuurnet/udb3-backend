@@ -170,8 +170,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                    '1',
                    new Calendar(
                        CalendarType::MULTIPLE(),
-                       new DateTime('2020-01-01 10:00:00'),
-                       new DateTime('2020-01-03 12:00:00'),
+                       null,
+                       null,
                        [
                            new Timestamp(
                                new DateTime('2020-01-01 10:00:00'),
@@ -232,8 +232,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     '1',
                     new Calendar(
                         CalendarType::MULTIPLE(),
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00'),
+                        null,
+                        null,
                         [
                             (new Timestamp(
                                 new DateTime('2020-01-01 10:00:00'),
@@ -288,8 +288,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     '1',
                     new Calendar(
                         CalendarType::MULTIPLE(),
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00'),
+                        null,
+                        null,
                         [
                             new Timestamp(
                                 new DateTime('2020-01-01 10:00:00'),
@@ -335,8 +335,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     '1',
                     new Calendar(
                         CalendarType::MULTIPLE(),
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00'),
+                        null,
+                        null,
                         [
                             (new Timestamp(
                                 new DateTime('2020-01-01 10:00:00'),
@@ -386,8 +386,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     '1',
                     new Calendar(
                         CalendarType::MULTIPLE(),
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00'),
+                        null,
+                        null,
                         [
                             new Timestamp(
                                 new DateTime('2020-01-01 10:00:00'),
@@ -448,8 +448,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     '1',
                     new Calendar(
                         CalendarType::MULTIPLE(),
-                        new DateTime('2020-01-01 10:00:00'),
-                        new DateTime('2020-01-03 12:00:00'),
+                        null,
+                        null,
                         [
                             (new Timestamp(
                                 new DateTime('2020-01-01 10:00:00'),

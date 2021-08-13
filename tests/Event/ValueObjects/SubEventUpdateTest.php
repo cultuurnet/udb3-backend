@@ -14,10 +14,10 @@ final class SubEventUpdateTest extends TestCase
      */
     public function it_requires_a_sub_event_index(): void
     {
-        $subEventIndex = 3;
-        $subEventUpdate = new SubEventUpdate($subEventIndex);
+        $subEventId = 3;
+        $subEventUpdate = new SubEventUpdate($subEventId);
 
-        $this->assertEquals($subEventIndex, $subEventUpdate->getSubEventIndex());
+        $this->assertEquals($subEventId, $subEventUpdate->getSubEventId());
     }
 
     /**
