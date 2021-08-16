@@ -90,7 +90,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
         $given = $this->requestBuilder->withBodyFromString('{}')->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(new SchemaError('/type', 'Required property "type" not found.')),
+            ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (type) are missing')),
             fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
 
@@ -105,7 +105,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
         $given = $this->requestBuilder->withBodyFromString('{"type":"foo"}')->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(new SchemaError('/type', 'Invalid type provided.')),
+            ApiProblem::bodyInvalidData(new SchemaError('/type', 'The data should match one item from enum')),
             fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
 
