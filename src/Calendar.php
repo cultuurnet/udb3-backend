@@ -396,6 +396,9 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
         $calendar->status = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
+        $calendar->bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
+            $udb3Calendar->getBookingAvailability()
+        );
         return $calendar;
     }
 
