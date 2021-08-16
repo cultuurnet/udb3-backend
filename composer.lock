@@ -4310,12 +4310,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "4ee69285862e648be2ba4f117d38642e793eddad"
+                "reference": "9945808fdc4101c3916df7fbd8fb1461fb664198"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/4ee69285862e648be2ba4f117d38642e793eddad",
-                "reference": "4ee69285862e648be2ba4f117d38642e793eddad",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/9945808fdc4101c3916df7fbd8fb1461fb664198",
+                "reference": "9945808fdc4101c3916df7fbd8fb1461fb664198",
                 "shasum": ""
             },
             "type": "library",
@@ -4334,7 +4334,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/booking-availability"
             },
-            "time": "2021-08-16T14:47:43+00:00"
+            "time": "2021-08-16T15:44:16+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
