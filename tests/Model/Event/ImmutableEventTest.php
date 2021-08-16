@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Event;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
@@ -143,7 +144,8 @@ class ImmutableEventTest extends TestCase
                     \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             )
         );
     }

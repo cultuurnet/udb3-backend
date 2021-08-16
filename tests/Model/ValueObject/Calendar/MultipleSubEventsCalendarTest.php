@@ -16,7 +16,11 @@ class MultipleSubEventsCalendarTest extends TestCase
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018');
         $dateRanges = new SubEvents(
-            new SubEvent(new DateRange($startDate, $endDate), new Status(StatusType::Available()))
+            new SubEvent(
+                new DateRange($startDate, $endDate),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
+            )
         );
 
         $this->expectException(\InvalidArgumentException::class);
@@ -39,14 +43,16 @@ class MultipleSubEventsCalendarTest extends TestCase
                     $startDate,
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             ),
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
                     $endDate
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             )
         );
 
@@ -70,14 +76,16 @@ class MultipleSubEventsCalendarTest extends TestCase
                     $startDate,
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             ),
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
                     $endDate
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             )
         );
 
@@ -100,14 +108,16 @@ class MultipleSubEventsCalendarTest extends TestCase
                     $startDate,
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             ),
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
                     $endDate
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             )
         );
 
@@ -130,14 +140,16 @@ class MultipleSubEventsCalendarTest extends TestCase
                     $startDate,
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
                 ),
-                new Status(StatusType::Unavailable())
+                new Status(StatusType::Unavailable()),
+                BookingAvailability::Available()
             ),
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
                     $endDate
                 ),
-                new Status(StatusType::TemporarilyUnavailable())
+                new Status(StatusType::TemporarilyUnavailable()),
+                BookingAvailability::Available()
             )
         );
 
@@ -160,14 +172,16 @@ class MultipleSubEventsCalendarTest extends TestCase
                     $startDate,
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
                 ),
-                new Status(StatusType::Unavailable())
+                new Status(StatusType::Unavailable()),
+                BookingAvailability::Available()
             ),
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
                     $endDate
                 ),
-                new Status(StatusType::TemporarilyUnavailable())
+                new Status(StatusType::TemporarilyUnavailable()),
+                BookingAvailability::Available()
             )
         );
 
