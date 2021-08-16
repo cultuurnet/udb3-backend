@@ -33,7 +33,7 @@ final class UpdateBookingAvailabilityRequestHandler
 
         try {
             $this->commandBus->dispatch(
-                new UpdateBookingAvailability($offerId, BookingAvailability::fromNative($data['type']))
+                new UpdateBookingAvailability($offerId, BookingAvailability::fromNative($data->type))
             );
         } catch (CalendarTypeNotSupported $exception) {
             throw ApiProblem::calendarTypeNotSupported($exception->getMessage());
