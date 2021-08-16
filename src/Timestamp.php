@@ -15,25 +15,13 @@ use InvalidArgumentException;
 
 final class Timestamp implements Serializable
 {
-    /**
-     * @var DateTimeInterface
-     */
-    private $startDate;
+    private DateTimeInterface $startDate;
 
-    /**
-     * @var DateTimeInterface
-     */
-    private $endDate;
+    private DateTimeInterface $endDate;
 
-    /**
-     * @var Status
-     */
-    private $status;
+    private Status $status;
 
-    /**
-     * @var BookingAvailability
-     */
-    private $bookingAvailability;
+    private BookingAvailability $bookingAvailability;
 
     public function __construct(
         DateTimeInterface $startDate,
@@ -130,7 +118,8 @@ final class Timestamp implements Serializable
         return new Timestamp(
             $subEvent->getDateRange()->getFrom(),
             $subEvent->getDateRange()->getTo(),
-            Status::fromUdb3ModelStatus($subEvent->getStatus())
+            Status::fromUdb3ModelStatus($subEvent->getStatus()),
+            BookingAvailability::fromUdb3ModelBookingAvailability($subEvent->getBookingAvailability())
         );
     }
 }
