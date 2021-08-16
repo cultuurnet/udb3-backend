@@ -4,10 +4,39 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class MultipleSubEventsCalendarTest extends TestCase
 {
+    private SubEvents $subEvents;
+
+    private MultipleSubEventsCalendar $multipleSubEventsCalendar;
+
+    protected function setUp(): void
+    {
+        $this->subEvents = new SubEvents(
+            new SubEvent(
+                new DateRange(
+                    DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
+            ),
+            new SubEvent(
+                new DateRange(
+                    DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
+                    DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
+            )
+        );
+
+        $this->multipleSubEventsCalendar = new MultipleSubEventsCalendar($this->subEvents);
+    }
+
     /**
      * @test
      */
@@ -34,32 +63,14 @@ class MultipleSubEventsCalendarTest extends TestCase
      */
     public function it_should_return_a_start_and_end_date(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-
-        $dateRanges = new SubEvents(
-            new SubEvent(
-                new DateRange(
-                    $startDate,
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available()
-            ),
-            new SubEvent(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                    $endDate
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available()
-            )
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+            $this->multipleSubEventsCalendar->getStartDate()
         );
-
-        $calendar = new MultipleSubEventsCalendar($dateRanges);
-
-        $this->assertEquals($startDate, $calendar->getStartDate());
-        $this->assertEquals($endDate, $calendar->getEndDate());
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018'),
+            $this->multipleSubEventsCalendar->getEndDate()
+        );
     }
 
     /**
@@ -67,31 +78,7 @@ class MultipleSubEventsCalendarTest extends TestCase
      */
     public function it_should_return_multiple_sub_events(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-
-        $dateRanges = new SubEvents(
-            new SubEvent(
-                new DateRange(
-                    $startDate,
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available()
-            ),
-            new SubEvent(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                    $endDate
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available()
-            )
-        );
-
-        $calendar = new MultipleSubEventsCalendar($dateRanges);
-
-        $this->assertEquals($dateRanges, $calendar->getSubEvents());
+        $this->assertEquals($this->subEvents, $this->multipleSubEventsCalendar->getSubEvents());
     }
 
     /**
@@ -99,31 +86,7 @@ class MultipleSubEventsCalendarTest extends TestCase
      */
     public function it_should_return_a_calendar_type(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-
-        $dateRanges = new SubEvents(
-            new SubEvent(
-                new DateRange(
-                    $startDate,
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available()
-            ),
-            new SubEvent(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                    $endDate
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available()
-            )
-        );
-
-        $calendar = new MultipleSubEventsCalendar($dateRanges);
-
-        $this->assertEquals(CalendarType::multiple(), $calendar->getType());
+        $this->assertEquals(CalendarType::multiple(), $this->multipleSubEventsCalendar->getType());
     }
 
     /**
@@ -131,31 +94,7 @@ class MultipleSubEventsCalendarTest extends TestCase
      */
     public function it_should_return_a_default_available_status(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-
-        $dateRanges = new SubEvents(
-            new SubEvent(
-                new DateRange(
-                    $startDate,
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
-                ),
-                new Status(StatusType::Unavailable()),
-                BookingAvailability::Available()
-            ),
-            new SubEvent(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                    $endDate
-                ),
-                new Status(StatusType::TemporarilyUnavailable()),
-                BookingAvailability::Available()
-            )
-        );
-
-        $calendar = new MultipleSubEventsCalendar($dateRanges);
-
-        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+        $this->assertEquals(new Status(StatusType::Available()), $this->multipleSubEventsCalendar->getStatus());
     }
 
     /**
@@ -163,31 +102,7 @@ class MultipleSubEventsCalendarTest extends TestCase
      */
     public function it_allows_setting_an_explicit_status(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-
-        $dateRanges = new SubEvents(
-            new SubEvent(
-                new DateRange(
-                    $startDate,
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
-                ),
-                new Status(StatusType::Unavailable()),
-                BookingAvailability::Available()
-            ),
-            new SubEvent(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                    $endDate
-                ),
-                new Status(StatusType::TemporarilyUnavailable()),
-                BookingAvailability::Available()
-            )
-        );
-
-        $calendar = new MultipleSubEventsCalendar($dateRanges);
-
-        $calendar = $calendar->withStatus(new Status(StatusType::Available()));
+        $calendar = $this->multipleSubEventsCalendar->withStatus(new Status(StatusType::Available()));
 
         $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
     }
