@@ -97,8 +97,8 @@ final class Timestamp implements Serializable
             $bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
         }
 
-        $startDate = DateTime::createFromFormat(DateTime::ATOM, $data['startDate']);
-        $endDate = DateTime::createFromFormat(DateTime::ATOM, $data['endDate']);
+        $startDate = DateTime::createFromFormat(DateTimeInterface::ATOM, $data['startDate']);
+        $endDate = DateTime::createFromFormat(DateTimeInterface::ATOM, $data['endDate']);
 
         if ($startDate > $endDate) {
             $endDate = $startDate;
@@ -110,8 +110,8 @@ final class Timestamp implements Serializable
     public function serialize(): array
     {
         return [
-            'startDate' => $this->startDate->format(DateTime::ATOM),
-            'endDate' => $this->endDate->format(DateTime::ATOM),
+            'startDate' => $this->startDate->format(DateTimeInterface::ATOM),
+            'endDate' => $this->endDate->format(DateTimeInterface::ATOM),
             'status' => $this->status->serialize(),
             'bookingAvailability' => $this->bookingAvailability->serialize(),
         ];
