@@ -18,7 +18,7 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_calendar_type()
+    public function it_should_return_a_calendar_type(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -31,7 +31,7 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_default_available_status()
+    public function it_should_return_a_default_available_status(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -44,7 +44,7 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_setting_an_explicit_status()
+    public function it_allows_setting_an_explicit_status(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -58,7 +58,7 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_start_and_end_date()
+    public function it_should_return_the_injected_start_and_end_date(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -72,7 +72,7 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_opening_hours()
+    public function it_should_return_the_injected_opening_hours(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
