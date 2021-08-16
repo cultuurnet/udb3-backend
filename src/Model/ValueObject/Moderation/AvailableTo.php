@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
+use DateTimeInterface;
 
 class AvailableTo
 {
@@ -27,7 +28,7 @@ class AvailableTo
     public static function forever()
     {
         return \DateTimeImmutable::createFromFormat(
-            \DateTime::ATOM,
+            DateTimeInterface::ATOM,
             '2100-01-01T00:00:00+00:00'
         );
     }

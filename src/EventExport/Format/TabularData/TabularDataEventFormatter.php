@@ -20,6 +20,7 @@ use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
+use DateTimeInterface;
 use stdClass;
 
 class TabularDataEventFormatter
@@ -130,7 +131,7 @@ class TabularDataEventFormatter
         // Try to create from various formats to maintain backwards
         // compatibility with external systems with older json-ld
         // projections (eg. OMD).
-        $formats = [\DateTime::ATOM, \DateTime::ISO8601, 'Y-m-d\TH:i:s'];
+        $formats = [DateTimeInterface::ATOM, DateTimeInterface::ISO8601, 'Y-m-d\TH:i:s'];
 
         do {
             $datetime = \DateTime::createFromFormat(current($formats), $date, $timezoneUtc);
@@ -151,7 +152,7 @@ class TabularDataEventFormatter
     protected function formatDateWithoutTime($date)
     {
         $timezone = new \DateTimeZone('Europe/Brussels');
-        $datetime = \DateTime::createFromFormat(\DateTime::ATOM, $date, $timezone);
+        $datetime = \DateTime::createFromFormat(DateTimeInterface::ATOM, $date, $timezone);
         return $datetime->format('Y-m-d');
     }
 
