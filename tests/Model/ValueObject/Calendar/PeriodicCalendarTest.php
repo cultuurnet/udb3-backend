@@ -90,7 +90,7 @@ class PeriodicCalendarTest extends TestCase
                     new Hour(9),
                     new Minute(0)
                 ),
-                $closingTime = new Time(
+                new Time(
                     new Hour(12),
                     new Minute(0)
                 )
@@ -101,7 +101,7 @@ class PeriodicCalendarTest extends TestCase
                     new Hour(13),
                     new Minute(0)
                 ),
-                $closingTime = new Time(
+                new Time(
                     new Hour(17),
                     new Minute(0)
                 )
