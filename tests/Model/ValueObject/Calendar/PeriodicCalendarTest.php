@@ -48,11 +48,29 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_has_a_default_booking_availability(): void
+    {
+        $this->assertEquals(BookingAvailability::Available(), $this->periodicCalendar->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_setting_an_explicit_status(): void
     {
         $calendar = $this->periodicCalendar->withStatus(new Status(StatusType::Unavailable()));
 
         $this->assertEquals(new Status(StatusType::Unavailable()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_booking_availability(): void
+    {
+        $calendar = $this->periodicCalendar->withBookingAvailability(BookingAvailability::Unavailable());
+
+        $this->assertEquals(BookingAvailability::Unavailable(), $calendar->getBookingAvailability());
     }
 
     /**
