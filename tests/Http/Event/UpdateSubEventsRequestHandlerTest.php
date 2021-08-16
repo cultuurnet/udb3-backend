@@ -20,9 +20,8 @@ use PHPUnit\Framework\TestCase;
 
 final class UpdateSubEventsRequestHandlerTest extends TestCase
 {
-    private const EVENT_ID = '983c06b8-abe8-4286-978f-ca750e3e911d';
-
     use AssertApiProblemTrait;
+    private const EVENT_ID = '983c06b8-abe8-4286-978f-ca750e3e911d';
 
     private TraceableCommandBus $commandBus;
     private UpdateSubEventsRequestHandler $requestHandler;

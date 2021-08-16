@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
@@ -46,7 +48,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
                 new UpdateBookingAvailability(
                     '609a8214-51c9-48c0-903f-840a4f38852f',
                     BookingAvailability::available()
-                )
+                ),
             ],
             $this->commandBus->getRecordedCommands()
         );
