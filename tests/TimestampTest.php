@@ -21,10 +21,7 @@ class TimestampTest extends TestCase
     public const START_DATE = '2016-01-03T01:01:01+01:00';
     public const END_DATE = '2016-01-07T01:01:01+01:00';
 
-    /**
-     * @var Timestamp
-     */
-    private $timestamp;
+    private Timestamp $timestamp;
 
     public function setUp(): void
     {
