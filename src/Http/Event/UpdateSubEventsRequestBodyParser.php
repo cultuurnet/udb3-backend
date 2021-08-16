@@ -13,11 +13,10 @@ final class UpdateSubEventsRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request)
     {
-        $data = (new ContentNegotiationRequestBodyParser())
+        return (new ContentNegotiationRequestBodyParser())
             ->withJsonRequestBodyParser(
                 new JsonRequestBodyParser(file_get_contents(__DIR__ . '/UpdateSubEventsSchema.json'))
             )
             ->parse($request);
-        return $data;
     }
 }
