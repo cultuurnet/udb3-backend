@@ -6,15 +6,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
-    /**
-     * @var SubEvents
-     */
-    private $dateRanges;
+    private SubEvents $dateRanges;
 
-    /**
-     * @var Status
-     */
-    private $status;
+    private Status $status;
+
+    private BookingAvailability $bookingAvailability;
 
     public function __construct(SubEvents $dateRanges)
     {
@@ -24,12 +20,20 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
 
         $this->dateRanges = $dateRanges;
         $this->status = new Status(StatusType::Available());
+        $this->bookingAvailability = BookingAvailability::Available();
     }
 
     public function withStatus(Status $status): Calendar
     {
         $clone = clone $this;
         $clone->status = $status;
+        return $clone;
+    }
+
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar
+    {
+        $clone = clone $this;
+        $clone->bookingAvailability = $bookingAvailability;
         return $clone;
     }
 
@@ -41,6 +45,11 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function getBookingAvailability(): BookingAvailability
+    {
+        return $this->bookingAvailability;
     }
 
     public function getStartDate(): \DateTimeImmutable
