@@ -737,6 +737,90 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_can_denormalize_booking_availability(): void
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-01-01T13:00:00+01:00',
+            'endDate' => '2018-01-10T17:00:00+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-01T13:00:00+01:00',
+                    'endDate' => '2018-01-01T17:00:00+01:00',
+                    'bookingAvailability' => [
+                        'type' => 'Unavailable',
+                    ],
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-03T13:00:00+01:00',
+                    'endDate' => '2018-01-03T17:00:00+01:00',
+                    'bookingAvailability' => [
+                        'type' => 'Unavailable',
+                    ],
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ],
+            ],
+        ];
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new MultipleSubEventsCalendar(
+                new SubEvents(
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                        new Status(StatusType::Available()),
+                        BookingAvailability::Unavailable()
+                    ),
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                        ),
+                        new Status(StatusType::Available()),
+                        BookingAvailability::Unavailable()
+                    )
+                )
+            ),
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_denormalize_event_data_with_single_date_range_and_apply_status_to_sub_event_with_no_status()
     {
         $eventData = [

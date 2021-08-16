@@ -183,7 +183,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         }
 
         if (isset($subEventData['bookingAvailability']['type'])) {
-            $bookingAvailability = new BookingAvailability($subEventData['status']['type']);
+            $bookingAvailability = new BookingAvailability($subEventData['bookingAvailability']['type']);
         }
 
         $status = new Status($statusType, $statusReason);
