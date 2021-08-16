@@ -11,7 +11,7 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_require_at_least_two_sub_events()
+    public function it_should_require_at_least_two_sub_events(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018');
@@ -32,7 +32,7 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_start_and_end_date()
+    public function it_should_return_a_start_and_end_date(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -65,7 +65,7 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_multiple_sub_events()
+    public function it_should_return_multiple_sub_events(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -97,7 +97,7 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_calendar_type()
+    public function it_should_return_a_calendar_type(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -129,7 +129,7 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_default_available_status()
+    public function it_should_return_a_default_available_status(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -161,7 +161,7 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_setting_an_explicit_status()
+    public function it_allows_setting_an_explicit_status(): void
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
