@@ -4,33 +4,41 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
-final class UpdateSubEventsRequestBodyParserTest extends TestCase
+final class UpdateSubEventsRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private UpdateSubEventsRequestBodyParser $parser;
+    private TraceableCommandBus $commandBus;
+    private UpdateSubEventsRequestHandler $requestHandler;
 
     protected function setUp(): void
     {
-        $this->parser = new UpdateSubEventsRequestBodyParser();
+        $this->commandBus = new TraceableCommandBus();
+
+        $this->requestHandler = new UpdateSubEventsRequestHandler(
+            $this->commandBus,
+            new UpdateSubEventsRequestBodyParser()
+        );
     }
 
     /**
      * @test
      * @dataProvider validDataProvider
      */
-    public function it_does_not_throw_when_given_valid_data(array $data): void
+    public function it_does_not_throw_when_given_valid_data($data): void
     {
-        $parsed = $this->parser->parse(
-            (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT')
+        $this->requestHandler->handle(
+            (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT'),
+            '983c06b8-abe8-4286-978f-ca750e3e911d'
         );
-        $this->assertEquals($data, $parsed);
+        $this->addToAssertionCount(1);
     }
 
     public function validDataProvider(): array
@@ -123,12 +131,13 @@ final class UpdateSubEventsRequestBodyParserTest extends TestCase
      * @test
      * @dataProvider invalidDataProvider
      */
-    public function it_throws_an_api_problem_when_given_with_valid_data(array $data, array $expectedSchemaErrors): void
+    public function it_throws_an_api_problem_when_given_with_valid_data($data, array $expectedSchemaErrors): void
     {
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
-            fn () => $this->parser->parse(
-                (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT')
+            fn () => $this->requestHandler->handle(
+                (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT'),
+                '983c06b8-abe8-4286-978f-ca750e3e911d'
             )
         );
     }
