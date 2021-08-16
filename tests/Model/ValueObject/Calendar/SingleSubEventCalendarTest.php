@@ -4,25 +4,33 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class SingleSubEventCalendarTest extends TestCase
 {
+    private SingleSubEventCalendar $singleSubEventCalendar;
+
+    protected function setUp(): void
+    {
+        $this->singleSubEventCalendar = new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
+            )
+        );
+    }
+
     /**
      * @test
      */
     public function it_should_return_a_calendar_type(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange($startDate, $endDate),
-                new Status(StatusType::Available())
-            )
-        );
-
-        $this->assertEquals(CalendarType::single(), $calendar->getType());
+        $this->assertEquals(CalendarType::single(), $this->singleSubEventCalendar->getType());
     }
 
     /**
@@ -30,16 +38,7 @@ class SingleSubEventCalendarTest extends TestCase
      */
     public function it_should_return_a_default_available_status(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange($startDate, $endDate),
-                new Status(StatusType::Unavailable())
-            )
-        );
-
-        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+        $this->assertEquals(new Status(StatusType::Available()), $this->singleSubEventCalendar->getStatus());
     }
 
     /**
@@ -47,17 +46,9 @@ class SingleSubEventCalendarTest extends TestCase
      */
     public function it_allows_setting_an_explicit_status(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange($startDate, $endDate),
-                new Status(StatusType::Unavailable())
-            )
-        );
-        $calendar = $calendar->withStatus(new Status(StatusType::Available()));
+        $calendar = $this->singleSubEventCalendar->withStatus(new Status(StatusType::Unavailable()));
 
-        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+        $this->assertEquals(new Status(StatusType::Unavailable()), $calendar->getStatus());
     }
 
     /**
@@ -65,17 +56,14 @@ class SingleSubEventCalendarTest extends TestCase
      */
     public function it_should_return_the_injected_start_and_end_date(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange($startDate, $endDate),
-                new Status(StatusType::Available())
-            )
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+            $this->singleSubEventCalendar->getStartDate()
         );
-
-        $this->assertEquals($startDate, $calendar->getStartDate());
-        $this->assertEquals($endDate, $calendar->getEndDate());
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018'),
+            $this->singleSubEventCalendar->getEndDate()
+        );
     }
 
     /**
@@ -83,22 +71,17 @@ class SingleSubEventCalendarTest extends TestCase
      */
     public function it_should_return_a_single_sub_event(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange($startDate, $endDate),
-                new Status(StatusType::Available())
-            )
-        );
-
         $expected = new SubEvents(
             new SubEvent(
-                new DateRange($startDate, $endDate),
-                new Status(StatusType::Available())
+                new DateRange(
+                    DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
             )
         );
 
-        $this->assertEquals($expected, $calendar->getSubEvents());
+        $this->assertEquals($expected, $this->singleSubEventCalendar->getSubEvents());
     }
 }
