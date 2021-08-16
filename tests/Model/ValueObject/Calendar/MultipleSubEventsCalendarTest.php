@@ -100,10 +100,31 @@ class MultipleSubEventsCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_has_a_default_booking_availability(): void
+    {
+        $this->assertEquals(
+            BookingAvailability::Available(),
+            $this->multipleSubEventsCalendar->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_setting_an_explicit_status(): void
     {
         $calendar = $this->multipleSubEventsCalendar->withStatus(new Status(StatusType::Available()));
 
         $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_booking_availability(): void
+    {
+        $calendar = $this->multipleSubEventsCalendar->withBookingAvailability(BookingAvailability::Unavailable());
+
+        $this->assertEquals(BookingAvailability::Unavailable(), $calendar->getBookingAvailability());
     }
 }
