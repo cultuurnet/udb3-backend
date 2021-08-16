@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class PeriodicCalendarTest extends TestCase
@@ -20,8 +21,8 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_should_return_a_calendar_type(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $startDate = DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
         $openingHours = new OpeningHours();
         $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
@@ -33,8 +34,8 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_should_return_a_default_available_status(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $startDate = DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
         $openingHours = new OpeningHours();
         $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
@@ -46,8 +47,8 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_allows_setting_an_explicit_status(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $startDate = DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
         $openingHours = new OpeningHours();
         $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
         $calendar = $calendar->withStatus(new Status(StatusType::Unavailable()));
@@ -60,8 +61,8 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_should_return_the_injected_start_and_end_date(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $startDate = DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
         $openingHours = new OpeningHours();
         $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
@@ -74,8 +75,8 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_should_return_the_injected_opening_hours(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $startDate = DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
 
         $days = new Days(
             Day::monday(),
