@@ -5,14 +5,23 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
+use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateSubEventsRequestHandlerTest extends TestCase
 {
+    private const EVENT_ID = '983c06b8-abe8-4286-978f-ca750e3e911d';
+
     use AssertApiProblemTrait;
 
     private TraceableCommandBus $commandBus;
@@ -26,19 +35,21 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             $this->commandBus,
             new UpdateSubEventsRequestBodyParser()
         );
+
+        $this->commandBus->record();
     }
 
     /**
      * @test
      * @dataProvider validDataProvider
      */
-    public function it_does_not_throw_when_given_valid_data($data): void
+    public function it_does_not_throw_when_given_valid_data($data, UpdateSubEvents $expectedCommand): void
     {
         $this->requestHandler->handle(
             (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT'),
-            '983c06b8-abe8-4286-978f-ca750e3e911d'
+            self::EVENT_ID
         );
-        $this->addToAssertionCount(1);
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
     }
 
     public function validDataProvider(): array
@@ -50,6 +61,10 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         'id' => 1,
                     ],
                 ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    new SubEventUpdate(1)
+                ),
             ],
             'two_subEvents_with_only_id' => [
                 'data' => [
@@ -60,6 +75,11 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         'id' => 2,
                     ],
                 ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    new SubEventUpdate(1),
+                    new SubEventUpdate(2)
+                ),
             ],
             'one_subEvent_with_id_and_status_type_Unavailable' => [
                 'data' => [
@@ -70,6 +90,11 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ],
                     ],
                 ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))
+                        ->withStatus(new Status(StatusType::unavailable(), []))
+                ),
             ],
             'two_subEvents_with_id_and_different_status_types' => [
                 'data' => [
@@ -86,6 +111,13 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ],
                     ],
                 ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))
+                        ->withStatus(new Status(StatusType::unavailable(), [])),
+                    (new SubEventUpdate(2))
+                        ->withStatus(new Status(StatusType::available(), []))
+                ),
             ],
             'one_subEvent_with_id_and_status_type_and_reason' => [
                 'data' => [
@@ -100,6 +132,19 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ],
                     ],
                 ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))
+                        ->withStatus(
+                            new Status(
+                                StatusType::unavailable(),
+                                [
+                                    new StatusReason(new Language('nl'), 'Geannuleerd wegens covid'),
+                                    new StatusReason(new Language('fr'), 'Franse tekst'),
+                                ]
+                            )
+                        ),
+                ),
             ],
             'one_subEvent_with_id_and_bookingAvailability_type' => [
                 'data' => [
@@ -110,6 +155,11 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ],
                     ],
                 ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))
+                        ->withBookingAvailability(BookingAvailability::unavailable()),
+                ),
             ],
             'one_subEvent_with_id_and_status_type_and_bookingAvailability_type' => [
                 'data' => [
@@ -123,6 +173,12 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ],
                     ],
                 ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))
+                        ->withStatus(new Status(StatusType::available(), []))
+                        ->withBookingAvailability(BookingAvailability::unavailable()),
+                ),
             ],
         ];
     }
@@ -137,9 +193,11 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->requestHandler->handle(
                 (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT'),
-                '983c06b8-abe8-4286-978f-ca750e3e911d'
+                self::EVENT_ID
             )
         );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
 
     public function invalidDataProvider(): array

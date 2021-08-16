@@ -7,6 +7,8 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use PHPUnit\Framework\TestCase;
 
 class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
@@ -26,6 +28,8 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
             new UpdateBookingAvailabilityRequestBodyParser()
         );
         $this->requestBuilder = new Psr7RequestBuilder();
+
+        $this->commandBus->record();
     }
 
     /**
@@ -37,7 +41,15 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
         $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f');
 
-        $this->addToAssertionCount(1);
+        $this->assertEquals(
+            [
+                new UpdateBookingAvailability(
+                    '609a8214-51c9-48c0-903f-840a4f38852f',
+                    BookingAvailability::available()
+                )
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
@@ -51,6 +63,8 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
             ApiProblem::bodyMissing(),
             fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
 
     /**
@@ -64,6 +78,8 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidSyntax('JSON'),
             fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
 
     /**
@@ -77,6 +93,8 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(new SchemaError('/type', 'Required property "type" not found.')),
             fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
 
     /**
@@ -90,5 +108,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(new SchemaError('/type', 'Invalid type provided.')),
             fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
 }
