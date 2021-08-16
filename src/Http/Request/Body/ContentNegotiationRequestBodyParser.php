@@ -8,14 +8,14 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class ContentNegotiationRequestBodyParser implements RequestBodyParser
 {
-    private JsonRequestBodyParser $jsonRequestBodyParser;
+    private RequestBodyParser $jsonRequestBodyParser;
 
     public function __construct()
     {
         $this->jsonRequestBodyParser = new JsonRequestBodyParser();
     }
 
-    public function withJsonRequestBodyParser(JsonRequestBodyParser $jsonRequestBodyParser)
+    public function withJsonRequestBodyParser(RequestBodyParser $jsonRequestBodyParser)
     {
         $c = clone $this;
         $c->jsonRequestBodyParser = $jsonRequestBodyParser;
