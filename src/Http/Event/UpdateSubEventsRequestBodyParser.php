@@ -17,7 +17,7 @@ final class UpdateSubEventsRequestBodyParser implements RequestBodyParser
         return (new ContentNegotiationRequestBodyParser())
             ->withJsonRequestBodyParser(
                 new JsonSchemaValidatingRequestBodyParser(
-                    file_get_contents(__DIR__ . '/UpdateSubEventsSchema.json'),
+                    file_get_contents(__DIR__ . '/../../../vendor/publiq/stoplight-docs-uitdatabank/models/event-subEvent-patch.json'),
                     new JsonRequestBodyParser()
                 )
             )
