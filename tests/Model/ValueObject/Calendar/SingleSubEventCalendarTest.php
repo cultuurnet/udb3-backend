@@ -44,11 +44,29 @@ class SingleSubEventCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_has_a_default_booking_availability(): void
+    {
+        $this->assertEquals(BookingAvailability::Available(), $this->singleSubEventCalendar->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_setting_an_explicit_status(): void
     {
         $calendar = $this->singleSubEventCalendar->withStatus(new Status(StatusType::Unavailable()));
 
         $this->assertEquals(new Status(StatusType::Unavailable()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_booking_availability(): void
+    {
+        $calendar = $this->singleSubEventCalendar->withBookingAvailability(BookingAvailability::Unavailable());
+
+        $this->assertEquals(BookingAvailability::Unavailable(), $calendar->getBookingAvailability());
     }
 
     /**
