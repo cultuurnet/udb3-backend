@@ -46,11 +46,8 @@ class CalendarTest extends TestCase
     public const TIMESTAMP_2 = '1457859600';
     public const TIMESTAMP_2_START_DATE = '2016-03-13T10:00:00+01:00';
     public const TIMESTAMP_2_END_DATE = '2016-03-13T12:00:00+01:00';
-
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    
+    private Calendar $calendar;
 
     public function setUp(): void
     {
