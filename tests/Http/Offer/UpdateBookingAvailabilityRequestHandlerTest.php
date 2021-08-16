@@ -1,26 +1,30 @@
 <?php
 
-declare(strict_types=1);
-
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
-final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
+class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private UpdateBookingAvailabilityRequestBodyParser $updateBookingAvailabilityRequestBodyParser;
+    private TraceableCommandBus $commandBus;
+    private UpdateBookingAvailabilityRequestHandler $requestHandler;
 
     private Psr7RequestBuilder $requestBuilder;
 
     protected function setUp(): void
     {
-        $this->updateBookingAvailabilityRequestBodyParser = new UpdateBookingAvailabilityRequestBodyParser();
+        $this->commandBus = new TraceableCommandBus();
+        $this->requestHandler = new UpdateBookingAvailabilityRequestHandler(
+            $this->commandBus,
+            new UpdateBookingAvailabilityRequestBodyParser()
+        );
         $this->requestBuilder = new Psr7RequestBuilder();
     }
 
@@ -30,13 +34,10 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     public function it_allows_valid_data(): void
     {
         $given = $this->requestBuilder->withBodyFromString('{"type":"Available"}')->build('PUT');
-        $expected = (object) [
-            'type' => 'Available',
-        ];
 
-        $actual = $this->updateBookingAvailabilityRequestBodyParser->parse($given);
+        $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f');
 
-        $this->assertEquals($expected, $actual);
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -48,7 +49,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
-            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
     }
 
@@ -61,7 +62,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidSyntax('JSON'),
-            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
     }
 
@@ -74,7 +75,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(new SchemaError('/type', 'Required property "type" not found.')),
-            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
     }
 
@@ -87,7 +88,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(new SchemaError('/type', 'Invalid type provided.')),
-            fn () => $this->updateBookingAvailabilityRequestBodyParser->parse($given)
+            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
         );
     }
 }
