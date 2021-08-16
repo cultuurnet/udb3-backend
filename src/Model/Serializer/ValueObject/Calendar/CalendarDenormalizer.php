@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -27,10 +28,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class CalendarDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var TranslatedStatusReasonDenormalizer
-     */
-    private $statusReasonDenormalizer;
+    private TranslatedStatusReasonDenormalizer $statusReasonDenormalizer;
 
     public function __construct()
     {
@@ -54,20 +52,22 @@ class CalendarDenormalizer implements DenormalizerInterface
         $openingHours = $this->denormalizeOpeningHours($openingHoursData);
 
         $topLevelStatus = isset($data['status']) ? $this->denormalizeStatus($data['status']) : null;
+        $topLevelBookingAvailability = isset($data['bookingAvailability']['type'])
+            ? new BookingAvailability($data['bookingAvailability']['type']) : null;
 
         switch ($data['calendarType']) {
             case 'single':
-                $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus);
+                $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
                 if (isset($data['subEvent'][0])) {
-                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus);
+                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability);
                 }
                 $calendar = new SingleSubEventCalendar($subEvent);
                 break;
 
             case 'multiple':
                 $subEvents = array_map(
-                    function (array $subEvent) use ($topLevelStatus) {
-                        return $this->denormalizeSubEvent($subEvent, $topLevelStatus);
+                    function (array $subEvent) use ($topLevelStatus, $topLevelBookingAvailability) {
+                        return $this->denormalizeSubEvent($subEvent, $topLevelStatus, $topLevelBookingAvailability);
                     },
                     $data['subEvent']
                 );
@@ -161,10 +161,14 @@ class CalendarDenormalizer implements DenormalizerInterface
         return new DateRange($startDate, $endDate);
     }
 
-    private function denormalizeSubEvent(array $subEventData, ?Status $topLevelStatus): SubEvent
-    {
+    private function denormalizeSubEvent(
+        array $subEventData,
+        ?Status $topLevelStatus,
+        ?BookingAvailability $topLevelBookingAvailability
+    ): SubEvent {
         $statusType = $topLevelStatus ? $topLevelStatus->getType() : StatusType::Available();
         $statusReason = $topLevelStatus ? $topLevelStatus->getReason() : null;
+        $bookingAvailability = $topLevelBookingAvailability ?: BookingAvailability::Available();
 
         if (isset($subEventData['status']['type'])) {
             $statusType = new StatusType($subEventData['status']['type']);
@@ -178,11 +182,16 @@ class CalendarDenormalizer implements DenormalizerInterface
             );
         }
 
+        if (isset($subEventData['bookingAvailability']['type'])) {
+            $bookingAvailability = new BookingAvailability($subEventData['status']['type']);
+        }
+
         $status = new Status($statusType, $statusReason);
 
         return new SubEvent(
             $this->denormalizeDateRange($subEventData),
-            $status
+            $status,
+            $bookingAvailability
         );
     }
 
