@@ -1,0 +1,3 @@
+[submodule "stoplight-docs-uitdatabank"]
+	path = stoplight-docs-uitdatabank
+	url = git@github.com:cultuurnet/stoplight-docs-uitdatabank.git
