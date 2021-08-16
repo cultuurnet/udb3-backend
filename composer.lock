@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7a406e0108ecddef50491288445c068",
+    "content-hash": "b404c608133c842eb996e67e1773ef22",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -4303,6 +4303,38 @@
                 "psr-3"
             ],
             "time": "2021-03-02T15:02:34+00:00"
+        },
+        {
+            "name": "publiq/stoplight-docs-uitdatabank",
+            "version": "dev-booking-availability",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
+                "reference": "4ee69285862e648be2ba4f117d38642e793eddad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/4ee69285862e648be2ba4f117d38642e793eddad",
+                "reference": "4ee69285862e648be2ba4f117d38642e793eddad",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "publiq vzw",
+                    "email": "info@publiq.be"
+                }
+            ],
+            "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
+            "support": {
+                "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
+                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/booking-availability"
+            },
+            "time": "2021-08-16T14:47:43+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -9989,7 +10021,8 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/culturefeed-php": 20,
         "doctrine/migrations": 20,
-        "psr/log": 20
+        "psr/log": 20,
+        "publiq/stoplight-docs-uitdatabank": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
