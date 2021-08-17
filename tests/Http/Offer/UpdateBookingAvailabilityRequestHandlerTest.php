@@ -25,10 +25,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->requestHandler = new UpdateBookingAvailabilityRequestHandler(
-            $this->commandBus,
-            new UpdateBookingAvailabilityRequestBodyParser()
-        );
+        $this->requestHandler = new UpdateBookingAvailabilityRequestHandler($this->commandBus);
         $this->requestBuilder = new Psr7RequestBuilder();
 
         $this->commandBus->record();

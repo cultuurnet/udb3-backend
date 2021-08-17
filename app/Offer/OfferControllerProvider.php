@@ -8,7 +8,6 @@ use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
@@ -48,10 +47,7 @@ class OfferControllerProvider implements ControllerProviderInterface
 
         $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new UpdateBookingAvailabilityRequestHandler(
-                    $app['event_command_bus'],
-                    new UpdateBookingAvailabilityRequestBodyParser()
-                );
+                return new UpdateBookingAvailabilityRequestHandler($app['event_command_bus']);
             }
         );
 
