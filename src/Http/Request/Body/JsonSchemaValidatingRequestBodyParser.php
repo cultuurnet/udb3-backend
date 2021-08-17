@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
 {
-    private const SCHEMA_LOCATIONS = __DIR__ . '/../../../vendor/publiq/stoplight-docs-uitdatabank/models/';
+    private const SCHEMA_LOCATIONS = __DIR__ . '/../../../../vendor/publiq/stoplight-docs-uitdatabank/models/';
 
     private RequestBodyParser $baseParser;
     private Validator $validator;
