@@ -30,10 +30,7 @@ final class UpdateBookingAvailabilityRequestHandler
 
         $this->updateBookingAvailabilityParser = (new ContentNegotiationRequestBodyParser())
             ->withJsonRequestBodyParser(
-                new JsonSchemaValidatingRequestBodyParser(
-                    file_get_contents(__DIR__ . '/../../../vendor/publiq/stoplight-docs-uitdatabank/models/event-bookingAvailability-put.json'),
-                    new JsonRequestBodyParser()
-                )
+                JsonSchemaValidatingRequestBodyParser::forStoplightModelFileName('event-bookingAvailability-put.json')
             );
     }
 
