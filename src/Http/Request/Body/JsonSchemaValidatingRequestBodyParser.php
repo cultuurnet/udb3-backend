@@ -18,22 +18,18 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
     private Validator $validator;
     private string $jsonSchema;
 
-    private function __construct(string $jsonSchema, RequestBodyParser $baseParser)
+    private function __construct(string $jsonSchema)
     {
         $this->jsonSchema = $jsonSchema;
-        $this->baseParser = $baseParser;
+        $this->baseParser = new JsonRequestBodyParser();
         $this->validator = new Validator(null, 100);
     }
 
-    public static function forStoplightModelFileName(
-        string $stoplightModelFileName,
-        ?RequestBodyParser $baseParser = null
-    ): self
+    public static function forStoplightModelFileName(string $stoplightModelFileName): self
     {
-        $baseParser = $baseParser ?? new JsonRequestBodyParser();
         $stoplightModelFileName = ltrim($stoplightModelFileName, '/');
         $schema = file_get_contents(self::SCHEMA_LOCATIONS . $stoplightModelFileName);
-        return new self($schema, $baseParser);
+        return new self($schema);
     }
 
     public function parse(ServerRequestInterface $request)
