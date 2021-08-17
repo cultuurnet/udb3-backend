@@ -30,10 +30,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->requestHandler = new UpdateSubEventsRequestHandler(
-            $this->commandBus,
-            new UpdateSubEventsRequestBodyParser()
-        );
+        $this->requestHandler = new UpdateSubEventsRequestHandler($this->commandBus);
 
         $this->commandBus->record();
     }

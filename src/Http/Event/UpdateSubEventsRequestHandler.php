@@ -10,6 +10,10 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
+use CultuurNet\UDB3\Http\Request\Body\ContentNegotiationRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -20,14 +24,18 @@ class UpdateSubEventsRequestHandler
 {
     private CommandBus $commandBus;
 
-    private UpdateSubEventsRequestBodyParser $updateSubEventsParser;
+    private RequestBodyParser $updateSubEventsParser;
 
-    public function __construct(
-        CommandBus $commandBus,
-        UpdateSubEventsRequestBodyParser $updateSubEventsParser
-    ) {
+    public function __construct(CommandBus $commandBus)
+    {
         $this->commandBus = $commandBus;
-        $this->updateSubEventsParser = $updateSubEventsParser;
+        $this->updateSubEventsParser = (new ContentNegotiationRequestBodyParser())
+            ->withJsonRequestBodyParser(
+                new JsonSchemaValidatingRequestBodyParser(
+                    file_get_contents(__DIR__ . '/../../../vendor/publiq/stoplight-docs-uitdatabank/models/event-subEvent-patch.json'),
+                    new JsonRequestBodyParser()
+                )
+            );
     }
 
     public function handle(ServerRequestInterface $request, string $eventId): ResponseInterface
