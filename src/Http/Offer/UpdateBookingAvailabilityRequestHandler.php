@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\ContentNegotiationRequestBodyParser;
-use CultuurNet\UDB3\Http\Request\Body\JsonRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;

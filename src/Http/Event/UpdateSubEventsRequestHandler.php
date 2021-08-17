@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
 use CultuurNet\UDB3\Http\Request\Body\ContentNegotiationRequestBodyParser;
-use CultuurNet\UDB3\Http\Request\Body\JsonRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
