@@ -31,11 +31,7 @@ class UpdateSubEventsRequestHandler
         $this->commandBus = $commandBus;
 
         $this->updateSubEventsParser = RequestBodyParserFactory::createBaseParser()
-            ->next(
-                new JsonSchemaValidatingRequestBodyParser(
-                    JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
-                )
-            );
+            ->next(JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH));
     }
 
     public function handle(ServerRequestInterface $request, string $eventId): ResponseInterface

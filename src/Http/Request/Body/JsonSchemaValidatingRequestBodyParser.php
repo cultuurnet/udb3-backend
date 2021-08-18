@@ -26,6 +26,15 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
         $this->validator = new Validator(null, self::MAX_ERRORS);
     }
 
+    /**
+     * Uses JsonSchemaLocator::loadSchema() to load the schema from the given filename.
+     * Filename must be one of the JsonSchemaLocator constants!
+     */
+    public static function fromFile(string $jsonSchemaLocatorFile): self
+    {
+        return new self(JsonSchemaLocator::loadSchema($jsonSchemaLocatorFile));
+    }
+
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $data = $request->getParsedBody();
