@@ -18,10 +18,8 @@ use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
-use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
