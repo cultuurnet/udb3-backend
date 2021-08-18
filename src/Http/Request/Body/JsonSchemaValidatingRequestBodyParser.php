@@ -12,7 +12,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
 {
-    private const SCHEMA_LOCATIONS = __DIR__ . '/../../../../vendor/publiq/stoplight-docs-uitdatabank/models/';
     private const MAX_ERRORS = 100;
 
     private RequestBodyParser $baseParser;
@@ -24,13 +23,6 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
         $this->jsonSchema = $jsonSchema;
         $this->baseParser = new JsonRequestBodyParser();
         $this->validator = new Validator(null, self::MAX_ERRORS);
-    }
-
-    public static function forStoplightModelFileName(string $stoplightModelFileName): self
-    {
-        $stoplightModelFileName = ltrim($stoplightModelFileName, '/');
-        $schema = file_get_contents(self::SCHEMA_LOCATIONS . $stoplightModelFileName);
-        return new self($schema);
     }
 
     public function parse(ServerRequestInterface $request)
