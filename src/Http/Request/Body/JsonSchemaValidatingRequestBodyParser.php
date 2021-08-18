@@ -9,25 +9,27 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Validator;
 use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
 {
     private const MAX_ERRORS = 100;
 
-    private RequestBodyParser $baseParser;
     private Validator $validator;
     private string $jsonSchema;
 
     public function __construct(string $jsonSchema)
     {
         $this->jsonSchema = $jsonSchema;
-        $this->baseParser = new JsonRequestBodyParser();
         $this->validator = new Validator(null, self::MAX_ERRORS);
     }
 
     public function parse(ServerRequestInterface $request)
     {
-        $data = $this->baseParser->parse($request);
+        $data = $request->getParsedBody();
+        if ($data === null) {
+            throw new RuntimeException('Given ServerRequestInterface has no parsed body.');
+        }
 
         $result = $this->validator->validate($data, $this->jsonSchema);
 
