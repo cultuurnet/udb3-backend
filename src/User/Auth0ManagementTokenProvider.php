@@ -4,50 +4,36 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User;
 
-use Lcobucci\JWT\Parser;
+use DateTime;
 
 class Auth0ManagementTokenProvider
 {
-    /**
-     * @var Auth0ManagementTokenGenerator
-     */
-    private $tokenGenerator;
+    private Auth0ManagementTokenGenerator $tokenGenerator;
 
-    /**
-     * @var Auth0ManagementTokenRepository
-     */
-    private $tokenRepository;
-
-    /**
-     * @var Parser
-     */
-    private $parser;
+    private Auth0ManagementTokenRepository $tokenRepository;
 
     public function __construct(
         Auth0ManagementTokenGenerator $tokenGenerator,
-        Auth0ManagementTokenRepository $tokenRepository,
-        Parser $parser
+        Auth0ManagementTokenRepository $tokenRepository
     ) {
         $this->tokenGenerator = $tokenGenerator;
         $this->tokenRepository = $tokenRepository;
-        $this->parser = $parser;
     }
 
     public function token(): string
     {
         $token = $this->tokenRepository->token();
 
-        if ($token === null || $this->isExpired($token)) {
+        if ($token === null || $this->expiresWithin($token, '+5 minutes')) {
             $token = $this->tokenGenerator->newToken();
             $this->tokenRepository->store($token);
         }
 
-        return $token;
+        return $token->getToken();
     }
 
-    private function isExpired(string $token): bool
+    private function expiresWithin(Auth0Token $token, string $offset): bool
     {
-        $parsed = $this->parser->parse($token);
-        return $parsed->isExpired();
+        return (new DateTime())->modify($offset) > $token->getExpiresAt();
     }
 }
