@@ -6,20 +6,11 @@ namespace CultuurNet\UDB3\User;
 
 class UserIdentityDetails implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var string
-     */
-    private $userName;
+    private string $userName;
 
-    /**
-     * @var string
-     */
-    private $emailAddress;
+    private string $emailAddress;
 
     public function __construct(
         string $userId,
