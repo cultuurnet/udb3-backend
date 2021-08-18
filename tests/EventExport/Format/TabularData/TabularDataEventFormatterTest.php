@@ -718,4 +718,26 @@ class TabularDataEventFormatterTest extends TestCase
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
     }
+
+    /**
+     * @test
+     */
+    public function it_formats_booking_availability()
+    {
+        $includedProperties = [
+            'id',
+            'bookingAvailability',
+        ];
+
+        $event = $this->getJSONEventFromFile('event_with_booking_availability.json');
+        $formatter = new TabularDataEventFormatter($includedProperties);
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $expectedFormattedEvent = [
+            'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
+            'bookingAvailability' => 'Volzet of uitverkocht',
+        ];
+
+        $this->assertEquals($expectedFormattedEvent, $formattedEvent);
+    }
 }
