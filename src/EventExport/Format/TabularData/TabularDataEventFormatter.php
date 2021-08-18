@@ -675,6 +675,13 @@ class TabularDataEventFormatter
                 },
                 'property' => 'status',
             ],
+            'bookingAvailability' => [
+                'name' => 'tickets & plaatsen',
+                'include' => function ($event) {
+                    return $this->formatBookingAvailability($event->bookingAvailability);
+                },
+                'property' => 'bookingAvailability',
+            ],
         ];
     }
 
@@ -821,5 +828,19 @@ class TabularDataEventFormatter
         }
 
         return $map[$status->type];
+    }
+
+    private function formatBookingAvailability(StdClass $bookingAvailability): string
+    {
+        $map = [
+            'Available' => 'Beschikbaar',
+            'Unavailable' => 'Volzet of uitverkocht',
+        ];
+
+        if (!array_key_exists($bookingAvailability->type, $map)) {
+            return '';
+        }
+
+        return $map[$bookingAvailability->type];
     }
 }
