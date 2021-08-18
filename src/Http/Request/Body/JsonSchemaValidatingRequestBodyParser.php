@@ -19,7 +19,7 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
     private Validator $validator;
     private string $jsonSchema;
 
-    private function __construct(string $jsonSchema)
+    public function __construct(string $jsonSchema)
     {
         $this->jsonSchema = $jsonSchema;
         $this->baseParser = new JsonRequestBodyParser();
