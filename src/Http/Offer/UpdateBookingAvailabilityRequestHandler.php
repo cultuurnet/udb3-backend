@@ -36,8 +36,7 @@ final class UpdateBookingAvailabilityRequestHandler
 
     public function handle(ServerRequestInterface $request, string $offerId): ResponseInterface
     {
-        /** @var object $data */
-        $data = $this->updateBookingAvailabilityParser->parse($request)->getParsedBody();
+        $data = (object) $this->updateBookingAvailabilityParser->parse($request)->getParsedBody();
 
         try {
             $this->commandBus->dispatch(
