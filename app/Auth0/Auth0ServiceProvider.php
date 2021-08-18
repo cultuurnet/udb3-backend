@@ -10,7 +10,6 @@ use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CacheRepository;
 use GuzzleHttp\Client;
-use Lcobucci\JWT\Parser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -29,8 +28,7 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
                     ),
                     new CacheRepository(
                         $app['cache']('auth0-management-token')
-                    ),
-                    new Parser()
+                    )
                 );
                 return $provider->token();
             }
