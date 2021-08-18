@@ -53,7 +53,8 @@ final class JsonSchemaLocator
         return $schema;
     }
 
-    private static function getConstants(): array {
+    private static function getConstants(): array
+    {
         return (new ReflectionClass(self::class))->getConstants();
     }
 }
