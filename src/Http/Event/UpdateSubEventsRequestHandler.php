@@ -29,16 +29,18 @@ class UpdateSubEventsRequestHandler
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
-        $this->updateSubEventsParser = new JsonSchemaValidatingRequestBodyParser(
-            JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
-        );
+        $this->updateSubEventsParser =
+            (new JsonRequestBodyParser())
+                ->next(
+                    new JsonSchemaValidatingRequestBodyParser(
+                        JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
+                    )
+                );
     }
 
     public function handle(ServerRequestInterface $request, string $eventId): ResponseInterface
     {
-        $request = (new JsonRequestBodyParser())->parse($request);
-        $request = $this->updateSubEventsParser->parse($request);
-        $updates = $request->getParsedBody();
+        $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();
 
         $updateSubEvents = [];
         foreach ($updates as $update) {

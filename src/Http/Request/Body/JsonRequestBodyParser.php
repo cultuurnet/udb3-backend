@@ -10,6 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class JsonRequestBodyParser implements RequestBodyParser
 {
+    use RequestBodyParserNextTrait;
+
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $body = (string) $request->getBody();
@@ -23,6 +25,6 @@ final class JsonRequestBodyParser implements RequestBodyParser
             throw ApiProblem::bodyInvalidSyntax('JSON');
         }
 
-        return $request->withParsedBody($decoded);
+        return $this->callNextParser($request->withParsedBody($decoded));
     }
 }

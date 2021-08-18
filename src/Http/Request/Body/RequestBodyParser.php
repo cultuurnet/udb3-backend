@@ -23,4 +23,24 @@ interface RequestBodyParser
      * @throws ApiProblem
      */
     public function parse(ServerRequestInterface $request): ServerRequestInterface;
+
+    /**
+     * Registers the RequestBodyParser to use after the current one.
+     * Implementations MUST call parse() on this next parser inside their own parse() method after executing their own
+     * logic, unless they throw an ApiProblem exception.
+     *
+     * If a next parser is already set, the implementation MUST call next() on the previously set next parser to append
+     * the new parser to the chain.
+     *
+     * @see RequestBodyParserNextTrait
+     *   For easy standard implementation.
+     *
+     * @param RequestBodyParser $requestBodyParser
+     *   The RequestBodyParser to call parse() on next.
+     *
+     * @return RequestBodyParser
+     *   The parser that the next() method was originally called on, for easy method chaining.
+     *   For example $parser->next($inBetweenParser)->next($finalParser)->parse($request).
+     */
+    public function next(RequestBodyParser $requestBodyParser): RequestBodyParser;
 }

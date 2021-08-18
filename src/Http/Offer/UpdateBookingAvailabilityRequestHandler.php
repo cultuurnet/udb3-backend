@@ -27,16 +27,18 @@ final class UpdateBookingAvailabilityRequestHandler
         CommandBus $commandBus
     ) {
         $this->commandBus = $commandBus;
-        $this->updateBookingAvailabilityParser = new JsonSchemaValidatingRequestBodyParser(
-            JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY_PUT)
-        );
+        $this->updateBookingAvailabilityParser =
+            (new JsonRequestBodyParser())
+                ->next(
+                    new JsonSchemaValidatingRequestBodyParser(
+                        JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY_PUT)
+                    )
+                );
     }
 
     public function handle(ServerRequestInterface $request, string $offerId): ResponseInterface
     {
-        $request = (new JsonRequestBodyParser())->parse($request);
-        $request = $this->updateBookingAvailabilityParser->parse($request);
-        $data = $request->getParsedBody();
+        $data = $this->updateBookingAvailabilityParser->parse($request)->getParsedBody();
 
         try {
             $this->commandBus->dispatch(
