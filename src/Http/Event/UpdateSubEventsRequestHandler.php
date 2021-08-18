@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
+use CultuurNet\UDB3\Http\Request\Body\JsonRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -35,7 +36,9 @@ class UpdateSubEventsRequestHandler
 
     public function handle(ServerRequestInterface $request, string $eventId): ResponseInterface
     {
-        $updates = $this->updateSubEventsParser->parse($request);
+        $request = (new JsonRequestBodyParser())->parse($request);
+        $request = $this->updateSubEventsParser->parse($request);
+        $updates = $request->getParsedBody();
 
         $updateSubEvents = [];
         foreach ($updates as $update) {

@@ -24,7 +24,7 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
         $this->validator = new Validator(null, self::MAX_ERRORS);
     }
 
-    public function parse(ServerRequestInterface $request)
+    public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $data = $request->getParsedBody();
         if ($data === null) {
@@ -44,6 +44,6 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
             throw ApiProblem::bodyInvalidData(...$schemaErrors);
         }
 
-        return $data;
+        return $request;
     }
 }

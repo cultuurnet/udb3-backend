@@ -26,11 +26,11 @@ class JsonRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_decoded_json_body_as_an_associative_array(): void
+    public function it_returns_the_decoded_json_body_as_an_associative_array_in_the_requests_parsed_body(): void
     {
         $given = $this->requestBuilder->withBodyFromString('{"foo":"bar"}')->build('PUT');
         $expected = (object) ['foo' => 'bar'];
-        $actual = $this->parser->parse($given);
+        $actual = $this->parser->parse($given)->getParsedBody();
         $this->assertEquals($expected, $actual);
     }
 
