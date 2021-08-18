@@ -183,7 +183,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
      * @test
      * @dataProvider invalidDataProvider
      */
-    public function it_throws_an_api_problem_when_given_with_valid_data($data, array $expectedSchemaErrors): void
+    public function it_throws_an_api_problem_when_given_invalid_data($data, array $expectedSchemaErrors): void
     {
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
