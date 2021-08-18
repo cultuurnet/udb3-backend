@@ -10,10 +10,10 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
-use CultuurNet\UDB3\Http\Request\Body\JsonRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -29,13 +29,13 @@ class UpdateSubEventsRequestHandler
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
-        $this->updateSubEventsParser =
-            (new JsonRequestBodyParser())
-                ->next(
-                    new JsonSchemaValidatingRequestBodyParser(
-                        JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
-                    )
-                );
+
+        $this->updateSubEventsParser = RequestBodyParserFactory::createBaseParser()
+            ->next(
+                new JsonSchemaValidatingRequestBodyParser(
+                    JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
+                )
+            );
     }
 
     public function handle(ServerRequestInterface $request, string $eventId): ResponseInterface

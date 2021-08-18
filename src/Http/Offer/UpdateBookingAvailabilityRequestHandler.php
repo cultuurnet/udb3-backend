@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Request\Body\JsonRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -27,13 +27,13 @@ final class UpdateBookingAvailabilityRequestHandler
         CommandBus $commandBus
     ) {
         $this->commandBus = $commandBus;
-        $this->updateBookingAvailabilityParser =
-            (new JsonRequestBodyParser())
-                ->next(
-                    new JsonSchemaValidatingRequestBodyParser(
-                        JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY_PUT)
-                    )
-                );
+
+        $this->updateBookingAvailabilityParser = RequestBodyParserFactory::createBaseParser()
+            ->next(
+                new JsonSchemaValidatingRequestBodyParser(
+                    JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY_PUT)
+                )
+            );
     }
 
     public function handle(ServerRequestInterface $request, string $offerId): ResponseInterface
