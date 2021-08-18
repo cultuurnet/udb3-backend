@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
 use CultuurNet\UDB3\Http\Request\Body\ContentNegotiationRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -30,7 +31,9 @@ class UpdateSubEventsRequestHandler
         $this->commandBus = $commandBus;
         $this->updateSubEventsParser = (new ContentNegotiationRequestBodyParser())
             ->withJsonRequestBodyParser(
-                JsonSchemaValidatingRequestBodyParser::forStoplightModelFileName('event-subEvent-patch.json')
+                new JsonSchemaValidatingRequestBodyParser(
+                    JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
+                )
             );
     }
 
