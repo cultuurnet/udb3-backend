@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Request\Body\ContentNegotiationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -27,13 +26,9 @@ final class UpdateBookingAvailabilityRequestHandler
         CommandBus $commandBus
     ) {
         $this->commandBus = $commandBus;
-
-        $this->updateBookingAvailabilityParser = (new ContentNegotiationRequestBodyParser())
-            ->withJsonRequestBodyParser(
-                new JsonSchemaValidatingRequestBodyParser(
-                    JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY_PUT)
-                )
-            );
+        $this->updateBookingAvailabilityParser = new JsonSchemaValidatingRequestBodyParser(
+            JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY_PUT)
+        );
     }
 
     public function handle(ServerRequestInterface $request, string $offerId): ResponseInterface
