@@ -32,10 +32,13 @@ class ApiProblemTest extends TestCase
     /**
      * @test
      */
-    public function it_can_have_a_jsonPointer(): void
+    public function it_can_have_schema_errors_if_error_is_invalid_body_data(): void
     {
-        $problem = ApiProblem::bodyInvalidData('Property mock should not be empty', '/mock');
-        $this->assertEquals('/mock', $problem->getJsonPointer());
+        $problem = ApiProblem::bodyInvalidData(new SchemaError('/mock', 'Property mock should not be empty'));
+        $this->assertEquals(
+            [new SchemaError('/mock', 'Property mock should not be empty')],
+            $problem->getSchemaErrors()
+        );
     }
 
     /**
@@ -43,14 +46,18 @@ class ApiProblemTest extends TestCase
      */
     public function it_can_be_converted_to_a_json_array(): void
     {
-        $problem = ApiProblem::bodyInvalidData('Property mock should not be empty', '/mock');
+        $problem = ApiProblem::bodyInvalidData(new SchemaError('/mock', 'Property mock should not be empty'));
         $this->assertEquals(
             [
                 'type' => 'https://api.publiq.be/probs/body/invalid-data',
                 'title' => 'Invalid body data',
                 'status' => 400,
-                'detail' => 'Property mock should not be empty',
-                'jsonPointer' => '/mock',
+                'schemaErrors' => [
+                    [
+                        'jsonPointer' => '/mock',
+                        'error' => 'Property mock should not be empty',
+                    ],
+                ],
             ],
             $problem->toArray()
         );
