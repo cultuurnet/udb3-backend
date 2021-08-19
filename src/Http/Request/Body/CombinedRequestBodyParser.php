@@ -8,8 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class CombinedRequestBodyParser implements RequestBodyParser
 {
-    use RequestBodyParserNextTrait;
-
     private array $parsers;
 
     public function __construct(RequestBodyParser ...$requestBodyParsers)

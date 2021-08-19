@@ -13,8 +13,6 @@ use RuntimeException;
 
 final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
 {
-    use RequestBodyParserNextTrait;
-
     private const MAX_ERRORS = 100;
 
     private Validator $validator;
@@ -55,6 +53,6 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
             throw ApiProblem::bodyInvalidData(...$schemaErrors);
         }
 
-        return $this->callNextParser($request);
+        return $request;
     }
 }
