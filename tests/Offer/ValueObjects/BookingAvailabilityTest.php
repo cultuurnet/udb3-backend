@@ -32,12 +32,12 @@ final class BookingAvailabilityTest extends TestCase
     public function it_can_be_deserialized(): void
     {
         $this->assertEquals(
-            BookingAvailability::fromNative('Available'),
+            new BookingAvailability(BookingAvailabilityType::fromNative('Available')),
             BookingAvailability::deserialize(['type' => 'Available'])
         );
 
         $this->assertEquals(
-            BookingAvailability::fromNative('Unavailable'),
+            new BookingAvailability(BookingAvailabilityType::fromNative('Unavailable')),
             BookingAvailability::deserialize(['type' => 'Unavailable'])
         );
     }
@@ -48,11 +48,27 @@ final class BookingAvailabilityTest extends TestCase
     public function it_is_comparable(): void
     {
         $this->assertTrue(
-            BookingAvailability::available()->equals(BookingAvailability::fromNative('Available'))
+            BookingAvailability::available()->equals(
+                new BookingAvailability(BookingAvailabilityType::available())
+            )
+        );
+
+        $this->assertTrue(
+            BookingAvailability::unavailable()->equals(
+                new BookingAvailability(BookingAvailabilityType::unavailable())
+            )
         );
 
         $this->assertFalse(
-            BookingAvailability::fromNative('Unavailable')->equals(BookingAvailability::available())
+            BookingAvailability::available()->equals(
+                new BookingAvailability(BookingAvailabilityType::unavailable())
+            )
+        );
+
+        $this->assertFalse(
+            BookingAvailability::unavailable()->equals(
+                new BookingAvailability(BookingAvailabilityType::available())
+            )
         );
     }
 
