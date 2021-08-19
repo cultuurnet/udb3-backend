@@ -12,7 +12,6 @@ final class RequestBodyParserFactory
      * @param RequestBodyParser ...$customParsers
      *  Parser(s) to append to the base parser. (Optional)
      *
-     * @return RequestBodyParser
      */
     public static function createBaseParser(RequestBodyParser ...$customParsers): RequestBodyParser
     {
