@@ -20,10 +20,9 @@ final class RequestBodyParserFactory
      */
     public static function createBaseParser(RequestBodyParser ...$nextParsers): RequestBodyParser
     {
-        $parser = new JsonRequestBodyParser();
-        foreach ($nextParsers as $nextParser) {
-            $parser = $parser->next($nextParser);
-        }
-        return $parser;
+        return new CombinedRequestBodyParser(
+            new JsonRequestBodyParser(),
+            ...$nextParsers
+        );
     }
 }
