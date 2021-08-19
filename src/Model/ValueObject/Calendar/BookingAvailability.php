@@ -6,14 +6,14 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 final class BookingAvailability
 {
-    private BookingAvailability $type;
+    private BookingAvailabilityType $type;
 
-    public function __construct(BookingAvailability $type)
+    public function __construct(BookingAvailabilityType $type)
     {
         $this->type = $type;
     }
 
-    public function getType(): BookingAvailability
+    public function getType(): BookingAvailabilityType
     {
         return $this->type;
     }
