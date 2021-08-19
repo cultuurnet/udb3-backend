@@ -28,7 +28,7 @@ final class ApiProblem extends Exception
     private string $title;
     private int $status;
     private ?string $detail;
-    private ?string $jsonPointer;
+    private array $schemaErrors = [];
     private array $debugInfo = [];
 
     /**
@@ -60,7 +60,7 @@ final class ApiProblem extends Exception
         string $title,
         int $status,
         ?string $detail = null,
-        ?string $jsonPointer = null
+        array $schemaErrors = []
     ): self {
         $problem = new ApiProblem();
 
@@ -69,7 +69,7 @@ final class ApiProblem extends Exception
         $problem->title = $title;
         $problem->status = $status;
         $problem->detail = $detail;
-        $problem->jsonPointer = $jsonPointer;
+        $problem->schemaErrors = $schemaErrors;
 
         // Exception properties.
         $problem->message = $title;
@@ -98,9 +98,9 @@ final class ApiProblem extends Exception
         return $this->detail;
     }
 
-    public function getJsonPointer(): ?string
+    public function getSchemaErrors(): array
     {
-        return $this->jsonPointer;
+        return $this->schemaErrors;
     }
 
     /**
@@ -129,8 +129,15 @@ final class ApiProblem extends Exception
         if ($this->detail) {
             $json['detail'] = $this->detail;
         }
-        if ($this->jsonPointer) {
-            $json['jsonPointer'] = $this->jsonPointer;
+
+        if (count($this->schemaErrors) > 0) {
+            $json['schemaErrors'] = array_map(
+                fn (SchemaError $schemaError) => [
+                    'jsonPointer' => $schemaError->getJsonPointer(),
+                    'error' => $schemaError->getError(),
+                ],
+                $this->schemaErrors
+            );
         }
 
         /** @deprecated Remove once withValidationMessages() is removed. */
@@ -154,9 +161,9 @@ final class ApiProblem extends Exception
         string $title,
         int $status,
         ?string $detail = null,
-        ?string $jsonPointer = null
+        array $schemaErrors = []
     ): self {
-        return self::create('about:blank', $title, $status, $detail, $jsonPointer);
+        return self::create('about:blank', $title, $status, $detail, $schemaErrors);
     }
 
     public static function internalServerError(string $detail = ''): self
@@ -217,14 +224,14 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function bodyInvalidData(string $detail, string $jsonPointer): self
+    public static function bodyInvalidData(SchemaError ...$schemaErrors): self
     {
         return self::create(
             'https://api.publiq.be/probs/body/invalid-data',
             'Invalid body data',
             400,
-            $detail,
-            $jsonPointer
+            null,
+            $schemaErrors
         );
     }
 

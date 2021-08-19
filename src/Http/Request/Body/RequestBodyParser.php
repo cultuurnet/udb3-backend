@@ -14,11 +14,13 @@ interface RequestBodyParser
      *
      * @param ServerRequestInterface $request
      *   The incoming (PSR-7) request of which the body has to be parsed.
+     *   Some implementations may require that the given $request already has a getParsedBody() that does not return
+     *   null, e.g. if they only do validation or transformations after the actual parsing.
+     *
+     * @return ServerRequestInterface
+     *   New ServerRequestInterface instance that has a getParsedBody() that does not return null.
      *
      * @throws ApiProblem
-     *
-     * @return array
-     *   The decoded data as an associative array.
      */
-    public function parse(ServerRequestInterface $request): array;
+    public function parse(ServerRequestInterface $request): ServerRequestInterface;
 }

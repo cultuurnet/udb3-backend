@@ -143,7 +143,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
         $multipleEventCreated = new EventCreated(
             '1',
             new Language('nl'),
-            new Title('Single Event'),
+            new Title('Multiple Event'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
             new Calendar(
