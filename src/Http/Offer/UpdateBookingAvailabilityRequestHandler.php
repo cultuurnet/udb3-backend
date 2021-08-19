@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use stdClass;
 
 final class UpdateBookingAvailabilityRequestHandler
 {
