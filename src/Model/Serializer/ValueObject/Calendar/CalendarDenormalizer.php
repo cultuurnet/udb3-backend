@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -53,7 +54,7 @@ class CalendarDenormalizer implements DenormalizerInterface
 
         $topLevelStatus = isset($data['status']) ? $this->denormalizeStatus($data['status']) : null;
         $topLevelBookingAvailability = isset($data['bookingAvailability']['type'])
-            ? new BookingAvailabilityType($data['bookingAvailability']['type']) : null;
+            ? new BookingAvailability(new BookingAvailabilityType($data['bookingAvailability']['type'])) : null;
 
         switch ($data['calendarType']) {
             case 'single':
@@ -164,11 +165,12 @@ class CalendarDenormalizer implements DenormalizerInterface
     private function denormalizeSubEvent(
         array $subEventData,
         ?Status $topLevelStatus,
-        ?BookingAvailabilityType $topLevelBookingAvailability
+        ?BookingAvailability $topLevelBookingAvailability
     ): SubEvent {
         $statusType = $topLevelStatus ? $topLevelStatus->getType() : StatusType::Available();
         $statusReason = $topLevelStatus ? $topLevelStatus->getReason() : null;
-        $bookingAvailability = $topLevelBookingAvailability ?: BookingAvailabilityType::Available();
+        $bookingAvailability = $topLevelBookingAvailability
+            ?: new BookingAvailability(BookingAvailabilityType::Available());
 
         if (isset($subEventData['status']['type'])) {
             $statusType = new StatusType($subEventData['status']['type']);
@@ -183,7 +185,9 @@ class CalendarDenormalizer implements DenormalizerInterface
         }
 
         if (isset($subEventData['bookingAvailability']['type'])) {
-            $bookingAvailability = new BookingAvailabilityType($subEventData['bookingAvailability']['type']);
+            $bookingAvailability = new BookingAvailability(
+                new BookingAvailabilityType($subEventData['bookingAvailability']['type'])
+            );
         }
 
         $status = new Status($statusType, $statusReason);

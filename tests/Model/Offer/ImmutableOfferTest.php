@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Offer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -599,7 +600,7 @@ class ImmutableOfferTest extends TestCase
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailabilityType::Available()
+                new BookingAvailability(BookingAvailabilityType::Available())
             )
         );
     }

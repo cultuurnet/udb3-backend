@@ -12,7 +12,7 @@ interface Calendar
 
     public function withStatus(Status $status): Calendar;
 
-    public function getBookingAvailability(): BookingAvailabilityType;
+    public function getBookingAvailability(): BookingAvailability;
 
-    public function withBookingAvailability(BookingAvailabilityType $bookingAvailability): Calendar;
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar;
 }

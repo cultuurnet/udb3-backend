@@ -12,13 +12,13 @@ class PermanentCalendar implements CalendarWithOpeningHours
 
     private Status $status;
 
-    private BookingAvailabilityType $bookingAvailability;
+    private BookingAvailability $bookingAvailability;
 
     public function __construct(OpeningHours $openingHours)
     {
         $this->openingHours = $openingHours;
         $this->status = new Status(StatusType::Available());
-        $this->bookingAvailability = BookingAvailabilityType::Available();
+        $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
 
     public function withStatus(Status $status): Calendar
@@ -28,7 +28,7 @@ class PermanentCalendar implements CalendarWithOpeningHours
         return $clone;
     }
 
-    public function withBookingAvailability(BookingAvailabilityType $bookingAvailability): Calendar
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar
     {
         $clone = clone $this;
         $clone->bookingAvailability = $bookingAvailability;
@@ -45,7 +45,7 @@ class PermanentCalendar implements CalendarWithOpeningHours
         return $this->status;
     }
 
-    public function getBookingAvailability(): BookingAvailabilityType
+    public function getBookingAvailability(): BookingAvailability
     {
         return $this->bookingAvailability;
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ValueObjects;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
 use InvalidArgumentException;
 
 final class BookingAvailability implements Serializable
@@ -74,6 +74,6 @@ final class BookingAvailability implements Serializable
     public static function fromUdb3ModelBookingAvailability(
         Udb3ModelBookingAvailability $udb3ModelBookingAvailability
     ): self {
-        return self::fromNative($udb3ModelBookingAvailability->toString());
+        return self::fromNative($udb3ModelBookingAvailability->getType()->toString());
     }
 }

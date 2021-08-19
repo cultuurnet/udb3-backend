@@ -20,7 +20,7 @@ class SingleSubEventCalendarTest extends TestCase
                     DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailabilityType::Available()
+                new BookingAvailability(BookingAvailabilityType::Available())
             )
         );
     }
@@ -46,7 +46,10 @@ class SingleSubEventCalendarTest extends TestCase
      */
     public function it_has_a_default_booking_availability(): void
     {
-        $this->assertEquals(BookingAvailabilityType::Available(), $this->singleSubEventCalendar->getBookingAvailability());
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Available()),
+            $this->singleSubEventCalendar->getBookingAvailability()
+        );
     }
 
     /**
@@ -64,9 +67,14 @@ class SingleSubEventCalendarTest extends TestCase
      */
     public function it_allows_setting_an_explicit_booking_availability(): void
     {
-        $calendar = $this->singleSubEventCalendar->withBookingAvailability(BookingAvailabilityType::Unavailable());
+        $calendar = $this->singleSubEventCalendar->withBookingAvailability(
+            new BookingAvailability(BookingAvailabilityType::Unavailable())
+        );
 
-        $this->assertEquals(BookingAvailabilityType::Unavailable(), $calendar->getBookingAvailability());
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Unavailable()),
+            $calendar->getBookingAvailability()
+        );
     }
 
     /**
@@ -96,7 +104,7 @@ class SingleSubEventCalendarTest extends TestCase
                     DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailabilityType::Available()
+                new BookingAvailability(BookingAvailabilityType::Available())
             )
         );
 

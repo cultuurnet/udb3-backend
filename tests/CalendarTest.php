@@ -11,7 +11,8 @@ use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -1483,12 +1484,12 @@ class CalendarTest extends TestCase
                 \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
             ),
             new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
-            Udb3ModelBookingAvailability::Unavailable()
+            new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
         );
 
         $udb3ModelCalendar = (new SingleSubEventCalendar($subEvent))
             ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()))
-            ->withBookingAvailability(Udb3ModelBookingAvailability::Unavailable());
+            ->withBookingAvailability(new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
             CalendarType::SINGLE(),
@@ -1523,7 +1524,7 @@ class CalendarTest extends TestCase
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
                 ),
                 new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
-                Udb3ModelBookingAvailability::Unavailable()
+                new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
             ),
             new SubEvent(
                 new DateRange(
@@ -1531,13 +1532,13 @@ class CalendarTest extends TestCase
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00')
                 ),
                 new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
-                Udb3ModelBookingAvailability::Unavailable()
+                new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
             )
         );
 
         $udb3ModelCalendar = (new MultipleSubEventsCalendar($subEvents))
             ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()))
-            ->withBookingAvailability(Udb3ModelBookingAvailability::Unavailable());
+            ->withBookingAvailability(new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable()));
 
         $expected = (new Calendar(
             CalendarType::MULTIPLE(),

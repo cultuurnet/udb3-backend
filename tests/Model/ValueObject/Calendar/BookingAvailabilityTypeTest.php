@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use PHPUnit\Framework\TestCase;
 
-final class BookingAvailabilityTest extends TestCase
+final class BookingAvailabilityTypeTest extends TestCase
 {
     /**
      * @test

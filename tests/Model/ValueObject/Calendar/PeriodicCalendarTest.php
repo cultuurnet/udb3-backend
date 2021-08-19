@@ -50,7 +50,10 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_has_a_default_booking_availability(): void
     {
-        $this->assertEquals(BookingAvailabilityType::Available(), $this->periodicCalendar->getBookingAvailability());
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Available()),
+            $this->periodicCalendar->getBookingAvailability()
+        );
     }
 
     /**
@@ -68,9 +71,14 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_allows_setting_an_explicit_booking_availability(): void
     {
-        $calendar = $this->periodicCalendar->withBookingAvailability(BookingAvailabilityType::Unavailable());
+        $calendar = $this->periodicCalendar->withBookingAvailability(
+            new BookingAvailability(BookingAvailabilityType::Unavailable())
+        );
 
-        $this->assertEquals(BookingAvailabilityType::Unavailable(), $calendar->getBookingAvailability());
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Unavailable()),
+            $calendar->getBookingAvailability()
+        );
     }
 
     /**
