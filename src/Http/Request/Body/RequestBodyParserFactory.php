@@ -9,16 +9,16 @@ final class RequestBodyParserFactory
     /**
      * Returns a "base" RequestBodyParser to use in every request handler, combined with optionally extra parsers.
      *
-     * @param RequestBodyParser ...$nextParsers
+     * @param RequestBodyParser ...$customParsers
      *  Parser(s) to append to the base parser. (Optional)
      *
      * @return RequestBodyParser
      */
-    public static function createBaseParser(RequestBodyParser ...$nextParsers): RequestBodyParser
+    public static function createBaseParser(RequestBodyParser ...$customParsers): RequestBodyParser
     {
         return new CombinedRequestBodyParser(
             new JsonRequestBodyParser(),
-            ...$nextParsers
+            ...$customParsers
         );
     }
 }
