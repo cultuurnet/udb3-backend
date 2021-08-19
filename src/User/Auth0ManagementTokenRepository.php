@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\User;
 
 interface Auth0ManagementTokenRepository
 {
-    public function token(): ?string;
+    public function token(): ?Auth0Token;
 
-    public function store(string $token): void;
+    public function store(Auth0Token $token): void;
 }
