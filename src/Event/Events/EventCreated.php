@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use DateTimeInterface;
 
 final class EventCreated extends EventEvent
 {
@@ -114,7 +115,7 @@ final class EventCreated extends EventEvent
         }
         $publicationDate = null;
         if (!is_null($this->getPublicationDate())) {
-            $publicationDate = $this->getPublicationDate()->format(\DateTime::ATOM);
+            $publicationDate = $this->getPublicationDate()->format(DateTimeInterface::ATOM);
         }
         return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
@@ -136,7 +137,7 @@ final class EventCreated extends EventEvent
         $publicationDate = null;
         if (!empty($data['publication_date'])) {
             $publicationDate = DateTimeImmutable::createFromFormat(
-                \DateTime::ATOM,
+                DateTimeInterface::ATOM,
                 $data['publication_date']
             );
         }

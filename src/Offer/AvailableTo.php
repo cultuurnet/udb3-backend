@@ -59,6 +59,6 @@ class AvailableTo
 
     public function __toString(): string
     {
-        return $this->availableTo->format(\DateTime::ATOM);
+        return $this->availableTo->format(DateTimeInterface::ATOM);
     }
 }
