@@ -29,6 +29,7 @@ class SubEventValidator extends Validator
                 new AlwaysValid()
             ),
             new Key('status', new StatusValidator(), false),
+            new Key('bookingAvailability', new BookingAvailabilityValidator(), false),
         ];
 
         parent::__construct($rules);

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\Validation\Offer;
 
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerReferenceValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Audience\AgeRangeValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\BookingAvailabilityValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleSubEventsCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
@@ -44,6 +45,7 @@ abstract class OfferValidator extends Validator
             new Key('description', new TranslatedStringValidator('description'), false),
             new HasMainLanguageRule('description'),
             new Key('status', new StatusValidator(), false),
+            new Key('bookingAvailability', new BookingAvailabilityValidator(), false),
             new Key('labels', new LabelsValidator(), false),
             new Key('hiddenLabels', new LabelsValidator(), false),
             new Key('organizer', new OrganizerReferenceValidator(), false),
