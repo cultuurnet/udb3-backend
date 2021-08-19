@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -38,7 +38,7 @@ class AvailableToTest extends TestCase
             new SubEvent(
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available()
+                BookingAvailabilityType::Available()
             )
         );
 

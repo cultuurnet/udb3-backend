@@ -41,7 +41,7 @@ class PermanentCalendarTest extends TestCase
     {
         $calendar = new PermanentCalendar(new OpeningHours());
 
-        $this->assertEquals(BookingAvailability::Available(), $calendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailabilityType::Available(), $calendar->getBookingAvailability());
     }
 
     /**
@@ -61,9 +61,9 @@ class PermanentCalendarTest extends TestCase
     public function it_allows_setting_an_explicit_booking_availability(): void
     {
         $calendar = new PermanentCalendar(new OpeningHours());
-        $calendar = $calendar->withBookingAvailability(BookingAvailability::Unavailable());
+        $calendar = $calendar->withBookingAvailability(BookingAvailabilityType::Unavailable());
 
-        $this->assertEquals(BookingAvailability::Unavailable(), $calendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailabilityType::Unavailable(), $calendar->getBookingAvailability());
     }
 
     /**

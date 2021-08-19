@@ -10,7 +10,7 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
 
     private Status $status;
 
-    private BookingAvailability $bookingAvailability;
+    private BookingAvailabilityType $bookingAvailability;
 
     public function __construct(SubEvents $dateRanges)
     {
@@ -20,7 +20,7 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
 
         $this->dateRanges = $dateRanges;
         $this->status = new Status(StatusType::Available());
-        $this->bookingAvailability = BookingAvailability::Available();
+        $this->bookingAvailability = BookingAvailabilityType::Available();
     }
 
     public function withStatus(Status $status): Calendar
@@ -30,7 +30,7 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         return $clone;
     }
 
-    public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar
+    public function withBookingAvailability(BookingAvailabilityType $bookingAvailability): Calendar
     {
         $clone = clone $this;
         $clone->bookingAvailability = $bookingAvailability;
@@ -47,7 +47,7 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         return $this->status;
     }
 
-    public function getBookingAvailability(): BookingAvailability
+    public function getBookingAvailability(): BookingAvailabilityType
     {
         return $this->bookingAvailability;
     }

@@ -10,9 +10,9 @@ final class SubEvent
 
     private Status $status;
 
-    private BookingAvailability $bookingAvailability;
+    private BookingAvailabilityType $bookingAvailability;
 
-    public function __construct(DateRange $dateRange, Status $status, BookingAvailability $bookingAvailability)
+    public function __construct(DateRange $dateRange, Status $status, BookingAvailabilityType $bookingAvailability)
     {
         $this->dateRange = $dateRange;
         $this->status = $status;
@@ -29,7 +29,7 @@ final class SubEvent
         return $this->status;
     }
 
-    public function getBookingAvailability(): BookingAvailability
+    public function getBookingAvailability(): BookingAvailabilityType
     {
         return $this->bookingAvailability;
     }

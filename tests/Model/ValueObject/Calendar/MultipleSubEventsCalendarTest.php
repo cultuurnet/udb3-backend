@@ -22,7 +22,7 @@ class MultipleSubEventsCalendarTest extends TestCase
                     DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available()
+                BookingAvailabilityType::Available()
             ),
             new SubEvent(
                 new DateRange(
@@ -30,7 +30,7 @@ class MultipleSubEventsCalendarTest extends TestCase
                     DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available()
+                BookingAvailabilityType::Available()
             )
         );
 
@@ -48,7 +48,7 @@ class MultipleSubEventsCalendarTest extends TestCase
             new SubEvent(
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available()
+                BookingAvailabilityType::Available()
             )
         );
 
@@ -103,7 +103,7 @@ class MultipleSubEventsCalendarTest extends TestCase
     public function it_has_a_default_booking_availability(): void
     {
         $this->assertEquals(
-            BookingAvailability::Available(),
+            BookingAvailabilityType::Available(),
             $this->multipleSubEventsCalendar->getBookingAvailability()
         );
     }
@@ -123,8 +123,8 @@ class MultipleSubEventsCalendarTest extends TestCase
      */
     public function it_allows_setting_an_explicit_booking_availability(): void
     {
-        $calendar = $this->multipleSubEventsCalendar->withBookingAvailability(BookingAvailability::Unavailable());
+        $calendar = $this->multipleSubEventsCalendar->withBookingAvailability(BookingAvailabilityType::Unavailable());
 
-        $this->assertEquals(BookingAvailability::Unavailable(), $calendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailabilityType::Unavailable(), $calendar->getBookingAvailability());
     }
 }

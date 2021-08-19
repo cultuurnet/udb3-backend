@@ -10,13 +10,13 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
 
     private Status $status;
 
-    private BookingAvailability $bookingAvailability;
+    private BookingAvailabilityType $bookingAvailability;
 
     public function __construct(SubEvent $subEvent)
     {
         $this->subEvent = $subEvent;
         $this->status = new Status(StatusType::Available());
-        $this->bookingAvailability = BookingAvailability::Available();
+        $this->bookingAvailability = BookingAvailabilityType::Available();
     }
 
     public function withStatus(Status $status): Calendar
@@ -26,7 +26,7 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         return $clone;
     }
 
-    public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar
+    public function withBookingAvailability(BookingAvailabilityType $bookingAvailability): Calendar
     {
         $clone = clone $this;
         $clone->bookingAvailability = $bookingAvailability;
@@ -43,7 +43,7 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         return $this->status;
     }
 
-    public function getBookingAvailability(): BookingAvailability
+    public function getBookingAvailability(): BookingAvailabilityType
     {
         return $this->bookingAvailability;
     }

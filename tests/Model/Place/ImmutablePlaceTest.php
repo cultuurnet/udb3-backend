@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\Place;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
@@ -69,7 +69,7 @@ class ImmutablePlaceTest extends TestCase
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available()
+                BookingAvailabilityType::Available()
             )
         );
 

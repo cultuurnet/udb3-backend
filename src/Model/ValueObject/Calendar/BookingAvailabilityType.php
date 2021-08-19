@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
- * @method static BookingAvailability Available()
- * @method static BookingAvailability Unavailable()
+ * @method static BookingAvailabilityType Available()
+ * @method static BookingAvailabilityType Unavailable()
  */
-final class BookingAvailability extends Enum
+final class BookingAvailabilityType extends Enum
 {
     public static function getAllowedValues(): array
     {

@@ -56,7 +56,7 @@ class DateRangesTest extends TestCase
                     DateTimeImmutable::createFromFormat(DATE_ATOM, $to)
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available()
+                BookingAvailabilityType::Available()
             );
         };
 

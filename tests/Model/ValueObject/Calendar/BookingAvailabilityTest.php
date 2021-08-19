@@ -13,8 +13,8 @@ final class BookingAvailabilityTest extends TestCase
      */
     public function it_supports_exactly_two_availabilities(): void
     {
-        $availableBooking = BookingAvailability::Available();
-        $unavailableBooking = BookingAvailability::Unavailable();
+        $availableBooking = BookingAvailabilityType::Available();
+        $unavailableBooking = BookingAvailabilityType::Unavailable();
 
         $this->assertEquals('Available', $availableBooking->toString());
         $this->assertEquals('Unavailable', $unavailableBooking->toString());

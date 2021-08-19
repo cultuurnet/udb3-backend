@@ -14,7 +14,7 @@ class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHour
 
     private Status $status;
 
-    private BookingAvailability $bookingAvailability;
+    private BookingAvailabilityType $bookingAvailability;
 
     public function __construct(
         DateRange $dateRange,
@@ -23,7 +23,7 @@ class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHour
         $this->dateRange = $dateRange;
         $this->openingHours = $openingHours;
         $this->status = new Status(StatusType::Available());
-        $this->bookingAvailability = BookingAvailability::Available();
+        $this->bookingAvailability = BookingAvailabilityType::Available();
     }
 
     public function withStatus(Status $status): Calendar
@@ -33,7 +33,7 @@ class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHour
         return $clone;
     }
 
-    public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar
+    public function withBookingAvailability(BookingAvailabilityType $bookingAvailability): Calendar
     {
         $clone = clone $this;
         $clone->bookingAvailability = $bookingAvailability;
@@ -50,7 +50,7 @@ class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHour
         return $this->status;
     }
 
-    public function getBookingAvailability(): BookingAvailability
+    public function getBookingAvailability(): BookingAvailabilityType
     {
         return $this->bookingAvailability;
     }
