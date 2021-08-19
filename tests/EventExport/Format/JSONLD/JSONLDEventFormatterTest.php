@@ -98,4 +98,24 @@ class JSONLDEventFormatterTest extends TestCase
             $event
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_export_booking_availability(): void
+    {
+        $includedProperties = [
+            'id',
+            'bookingAvailability',
+        ];
+        $eventWithTerms = $this->getJSONEventFromFile('event_with_booking_availability.json');
+        $formatter = new JSONLDEventFormatter($includedProperties);
+
+        $event = $formatter->formatEvent($eventWithTerms);
+
+        $this->assertEquals(
+            '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","bookingAvailability":{"type":"Unavailable"}}',
+            $event
+        );
+    }
 }
