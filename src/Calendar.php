@@ -23,40 +23,19 @@ use InvalidArgumentException;
 
 final class Calendar implements CalendarInterface, JsonLdSerializableInterface, Serializable
 {
-    /**
-     * @var CalendarType
-     */
-    private $type;
+    private CalendarType $type;
 
-    /**
-     * @var DateTimeInterface
-     */
-    private $startDate;
+    private ?DateTimeInterface $startDate;
 
-    /**
-     * @var DateTimeInterface
-     */
-    private $endDate;
+    private ?DateTimeInterface $endDate;
 
-    /**
-     * @var Timestamp[]
-     */
-    private $timestamps = [];
+    private array $timestamps ;
 
-    /**
-     * @var OpeningHour[]
-     */
-    private $openingHours = [];
+    private array $openingHours ;
 
-    /**
-     * @var Status
-     */
-    private $status;
+    private Status $status;
 
-    /**
-     * @var BookingAvailability
-     */
-    private $bookingAvailability;
+    private BookingAvailability $bookingAvailability;
 
     /**
      * @param Timestamp[] $timestamps
@@ -396,6 +375,9 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
         $calendar->status = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
+        $calendar->bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
+            $udb3Calendar->getBookingAvailability()
+        );
         return $calendar;
     }
 

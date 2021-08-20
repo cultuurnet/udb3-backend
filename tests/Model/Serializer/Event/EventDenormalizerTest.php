@@ -11,6 +11,8 @@ use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -29,7 +31,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability as ContactBookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -340,8 +342,9 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new Status(
                         StatusType::Available()
-                    )
-                )
+                    ),
+                    new BookingAvailability(BookingAvailabilityType::Available())
+                ),
             ),
             PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
@@ -416,7 +419,8 @@ class EventDenormalizerTest extends TestCase
                             new StatusReason('Nederlandse reden')
                         ))
                             ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
-                    )
+                    ),
+                    new BookingAvailability(BookingAvailabilityType::Available())
                 )
             ),
             PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
@@ -473,7 +477,8 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new Status(
                         StatusType::Available()
-                    )
+                    ),
+                    new BookingAvailability(BookingAvailabilityType::Available())
                 )
             ),
             PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
@@ -548,7 +553,8 @@ class EventDenormalizerTest extends TestCase
                         ),
                         new Status(
                             StatusType::Available()
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     ),
                     new SubEvent(
                         new DateRange(
@@ -557,7 +563,8 @@ class EventDenormalizerTest extends TestCase
                         ),
                         new Status(
                             StatusType::Available()
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     ),
                     new SubEvent(
                         new DateRange(
@@ -566,7 +573,8 @@ class EventDenormalizerTest extends TestCase
                         ),
                         new Status(
                             StatusType::Available()
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     )
                 )
             ),
@@ -671,7 +679,8 @@ class EventDenormalizerTest extends TestCase
                                 new StatusReason('Nederlandse reden')
                             ))
                                 ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     ),
                     new SubEvent(
                         new DateRange(
@@ -680,7 +689,8 @@ class EventDenormalizerTest extends TestCase
                         ),
                         new Status(
                             StatusType::Available()
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     ),
                     new SubEvent(
                         new DateRange(
@@ -689,7 +699,8 @@ class EventDenormalizerTest extends TestCase
                         ),
                         new Status(
                             StatusType::TemporarilyUnavailable()
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     ),
                     new SubEvent(
                         new DateRange(
@@ -706,7 +717,92 @@ class EventDenormalizerTest extends TestCase
                                     new Language('fr'),
                                     new StatusReason('Franse reden zonder status type')
                                 )
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
+                    )
+                )
+            ),
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_denormalize_booking_availability(): void
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-01-01T13:00:00+01:00',
+            'endDate' => '2018-01-10T17:00:00+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-01T13:00:00+01:00',
+                    'endDate' => '2018-01-01T17:00:00+01:00',
+                    'bookingAvailability' => [
+                        'type' => 'Unavailable',
+                    ],
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-03T13:00:00+01:00',
+                    'endDate' => '2018-01-03T17:00:00+01:00',
+                    'bookingAvailability' => [
+                        'type' => 'Unavailable',
+                    ],
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ],
+            ],
+        ];
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new MultipleSubEventsCalendar(
+                new SubEvents(
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
+                        new Status(StatusType::Available()),
+                        new BookingAvailability(BookingAvailabilityType::Unavailable())
+                    ),
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                        ),
+                        new Status(StatusType::Available()),
+                        new BookingAvailability(BookingAvailabilityType::Unavailable())
                     )
                 )
             ),
@@ -775,7 +871,8 @@ class EventDenormalizerTest extends TestCase
                             new Language('nl'),
                             new StatusReason('Nederlands')
                         ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
-                    )
+                    ),
+                    new BookingAvailability(BookingAvailabilityType::Available())
                 )
             ))->withStatus(
                 new Status(
@@ -858,7 +955,8 @@ class EventDenormalizerTest extends TestCase
                             new Language('nl'),
                             new StatusReason('Nederlands')
                         ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
-                    )
+                    ),
+                    new BookingAvailability(BookingAvailabilityType::Available())
                 )
             ))->withStatus(
                 new Status(
@@ -955,7 +1053,8 @@ class EventDenormalizerTest extends TestCase
                                 new StatusReason('Nederlandse reden')
                             ))
                                 ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     ),
                     new SubEvent(
                         new DateRange(
@@ -968,7 +1067,8 @@ class EventDenormalizerTest extends TestCase
                                 new Language('nl'),
                                 new StatusReason('Nederlands')
                             ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
-                        )
+                        ),
+                        new BookingAvailability(BookingAvailabilityType::Available())
                     )
                 )
             ))->withStatus(
@@ -1502,7 +1602,7 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new TelephoneNumber('02 551 18 70'),
                     new EmailAddress('info@publiq.be'),
-                    new BookingAvailability(
+                    new ContactBookingAvailability(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-10-01T00:00:00+01:00')
                     )

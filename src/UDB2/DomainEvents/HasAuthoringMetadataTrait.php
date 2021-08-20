@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
+use DateTimeInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 trait HasAuthoringMetadataTrait
@@ -50,7 +51,7 @@ trait HasAuthoringMetadataTrait
     public function serialize()
     {
         return [
-            'time' => $this->getTime()->format(\DateTime::ISO8601),
+            'time' => $this->getTime()->format(DateTimeInterface::ISO8601),
             'author' => (string) $this->getAuthor(),
         ];
     }

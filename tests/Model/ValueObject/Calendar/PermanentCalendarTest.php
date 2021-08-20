@@ -18,7 +18,7 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_calendar_type()
+    public function it_should_return_a_calendar_type(): void
     {
         $calendar = new PermanentCalendar(new OpeningHours());
         $this->assertEquals(CalendarType::permanent(), $calendar->getType());
@@ -27,7 +27,7 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_default_available_status()
+    public function it_should_return_a_default_available_status(): void
     {
         $calendar = new PermanentCalendar(new OpeningHours());
 
@@ -37,7 +37,20 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_setting_an_explicit_status()
+    public function it_has_a_default_booking_availability(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Available()),
+            $calendar->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_status(): void
     {
         $calendar = new PermanentCalendar(new OpeningHours());
         $calendar = $calendar->withStatus(new Status(StatusType::Unavailable()));
@@ -48,7 +61,23 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_opening_hours()
+    public function it_allows_setting_an_explicit_booking_availability(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+        $calendar = $calendar->withBookingAvailability(
+            new BookingAvailability(BookingAvailabilityType::Unavailable())
+        );
+
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Unavailable()),
+            $calendar->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_injected_opening_hours(): void
     {
         $days = new Days(
             Day::monday(),
@@ -63,7 +92,7 @@ class PermanentCalendarTest extends TestCase
                     new Hour(9),
                     new Minute(0)
                 ),
-                $closingTime = new Time(
+                new Time(
                     new Hour(12),
                     new Minute(0)
                 )
@@ -74,7 +103,7 @@ class PermanentCalendarTest extends TestCase
                     new Hour(13),
                     new Minute(0)
                 ),
-                $closingTime = new Time(
+                new Time(
                     new Hour(17),
                     new Minute(0)
                 )

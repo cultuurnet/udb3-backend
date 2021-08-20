@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\OpeningHours\OpeningHoursValidator;
+use DateTimeInterface;
 use Respect\Validation\Rules\AllOf;
 use Respect\Validation\Rules\AlwaysValid;
 use Respect\Validation\Rules\Date;
@@ -22,12 +23,12 @@ class PeriodicCalendarValidator extends Validator
             new When(
                 new Key('calendarType', new Equals('periodic'), true),
                 (new AllOf(
-                    new Key('startDate', new Date(\DateTime::ATOM), true),
-                    new Key('endDate', new Date(\DateTime::ATOM), true),
+                    new Key('startDate', new Date(DateTimeInterface::ATOM), true),
+                    new Key('endDate', new Date(DateTimeInterface::ATOM), true),
                     new When(
                         new AllOf(
-                            new Key('startDate', new Date(\DateTime::ATOM)),
-                            new Key('endDate', new Date(\DateTime::ATOM))
+                            new Key('startDate', new Date(DateTimeInterface::ATOM)),
+                            new Key('endDate', new Date(DateTimeInterface::ATOM))
                         ),
                         new KeyValue('endDate', 'min', 'startDate'),
                         new AlwaysValid()

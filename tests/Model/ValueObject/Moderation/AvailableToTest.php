@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -36,7 +38,8 @@ class AvailableToTest extends TestCase
         $singleDateRangeCalendar = new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange($startDate, $endDate),
-                new Status(StatusType::Available())
+                new Status(StatusType::Available()),
+                new BookingAvailability(BookingAvailabilityType::Available())
             )
         );
 

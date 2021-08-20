@@ -11,6 +11,8 @@ use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType as Udb3ModelBookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -46,10 +48,7 @@ class CalendarTest extends TestCase
     public const TIMESTAMP_2_START_DATE = '2016-03-13T10:00:00+01:00';
     public const TIMESTAMP_2_END_DATE = '2016-03-13T12:00:00+01:00';
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function setUp(): void
     {
@@ -1484,23 +1483,29 @@ class CalendarTest extends TestCase
                 \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
                 \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
             ),
-            new Udb3ModelStatus(Udb3ModelStatusType::Available())
+            new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
+            new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
         );
 
-        $udb3ModelCalendar = new SingleSubEventCalendar($subEvent);
+        $udb3ModelCalendar = (new SingleSubEventCalendar($subEvent))
+            ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()))
+            ->withBookingAvailability(new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable()));
 
-        $expected = new Calendar(
+        $expected = (new Calendar(
             CalendarType::SINGLE(),
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
             [
                 new Timestamp(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
+                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+                    new Status(StatusType::unavailable(), []),
+                    BookingAvailability::unavailable()
                 ),
             ],
             []
-        );
+        ))->withStatus(new Status(StatusType::unavailable(), []))
+            ->withBookingAvailability(BookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
 
@@ -1518,35 +1523,44 @@ class CalendarTest extends TestCase
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
                 ),
-                new Udb3ModelStatus(Udb3ModelStatusType::Available())
+                new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
+                new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
             ),
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-09T10:00:00+01:00'),
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00')
                 ),
-                new Udb3ModelStatus(Udb3ModelStatusType::Available())
+                new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()),
+                new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable())
             )
         );
 
-        $udb3ModelCalendar = new MultipleSubEventsCalendar($subEvents);
+        $udb3ModelCalendar = (new MultipleSubEventsCalendar($subEvents))
+            ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::Unavailable()))
+            ->withBookingAvailability(new Udb3ModelBookingAvailability(Udb3ModelBookingAvailabilityType::Unavailable()));
 
-        $expected = new Calendar(
+        $expected = (new Calendar(
             CalendarType::MULTIPLE(),
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00'),
             [
                 new Timestamp(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00')
+                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+                    new Status(StatusType::unavailable(), []),
+                    BookingAvailability::unavailable()
                 ),
                 new Timestamp(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-09T10:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00')
+                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00'),
+                    new Status(StatusType::unavailable(), []),
+                    BookingAvailability::unavailable()
                 ),
             ],
             []
-        );
+        ))->withStatus(new Status(StatusType::unavailable(), []))
+            ->withBookingAvailability(BookingAvailability::unavailable());
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
 
@@ -1732,22 +1746,6 @@ class CalendarTest extends TestCase
                 ),
             ]
         );
-
-        $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_takes_into_account_udb3_model_calendar_status(): void
-    {
-        $udb3ModelCalendar = (new PermanentCalendar(new OpeningHours()))
-            ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::TemporarilyUnavailable()));
-
-        $expected = (new Calendar(CalendarType::PERMANENT()))
-            ->withStatus(new Status(StatusType::temporarilyUnavailable(), []));
 
         $actual = Calendar::fromUdb3ModelCalendar($udb3ModelCalendar);
 

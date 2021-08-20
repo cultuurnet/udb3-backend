@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
+use DateTimeInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -20,16 +21,13 @@ class TimestampTest extends TestCase
     public const START_DATE = '2016-01-03T01:01:01+01:00';
     public const END_DATE = '2016-01-07T01:01:01+01:00';
 
-    /**
-     * @var Timestamp
-     */
-    private $timestamp;
+    private Timestamp $timestamp;
 
     public function setUp(): void
     {
         $this->timestamp = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE)
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE)
         );
     }
 
@@ -39,12 +37,12 @@ class TimestampTest extends TestCase
     public function it_stores_a_start_and_end_date(): void
     {
         $this->assertEquals(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
             $this->timestamp->getStartDate()
         );
 
         $this->assertEquals(
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
             $this->timestamp->getEndDate()
         );
     }
@@ -60,8 +58,8 @@ class TimestampTest extends TestCase
         $this->expectExceptionMessage('End date can not be earlier than start date.');
 
         new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, $pastDate)
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, $pastDate)
         );
     }
 
@@ -71,8 +69,8 @@ class TimestampTest extends TestCase
     public function it_will_add_the_default_event_status(): void
     {
         $timestamp = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE)
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE)
         );
 
         $this->assertEquals(
@@ -87,8 +85,8 @@ class TimestampTest extends TestCase
     public function it_has_a_default_booking_availability(): void
     {
         $timestamp = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE)
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE)
         );
 
         $this->assertEquals(BookingAvailability::available(), $timestamp->getBookingAvailability());
@@ -100,8 +98,8 @@ class TimestampTest extends TestCase
     public function it_can_serialize_and_deserialize(): void
     {
         $timestamp = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
             new Status(
                 StatusType::unavailable(),
                 [
@@ -135,8 +133,8 @@ class TimestampTest extends TestCase
     public function itCanChangeStatus(): void
     {
         $timestamp = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
             new Status(StatusType::available(), [])
         );
 
@@ -148,8 +146,8 @@ class TimestampTest extends TestCase
         );
 
         $expected = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
             $newStatus
         );
 
@@ -165,16 +163,16 @@ class TimestampTest extends TestCase
     public function it_allows_changing_the_booking_availability(): void
     {
         $timestamp = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE)
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE)
         );
 
         $updatedTimestamp = $timestamp->withBookingAvailability(BookingAvailability::unavailable());
 
         $this->assertEquals(
             new Timestamp(
-                DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
-                DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+                DateTime::createFromFormat(DateTimeInterface::ATOM, self::START_DATE),
+                DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
                 new Status(StatusType::available(), []),
                 BookingAvailability::unavailable()
             ),
@@ -188,8 +186,8 @@ class TimestampTest extends TestCase
     public function it_will_set_end_date_to_start_date_when_deserializing_incorrect_events(): void
     {
         $expected = new Timestamp(
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
-            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
+            DateTime::createFromFormat(DateTimeInterface::ATOM, self::END_DATE),
             new Status(StatusType::available(), [])
         );
 

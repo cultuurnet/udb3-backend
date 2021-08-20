@@ -55,6 +55,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SluggerInterface;
+use DateTimeInterface;
 use ValueObjects\Identity\UUID;
 
 abstract class OfferLDProjector implements OrganizerServiceInterface
@@ -823,7 +824,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd->workflowStatus = WorkflowStatus::READY_FOR_VALIDATION()->getName();
 
         $publicationDate = $published->getPublicationDate();
-        $offerLd->availableFrom = $publicationDate->format(\DateTime::ATOM);
+        $offerLd->availableFrom = $publicationDate->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
     }
