@@ -222,8 +222,8 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             'bookingAvailability' => $this->bookingAvailability->serialize(),
         ];
 
-        empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTime::ATOM);
-        empty($this->endDate) ?: $calendar['endDate'] = $this->endDate->format(DateTime::ATOM);
+        empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTimeInterface::ATOM);
+        empty($this->endDate) ?: $calendar['endDate'] = $this->endDate->format(DateTimeInterface::ATOM);
         empty($serializedTimestamps) ?: $calendar['timestamps'] = $serializedTimestamps;
         empty($serializedOpeningHours) ?: $calendar['openingHours'] = $serializedOpeningHours;
 
@@ -285,7 +285,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      */
     private static function deserializeDateTime(string $dateTimeData): DateTime
     {
-        $dateTime = DateTime::createFromFormat(DateTime::ATOM, $dateTimeData);
+        $dateTime = DateTime::createFromFormat(DateTimeInterface::ATOM, $dateTimeData);
 
         if ($dateTime === false) {
             $dateTime = DateTime::createFromFormat('Y-m-d\TH:i:s', $dateTimeData, new DateTimeZone('Europe/Brussels'));
@@ -307,10 +307,10 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
         if ($startDate !== null) {
-            $jsonLd['startDate'] = $startDate->format(DateTime::ATOM);
+            $jsonLd['startDate'] = $startDate->format(DateTimeInterface::ATOM);
         }
         if ($endDate !== null) {
-            $jsonLd['endDate'] = $endDate->format(DateTime::ATOM);
+            $jsonLd['endDate'] = $endDate->format(DateTimeInterface::ATOM);
         }
 
         $jsonLd['status'] = $this->determineCorrectTopStatusForProjection()->serialize();

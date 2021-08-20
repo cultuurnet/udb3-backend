@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Timestamp;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
@@ -83,8 +84,8 @@ class CalendarJSONDeserializerTest extends TestCase
 
         $expectedCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00'),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00'),
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00'),
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00'),
             [],
             $openingHours
         );
@@ -111,8 +112,8 @@ class CalendarJSONDeserializerTest extends TestCase
 
         $expectedCalendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00'),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00')
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00'),
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00')
         );
 
         $expectedCalendar = $expectedCalendar->withStatus(
@@ -151,8 +152,8 @@ class CalendarJSONDeserializerTest extends TestCase
             null,
             [
                 (new TimeStamp(
-                    \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00'),
-                    \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00')
+                    \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00'),
+                    \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00')
                 ))->withBookingAvailability(BookingAvailability::unavailable()),
             ]
         ))->withBookingAvailability(BookingAvailability::unavailable());
@@ -177,11 +178,11 @@ class CalendarJSONDeserializerTest extends TestCase
             $this->calendarDataValidator
         );
 
-        $startDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-01T16:00:00+01:00');
+        $startDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
+        $endDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-01T16:00:00+01:00');
 
-        $startDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
+        $startDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00');
+        $endDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
 
         $timestamps = [
             (new Timestamp(
@@ -247,11 +248,11 @@ class CalendarJSONDeserializerTest extends TestCase
             $this->calendarDataValidator
         );
 
-        $startDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-01T16:00:00+01:00');
+        $startDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
+        $endDate1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-01T16:00:00+01:00');
 
-        $startDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
+        $startDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00');
+        $endDate2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
 
         $timestamps = [
             (new Timestamp(

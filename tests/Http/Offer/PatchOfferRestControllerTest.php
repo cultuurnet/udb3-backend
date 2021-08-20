@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate as FlagAsInapp
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject as RejectPlace;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\OfferType;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,7 +119,7 @@ class PatchOfferRestControllerTest extends TestCase
                 'expectedCommand' => new Publish(
                     $this->itemId,
                     \DateTime::createFromFormat(
-                        \DateTime::ISO8601,
+                        DateTimeInterface::ATOM,
                         '2030-02-01T12:00:00+00:00'
                     )
                 ),

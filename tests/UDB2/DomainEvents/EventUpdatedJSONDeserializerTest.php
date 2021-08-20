@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
-use DateTime;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
@@ -132,7 +132,7 @@ class EventUpdatedJSONDeserializerTest extends TestCase
 
         $this->assertEquals(
             \DateTimeImmutable::createFromFormat(
-                DateTime::ISO8601,
+                DateTimeInterface::ATOM,
                 '2015-02-20T20:39:09+0100'
             ),
             $eventUpdated->getTime()

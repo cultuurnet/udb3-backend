@@ -47,6 +47,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use ValueObjects\Geography\Country;
@@ -755,8 +756,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2015-02-26T13:25:21+01:00')
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
         );
         $theme = new Theme('123', 'theme label');
         $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $this->address, $calendar, $theme);

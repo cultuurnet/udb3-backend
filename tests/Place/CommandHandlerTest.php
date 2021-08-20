@@ -41,6 +41,7 @@ use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use DateTimeInterface;
 use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 
@@ -268,8 +269,8 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
         );
 
         $this->scenario

@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
+use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -496,7 +497,7 @@ class ImmutableOfferTest extends TestCase
     public function it_should_return_a_copy_with_an_updated_available_from()
     {
         $availableFrom = \DateTimeImmutable::createFromFormat(
-            \DateTime::ATOM,
+            DateTimeInterface::ATOM,
             '2018-01-01T00:00:00+00:00'
         );
 
@@ -514,7 +515,7 @@ class ImmutableOfferTest extends TestCase
     public function it_should_return_a_copy_without_available_from()
     {
         $availableFrom = \DateTimeImmutable::createFromFormat(
-            \DateTime::ATOM,
+            DateTimeInterface::ATOM,
             '2018-01-01T00:00:00+00:00'
         );
 
