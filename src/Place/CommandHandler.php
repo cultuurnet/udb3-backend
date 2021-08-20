@@ -100,14 +100,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    protected function getUpdateCalendarClassName()
-    {
-        return UpdateCalendar::class;
-    }
-
-    /**
      * @return string
      */
     protected function getUpdateTypicalAgeRangeClassName()

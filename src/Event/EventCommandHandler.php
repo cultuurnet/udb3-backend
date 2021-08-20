@@ -160,14 +160,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     }
 
     /**
-     * @inheritdoc
-     */
-    protected function getUpdateCalendarClassName()
-    {
-        return UpdateCalendar::class;
-    }
-
-    /**
      * @return string
      */
     protected function getUpdateTypicalAgeRangeClassName()
