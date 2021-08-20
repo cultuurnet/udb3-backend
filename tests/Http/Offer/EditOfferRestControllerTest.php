@@ -17,6 +17,7 @@ use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
+use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -272,21 +273,18 @@ class EditOfferRestControllerTest extends TestCase
             CalendarType::PERMANENT()
         );
 
+        $expectedCommand = new UpdateCalendar($eventId, $calendar);
+        $this->commandBus->record();
+
         $calendarData = '{"calendarType": "permanent"}';
 
         $request = new Request([], [], [], [], [], [], $calendarData);
-
-        $this->editService->expects($this->once())
-            ->method('updateCalendar')
-            ->with(
-                $eventId,
-                $calendar
-            );
 
         $response = $this->controller
             ->updateCalendar($request, $eventId);
 
         $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
     }
 
     /**

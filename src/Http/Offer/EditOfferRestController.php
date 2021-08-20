@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
+use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
@@ -173,10 +174,7 @@ class EditOfferRestController
             new StringLiteral($request->getContent())
         );
 
-        $this->editService->updateCalendar(
-            $cdbid,
-            $calendar
-        );
+        $this->commandBus->dispatch(new UpdateCalendar($cdbid, $calendar));
 
         return new NoContent();
     }
