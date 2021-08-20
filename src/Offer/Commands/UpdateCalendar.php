@@ -8,25 +8,16 @@ use CultuurNet\UDB3\Calendar;
 
 final class UpdateCalendar extends AbstractCommand
 {
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Calendar $calendar)
+    public function __construct(string $itemId, Calendar $calendar)
     {
         parent::__construct($itemId);
 
         $this->calendar = $calendar;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
+    public function getCalendar(): Calendar
     {
         return $this->calendar;
     }
