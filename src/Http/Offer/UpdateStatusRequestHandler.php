@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\Request\RequestHandler;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
-use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Language;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-class UpdateStatusRequestHandler
+class UpdateStatusRequestHandler implements RequestHandler
 {
     /**
      * @var CommandBus
@@ -32,9 +34,12 @@ class UpdateStatusRequestHandler
         $this->validator = $validator;
     }
 
-    public function handle(Request $request, string $offerId): Response
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $data = json_decode($request->getContent(), true);
+        $routeParameters = new RouteParameters($request);
+        $offerId = $routeParameters->get('offerId');
+
+        $data = json_decode((string) $request->getBody(), true);
 
         $this->validator->validate($data);
 
@@ -45,7 +50,7 @@ class UpdateStatusRequestHandler
 
         $this->commandBus->dispatch(new UpdateStatus($offerId, $newStatus));
 
-        return new NoContent();
+        return new NoContentResponse();
     }
 
     /**
