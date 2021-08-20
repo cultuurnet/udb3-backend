@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -62,7 +63,14 @@ class UpdateStatusRequestHandler implements RequestHandler
 
         $reason = [];
         foreach ($data->reason as $language => $translatedReason) {
-            $reason[] = new StatusReason(new Language($language), $translatedReason);
+            try {
+                $language = new Language($language);
+            } catch (InvalidArgumentException $e) {
+                // Skip unsupported language codes to avoid any extra properties that are passed but not supported from
+                // resulting in an error response.
+                continue;
+            }
+            $reason[] = new StatusReason($language, $translatedReason);
         }
 
         return $reason;
