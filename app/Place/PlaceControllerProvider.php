@@ -72,8 +72,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
         $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
-        $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class . ':handle');
-        $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
         return $controllers;
     }
