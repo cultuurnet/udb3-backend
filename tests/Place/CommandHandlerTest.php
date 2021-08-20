@@ -39,7 +39,6 @@ use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
-use DateTimeInterface;
 use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 
