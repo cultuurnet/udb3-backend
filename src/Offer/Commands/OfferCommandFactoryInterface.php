@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
@@ -39,8 +38,6 @@ interface OfferCommandFactoryInterface
     public function createUpdateTitleCommand(string $id, Language $language, StringLiteral $title): AbstractUpdateTitle;
 
     public function createUpdateDescriptionCommand(string $id, Language $language, Description $description): AbstractUpdateDescription;
-
-    public function createUpdateCalendarCommand(string $id, Calendar $calendar): UpdateCalendar;
 
     public function createUpdateTypicalAgeRangeCommand(string $id, AgeRange $ageRange): AbstractUpdateTypicalAgeRange;
 
