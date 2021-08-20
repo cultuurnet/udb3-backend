@@ -38,10 +38,7 @@ class OfferControllerProvider implements ControllerProviderInterface
     {
         $app[UpdateStatusRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new UpdateStatusRequestHandler(
-                    $app['event_command_bus'],
-                    new UpdateStatusValidator()
-                );
+                return new UpdateStatusRequestHandler($app['event_command_bus']);
             }
         );
 
