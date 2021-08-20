@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Security\AuthorizableCommand;
 
 abstract class AbstractCommand implements AuthorizableCommand
 {
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
     public function __construct(string $itemId)
     {
