@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Calendar;
 
-abstract class AbstractUpdateCalendar extends AbstractCommand
+class UpdateCalendar extends AbstractCommand
 {
     /**
      * @var Calendar
