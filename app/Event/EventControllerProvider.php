@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

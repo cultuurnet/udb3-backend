@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
-use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
