@@ -16,13 +16,11 @@ use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\DeleteEvent;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
-use CultuurNet\UDB3\Event\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
-use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
@@ -210,36 +208,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new MajorInfoUpdated($id, $title, $eventType, $location, $calendar),
                     new AudienceUpdated($id, new Audience(AudienceType::EDUCATION())),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_the_calendar_of_an_event()
-    {
-        $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
-
-        $calendar = new Calendar(
-            CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
-        );
-
-        $this->scenario
-            ->withAggregateId($eventId)
-            ->given(
-                [
-                    $this->factorOfferCreated($eventId),
-                ]
-            )
-            ->when(
-                new UpdateCalendar($eventId, $calendar)
-            )
-            ->then(
-                [
-                    new CalendarUpdated($eventId, $calendar),
                 ]
             );
     }
