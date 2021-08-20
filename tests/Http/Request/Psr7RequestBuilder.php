@@ -25,6 +25,8 @@ final class Psr7RequestBuilder
 
     private ?StreamInterface $body = null;
 
+    private array $routeParameters = [];
+
     public function withUriFromString(string $uri): self
     {
         $c = clone $this;
@@ -49,16 +51,25 @@ final class Psr7RequestBuilder
         return $c;
     }
 
+    public function withRouteParameter(string $parameterName, string $parameterValue): self
+    {
+        $c = clone $this;
+        $c->routeParameters[$parameterName] = $parameterValue;
+        return $c;
+    }
+
     public function build(string $method): ServerRequestInterface
     {
-        return new Request(
-            $method,
-            $this->uri ?? self::getUriFactory()->createUri(),
-            $this->headers ?? new Headers(),
-            [],
-            [],
-            $this->body ?? self::getStreamFactory()->createStream()
-        );
+        return (
+            new Request(
+                $method,
+                $this->uri ?? self::getUriFactory()->createUri(),
+                $this->headers ?? new Headers(),
+                [],
+                [],
+                $this->body ?? self::getStreamFactory()->createStream()
+            )
+        )->withAttribute('_route_params', $this->routeParameters);
     }
 
     private static function getUriFactory(): UriFactory
