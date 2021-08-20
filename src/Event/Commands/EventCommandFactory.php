@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTheme;
@@ -101,7 +101,7 @@ class EventCommandFactory implements OfferCommandFactoryInterface
         return new UpdateDescription($id, $language, $description);
     }
 
-    public function createUpdateCalendarCommand(string $id, Calendar $calendar): AbstractUpdateCalendar
+    public function createUpdateCalendarCommand(string $id, Calendar $calendar): UpdateCalendar
     {
         return new UpdateCalendar($id, $calendar);
     }

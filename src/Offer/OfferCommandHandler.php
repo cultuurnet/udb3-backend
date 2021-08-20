@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
@@ -330,7 +330,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     }
 
 
-    public function handleUpdateCalendar(AbstractUpdateCalendar $updateCalendar)
+    public function handleUpdateCalendar(UpdateCalendar $updateCalendar)
     {
         $offer = $this->load($updateCalendar->getItemId());
 

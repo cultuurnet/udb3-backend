@@ -40,7 +40,7 @@ interface OfferCommandFactoryInterface
 
     public function createUpdateDescriptionCommand(string $id, Language $language, Description $description): AbstractUpdateDescription;
 
-    public function createUpdateCalendarCommand(string $id, Calendar $calendar): AbstractUpdateCalendar;
+    public function createUpdateCalendarCommand(string $id, Calendar $calendar): UpdateCalendar;
 
     public function createUpdateTypicalAgeRangeCommand(string $id, AgeRange $ageRange): AbstractUpdateTypicalAgeRange;
 
