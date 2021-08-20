@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
+use CultuurNet\UDB3\Http\Request\RequestHandler;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -21,7 +23,7 @@ use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class UpdateSubEventsRequestHandler
+class UpdateSubEventsRequestHandler implements RequestHandler
 {
     private CommandBus $commandBus;
 
@@ -36,8 +38,11 @@ class UpdateSubEventsRequestHandler
         );
     }
 
-    public function handle(ServerRequestInterface $request, string $eventId): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $routeParameters = new RouteParameters($request);
+        $eventId = $routeParameters->get('eventId');
+
         $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();
 
         $updateSubEvents = [];

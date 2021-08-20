@@ -42,8 +42,10 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
     public function it_does_not_throw_when_given_valid_data($data, UpdateSubEvents $expectedCommand): void
     {
         $this->requestHandler->handle(
-            (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT'),
-            self::EVENT_ID
+            (new Psr7RequestBuilder())
+                ->withBodyFromString(json_encode($data))
+                ->withRouteParameter('eventId', self::EVENT_ID)
+                ->build('PUT')
         );
         $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
     }
@@ -188,8 +190,10 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->requestHandler->handle(
-                (new Psr7RequestBuilder())->withBodyFromString(json_encode($data))->build('PUT'),
-                self::EVENT_ID
+                (new Psr7RequestBuilder())
+                    ->withBodyFromString(json_encode($data))
+                    ->withRouteParameter('eventId', self::EVENT_ID)
+                    ->build('PUT')
             )
         );
 
