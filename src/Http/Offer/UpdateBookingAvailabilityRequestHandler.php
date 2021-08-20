@@ -32,7 +32,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
         $this->commandBus = $commandBus;
 
         $this->updateBookingAvailabilityParser = RequestBodyParserFactory::createBaseParser(
-            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY_PUT)
+            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY)
         );
     }
 
