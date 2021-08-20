@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
@@ -210,7 +211,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
      */
     public function it_can_create_a_new_place_with_a_fixed_publication_date()
     {
-        $publicationDate = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2016-08-01T00:00:00+0200');
+        $publicationDate = \DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, '2016-08-01T00:00:00+0200');
 
         $street = new Street('Kerkstraat 69');
         $locality = new Locality('Leuven');
@@ -267,8 +268,8 @@ class DefaultPlaceEditingServiceTest extends TestCase
 
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
         );
 
         $updateCalendar = new UpdateCalendar($placeId, $calendar);

@@ -75,6 +75,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use ValueObjects\Identity\UUID;
@@ -777,7 +778,7 @@ class HistoryProjectorTest extends TestCase
         $event = new Published(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             DateTimeImmutable::createFromFormat(
-                \DateTime::ATOM,
+                DateTimeInterface::ATOM,
                 '2015-04-30T02:00:00+02:00'
             )
         );

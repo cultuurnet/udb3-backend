@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Place\Commands;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class UpdateCalendarTest extends TestCase
@@ -32,8 +33,8 @@ class UpdateCalendarTest extends TestCase
 
         $this->calendar = new Calendar(
             CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
+            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
         );
 
         $this->updateCalendar = new UpdateCalendar(

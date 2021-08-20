@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class EventCreatedTest extends TestCase
@@ -245,7 +246,7 @@ class EventCreatedTest extends TestCase
                     ),
                     null,
                     DateTimeImmutable::createFromFormat(
-                        \DateTime::ATOM,
+                        DateTimeInterface::ATOM,
                         '2016-08-01T00:00:00+02:00'
                     )
                 ),

@@ -51,7 +51,7 @@ trait HasAuthoringMetadataTrait
     public function serialize()
     {
         return [
-            'time' => $this->getTime()->format(DateTimeInterface::ISO8601),
+            'time' => $this->getTime()->format(DateTimeInterface::ATOM),
             'author' => (string) $this->getAuthor(),
         ];
     }

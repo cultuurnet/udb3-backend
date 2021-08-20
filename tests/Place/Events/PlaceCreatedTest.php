@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 
@@ -287,7 +288,7 @@ class PlaceCreatedTest extends TestCase
                     ),
                     null,
                     \DateTimeImmutable::createFromFormat(
-                        \DateTime::ATOM,
+                        DateTimeInterface::ATOM,
                         '2016-08-01T00:00:00+02:00'
                     )
                 ),

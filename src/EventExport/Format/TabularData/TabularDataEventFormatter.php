@@ -131,7 +131,7 @@ class TabularDataEventFormatter
         // Try to create from various formats to maintain backwards
         // compatibility with external systems with older json-ld
         // projections (eg. OMD).
-        $formats = [DateTimeInterface::ATOM, DateTimeInterface::ISO8601, 'Y-m-d\TH:i:s'];
+        $formats = [DateTimeInterface::ATOM, DateTimeInterface::ATOM, 'Y-m-d\TH:i:s'];
 
         do {
             $datetime = \DateTime::createFromFormat(current($formats), $date, $timezoneUtc);
