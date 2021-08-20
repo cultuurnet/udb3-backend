@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events\Moderation;
 
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class PublishedTest extends TestCase
@@ -42,7 +43,7 @@ class PublishedTest extends TestCase
     {
         $publishedAsArray = [
             'item_id' => $this->itemId,
-            'publication_date' => $this->publicationDate->format(\DateTime::ATOM),
+            'publication_date' => $this->publicationDate->format(DateTimeInterface::ATOM),
         ];
 
         $this->assertEquals(

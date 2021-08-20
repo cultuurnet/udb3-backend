@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use DateTimeInterface;
 use Exception;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Person\Age;

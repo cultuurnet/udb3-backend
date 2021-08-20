@@ -73,7 +73,7 @@ class ActorUpdatedTest extends TestCase
         $eventCreated = $this->createActorUpdated($time);
         $expectedData = [
             'actorId' => '123',
-            'time' => '2016-04-15T16:06:11+0200',
+            'time' => '2016-04-15T16:06:11+02:00',
             'author' => 'me@example.com',
             'url' => 'http://foo.bar/event/foo',
         ];

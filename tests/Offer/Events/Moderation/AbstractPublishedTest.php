@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events\Moderation;
 
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -77,7 +78,7 @@ class AbstractPublishedTest extends TestCase
     {
         $expectedArray = [
             'item_id' => $this->itemId,
-            'publication_date' => $this->publicationDate->format(\DateTime::ATOM),
+            'publication_date' => $this->publicationDate->format(DateTimeInterface::ATOM),
         ];
 
         $actualArray = $this->abstractPublished->serialize();

@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Timestamp;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
@@ -43,7 +44,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_start_date()
     {
-        $startDate = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
+        $startDate = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
 
         $this->assertEquals(
             $startDate,
@@ -73,7 +74,7 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_end_date()
     {
-        $endDate = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
+        $endDate = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
 
         $this->assertEquals(
             $endDate,
@@ -133,11 +134,11 @@ class CalendarJSONParserTest extends TestCase
      */
     public function it_can_get_the_timestamps()
     {
-        $startDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-01T16:00:00+01:00');
+        $startDatePeriod1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T09:00:00+01:00');
+        $endDatePeriod1 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-01T16:00:00+01:00');
 
-        $startDatePeriod2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDatePeriod2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
+        $startDatePeriod2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-03T09:00:00+01:00');
+        $endDatePeriod2 = \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-02-10T16:00:00+01:00');
 
         $timestamps = [
             (new Timestamp(

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
-use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ISO8601DateTimeDeserializer
@@ -13,7 +13,7 @@ class ISO8601DateTimeDeserializer
     public static function deserialize(StringLiteral $timeString): DateTimeImmutable
     {
         $time = DateTimeImmutable::createFromFormat(
-            DateTime::ISO8601,
+            DateTimeInterface::ATOM,
             $timeString->toNative()
         );
 
@@ -22,7 +22,7 @@ class ISO8601DateTimeDeserializer
             $now = new DateTimeImmutable();
             throw new \RuntimeException(
                 'invalid time provided, please use a ISO 8601 formatted date' .
-                '& time like ' . $now->format(DateTime::ISO8601)
+                '& time like ' . $now->format(DateTimeInterface::ATOM)
             );
         }
 

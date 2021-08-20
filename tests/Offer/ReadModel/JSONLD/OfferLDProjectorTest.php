@@ -55,6 +55,7 @@ use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -1030,7 +1031,7 @@ class OfferLDProjectorTest extends TestCase
         $expectedItem = (object)[
             '@id' => $itemId,
             '@type' => 'event',
-            'availableFrom' => $now->format(\DateTime::ATOM),
+            'availableFrom' => $now->format(DateTimeInterface::ATOM),
             'workflowStatus' => 'READY_FOR_VALIDATION',
             'modified' => $this->recordedOn->toString(),
         ];

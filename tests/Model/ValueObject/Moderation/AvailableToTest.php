@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class AvailableToTest extends TestCase
@@ -23,7 +24,7 @@ class AvailableToTest extends TestCase
     public function it_should_return_an_immutable_datetime_set_in_2100()
     {
         $expected = '2100-01-01T00:00:00+00:00';
-        $actual = AvailableTo::forever()->format(\DateTime::ATOM);
+        $actual = AvailableTo::forever()->format(DateTimeInterface::ATOM);
         $this->assertEquals($expected, $actual);
     }
 

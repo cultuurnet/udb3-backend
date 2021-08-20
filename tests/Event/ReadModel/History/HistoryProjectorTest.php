@@ -73,6 +73,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
@@ -288,7 +289,7 @@ class HistoryProjectorTest extends TestCase
             4,
             $metadata,
             $eventCreated,
-            DateTime::fromString($now->format(\DateTime::ATOM))
+            DateTime::fromString($now->format(DateTimeInterface::ATOM))
         );
 
         $this->historyProjector->handle($domainMessage);
@@ -329,7 +330,7 @@ class HistoryProjectorTest extends TestCase
             4,
             new Metadata(['user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6']),
             $eventCopied,
-            DateTime::fromString($now->format(\DateTime::ATOM))
+            DateTime::fromString($now->format(DateTimeInterface::ATOM))
         );
 
         $this->historyProjector->handle($domainMessage);
@@ -1273,7 +1274,7 @@ class HistoryProjectorTest extends TestCase
         $event = new Published(
             self::EVENT_ID_1,
             DateTimeImmutable::createFromFormat(
-                \DateTime::ATOM,
+                DateTimeInterface::ATOM,
                 '2015-04-30T02:00:00+02:00'
             )
         );
