@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use DateTime;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -119,7 +120,7 @@ class TimestampTest extends TestCase
                 ],
             ],
             'bookingAvailability' => [
-                'type' => BookingAvailability::unavailable()->toNative(),
+                'type' => BookingAvailabilityType::unavailable()->toNative(),
             ],
         ];
 

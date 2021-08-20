@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -39,7 +40,10 @@ final class UpdateBookingAvailabilityRequestHandler
 
         try {
             $this->commandBus->dispatch(
-                new UpdateBookingAvailability($offerId, BookingAvailability::fromNative($data->type))
+                new UpdateBookingAvailability(
+                    $offerId,
+                    new BookingAvailability(BookingAvailabilityType::fromNative($data->type))
+                )
             );
         } catch (CalendarTypeNotSupported $exception) {
             throw ApiProblem::calendarTypeNotSupported($exception->getMessage());
