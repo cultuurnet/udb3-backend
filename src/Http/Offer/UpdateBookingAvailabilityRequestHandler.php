@@ -23,15 +23,13 @@ use Psr\Http\Message\ServerRequestInterface;
 final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
 {
     private CommandBus $commandBus;
-
-    private RequestBodyParser $updateBookingAvailabilityParser;
+    private RequestBodyParser $parser;
 
     public function __construct(
         CommandBus $commandBus
     ) {
         $this->commandBus = $commandBus;
-
-        $this->updateBookingAvailabilityParser = RequestBodyParserFactory::createBaseParser(
+        $this->parser = RequestBodyParserFactory::createBaseParser(
             JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY)
         );
     }
@@ -41,7 +39,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->get('offerId');
 
-        $data = (object) $this->updateBookingAvailabilityParser->parse($request)->getParsedBody();
+        $data = (object) $this->parser->parse($request)->getParsedBody();
 
         try {
             $this->commandBus->dispatch(
