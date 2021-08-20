@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -54,7 +55,7 @@ class UpdateSubEventsRequestHandler
 
             if (isset($update->bookingAvailability)) {
                 $subEventUpdate = $subEventUpdate->withBookingAvailability(
-                    BookingAvailability::fromNative($update->bookingAvailability->type)
+                    new BookingAvailability(BookingAvailabilityType::fromNative($update->bookingAvailability->type))
                 );
             }
 

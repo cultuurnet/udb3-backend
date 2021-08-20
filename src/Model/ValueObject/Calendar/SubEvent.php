@@ -6,20 +6,17 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 final class SubEvent
 {
-    /**
-     * @var DateRange
-     */
-    private $dateRange;
+    private DateRange $dateRange;
 
-    /**
-     * @var Status
-     */
-    private $status;
+    private Status $status;
 
-    public function __construct(DateRange $dateRange, Status $status)
+    private BookingAvailability $bookingAvailability;
+
+    public function __construct(DateRange $dateRange, Status $status, BookingAvailability $bookingAvailability)
     {
         $this->dateRange = $dateRange;
         $this->status = $status;
+        $this->bookingAvailability = $bookingAvailability;
     }
 
     public function getDateRange(): DateRange
@@ -30,5 +27,10 @@ final class SubEvent
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function getBookingAvailability(): BookingAvailability
+    {
+        return $this->bookingAvailability;
     }
 }

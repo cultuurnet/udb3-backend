@@ -5,68 +5,54 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ValueObjects;
 
 use Broadway\Serializer\Serializable;
-use InvalidArgumentException;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
 
 final class BookingAvailability implements Serializable
 {
-    private const AVAILABLE = 'Available';
-    private const UNAVAILABLE = 'Unavailable';
+    private BookingAvailabilityType $type;
 
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @var string[]
-     */
-    private const ALLOWED_VALUES = [
-        self::AVAILABLE,
-        self::UNAVAILABLE,
-    ];
-
-    private function __construct(string $value)
+    public function __construct(BookingAvailabilityType $type)
     {
-        if (!\in_array($value, self::ALLOWED_VALUES, true)) {
-            throw new InvalidArgumentException('Booking availability does not support the value "' . $value . '"');
-        }
-        $this->value = $value;
+        $this->type = $type;
     }
 
     public static function available(): BookingAvailability
     {
-        return new BookingAvailability(self::AVAILABLE);
+        return new BookingAvailability(BookingAvailabilityType::available());
     }
 
     public static function unavailable(): BookingAvailability
     {
-        return new BookingAvailability(self::UNAVAILABLE);
+        return new BookingAvailability(BookingAvailabilityType::unavailable());
     }
 
-    public function toNative(): string
+    public function getType(): BookingAvailabilityType
     {
-        return $this->value;
+        return $this->type;
     }
 
-    public static function fromNative(string $value): BookingAvailability
+    public function equals(BookingAvailability $bookingAvailability): bool
     {
-        return new BookingAvailability($value);
-    }
-
-    public function equals(BookingAvailability $status): bool
-    {
-        return $this->value === $status->toNative();
+        return $this->type->toNative() === $bookingAvailability->getType()->toNative();
     }
 
     public static function deserialize(array $data): BookingAvailability
     {
-        return new BookingAvailability($data['type']);
+        return new BookingAvailability(BookingAvailabilityType::fromNative($data['type']));
     }
 
     public function serialize(): array
     {
         return [
-            'type' => $this->value,
+            'type' => $this->type->toNative(),
         ];
+    }
+
+    public static function fromUdb3ModelBookingAvailability(
+        Udb3ModelBookingAvailability $udb3ModelBookingAvailability
+    ): self {
+        return new BookingAvailability(BookingAvailabilityType::fromNative(
+            $udb3ModelBookingAvailability->getType()->toString()
+        ));
     }
 }

@@ -11,46 +11,57 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class PeriodicCalendarTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_should_return_a_calendar_type()
-    {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
+    private PeriodicCalendar $periodicCalendar;
 
-        $this->assertEquals(CalendarType::periodic(), $calendar->getType());
+    protected function setUp(): void
+    {
+        $this->periodicCalendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+                DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018')
+            ),
+            new OpeningHours()
+        );
     }
 
     /**
      * @test
      */
-    public function it_should_return_a_default_available_status()
+    public function it_should_return_a_calendar_type(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
-
-        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+        $this->assertEquals(CalendarType::periodic(), $this->periodicCalendar->getType());
     }
 
     /**
      * @test
      */
-    public function it_allows_setting_an_explicit_status()
+    public function it_should_return_a_default_available_status(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
-        $calendar = $calendar->withStatus(new Status(StatusType::Unavailable()));
+        $this->assertEquals(new Status(StatusType::Available()), $this->periodicCalendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_a_default_booking_availability(): void
+    {
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Available()),
+            $this->periodicCalendar->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_status(): void
+    {
+        $calendar = $this->periodicCalendar->withStatus(new Status(StatusType::Unavailable()));
 
         $this->assertEquals(new Status(StatusType::Unavailable()), $calendar->getStatus());
     }
@@ -58,24 +69,40 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_start_and_end_date()
+    public function it_allows_setting_an_explicit_booking_availability(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
+        $calendar = $this->periodicCalendar->withBookingAvailability(
+            new BookingAvailability(BookingAvailabilityType::Unavailable())
+        );
 
-        $this->assertEquals($startDate, $calendar->getStartDate());
-        $this->assertEquals($endDate, $calendar->getEndDate());
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Unavailable()),
+            $calendar->getBookingAvailability()
+        );
     }
 
     /**
      * @test
      */
-    public function it_should_return_the_injected_opening_hours()
+    public function it_should_return_the_injected_start_and_end_date(): void
     {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018'),
+            $this->periodicCalendar->getStartDate()
+        );
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018'),
+            $this->periodicCalendar->getEndDate()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_injected_opening_hours(): void
+    {
+        $startDate = DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
 
         $days = new Days(
             Day::monday(),
@@ -90,7 +117,7 @@ class PeriodicCalendarTest extends TestCase
                     new Hour(9),
                     new Minute(0)
                 ),
-                $closingTime = new Time(
+                new Time(
                     new Hour(12),
                     new Minute(0)
                 )
@@ -101,7 +128,7 @@ class PeriodicCalendarTest extends TestCase
                     new Hour(13),
                     new Minute(0)
                 ),
-                $closingTime = new Time(
+                new Time(
                     new Hour(17),
                     new Minute(0)
                 )
