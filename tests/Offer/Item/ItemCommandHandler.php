@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Offer\Item\Commands\RemoveImage;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateBookingInfo;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateFacilities;
@@ -72,14 +71,6 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getUpdateDescriptionClassName()
     {
         return UpdateDescription::class;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getUpdateCalendarClassName()
-    {
-        return UpdateCalendar::class;
     }
 
     protected function getUpdateTypicalAgeRangeClassName()

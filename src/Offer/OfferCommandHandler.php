@@ -139,11 +139,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * @return string
      */
-    abstract protected function getUpdateCalendarClassName();
-
-    /**
-     * @return string
-     */
     abstract protected function getUpdateTypicalAgeRangeClassName();
 
     /**
