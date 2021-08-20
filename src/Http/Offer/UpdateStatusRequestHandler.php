@@ -18,15 +18,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class UpdateStatusRequestHandler implements RequestHandler
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
-
-    /**
-     * @var UpdateStatusValidator
-     */
-    private $validator;
+    private CommandBus $commandBus;
+    private UpdateStatusValidator $validator;
 
     public function __construct(CommandBus $commandBus, UpdateStatusValidator $validator)
     {
