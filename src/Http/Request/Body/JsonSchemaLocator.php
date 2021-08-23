@@ -23,7 +23,8 @@ final class JsonSchemaLocator
         if (!is_dir($schemaDirectory)) {
             throw new InvalidArgumentException($schemaDirectory . ' could not be found or is not a directory.');
         }
-        self::$schemaDirectory = rtrim($schemaDirectory, '/');
+        // Use realpath() to resolve symbolic directories like ".." and ".", which is needed for the validator to work.
+        self::$schemaDirectory = realpath($schemaDirectory);
     }
 
     public static function loadSchema(string $schemaFileName): string
