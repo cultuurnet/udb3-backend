@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -70,6 +71,12 @@ class OfferServiceProvider implements ServiceProviderInterface
                     $app['event_repository'],
                     $app['place_repository']
                 );
+            }
+        );
+
+        $app[UpdateCalendarHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateCalendarHandler($app[OfferRepository::class]);
             }
         );
 

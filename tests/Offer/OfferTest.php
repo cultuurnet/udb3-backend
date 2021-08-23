@@ -6,8 +6,6 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
@@ -22,7 +20,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\CalendarUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
@@ -55,7 +52,6 @@ use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use DateTimeInterface;
 use Exception;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Person\Age;
@@ -1380,53 +1376,6 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then([
                 new DescriptionTranslated($itemId, $language, $description),
             ]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_calendar_updated_events()
-    {
-        $itemId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
-
-        $calendar = new Calendar(
-            CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
-        );
-
-        $sameCalendar = new Calendar(
-            CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-26T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T12:12:12+01:00')
-        );
-
-        $otherCalendar = new Calendar(
-            CalendarType::PERIODIC(),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-27T11:11:11+01:00'),
-            \DateTime::createFromFormat(DateTimeInterface::ATOM, '2020-01-28T12:12:12+01:00')
-        );
-
-        $this->scenario
-            ->withAggregateId($itemId)
-            ->given(
-                [
-                    new ItemCreated($itemId),
-                ]
-            )
-            ->when(
-                function (Item $item) use ($calendar, $sameCalendar, $otherCalendar) {
-                    $item->updateCalendar($calendar);
-                    $item->updateCalendar($sameCalendar);
-                    $item->updateCalendar($otherCalendar);
-                }
-            )
-            ->then(
-                [
-                    new CalendarUpdated($itemId, $calendar),
-                    new CalendarUpdated($itemId, $otherCalendar),
-                ]
-            );
     }
 
     /**
