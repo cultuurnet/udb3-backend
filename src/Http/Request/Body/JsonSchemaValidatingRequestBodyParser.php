@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Validator;
+use Opis\Uri\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
@@ -16,12 +17,12 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
     private const MAX_ERRORS = 100;
 
     private Validator $validator;
-    private string $jsonSchema;
+    private Uri $jsonSchema;
 
-    public function __construct(string $jsonSchema)
+    private function __construct(Validator $validator, Uri $jsonSchema)
     {
         $this->jsonSchema = $jsonSchema;
-        $this->validator = new Validator(null, self::MAX_ERRORS);
+        $this->validator = $validator;
     }
 
     /**
@@ -30,7 +31,10 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
      */
     public static function fromFile(string $jsonSchemaLocatorFile): self
     {
-        return new self(JsonSchemaLocator::loadSchema($jsonSchemaLocatorFile));
+        return new self(
+            JsonSchemaLocator::createValidator(self::MAX_ERRORS),
+            JsonSchemaLocator::createSchemaUri($jsonSchemaLocatorFile)
+        );
     }
 
     public function parse(ServerRequestInterface $request): ServerRequestInterface
