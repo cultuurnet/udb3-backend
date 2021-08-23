@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Request\Body;
 
 use InvalidArgumentException;
+use Opis\JsonSchema\Parsers\SchemaParser;
+use Opis\JsonSchema\Resolvers\SchemaResolver;
+use Opis\JsonSchema\SchemaLoader;
+use Opis\JsonSchema\Validator;
 use ReflectionClass;
 use RuntimeException;
 
@@ -55,6 +59,29 @@ final class JsonSchemaLocator
         }
 
         return $schema;
+    }
+
+    public static function createValidator(int $maxErrors = 1): Validator
+    {
+        $resolver = new SchemaResolver();
+        $resolver->registerPrefix(self::getSchemaDirectoryUri(), self::getSchemaDirectory());
+        $loader = new SchemaLoader(new SchemaParser(), $resolver);
+        return new Validator($loader, $maxErrors);
+    }
+
+    private static function getSchemaDirectory(): string
+    {
+        if (self::$schemaDirectory === null) {
+            throw new RuntimeException(
+                'JsonSchemaLocator::setSchemaDirectory() should have been called at least once first.'
+            );
+        }
+        return self::$schemaDirectory;
+    }
+
+    private static function getSchemaDirectoryUri(): string
+    {
+        return 'file://' . self::getSchemaDirectory() . '/';
     }
 
     private static function getConstants(): array
