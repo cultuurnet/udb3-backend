@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
-use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
@@ -60,11 +59,6 @@ class EditOfferRestController
     /**
      * @var DeserializerInterface
      */
-    private $calendarJsonDeserializer;
-
-    /**
-     * @var DeserializerInterface
-     */
     private $facilityDeserializer;
 
     public function __construct(
@@ -75,7 +69,6 @@ class EditOfferRestController
         DeserializerInterface $titleJsonDeserializer,
         DeserializerInterface $descriptionJsonDeserializer,
         DeserializerInterface $priceInfoJsonDeserializer,
-        DeserializerInterface $calendarJsonDeserializer,
         DeserializerInterface $facilityDeserializer
     ) {
         $this->commandBus = $commandBus;
@@ -85,7 +78,6 @@ class EditOfferRestController
         $this->titleJsonDeserializer = $titleJsonDeserializer;
         $this->descriptionJsonDeserializer = $descriptionJsonDeserializer;
         $this->priceInfoJsonDeserializer = $priceInfoJsonDeserializer;
-        $this->calendarJsonDeserializer = $calendarJsonDeserializer;
         $this->facilityDeserializer = $facilityDeserializer;
     }
 
@@ -164,17 +156,6 @@ class EditOfferRestController
         );
 
         $this->editService->updateFacilities($cdbid, $facilities);
-
-        return new NoContent();
-    }
-
-    public function updateCalendar(Request $request, string $cdbid): Response
-    {
-        $calendar = $this->calendarJsonDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->commandBus->dispatch(new UpdateCalendar($cdbid, $calendar));
 
         return new NoContent();
     }

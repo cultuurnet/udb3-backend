@@ -265,31 +265,6 @@ class EditOfferRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_the_calendar_info()
-    {
-        $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
-
-        $calendar = new Calendar(
-            CalendarType::PERMANENT()
-        );
-
-        $expectedCommand = new UpdateCalendar($eventId, $calendar);
-        $this->commandBus->record();
-
-        $calendarData = '{"calendarType": "permanent"}';
-
-        $request = new Request([], [], [], [], [], [], $calendarData);
-
-        $response = $this->controller
-            ->updateCalendar($request, $eventId);
-
-        $this->assertEquals(204, $response->getStatusCode());
-        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_the_theme_by_id()
     {
         $this->editService

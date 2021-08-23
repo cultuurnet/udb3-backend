@@ -74,10 +74,6 @@ class OfferControllerProvider implements ControllerProviderInterface
                         new TitleJSONDeserializer(false, new StringLiteral('name')),
                         new DescriptionJSONDeserializer(),
                         new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
-                        new CalendarJSONDeserializer(
-                            new CalendarJSONParser(),
-                            $this->getDataCalendarValidator($offerType)
-                        ),
                         new FacilitiesJSONDeserializer(
                             $this->getFacilityResolver($offerType)
                         )
@@ -123,7 +119,6 @@ class OfferControllerProvider implements ControllerProviderInterface
             $controllers->put("{$offerType}/{offerId}/status", UpdateStatusRequestHandler::class . ':handle');
             $controllers->put("{$offerType}/{offerId}/bookingAvailability", UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
-            $controllers->put("{$offerType}/{cdbid}/calendar", "{$controllerName}:updateCalendar");
             $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
             $controllers->put("{$offerType}/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
             $controllers->put("{$offerType}/{cdbid}/facilities/", "{$controllerName}:updateFacilities");
@@ -180,20 +175,6 @@ class OfferControllerProvider implements ControllerProviderInterface
         }
 
         return $controllers;
-    }
-
-    /**
-     * @param string $offerType
-     *
-     * @return DataValidatorInterface
-     */
-    private function getDataCalendarValidator($offerType)
-    {
-        if (strpos($offerType, 'place') !== false) {
-            return new CalendarForPlaceDataValidator();
-        }
-
-        return new CalendarForEventDataValidator();
     }
 
     /**
