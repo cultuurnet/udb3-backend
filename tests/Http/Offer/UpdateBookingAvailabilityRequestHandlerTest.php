@@ -34,11 +34,14 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_valid_data(): void
+    public function it_allows_a_valid_type(): void
     {
-        $given = $this->requestBuilder->withBodyFromString('{"type":"Available"}')->build('PUT');
+        $given = $this->requestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"type":"Available"}')
+            ->build('PUT');
 
-        $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f');
+        $this->requestHandler->handle($given);
 
         $this->assertEquals(
             [
@@ -56,11 +59,14 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
      */
     public function it_fails_on_empty_body(): void
     {
-        $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
+        $given = $this->requestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('')
+            ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
-            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
+            fn () => $this->requestHandler->handle($given)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -71,11 +77,14 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
      */
     public function it_fails_on_unparsable_body(): void
     {
-        $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
+        $given = $this->requestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{{}')
+            ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidSyntax('JSON'),
-            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
+            fn () => $this->requestHandler->handle($given)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -86,11 +95,14 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
      */
     public function it_fails_on_missing_type(): void
     {
-        $given = $this->requestBuilder->withBodyFromString('{}')->build('PUT');
+        $given = $this->requestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{}')
+            ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (type) are missing')),
-            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
+            fn () => $this->requestHandler->handle($given)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
@@ -101,11 +113,14 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
      */
     public function it_fails_on_invalid_type(): void
     {
-        $given = $this->requestBuilder->withBodyFromString('{"type":"foo"}')->build('PUT');
+        $given = $this->requestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"type":"foo"}')
+            ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(new SchemaError('/type', 'The data should match one item from enum')),
-            fn () => $this->requestHandler->handle($given, '609a8214-51c9-48c0-903f-840a4f38852f')
+            fn () => $this->requestHandler->handle($given)
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());

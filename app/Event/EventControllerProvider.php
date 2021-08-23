@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -76,8 +74,6 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
         $controllers->patch('/{eventId}/subEvents', UpdateSubEventsRequestHandler::class . ':handle');
-        $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class . ':handle');
-        $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
         return $controllers;
     }

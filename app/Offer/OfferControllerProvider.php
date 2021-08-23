@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -38,10 +37,7 @@ class OfferControllerProvider implements ControllerProviderInterface
     {
         $app[UpdateStatusRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new UpdateStatusRequestHandler(
-                    $app['event_command_bus'],
-                    new UpdateStatusValidator()
-                );
+                return new UpdateStatusRequestHandler($app['event_command_bus']);
             }
         );
 
@@ -123,6 +119,9 @@ class OfferControllerProvider implements ControllerProviderInterface
                     );
                 }
             );
+
+            $controllers->put("{$offerType}/{offerId}/status", UpdateStatusRequestHandler::class . ':handle');
+            $controllers->put("{$offerType}/{offerId}/bookingAvailability", UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
             $controllers->put("{$offerType}/{cdbid}/calendar", "{$controllerName}:updateCalendar");
             $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
