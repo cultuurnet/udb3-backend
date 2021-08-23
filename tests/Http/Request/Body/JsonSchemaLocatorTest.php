@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Request\Body;
 
 use InvalidArgumentException;
+use Opis\JsonSchema\Resolvers\SchemaResolver;
+use Opis\JsonSchema\Uri;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -13,11 +15,27 @@ class JsonSchemaLocatorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_schema_as_an_encoded_json_string_from_the_file(): void
+    public function it_returns_a_validator_with_a_resolver_for_the_previously_set_schema_directory(): void
     {
-        $schema = JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH);
-        json_decode($schema, false, JSON_THROW_ON_ERROR);
-        $this->addToAssertionCount(1);
+        $directory = realpath(__DIR__ . '/../../../../vendor/publiq/stoplight-docs-uitdatabank/models');
+
+        $expectedResolver = new SchemaResolver();
+        $expectedResolver->registerPrefix('file://' . $directory . '/', $directory);
+
+        $validator = JsonSchemaLocator::createValidator(100);
+        $actualResolver = $validator->resolver();
+
+        $this->assertEquals($expectedResolver, $actualResolver);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_schema_uri_for_a_file(): void
+    {
+        $expected = Uri::create('file://' . realpath(__DIR__ . '/../../../../vendor/publiq/stoplight-docs-uitdatabank/models/') . '/event-subEvent-patch.json');
+        $actual = JsonSchemaLocator::createSchemaUri(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH);
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -47,7 +65,7 @@ class JsonSchemaLocatorTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('mock.json is not in the list of known schema files, please use a predefined constant on the JsonSchemaLocator class (or add one).');
-        JsonSchemaLocator::loadSchema('mock.json');
+        JsonSchemaLocator::createSchemaUri('mock.json');
     }
 
     /**
@@ -59,6 +77,6 @@ class JsonSchemaLocatorTest extends TestCase
         $this->expectExceptionMessage(__DIR__ . '/' . JsonSchemaLocator::EVENT_SUB_EVENT_PATCH . ' is not a file.');
 
         JsonSchemaLocator::setSchemaDirectory(__DIR__);
-        JsonSchemaLocator::loadSchema(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH);
+        JsonSchemaLocator::createSchemaUri(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH);
     }
 }
