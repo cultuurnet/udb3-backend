@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\Resolvers\SchemaResolver;
 use Opis\JsonSchema\SchemaLoader;
+use Opis\JsonSchema\Uri;
 use Opis\JsonSchema\Validator;
 use ReflectionClass;
 use RuntimeException;
@@ -67,6 +68,24 @@ final class JsonSchemaLocator
         $resolver->registerPrefix(self::getSchemaDirectoryUri(), self::getSchemaDirectory());
         $loader = new SchemaLoader(new SchemaParser(), $resolver);
         return new Validator($loader, $maxErrors);
+    }
+
+    public static function createSchemaUri(string $schemaFileName): Uri
+    {
+        // Prevent usages of hardcoded strings so we can easily refactor the file locations later if they ever change.
+        if (!in_array($schemaFileName, self::getConstants(), true)) {
+            throw new InvalidArgumentException(
+                $schemaFileName . ' is not in the list of known schema files, please use a predefined constant on the JsonSchemaLocator class (or add one).'
+            );
+        }
+
+        $schemaFileName = ltrim($schemaFileName, '/');
+        $schemaFileLocation = self::getSchemaDirectory() . '/' . $schemaFileName;
+        if (!is_file($schemaFileLocation)) {
+            throw new RuntimeException($schemaFileLocation . ' is not a file.');
+        }
+
+        return Uri::create(self::getSchemaDirectoryUri() . $schemaFileName);
     }
 
     private static function getSchemaDirectory(): string
