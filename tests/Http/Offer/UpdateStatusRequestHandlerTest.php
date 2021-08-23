@@ -194,7 +194,7 @@ class UpdateStatusRequestHandlerTest extends TestCase
             ],
             'invalid_type' => [
                 'data' => (object) [
-                    'type' => 'foo'
+                    'type' => 'foo',
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/type', 'The data should match one item from enum'),
