@@ -74,11 +74,6 @@ class EditOfferRestControllerTest extends TestCase
     private $priceInfoDeserializer;
 
     /**
-     * @var CalendarJSONDeserializer
-     */
-    private $calendarDeserializer;
-
-    /**
      * @var DataValidatorInterface|MockObject
      */
     private $calendarDataValidator;
@@ -106,10 +101,6 @@ class EditOfferRestControllerTest extends TestCase
         $this->titleDeserializer = new TitleJSONDeserializer();
         $this->descriptionDeserializer = new DescriptionJSONDeserializer();
         $this->priceInfoDeserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
-        $this->calendarDeserializer = new CalendarJSONDeserializer(
-            new CalendarJSONParser(),
-            $this->calendarDataValidator
-        );
         $this->facilitiesJSONDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->controller = new EditOfferRestController(
@@ -120,7 +111,6 @@ class EditOfferRestControllerTest extends TestCase
             $this->titleDeserializer,
             $this->descriptionDeserializer,
             $this->priceInfoDeserializer,
-            $this->calendarDeserializer,
             $this->facilitiesJSONDeserializer
         );
     }
