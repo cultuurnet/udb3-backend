@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Place;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
+use CultuurNet\UDB3\Http\Place\UpdateCalendarRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -47,6 +48,12 @@ class PlaceControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[UpdateCalendarRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateCalendarRequestHandler($app['event_command_bus']);
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -70,6 +77,8 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
         $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
+
+        $controllers->put('/{placeId}/calendar', UpdateCalendarRequestHandler::class . ':handle');
 
         return $controllers;
     }
