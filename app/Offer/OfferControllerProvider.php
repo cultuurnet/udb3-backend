@@ -14,11 +14,6 @@ use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForPlaceDataValidator;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
-use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\Place\FacilitiesJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
@@ -74,10 +69,6 @@ class OfferControllerProvider implements ControllerProviderInterface
                         new TitleJSONDeserializer(false, new StringLiteral('name')),
                         new DescriptionJSONDeserializer(),
                         new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
-                        new CalendarJSONDeserializer(
-                            new CalendarJSONParser(),
-                            $this->getDataCalendarValidator($offerType)
-                        ),
                         new FacilitiesJSONDeserializer(
                             $this->getFacilityResolver($offerType)
                         )
@@ -123,7 +114,6 @@ class OfferControllerProvider implements ControllerProviderInterface
             $controllers->put("{$offerType}/{offerId}/status", UpdateStatusRequestHandler::class . ':handle');
             $controllers->put("{$offerType}/{offerId}/bookingAvailability", UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
-            $controllers->put("{$offerType}/{cdbid}/calendar", "{$controllerName}:updateCalendar");
             $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
             $controllers->put("{$offerType}/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
             $controllers->put("{$offerType}/{cdbid}/facilities/", "{$controllerName}:updateFacilities");
@@ -180,20 +170,6 @@ class OfferControllerProvider implements ControllerProviderInterface
         }
 
         return $controllers;
-    }
-
-    /**
-     * @param string $offerType
-     *
-     * @return DataValidatorInterface
-     */
-    private function getDataCalendarValidator($offerType)
-    {
-        if (strpos($offerType, 'place') !== false) {
-            return new CalendarForPlaceDataValidator();
-        }
-
-        return new CalendarForEventDataValidator();
     }
 
     /**

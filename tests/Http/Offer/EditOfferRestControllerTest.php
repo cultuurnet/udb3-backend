@@ -6,8 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Facility;
@@ -17,15 +15,12 @@ use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
-use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
@@ -74,11 +69,6 @@ class EditOfferRestControllerTest extends TestCase
     private $priceInfoDeserializer;
 
     /**
-     * @var CalendarJSONDeserializer
-     */
-    private $calendarDeserializer;
-
-    /**
      * @var DataValidatorInterface|MockObject
      */
     private $calendarDataValidator;
@@ -106,10 +96,6 @@ class EditOfferRestControllerTest extends TestCase
         $this->titleDeserializer = new TitleJSONDeserializer();
         $this->descriptionDeserializer = new DescriptionJSONDeserializer();
         $this->priceInfoDeserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
-        $this->calendarDeserializer = new CalendarJSONDeserializer(
-            new CalendarJSONParser(),
-            $this->calendarDataValidator
-        );
         $this->facilitiesJSONDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->controller = new EditOfferRestController(
@@ -120,7 +106,6 @@ class EditOfferRestControllerTest extends TestCase
             $this->titleDeserializer,
             $this->descriptionDeserializer,
             $this->priceInfoDeserializer,
-            $this->calendarDeserializer,
             $this->facilitiesJSONDeserializer
         );
     }
@@ -260,31 +245,6 @@ class EditOfferRestControllerTest extends TestCase
             ->updateDescription($request, 'EC545F35-C76E-4EFC-8AB0-5024DA866CA0', 'nl');
 
         $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_the_calendar_info()
-    {
-        $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
-
-        $calendar = new Calendar(
-            CalendarType::PERMANENT()
-        );
-
-        $expectedCommand = new UpdateCalendar($eventId, $calendar);
-        $this->commandBus->record();
-
-        $calendarData = '{"calendarType": "permanent"}';
-
-        $request = new Request([], [], [], [], [], [], $calendarData);
-
-        $response = $this->controller
-            ->updateCalendar($request, $eventId);
-
-        $this->assertEquals(204, $response->getStatusCode());
-        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
     }
 
     /**
