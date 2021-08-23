@@ -34,7 +34,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_valid_data(): void
+    public function it_allows_a_valid_type(): void
     {
         $given = $this->requestBuilder
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
