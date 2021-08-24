@@ -6,6 +6,9 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Converts any objects inside the parsed body on the request to associative arrays.
+ */
 final class AssociativeArrayRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
