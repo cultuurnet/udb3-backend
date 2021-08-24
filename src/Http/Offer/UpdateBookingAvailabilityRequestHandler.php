@@ -39,13 +39,13 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->get('offerId');
 
-        $data = (object) $this->parser->parse($request)->getParsedBody();
+        $data = $this->parser->parse($request)->getParsedBody();
 
         try {
             $this->commandBus->dispatch(
                 new UpdateBookingAvailability(
                     $offerId,
-                    new BookingAvailability(BookingAvailabilityType::fromNative($data->type))
+                    new BookingAvailability(BookingAvailabilityType::fromNative($data['type']))
                 )
             );
         } catch (CalendarTypeNotSupported $exception) {

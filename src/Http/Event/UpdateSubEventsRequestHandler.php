@@ -47,20 +47,20 @@ class UpdateSubEventsRequestHandler implements RequestHandler
 
         $updateSubEvents = [];
         foreach ($updates as $update) {
-            $subEventUpdate = new SubEventUpdate($update->id);
+            $subEventUpdate = new SubEventUpdate($update['id']);
 
-            if (isset($update->status)) {
+            if (isset($update['status'])) {
                 $subEventUpdate = $subEventUpdate->withStatus(
                     new Status(
-                        StatusType::fromNative($update->status->type),
+                        StatusType::fromNative($update['status']['type']),
                         $this->parseReason($update)
                     )
                 );
             }
 
-            if (isset($update->bookingAvailability)) {
+            if (isset($update['bookingAvailability'])) {
                 $subEventUpdate = $subEventUpdate->withBookingAvailability(
-                    new BookingAvailability(BookingAvailabilityType::fromNative($update->bookingAvailability->type))
+                    new BookingAvailability(BookingAvailabilityType::fromNative($update['bookingAvailability']['type']))
                 );
             }
 
@@ -75,14 +75,14 @@ class UpdateSubEventsRequestHandler implements RequestHandler
     /**
      * @return StatusReason[]
      */
-    private function parseReason($data): array
+    private function parseReason(array $data): array
     {
-        if (!isset($data->status->reason)) {
+        if (!isset($data['status']['reason'])) {
             return [];
         }
 
         $reason = [];
-        foreach ($data->status->reason as $language => $translatedReason) {
+        foreach ($data['status']['reason'] as $language => $translatedReason) {
             $reason[] = new StatusReason(new Language($language), $translatedReason);
         }
 

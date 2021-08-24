@@ -40,10 +40,10 @@ class UpdateStatusRequestHandler implements RequestHandler
         $offerId = $routeParameters->get('offerId');
 
         $request = $this->parser->parse($request);
-        $data = (object) $request->getParsedBody();
+        $data = $request->getParsedBody();
 
         $newStatus = new Status(
-            StatusType::fromNative($data->type),
+            StatusType::fromNative($data['type']),
             $this->parseReason($data)
         );
 
@@ -55,14 +55,14 @@ class UpdateStatusRequestHandler implements RequestHandler
     /**
      * @return StatusReason[]
      */
-    private function parseReason(object $data): array
+    private function parseReason(array $data): array
     {
-        if (!isset($data->reason)) {
+        if (!isset($data['reason'])) {
             return [];
         }
 
         $reason = [];
-        foreach ($data->reason as $language => $translatedReason) {
+        foreach ($data['reason'] as $language => $translatedReason) {
             try {
                 $language = new Language($language);
             } catch (InvalidArgumentException $e) {
