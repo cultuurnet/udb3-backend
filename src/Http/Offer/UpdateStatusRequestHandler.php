@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -30,7 +31,8 @@ class UpdateStatusRequestHandler implements RequestHandler
     {
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
-            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_STATUS)
+            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_STATUS),
+            new AssociativeArrayRequestBodyParser()
         );
     }
 
@@ -40,10 +42,10 @@ class UpdateStatusRequestHandler implements RequestHandler
         $offerId = $routeParameters->get('offerId');
 
         $request = $this->parser->parse($request);
-        $data = (object) $request->getParsedBody();
+        $data = $request->getParsedBody();
 
         $newStatus = new Status(
-            StatusType::fromNative($data->type),
+            StatusType::fromNative($data['type']),
             $this->parseReason($data)
         );
 
@@ -55,14 +57,14 @@ class UpdateStatusRequestHandler implements RequestHandler
     /**
      * @return StatusReason[]
      */
-    private function parseReason(object $data): array
+    private function parseReason(array $data): array
     {
-        if (!isset($data->reason)) {
+        if (!isset($data['reason'])) {
             return [];
         }
 
         $reason = [];
-        foreach ($data->reason as $language => $translatedReason) {
+        foreach ($data['reason'] as $language => $translatedReason) {
             try {
                 $language = new Language($language);
             } catch (InvalidArgumentException $e) {
