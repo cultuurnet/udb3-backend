@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Request\Body;
 
 use InvalidArgumentException;
-use Opis\JsonSchema\Parsers\SchemaParser;
 use Opis\JsonSchema\Resolvers\SchemaResolver;
-use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Uri;
 use Opis\JsonSchema\Validator;
 use ReflectionClass;
