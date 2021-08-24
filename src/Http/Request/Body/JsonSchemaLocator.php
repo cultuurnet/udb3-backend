@@ -39,12 +39,6 @@ final class JsonSchemaLocator
         return $resolver;
     }
 
-    public static function createValidator(int $maxErrors = 1): Validator
-    {
-        $loader = new SchemaLoader(new SchemaParser(), self::createSchemaResolver());
-        return new Validator($loader, $maxErrors);
-    }
-
     public static function createSchemaUri(string $schemaFileName): Uri
     {
         // Prevent usages of hardcoded strings so we can easily refactor the file locations later if they ever change.
