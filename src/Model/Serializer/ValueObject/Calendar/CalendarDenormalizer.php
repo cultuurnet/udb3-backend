@@ -29,11 +29,11 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class CalendarDenormalizer implements DenormalizerInterface
 {
-    private TranslatedStatusReasonDenormalizer $statusReasonDenormalizer;
+    private StatusDenormalizer $statusDenormalizer;
 
     public function __construct()
     {
-        $this->statusReasonDenormalizer = new TranslatedStatusReasonDenormalizer();
+        $this->statusDenormalizer = new StatusDenormalizer();
     }
 
     /**
@@ -52,7 +52,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         $openingHoursData = isset($data['openingHours']) ? $data['openingHours'] : [];
         $openingHours = $this->denormalizeOpeningHours($openingHoursData);
 
-        $topLevelStatus = isset($data['status']) ? $this->denormalizeStatus($data['status']) : null;
+        $topLevelStatus = isset($data['status']) ? $this->statusDenormalizer->denormalize($data['status'], Status::class) : null;
         $topLevelBookingAvailability = isset($data['bookingAvailability']['type'])
             ? new BookingAvailability(new BookingAvailabilityType($data['bookingAvailability']['type'])) : null;
 
@@ -87,10 +87,8 @@ class CalendarDenormalizer implements DenormalizerInterface
                 break;
         }
 
-        if (isset($data['status'])) {
-            $calendar = $calendar->withStatus(
-                $this->denormalizeStatus($data['status'])
-            );
+        if ($topLevelStatus !== null) {
+            $calendar = $calendar->withStatus($topLevelStatus);
         }
 
         return $calendar;
@@ -167,22 +165,19 @@ class CalendarDenormalizer implements DenormalizerInterface
         ?Status $topLevelStatus,
         ?BookingAvailability $topLevelBookingAvailability
     ): SubEvent {
-        $statusType = $topLevelStatus ? $topLevelStatus->getType() : StatusType::Available();
-        $statusReason = $topLevelStatus ? $topLevelStatus->getReason() : null;
         $bookingAvailability = $topLevelBookingAvailability
             ?: new BookingAvailability(BookingAvailabilityType::Available());
 
-        if (isset($subEventData['status']['type'])) {
-            $statusType = new StatusType($subEventData['status']['type']);
+        if (!isset($subEventData['status']['type'])) {
+            $subEventData['status']['type'] = $topLevelStatus ? $topLevelStatus->getType()->toString() : StatusType::Available()->toString();
+        }
+        if (!isset($subEventData['status']['reason']) && $topLevelStatus && $reason = $topLevelStatus->getReason()) {
+            foreach ($reason->getLanguages() as $language) {
+                $subEventData['status']['reason'][$language->getCode()] = $reason->getTranslation($language)->toString();
+            }
         }
 
-        if (isset($subEventData['status']['reason'])) {
-            /** @var TranslatedStatusReason $statusReason */
-            $statusReason = $this->statusReasonDenormalizer->denormalize(
-                $subEventData['status']['reason'],
-                TranslatedStatusReason::class
-            );
-        }
+        $status = $this->statusDenormalizer->denormalize($subEventData['status'], Status::class);
 
         if (isset($subEventData['bookingAvailability']['type'])) {
             $bookingAvailability = new BookingAvailability(
@@ -190,27 +185,10 @@ class CalendarDenormalizer implements DenormalizerInterface
             );
         }
 
-        $status = new Status($statusType, $statusReason);
-
         return new SubEvent(
             $this->denormalizeDateRange($subEventData),
             $status,
             $bookingAvailability
         );
-    }
-
-    private function denormalizeStatus(array $status): Status
-    {
-        $statusType = new StatusType($status['type']);
-        $statusReason = null;
-
-        if (isset($status['reason'])) {
-            $statusReason = $this->statusReasonDenormalizer->denormalize(
-                $status['reason'],
-                TranslatedStatusReason::class
-            );
-        }
-
-        return new Status($statusType, $statusReason);
     }
 }
