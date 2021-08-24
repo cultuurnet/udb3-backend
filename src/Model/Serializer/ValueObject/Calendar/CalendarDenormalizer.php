@@ -28,10 +28,12 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class CalendarDenormalizer implements DenormalizerInterface
 {
     private StatusDenormalizer $statusDenormalizer;
+    private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
 
     public function __construct()
     {
         $this->statusDenormalizer = new StatusDenormalizer();
+        $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
     }
 
     /**
@@ -53,8 +55,8 @@ class CalendarDenormalizer implements DenormalizerInterface
         $statusData = $data['status'] ?? ['type' => 'Available'];
         $topLevelStatus = $this->statusDenormalizer->denormalize($statusData, Status::class);
 
-        $topLevelBookingAvailability = isset($data['bookingAvailability']['type'])
-            ? new BookingAvailability(new BookingAvailabilityType($data['bookingAvailability']['type'])) : null;
+        $bookingAvailabilityData = $data['bookingAvailability'] ?? ['type' => 'Available'];
+        $topLevelBookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($bookingAvailabilityData, BookingAvailability::class);
 
         switch ($data['calendarType']) {
             case 'single':
@@ -163,11 +165,8 @@ class CalendarDenormalizer implements DenormalizerInterface
     private function denormalizeSubEvent(
         array $subEventData,
         Status $topLevelStatus,
-        ?BookingAvailability $topLevelBookingAvailability
+        BookingAvailability $topLevelBookingAvailability
     ): SubEvent {
-        $bookingAvailability = $topLevelBookingAvailability
-            ?: new BookingAvailability(BookingAvailabilityType::Available());
-
         if (!isset($subEventData['status']['type'])) {
             $subEventData['status']['type'] = $topLevelStatus->getType()->toString();
         }
@@ -176,14 +175,16 @@ class CalendarDenormalizer implements DenormalizerInterface
                 $subEventData['status']['reason'][$language->getCode()] = $reason->getTranslation($language)->toString();
             }
         }
+        if (!isset($subEventData['bookingAvailability']['type'])) {
+            $subEventData['bookingAvailability']['type'] = $topLevelBookingAvailability->getType()->toString();
+        }
 
         $status = $this->statusDenormalizer->denormalize($subEventData['status'], Status::class);
 
-        if (isset($subEventData['bookingAvailability']['type'])) {
-            $bookingAvailability = new BookingAvailability(
-                new BookingAvailabilityType($subEventData['bookingAvailability']['type'])
-            );
-        }
+        $bookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize(
+            $subEventData['bookingAvailability'],
+            BookingAvailability::class
+        );
 
         return new SubEvent(
             $this->denormalizeDateRange($subEventData),
