@@ -13,10 +13,10 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -24,6 +24,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
 {
     private CommandBus $commandBus;
     private RequestBodyParser $parser;
+    private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
 
     public function __construct(
         CommandBus $commandBus
@@ -32,6 +33,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
         $this->parser = RequestBodyParserFactory::createBaseParser(
             JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY)
         );
+        $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -41,11 +43,13 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
 
         $data = $this->parser->parse($request)->getParsedBody();
 
+        $bookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($data, BookingAvailability::class);
+
         try {
             $this->commandBus->dispatch(
                 new UpdateBookingAvailability(
                     $offerId,
-                    new BookingAvailability(BookingAvailabilityType::fromNative($data['type']))
+                    \CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability::fromUdb3ModelBookingAvailability($bookingAvailability)
                 )
             );
         } catch (CalendarTypeNotSupported $exception) {
