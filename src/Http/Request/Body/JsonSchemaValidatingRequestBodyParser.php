@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Parsers\SchemaParser;
+use Opis\JsonSchema\Resolvers\SchemaResolver;
+use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Validator;
 use Opis\Uri\Uri;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,10 +22,17 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
     private Validator $validator;
     private Uri $jsonSchema;
 
-    private function __construct(Validator $validator, Uri $jsonSchema)
+    private function __construct(SchemaResolver $schemaResolver, Uri $jsonSchema)
     {
         $this->jsonSchema = $jsonSchema;
-        $this->validator = $validator;
+
+        $this->validator = new Validator(
+            new SchemaLoader(
+                new SchemaParser(),
+                $schemaResolver
+            ),
+            self::MAX_ERRORS
+        );
     }
 
     /**
@@ -32,7 +42,7 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
     public static function fromFile(string $jsonSchemaLocatorFile): self
     {
         return new self(
-            JsonSchemaLocator::createValidator(self::MAX_ERRORS),
+            JsonSchemaLocator::createSchemaResolver(),
             JsonSchemaLocator::createSchemaUri($jsonSchemaLocatorFile)
         );
     }
