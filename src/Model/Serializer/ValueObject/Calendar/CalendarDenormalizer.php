@@ -51,7 +51,9 @@ class CalendarDenormalizer implements DenormalizerInterface
         $openingHoursData = isset($data['openingHours']) ? $data['openingHours'] : [];
         $openingHours = $this->denormalizeOpeningHours($openingHoursData);
 
-        $topLevelStatus = isset($data['status']) ? $this->statusDenormalizer->denormalize($data['status'], Status::class) : null;
+        $statusData = $data['status'] ?? ['type' => 'Available'];
+        $topLevelStatus = $this->statusDenormalizer->denormalize($statusData, Status::class);
+
         $topLevelBookingAvailability = isset($data['bookingAvailability']['type'])
             ? new BookingAvailability(new BookingAvailabilityType($data['bookingAvailability']['type'])) : null;
 
@@ -161,16 +163,16 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     private function denormalizeSubEvent(
         array $subEventData,
-        ?Status $topLevelStatus,
+        Status $topLevelStatus,
         ?BookingAvailability $topLevelBookingAvailability
     ): SubEvent {
         $bookingAvailability = $topLevelBookingAvailability
             ?: new BookingAvailability(BookingAvailabilityType::Available());
 
         if (!isset($subEventData['status']['type'])) {
-            $subEventData['status']['type'] = $topLevelStatus ? $topLevelStatus->getType()->toString() : StatusType::Available()->toString();
+            $subEventData['status']['type'] = $topLevelStatus->getType()->toString();
         }
-        if (!isset($subEventData['status']['reason']) && $topLevelStatus && $reason = $topLevelStatus->getReason()) {
+        if (!isset($subEventData['status']['reason']) && $reason = $topLevelStatus->getReason()) {
             foreach ($reason->getLanguages() as $language) {
                 $subEventData['status']['reason'][$language->getCode()] = $reason->getTranslation($language)->toString();
             }

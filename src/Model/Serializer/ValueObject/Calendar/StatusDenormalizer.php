@@ -20,7 +20,7 @@ final class StatusDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, $class, $format = null, array $context = []): Status
     {
-        $statusType = new StatusType($data['type'] ?? 'Available');
+        $statusType = new StatusType($data['type']);
         $statusReason = null;
 
         if (isset($data['reason'])) {
