@@ -18,7 +18,7 @@ final class StatusDenormalizer implements DenormalizerInterface
         $this->statusReasonDenormalizer = new TranslatedStatusReasonDenormalizer();
     }
 
-    public function denormalize($data, $class, $format = null, array $context = array()): Status
+    public function denormalize($data, $class, $format = null, array $context = []): Status
     {
         $statusType = new StatusType($data['type'] ?? 'Available');
         $statusReason = null;
