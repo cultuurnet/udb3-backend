@@ -28,7 +28,7 @@ class UpdateStatusRequestHandler implements RequestHandler
     {
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
-            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_STATUS),
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::OFFER_STATUS),
             new DenormalizerRequestBodyParser(new StatusDenormalizer(), Status::class)
         );
     }
