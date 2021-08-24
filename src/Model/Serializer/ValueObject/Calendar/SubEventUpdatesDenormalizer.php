@@ -17,7 +17,7 @@ final class SubEventUpdatesDenormalizer implements DenormalizerInterface
         $this->subEventUpdateDenormalizer = new SubEventUpdateDenormalizer();
     }
 
-    public function denormalize($data, $class, $format = null, array $context = array()): SubEventUpdates
+    public function denormalize($data, $class, $format = null, array $context = []): SubEventUpdates
     {
         $updates = [];
         foreach ($data as $subEventUpdateData) {
