@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -30,7 +31,8 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
     ) {
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
-            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY)
+            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY),
+            new AssociativeArrayRequestBodyParser()
         );
     }
 
@@ -39,13 +41,13 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->get('offerId');
 
-        $data = (object) $this->parser->parse($request)->getParsedBody();
+        $data = $this->parser->parse($request)->getParsedBody();
 
         try {
             $this->commandBus->dispatch(
                 new UpdateBookingAvailability(
                     $offerId,
-                    new BookingAvailability(BookingAvailabilityType::fromNative($data->type))
+                    new BookingAvailability(BookingAvailabilityType::fromNative($data['type']))
                 )
             );
         } catch (CalendarTypeNotSupported $exception) {
