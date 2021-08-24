@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 use InvalidArgumentException;
 use Opis\JsonSchema\Resolvers\SchemaResolver;
 use Opis\JsonSchema\Uri;
-use Opis\JsonSchema\Validator;
 use ReflectionClass;
 use RuntimeException;
 
