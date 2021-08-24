@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate as Udb3ModelsSubEventUpdate;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 
 final class SubEventUpdate
@@ -46,5 +47,27 @@ final class SubEventUpdate
     public function getBookingAvailability(): ?BookingAvailability
     {
         return $this->bookingAvailability;
+    }
+
+    public static function fromUdb3ModelsSubEventUpdate(
+        Udb3ModelsSubEventUpdate $udb3ModelsSubEventUpdate
+    ): self {
+        $update = new self($udb3ModelsSubEventUpdate->getSubEventId());
+
+        $udb3ModelsStatus = $udb3ModelsSubEventUpdate->getStatus();
+        if ($udb3ModelsStatus) {
+            $update = $update->withStatus(
+                Status::fromUdb3ModelStatus($udb3ModelsStatus)
+            );
+        }
+
+        $udb3ModelsBookingAvailability = $udb3ModelsSubEventUpdate->getBookingAvailability();
+        if ($udb3ModelsBookingAvailability) {
+            $update = $update->withBookingAvailability(
+                BookingAvailability::fromUdb3ModelBookingAvailability($udb3ModelsBookingAvailability)
+            );
+        }
+
+        return $update;
     }
 }
