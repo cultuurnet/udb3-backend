@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -25,17 +26,14 @@ class UpdateSubEventsRequestHandler implements RequestHandler
 
     private RequestBodyParser $updateSubEventsParser;
 
-    private SubEventUpdatesDenormalizer $subEventUpdatesDenormalizer;
-
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
 
         $this->updateSubEventsParser = RequestBodyParserFactory::createBaseParser(
-            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
+            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH),
+            new DenormalizerRequestBodyParser(new SubEventUpdatesDenormalizer(), SubEventUpdates::class)
         );
-
-        $this->subEventUpdatesDenormalizer = new SubEventUpdatesDenormalizer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -43,11 +41,12 @@ class UpdateSubEventsRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $eventId = $routeParameters->get('eventId');
 
-        $data = $this->updateSubEventsParser->parse($request)->getParsedBody();
+        /** @var SubEventUpdates $updates */
+        $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();
 
         $updates = array_map(
             fn (SubEventUpdate $update) => \CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate::fromUdb3ModelsSubEventUpdate($update),
-            $this->subEventUpdatesDenormalizer->denormalize($data, SubEventUpdates::class)->toArray()
+            $updates->toArray()
         );
 
         $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));

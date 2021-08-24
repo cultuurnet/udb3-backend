@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -22,15 +23,14 @@ class UpdateStatusRequestHandler implements RequestHandler
 {
     private CommandBus $commandBus;
     private RequestBodyParser $parser;
-    private StatusDenormalizer $statusDenormalizer;
 
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
-            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_STATUS)
+            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_STATUS),
+            new DenormalizerRequestBodyParser(new StatusDenormalizer(), Status::class)
         );
-        $this->statusDenormalizer = new StatusDenormalizer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -38,10 +38,8 @@ class UpdateStatusRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->get('offerId');
 
-        $request = $this->parser->parse($request);
-        $data = $request->getParsedBody();
-
-        $status = $this->statusDenormalizer->denormalize($data, Status::class);
+        /** @var Status $status */
+        $status = $this->parser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch(
             new UpdateStatus($offerId, \CultuurNet\UDB3\Event\ValueObjects\Status::fromUdb3ModelStatus($status))

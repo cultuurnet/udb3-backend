@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -24,16 +25,15 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
 {
     private CommandBus $commandBus;
     private RequestBodyParser $parser;
-    private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
 
     public function __construct(
         CommandBus $commandBus
     ) {
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
-            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY)
+            JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY),
+            new DenormalizerRequestBodyParser(new BookingAvailabilityDenormalizer(), BookingAvailability::class)
         );
-        $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -41,9 +41,8 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->get('offerId');
 
-        $data = $this->parser->parse($request)->getParsedBody();
-
-        $bookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($data, BookingAvailability::class);
+        /** @var BookingAvailability $bookingAvailability */
+        $bookingAvailability = $this->parser->parse($request)->getParsedBody();
 
         try {
             $this->commandBus->dispatch(
