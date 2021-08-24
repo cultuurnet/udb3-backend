@@ -27,8 +27,6 @@ final class AssociativeArrayRequestBodyParser implements RequestBodyParser
      * If $data is an array, the function will loop over all entries and call itself on the values.
      * If $data is an object, it will be cast to an array first and then the function will handle it like arrays.
      *
-     * @param mixed $data
-     * @return mixed
      */
     private function convertToAssociativeArray($data)
     {
