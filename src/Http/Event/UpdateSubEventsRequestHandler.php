@@ -13,8 +13,9 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventUpdateDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventUpdatesDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdates;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -24,7 +25,7 @@ class UpdateSubEventsRequestHandler implements RequestHandler
 
     private RequestBodyParser $updateSubEventsParser;
 
-    private SubEventUpdateDenormalizer $subEventUpdateDenormalizer;
+    private SubEventUpdatesDenormalizer $subEventUpdatesDenormalizer;
 
     public function __construct(CommandBus $commandBus)
     {
@@ -34,7 +35,7 @@ class UpdateSubEventsRequestHandler implements RequestHandler
             JsonSchemaValidatingRequestBodyParser::fromFile(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH)
         );
 
-        $this->subEventUpdateDenormalizer = new SubEventUpdateDenormalizer();
+        $this->subEventUpdatesDenormalizer = new SubEventUpdatesDenormalizer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -42,16 +43,14 @@ class UpdateSubEventsRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $eventId = $routeParameters->get('eventId');
 
-        $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();
+        $data = $this->updateSubEventsParser->parse($request)->getParsedBody();
 
-        $updateSubEvents = [];
-        foreach ($updates as $update) {
-            $updateSubEvents[] = \CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate::fromUdb3ModelsSubEventUpdate(
-                $this->subEventUpdateDenormalizer->denormalize($update, SubEventUpdate::class)
-            );
-        }
+        $updates = array_map(
+            fn (SubEventUpdate $update) => \CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate::fromUdb3ModelsSubEventUpdate($update),
+            $this->subEventUpdatesDenormalizer->denormalize($data, SubEventUpdates::class)->toArray()
+        );
 
-        $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updateSubEvents));
+        $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
 
         return new NoContentResponse();
     }
