@@ -15,15 +15,14 @@ class JsonSchemaLocatorTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_validator_with_a_resolver_for_the_previously_set_schema_directory(): void
+    public function it_returns_a_resolver_for_the_previously_set_schema_directory(): void
     {
         $directory = realpath(__DIR__ . '/../../../../vendor/publiq/stoplight-docs-uitdatabank/models');
 
         $expectedResolver = new SchemaResolver();
         $expectedResolver->registerPrefix('file://' . $directory . '/', $directory);
 
-        $validator = JsonSchemaLocator::createValidator(100);
-        $actualResolver = $validator->resolver();
+        $actualResolver = JsonSchemaLocator::createSchemaResolver();
 
         $this->assertEquals($expectedResolver, $actualResolver);
     }
