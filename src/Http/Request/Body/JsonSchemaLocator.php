@@ -32,11 +32,16 @@ final class JsonSchemaLocator
         self::$schemaDirectory = realpath($schemaDirectory);
     }
 
-    public static function createValidator(int $maxErrors = 1): Validator
+    public static function createSchemaResolver(): SchemaResolver
     {
         $resolver = new SchemaResolver();
         $resolver->registerPrefix(self::getSchemaDirectoryUri(), self::getSchemaDirectory());
-        $loader = new SchemaLoader(new SchemaParser(), $resolver);
+        return $resolver;
+    }
+
+    public static function createValidator(int $maxErrors = 1): Validator
+    {
+        $loader = new SchemaLoader(new SchemaParser(), self::createSchemaResolver());
         return new Validator($loader, $maxErrors);
     }
 
