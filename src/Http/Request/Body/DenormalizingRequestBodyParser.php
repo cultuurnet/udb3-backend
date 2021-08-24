@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class DenormalizerRequestBodyParser implements RequestBodyParser
+final class DenormalizingRequestBodyParser implements RequestBodyParser
 {
     private AssociativeArrayRequestBodyParser $associativeArrayRequestBodyParser;
     private DenormalizerInterface $denormalizer;

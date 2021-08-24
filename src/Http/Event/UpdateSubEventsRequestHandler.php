@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
-use CultuurNet\UDB3\Http\Request\Body\DenormalizerRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -32,7 +32,7 @@ class UpdateSubEventsRequestHandler implements RequestHandler
 
         $this->updateSubEventsParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH),
-            new DenormalizerRequestBodyParser(new SubEventUpdatesDenormalizer(), SubEventUpdates::class)
+            new DenormalizingRequestBodyParser(new SubEventUpdatesDenormalizer(), SubEventUpdates::class)
         );
     }
 

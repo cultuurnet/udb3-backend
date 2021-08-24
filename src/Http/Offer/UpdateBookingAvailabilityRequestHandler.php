@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Request\Body\DenormalizerRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -32,7 +32,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::OFFER_BOOKING_AVAILABILITY),
-            new DenormalizerRequestBodyParser(new BookingAvailabilityDenormalizer(), BookingAvailability::class)
+            new DenormalizingRequestBodyParser(new BookingAvailabilityDenormalizer(), BookingAvailability::class)
         );
     }
 

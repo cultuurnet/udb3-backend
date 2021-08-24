@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Http\Request\Body\DenormalizerRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -29,7 +29,7 @@ class UpdateStatusRequestHandler implements RequestHandler
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::OFFER_STATUS),
-            new DenormalizerRequestBodyParser(new StatusDenormalizer(), Status::class)
+            new DenormalizingRequestBodyParser(new StatusDenormalizer(), Status::class)
         );
     }
 
