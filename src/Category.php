@@ -8,6 +8,10 @@ use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category as Udb3ModelCategory;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category instead where possible.
+ */
 class Category implements Serializable, JsonLdSerializableInterface
 {
     /**
