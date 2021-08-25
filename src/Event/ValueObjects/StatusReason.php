@@ -7,6 +7,10 @@ namespace CultuurNet\UDB3\Event\ValueObjects;
 use CultuurNet\UDB3\Language;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason as much as possible
+ */
 final class StatusReason
 {
     /**
