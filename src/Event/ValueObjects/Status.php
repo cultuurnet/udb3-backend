@@ -9,6 +9,11 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as much as possible, and convert to this using
+ *   fromUdb3ModelStatus() where still needed.
+ */
 final class Status implements Serializable
 {
     /**
