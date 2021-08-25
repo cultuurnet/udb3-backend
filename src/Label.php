@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label instead where possible.
+ */
 class Label
 {
     /**

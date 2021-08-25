@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3;
 
 use CultureFeed_Cdb_Data_Keyword;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Labels instead where possible.
+ */
 class LabelCollection implements \Countable
 {
     /**
