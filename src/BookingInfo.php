@@ -8,6 +8,10 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo as Udb3ModelBookingInf
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo instead where possible.
+ */
 final class BookingInfo implements JsonLdSerializableInterface
 {
     /**
