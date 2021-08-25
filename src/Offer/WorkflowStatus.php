@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Offer;
 use ValueObjects\Enum\Enum;
 
 /**
- * Class WorkflowStatus
- * @package CultuurNet\UDB3\Offer
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus instead where possible.
  *
  * @method static WorkflowStatus READY_FOR_VALIDATION()
  * @method static WorkflowStatus APPROVED()
