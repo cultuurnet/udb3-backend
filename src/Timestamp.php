@@ -13,6 +13,10 @@ use DateTime;
 use DateTimeInterface;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent instead where possible.
+ */
 final class Timestamp implements Serializable
 {
     private DateTimeInterface $startDate;

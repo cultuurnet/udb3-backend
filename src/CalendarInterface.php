@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use DateTimeInterface;
 
 /**
- * Interface for calendars.
- * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar.
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar instead where possible.
  */
 interface CalendarInterface
 {
