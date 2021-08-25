@@ -9,6 +9,10 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
 use ValueObjects\Money\Currency;
 use ValueObjects\Money\CurrencyCode;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Price\Tariff instead where possible.
+ */
 class BasePrice implements Serializable
 {
     /**

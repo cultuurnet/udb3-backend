@@ -10,6 +10,10 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use ValueObjects\Money\Currency;
 use ValueObjects\Money\CurrencyCode;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Price\Tariff instead where possible.
+ */
 class Tariff implements Serializable
 {
     /**
