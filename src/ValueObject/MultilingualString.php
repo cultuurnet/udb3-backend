@@ -8,6 +8,11 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Use concrete instances of CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject instead where
+ *   possible.
+ */
 class MultilingualString
 {
     /**
