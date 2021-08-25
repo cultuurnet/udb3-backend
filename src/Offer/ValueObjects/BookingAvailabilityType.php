@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3\Offer\ValueObjects;
 
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use Use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType instead where possible.
+ */
 class BookingAvailabilityType
 {
     private const AVAILABLE = 'Available';
