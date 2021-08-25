@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDen
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -48,7 +49,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandler
             $this->commandBus->dispatch(
                 new UpdateBookingAvailability(
                     $offerId,
-                    \CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability::fromUdb3ModelBookingAvailability($bookingAvailability)
+                    LegacyBookingAvailability::fromUdb3ModelBookingAvailability($bookingAvailability)
                 )
             );
         } catch (CalendarTypeNotSupported $exception) {
