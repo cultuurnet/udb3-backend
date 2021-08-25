@@ -8,6 +8,10 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time instead where possible.
+ */
 class OpeningTime
 {
     /**

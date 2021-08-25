@@ -8,7 +8,8 @@ use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 
 /**
- * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour.
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour instead where possible.
  */
 final class OpeningHour implements Serializable
 {
