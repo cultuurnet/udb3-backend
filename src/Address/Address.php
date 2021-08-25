@@ -10,6 +10,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3ModelAddress;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Geography\Address instead where possible.
+ */
 final class Address implements Serializable, JsonLdSerializableInterface
 {
     /**
