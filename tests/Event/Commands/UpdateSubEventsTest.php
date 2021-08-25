@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
-use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

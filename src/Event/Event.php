@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
@@ -63,12 +62,14 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
@@ -352,11 +353,14 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
             $timestamp = $timestamps[$index];
 
+            $subEventStatus = $subEventUpdate->getStatus() ? Status::fromUdb3ModelStatus($subEventUpdate->getStatus()) : null;
+            $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ? BookingAvailability::fromUdb3ModelBookingAvailability($subEventUpdate->getBookingAvailability()) : null;
+
             $updatedTimestamp = new Timestamp(
                 $timestamp->getStartDate(),
                 $timestamp->getEndDate(),
-                $subEventUpdate->getStatus() ?: $timestamp->getStatus(),
-                $subEventUpdate->getBookingAvailability() ?: $timestamp->getBookingAvailability()
+                $subEventStatus ?? $timestamp->getStatus(),
+                $subEventBookingAvailability ?? $timestamp->getBookingAvailability()
             );
 
             $timestamps[$index] = $updatedTimestamp;

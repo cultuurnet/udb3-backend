@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventUpdatesDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdates;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -43,11 +42,6 @@ class UpdateSubEventsRequestHandler implements RequestHandler
 
         /** @var SubEventUpdates $updates */
         $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();
-
-        $updates = array_map(
-            fn (SubEventUpdate $update) => \CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate::fromUdb3ModelsSubEventUpdate($update),
-            $updates->toArray()
-        );
 
         $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
 
