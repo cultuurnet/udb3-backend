@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Event\ValueObjects;
 use ValueObjects\Enum\Enum;
 
 /**
- * Class AudienceType
- * @package CultuurNet\UDB3\Event\ValueObjects
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType instead where possible
  *
  * @method static AudienceType EVERYONE()
  * @method static AudienceType MEMBERS()
