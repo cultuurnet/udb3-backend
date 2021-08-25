@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
-use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use InvalidArgumentException;
@@ -38,6 +38,9 @@ class UpdateSubEvents implements AuthorizableCommand
         return  Permission::AANBOD_BEWERKEN();
     }
 
+    /**
+     * @return SubEventUpdate[]
+     */
     public function getUpdates(): array
     {
         return $this->subEventUpdates;

@@ -15,8 +15,6 @@ final class RequestBodyParserFactory
      */
     public static function createBaseParser(RequestBodyParser ...$customParsers): RequestBodyParser
     {
-        $customParsers[] = new AssociativeArrayRequestBodyParser();
-
         return new CombinedRequestBodyParser(
             new JsonRequestBodyParser(),
             ...$customParsers

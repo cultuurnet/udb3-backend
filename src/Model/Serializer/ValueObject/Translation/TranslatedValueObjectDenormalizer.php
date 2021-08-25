@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Translation;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
+use InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -29,10 +30,20 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
             );
         }
 
-        if (isset($context['originalLanguage'])) {
+        // Skip unsupported language codes to avoid any extra properties that are passed but not supported from
+        // resulting in an error response.
+        $languageKeys = array_keys($data);
+        foreach ($languageKeys as $languageKey) {
+            try {
+                new Language($languageKey);
+            } catch (InvalidArgumentException $e) {
+                unset($data[$languageKey]);
+            }
+        }
+
+        if (isset($context['originalLanguage'], $data[$context['originalLanguage']])) {
             $originalLanguageKey = $context['originalLanguage'];
         } else {
-            $languageKeys = array_keys($data);
             $originalLanguageKey = $languageKeys[0];
         }
 

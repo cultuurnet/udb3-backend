@@ -8,23 +8,30 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Calendar as LegacyCalendar;
+use CultuurNet\UDB3\CalendarType as LegacyCalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
-use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Event\EventType as LegacyEventType;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId as LegacyLocationId;
+use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
+use CultuurNet\UDB3\Event\ValueObjects\StatusReason as LegacyStatusReason;
+use CultuurNet\UDB3\Event\ValueObjects\StatusType as LegacyStatusType;
+use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Timestamp;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
+use CultuurNet\UDB3\Timestamp as LegacyTimestamp;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
 
 final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
@@ -41,11 +48,11 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $permanentEventCreated = new EventCreated(
             '1',
-            new Language('nl'),
-            new Title('Permanent Event'),
-            new EventType('0.50.4.0.0', 'concert'),
-            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::PERMANENT())
+            new LegacyLanguage('nl'),
+            new LegacyTitle('Permanent Event'),
+            new LegacyEventType('0.50.4.0.0', 'concert'),
+            new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new LegacyCalendar(LegacyCalendarType::PERMANENT())
         );
 
         $this->expectException(CalendarTypeNotSupported::class);
@@ -64,12 +71,12 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $periodicEventCreated = new EventCreated(
             '1',
-            new Language('nl'),
-            new Title('Periodic Event'),
-            new EventType('0.50.4.0.0', 'concert'),
-            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(
-                CalendarType::PERIODIC(),
+            new LegacyLanguage('nl'),
+            new LegacyTitle('Periodic Event'),
+            new LegacyEventType('0.50.4.0.0', 'concert'),
+            new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new LegacyCalendar(
+                LegacyCalendarType::PERIODIC(),
                 new DateTime('2020-01-01 10:00:00'),
                 new DateTime('2020-01-01 12:00:00')
             )
@@ -91,16 +98,16 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $singleEventCreated = new EventCreated(
             '1',
-            new Language('nl'),
-            new Title('Single Event'),
-            new EventType('0.50.4.0.0', 'concert'),
-            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(
-                CalendarType::SINGLE(),
+            new LegacyLanguage('nl'),
+            new LegacyTitle('Single Event'),
+            new LegacyEventType('0.50.4.0.0', 'concert'),
+            new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new LegacyCalendar(
+                LegacyCalendarType::SINGLE(),
                 null,
                 null,
                 [
-                    new Timestamp(
+                    new LegacyTimestamp(
                         new DateTime('2020-01-01 10:00:00'),
                         new DateTime('2020-01-01 12:00:00')
                     ),
@@ -137,20 +144,20 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update status on 1 sub event' => [
                new EventCreated(
                    '1',
-                   new Language('nl'),
-                   new Title('Multiple Event'),
-                   new EventType('0.50.4.0.0', 'concert'),
-                   new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                   new Calendar(
-                       CalendarType::MULTIPLE(),
+                   new LegacyLanguage('nl'),
+                   new LegacyTitle('Multiple Event'),
+                   new LegacyEventType('0.50.4.0.0', 'concert'),
+                   new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                   new LegacyCalendar(
+                       LegacyCalendarType::MULTIPLE(),
                        null,
                        null,
                        [
-                           new Timestamp(
+                           new LegacyTimestamp(
                                new DateTime('2020-01-01 10:00:00'),
                                new DateTime('2020-01-01 12:00:00')
                            ),
-                           new Timestamp(
+                           new LegacyTimestamp(
                                new DateTime('2020-01-03 10:00:00'),
                                new DateTime('2020-01-03 12:00:00')
                            ),
@@ -161,29 +168,32 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                    '1',
                    (new SubEventUpdate(1))->withStatus(
                        new Status(
-                           StatusType::unavailable(),
-                           [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                           StatusType::Unavailable(),
+                           new TranslatedStatusReason(
+                               new Language('nl'),
+                               new StatusReason('Niet beschikbaar')
+                           )
                        )
                    )
                ),
                new CalendarUpdated(
                    '1',
-                   new Calendar(
-                       CalendarType::MULTIPLE(),
+                   new LegacyCalendar(
+                       LegacyCalendarType::MULTIPLE(),
                        null,
                        null,
                        [
-                           new Timestamp(
+                           new LegacyTimestamp(
                                new DateTime('2020-01-01 10:00:00'),
                                new DateTime('2020-01-01 12:00:00')
                            ),
-                           (new Timestamp(
+                           (new LegacyTimestamp(
                                new DateTime('2020-01-03 10:00:00'),
                                new DateTime('2020-01-03 12:00:00')
                            ))->withStatus(
-                               new Status(
-                                   StatusType::unavailable(),
-                                   [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                               new LegacyStatus(
+                                   LegacyStatusType::unavailable(),
+                                   [new LegacyStatusReason(new LegacyLanguage('nl'), 'Niet beschikbaar')]
                                )
                            ),
                        ]
@@ -193,20 +203,20 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update status on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new Language('nl'),
-                    new Title('Multiple Event'),
-                    new EventType('0.50.4.0.0', 'concert'),
-                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ),
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ),
@@ -217,40 +227,46 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     '1',
                     (new SubEventUpdate(0))->withStatus(
                         new Status(
-                            StatusType::unavailable(),
-                            [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                            StatusType::Unavailable(),
+                            new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('Niet beschikbaar')
+                            )
                         )
                     ),
                     (new SubEventUpdate(1))->withStatus(
                         new Status(
-                            StatusType::temporarilyUnavailable(),
-                            [new StatusReason(new Language('nl'), 'Tijdelijk niet beschikbaar')]
+                            StatusType::TemporarilyUnavailable(),
+                            new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('Tijdelijk niet beschikbaar')
+                            )
                         )
                     )
                 ),
                 new CalendarUpdated(
                     '1',
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            (new Timestamp(
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ))->withStatus(
-                                new Status(
-                                    StatusType::unavailable(),
-                                    [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                                new LegacyStatus(
+                                    LegacyStatusType::unavailable(),
+                                    [new LegacyStatusReason(new LegacyLanguage('nl'), 'Niet beschikbaar')]
                                 )
                             ),
-                            (new Timestamp(
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ))->withStatus(
-                                new Status(
-                                    StatusType::temporarilyUnavailable(),
-                                    [new StatusReason(new Language('nl'), 'Tijdelijk niet beschikbaar')]
+                                new LegacyStatus(
+                                    LegacyStatusType::temporarilyUnavailable(),
+                                    [new LegacyStatusReason(new LegacyLanguage('nl'), 'Tijdelijk niet beschikbaar')]
                                 )
                             ),
                         ]
@@ -260,20 +276,20 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update booking availability on 1 sub event' => [
                 new EventCreated(
                     '1',
-                    new Language('nl'),
-                    new Title('Multiple Event'),
-                    new EventType('0.50.4.0.0', 'concert'),
-                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ),
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ),
@@ -282,23 +298,27 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(1))->withBookingAvailability(BookingAvailability::unavailable())
+                    (new SubEventUpdate(1))->withBookingAvailability(
+                        new BookingAvailability(
+                            BookingAvailabilityType::Unavailable()
+                        )
+                    )
                 ),
                 new CalendarUpdated(
                     '1',
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ),
-                            (new Timestamp(
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
-                            ))->withBookingAvailability(BookingAvailability::unavailable()),
+                            ))->withBookingAvailability(LegacyBookingAvailability::unavailable()),
                         ]
                     )
                 ),
@@ -306,20 +326,20 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update booking availability on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new Language('nl'),
-                    new Title('Multiple Event'),
-                    new EventType('0.50.4.0.0', 'concert'),
-                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ),
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ),
@@ -328,24 +348,32 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(0))->withBookingAvailability(BookingAvailability::unavailable()),
-                    (new SubEventUpdate(1))->withBookingAvailability(BookingAvailability::unavailable())
+                    (new SubEventUpdate(0))->withBookingAvailability(
+                        new BookingAvailability(
+                            BookingAvailabilityType::Unavailable()
+                        )
+                    ),
+                    (new SubEventUpdate(1))->withBookingAvailability(
+                        new BookingAvailability(
+                            BookingAvailabilityType::Unavailable()
+                        )
+                    )
                 ),
                 new CalendarUpdated(
                     '1',
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            (new Timestamp(
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
-                            ))->withBookingAvailability(BookingAvailability::unavailable()),
-                            (new Timestamp(
+                            ))->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
-                            ))->withBookingAvailability(BookingAvailability::unavailable()),
+                            ))->withBookingAvailability(LegacyBookingAvailability::unavailable()),
                         ]
                     )
                 ),
@@ -353,20 +381,20 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update status and booking on 1 sub event' => [
                 new EventCreated(
                     '1',
-                    new Language('nl'),
-                    new Title('Multiple Event'),
-                    new EventType('0.50.4.0.0', 'concert'),
-                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ),
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ),
@@ -375,33 +403,42 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(1))->withStatus(
-                        new Status(
-                            StatusType::unavailable(),
-                            [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                    (new SubEventUpdate(1))
+                        ->withStatus(
+                            new Status(
+                                StatusType::Unavailable(),
+                                new TranslatedStatusReason(
+                                    new Language('nl'),
+                                    new StatusReason('Niet beschikbaar')
+                                )
+                            )
                         )
-                    )->withBookingAvailability(BookingAvailability::unavailable())
+                        ->withBookingAvailability(
+                            new BookingAvailability(
+                                BookingAvailabilityType::Unavailable()
+                            )
+                        )
                 ),
                 new CalendarUpdated(
                     '1',
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ),
-                            (new Timestamp(
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ))->withStatus(
-                                new Status(
-                                    StatusType::unavailable(),
-                                    [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                                new LegacyStatus(
+                                    LegacyStatusType::unavailable(),
+                                    [new LegacyStatusReason(new LegacyLanguage('nl'), 'Niet beschikbaar')]
                                 )
-                            )->withBookingAvailability(BookingAvailability::unavailable()),
+                            )->withBookingAvailability(LegacyBookingAvailability::unavailable()),
                         ]
                     )
                 ),
@@ -409,20 +446,20 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Update booking and status on 2 sub events' => [
                 new EventCreated(
                     '1',
-                    new Language('nl'),
-                    new Title('Multiple Event'),
-                    new EventType('0.50.4.0.0', 'concert'),
-                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ),
-                            new Timestamp(
+                            new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ),
@@ -431,44 +468,62 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(0))->withStatus(
-                        new Status(
-                            StatusType::unavailable(),
-                            [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                    (new SubEventUpdate(0))
+                        ->withStatus(
+                            new Status(
+                                StatusType::Unavailable(),
+                                new TranslatedStatusReason(
+                                    new Language('nl'),
+                                    new StatusReason('Niet beschikbaar')
+                                )
+                            )
                         )
-                    )->withBookingAvailability(BookingAvailability::unavailable()),
-                    (new SubEventUpdate(1))->withStatus(
-                        new Status(
-                            StatusType::temporarilyUnavailable(),
-                            [new StatusReason(new Language('nl'), 'Tijdelijk niet beschikbaar')]
+                        ->withBookingAvailability(
+                            new BookingAvailability(
+                                BookingAvailabilityType::Unavailable()
+                            )
+                        ),
+                    (new SubEventUpdate(1))
+                        ->withStatus(
+                            new Status(
+                                StatusType::TemporarilyUnavailable(),
+                                new TranslatedStatusReason(
+                                    new Language('nl'),
+                                    new StatusReason('Tijdelijk niet beschikbaar')
+                                )
+                            )
                         )
-                    )->withBookingAvailability(BookingAvailability::unavailable())
+                        ->withBookingAvailability(
+                            new BookingAvailability(
+                                BookingAvailabilityType::Unavailable()
+                            )
+                        )
                 ),
                 new CalendarUpdated(
                     '1',
-                    new Calendar(
-                        CalendarType::MULTIPLE(),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
                         null,
                         null,
                         [
-                            (new Timestamp(
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-01 10:00:00'),
                                 new DateTime('2020-01-01 12:00:00')
                             ))->withStatus(
-                                new Status(
-                                    StatusType::unavailable(),
-                                    [new StatusReason(new Language('nl'), 'Niet beschikbaar')]
+                                new LegacyStatus(
+                                    LegacyStatusType::unavailable(),
+                                    [new LegacyStatusReason(new LegacyLanguage('nl'), 'Niet beschikbaar')]
                                 )
-                            )->withBookingAvailability(BookingAvailability::unavailable()),
-                            (new Timestamp(
+                            )->withBookingAvailability(LegacyBookingAvailability::unavailable()),
+                            (new LegacyTimestamp(
                                 new DateTime('2020-01-03 10:00:00'),
                                 new DateTime('2020-01-03 12:00:00')
                             ))->withStatus(
-                                new Status(
-                                    StatusType::temporarilyUnavailable(),
-                                    [new StatusReason(new Language('nl'), 'Tijdelijk niet beschikbaar')]
+                                new LegacyStatus(
+                                    LegacyStatusType::temporarilyUnavailable(),
+                                    [new LegacyStatusReason(new LegacyLanguage('nl'), 'Tijdelijk niet beschikbaar')]
                                 )
-                            )->withBookingAvailability(BookingAvailability::unavailable()),
+                            )->withBookingAvailability(LegacyBookingAvailability::unavailable()),
                         ]
                     )
                 ),

@@ -6,16 +6,18 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
-use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\StatusType;
-use CultuurNet\UDB3\Event\ValueObjects\SubEventUpdate;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateSubEventsRequestHandlerTest extends TestCase
@@ -91,7 +93,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
                     (new SubEventUpdate(1))
-                        ->withStatus(new Status(StatusType::unavailable(), []))
+                        ->withStatus(new Status(StatusType::Unavailable()))
                 ),
             ],
             'two_subEvents_with_id_and_different_status_types' => [
@@ -112,9 +114,9 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
                     (new SubEventUpdate(1))
-                        ->withStatus(new Status(StatusType::unavailable(), [])),
+                        ->withStatus(new Status(StatusType::Unavailable())),
                     (new SubEventUpdate(2))
-                        ->withStatus(new Status(StatusType::available(), []))
+                        ->withStatus(new Status(StatusType::Available()))
                 ),
             ],
             'one_subEvent_with_id_and_status_type_and_reason' => [
@@ -135,11 +137,16 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     (new SubEventUpdate(1))
                         ->withStatus(
                             new Status(
-                                StatusType::unavailable(),
-                                [
-                                    new StatusReason(new Language('nl'), 'Geannuleerd wegens covid'),
-                                    new StatusReason(new Language('fr'), 'Franse tekst'),
-                                ]
+                                StatusType::Unavailable(),
+                                (
+                                    new TranslatedStatusReason(
+                                        new Language('nl'),
+                                        new StatusReason('Geannuleerd wegens covid')
+                                    )
+                                )->withTranslation(
+                                    new Language('fr'),
+                                    new StatusReason('Franse tekst')
+                                )
                             )
                         ),
                 ),
@@ -156,7 +163,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
                     (new SubEventUpdate(1))
-                        ->withBookingAvailability(BookingAvailability::unavailable()),
+                        ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
                 ),
             ],
             'one_subEvent_with_id_and_status_type_and_bookingAvailability_type' => [
@@ -174,8 +181,8 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
                     (new SubEventUpdate(1))
-                        ->withStatus(new Status(StatusType::available(), []))
-                        ->withBookingAvailability(BookingAvailability::unavailable()),
+                        ->withStatus(new Status(StatusType::Available()))
+                        ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
                 ),
             ],
         ];

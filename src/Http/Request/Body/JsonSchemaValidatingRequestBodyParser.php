@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Parsers\SchemaParser;
-use Opis\JsonSchema\Resolvers\SchemaResolver;
 use Opis\JsonSchema\SchemaLoader;
 use Opis\JsonSchema\Validator;
 use Opis\Uri\Uri;
@@ -22,28 +21,19 @@ final class JsonSchemaValidatingRequestBodyParser implements RequestBodyParser
     private Validator $validator;
     private Uri $jsonSchema;
 
-    private function __construct(SchemaResolver $schemaResolver, Uri $jsonSchema)
+    /**
+     * Filename must be one of the JsonSchemaLocator constants!
+     */
+    public function __construct(string $jsonSchemaLocatorFile)
     {
-        $this->jsonSchema = $jsonSchema;
+        $this->jsonSchema = JsonSchemaLocator::createSchemaUri($jsonSchemaLocatorFile);
 
         $this->validator = new Validator(
             new SchemaLoader(
                 new SchemaParser(),
-                $schemaResolver
+                JsonSchemaLocator::createSchemaResolver()
             ),
             self::MAX_ERRORS
-        );
-    }
-
-    /**
-     * Uses JsonSchemaLocator::loadSchema() to load the schema from the given filename.
-     * Filename must be one of the JsonSchemaLocator constants!
-     */
-    public static function fromFile(string $jsonSchemaLocatorFile): self
-    {
-        return new self(
-            JsonSchemaLocator::createSchemaResolver(),
-            JsonSchemaLocator::createSchemaUri($jsonSchemaLocatorFile)
         );
     }
 

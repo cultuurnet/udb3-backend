@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -23,17 +21,18 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class CalendarDenormalizer implements DenormalizerInterface
 {
-    private TranslatedStatusReasonDenormalizer $statusReasonDenormalizer;
+    private StatusDenormalizer $statusDenormalizer;
+    private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
 
     public function __construct()
     {
-        $this->statusReasonDenormalizer = new TranslatedStatusReasonDenormalizer();
+        $this->statusDenormalizer = new StatusDenormalizer();
+        $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
     }
 
     /**
@@ -52,9 +51,11 @@ class CalendarDenormalizer implements DenormalizerInterface
         $openingHoursData = isset($data['openingHours']) ? $data['openingHours'] : [];
         $openingHours = $this->denormalizeOpeningHours($openingHoursData);
 
-        $topLevelStatus = isset($data['status']) ? $this->denormalizeStatus($data['status']) : null;
-        $topLevelBookingAvailability = isset($data['bookingAvailability']['type'])
-            ? new BookingAvailability(new BookingAvailabilityType($data['bookingAvailability']['type'])) : null;
+        $statusData = $data['status'] ?? ['type' => 'Available'];
+        $topLevelStatus = $this->statusDenormalizer->denormalize($statusData, Status::class);
+
+        $bookingAvailabilityData = $data['bookingAvailability'] ?? ['type' => 'Available'];
+        $topLevelBookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($bookingAvailabilityData, BookingAvailability::class);
 
         switch ($data['calendarType']) {
             case 'single':
@@ -87,10 +88,8 @@ class CalendarDenormalizer implements DenormalizerInterface
                 break;
         }
 
-        if (isset($data['status'])) {
-            $calendar = $calendar->withStatus(
-                $this->denormalizeStatus($data['status'])
-            );
+        if ($topLevelStatus !== null) {
+            $calendar = $calendar->withStatus($topLevelStatus);
         }
 
         return $calendar;
@@ -164,53 +163,32 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     private function denormalizeSubEvent(
         array $subEventData,
-        ?Status $topLevelStatus,
-        ?BookingAvailability $topLevelBookingAvailability
+        Status $topLevelStatus,
+        BookingAvailability $topLevelBookingAvailability
     ): SubEvent {
-        $statusType = $topLevelStatus ? $topLevelStatus->getType() : StatusType::Available();
-        $statusReason = $topLevelStatus ? $topLevelStatus->getReason() : null;
-        $bookingAvailability = $topLevelBookingAvailability
-            ?: new BookingAvailability(BookingAvailabilityType::Available());
-
-        if (isset($subEventData['status']['type'])) {
-            $statusType = new StatusType($subEventData['status']['type']);
+        if (!isset($subEventData['status']['type'])) {
+            $subEventData['status']['type'] = $topLevelStatus->getType()->toString();
+        }
+        if (!isset($subEventData['status']['reason']) && $reason = $topLevelStatus->getReason()) {
+            foreach ($reason->getLanguages() as $language) {
+                $subEventData['status']['reason'][$language->getCode()] = $reason->getTranslation($language)->toString();
+            }
+        }
+        if (!isset($subEventData['bookingAvailability']['type'])) {
+            $subEventData['bookingAvailability']['type'] = $topLevelBookingAvailability->getType()->toString();
         }
 
-        if (isset($subEventData['status']['reason'])) {
-            /** @var TranslatedStatusReason $statusReason */
-            $statusReason = $this->statusReasonDenormalizer->denormalize(
-                $subEventData['status']['reason'],
-                TranslatedStatusReason::class
-            );
-        }
+        $status = $this->statusDenormalizer->denormalize($subEventData['status'], Status::class);
 
-        if (isset($subEventData['bookingAvailability']['type'])) {
-            $bookingAvailability = new BookingAvailability(
-                new BookingAvailabilityType($subEventData['bookingAvailability']['type'])
-            );
-        }
-
-        $status = new Status($statusType, $statusReason);
+        $bookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize(
+            $subEventData['bookingAvailability'],
+            BookingAvailability::class
+        );
 
         return new SubEvent(
             $this->denormalizeDateRange($subEventData),
             $status,
             $bookingAvailability
         );
-    }
-
-    private function denormalizeStatus(array $status): Status
-    {
-        $statusType = new StatusType($status['type']);
-        $statusReason = null;
-
-        if (isset($status['reason'])) {
-            $statusReason = $this->statusReasonDenormalizer->denormalize(
-                $status['reason'],
-                TranslatedStatusReason::class
-            );
-        }
-
-        return new Status($statusType, $statusReason);
     }
 }

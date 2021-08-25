@@ -7,6 +7,11 @@ namespace CultuurNet\UDB3\Offer\ValueObjects;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelBookingAvailability;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as much as possible, and convert to this using
+ *   fromUdb3ModelBookingAvailability() where still needed.
+ */
 final class BookingAvailability implements Serializable
 {
     private BookingAvailabilityType $type;
