@@ -7,7 +7,8 @@ namespace CultuurNet\UDB3;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
 
 /**
- * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Translation\Language.
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Translation\Language instead where possible.
  */
 class Language
 {

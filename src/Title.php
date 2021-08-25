@@ -7,7 +7,8 @@ namespace CultuurNet\UDB3;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
 
 /**
- * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Text\Title.
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Text\Title instead where possible.
  */
 class Title extends TrimmedString implements \JsonSerializable
 {
