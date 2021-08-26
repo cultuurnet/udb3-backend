@@ -14,11 +14,11 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelB
  */
 final class BookingAvailability implements Serializable
 {
-    private BookingAvailabilityType $type;
+    private string $type;
 
     public function __construct(BookingAvailabilityType $type)
     {
-        $this->type = $type;
+        $this->type = $type->toNative();
     }
 
     public static function available(): BookingAvailability
@@ -33,12 +33,12 @@ final class BookingAvailability implements Serializable
 
     public function getType(): BookingAvailabilityType
     {
-        return $this->type;
+        return BookingAvailabilityType::fromNative($this->type);
     }
 
     public function equals(BookingAvailability $bookingAvailability): bool
     {
-        return $this->type->toNative() === $bookingAvailability->getType()->toNative();
+        return $this->type === $bookingAvailability->getType()->toNative();
     }
 
     public static function deserialize(array $data): BookingAvailability
@@ -49,7 +49,7 @@ final class BookingAvailability implements Serializable
     public function serialize(): array
     {
         return [
-            'type' => $this->type->toNative(),
+            'type' => $this->type,
         ];
     }
 
