@@ -23,7 +23,7 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
         $data = clone $data;
 
         // Rename timeSpans to subEvent
-        if (isset($data->timeSpans) && is_array($data->timeSpans)) {
+        if (isset($data->timeSpans) && is_array($data->timeSpans) && !isset($data->subEvent)) {
             $data->subEvent = array_map(
                 function ($timeSpan) {
                     // Rename start to startDate
