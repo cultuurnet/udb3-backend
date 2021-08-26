@@ -20,6 +20,7 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
         if (!($data instanceof stdClass)) {
             return $request;
         }
+        $data = clone $data;
 
         // Rename timeSpans to subEvent
         if (isset($data->timeSpans) && is_array($data->timeSpans)) {
@@ -84,6 +85,6 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
             );
         }
 
-        return $request;
+        return $request->withParsedBody($data);
     }
 }
