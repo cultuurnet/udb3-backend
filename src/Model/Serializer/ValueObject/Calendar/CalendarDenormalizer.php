@@ -59,9 +59,10 @@ class CalendarDenormalizer implements DenormalizerInterface
 
         switch ($data['calendarType']) {
             case 'single':
-                $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
                 if (isset($data['subEvent'][0])) {
                     $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability);
+                } else {
+                    $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
                 }
                 $calendar = new SingleSubEventCalendar($subEvent);
                 break;
