@@ -306,7 +306,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     {
         $jsonLd = [];
 
-        $jsonLd['calendarType'] = $this->getType();
+        $jsonLd['calendarType'] = $this->type;
 
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
