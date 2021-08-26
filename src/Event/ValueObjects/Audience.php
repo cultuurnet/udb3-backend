@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3\Event\ValueObjects;
 
 use Broadway\Serializer\Serializable;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType instead where possible
+ */
 final class Audience implements Serializable
 {
     /**

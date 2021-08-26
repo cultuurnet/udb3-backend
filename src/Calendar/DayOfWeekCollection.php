@@ -9,7 +9,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 
 /**
- * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days.
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days instead where possible.
  */
 class DayOfWeekCollection implements Serializable
 {

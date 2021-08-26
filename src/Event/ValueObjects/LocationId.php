@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3\Event\ValueObjects;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Identity\UUID instead where possible
+ */
 class LocationId extends StringLiteral
 {
     private static $dummyPlaceForEducationIds = [];

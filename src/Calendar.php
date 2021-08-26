@@ -21,6 +21,10 @@ use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use concrete implementations of CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar instead where possible.
+ */
 final class Calendar implements CalendarInterface, JsonLdSerializableInterface, Serializable
 {
     private CalendarType $type;

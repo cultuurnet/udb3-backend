@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Address;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
- * City/Town/Village
- * @package CultuurNet\UDB3
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Geography\Locality instead where possible.
  */
 class Locality extends StringLiteral
 {

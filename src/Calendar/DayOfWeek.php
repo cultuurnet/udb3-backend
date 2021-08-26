@@ -8,6 +8,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use ValueObjects\Enum\Enum;
 
 /**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day instead where possible.
+ *
  * @method static DayOfWeek MONDAY()
  * @method static DayOfWeek TUESDAY()
  * @method static DayOfWeek WEDNESDAY()
@@ -15,8 +18,6 @@ use ValueObjects\Enum\Enum;
  * @method static DayOfWeek FRIDAY()
  * @method static DayOfWeek SATURDAY()
  * @method static DayOfWeek SUNDAY()
- *
- * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day.
  */
 final class DayOfWeek extends Enum
 {

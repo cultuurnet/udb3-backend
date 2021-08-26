@@ -9,6 +9,9 @@ use ValueObjects\Number\Natural;
 
 /**
  * Price expressed in its lowest unit, eg cents.
+ *
+ * @deprecated
+ *   Use Money\Money instead where possible.
  */
 class Price extends Natural
 {

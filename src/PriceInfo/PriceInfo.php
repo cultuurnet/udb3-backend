@@ -7,6 +7,10 @@ namespace CultuurNet\UDB3\PriceInfo;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo as Udb3ModelPriceInfo;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo instead where possible.
+ */
 class PriceInfo implements Serializable
 {
     /**

@@ -11,6 +11,10 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use DateTimeImmutable;
 use DateTimeInterface;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo where possible.
+ */
 class AvailableTo
 {
     /**

@@ -8,6 +8,10 @@ use CultuurNet\UDB3\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category as Udb3ModelCategory;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category instead where possible.
+ */
 final class EventType extends Category
 {
     public const DOMAIN = 'eventtype';

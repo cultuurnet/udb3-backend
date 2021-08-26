@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializable;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject instead where possible.
+ */
 final class MediaObject implements Serializable, JsonLdSerializableInterface
 {
     /**

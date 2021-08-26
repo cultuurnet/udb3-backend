@@ -10,6 +10,10 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint instead where possible.
+ */
 final class ContactPoint implements Serializable, JsonLdSerializableInterface
 {
     /**

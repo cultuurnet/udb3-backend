@@ -7,6 +7,10 @@ namespace CultuurNet\UDB3\Offer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange as Udb3ModelAgeRange;
 use ValueObjects\Person\Age;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange where possible.
+ */
 class AgeRange
 {
     /**

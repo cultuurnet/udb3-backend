@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3;
 use ValueObjects\Enum\Enum;
 
 /**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType instead where possible.
+ *
  * @method static CalendarType SINGLE()
  * @method static CalendarType MULTIPLE()
  * @method static CalendarType PERIODIC()

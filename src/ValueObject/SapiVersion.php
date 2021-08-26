@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\ValueObject;
 use ValueObjects\Enum\Enum;
 
 /**
+ * @deprecated
+ *   Everything should use V3 by now so remove usages and this class.
+ *
  * @method static SapiVersion V2()
  * @method static SapiVersion V3()
  */

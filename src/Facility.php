@@ -7,6 +7,10 @@ namespace CultuurNet\UDB3;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category as Udb3ModelCategory;
 use InvalidArgumentException;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category instead where possible.
+ */
 final class Facility extends Category
 {
     public const DOMAIN = 'facility';
