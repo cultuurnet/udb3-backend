@@ -25,11 +25,16 @@ class ImportServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        // Set up the import resque command bus.
-        $app['resque_command_bus_factory']('imports');
+        if (isset($app['config']['synchronous_imports']) && $app['config']['synchronous_imports'] === true) {
+            $app['imports_command_bus'] = fn (Application $app) => $app['event_command_bus'];
+            $app['imports_command_bus_out'] = fn (Application $app) => $app['event_command_bus'];
+        } else {
+            // Set up the import resque command bus.
+            $app['resque_command_bus_factory']('imports');
 
-        // Tie the relevant command handlers to the command bus.
-        $app->extend('imports_command_bus_out', $this->subscribeHandlersCallback);
+            // Tie the relevant command handlers to the command bus.
+            $app->extend('imports_command_bus_out', $this->subscribeHandlersCallback);
+        }
     }
 
     /**
