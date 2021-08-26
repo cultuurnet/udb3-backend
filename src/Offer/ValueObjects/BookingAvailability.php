@@ -14,6 +14,12 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability as Udb3ModelB
  */
 final class BookingAvailability implements Serializable
 {
+    /**
+     * Store the BookingAvailabilityType as a string to prevent serialization issues when the Calendar is part of a
+     * command that gets queued in Redis, as the base Enum class that it extends from does not support serialization for
+     * some reason.
+     * @var string
+     */
     private string $type;
 
     public function __construct(BookingAvailabilityType $type)

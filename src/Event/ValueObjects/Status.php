@@ -17,6 +17,8 @@ use InvalidArgumentException;
 final class Status implements Serializable
 {
     /**
+     * Store the StatusType as a string to prevent serialization issues when the Calendar is part of a command that
+     * gets queued in Redis, as the base Enum class that it extends from does not support serialization for some reason.
      * @var string
      */
     private $type;
