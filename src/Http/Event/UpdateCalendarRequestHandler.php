@@ -32,7 +32,7 @@ final class UpdateCalendarRequestHandler implements RequestHandler
         $this->commandBus = $commandBus;
         $this->parser = RequestBodyParserFactory::createBaseParser(
             new UpdateCalendarBackwardCompatibilityRequestBodyParser(),
-            new UpdateCalendarValidationRequestBodyParser(),
+            new UpdateCalendarValidationRequestBodyParser(JsonSchemaLocator::EVENT_CALENDAR_PUT),
             new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class)
         );
     }

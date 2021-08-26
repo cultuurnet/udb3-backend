@@ -14,11 +14,21 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class UpdateCalendarValidationRequestBodyParser implements RequestBodyParser
 {
+    /**
+     * @var string
+     */
+    private $jsonSchemaLocatorFile;
+
+    public function __construct(string $jsonSchemaLocatorFile)
+    {
+        $this->jsonSchemaLocatorFile = $jsonSchemaLocatorFile;
+    }
+
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $errors = [];
         try {
-            $baseValidationParser = new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_CALENDAR_PUT);
+            $baseValidationParser = new JsonSchemaValidatingRequestBodyParser($this->jsonSchemaLocatorFile);
             $request = $baseValidationParser->parse($request);
         } catch (ApiProblem $apiProblem) {
             // Re-throw anything that's not https://api.publiq.be/probs/body/invalid-data.
