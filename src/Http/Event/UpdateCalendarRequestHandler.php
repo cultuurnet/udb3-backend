@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Calendar as LegacyCalendar;
+use CultuurNet\UDB3\Http\Offer\UpdateCalendarBackwardCompatibilityRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\UpdateCalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
