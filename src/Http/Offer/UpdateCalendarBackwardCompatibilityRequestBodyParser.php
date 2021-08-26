@@ -17,8 +17,12 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
     {
         $data = $request->getParsedBody();
 
+        if (!($data instanceof stdClass)) {
+            return $request;
+        }
+
         // Rename timeSpans to subEvent
-        if ($data instanceof stdClass && isset($data->timeSpans) && is_array($data->timeSpans)) {
+        if (isset($data->timeSpans) && is_array($data->timeSpans)) {
             $data->subEvent = array_map(
                 function ($timeSpan) {
                     // Rename start to startDate
@@ -36,6 +40,24 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
                 $data->timeSpans
             );
             unset($data->timeSpans);
+        }
+
+        // Add default status and bookingAvailability to subEvent(s) if missing
+        // Technically they are required on the schema of subEvent, but for backward compatibility we need to set
+        // defaults when they are missing.
+        if (isset($data->subEvent) && is_array($data->subEvent)) {
+            $data->subEvent = array_map(
+                function ($subEvent) {
+                    if ($subEvent instanceof stdClass && !isset($subEvent->status)) {
+                        $subEvent->status = (object) ['type' => 'Available'];
+                    }
+                    if ($subEvent instanceof stdClass && !isset($subEvent->bookingAvailability)) {
+                        $subEvent->bookingAvailability = (object) ['type' => 'Available'];
+                    }
+                    return $subEvent;
+                },
+                $data->subEvent
+            );
         }
 
         return $request;
