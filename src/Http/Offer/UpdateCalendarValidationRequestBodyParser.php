@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use DateTimeImmutable;
@@ -147,7 +146,7 @@ final class UpdateCalendarValidationRequestBodyParser implements RequestBodyPars
             $closes = DateTimeImmutable::createFromFormat('H:i', $openingHourData->opens);
 
             if ($opens !== false && $closes !== false && $opens > $closes) {
-                $errors[] = new SchemaError( '/openingHours/' . $index . '/closes', 'closes should not be before opens');
+                $errors[] = new SchemaError('/openingHours/' . $index . '/closes', 'closes should not be before opens');
             }
         }
         return $errors;
