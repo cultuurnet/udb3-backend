@@ -169,7 +169,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                         StatusType::temporarilyUnavailable(),
                                         [new StatusReason(new Language('nl'), 'Covid')]
                                     )
-                                )
+                                ),
                         ]
                     )
                 ),
