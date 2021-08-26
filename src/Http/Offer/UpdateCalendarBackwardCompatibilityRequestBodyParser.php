@@ -42,9 +42,12 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
             unset($data->timeSpans);
         }
 
-        // Add default status and bookingAvailability to subEvent(s) if missing
-        // Technically they are required on the schema of subEvent, but for backward compatibility we need to set
-        // defaults when they are missing.
+        // Add default status and bookingAvailability to subEvent(s) if missing.
+        // Technically they are required on the schema of subEvent as a side effect of using $ref to the subEvent model
+        // which has status and bookingAvailability set to required because they are always present on the read model.
+        // For backward compatibility we need to set defaults when they are missing so the validator does not complain.
+        // If we didn't set these defaults and made the properties optional in the schema, they would still get these
+        // defaults down the line anyway.
         if (isset($data->subEvent) && is_array($data->subEvent)) {
             $data->subEvent = array_map(
                 function ($subEvent) {
