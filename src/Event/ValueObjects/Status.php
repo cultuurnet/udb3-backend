@@ -17,7 +17,7 @@ use InvalidArgumentException;
 final class Status implements Serializable
 {
     /**
-     * @var StatusType
+     * @var string
      */
     private $type;
 
@@ -29,13 +29,13 @@ final class Status implements Serializable
     public function __construct(StatusType $type, array $reason)
     {
         $this->ensureTranslationsAreUnique($reason);
-        $this->type = $type;
+        $this->type = $type->toNative();
         $this->reason = $reason;
     }
 
     public function getType(): StatusType
     {
-        return $this->type;
+        return StatusType::fromNative($this->type);
     }
 
     public function getReason(): array
@@ -64,7 +64,7 @@ final class Status implements Serializable
     public function serialize(): array
     {
         $serialized = [
-            'type' => $this->type->toNative(),
+            'type' => $this->type,
         ];
 
         $statusReasons = [];
