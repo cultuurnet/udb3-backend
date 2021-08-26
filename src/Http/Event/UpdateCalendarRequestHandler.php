@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\Offer\UpdateCalendarBackwardCompatibilityRequestBodyPar
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
-use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RequestHandler;
