@@ -382,13 +382,10 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
-
-        if ($type->sameValueAs(CalendarType::PERIODIC()) || $type->sameValueAs(CalendarType::PERMANENT())) {
-            $calendar->status = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
-            $calendar->bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
-                $udb3Calendar->getBookingAvailability()
-            );
-        }
+        $calendar->status = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
+        $calendar->bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
+            $udb3Calendar->getBookingAvailability()
+        );
         return $calendar;
     }
 
