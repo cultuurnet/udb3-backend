@@ -7,6 +7,10 @@ namespace CultuurNet\UDB3\Collection;
 use CultuurNet\UDB3\Collection\Exception\CollectionKeyNotFoundException;
 use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
 
+/**
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Collection instead where possible.
+ */
 interface CollectionInterface extends \IteratorAggregate
 {
     /**

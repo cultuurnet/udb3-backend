@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Address;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
- * Street name and number
- * @package CultuurNet\UDB3\Address\Address
+ * @deprecated
+ *   Use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode instead.
  */
 class PostalCode extends StringLiteral
 {

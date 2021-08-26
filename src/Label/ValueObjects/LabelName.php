@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Label\ValueObjects;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
- * Class LabelName
- * @package CultuurNet\UDB3\Label\ValueObjects
+ * @deprecated
+ * Use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName when possible
  */
 class LabelName extends StringLiteral
 {
