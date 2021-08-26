@@ -79,6 +79,7 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
                         !isset($subEvent->bookingAvailability->type)) {
                         $subEvent->bookingAvailability->type = $defaultBookingAvailabilityType;
                     }
+
                     return $subEvent;
                 },
                 $data->subEvent
