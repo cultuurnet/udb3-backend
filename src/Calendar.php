@@ -27,7 +27,7 @@ use InvalidArgumentException;
  */
 final class Calendar implements CalendarInterface, JsonLdSerializableInterface, Serializable
 {
-    private CalendarType $type;
+    private string $type;
 
     private ?DateTimeInterface $startDate;
 
@@ -72,7 +72,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             }
         }
 
-        $this->type = $type;
+        $this->type = $type->toNative();
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->openingHours = $openingHours;
@@ -97,8 +97,8 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private function guardUpdatingBookingAvailability(): void
     {
-        if ($this->type->sameValueAs(CalendarType::PERIODIC()) || $this->type->sameValueAs(CalendarType::PERMANENT())) {
-            throw CalendarTypeNotSupported::forCalendarType($this->type);
+        if ($this->getType()->sameValueAs(CalendarType::PERIODIC()) || $this->getType()->sameValueAs(CalendarType::PERMANENT())) {
+            throw CalendarTypeNotSupported::forCalendarType($this->getType());
         }
     }
 
@@ -139,7 +139,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public function getType(): CalendarType
     {
-        return $this->type;
+        return CalendarType::fromNative($this->type);
     }
 
     public function getStartDate(): ?DateTimeInterface
@@ -221,7 +221,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         );
 
         $calendar = [
-            'type' => $this->type->toNative(),
+            'type' => $this->type,
             'status' => $this->status->serialize(),
             'bookingAvailability' => $this->bookingAvailability->serialize(),
         ];
@@ -306,7 +306,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     {
         $jsonLd = [];
 
-        $jsonLd['calendarType'] = $this->getType()->toNative();
+        $jsonLd['calendarType'] = $this->getType();
 
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
