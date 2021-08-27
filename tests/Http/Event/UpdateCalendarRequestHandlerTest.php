@@ -331,6 +331,26 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new Calendar(CalendarType::PERMANENT())
                 ),
             ],
+            'permanent_with_status_and_bookingAvailability' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'status' => (object) [
+                        'type' => 'TemporarilyUnavailable',
+                        'reason' => (object) ['nl' => 'Covid'],
+                    ],
+                    'bookingAvailability' => (object) ['type' => 'Unavailable'],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new Calendar(CalendarType::PERMANENT()))
+                        ->withStatus(
+                            new Status(
+                                StatusType::temporarilyUnavailable(),
+                                [new StatusReason(new Language('nl'), 'Covid')]
+                            )
+                        )
+                ),
+            ],
         ];
     }
 
