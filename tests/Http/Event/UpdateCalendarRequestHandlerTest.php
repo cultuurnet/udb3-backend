@@ -322,6 +322,49 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'periodic' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new Calendar(
+                        CalendarType::PERIODIC(),
+                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
+                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                    )
+                ),
+            ],
+            'periodic_with_status_and_bookingAvailability' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'status' => (object) [
+                        'type' => 'TemporarilyUnavailable',
+                        'reason' => (object) ['nl' => 'Covid'],
+                    ],
+                    'bookingAvailability' => (object) ['type' => 'Unavailable'],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (
+                        new Calendar(
+                            CalendarType::PERIODIC(),
+                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
+                            DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00')
+                        )
+                    )
+                        ->withStatus(
+                            new Status(
+                                StatusType::temporarilyUnavailable(),
+                                [new StatusReason(new Language('nl'), 'Covid')]
+                            )
+                        )
+                ),
+            ],
             'permanent' => [
                 'data' => (object) [
                     'calendarType' => 'permanent',
