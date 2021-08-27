@@ -322,6 +322,15 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'permanent' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new Calendar(CalendarType::PERMANENT())
+                ),
+            ],
         ];
     }
 
