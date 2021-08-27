@@ -649,6 +649,80 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/endDate', 'The data (boolean) must match the type: string'),
                 ],
             ],
+            'periodic_invalid_openingHours_type' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T17:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => 'foo',
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours', 'The data (string) must match the type: array'),
+                ],
+            ],
+            'periodic_invalid_openingHours_item_type' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T17:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => ['foo'],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0', 'The data (string) must match the type: object'),
+                ],
+            ],
+            'periodic_invalid_openingHours_item_missing_required_fields' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T17:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0', 'The required properties (opens, closes, dayOfWeek) are missing'),
+                ],
+            ],
+            'periodic_invalid_openingHours_item_invalid_fields' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T17:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => 10,
+                            'closes' => 'foo',
+                            'dayOfWeek' => 'Monday',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/opens', 'The data (integer) must match the type: string'),
+                    new SchemaError('/openingHours/0/closes', 'The string should match pattern: ^\d?\d:\d\d$'),
+                    new SchemaError('/openingHours/0/dayOfWeek', 'The data (string) must match the type: array'),
+                ],
+            ],
+            'periodic_invalid_openingHours_item_invalid_dayOfWeek' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T17:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '8:00',
+                            'closes' => '12:00',
+                            'dayOfWeek' => [
+                                'monday',
+                                'foo',
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/dayOfWeek/1', 'The data should match one item from enum'),
+                ],
+            ],
         ];
     }
 }
