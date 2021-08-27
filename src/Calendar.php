@@ -349,6 +349,63 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $this->toJsonLd() === $otherCalendar->toJsonLd();
     }
 
+    public static function single(
+        Timestamp $timestamp,
+        ?Status $status = null,
+        ?BookingAvailability $bookingAvailability = null
+    ): self {
+        $calendar = new self(CalendarType::SINGLE(), null, null, [$timestamp]);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        if ($bookingAvailability) {
+            $calendar = $calendar->withBookingAvailability($bookingAvailability);
+        }
+        return $calendar;
+    }
+
+    /**
+     * @param Timestamp[] $timestamps
+     */
+    public static function multiple(
+        array $timestamps,
+        ?Status $status = null,
+        ?BookingAvailability $bookingAvailability = null
+    ): self {
+        $calendar = new self(CalendarType::MULTIPLE(), null, null, $timestamps);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        if ($bookingAvailability) {
+            $calendar = $calendar->withBookingAvailability($bookingAvailability);
+        }
+        return $calendar;
+    }
+
+    public static function periodic(
+        DateTimeInterface $startDate,
+        DateTimeInterface $endDate,
+        array $openingHours = [],
+        ?Status $status = null
+    ): self {
+        $calendar = new self(CalendarType::PERIODIC(), $startDate, $endDate, [], $openingHours);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        return $calendar;
+    }
+
+    public static function permanent(
+        array $openingHours = [],
+        ?Status $status = null
+    ): self {
+        $calendar = new self(CalendarType::PERMANENT(), null, null, [], $openingHours);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        return $calendar;
+    }
+
     public static function fromUdb3ModelCalendar(Udb3ModelCalendar $udb3Calendar): Calendar
     {
         $type = CalendarType::fromNative($udb3Calendar->getType()->toString());
