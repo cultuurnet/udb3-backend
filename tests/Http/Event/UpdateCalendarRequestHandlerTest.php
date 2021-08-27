@@ -268,6 +268,27 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'multiple_with_startDate_and_endDate_instead_of_subEvent' => [
+                'data' => (object) [
+                    'calendarType' => 'multiple',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new Calendar(
+                        CalendarType::SINGLE(),
+                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
+                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                        [
+                            new Timestamp(
+                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
+                                DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                            ),
+                        ]
+                    )
+                ),
+            ],
         ];
     }
 

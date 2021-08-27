@@ -45,7 +45,7 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
 
         // Convert startDate and endDate on calendarType single to subEvent
         $calendarType = $data->calendarType ?? null;
-        if ($calendarType === 'single' && isset($data->startDate, $data->endDate) && !isset($data->subEvent)) {
+        if (($calendarType === 'single' || $calendarType === 'multiple') && isset($data->startDate, $data->endDate) && !isset($data->subEvent)) {
             $data->subEvent = [
                 (object) [
                     'startDate' => $data->startDate,
