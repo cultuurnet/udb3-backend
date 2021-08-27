@@ -549,6 +549,25 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/subEvent/1/startDate', 'The data must match the \'date-time\' format'),
                 ],
             ],
+            'periodic_no_startDate_and_endDate' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/', 'The required properties (startDate, endDate) are missing'),
+                ],
+            ],
+            'periodic_invalid_startDate_and_endDate' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => 'foo',
+                    'endDate' => false,
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/startDate', 'The data must match the \'date-time\' format'),
+                    new SchemaError('/endDate', 'The data (boolean) must match the type: string'),
+                ],
+            ],
         ];
     }
 }
