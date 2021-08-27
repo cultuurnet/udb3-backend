@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
@@ -51,6 +52,12 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $app[UpdateCalendarRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateCalendarRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
             }
         );
 
