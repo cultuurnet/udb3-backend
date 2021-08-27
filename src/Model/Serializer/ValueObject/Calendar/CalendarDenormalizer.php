@@ -57,6 +57,10 @@ class CalendarDenormalizer implements DenormalizerInterface
         $bookingAvailabilityData = $data['bookingAvailability'] ?? ['type' => 'Available'];
         $topLevelBookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($bookingAvailabilityData, BookingAvailability::class);
 
+        if ($data['calendarType'] === 'single' || $data['calendarType'] === 'multiple') {
+            $data['calendarType'] = count($data['subEvent']) === 1 ? 'single' : 'multiple';
+        }
+
         switch ($data['calendarType']) {
             case 'single':
                 if (isset($data['subEvent'][0])) {
