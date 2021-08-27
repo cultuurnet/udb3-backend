@@ -382,10 +382,25 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
-        $calendar->status = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
-        $calendar->bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
+
+        $topStatus = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
+        $topBookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
             $udb3Calendar->getBookingAvailability()
         );
+
+        if ($type->sameValueAs(CalendarType::PERIODIC()) || $type->sameValueAs(CalendarType::PERMANENT())) {
+            // If there are no subEvents, set the top status and top bookingAvailability.
+            $calendar->status = $topStatus;
+            $calendar->bookingAvailability = $topBookingAvailability;
+        } elseif ($calendar->deriveStatusTypeFromSubEvents()->equals($topStatus->getType())) {
+            // If there are subEvents, the top status and bookingAvailability have already been determined by their
+            // respective status and bookingAvailability and it should not be overwritten to avoid confusion in the
+            // expected behavior in tests, even though the JSON-LD projections will always fix it (again).
+            // Only overwrite the top status if it's the same type as the derived status, so the top status reason (if
+            // any) is set correctly. This is in line with the logic in determineCorrectTopStatusForProjection().
+            $calendar->status = $topStatus;
+        }
+
         return $calendar;
     }
 
