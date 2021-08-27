@@ -425,6 +425,12 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/', 'The data (array) must match the type: object'),
                 ],
             ],
+            'calendar_type_missing' => [
+                'data' => (object) [],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/', 'The required properties (calendarType) are missing'),
+                ],
+            ],
             'single_no_subEvent' => [
                 'data' => (object) [
                     'calendarType' => 'single',

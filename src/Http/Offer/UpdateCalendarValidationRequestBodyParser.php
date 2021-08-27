@@ -45,7 +45,7 @@ final class UpdateCalendarValidationRequestBodyParser implements RequestBodyPars
             throw ApiProblem::bodyInvalidData(...$errors);
         }
 
-        $calendarType = $data->calendarType;
+        $calendarType = $data->calendarType ?? null;
         switch ($calendarType) {
             case 'single':
             case 'multiple':
