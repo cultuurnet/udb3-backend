@@ -485,6 +485,56 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         )
                 ),
             ],
+            'permanent_with_openingHours' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '10:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => [
+                                'monday',
+                                'wednesday',
+                            ],
+                        ],
+                        (object) [
+                            'opens' => '8:30',
+                            'closes' => '9:00',
+                            'dayOfWeek' => [
+                                'tuesday',
+                                'thursday',
+                            ],
+                        ]
+                    ]
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new Calendar(
+                        CalendarType::PERMANENT(),
+                        null,
+                        null,
+                        [],
+                        [
+                            new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new DayOfWeekCollection(
+                                    DayOfWeek::MONDAY(),
+                                    DayOfWeek::WEDNESDAY()
+                                )
+                            ),
+                            new OpeningHour(
+                                new OpeningTime(new Hour(8), new Minute(30)),
+                                new OpeningTime(new Hour(9), new Minute(0)),
+                                new DayOfWeekCollection(
+                                    DayOfWeek::TUESDAY(),
+                                    DayOfWeek::THURSDAY()
+                                )
+                            )
+                        ]
+                    )
+                ),
+            ],
         ];
     }
 
