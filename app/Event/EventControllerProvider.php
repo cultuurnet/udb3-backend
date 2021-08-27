@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateCalendarRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -51,6 +52,12 @@ class EventControllerProvider implements ControllerProviderInterface
         $app[UpdateSubEventsRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateSubEventsRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
             }
         );
 
