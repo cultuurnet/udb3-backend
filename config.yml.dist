@@ -175,3 +175,5 @@ bypass_api_key_check: false
 sentry:
   dsn: ***
   environment: development
+
+synchronous_imports: true
