@@ -43,6 +43,16 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
             unset($data->timeSpans);
         }
 
+        $calendarType = $data->calendarType ?? null;
+        if ($calendarType === 'single' && isset($data->startDate, $data->endDate) && !isset($data->subEvent)) {
+            $data->subEvent = [
+                (object) [
+                    'startDate' => $data->startDate,
+                    'endDate' => $data->endDate,
+                ]
+            ];
+        }
+
         return $request->withParsedBody($data);
     }
 }
