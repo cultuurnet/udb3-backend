@@ -6,9 +6,6 @@ namespace CultuurNet\UDB3\Http\Place;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Calendar as LegacyCalendar;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForPlaceDataValidator;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarBackwardCompatibilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -23,7 +20,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class UpdateCalendarRequestHandler implements RequestHandler
 {
