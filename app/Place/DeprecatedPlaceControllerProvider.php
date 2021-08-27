@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -31,7 +32,7 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
         $controllers->post('place/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
         $controllers->post('place/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
         $controllers->delete('place/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
-        $controllers->post('place/{cdbid}/major-info', 'place_editing_controller:updateMajorInfo');
+        $controllers->post('place/{placeId}/major-info', UpdateMajorInfoRequestHandler::class . ':handle');
         $controllers->post('place/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
         $controllers->post('place/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
         $controllers->post('place/{cdbid}/organizer', 'place_editing_controller:updateOrganizerFromJsonBody');
