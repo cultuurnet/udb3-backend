@@ -261,6 +261,15 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/', 'The required properties (subEvent) are missing'),
                 ],
             ],
+            'single_empty_subEvent' => [
+                'data' => (object) [
+                    'calendarType' => 'single',
+                    'subEvent' => [],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent', 'Array should have at least 1 items, 0 found'),
+                ],
+            ],
             'subEvent_not_an_array' => [
                 'data' => (object) [
                     'calendarType' => 'single',
