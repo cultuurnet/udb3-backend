@@ -449,6 +449,28 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/subEvent/0/bookingAvailability/type', 'The data should match one item from enum'),
                 ],
             ],
+            'multiple_incorrect_subEvents' => [
+                'data' => (object) [
+                    'calendarType' => 'multiple',
+                    'subEvent' => [
+                        (object) [
+                            'startDate' => '2021-01-01T14:00:30+01:00',
+                            'endDate' => '2021-01-01T17:00:30+01:00',
+                            'status' => (object) ['type' => 'foo'],
+                            'bookingAvailability' => (object) ['type' => 'foo'],
+                        ],
+                        (object) [
+                            'startDate' => 'foo',
+                            'endDate' => '2021-01-01T17:00:30+01:00',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent/0/status/type', 'The data should match one item from enum'),
+                    new SchemaError('/subEvent/0/bookingAvailability/type', 'The data should match one item from enum'),
+                    new SchemaError('/subEvent/1/startDate', 'The data must match the \'date-time\' format'),
+                ],
+            ],
         ];
     }
 }
