@@ -6,6 +6,10 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Calendar\DayOfWeek;
+use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
+use CultuurNet\UDB3\Calendar\OpeningHour;
+use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
@@ -21,6 +25,8 @@ use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use CultuurNet\UDB3\Timestamp;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use ValueObjects\DateTime\Hour;
+use ValueObjects\DateTime\Minute;
 
 class UpdateCalendarRequestHandlerTest extends TestCase
 {
@@ -396,6 +402,58 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 [new StatusReason(new Language('nl'), 'Covid')]
                             )
                         )
+                ),
+            ],
+            'periodic_with_openingHours' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '10:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => [
+                                'monday',
+                                'wednesday',
+                            ],
+                        ],
+                        (object) [
+                            'opens' => '8:30',
+                            'closes' => '9:00',
+                            'dayOfWeek' => [
+                                'tuesday',
+                                'thursday',
+                            ],
+                        ]
+                    ]
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new Calendar(
+                        CalendarType::PERIODIC(),
+                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T14:00:30+01:00'),
+                        DateTimeImmutable::createFromFormat(DATE_ATOM, '2021-01-01T17:00:30+01:00'),
+                        [],
+                        [
+                            new OpeningHour(
+                                new OpeningTime(new Hour(10), new Minute(0)),
+                                new OpeningTime(new Hour(17), new Minute(0)),
+                                new DayOfWeekCollection(
+                                    DayOfWeek::MONDAY(),
+                                    DayOfWeek::WEDNESDAY()
+                                )
+                            ),
+                            new OpeningHour(
+                                new OpeningTime(new Hour(8), new Minute(30)),
+                                new OpeningTime(new Hour(9), new Minute(0)),
+                                new DayOfWeekCollection(
+                                    DayOfWeek::TUESDAY(),
+                                    DayOfWeek::THURSDAY()
+                                )
+                            )
+                        ]
+                    )
                 ),
             ],
             'permanent' => [
