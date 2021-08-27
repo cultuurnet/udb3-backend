@@ -214,7 +214,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                         )
                     )
                         ->withStatus(
-                            new Status(StatusType::temporarilyUnavailable(), [])
+                            new Status(
+                                StatusType::temporarilyUnavailable(),
+                                [new StatusReason(new Language('nl'), 'Covid')]
+                            )
                         )
                         ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::unavailable()))
                 ),
