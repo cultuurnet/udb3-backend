@@ -50,7 +50,7 @@ final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements Requ
                 (object) [
                     'startDate' => $data->startDate,
                     'endDate' => $data->endDate,
-                ]
+                ],
             ];
         }
 

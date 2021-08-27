@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
-use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -372,8 +371,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 'tuesday',
                                 'thursday',
                             ],
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
@@ -396,7 +395,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     DayOfWeek::TUESDAY(),
                                     DayOfWeek::THURSDAY()
                                 )
-                            )
+                            ),
                         ]
                     )
                 ),
@@ -449,8 +448,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                 'tuesday',
                                 'thursday',
                             ],
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
@@ -471,7 +470,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                                     DayOfWeek::TUESDAY(),
                                     DayOfWeek::THURSDAY()
                                 )
-                            )
+                            ),
                         ]
                     )
                 ),
