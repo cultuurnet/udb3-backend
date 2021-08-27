@@ -4310,12 +4310,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "31651aaafac1a090ffd1b8e2751a9e229ec1b5bc"
+                "reference": "762f2430a31bfd2672b3d5dfd072b5651708c71c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/31651aaafac1a090ffd1b8e2751a9e229ec1b5bc",
-                "reference": "31651aaafac1a090ffd1b8e2751a9e229ec1b5bc",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/762f2430a31bfd2672b3d5dfd072b5651708c71c",
+                "reference": "762f2430a31bfd2672b3d5dfd072b5651708c71c",
                 "shasum": ""
             },
             "type": "library",
@@ -4334,7 +4334,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/booking-availability-calendar"
             },
-            "time": "2021-08-27T07:57:29+00:00"
+            "time": "2021-08-27T10:29:13+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
