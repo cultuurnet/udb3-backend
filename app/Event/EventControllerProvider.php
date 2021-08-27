@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateCalendarRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -54,6 +55,12 @@ class EventControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
+            }
+        );
+
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -66,7 +73,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->put('/{cdbid}/audience', 'event_editing_controller:updateAudience');
         $controllers->put('/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
-        $controllers->put('/{cdbid}/majorInfo', 'event_editing_controller:updateMajorInfo');
+        $controllers->put('/{eventId}/majorInfo', UpdateMajorInfoRequestHandler::class . ':handle');
         $controllers->put('/{cdbid}/location/{locationId}', 'event_editing_controller:updateLocation');
         $controllers->put('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');

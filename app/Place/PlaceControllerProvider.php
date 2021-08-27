@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
@@ -54,6 +55,12 @@ class PlaceControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -66,6 +73,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
         $controllers->put('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
+        $controllers->put('/{placeId}/majorInfo', UpdateMajorInfoRequestHandler::class . ':handle');
         $controllers->put('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
         $controllers->delete('/{cdbid}/typicalAgeRange', 'place_editing_controller:deleteTypicalAgeRange');

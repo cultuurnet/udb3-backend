@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -36,7 +37,7 @@ class DeprecatedEventControllerProvider implements ControllerProviderInterface
 
         $controllers->post('event/{cdbid}/typical-age-range', 'event_editing_controller:updateTypicalAgeRange');
         $controllers->delete('event/{cdbid}/typical-age-range', 'event_editing_controller:deleteTypicalAgeRange');
-        $controllers->post('event/{cdbid}/major-info', 'event_editing_controller:updateMajorInfo');
+        $controllers->post('event/{eventId}/major-info', UpdateMajorInfoRequestHandler::class . ':handle');
         $controllers->post('event/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
         $controllers->post('event/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
         $controllers->post('event/{cdbid}/organizer', 'event_editing_controller:updateOrganizerFromJsonBody');

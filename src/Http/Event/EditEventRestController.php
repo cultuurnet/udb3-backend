@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Event\CreateEventJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Event\MajorInfoJSONDeserializer;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
@@ -41,11 +40,6 @@ class EditEventRestController extends OfferRestBaseController
      * @var IriGeneratorInterface
      */
     protected $iriGenerator;
-
-    /**
-     * @var MajorInfoJSONDeserializer
-     */
-    protected $majorInfoDeserializer;
 
     /**
      * @var CreateEventJSONDeserializer
@@ -93,7 +87,6 @@ class EditEventRestController extends OfferRestBaseController
         $this->consumerReadRepository = $consumerReadRepository;
         $this->shouldApprove = $shouldApprove;
 
-        $this->majorInfoDeserializer = new MajorInfoJSONDeserializer();
         $this->createEventJSONDeserializer = new CreateEventJSONDeserializer();
         $this->calendarDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
@@ -152,24 +145,6 @@ class EditEventRestController extends OfferRestBaseController
         }
 
         $this->editor->deleteEvent($cdbid);
-
-        return new NoContent();
-    }
-
-    public function updateMajorInfo(Request $request, string $cdbid): Response
-    {
-        $majorInfo = $this->majorInfoDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editor->updateMajorInfo(
-            $cdbid,
-            $majorInfo->getTitle(),
-            $majorInfo->getType(),
-            $majorInfo->getLocation(),
-            $majorInfo->getCalendar(),
-            $majorInfo->getTheme()
-        );
 
         return new NoContent();
     }
