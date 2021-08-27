@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Place\CreatePlaceJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Place\MajorInfoJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
 use InvalidArgumentException;
@@ -43,11 +42,6 @@ class EditPlaceRestController extends OfferRestBaseController
      * @var CreatePlaceJSONDeserializer
      */
     private $createPlaceJSONDeserializer;
-
-    /**
-     * @var MajorInfoJSONDeserializer
-     */
-    private $majorInfoDeserializer;
 
     /**
      * @var AddressJSONDeserializer
@@ -91,7 +85,6 @@ class EditPlaceRestController extends OfferRestBaseController
         $this->shouldApprove = $shouldApprove;
 
         $this->createPlaceJSONDeserializer = new CreatePlaceJSONDeserializer();
-        $this->majorInfoDeserializer = new MajorInfoJSONDeserializer();
         $this->addressDeserializer = new AddressJSONDeserializer();
     }
 
@@ -104,7 +97,7 @@ class EditPlaceRestController extends OfferRestBaseController
 
     public function createPlace(Request $request): JsonResponse
     {
-        $majorInfo = $this->createPlaceJSONDeserializer->deserialize(
+        $createPlace = $this->createPlaceJSONDeserializer->deserialize(
             new StringLiteral($request->getContent())
         );
 
@@ -125,12 +118,12 @@ class EditPlaceRestController extends OfferRestBaseController
         $createMethod = $approve ? 'createApprovedPlace' : 'createPlace';
 
         $placeId = $this->editor->$createMethod(
-            $majorInfo->getMainLanguage(),
-            $majorInfo->getTitle(),
-            $majorInfo->getType(),
-            $majorInfo->getAddress(),
-            $majorInfo->getCalendar(),
-            $majorInfo->getTheme()
+            $createPlace->getMainLanguage(),
+            $createPlace->getTitle(),
+            $createPlace->getType(),
+            $createPlace->getAddress(),
+            $createPlace->getCalendar(),
+            $createPlace->getTheme()
         );
 
         return new JsonResponse(
@@ -149,24 +142,6 @@ class EditPlaceRestController extends OfferRestBaseController
         }
 
         $this->editor->deletePlace($cdbid);
-
-        return new NoContent();
-    }
-
-    public function updateMajorInfo(Request $request, string $cdbid): Response
-    {
-        $majorInfo = $this->majorInfoDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editor->updateMajorInfo(
-            $cdbid,
-            $majorInfo->getTitle(),
-            $majorInfo->getType(),
-            $majorInfo->getAddress(),
-            $majorInfo->getCalendar(),
-            $majorInfo->getTheme()
-        );
 
         return new NoContent();
     }
