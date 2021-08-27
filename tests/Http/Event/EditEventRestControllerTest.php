@@ -237,29 +237,6 @@ class EditEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_major_info_with_all_the_provided_json_data()
-    {
-        $eventId = new UUID('7f71ebbd-b22b-4b94-96df-947ad0c1534f');
-        $request = new Request([], [], [], [], [], [], $this->getMajorInfoJson());
-
-        $this->eventEditor
-            ->expects($this->once())
-            ->method('updateMajorInfo')
-            ->with(
-                $eventId,
-                new Title('foo'),
-                new EventType('1.8.2', 'PARTY!'),
-                new LocationId('fe282e4f-35f5-480d-a90b-2720ab883b0a')
-            );
-
-        $response = $this->controller->updateMajorInfo($request, $eventId->toNative());
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_location()
     {
         $eventId = '7f71ebbd-b22b-4b94-96df-947ad0c1534f';

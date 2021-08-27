@@ -24,7 +24,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
-use ValueObjects\Identity\UUID;
 
 class EditPlaceRestControllerTest extends TestCase
 {
@@ -193,34 +192,6 @@ class EditPlaceRestControllerTest extends TestCase
         );
 
         $this->assertEquals($expectedResponseContent, $response->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_major_info()
-    {
-        $placeId = new UUID('A14DD1C8-0F9C-4633-B56A-A908F009AD94');
-        $request = new Request([], [], [], [], [], [], $this->getMajorInfoJson());
-
-        $this->placeEditingService
-            ->expects($this->once())
-            ->method('updateMajorInfo')
-            ->with(
-                $placeId,
-                new Title('foo'),
-                new EventType('1.8.2', 'PARTY!'),
-                new Address(
-                    new Street('acmelane 12'),
-                    new PostalCode('3000'),
-                    new Locality('Leuven'),
-                    Country::fromNative('BE')
-                )
-            );
-
-        $response = $this->placeRestController->updateMajorInfo($request, $placeId->toNative());
-
-        $this->assertEquals(204, $response->getStatusCode());
     }
 
     /**
