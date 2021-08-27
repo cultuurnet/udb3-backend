@@ -92,6 +92,9 @@ class CalendarDenormalizer implements DenormalizerInterface
         if ($topLevelStatus !== null) {
             $calendar = $calendar->withStatus($topLevelStatus);
         }
+        if ($topLevelBookingAvailability !== null) {
+            $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
+        }
 
         return $calendar;
     }
