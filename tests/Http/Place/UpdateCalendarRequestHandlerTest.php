@@ -377,6 +377,25 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/openingHours/0/dayOfWeek/1', 'The data should match one item from enum'),
                 ],
             ],
+            'periodic_invalid_openingHours_item_closing_time' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T17:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '12:00',
+                            'closes' => '08:00',
+                            'dayOfWeek' => [
+                                'monday',
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/closes', 'closes should not be before opens'),
+                ],
+            ],
         ];
     }
 }

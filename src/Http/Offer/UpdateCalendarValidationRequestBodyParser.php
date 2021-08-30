@@ -143,7 +143,7 @@ final class UpdateCalendarValidationRequestBodyParser implements RequestBodyPars
             }
 
             $opens = DateTimeImmutable::createFromFormat('H:i', $openingHourData->opens);
-            $closes = DateTimeImmutable::createFromFormat('H:i', $openingHourData->opens);
+            $closes = DateTimeImmutable::createFromFormat('H:i', $openingHourData->closes);
 
             if ($opens !== false && $closes !== false && $opens > $closes) {
                 $errors[] = new SchemaError('/openingHours/' . $index . '/closes', 'closes should not be before opens');
