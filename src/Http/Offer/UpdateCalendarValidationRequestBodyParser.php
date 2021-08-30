@@ -13,10 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class UpdateCalendarValidationRequestBodyParser implements RequestBodyParser
 {
-    /**
-     * @var string
-     */
-    private $jsonSchemaLocatorFile;
+    private string $jsonSchemaLocatorFile;
 
     public function __construct(string $jsonSchemaLocatorFile)
     {
