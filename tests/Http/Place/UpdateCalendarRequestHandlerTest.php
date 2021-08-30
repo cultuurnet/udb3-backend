@@ -293,6 +293,16 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/endDate', 'The data (boolean) must match the type: string'),
                 ],
             ],
+            'periodic_invalid_endDate' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T17:00:30+01:00',
+                    'endDate' => '2021-01-01T10:00:30+01:00',
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/endDate', 'endDate should not be before startDate'),
+                ],
+            ],
             'periodic_invalid_openingHours_type' => [
                 'data' => (object) [
                     'calendarType' => 'periodic',
