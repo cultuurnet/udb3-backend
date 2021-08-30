@@ -57,13 +57,21 @@ class CalendarDenormalizer implements DenormalizerInterface
         $bookingAvailabilityData = $data['bookingAvailability'] ?? ['type' => 'Available'];
         $topLevelBookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($bookingAvailabilityData, BookingAvailability::class);
 
+        if (($data['calendarType'] === 'single' || $data['calendarType'] === 'multiple') && isset($data['subEvent'])) {
+            $data['calendarType'] = count($data['subEvent']) === 1 ? 'single' : 'multiple';
+        }
+
         switch ($data['calendarType']) {
             case 'single':
-                $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
                 if (isset($data['subEvent'][0])) {
                     $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability);
+                } else {
+                    $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
                 }
                 $calendar = new SingleSubEventCalendar($subEvent);
+                if ($topLevelBookingAvailability !== null) {
+                    $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
+                }
                 break;
 
             case 'multiple':
@@ -75,6 +83,9 @@ class CalendarDenormalizer implements DenormalizerInterface
                 );
                 $subEvents = new SubEvents(...$subEvents);
                 $calendar = new MultipleSubEventsCalendar($subEvents);
+                if ($topLevelBookingAvailability !== null) {
+                    $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
+                }
                 break;
 
             case 'periodic':

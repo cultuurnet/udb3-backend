@@ -1495,8 +1495,8 @@ class CalendarTest extends TestCase
 
         $expected = (new Calendar(
             CalendarType::SINGLE(),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-07T10:00:00+01:00'),
+            null,
+            null,
             [
                 new Timestamp(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
@@ -1544,8 +1544,8 @@ class CalendarTest extends TestCase
 
         $expected = (new Calendar(
             CalendarType::MULTIPLE(),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-10T10:00:00+01:00'),
+            null,
+            null,
             [
                 new Timestamp(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),

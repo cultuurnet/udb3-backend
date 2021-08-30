@@ -5,28 +5,34 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
+use CultuurNet\UDB3\Calendar as LegacyCalendar;
+use CultuurNet\UDB3\Http\Offer\UpdateCalendarBackwardCompatibilityRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\UpdateCalendarValidationRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class UpdateCalendarRequestHandler implements RequestHandler
 {
     private CommandBus $commandBus;
-    private CalendarJSONDeserializer $calendarJsonDeserializer;
+    private RequestBodyParser $parser;
 
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
-        $this->calendarJsonDeserializer = new CalendarJSONDeserializer(
-            new CalendarJSONParser(),
-            new CalendarForEventDataValidator()
+        $this->parser = RequestBodyParserFactory::createBaseParser(
+            new UpdateCalendarBackwardCompatibilityRequestBodyParser(),
+            new UpdateCalendarValidationRequestBodyParser(JsonSchemaLocator::EVENT_CALENDAR_PUT),
+            new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class)
         );
     }
 
@@ -35,11 +41,12 @@ final class UpdateCalendarRequestHandler implements RequestHandler
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->get('eventId');
 
-        $calendar = $this->calendarJsonDeserializer->deserialize(
-            new StringLiteral((string) $request->getBody())
-        );
+        /** @var Calendar $calendar */
+        $calendar = $this->parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch(new UpdateCalendar($offerId, $calendar));
+        $this->commandBus->dispatch(
+            new UpdateCalendar($offerId, LegacyCalendar::fromUdb3ModelCalendar($calendar))
+        );
 
         return new NoContentResponse();
     }

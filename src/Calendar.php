@@ -9,10 +9,10 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar as Udb3ModelCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -349,6 +349,63 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $this->toJsonLd() === $otherCalendar->toJsonLd();
     }
 
+    public static function single(
+        Timestamp $timestamp,
+        ?Status $status = null,
+        ?BookingAvailability $bookingAvailability = null
+    ): self {
+        $calendar = new self(CalendarType::SINGLE(), null, null, [$timestamp]);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        if ($bookingAvailability) {
+            $calendar = $calendar->withBookingAvailability($bookingAvailability);
+        }
+        return $calendar;
+    }
+
+    /**
+     * @param Timestamp[] $timestamps
+     */
+    public static function multiple(
+        array $timestamps,
+        ?Status $status = null,
+        ?BookingAvailability $bookingAvailability = null
+    ): self {
+        $calendar = new self(CalendarType::MULTIPLE(), null, null, $timestamps);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        if ($bookingAvailability) {
+            $calendar = $calendar->withBookingAvailability($bookingAvailability);
+        }
+        return $calendar;
+    }
+
+    public static function periodic(
+        DateTimeInterface $startDate,
+        DateTimeInterface $endDate,
+        array $openingHours = [],
+        ?Status $status = null
+    ): self {
+        $calendar = new self(CalendarType::PERIODIC(), $startDate, $endDate, [], $openingHours);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        return $calendar;
+    }
+
+    public static function permanent(
+        array $openingHours = [],
+        ?Status $status = null
+    ): self {
+        $calendar = new self(CalendarType::PERMANENT(), null, null, [], $openingHours);
+        if ($status) {
+            $calendar = $calendar->withStatus($status);
+        }
+        return $calendar;
+    }
+
     public static function fromUdb3ModelCalendar(Udb3ModelCalendar $udb3Calendar): Calendar
     {
         $type = CalendarType::fromNative($udb3Calendar->getType()->toString());
@@ -358,7 +415,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $timestamps = [];
         $openingHours = [];
 
-        if ($udb3Calendar instanceof CalendarWithDateRange) {
+        if ($udb3Calendar instanceof PeriodicCalendar) {
             $startDate = $udb3Calendar->getStartDate();
             $endDate = $udb3Calendar->getEndDate();
         }
@@ -382,10 +439,25 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
-        $calendar->status = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
-        $calendar->bookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
+
+        $topStatus = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
+        $topBookingAvailability = BookingAvailability::fromUdb3ModelBookingAvailability(
             $udb3Calendar->getBookingAvailability()
         );
+
+        if ($type->sameValueAs(CalendarType::PERIODIC()) || $type->sameValueAs(CalendarType::PERMANENT())) {
+            // If there are no subEvents, set the top status and top bookingAvailability.
+            $calendar->status = $topStatus;
+            $calendar->bookingAvailability = $topBookingAvailability;
+        } elseif ($calendar->deriveStatusTypeFromSubEvents()->equals($topStatus->getType())) {
+            // If there are subEvents, the top status and bookingAvailability have already been determined by their
+            // respective status and bookingAvailability and it should not be overwritten to avoid confusion in the
+            // expected behavior in tests, even though the JSON-LD projections will always fix it (again).
+            // Only overwrite the top status if it's the same type as the derived status, so the top status reason (if
+            // any) is set correctly. This is in line with the logic in determineCorrectTopStatusForProjection().
+            $calendar->status = $topStatus;
+        }
+
         return $calendar;
     }
 

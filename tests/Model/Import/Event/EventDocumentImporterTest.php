@@ -283,8 +283,8 @@ class EventDocumentImporterTest extends TestCase
                 $id,
                 new Calendar(
                     CalendarType::SINGLE(),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                    null,
+                    null,
                     [
                         new Timestamp(
                             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00'),

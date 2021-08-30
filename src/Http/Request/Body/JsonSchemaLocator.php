@@ -14,7 +14,10 @@ final class JsonSchemaLocator
 {
     private static ?string $schemaDirectory;
 
+    public const EVENT_CALENDAR_PUT = 'event-calendar-put.json';
     public const EVENT_SUB_EVENT_PATCH = 'event-subEvent-patch.json';
+
+    public const PLACE_CALENDAR_PUT = 'place-calendar-put.json';
 
     // For OFFER schemas, use the ones for events
     public const OFFER_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
