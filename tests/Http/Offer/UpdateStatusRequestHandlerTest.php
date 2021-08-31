@@ -97,6 +97,20 @@ class UpdateStatusRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'type_available_with_empty_reason' => [
+                'data' => (object) [
+                    'type' => 'Available',
+                    'reason' => (object) [],
+                ],
+                'expected_command' => new UpdateStatus(
+                    self::OFFER_ID,
+                    new Status(
+                        StatusType::available(),
+                        [
+                        ]
+                    )
+                ),
+            ],
             'type_unavailable_with_reason' => [
                 'data' => (object) [
                     'type' => 'Unavailable',
