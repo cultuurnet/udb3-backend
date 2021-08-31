@@ -23,7 +23,7 @@ final class StatusDenormalizer implements DenormalizerInterface
         $statusType = new StatusType($data['type']);
         $statusReason = null;
 
-        if (isset($data['reason'])) {
+        if (isset($data['reason']) && !empty($data['reason'])) {
             $statusReason = $this->statusReasonDenormalizer->denormalize(
                 $data['reason'],
                 TranslatedStatusReason::class
