@@ -88,7 +88,7 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
             ->getBody()
             ->getContents();
 
-        $this->logger->debug('Send SAPI3 request with the following parameters: ' . json_encode($queryParameters));
+        $this->logger->debug('Sent SAPI3 request with the following parameters: ' . json_encode($queryParameters));
         $this->logger->debug('Response data: ' . $searchResponseData);
 
         $searchResponseData = json_decode($searchResponseData);
