@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
+use Psr\Log\LoggerAwareInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Twig_Environment;
@@ -103,6 +104,12 @@ class ExportServiceProvider implements ServiceProviderInterface
         Application $app,
         SearchServiceInterface $searchService
     ): EventExportServiceInterface {
+        $logger = LoggerFactory::create($app, LoggerName::forResqueWorker('event-export'));
+        if ($searchService instanceof LoggerAwareInterface) {
+            $searchService = clone $searchService;
+            $searchService->setLogger($logger);
+        }
+
         return new EventExportService(
             $app['external_event_service'],
             $searchService,
