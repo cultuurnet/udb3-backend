@@ -244,8 +244,12 @@ class HistoryProjectorTest extends TestCase
                         ],
                     ]
                 ),
-                'apiKey',
-                'my-super-duper-key',
+                [
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
+                    'apiKey' => 'my-super-duper-key',
+                    'api' => 'json-api',
+                    'consumerName' => 'My super duper name',
+                ]
             ],
             'with auth0 client id' => [
                 new Metadata(
@@ -258,8 +262,12 @@ class HistoryProjectorTest extends TestCase
                         ],
                     ]
                 ),
-                'auth0ClientId',
-                'my-auth0-client-id',
+                [
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
+                    'auth0ClientId' => 'my-auth0-client-id',
+                    'api' => 'json-api',
+                    'consumerName' => 'My super duper name',
+                ]
             ],
             'with auth0 client name' => [
                 new Metadata(
@@ -272,8 +280,12 @@ class HistoryProjectorTest extends TestCase
                         ],
                     ]
                 ),
-                'auth0ClientName',
-                'My Auth0 Client',
+                [
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
+                    'auth0ClientName' => 'My Auth0 Client',
+                    'api' => 'json-api',
+                    'consumerName' => 'My super duper name',
+                ]
             ],
         ];
     }
@@ -282,7 +294,7 @@ class HistoryProjectorTest extends TestCase
      * @test
      * @dataProvider metadataProvider
      */
-    public function it_logs_creating_an_event(Metadata $metadata, string $keyName, string $keyValue)
+    public function it_logs_creating_an_event(Metadata $metadata, array $expectedKeys)
     {
         $eventId = 'f2b227c5-4756-49f6-a25d-8286b6a2351f';
 
@@ -311,14 +323,13 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogs(
             $eventId,
             [
-                (object) [
-                    'date' => $now->format('c'),
-                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
-                    'description' => 'Event aangemaakt in UiTdatabank',
-                    $keyName => $keyValue,
-                    'api' => 'json-api',
-                    'consumerName' => 'My super duper name',
-                ],
+                (object) array_merge(
+                    [
+                        'date' => $now->format('c'),
+                        'description' => 'Event aangemaakt in UiTdatabank',
+                    ],
+                    $expectedKeys
+                )
             ]
         );
     }
