@@ -235,27 +235,27 @@ class HistoryProjectorTest extends TestCase
         return [
             'with user id' => [
                 new Metadata(['user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6']),
-                ['author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6']
+                ['author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6'],
             ],
             'with api' => [
                 new Metadata(['api' => 'json-api']),
-                ['api' => 'json-api']
+                ['api' => 'json-api'],
             ],
             'with api key' => [
                 new Metadata(['auth_api_key' => 'my-super-duper-key']),
-                ['apiKey' => 'my-super-duper-key']
+                ['apiKey' => 'my-super-duper-key'],
             ],
             'with consumer name' => [
                 new Metadata(['consumer' => ['name' => 'My super duper name']]),
-                ['consumerName' => 'My super duper name']
+                ['consumerName' => 'My super duper name'],
             ],
             'with auth0 client id' => [
                 new Metadata(['auth_api_client_id' => 'my-auth0-client-id']),
-                ['auth0ClientId' => 'my-auth0-client-id']
+                ['auth0ClientId' => 'my-auth0-client-id'],
             ],
             'with auth0 client name' => [
                 new Metadata(['auth_api_client_name' => 'My Auth0 Client']),
-                ['auth0ClientName' => 'My Auth0 Client']
+                ['auth0ClientName' => 'My Auth0 Client'],
             ],
         ];
     }
@@ -299,7 +299,7 @@ class HistoryProjectorTest extends TestCase
                         'description' => 'Event aangemaakt in UiTdatabank',
                     ],
                     $expectedKeys
-                )
+                ),
             ]
         );
     }
