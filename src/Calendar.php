@@ -325,11 +325,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $jsonLd['bookingAvailability'] = $this->determineCorrectTopBookingAvailabilityForProjection()->serialize();
 
-        $timestamps = $this->getTimestamps();
+        $timestamps = array_values($this->getTimestamps());
         if (!empty($timestamps)) {
             $jsonLd['subEvent'] = [];
-            foreach ($timestamps as $timestamp) {
-                $jsonLd['subEvent'][] = $timestamp->toJsonLd();
+            foreach ($timestamps as $id => $timestamp) {
+                $jsonLd['subEvent'][] = ['id' => $id] + $timestamp->toJsonLd();
             }
         }
 
