@@ -261,6 +261,20 @@ class HistoryProjectorTest extends TestCase
                 'auth0ClientId',
                 'my-auth0-client-id',
             ],
+            'with auth0 client name' => [
+                new Metadata(
+                    [
+                        'user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
+                        'auth_api_client_name' => 'My Auth0 Client',
+                        'api' => 'json-api',
+                        'consumer' => [
+                            'name' => 'My super duper name',
+                        ],
+                    ]
+                ),
+                'auth0ClientName',
+                'My Auth0 Client',
+            ],
         ];
     }
 
