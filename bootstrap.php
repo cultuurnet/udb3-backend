@@ -126,10 +126,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
 
-$app->register(new CorsServiceProvider(), array(
-    "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
-    "cors.allowCredentials" => true
-));
+$app->register(new CorsServiceProvider());
 
 $app['local_domain'] = \ValueObjects\Web\Domain::specifyType(
     parse_url($app['config']['url'])['host']
