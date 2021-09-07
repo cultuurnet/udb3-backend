@@ -56,7 +56,7 @@ class Log implements JsonSerializable
      */
     private $consumerName;
 
-    public function __construct(
+    private function __construct(
         string $id,
         DateTime $date,
         string $description,
