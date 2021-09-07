@@ -66,9 +66,10 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
         }
 
         $json['subEvent'] = array_map(
-            function (array $subEvent) {
+            function (array $subEvent, int $index) {
                 return array_merge(
                     [
+                        'id' => $index,
                         'status' => [
                             'type' => StatusType::available()->toNative(),
                         ],
@@ -77,7 +78,8 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
                     $subEvent
                 );
             },
-            $json['subEvent']
+            $json['subEvent'],
+            range(0, count($json['subEvent']) - 1)
         );
 
         return $json;
