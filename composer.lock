@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b404c608133c842eb996e67e1773ef22",
+    "content-hash": "b9ce4c379f08a1503f89dbde23e337c0",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -595,16 +595,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v3.2",
+            "version": "v3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "bc8817f5ea8f04c8842c8e5310b7030257546150"
+                "reference": "a42b0c7222e5dbeecae434ad805fd97333c9bc37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/bc8817f5ea8f04c8842c8e5310b7030257546150",
-                "reference": "bc8817f5ea8f04c8842c8e5310b7030257546150",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/a42b0c7222e5dbeecae434ad805fd97333c9bc37",
+                "reference": "a42b0c7222e5dbeecae434ad805fd97333c9bc37",
                 "shasum": ""
             },
             "require": {
@@ -617,8 +617,7 @@
             "require-dev": {
                 "phpstan/phpstan": "^0.12.68",
                 "phpunit/phpunit": "^7.5",
-                "publiq/php-cs-fixer-config": "^v1.3",
-                "satooshi/php-coveralls": "~0.7"
+                "publiq/php-cs-fixer-config": "^v1.3"
             },
             "type": "library",
             "autoload": {
@@ -641,9 +640,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v3.2"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v3.3"
             },
-            "time": "2021-03-16T15:02:11+00:00"
+            "time": "2021-09-08T09:26:12+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -10040,5 +10039,5 @@
         "ext-xmlreader": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
