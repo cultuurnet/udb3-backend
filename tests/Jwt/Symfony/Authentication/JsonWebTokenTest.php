@@ -101,6 +101,30 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_client_name_from_publiq_client_name_claim_if_present(): void
+    {
+        $jwt = JsonWebTokenFactory::createWithClaims(
+            [
+                'https://publiq.be/client-name' => 'Example',
+            ]
+        );
+
+        $this->assertEquals('Example', $jwt->getClientName());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_as_client_name_if_publiq_client_name_claim_is_missing(): void
+    {
+        $jwt = JsonWebTokenFactory::createWithClaims([]);
+
+        $this->assertNull($jwt->getClientName());
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_v1_jwt_provider_token_type_if_a_uid_claim_is_present(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims(['uid' => 'mock']);

@@ -44,6 +44,11 @@ class Log implements JsonSerializable
     /**
      * @var string
      */
+    private $auth0ClientName;
+
+    /**
+     * @var string
+     */
     private $api;
 
     /**
@@ -51,13 +56,14 @@ class Log implements JsonSerializable
      */
     private $consumerName;
 
-    public function __construct(
+    private function __construct(
         string $id,
         DateTime $date,
         string $description,
         string $author = null,
         string $apiKey = null,
         string $auth0ClientId = null,
+        string $auth0ClientName = null,
         string $api = null,
         string $consumerName = null
     ) {
@@ -67,6 +73,7 @@ class Log implements JsonSerializable
         $this->author = $author;
         $this->apiKey = $apiKey;
         $this->auth0ClientId = $auth0ClientId;
+        $this->auth0ClientName = $auth0ClientName;
         $this->api = $api;
         $this->consumerName = $consumerName;
     }
@@ -119,6 +126,10 @@ class Log implements JsonSerializable
             $log['auth0ClientId'] = $this->auth0ClientId;
         }
 
+        if ($this->auth0ClientName) {
+            $log['auth0ClientName'] = $this->auth0ClientName;
+        }
+
         if ($this->api) {
             $log['api'] = $this->api;
         }
@@ -150,6 +161,7 @@ class Log implements JsonSerializable
         $author = $metadata['user_id'] ?? null;
         $apiKey = $metadata['auth_api_key'] ?? null;
         $auth0ClientId = $metadata['auth_api_client_id'] ?? null;
+        $auth0ClientName = $metadata['auth_api_client_name'] ?? null;
         $api = $metadata['api'] ?? null;
         $consumer = $metadata['consumer']['name'] ?? null;
 
@@ -159,6 +171,6 @@ class Log implements JsonSerializable
             $apiKey = null;
         }
 
-        return new Log($id, $date, $description, $author, $apiKey, $auth0ClientId, $api, $consumer);
+        return new Log($id, $date, $description, $author, $apiKey, $auth0ClientId, $auth0ClientName, $api, $consumer);
     }
 }

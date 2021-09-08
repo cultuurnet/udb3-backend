@@ -132,6 +132,16 @@ class JsonWebToken extends AbstractToken
         return null;
     }
 
+    public function getClientName(): ?string
+    {
+        // Check first if the token has the claim, to prevent an OutOfBoundsException (thrown if the default is set to
+        // null and the claim is missing).
+        if ($this->token->hasClaim('https://publiq.be/client-name')) {
+            return (string) $this->token->getClaim('https://publiq.be/client-name');
+        }
+        return null;
+    }
+
     public function hasClaims(array $names): bool
     {
         foreach ($names as $name) {
