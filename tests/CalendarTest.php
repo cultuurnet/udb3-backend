@@ -735,6 +735,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -779,6 +780,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -824,6 +826,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -835,6 +838,7 @@ class CalendarTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 1,
                             '@type' => 'Event',
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
@@ -890,6 +894,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -905,6 +910,7 @@ class CalendarTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 1,
                             '@type' => 'Event',
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
@@ -964,6 +970,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -979,6 +986,7 @@ class CalendarTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 1,
                             '@type' => 'Event',
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
@@ -1038,6 +1046,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -1053,6 +1062,7 @@ class CalendarTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 1,
                             '@type' => 'Event',
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
@@ -1120,6 +1130,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -1135,6 +1146,7 @@ class CalendarTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 1,
                             '@type' => 'Event',
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',
@@ -1184,6 +1196,7 @@ class CalendarTest extends TestCase
                     ],
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2016-03-06T10:00:00+01:00',
                             'endDate' => '2016-03-13T12:00:00+01:00',
@@ -1195,6 +1208,7 @@ class CalendarTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 1,
                             '@type' => 'Event',
                             'startDate' => '2020-03-06T10:00:00+01:00',
                             'endDate' => '2020-03-13T12:00:00+01:00',

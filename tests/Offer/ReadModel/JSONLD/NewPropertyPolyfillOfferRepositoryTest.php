@@ -167,6 +167,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                 [
                     'subEvent' => [
                         [
+                            'id' => 0,
                             '@type' => 'Event',
                             'startDate' => '2020-01-01T16:00:00+01:00',
                             'endDate' => '2020-01-01T20:00:00+01:00',
@@ -178,6 +179,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 1,
                             '@type' => 'Event',
                             'startDate' => '2020-01-02T16:00:00+01:00',
                             'endDate' => '2020-01-02T20:00:00+01:00',
@@ -189,6 +191,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 2,
                             '@type' => 'Event',
                             'startDate' => '2020-01-03T16:00:00+01:00',
                             'endDate' => '2020-01-03T20:00:00+01:00',
@@ -200,6 +203,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             ],
                         ],
                         [
+                            'id' => 3,
                             '@type' => 'Event',
                             'startDate' => '2020-01-04T16:00:00+01:00',
                             'endDate' => '2020-01-04T20:00:00+01:00',

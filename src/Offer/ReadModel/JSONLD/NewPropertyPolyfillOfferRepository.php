@@ -25,7 +25,7 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             function (array $json) {
                 $json = $this->polyfillStatus($json);
                 $json = $this->polyfillBookingAvailability($json);
-                $json = $this->polyfillSubEventStatusAndBookingAvailability($json);
+                $json = $this->polyfillSubEventProperties($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 return $this->polyfillEmbeddedPlaceBookingAvailability($json);
             }
@@ -59,16 +59,17 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
         return $json;
     }
 
-    private function polyfillSubEventStatusAndBookingAvailability(array $json): array
+    private function polyfillSubEventProperties(array $json): array
     {
         if (!isset($json['subEvent']) || !is_array($json['subEvent'])) {
             return $json;
         }
 
         $json['subEvent'] = array_map(
-            function (array $subEvent) {
+            function (array $subEvent, int $index) {
                 return array_merge(
                     [
+                        'id' => $index,
                         'status' => [
                             'type' => StatusType::available()->toNative(),
                         ],
@@ -77,7 +78,8 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
                     $subEvent
                 );
             },
-            $json['subEvent']
+            $json['subEvent'],
+            range(0, count($json['subEvent']) - 1)
         );
 
         return $json;

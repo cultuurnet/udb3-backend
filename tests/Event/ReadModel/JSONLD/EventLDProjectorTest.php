@@ -565,6 +565,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->endDate = '2015-01-29T13:25:21+01:00';
         $jsonLD->subEvent = [
             (object)[
+                'id' => 0,
                 '@type' => 'Event',
                 'startDate' => '2015-01-26T13:25:21+01:00',
                 'endDate' => '2015-01-27T13:25:21+01:00',
@@ -572,6 +573,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'bookingAvailability' => (object) ['type' => 'Available'],
             ],
             (object)[
+                'id' => 1,
                 '@type' => 'Event',
                 'startDate' => '2015-01-28T13:25:21+01:00',
                 'endDate' => '2015-01-29T13:25:21+01:00',

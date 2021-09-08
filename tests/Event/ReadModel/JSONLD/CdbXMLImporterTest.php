@@ -708,6 +708,7 @@ class CdbXMLImporterTest extends TestCase
         $this->assertEquals(
             [
                 [
+                    'id' => 0,
                     '@type' => 'Event',
                     'startDate' => '2017-02-06T13:00:00+01:00',
                     'endDate' => '2017-02-06T16:45:00+01:00',
@@ -719,6 +720,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 1,
                     '@type' => 'Event',
                     'startDate' => '2017-02-20T13:00:00+01:00',
                     'endDate' => '2017-02-20T16:45:00+01:00',
@@ -730,6 +732,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 2,
                     '@type' => 'Event',
                     'startDate' => '2017-03-06T13:00:00+01:00',
                     'endDate' => '2017-03-06T16:45:00+01:00',
@@ -741,6 +744,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 3,
                     '@type' => 'Event',
                     'startDate' => '2017-03-20T13:00:00+01:00',
                     'endDate' => '2017-03-20T16:45:00+01:00',
@@ -769,6 +773,7 @@ class CdbXMLImporterTest extends TestCase
         $this->assertEquals(
             [
                 [
+                    'id' => 0,
                     '@type' => 'Event',
                     'startDate' => '2016-01-30T13:00:00+01:00',
                     'endDate' => '2016-01-30T13:00:00+01:00',
@@ -780,6 +785,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 1,
                     '@type' => 'Event',
                     'startDate' => '2016-11-30T13:00:00+01:00',
                     'endDate' => '2016-11-30T17:00:00+01:00',
@@ -791,6 +797,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 2,
                     '@type' => 'Event',
                     'startDate' => '2016-12-03T00:00:00+01:00',
                     'endDate' => '2016-12-03T00:00:00+01:00',
@@ -802,6 +809,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 3,
                     '@type' => 'Event',
                     'startDate' => '2016-12-09T00:00:00+01:00',
                     'endDate' => '2016-12-09T00:00:00+01:00',
@@ -813,6 +821,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 4,
                     '@type' => 'Event',
                     'startDate' => '2016-12-30T13:00:00+01:00',
                     'endDate' => '2016-12-30T13:00:00+01:00',
@@ -824,6 +833,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 5,
                     '@type' => 'Event',
                     'startDate' => '2017-11-30T13:00:00+01:00',
                     'endDate' => '2017-11-30T17:00:00+01:00',
@@ -852,6 +862,7 @@ class CdbXMLImporterTest extends TestCase
         $this->assertEquals(
             [
                 [
+                    'id' => 0,
                     '@type' => 'Event',
                     'startDate' => '2017-02-06T13:00:00+01:00',
                     'endDate' => '2017-02-06T13:00:00+01:00',
@@ -863,6 +874,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 1,
                     '@type' => 'Event',
                     'startDate' => '2017-02-20T13:00:00+01:00',
                     'endDate' => '2017-02-20T13:00:00+01:00',
@@ -874,6 +886,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 2,
                     '@type' => 'Event',
                     'startDate' => '2017-03-06T13:00:00+01:00',
                     'endDate' => '2017-03-06T13:00:00+01:00',
@@ -885,6 +898,7 @@ class CdbXMLImporterTest extends TestCase
                     ],
                 ],
                 [
+                    'id' => 3,
                     '@type' => 'Event',
                     'startDate' => '2017-03-20T13:00:00+01:00',
                     'endDate' => '2017-03-20T13:00:00+01:00',
