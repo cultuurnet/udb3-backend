@@ -12,8 +12,6 @@ uitid:
 search:
   base_url: http://www.uitid.be/uitid/rest/searchv2
 sync_with_udb2: true
-cors:
-  origins: []
 log.search: []
 database:
   driver: pdo_mysql
