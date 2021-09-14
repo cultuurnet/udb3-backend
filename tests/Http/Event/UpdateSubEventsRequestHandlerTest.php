@@ -196,9 +196,9 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                                     new StatusReason('Geannuleerd wegens covid')
                                 )
                                 )->withTranslation(
-                                        new Language('fr'),
-                                        new StatusReason('Franse tekst')
-                                    )
+                                    new Language('fr'),
+                                    new StatusReason('Franse tekst')
+                                )
                             )
                         ),
                 ),
@@ -248,7 +248,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
     {
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
-            fn() => $this->requestHandler->handle(
+            fn () => $this->requestHandler->handle(
                 (new Psr7RequestBuilder())
                     ->withBodyFromString(json_encode($data))
                     ->withRouteParameter('eventId', self::EVENT_ID)
