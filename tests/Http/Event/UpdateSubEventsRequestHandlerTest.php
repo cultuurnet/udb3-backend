@@ -305,6 +305,36 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/endDate', 'The data must match the \'date-time\' format'),
                 ],
             ],
+            'one_subEvent_with_end_date_before_start_date' => [
+                'data' => [
+                    (object)[
+                        'id' => 1,
+                        'startDate' => '2020-01-01T12:00:00+00:00',
+                        'endDate' => '2020-01-01T10:00:00+00:00',
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/endDate', 'endDate should not be before startDate'),
+                ],
+            ],
+            'two_subEvent_with_end_date_before_start_date' => [
+                'data' => [
+                    (object)[
+                        'id' => 1,
+                        'startDate' => '2020-01-01T12:00:00+00:00',
+                        'endDate' => '2020-01-01T10:00:00+00:00',
+                    ],
+                    (object)[
+                        'id' => 2,
+                        'startDate' => '2020-02-01T12:00:00+00:00',
+                        'endDate' => '2020-02-01T10:00:00+00:00',
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/endDate', 'endDate should not be before startDate'),
+                    new SchemaError('/1/endDate', 'endDate should not be before startDate'),
+                ],
+            ],
             'two_subEvents_one_without_id_and_the_other_with_invalid_status_data_type' => [
                 'data' => [
                     (object)['id' => 1, 'status' => 'Unavailable'],
