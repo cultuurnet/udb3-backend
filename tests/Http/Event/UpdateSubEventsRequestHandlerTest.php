@@ -18,11 +18,13 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateSubEventsRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
+
     private const EVENT_ID = '983c06b8-abe8-4286-978f-ca750e3e911d';
 
     private TraceableCommandBus $commandBus;
@@ -57,7 +59,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
         return [
             'one_subEvent_with_only_id' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
                     ],
                 ],
@@ -68,10 +70,10 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'two_subEvents_with_only_id' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
                     ],
-                    (object) [
+                    (object)[
                         'id' => 2,
                     ],
                 ],
@@ -81,11 +83,61 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SubEventUpdate(2)
                 ),
             ],
+            'one_subEvent_with_start_date' => [
+                'data' => [
+                    (object)[
+                        'id' => 1,
+                        'startDate' => '2020-01-01T10:00:00+00:00',
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))->withStartDate(new DateTimeImmutable('2020-01-01T10:00:00+00:00'))
+                ),
+            ],
+            'one_subEvent_with_start_date_and_end_date' => [
+                'data' => [
+                    (object)[
+                        'id' => 1,
+                        'startDate' => '2020-01-01T10:00:00+00:00',
+                        'endDate' => '2020-01-01T12:00:00+00:00',
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))
+                        ->withStartDate(new DateTimeImmutable('2020-01-01T10:00:00+00:00'))
+                        ->withEndDate(new DateTimeImmutable('2020-01-01T12:00:00+00:00'))
+                ),
+            ],
+            'two_subEvent_with_start_date_and_end_date' => [
+                'data' => [
+                    (object)[
+                        'id' => 1,
+                        'startDate' => '2020-01-01T10:00:00+00:00',
+                        'endDate' => '2020-01-01T12:00:00+00:00',
+                    ],
+                    (object)[
+                        'id' => 2,
+                        'startDate' => '2020-01-02T10:00:00+00:00',
+                        'endDate' => '2020-01-02T12:00:00+00:00',
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(1))
+                        ->withStartDate(new DateTimeImmutable('2020-01-01T10:00:00+00:00'))
+                        ->withEndDate(new DateTimeImmutable('2020-01-01T12:00:00+00:00')),
+                    (new SubEventUpdate(2))
+                        ->withStartDate(new DateTimeImmutable('2020-01-02T10:00:00+00:00'))
+                        ->withEndDate(new DateTimeImmutable('2020-01-02T12:00:00+00:00'))
+                ),
+            ],
             'one_subEvent_with_id_and_status_type_Unavailable' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
-                        'status' => (object) [
+                        'status' => (object)[
                             'type' => 'Unavailable',
                         ],
                     ],
@@ -98,15 +150,15 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'two_subEvents_with_id_and_different_status_types' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
-                        'status' => (object) [
+                        'status' => (object)[
                             'type' => 'Unavailable',
                         ],
                     ],
-                    (object) [
+                    (object)[
                         'id' => 2,
-                        'status' => (object) [
+                        'status' => (object)[
                             'type' => 'Available',
                         ],
                     ],
@@ -121,11 +173,11 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'one_subEvent_with_id_and_status_type_and_reason' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
-                        'status' => (object) [
+                        'status' => (object)[
                             'type' => 'Unavailable',
-                            'reason' => (object) [
+                            'reason' => (object)[
                                 'nl' => 'Geannuleerd wegens covid',
                                 'fr' => 'Franse tekst',
                             ],
@@ -139,23 +191,23 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                             new Status(
                                 StatusType::Unavailable(),
                                 (
-                                    new TranslatedStatusReason(
-                                        new Language('nl'),
-                                        new StatusReason('Geannuleerd wegens covid')
-                                    )
-                                )->withTranslation(
-                                    new Language('fr'),
-                                    new StatusReason('Franse tekst')
+                                new TranslatedStatusReason(
+                                    new Language('nl'),
+                                    new StatusReason('Geannuleerd wegens covid')
                                 )
+                                )->withTranslation(
+                                        new Language('fr'),
+                                        new StatusReason('Franse tekst')
+                                    )
                             )
                         ),
                 ),
             ],
             'one_subEvent_with_id_and_bookingAvailability_type' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
-                        'bookingAvailability' => (object) [
+                        'bookingAvailability' => (object)[
                             'type' => 'Unavailable',
                         ],
                     ],
@@ -168,12 +220,12 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'one_subEvent_with_id_and_status_type_and_bookingAvailability_type' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
-                        'status' => (object) [
+                        'status' => (object)[
                             'type' => 'Available',
                         ],
-                        'bookingAvailability' => (object) [
+                        'bookingAvailability' => (object)[
                             'type' => 'Unavailable',
                         ],
                     ],
@@ -196,7 +248,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
     {
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
-            fn () => $this->requestHandler->handle(
+            fn() => $this->requestHandler->handle(
                 (new Psr7RequestBuilder())
                     ->withBodyFromString(json_encode($data))
                     ->withRouteParameter('eventId', self::EVENT_ID)
@@ -212,7 +264,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
         return [
             'one_subEvent_without_id' => [
                 'data' => [
-                    (object) [],
+                    (object)[],
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/0', 'The required properties (id) are missing'),
@@ -220,8 +272,8 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'two_subEvents_without_id' => [
                 'data' => [
-                    (object) [],
-                    (object) [],
+                    (object)[],
+                    (object)[],
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/', 'Array must have unique items'),
@@ -229,17 +281,34 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'two_subEvents_one_with_id_and_the_other_without' => [
                 'data' => [
-                    (object) ['id' => 1],
-                    (object) [],
+                    (object)['id' => 1],
+                    (object)[],
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/1', 'The required properties (id) are missing'),
                 ],
             ],
+            'one_subEvent_with_wrong_start_date' => [
+                'data' => [
+                    (object)['id' => 1, 'startDate' => '2020-01-01 10:00:00'],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/startDate', 'The data must match the \'date-time\' format'),
+                ],
+            ],
+            'one_subEvent_with_wrong_start_date_and_end_date' => [
+                'data' => [
+                    (object)['id' => 1, 'startDate' => '2020-01-01 10:00:00', 'endDate' => '2020-01-01 12:00:00'],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/startDate', 'The data must match the \'date-time\' format'),
+                    new SchemaError('/0/endDate', 'The data must match the \'date-time\' format'),
+                ],
+            ],
             'two_subEvents_one_without_id_and_the_other_with_invalid_status_data_type' => [
                 'data' => [
-                    (object) ['id' => 1, 'status' => 'Unavailable'],
-                    (object) [],
+                    (object)['id' => 1, 'status' => 'Unavailable'],
+                    (object)[],
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/0/status', 'The data (string) must match the type: object'),
@@ -248,8 +317,8 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'two_subEvents_one_with_invalid_status_type_and_the_other_valid' => [
                 'data' => [
-                    (object) ['id' => 1, 'status' => ['type' => 'invalid']],
-                    (object) ['id' => 2],
+                    (object)['id' => 1, 'status' => ['type' => 'invalid']],
+                    (object)['id' => 2],
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/0/status/type', 'The data should match one item from enum'),
@@ -257,8 +326,8 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'two_subEvents_one_with_valid_status_type_and_the_other_with_invalid_bookingAvailability_type' => [
                 'data' => [
-                    (object) ['id' => 1, 'status' => ['type' => 'Available']],
-                    (object) ['id' => 2, 'bookingAvailability' => ['type' => 'invalid']],
+                    (object)['id' => 1, 'status' => ['type' => 'Available']],
+                    (object)['id' => 2, 'bookingAvailability' => ['type' => 'invalid']],
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/1/bookingAvailability/type', 'The data should match one item from enum'),
@@ -266,7 +335,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'one_subEvent_with_invalid_status_reason' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
                         'status' => [
                             'type' => 'Available',
@@ -280,10 +349,10 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ],
             'one_subEvent_with_only_status_reason_but_no_type' => [
                 'data' => [
-                    (object) [
+                    (object)[
                         'id' => 1,
-                        'status' => (object) [
-                            'reason' => (object) [
+                        'status' => (object)[
+                            'reason' => (object)[
                                 'nl' => 'Mijn reden in NL',
                             ],
                         ],
