@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvail
 use CultuurNet\UDB3\Timestamp as LegacyTimestamp;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use DateTime;
+use DateTimeImmutable;
 
 final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -141,6 +142,198 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     public function calendarProvider(): array
     {
         return [
+            'Update start date on 1 sub event' => [
+                new EventCreated(
+                    '1',
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-01 10:00:00'),
+                                new DateTime('2020-01-01 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-03 10:00:00'),
+                                new DateTime('2020-01-03 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(1))->withStartDate(new DateTimeImmutable('2019-12-29 10:00:00'))
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2019-12-29 10:00:00'),
+                                new DateTime('2020-01-03 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-01 10:00:00'),
+                                new DateTime('2020-01-01 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            'Update start date and end date on 1 sub event' => [
+                new EventCreated(
+                    '1',
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-01 10:00:00'),
+                                new DateTime('2020-01-01 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-03 10:00:00'),
+                                new DateTime('2020-01-03 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(1))
+                        ->withStartDate(new DateTimeImmutable('2019-12-29 10:00:00'))
+                        ->withEndDate(new DateTimeImmutable('2019-12-29 12:00:00'))
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2019-12-29 10:00:00'),
+                                new DateTime('2019-12-29 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-01 10:00:00'),
+                                new DateTime('2020-01-01 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            'Update start date on 2 sub events' => [
+                new EventCreated(
+                    '1',
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-01 10:00:00'),
+                                new DateTime('2020-01-01 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-03 10:00:00'),
+                                new DateTime('2020-01-03 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(0))->withStartDate(new DateTimeImmutable('2019-12-31 10:00:00')),
+                    (new SubEventUpdate(1))->withStartDate(new DateTimeImmutable('2019-12-29 10:00:00'))
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2019-12-29 10:00:00'),
+                                new DateTime('2020-01-03 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2019-12-31 10:00:00'),
+                                new DateTime('2020-01-01 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            'Update start date and end date on 2 sub events' => [
+                new EventCreated(
+                    '1',
+                    new LegacyLanguage('nl'),
+                    new LegacyTitle('Multiple Event'),
+                    new LegacyEventType('0.50.4.0.0', 'concert'),
+                    new LegacyLocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-01 10:00:00'),
+                                new DateTime('2020-01-01 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2020-01-03 10:00:00'),
+                                new DateTime('2020-01-03 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(0))
+                        ->withStartDate(new DateTimeImmutable('2019-12-31 10:00:00'))
+                        ->withEndDate(new DateTimeImmutable('2019-12-31 12:00:00')),
+                    (new SubEventUpdate(1))
+                        ->withStartDate(new DateTimeImmutable('2019-12-29 10:00:00'))
+                        ->withEndDate(new DateTimeImmutable('2019-12-29 12:00:00'))
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new LegacyCalendar(
+                        LegacyCalendarType::MULTIPLE(),
+                        null,
+                        null,
+                        [
+                            new LegacyTimestamp(
+                                new DateTime('2019-12-29 10:00:00'),
+                                new DateTime('2019-12-29 12:00:00')
+                            ),
+                            new LegacyTimestamp(
+                                new DateTime('2019-12-31 10:00:00'),
+                                new DateTime('2019-12-31 12:00:00')
+                            ),
+                        ]
+                    )
+                ),
+            ],
             'Update status on 1 sub event' => [
                new EventCreated(
                    '1',

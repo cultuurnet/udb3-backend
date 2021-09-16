@@ -55,7 +55,7 @@ final class UpdateCalendarValidationRequestBodyParser implements RequestBodyPars
             case 'periodic':
                 $errors = array_merge(
                     $errors,
-                    $this->validateDateRange($data),
+                    (new DateRangeValidator())->validate($data),
                     $this->validateOpeningHoursTimeRanges($data)
                 );
                 break;
@@ -89,35 +89,13 @@ final class UpdateCalendarValidationRequestBodyParser implements RequestBodyPars
         }
 
         $errors = [];
+        $dateRangeValidator = new DateRangeValidator();
         foreach ($data->subEvent as $key => $subEvent) {
             if (is_object($subEvent)) {
-                $errors[] = $this->validateDateRange($subEvent, '/subEvent/' . $key);
+                $errors[] = $dateRangeValidator->validate($subEvent, '/subEvent/' . $key);
             }
         }
         return array_merge(...$errors);
-    }
-
-    /**
-     * @return SchemaError[]
-     */
-    private function validateDateRange(object $data, string $jsonPointer = ''): array
-    {
-        if (!isset($data->startDate, $data->endDate) || !is_string($data->startDate) || !is_string($data->endDate)) {
-            // Error(s) will be reported by the Schema validation.
-            return [];
-        }
-
-        $startDate = DateTimeImmutable::createFromFormat(DATE_ATOM, $data->startDate);
-        $endDate = DateTimeImmutable::createFromFormat(DATE_ATOM, $data->endDate);
-        if ($startDate === false || $endDate === false) {
-            // Error(s) will be reported by the Schema validation.
-            return [];
-        }
-
-        if ($startDate > $endDate) {
-            return [new SchemaError($jsonPointer . '/endDate', 'endDate should not be before startDate')];
-        }
-        return [];
     }
 
     /**

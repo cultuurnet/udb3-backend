@@ -357,8 +357,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ? BookingAvailability::fromUdb3ModelBookingAvailability($subEventUpdate->getBookingAvailability()) : null;
 
             $updatedTimestamp = new Timestamp(
-                $timestamp->getStartDate(),
-                $timestamp->getEndDate(),
+                $subEventUpdate->getStartDate() ?: $timestamp->getStartDate(),
+                $subEventUpdate->getEndDate() ?: $timestamp->getEndDate(),
                 $subEventStatus ?? $timestamp->getStatus(),
                 $subEventBookingAvailability ?? $timestamp->getBookingAvailability()
             );

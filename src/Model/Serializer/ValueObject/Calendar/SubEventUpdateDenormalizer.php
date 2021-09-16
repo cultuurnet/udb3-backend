@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use DateTimeImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class SubEventUpdateDenormalizer implements DenormalizerInterface
@@ -22,7 +23,19 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $subEventUpdate = new SubEventUpdate((int) $data['id']);
+        $subEventUpdate = new SubEventUpdate((int)$data['id']);
+
+        if (isset($data['startDate'])) {
+            $subEventUpdate = $subEventUpdate->withStartDate(
+                new DateTimeImmutable($data['startDate'])
+            );
+        }
+
+        if (isset($data['endDate'])) {
+            $subEventUpdate = $subEventUpdate->withEndDate(
+                new DateTimeImmutable($data['endDate'])
+            );
+        }
 
         if (isset($data['status'])) {
             $subEventUpdate = $subEventUpdate->withStatus(
