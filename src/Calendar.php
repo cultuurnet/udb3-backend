@@ -508,6 +508,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // the subEvents. In that case return $this->status so we include the top-level reason (if it has one).
         $expectedStatusType = $this->deriveStatusTypeFromSubEvents();
         if ($this->status->getType()->equals($expectedStatusType)) {
+            // Also make sure to include the reason of a sub event when there is no reason on the top level.
+            if (count($this->timestamps) === 1 && count($this->status->getReason()) === 0) {
+                return $this->timestamps[0]->getStatus();
+            }
+
             return $this->status;
         }
 
