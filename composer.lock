@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9ce4c379f08a1503f89dbde23e337c0",
+    "content-hash": "07d6b0551c65ede9afe2c79b5d072ac9",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -595,16 +595,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v3.3",
+            "version": "v3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "a42b0c7222e5dbeecae434ad805fd97333c9bc37"
+                "reference": "a9285e1cbcf48cc3f60c3fb1a748f9aca807b5ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/a42b0c7222e5dbeecae434ad805fd97333c9bc37",
-                "reference": "a42b0c7222e5dbeecae434ad805fd97333c9bc37",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/a9285e1cbcf48cc3f60c3fb1a748f9aca807b5ae",
+                "reference": "a9285e1cbcf48cc3f60c3fb1a748f9aca807b5ae",
                 "shasum": ""
             },
             "require": {
@@ -640,9 +640,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v3.3"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v3.4"
             },
-            "time": "2021-09-08T09:26:12+00:00"
+            "time": "2021-09-16T06:56:12+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -10039,5 +10039,5 @@
         "ext-xmlreader": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
