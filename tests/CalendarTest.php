@@ -774,6 +774,10 @@ class CalendarTest extends TestCase
                     'endDate' => '2016-03-13T12:00:00+01:00',
                     'status' => [
                         'type' => 'TemporarilyUnavailable',
+                        'reason' => [
+                            'nl' => 'Jammer genoeg uitgesteld.',
+                            'fr' => 'Malheureusement reporté.',
+                        ],
                     ],
                     'bookingAvailability' => [
                         'type' => BookingAvailabilityType::available()->toNative(),
