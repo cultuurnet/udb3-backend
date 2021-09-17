@@ -57,7 +57,7 @@ class ReadEventRestControllerTest extends TestCase
                         'type' => 'Available',
                     ],
                     'bookingAvailability' => [
-                        'type' => 'Unavailable'
+                        'type' => 'Unavailable',
                     ],
                     'startDate' => '2018-10-07 12:15:00+0200',
                     'endDate' => '2018-10-07 18:00:00+0200',
