@@ -56,6 +56,9 @@ class ReadEventRestControllerTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => [
+                        'type' => 'Unavailable',
+                    ],
                     'startDate' => '2018-10-07 12:15:00+0200',
                     'endDate' => '2018-10-07 18:00:00+0200',
                     'calendarType' => 'single',
@@ -98,7 +101,7 @@ class ReadEventRestControllerTest extends TestCase
             ]
         );
 
-        $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00';
+        $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00 (Volzet of uitverkocht)';
     }
 
     private function createController(bool $godUser): ReadEventRestController
