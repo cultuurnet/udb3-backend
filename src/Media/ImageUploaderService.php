@@ -18,32 +18,19 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ImageUploaderService implements ImageUploaderInterface
 {
-    /**
-     * @var UuidGeneratorInterface
-     */
-    protected $uuidGenerator;
+    private UuidGeneratorInterface $uuidGenerator;
+
+    private CommandBus $commandBus;
+
+    private string $uploadDirectory;
+
+    private FilesystemOperator $filesystem;
 
     /**
-     * @var CommandBus
-     */
-    protected $commandBus;
-
-    /**
-     * @var string
-     */
-    protected $uploadDirectory;
-
-    /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
-
-    /**
-     * @var Natural|null
      *  The maximum file size in bytes.
      *  There is no limit when the file size if null.
      */
-    protected $maxFileSize;
+    private ?Natural $maxFileSize;
 
     public function __construct(
         UuidGeneratorInterface $uuidGenerator,
