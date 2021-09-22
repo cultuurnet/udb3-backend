@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Validation\MediaObject;
 
+use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
-use CultuurNet\UDB3\MediaObject;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use ValueObjects\Identity\UUID;
+use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Web\Url;
 
 class MediaObjectsExistValidatorTest extends TestCase
 {
