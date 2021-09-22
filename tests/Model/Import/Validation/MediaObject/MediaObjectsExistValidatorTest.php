@@ -19,10 +19,7 @@ class MediaObjectsExistValidatorTest extends TestCase
      */
     private $mediaManager;
 
-    /**
-     * @var MediaObjectsExistValidator
-     */
-    private $validator;
+    private MediaObjectsExistValidator $validator;
 
     public function setUp()
     {
@@ -33,7 +30,7 @@ class MediaObjectsExistValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_pass_if_all_media_objects_exist()
+    public function it_should_pass_if_all_media_objects_exist(): void
     {
         $this->expectIdsToExist(
             [
@@ -53,7 +50,7 @@ class MediaObjectsExistValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_any_of_the_given_media_objects_do_not_exist()
+    public function it_should_throw_an_exception_if_any_of_the_given_media_objects_do_not_exist(): void
     {
         $this->expectIdsToExist(
             [
@@ -86,7 +83,7 @@ class MediaObjectsExistValidatorTest extends TestCase
     }
 
 
-    private function expectIdsToExist(array $ids)
+    private function expectIdsToExist(array $ids): void
     {
         $this->mediaManager->expects($this->any())
             ->method('get')
