@@ -16,31 +16,15 @@ use League\Flysystem\MountManager;
 
 abstract class WebArchiveFileWriter implements FileWriterInterface
 {
-    /**
-     * @var HTMLFileWriter
-     */
-    protected $htmlFileWriter;
+    protected HTMLFileWriter $htmlFileWriter;
 
-    /**
-     * @var MountManager
-     */
-    protected $mountManager;
+    protected MountManager $mountManager;
 
-    /**
-     * @var string
-     */
-    protected $tmpDir;
+    protected string $tmpDir;
 
-    /**
-     * @var EventInfoServiceInterface
-     */
-    protected $uitpas;
+    protected ?EventInfoServiceInterface $uitpas;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface
-     */
-    protected $calendarSummaryRepository;
-
+    protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     public function __construct(
         HTMLFileWriter $htmlFileWriter,
@@ -57,12 +41,10 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param \Traversable $events
-     * @return string
      *   The path of the temporary directory, relative to the 'tmp://' mounted
      *   filesystem.
      */
-    protected function createWebArchiveDirectory($events)
+    protected function createWebArchiveDirectory(Traversable $events): string
     {
         $tmpDir = $this->createTemporaryArchiveDirectory();
 
@@ -72,7 +54,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         return $tmpDir;
     }
 
-    protected function copyAssets($tmpDir)
+    protected function copyAssets(string $tmpDir): void
     {
         $assets = $this->mountManager->listContents('assets:///', true);
 
@@ -88,11 +70,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         };
     }
 
-    /**
-     * @param string $tmpDir
-     * @return MountManager
-     */
-    protected function initMountManager($tmpDir)
+    protected function initMountManager(string $tmpDir): MountManager
     {
         return new MountManager(
             [
@@ -107,17 +85,16 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         );
     }
 
-    protected function removeTemporaryArchiveDirectory($tmpDir)
+    protected function removeTemporaryArchiveDirectory(string $tmpDir): void
     {
         $this->mountManager->deleteDir('tmp://' . $tmpDir);
     }
 
     /**
-     * @return string
      *   The path of the temporary directory, relative to the 'tmp://' mounted
      *   filesystem.
      */
-    protected function createTemporaryArchiveDirectory()
+    protected function createTemporaryArchiveDirectory(): string
     {
         $exportDir = uniqid('html-export');
         $path = 'tmp://' . $exportDir;
@@ -128,20 +105,16 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
 
     /**
      * Expands a path relative to the tmp:// mount point to a full path.
-     *
-     * @param  string $tmpPath
-     * @return string
      */
-    protected function expandTmpPath($tmpPath)
+    protected function expandTmpPath(string $tmpPath): string
     {
         return $this->tmpDir . '/' . $tmpPath;
     }
 
     /**
-     * @param string             $dir
      * @param \Traversable|array $events
      */
-    protected function writeHtml($dir, $events)
+    protected function writeHtml(string $dir, $events): void
     {
         $filePath = $dir . '/index.html';
 
