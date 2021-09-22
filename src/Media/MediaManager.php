@@ -25,30 +25,15 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    protected $iriGenerator;
+    private IriGeneratorInterface $iriGenerator;
 
-    /**
-     * @var string
-     */
-    protected $mediaDirectory;
+    private string $mediaDirectory;
 
-    /**
-     * @var Repository
-     */
-    protected $repository;
+    private Repository $repository;
 
-    /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
+    private FilesystemOperator $filesystem;
 
-    /**
-     * @var PathGeneratorInterface
-     */
-    protected $pathGenerator;
+    protected PathGeneratorInterface $pathGenerator;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
@@ -99,10 +84,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         return $mediaObject;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handleUploadImage(UploadImage $uploadImage)
+    public function handleUploadImage(UploadImage $uploadImage): void
     {
         $pathParts = explode('/', $uploadImage->getFilePath()->toNative());
         $fileName = array_pop($pathParts);
@@ -133,10 +115,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         $this->logger->info('job_info', $jobInfo);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get(UUID $fileId)
+    public function get(UUID $fileId): MediaObject
     {
         try {
             /** @var MediaObject $mediaObject */
