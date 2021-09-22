@@ -64,9 +64,10 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
                 continue;
             }
 
+            // The path property now also includes the mount prefix
             $this->mountManager->copy(
-                $asset['filesystem'] . '://' . $asset['path'],
-                'tmp://' . $tmpDir . '/' . $asset['path']
+                $asset['path'],
+                'tmp://' . $tmpDir . '/' . str_replace('assets://', '', $asset['path'])
             );
         };
     }
