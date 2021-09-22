@@ -90,12 +90,13 @@ class MediaObjectsExistValidatorTest extends TestCase
             ->willReturnCallback(
                 function (UUID $id) use ($ids) {
                     if (in_array($id->toNative(), $ids)) {
-                        return new MediaObject(
-                            'https://mocked-image.jpg',
-                            'https://mocked-image-thumbnail.jpg',
-                            'description',
-                            'copyright holder',
-                            $id->toNative()
+                        return MediaObject::create(
+                            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+                            new MIMEType('image/png'),
+                            new StringLiteral('The Gleaners'),
+                            new CopyrightHolder('Jean-François Millet'),
+                            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                            new Language('en')
                         );
                     }
                     throw new MediaObjectNotFoundException();
