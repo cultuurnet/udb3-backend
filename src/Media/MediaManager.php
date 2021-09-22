@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -39,7 +39,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         IriGeneratorInterface $iriGenerator,
         PathGeneratorInterface $pathGenerator,
         Repository $repository,
-        FilesystemInterface $filesystem,
+        FilesystemOperator $filesystem,
         $mediaDirectory
     ) {
         $this->iriGenerator = $iriGenerator;
