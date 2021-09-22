@@ -88,7 +88,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
 
     protected function removeTemporaryArchiveDirectory(string $tmpDir): void
     {
-        $this->mountManager->deleteDir('tmp://' . $tmpDir);
+        $this->mountManager->deleteDirectory('tmp://' . $tmpDir);
     }
 
     /**
@@ -99,7 +99,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
     {
         $exportDir = uniqid('html-export');
         $path = 'tmp://' . $exportDir;
-        $this->mountManager->createDir($path);
+        $this->mountManager->createDirectory($path);
 
         return $exportDir;
     }
