@@ -34,10 +34,7 @@ class ImageUploaderServiceTest extends TestCase
      */
     protected $filesystem;
 
-    /**
-     * @var string
-     */
-    protected $directory = '/uploads';
+    protected string $directory = '/uploads';
 
     /**
      * @var MockObject|CommandBus
