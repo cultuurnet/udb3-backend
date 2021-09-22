@@ -131,7 +131,7 @@ class MediaManagerTest extends TestCase
 
         $this->filesystem
             ->expects($this->once())
-            ->method('rename')
+            ->method('move')
             ->with(
                 '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 '/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'

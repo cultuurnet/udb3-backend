@@ -97,8 +97,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
         $destinationIri = $this->iriGenerator->iri($destinationPath);
 
-        $this->filesystem->rename(
-            $uploadImage->getFilePath(),
+        $this->filesystem->move(
+            $uploadImage->getFilePath()->toNative(),
             $this->mediaDirectory . '/' . $destinationPath
         );
 
