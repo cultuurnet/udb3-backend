@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -51,7 +51,7 @@ class MediaManagerTest extends TestCase
         $this->repository = $this->createMock(Repository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->pathGenerator = $this->createMock(PathGeneratorInterface::class);
-        $this->filesystem = $this->createMock(FilesystemInterface::class);
+        $this->filesystem = $this->createMock(FilesystemOperator::class);
 
         $this->mediaManager = new MediaManager(
             $this->iriGenerator,

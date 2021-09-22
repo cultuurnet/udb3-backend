@@ -10,9 +10,10 @@ use CultuurNet\UDB3\EventExport\Format\HTML\HTMLFileWriter;
 use CultuurNet\UDB3\EventExport\Format\HTML\TransformingIteratorIterator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\MountManager;
+use Traversable;
 
 abstract class WebArchiveFileWriter implements FileWriterInterface
 {
@@ -75,11 +76,11 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         return new MountManager(
             [
                 'tmp' => new Filesystem(
-                    new Local($tmpDir)
+                    new LocalFilesystemAdapter($tmpDir)
                 ),
                 // @todo make this configurable
                 'assets' => new Filesystem(
-                    new Local(__DIR__ . '/assets')
+                    new LocalFilesystemAdapter(__DIR__ . '/assets')
                 ),
             ]
         );

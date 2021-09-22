@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
@@ -35,7 +35,7 @@ class ImageUploaderService implements ImageUploaderInterface
     public function __construct(
         UuidGeneratorInterface $uuidGenerator,
         CommandBus $commandBus,
-        FilesystemInterface $filesystem,
+        FilesystemOperator $filesystem,
         string $uploadDirectory,
         Natural $maxFileSize = null
     ) {

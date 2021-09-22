@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use org\bovigo\vfs\content\LargeFileContent;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,7 +30,7 @@ class ImageUploaderServiceTest extends TestCase
     protected $uuidGenerator;
 
     /**
-     * @var MockObject|FilesystemInterface
+     * @var MockObject|FilesystemOperator
      */
     protected $filesystem;
 
@@ -46,7 +46,7 @@ class ImageUploaderServiceTest extends TestCase
         $this->fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->filesystem = $this->createMock(FilesystemInterface::class);
+        $this->filesystem = $this->createMock(FilesystemOperator::class);
         $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->uploader = new ImageUploaderService(
