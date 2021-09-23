@@ -9,22 +9,11 @@ use PHPExcel;
 
 class OOXMLFileWriter implements TabularDataFileWriterInterface
 {
-    /**
-     * @var string
-     */
-    protected $filePath;
+    private string $filePath;
 
-    /**
-     * Next row number to write to.
-     *
-     * @var int
-     */
-    protected $i;
+    private int $i;
 
-    /**
-     * @var PHPExcel
-     */
-    private $spreadsheet;
+    private Spreadsheet $spreadsheet;
 
     public function __construct(string $filePath)
     {
