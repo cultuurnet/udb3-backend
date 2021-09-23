@@ -86,6 +86,11 @@ class MediaManagerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $this->mediaManager->setLogger($logger);
 
+        $this->pathGenerator
+            ->expects($this->once())
+            ->method('path')
+            ->willReturn('de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
         $this->iriGenerator
             ->expects($this->once())
             ->method('iri')
