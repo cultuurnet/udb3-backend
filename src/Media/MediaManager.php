@@ -31,21 +31,25 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
     private Repository $repository;
 
-    private FilesystemOperator $filesystem;
+    private FilesystemOperator $localFilesystem;
 
-    protected PathGeneratorInterface $pathGenerator;
+    private FilesystemOperator $s3FileSystem;
+
+    private PathGeneratorInterface $pathGenerator;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
         PathGeneratorInterface $pathGenerator,
         Repository $repository,
-        FilesystemOperator $filesystem,
+        FilesystemOperator $legacyFilesystem,
+        FilesystemOperator $s3FileSystem,
         $mediaDirectory
     ) {
         $this->iriGenerator = $iriGenerator;
         $this->pathGenerator = $pathGenerator;
         $this->mediaDirectory = $mediaDirectory;
-        $this->filesystem = $filesystem;
+        $this->localFilesystem = $legacyFilesystem;
+        $this->s3FileSystem = $s3FileSystem;
         $this->repository = $repository;
 
         // Avoid conditional log calls by setting a null logger by default.
@@ -97,7 +101,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
         $destinationIri = $this->iriGenerator->iri($destinationPath);
 
-        $this->filesystem->move(
+        // Move to the local file system media directory
+        $this->localFilesystem->copy(
             $uploadImage->getFilePath()->toNative(),
             $this->mediaDirectory . '/' . $destinationPath
         );
