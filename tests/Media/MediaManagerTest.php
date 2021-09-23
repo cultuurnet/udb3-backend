@@ -141,12 +141,30 @@ class MediaManagerTest extends TestCase
             ->method('load')
             ->willThrowException(new AggregateNotFoundException());
 
-        $this->filesystem
+        $this->localFilesystem
             ->expects($this->once())
-            ->method('move')
+            ->method('copy')
             ->with(
                 '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 '/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
+            );
+
+        $this->localFilesystem
+            ->expects($this->once())
+            ->method('readStream')
+            ->with(
+                '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            );
+
+        $this->s3Filesystem
+            ->expects($this->once())
+            ->method('writeStream');
+
+        $this->localFilesystem
+            ->expects($this->once())
+            ->method('delete')
+            ->with(
+                '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
             );
 
         $this->mediaManager->handleUploadImage($command);
