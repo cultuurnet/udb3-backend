@@ -107,6 +107,14 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $this->mediaDirectory . '/' . $destinationPath
         );
 
+        // Upload to the S3 bucket
+        $this->s3FileSystem->writeStream(
+            $destinationPath,
+            $this->localFilesystem->readStream($uploadImage->getFilePath()->toNative())
+        );
+
+        $this->localFilesystem->delete($uploadImage->getFilePath()->toNative());
+
         $this->create(
             $uploadImage->getFileId(),
             $uploadImage->getMimeType(),
