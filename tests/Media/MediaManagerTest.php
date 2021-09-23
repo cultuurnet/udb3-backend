@@ -44,20 +44,27 @@ class MediaManagerTest extends TestCase
     /**
      * @var FilesystemOperator|MockObject;
      */
-    private $filesystem;
+    private $localFilesystem;
+
+    /**
+     * @var FilesystemOperator|MockObject;
+     */
+    private $s3Filesystem;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(Repository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->pathGenerator = $this->createMock(PathGeneratorInterface::class);
-        $this->filesystem = $this->createMock(FilesystemOperator::class);
+        $this->localFilesystem = $this->createMock(FilesystemOperator::class);
+        $this->s3Filesystem = $this->createMock(FilesystemOperator::class);
 
         $this->mediaManager = new MediaManager(
             $this->iriGenerator,
             $this->pathGenerator,
             $this->repository,
-            $this->filesystem,
+            $this->localFilesystem,
+            $this->s3Filesystem,
             $this->mediaDirectory
         );
     }
