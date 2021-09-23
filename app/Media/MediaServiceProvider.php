@@ -83,6 +83,7 @@ class MediaServiceProvider implements ServiceProviderInterface
                     new SimplePathGenerator(),
                     $app['media_object_repository'],
                     $app['local_file_system'],
+                    $app['s3_file_system'],
                     $app['media.media_directory']
                 );
 

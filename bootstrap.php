@@ -1,5 +1,6 @@
 <?php
 
+use Aws\S3\S3Client;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
@@ -63,6 +64,7 @@ use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Monolog\Logger;
@@ -76,15 +78,26 @@ date_default_timezone_set('Europe/Brussels');
 
 $app = new Application();
 
-$localAdapter = new LocalFilesystemAdapter(__DIR__);
-$app['local_file_system'] = new Filesystem($localAdapter);
-
 $app['api_name'] = ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation = __DIR__;
 }
 $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
+
+$localAdapter = new LocalFilesystemAdapter(__DIR__);
+$app['local_file_system'] = new Filesystem($localAdapter);
+
+$s3Client = new S3Client([
+    'credentials' => [
+        'key'    => $app['config']['media']['aws']['credentials']['key'],
+        'secret' => $app['config']['media']['aws']['credentials']['secret']
+    ],
+    'region' => $app['config']['media']['aws']['region'],
+    'version' => $app['config']['media']['aws']['version'],
+]);
+$s3Adapter = new AwsS3V3Adapter($s3Client, $app['config']['media']['aws']['bucket']);
+$app['s3_file_system'] = new Filesystem($s3Adapter);
 
 $app['system_user_id'] = $app::share(
     function () {
