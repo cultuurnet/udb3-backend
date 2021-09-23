@@ -13,7 +13,9 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use League\Flysystem\Config;
 use League\Flysystem\FilesystemOperator;
+use League\Flysystem\Visibility;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -110,7 +112,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         // Upload to the S3 bucket
         $this->s3FileSystem->writeStream(
             $destinationPath,
-            $this->localFilesystem->readStream($uploadImage->getFilePath()->toNative())
+            $this->localFilesystem->readStream($uploadImage->getFilePath()->toNative()),
+            [Config::OPTION_VISIBILITY => Visibility::PUBLIC]
         );
 
         $this->localFilesystem->delete($uploadImage->getFilePath()->toNative());
