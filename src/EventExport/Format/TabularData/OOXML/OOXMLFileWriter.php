@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\TabularData\OOXML;
 
 use CultuurNet\UDB3\EventExport\Format\TabularData\TabularDataFileWriterInterface;
-use PHPExcel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class OOXMLFileWriter implements TabularDataFileWriterInterface
 {
@@ -18,7 +19,7 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
     public function __construct(string $filePath)
     {
         $this->filePath = $filePath;
-        $this->spreadsheet = new PHPExcel();
+        $this->spreadsheet = new Spreadsheet();
         $this->spreadsheet->setActiveSheetIndex(0);
         $this->i = 1;
     }
@@ -39,7 +40,7 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
 
     public function close(): void
     {
-        $objWriter = new \PHPExcel_Writer_Excel2007($this->spreadsheet);
+        $objWriter = new Xlsx($this->spreadsheet);
         $objWriter->save($this->filePath);
     }
 }
