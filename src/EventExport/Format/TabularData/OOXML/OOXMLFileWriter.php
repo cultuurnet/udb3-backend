@@ -37,7 +37,7 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
     /**
      * @param string[] $row
      */
-    public function writeRow($row)
+    public function writeRow($row): void
     {
         $this->spreadsheet->getActiveSheet()->fromArray(
             $row,
@@ -48,10 +48,7 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
         $this->i++;
     }
 
-    /**
-     * @return void
-     */
-    public function close()
+    public function close(): void
     {
         $objWriter = new \PHPExcel_Writer_Excel2007($this->spreadsheet);
         $objWriter->save($this->filePath);

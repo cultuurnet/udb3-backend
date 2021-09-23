@@ -9,7 +9,7 @@ interface TabularDataFileWriterInterface
     /**
      * @param string[] $row
      */
-    public function writeRow($row);
+    public function writeRow(array $row): void;
 
-    public function close();
+    public function close(): void;
 }
