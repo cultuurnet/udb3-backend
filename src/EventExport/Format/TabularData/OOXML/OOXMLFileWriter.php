@@ -5,31 +5,21 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\TabularData\OOXML;
 
 use CultuurNet\UDB3\EventExport\Format\TabularData\TabularDataFileWriterInterface;
-use PHPExcel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class OOXMLFileWriter implements TabularDataFileWriterInterface
 {
-    /**
-     * @var string
-     */
-    protected $filePath;
+    private string $filePath;
 
-    /**
-     * Next row number to write to.
-     *
-     * @var int
-     */
-    protected $i;
+    private int $i;
 
-    /**
-     * @var PHPExcel
-     */
-    private $spreadsheet;
+    private Spreadsheet $spreadsheet;
 
     public function __construct(string $filePath)
     {
         $this->filePath = $filePath;
-        $this->spreadsheet = new PHPExcel();
+        $this->spreadsheet = new Spreadsheet();
         $this->spreadsheet->setActiveSheetIndex(0);
         $this->i = 1;
     }
@@ -37,7 +27,7 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
     /**
      * @param string[] $row
      */
-    public function writeRow($row)
+    public function writeRow($row): void
     {
         $this->spreadsheet->getActiveSheet()->fromArray(
             $row,
@@ -48,12 +38,9 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
         $this->i++;
     }
 
-    /**
-     * @return void
-     */
-    public function close()
+    public function close(): void
     {
-        $objWriter = new \PHPExcel_Writer_Excel2007($this->spreadsheet);
+        $objWriter = new Xlsx($this->spreadsheet);
         $objWriter->save($this->filePath);
     }
 }

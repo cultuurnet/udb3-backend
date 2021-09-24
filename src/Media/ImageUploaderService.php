@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
@@ -18,37 +18,24 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ImageUploaderService implements ImageUploaderInterface
 {
-    /**
-     * @var UuidGeneratorInterface
-     */
-    protected $uuidGenerator;
+    private UuidGeneratorInterface $uuidGenerator;
+
+    private CommandBus $commandBus;
+
+    private string $uploadDirectory;
+
+    private FilesystemOperator $filesystem;
 
     /**
-     * @var CommandBus
-     */
-    protected $commandBus;
-
-    /**
-     * @var string
-     */
-    protected $uploadDirectory;
-
-    /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
-
-    /**
-     * @var Natural|null
      *  The maximum file size in bytes.
      *  There is no limit when the file size if null.
      */
-    protected $maxFileSize;
+    private ?Natural $maxFileSize;
 
     public function __construct(
         UuidGeneratorInterface $uuidGenerator,
         CommandBus $commandBus,
-        FilesystemInterface $filesystem,
+        FilesystemOperator $filesystem,
         string $uploadDirectory,
         Natural $maxFileSize = null
     ) {

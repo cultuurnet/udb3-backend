@@ -63,6 +63,8 @@ use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\Psr7ServiceProvider;
@@ -74,8 +76,8 @@ date_default_timezone_set('Europe/Brussels');
 
 $app = new Application();
 
-$adapter = new \League\Flysystem\Adapter\Local(__DIR__);
-$app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
+$localAdapter = new LocalFilesystemAdapter(__DIR__);
+$app['local_file_system'] = new Filesystem($localAdapter);
 
 $app['api_name'] = ApiName::UNKNOWN;
 

@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use org\bovigo\vfs\content\LargeFileContent;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,15 +20,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ImageUploaderServiceTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $fileId;
+    private UUID $fileId;
 
-    /**
-     * @var ImageUploaderInterface
-     */
-    protected $uploader;
+    private ImageUploaderInterface $uploader;
 
     /**
      * @var MockObject|UuidGeneratorInterface
@@ -36,26 +30,23 @@ class ImageUploaderServiceTest extends TestCase
     protected $uuidGenerator;
 
     /**
-     * @var MockObject|FilesystemInterface
+     * @var MockObject|FilesystemOperator
      */
     protected $filesystem;
 
-    /**
-     * @var string
-     */
-    protected $directory = '/uploads';
+    protected string $directory = '/uploads';
 
     /**
      * @var MockObject|CommandBus
      */
     protected $commandBus;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->filesystem = $this->createMock(FilesystemInterface::class);
+        $this->filesystem = $this->createMock(FilesystemOperator::class);
         $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->uploader = new ImageUploaderService(
@@ -69,7 +60,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_uploaded_file_is_not_an_image()
+    public function it_should_throw_an_exception_if_the_uploaded_file_is_not_an_image(): void
     {
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -95,7 +86,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_move_an_uploaded_file_to_the_upload_directory()
+    public function it_should_move_an_uploaded_file_to_the_upload_directory(): void
     {
         $file = new UploadedFile(
             __DIR__ . '/files/my-image.png',
@@ -135,7 +126,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_upload_was_not_successful()
+    public function it_should_throw_an_exception_when_the_upload_was_not_successful(): void
     {
         $file = new UploadedFile(
             __DIR__ . '/files/my-image.png',
@@ -155,7 +146,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_file_type_can_not_be_guessed()
+    public function it_should_throw_an_exception_when_the_file_type_can_not_be_guessed(): void
     {
         $file = $this->getMockFile(1000);
 
@@ -182,7 +173,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_file_size_limit_is_exceeded()
+    public function it_should_throw_an_exception_when_the_file_size_limit_is_exceeded(): void
     {
         $uploader = new ImageUploaderService(
             $this->uuidGenerator,
@@ -207,7 +198,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_file_size_is_limited_but_cannot_be_determined()
+    public function it_should_throw_an_exception_when_the_file_size_is_limited_but_cannot_be_determined(): void
     {
         $uploader = new ImageUploaderService(
             $this->uuidGenerator,
@@ -232,7 +223,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_upload_a_file_that_does_not_exceed_the_maximum_file_size()
+    public function it_should_upload_a_file_that_does_not_exceed_the_maximum_file_size(): void
     {
         $file = $this->getMockImage(1000000);
 

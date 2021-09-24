@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -22,42 +22,36 @@ use ValueObjects\Web\Url;
 
 class MediaManagerTest extends TestCase
 {
-    /**
-     * @var MediaManager
-     */
-    protected $mediaManager;
+    private MediaManager $mediaManager;
 
     /**
      * @var Repository|MockObject
      */
-    protected $repository;
+    private $repository;
 
     /**
      * @var IriGeneratorInterface|MockObject
      */
-    protected $iriGenerator;
+    private $iriGenerator;
 
     /**
      * @var PathGeneratorInterface|MockObject
      */
-    protected $pathGenerator;
+    private $pathGenerator;
+
+    private string $mediaDirectory = '/media';
 
     /**
-     * @var string
+     * @var FilesystemOperator|MockObject;
      */
-    protected $mediaDirectory = '/media';
+    private $filesystem;
 
-    /**
-     * @var FilesystemInterface|MockObject;
-     */
-    protected $filesystem;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->createMock(Repository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->pathGenerator = $this->createMock(PathGeneratorInterface::class);
-        $this->filesystem = $this->createMock(FilesystemInterface::class);
+        $this->filesystem = $this->createMock(FilesystemOperator::class);
 
         $this->mediaManager = new MediaManager(
             $this->iriGenerator,
@@ -71,7 +65,7 @@ class MediaManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_log_the_file_id_after_a_media_object_is_created_for_an_uploaded_image()
+    public function it_should_log_the_file_id_after_a_media_object_is_created_for_an_uploaded_image(): void
     {
         $command = new UploadImage(
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
@@ -109,7 +103,7 @@ class MediaManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_move_a_file_to_the_media_directory_when_uploading()
+    public function it_should_move_a_file_to_the_media_directory_when_uploading(): void
     {
         $command = new UploadImage(
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
@@ -137,7 +131,7 @@ class MediaManagerTest extends TestCase
 
         $this->filesystem
             ->expects($this->once())
-            ->method('rename')
+            ->method('move')
             ->with(
                 '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 '/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
@@ -149,7 +143,7 @@ class MediaManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_retrieve_an_image_by_id()
+    public function it_can_retrieve_an_image_by_id(): void
     {
         $id = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $fileType = new MIMEType('image/png');
@@ -190,7 +184,7 @@ class MediaManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_a_media_object_is_not_found()
+    public function it_throws_an_exception_when_a_media_object_is_not_found(): void
     {
         $id = 'de305d54-75b4-431b-adb2-eb6b9e546014';
 
