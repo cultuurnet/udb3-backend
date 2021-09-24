@@ -10,19 +10,10 @@ use ValueObjects\Identity\UUID;
 
 abstract class AbstractConstraintEvent extends AbstractEvent
 {
-    /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
+    private SapiVersion $sapiVersion;
 
-    /**
-     * @var Query
-     */
-    private $query;
+    private Query $query;
 
-    /**
-     * AbstractPermissionEvent constructor.
-     */
     final public function __construct(
         UUID $uuid,
         SapiVersion $sapiVersion,
@@ -47,7 +38,7 @@ abstract class AbstractConstraintEvent extends AbstractEvent
     {
         return new static(
             new UUID($data['uuid']),
-            SapiVersion::fromNative($data['sapiVersion']),
+            SapiVersion::V3(),
             new Query($data['query'])
         );
     }

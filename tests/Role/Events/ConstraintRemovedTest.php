@@ -10,25 +10,16 @@ use ValueObjects\Identity\UUID;
 
 class ConstraintRemovedTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var SapiVersion
-     */
-    protected $sapiVersion;
+    private SapiVersion $sapiVersion;
 
-    /**
-     * @var ConstraintRemoved
-     */
-    protected $event;
+    private ConstraintRemoved $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID();
-        $this->sapiVersion = SapiVersion::V2();
+        $this->sapiVersion = SapiVersion::V3();
 
         $this->event = new ConstraintRemoved(
             $this->uuid,
@@ -39,7 +30,7 @@ class ConstraintRemovedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid_and_a_sapi_version()
+    public function it_stores_a_uuid_and_a_sapi_version(): void
     {
         $this->assertEquals($this->uuid, $this->event->getUuid());
         $this->assertEquals($this->sapiVersion, $this->event->getSapiVersion());
@@ -48,7 +39,7 @@ class ConstraintRemovedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualArray = $this->event->serialize();
 
@@ -63,11 +54,11 @@ class ConstraintRemovedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $data = [
             'uuid' => $this->uuid->toNative(),
-            'sapiVersion' => $this->sapiVersion->toNative(),
+            'sapiVersion' => SapiVersion::V3()->toNative(),
         ];
         $actualEvent = $this->event->deserialize($data);
         $expectedEvent = $this->event;

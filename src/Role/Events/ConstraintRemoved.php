@@ -9,10 +9,7 @@ use ValueObjects\Identity\UUID;
 
 final class ConstraintRemoved extends AbstractEvent
 {
-    /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
+    private SapiVersion $sapiVersion;
 
     final public function __construct(
         UUID $uuid,
@@ -31,7 +28,7 @@ final class ConstraintRemoved extends AbstractEvent
     {
         return new static(
             new UUID($data['uuid']),
-            SapiVersion::fromNative($data['sapiVersion'])
+            SapiVersion::V3()
         );
     }
 

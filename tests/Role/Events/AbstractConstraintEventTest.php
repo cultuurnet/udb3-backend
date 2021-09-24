@@ -12,31 +12,22 @@ use ValueObjects\Identity\UUID;
 
 class AbstractConstraintEventTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var SapiVersion
-     */
-    protected $sapiVersion;
+    private SapiVersion $sapiVersion;
 
-    /**
-     * @var Query
-     */
-    protected $query;
+    private Query $query;
 
     /**
      * @var AbstractConstraintEvent|MockObject
      */
     protected $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID();
 
-        $this->sapiVersion = SapiVersion::V2();
+        $this->sapiVersion = SapiVersion::V3();
 
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
 
@@ -49,7 +40,7 @@ class AbstractConstraintEventTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid_and_a_query()
+    public function it_stores_a_uuid_and_a_query(): void
     {
         $this->assertEquals($this->uuid, $this->event->getUuid());
         $this->assertEquals($this->sapiVersion, $this->event->getSapiVersion());
@@ -59,7 +50,7 @@ class AbstractConstraintEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualArray = $this->event->serialize();
 
@@ -75,16 +66,16 @@ class AbstractConstraintEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $data = [
             'uuid' => $this->uuid->toNative(),
-            'sapiVersion' => $this->sapiVersion->toNative(),
+            'sapiVersion' => SapiVersion::V3()->toNative(),
             'query' => $this->query->toNative(),
         ];
         $actualEvent = $this->event->deserialize($data);
         $expectedEvent = $this->event;
 
-        $this->assertEquals($actualEvent, $expectedEvent);
+        $this->assertEquals($expectedEvent, $actualEvent);
     }
 }
