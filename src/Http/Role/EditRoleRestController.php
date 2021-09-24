@@ -69,7 +69,7 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    public function addConstraint(Request $request, string $id, string $sapiVersion): Response
+    public function addConstraint(Request $request, string $id): Response
     {
         $query = $this->queryJsonDeserializer->deserialize(
             new StringLiteral($request->getContent())
@@ -80,7 +80,7 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    public function updateConstraint(Request $request, string $id, string $sapiVersion): Response
+    public function updateConstraint(Request $request, string $id): Response
     {
         $query = $this->queryJsonDeserializer->deserialize(
             new StringLiteral($request->getContent())
@@ -91,7 +91,7 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    public function removeConstraint(string $id, string $sapiVersion): Response
+    public function removeConstraint(string $id): Response
     {
         $this->service->removeConstraint(new UUID($id));
 

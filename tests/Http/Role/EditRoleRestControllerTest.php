@@ -141,7 +141,6 @@ class EditRoleRestControllerTest extends TestCase
     {
         $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
         $constraintQuery = new Query('city:3000');
-        $sapiVersion = 'v2';
 
         $request = $this->makeRequest('POST', 'samples/add_constraint.json');
 
@@ -157,7 +156,7 @@ class EditRoleRestControllerTest extends TestCase
                 $constraintQuery
             );
 
-        $response = $this->controller->addConstraint($request, $roleId, $sapiVersion);
+        $response = $this->controller->addConstraint($request, $roleId);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -169,7 +168,6 @@ class EditRoleRestControllerTest extends TestCase
     {
         $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
         $constraintQuery = new Query('city:3000');
-        $sapiVersion = 'v2';
 
         $request = $this->makeRequest('PUT', 'samples/add_constraint.json');
 
@@ -185,7 +183,7 @@ class EditRoleRestControllerTest extends TestCase
                 $constraintQuery
             );
 
-        $response = $this->controller->updateConstraint($request, $roleId, $sapiVersion);
+        $response = $this->controller->updateConstraint($request, $roleId);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -196,13 +194,12 @@ class EditRoleRestControllerTest extends TestCase
     public function it_removes_a_constraint()
     {
         $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
-        $sapiVersion = 'v2';
 
         $this->editService->expects($this->once())
             ->method('removeConstraint')
             ->with(new UUID($roleId));
 
-        $response = $this->controller->removeConstraint($roleId, $sapiVersion);
+        $response = $this->controller->removeConstraint($roleId);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
