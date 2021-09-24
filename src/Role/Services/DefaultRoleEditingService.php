@@ -135,10 +135,7 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
 
     public function removeConstraint(UUID $uuid, SapiVersion $sapiVersion): void
     {
-        $command = new RemoveConstraint(
-            $uuid,
-            $sapiVersion
-        );
+        $command = new RemoveConstraint($uuid);
 
         $this->commandBus->dispatch($command);
     }

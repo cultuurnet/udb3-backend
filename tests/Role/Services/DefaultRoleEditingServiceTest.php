@@ -242,7 +242,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
-            ->with(new RemoveConstraint($this->uuid, SapiVersion::V2()));
+            ->with(new RemoveConstraint($this->uuid));
 
         $this->roleEditingService->removeConstraint(
             $this->uuid,

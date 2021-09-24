@@ -377,10 +377,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($this->uuid)
             ->given([$this->roleCreated, $this->constraintAdded])
-            ->when(new RemoveConstraint(
-                $this->uuid,
-                $this->sapiVersion
-            ))
+            ->when(new RemoveConstraint($this->uuid))
             ->then([$this->constraintRemoved]);
     }
 

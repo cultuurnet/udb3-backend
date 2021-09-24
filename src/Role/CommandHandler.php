@@ -88,9 +88,7 @@ class CommandHandler extends AbstractCommandHandler
     {
         $role = $this->load($removeConstraint->getUuid());
 
-        $role->removeConstraint(
-            $removeConstraint->getSapiVersion()
-        );
+        $role->removeConstraint(SapiVersion::V3());
 
         $this->save($role);
     }
