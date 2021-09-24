@@ -28,10 +28,7 @@ class Role extends EventSourcedAggregateRoot
 
     private StringLiteral $name;
 
-    /**
-     * @var Query[]
-     */
-    private array $queries = [];
+    private ?Query $query = null;
 
     /**
      * @var Permission[]
@@ -76,33 +73,32 @@ class Role extends EventSourcedAggregateRoot
 
     public function addConstraint(Query $query): void
     {
-        if ($this->queryEmpty()) {
+        if ($this->isCurrentQueryEmpty() && !$query->isEmpty()) {
             $this->apply(new ConstraintAdded($this->uuid, $query));
         }
     }
 
     public function updateConstraint(Query $query): void
     {
-        if (!$this->queryEmpty() && !$this->querySameValue($query)) {
+        if (!$this->isCurrentQueryEmpty() && !$this->query->sameValueAs($query)) {
             $this->apply(new ConstraintUpdated($this->uuid, $query));
         }
     }
 
     public function removeConstraint(): void
     {
-        if (!$this->queryEmpty()) {
+        if (!$this->isCurrentQueryEmpty()) {
             $this->apply(new ConstraintRemoved($this->uuid));
         }
     }
 
-    private function queryEmpty(): bool
+    private function isCurrentQueryEmpty(): bool
     {
-        return empty($this->queries['v3']);
-    }
+        if ($this->query === null) {
+            return true;
+        }
 
-    private function querySameValue(Query $query): bool
-    {
-        return $this->queries['v3']->sameValueAs($query);
+        return $this->query->isEmpty();
     }
 
     public function addPermission(
@@ -169,22 +165,24 @@ class Role extends EventSourcedAggregateRoot
 
     public function applyRoleRenamed(RoleRenamed $roleRenamed): void
     {
-        $this->name = $roleRenamed->getName();
+        if (!$roleRenamed->getName()->isEmpty() && !$this->name->sameValueAs($roleRenamed->getName())) {
+            $this->name = $roleRenamed->getName();
+        }
     }
 
     public function applyConstraintAdded(ConstraintAdded $constraintAdded): void
     {
-        $this->queries['v3'] = $constraintAdded->getQuery();
+        $this->query = $constraintAdded->getQuery();
     }
 
     public function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
     {
-        $this->queries['v3'] = $constraintUpdated->getQuery();
+        $this->query = $constraintUpdated->getQuery();
     }
 
     public function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
-        unset($this->queries['v3']);
+        $this->query = null;
     }
 
     public function applyPermissionAdded(PermissionAdded $permissionAdded): void
