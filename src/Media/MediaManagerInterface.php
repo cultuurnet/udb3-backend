@@ -15,17 +15,11 @@ use ValueObjects\Web\Url;
 
 interface MediaManagerInterface extends CommandHandler
 {
-    /**
-     * @throws MediaObjectNotFoundException
-     * @return MediaObject
-     */
-    public function get(UUID $id);
+    public function get(UUID $id): MediaObject;
 
     public function getImage(UUID $imageId): Image;
 
-
-    public function handleUploadImage(UploadImage $uploadImage);
-
+    public function handleUploadImage(UploadImage $uploadImage): void;
 
     public function create(
         UUID $id,

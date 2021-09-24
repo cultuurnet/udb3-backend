@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Validation\MediaObject;
 
+use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
-use CultuurNet\UDB3\MediaObject;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use ValueObjects\Identity\UUID;
+use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Web\Url;
 
 class MediaObjectsExistValidatorTest extends TestCase
 {
@@ -19,10 +24,7 @@ class MediaObjectsExistValidatorTest extends TestCase
      */
     private $mediaManager;
 
-    /**
-     * @var MediaObjectsExistValidator
-     */
-    private $validator;
+    private MediaObjectsExistValidator $validator;
 
     public function setUp()
     {
@@ -33,7 +35,7 @@ class MediaObjectsExistValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_pass_if_all_media_objects_exist()
+    public function it_should_pass_if_all_media_objects_exist(): void
     {
         $this->expectIdsToExist(
             [
@@ -53,7 +55,7 @@ class MediaObjectsExistValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_any_of_the_given_media_objects_do_not_exist()
+    public function it_should_throw_an_exception_if_any_of_the_given_media_objects_do_not_exist(): void
     {
         $this->expectIdsToExist(
             [
@@ -86,19 +88,20 @@ class MediaObjectsExistValidatorTest extends TestCase
     }
 
 
-    private function expectIdsToExist(array $ids)
+    private function expectIdsToExist(array $ids): void
     {
         $this->mediaManager->expects($this->any())
             ->method('get')
             ->willReturnCallback(
                 function (UUID $id) use ($ids) {
                     if (in_array($id->toNative(), $ids)) {
-                        return new MediaObject(
-                            'https://mocked-image.jpg',
-                            'https://mocked-image-thumbnail.jpg',
-                            'description',
-                            'copyright holder',
-                            $id->toNative()
+                        return MediaObject::create(
+                            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+                            new MIMEType('image/png'),
+                            new StringLiteral('The Gleaners'),
+                            new CopyrightHolder('Jean-François Millet'),
+                            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                            new Language('en')
                         );
                     }
                     throw new MediaObjectNotFoundException();
