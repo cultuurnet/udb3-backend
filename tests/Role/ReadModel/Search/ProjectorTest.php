@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -29,14 +28,10 @@ class ProjectorTest extends TestCase
 
     private $repository;
 
-
-    private SapiVersion $sapiVersion;
-
     public function setUp(): void
     {
         $this->repository = $this->createMock(RepositoryInterface::class);
-        $this->sapiVersion = SapiVersion::V2();
-        $this->projector = new Projector($this->repository, $this->sapiVersion);
+        $this->projector = new Projector($this->repository);
         $this->domainMessage = new DomainMessage('id', 0, new Metadata(), '', DateTime::now());
         $this->uuid = new UUID();
     }

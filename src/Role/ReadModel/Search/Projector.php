@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 
 class Projector implements EventListener
 {
@@ -21,13 +20,8 @@ class Projector implements EventListener
 
     private RepositoryInterface $repository;
 
-    private SapiVersion $sapiVersion;
-
-    public function __construct(
-        RepositoryInterface $repository,
-        SapiVersion $sapiVersion
-    ) {
-        $this->sapiVersion = $sapiVersion;
+    public function __construct(RepositoryInterface $repository)
+    {
         $this->repository = $repository;
     }
 
