@@ -19,16 +19,9 @@ class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $repository;
+    private RepositoryInterface $repository;
 
-    /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
-
+    private SapiVersion $sapiVersion;
 
     public function __construct(
         RepositoryInterface $repository,
@@ -38,60 +31,50 @@ class Projector implements EventListener
         $this->repository = $repository;
     }
 
-
     public function applyRoleCreated(
         RoleCreated $roleCreated,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->repository->save(
             $roleCreated->getUuid()->toNative(),
             $roleCreated->getName()->toNative()
         );
     }
 
-
     public function applyRoleRenamed(
         RoleRenamed $roleRenamed,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->repository->updateName(
             $roleRenamed->getUuid()->toNative(),
             $roleRenamed->getName()->toNative()
         );
     }
 
-
     public function applyRoleDeleted(
         RoleDeleted $roleDeleted,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->repository->remove($roleDeleted->getUuid()->toNative());
     }
 
-
-    protected function applyConstraintAdded(ConstraintAdded $constraintAdded)
+    protected function applyConstraintAdded(ConstraintAdded $constraintAdded): void
     {
-        if ($constraintAdded->getSapiVersion()->sameValueAs($this->sapiVersion)) {
-            $this->repository->updateConstraint(
-                $constraintAdded->getUuid(),
-                $constraintAdded->getQuery()
-            );
-        }
+        $this->repository->updateConstraint(
+            $constraintAdded->getUuid(),
+            $constraintAdded->getQuery()
+        );
     }
 
-
-    protected function applyConstraintUpdated(ConstraintUpdated $constraintUpdated)
+    protected function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
     {
-        if ($constraintUpdated->getSapiVersion()->sameValueAs($this->sapiVersion)) {
-            $this->repository->updateConstraint(
-                $constraintUpdated->getUuid(),
-                $constraintUpdated->getQuery()
-            );
-        }
+        $this->repository->updateConstraint(
+            $constraintUpdated->getUuid(),
+            $constraintUpdated->getQuery()
+        );
     }
 
-
-    protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved)
+    protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
         if ($constraintRemoved->getSapiVersion()->sameValueAs($this->sapiVersion)) {
             $this->repository->updateConstraint(
