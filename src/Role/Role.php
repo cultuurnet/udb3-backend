@@ -90,9 +90,9 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    public function removeConstraint(SapiVersion $sapiVersion): void
+    public function removeConstraint(): void
     {
-        if (!$this->queryEmpty($sapiVersion)) {
+        if (!$this->queryEmpty(SapiVersion::V3())) {
             $this->apply(new ConstraintRemoved($this->uuid));
         }
     }

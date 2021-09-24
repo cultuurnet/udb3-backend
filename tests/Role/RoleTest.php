@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -29,8 +28,6 @@ class RoleTest extends AggregateRootScenarioTestCase
     private Query $query;
 
     private Query $updatedQuery;
-
-    private SapiVersion $sapiVersion;
 
     private RoleCreated $roleCreated;
 
@@ -53,7 +50,6 @@ class RoleTest extends AggregateRootScenarioTestCase
         $this->permission = Permission::AANBOD_BEWERKEN();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
-        $this->sapiVersion = SapiVersion::V3();
 
         $this->roleCreated = new RoleCreated(
             $this->uuid,
@@ -297,9 +293,7 @@ class RoleTest extends AggregateRootScenarioTestCase
                 $this->constraintAdded,
             ])
             ->when(function (Role $role) {
-                $role->removeConstraint(
-                    $this->sapiVersion
-                );
+                $role->removeConstraint();
             })
             ->then([$this->constraintRemoved]);
     }
@@ -315,9 +309,7 @@ class RoleTest extends AggregateRootScenarioTestCase
                 $this->roleCreated,
             ])
             ->when(function (Role $role) {
-                $role->removeConstraint(
-                    $this->sapiVersion
-                );
+                $role->removeConstraint();
             })
             ->then([]);
     }
