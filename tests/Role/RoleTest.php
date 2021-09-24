@@ -214,10 +214,7 @@ class RoleTest extends AggregateRootScenarioTestCase
             ->withAggregateId($this->uuid)
             ->given([$this->roleCreated])
             ->when(function (Role $role) {
-                $role->addConstraint(
-                    $this->sapiVersion,
-                    $this->query
-                );
+                $role->addConstraint($this->query);
             })
             ->then([$this->constraintAdded]);
     }
@@ -234,10 +231,7 @@ class RoleTest extends AggregateRootScenarioTestCase
                 $this->constraintAdded,
             ])
             ->when(function (Role $role) {
-                $role->addConstraint(
-                    $this->sapiVersion,
-                    $this->query
-                );
+                $role->addConstraint($this->query);
             })
             ->then([]);
     }

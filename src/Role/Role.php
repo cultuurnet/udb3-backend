@@ -75,9 +75,9 @@ class Role extends EventSourcedAggregateRoot
         $this->apply(new RoleRenamed($uuid, $name));
     }
 
-    public function addConstraint(SapiVersion $sapiVersion, Query $query): void
+    public function addConstraint(Query $query): void
     {
-        if ($this->queryEmpty($sapiVersion)) {
+        if ($this->queryEmpty(SapiVersion::V3())) {
             $this->apply(new ConstraintAdded($this->uuid, $query));
         }
     }
