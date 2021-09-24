@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -25,36 +25,21 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    protected $iriGenerator;
+    private IriGeneratorInterface $iriGenerator;
 
-    /**
-     * @var string
-     */
-    protected $mediaDirectory;
+    private string $mediaDirectory;
 
-    /**
-     * @var Repository
-     */
-    protected $repository;
+    private Repository $repository;
 
-    /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
+    private FilesystemOperator $filesystem;
 
-    /**
-     * @var PathGeneratorInterface
-     */
-    protected $pathGenerator;
+    protected PathGeneratorInterface $pathGenerator;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
         PathGeneratorInterface $pathGenerator,
         Repository $repository,
-        FilesystemInterface $filesystem,
+        FilesystemOperator $filesystem,
         $mediaDirectory
     ) {
         $this->iriGenerator = $iriGenerator;
@@ -99,10 +84,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         return $mediaObject;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handleUploadImage(UploadImage $uploadImage)
+    public function handleUploadImage(UploadImage $uploadImage): void
     {
         $pathParts = explode('/', $uploadImage->getFilePath()->toNative());
         $fileName = array_pop($pathParts);
@@ -115,8 +97,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
         $destinationIri = $this->iriGenerator->iri($destinationPath);
 
-        $this->filesystem->rename(
-            $uploadImage->getFilePath(),
+        $this->filesystem->move(
+            $uploadImage->getFilePath()->toNative(),
             $this->mediaDirectory . '/' . $destinationPath
         );
 
@@ -133,10 +115,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         $this->logger->info('job_info', $jobInfo);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get(UUID $fileId)
+    public function get(UUID $fileId): MediaObject
     {
         try {
             /** @var MediaObject $mediaObject */

@@ -10,37 +10,22 @@ use CultuurNet\UDB3\EventExport\Format\HTML\HTMLFileWriter;
 use CultuurNet\UDB3\EventExport\Format\HTML\TransformingIteratorIterator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\MountManager;
+use Traversable;
 
 abstract class WebArchiveFileWriter implements FileWriterInterface
 {
-    /**
-     * @var HTMLFileWriter
-     */
-    protected $htmlFileWriter;
+    protected HTMLFileWriter $htmlFileWriter;
 
-    /**
-     * @var MountManager
-     */
-    protected $mountManager;
+    protected MountManager $mountManager;
 
-    /**
-     * @var string
-     */
-    protected $tmpDir;
+    protected string $tmpDir;
 
-    /**
-     * @var EventInfoServiceInterface
-     */
-    protected $uitpas;
+    protected ?EventInfoServiceInterface $uitpas;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface
-     */
-    protected $calendarSummaryRepository;
-
+    protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     public function __construct(
         HTMLFileWriter $htmlFileWriter,
@@ -57,12 +42,10 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param \Traversable $events
-     * @return string
      *   The path of the temporary directory, relative to the 'tmp://' mounted
      *   filesystem.
      */
-    protected function createWebArchiveDirectory($events)
+    protected function createWebArchiveDirectory(Traversable $events): string
     {
         $tmpDir = $this->createTemporaryArchiveDirectory();
 
@@ -72,7 +55,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
         return $tmpDir;
     }
 
-    protected function copyAssets($tmpDir)
+    protected function copyAssets(string $tmpDir): void
     {
         $assets = $this->mountManager->listContents('assets:///', true);
 
@@ -81,67 +64,59 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
                 continue;
             }
 
+            // The path property now also includes the mount prefix
             $this->mountManager->copy(
-                $asset['filesystem'] . '://' . $asset['path'],
-                'tmp://' . $tmpDir . '/' . $asset['path']
+                $asset['path'],
+                'tmp://' . $tmpDir . '/' . str_replace('assets://', '', $asset['path'])
             );
         };
     }
 
-    /**
-     * @param string $tmpDir
-     * @return MountManager
-     */
-    protected function initMountManager($tmpDir)
+    protected function initMountManager(string $tmpDir): MountManager
     {
         return new MountManager(
             [
                 'tmp' => new Filesystem(
-                    new Local($tmpDir)
+                    new LocalFilesystemAdapter($tmpDir)
                 ),
                 // @todo make this configurable
                 'assets' => new Filesystem(
-                    new Local(__DIR__ . '/assets')
+                    new LocalFilesystemAdapter(__DIR__ . '/assets')
                 ),
             ]
         );
     }
 
-    protected function removeTemporaryArchiveDirectory($tmpDir)
+    protected function removeTemporaryArchiveDirectory(string $tmpDir): void
     {
-        $this->mountManager->deleteDir('tmp://' . $tmpDir);
+        $this->mountManager->deleteDirectory('tmp://' . $tmpDir);
     }
 
     /**
-     * @return string
      *   The path of the temporary directory, relative to the 'tmp://' mounted
      *   filesystem.
      */
-    protected function createTemporaryArchiveDirectory()
+    protected function createTemporaryArchiveDirectory(): string
     {
         $exportDir = uniqid('html-export');
         $path = 'tmp://' . $exportDir;
-        $this->mountManager->createDir($path);
+        $this->mountManager->createDirectory($path);
 
         return $exportDir;
     }
 
     /**
      * Expands a path relative to the tmp:// mount point to a full path.
-     *
-     * @param  string $tmpPath
-     * @return string
      */
-    protected function expandTmpPath($tmpPath)
+    protected function expandTmpPath(string $tmpPath): string
     {
         return $this->tmpDir . '/' . $tmpPath;
     }
 
     /**
-     * @param string             $dir
      * @param \Traversable|array $events
      */
-    protected function writeHtml($dir, $events)
+    protected function writeHtml(string $dir, $events): void
     {
         $filePath = $dir . '/index.html';
 
