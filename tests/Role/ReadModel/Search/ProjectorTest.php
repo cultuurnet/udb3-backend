@@ -135,25 +135,10 @@ class ProjectorTest extends TestCase
      */
     public function it_calls_update_constraint_on_constraint_removed_event(): void
     {
-        $constraintRemoved = new ConstraintRemoved(new UUID(), SapiVersion::V2());
+        $constraintRemoved = new ConstraintRemoved(new UUID());
         $domainMessage = $this->createDomainMessage($constraintRemoved);
 
         $this->repository->expects($this->once())
-            ->method('updateConstraint')
-            ->with($constraintRemoved->getUuid());
-
-        $this->projector->handle($domainMessage);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_calls_update_constraint_on_constraint_removed_event_when_sapi_does_not_match(): void
-    {
-        $constraintRemoved = new ConstraintRemoved(new UUID(), SapiVersion::V3());
-        $domainMessage = $this->createDomainMessage($constraintRemoved);
-
-        $this->repository->expects($this->never())
             ->method('updateConstraint')
             ->with($constraintRemoved->getUuid());
 

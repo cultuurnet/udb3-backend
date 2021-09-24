@@ -76,10 +76,8 @@ class Projector implements EventListener
 
     protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
-        if ($constraintRemoved->getSapiVersion()->sameValueAs($this->sapiVersion)) {
-            $this->repository->updateConstraint(
-                $constraintRemoved->getUuid()
-            );
-        }
+        $this->repository->updateConstraint(
+            $constraintRemoved->getUuid()
+        );
     }
 }

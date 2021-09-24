@@ -357,7 +357,6 @@ class ProjectorTest extends TestCase
     {
         $constraintRemoved = new ConstraintRemoved(
             $this->uuid,
-            SapiVersion::V2()
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -373,7 +372,7 @@ class ProjectorTest extends TestCase
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();
-        $json->constraints->{$constraintRemoved->getSapiVersion()->toNative()} =
+        $json->constraints->{SapiVersion::V3()->toNative()} =
             null;
 
         $document = $document->withBody($json);
@@ -382,7 +381,7 @@ class ProjectorTest extends TestCase
             ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->documentWithEmptyConstraint(
-                $constraintRemoved->getSapiVersion()
+                SapiVersion::V3()
             ));
 
         $this->repository->expects($this->once())
@@ -401,7 +400,6 @@ class ProjectorTest extends TestCase
     {
         $constraintRemoved = new ConstraintRemoved(
             $this->uuid,
-            SapiVersion::V3()
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -429,7 +427,7 @@ class ProjectorTest extends TestCase
         $json->permissions = [];
         $json->constraints = new \stdClass();
         $json->constraints->{SapiVersion::V2} = 'city:Kortrijk OR keywords:"zuidwest uitpas"';
-        $json->constraints->{$constraintRemoved->getSapiVersion()->toNative()} =
+        $json->constraints->{SapiVersion::V3} =
             null;
 
         $document = $document->withBody($json);

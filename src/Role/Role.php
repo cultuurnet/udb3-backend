@@ -93,7 +93,7 @@ class Role extends EventSourcedAggregateRoot
     public function removeConstraint(SapiVersion $sapiVersion): void
     {
         if (!$this->queryEmpty($sapiVersion)) {
-            $this->apply(new ConstraintRemoved($this->uuid, $sapiVersion));
+            $this->apply(new ConstraintRemoved($this->uuid));
         }
     }
 
@@ -186,7 +186,7 @@ class Role extends EventSourcedAggregateRoot
 
     public function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
-        unset($this->queries[$constraintRemoved->getSapiVersion()->toNative()]);
+        unset($this->queries[SapiVersion::V3]);
     }
 
     public function applyPermissionAdded(PermissionAdded $permissionAdded): void

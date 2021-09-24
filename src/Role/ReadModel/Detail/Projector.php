@@ -82,7 +82,7 @@ class Projector extends RoleProjector
         );
 
         $json = $document->getBody();
-        $json->constraints->{$constraintRemoved->getSapiVersion()->toNative()} = null;
+        $json->constraints->{SapiVersion::V3} = null;
 
         $this->repository->save($document->withBody($json));
     }

@@ -33,7 +33,6 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -114,7 +113,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->constraintRemoved = new ConstraintRemoved(
             $this->uuid,
-            SapiVersion::V3()
         );
 
         $this->labelAdded = new LabelAdded(
