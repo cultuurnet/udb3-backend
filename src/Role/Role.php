@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -77,34 +76,33 @@ class Role extends EventSourcedAggregateRoot
 
     public function addConstraint(Query $query): void
     {
-        if ($this->queryEmpty(SapiVersion::V3())) {
+        if ($this->queryEmpty()) {
             $this->apply(new ConstraintAdded($this->uuid, $query));
         }
     }
 
     public function updateConstraint(Query $query): void
     {
-        if (!$this->queryEmpty(SapiVersion::V3()) &&
-            !$this->querySameValue(SapiVersion::V3(), $query)) {
+        if (!$this->queryEmpty() && !$this->querySameValue($query)) {
             $this->apply(new ConstraintUpdated($this->uuid, $query));
         }
     }
 
     public function removeConstraint(): void
     {
-        if (!$this->queryEmpty(SapiVersion::V3())) {
+        if (!$this->queryEmpty()) {
             $this->apply(new ConstraintRemoved($this->uuid));
         }
     }
 
-    private function queryEmpty(SapiVersion $sapiVersion): bool
+    private function queryEmpty(): bool
     {
-        return empty($this->queries[$sapiVersion->toNative()]);
+        return empty($this->queries['v3']);
     }
 
-    private function querySameValue(SapiVersion $sapiVersion, Query $query): bool
+    private function querySameValue(Query $query): bool
     {
-        return $this->queries[$sapiVersion->toNative()]->sameValueAs($query);
+        return $this->queries['v3']->sameValueAs($query);
     }
 
     public function addPermission(
@@ -176,17 +174,17 @@ class Role extends EventSourcedAggregateRoot
 
     public function applyConstraintAdded(ConstraintAdded $constraintAdded): void
     {
-        $this->queries[SapiVersion::V3()->toNative()] = $constraintAdded->getQuery();
+        $this->queries['v3'] = $constraintAdded->getQuery();
     }
 
     public function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
     {
-        $this->queries[SapiVersion::V3()->toNative()] = $constraintUpdated->getQuery();
+        $this->queries['v3'] = $constraintUpdated->getQuery();
     }
 
     public function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
-        unset($this->queries[SapiVersion::V3]);
+        unset($this->queries['v3']);
     }
 
     public function applyPermissionAdded(PermissionAdded $permissionAdded): void
