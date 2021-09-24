@@ -72,10 +72,7 @@ class CommandHandler extends AbstractCommandHandler
     {
         $role = $this->load($updateConstraint->getUuid());
 
-        $role->updateConstraint(
-            SapiVersion::V3(),
-            $updateConstraint->getQuery()
-        );
+        $role->updateConstraint($updateConstraint->getQuery());
 
         $this->save($role);
     }
