@@ -210,7 +210,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
-            ->with(new AddConstraint($this->uuid, SapiVersion::V2(), new Query('test query')));
+            ->with(new AddConstraint($this->uuid, new Query('test query')));
 
         $this->roleEditingService->addConstraint(
             $this->uuid,
@@ -226,7 +226,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
-            ->with(new UpdateConstraint($this->uuid, SapiVersion::V2(), new Query('test query')));
+            ->with(new UpdateConstraint($this->uuid, new Query('test query')));
 
         $this->roleEditingService->updateConstraint(
             $this->uuid,

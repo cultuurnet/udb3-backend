@@ -133,7 +133,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->permission = Permission::AANBOD_BEWERKEN();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
-        $this->sapiVersion = SapiVersion::V2();
+        $this->sapiVersion = SapiVersion::V3();
         $this->labelId = new UUID();
 
         $this->roleCreated = new RoleCreated(
@@ -158,19 +158,19 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->constraintAdded = new ConstraintAdded(
             $this->uuid,
-            SapiVersion::V2(),
+            SapiVersion::V3(),
             $this->query
         );
 
         $this->constraintUpdated = new ConstraintUpdated(
             $this->uuid,
-            SapiVersion::V2(),
+            SapiVersion::V3(),
             $this->updatedQuery
         );
 
         $this->constraintRemoved = new ConstraintRemoved(
             $this->uuid,
-            SapiVersion::V2()
+            SapiVersion::V3()
         );
 
         $this->labelAdded = new LabelAdded(
@@ -349,7 +349,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$this->roleCreated])
             ->when(new AddConstraint(
                 $this->uuid,
-                $this->sapiVersion,
                 $this->query
             ))
             ->then([$this->constraintAdded]);
@@ -365,7 +364,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$this->roleCreated, $this->constraintAdded])
             ->when(new UpdateConstraint(
                 $this->uuid,
-                $this->sapiVersion,
                 $this->updatedQuery
             ))
             ->then([$this->constraintUpdated]);

@@ -117,7 +117,6 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
     {
         $command = new AddConstraint(
             $uuid,
-            $sapiVersion,
             $query
         );
 
@@ -128,7 +127,6 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
     {
         $command = new UpdateConstraint(
             $uuid,
-            $sapiVersion,
             $query
         );
 
