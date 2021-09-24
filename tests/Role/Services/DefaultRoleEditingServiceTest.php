@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
-use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
@@ -24,7 +23,6 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\RoleRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
@@ -37,83 +35,41 @@ class DefaultRoleEditingServiceTest extends TestCase
      */
     private $commandBus;
 
-    /**
-     * @var UuidGeneratorInterface|MockObject
-     */
-    private $uuidGenerator;
 
-    /**
-     * @var TraceableEventStore
-     */
-    protected $eventStore;
+    protected TraceableEventStore $eventStore;
 
-    /**
-     * @var Repository|MockObject
-     */
-    private $writeRepository;
+    private UUID $uuid;
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $labelId;
 
-    /**
-     * @var UUID
-     */
-    private $labelId;
+    private CreateRole $createRole;
 
-    /**
-     * @var CreateRole
-     */
-    private $createRole;
+    private RenameRole $renameRole;
 
-    /**
-     * @var RenameRole
-     */
-    private $renameRole;
+    private AddPermission $addPermission;
 
-    /**
-     * @var AddPermission
-     */
-    private $addPermission;
+    private RemovePermission $removePermission;
 
-    /**
-     * @var RemovePermission
-     */
-    private $removePermission;
+    private AddLabel $addLabel;
 
-    /**
-     * @var AddLabel
-     */
-    private $addLabel;
+    private RemoveLabel $removeLabel;
 
-    /**
-     * @var RemoveLabel
-     */
-    private $removeLabel;
+    private DeleteRole $deleteRole;
 
-    /**
-     * @var DeleteRole
-     */
-    private $deleteRole;
+    private DefaultRoleEditingService $roleEditingService;
 
-    /**
-     * @var DefaultRoleEditingService
-     */
-    private $roleEditingService;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->uuid = new UUID('9196cb78-4381-11e6-beb8-9e71128cae77');
 
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
         $this->labelId = new UUID();
 
         $this->eventStore = new TraceableEventStore(new InMemoryEventStore());
 
-        $this->writeRepository = new RoleRepository(
+        $writeRepository = new RoleRepository(
             $this->eventStore,
             new SimpleEventBus()
         );
@@ -152,20 +108,20 @@ class DefaultRoleEditingServiceTest extends TestCase
             $this->uuid
         );
 
-        $this->uuidGenerator->method('generate')
+        $uuidGenerator->method('generate')
             ->willReturn('9196cb78-4381-11e6-beb8-9e71128cae77');
 
         $this->roleEditingService = new DefaultRoleEditingService(
             $this->commandBus,
-            $this->uuidGenerator,
-            $this->writeRepository
+            $uuidGenerator,
+            $writeRepository
         );
     }
 
     /**
      * @test
      */
-    public function it_can_create_a_role()
+    public function it_can_create_a_role(): void
     {
         $this->eventStore->trace();
 
@@ -191,7 +147,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_rename_a_role()
+    public function it_can_rename_a_role(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -206,7 +162,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_add_a_constraint()
+    public function it_can_add_a_constraint(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -214,7 +170,6 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->roleEditingService->addConstraint(
             $this->uuid,
-            SapiVersion::V2(),
             new Query('test query')
         );
     }
@@ -222,7 +177,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_constraint()
+    public function it_can_update_a_constraint(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -230,7 +185,6 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->roleEditingService->updateConstraint(
             $this->uuid,
-            SapiVersion::V2(),
             new Query('test query')
         );
     }
@@ -238,7 +192,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_remove_a_constraint()
+    public function it_can_remove_a_constraint(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -246,14 +200,13 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->roleEditingService->removeConstraint(
             $this->uuid,
-            SapiVersion::V2()
         );
     }
 
     /**
      * @test
      */
-    public function it_can_add_a_permission()
+    public function it_can_add_a_permission(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -268,7 +221,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_remove_a_permission()
+    public function it_can_remove_a_permission(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -283,7 +236,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_add_a_label()
+    public function it_can_add_a_label(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -298,7 +251,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_remove_a_label()
+    public function it_can_remove_a_label(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -313,7 +266,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_delete_a_role()
+    public function it_can_delete_a_role(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')

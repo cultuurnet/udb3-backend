@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -155,7 +154,6 @@ class EditRoleRestControllerTest extends TestCase
             ->method('addConstraint')
             ->with(
                 new UUID($roleId),
-                SapiVersion::fromNative($sapiVersion),
                 $constraintQuery
             );
 
@@ -184,7 +182,6 @@ class EditRoleRestControllerTest extends TestCase
             ->method('updateConstraint')
             ->with(
                 new UUID($roleId),
-                SapiVersion::fromNative($sapiVersion),
                 $constraintQuery
             );
 
@@ -203,7 +200,7 @@ class EditRoleRestControllerTest extends TestCase
 
         $this->editService->expects($this->once())
             ->method('removeConstraint')
-            ->with(new UUID($roleId), SapiVersion::fromNative($sapiVersion));
+            ->with(new UUID($roleId));
 
         $response = $this->controller->removeConstraint($roleId, $sapiVersion);
 

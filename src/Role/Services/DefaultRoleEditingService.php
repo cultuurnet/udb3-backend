@@ -21,26 +21,16 @@ use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
 use CultuurNet\UDB3\Role\Role;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DefaultRoleEditingService implements RoleEditingServiceInterface
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var UuidGeneratorInterface
-     */
-    private $uuidGenerator;
+    private UuidGeneratorInterface $uuidGenerator;
 
-    /**
-     * @var Repository
-     */
-    private $writeRepository;
+    private Repository $writeRepository;
 
     public function __construct(
         CommandBus $commandBus,
@@ -113,7 +103,7 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
         $this->commandBus->dispatch($command);
     }
 
-    public function addConstraint(UUID $uuid, SapiVersion $sapiVersion, Query $query): void
+    public function addConstraint(UUID $uuid, Query $query): void
     {
         $command = new AddConstraint(
             $uuid,
@@ -123,7 +113,7 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
         $this->commandBus->dispatch($command);
     }
 
-    public function updateConstraint(UUID $uuid, SapiVersion $sapiVersion, Query $query): void
+    public function updateConstraint(UUID $uuid, Query $query): void
     {
         $command = new UpdateConstraint(
             $uuid,
@@ -133,7 +123,7 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
         $this->commandBus->dispatch($command);
     }
 
-    public function removeConstraint(UUID $uuid, SapiVersion $sapiVersion): void
+    public function removeConstraint(UUID $uuid): void
     {
         $command = new RemoveConstraint($uuid);
 
