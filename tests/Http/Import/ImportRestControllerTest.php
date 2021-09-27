@@ -23,20 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ImportRestControllerTest extends TestCase
 {
-    /**
-     * @var QueryParameterApiKeyReader
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var InMemoryConsumerRepository
-     */
-    private $consumerRepository;
-
-    /**
-     * @var ApiKey
-     */
-    private $apiKey;
+    private ApiKey $apiKey;
 
     /**
      * @var ConsumerInterface|MockObject
@@ -53,42 +40,33 @@ class ImportRestControllerTest extends TestCase
      */
     private $uuidGenerator;
 
-    /**
-     * @var CallableIriGenerator
-     */
-    private $iriGenerator;
+    private ImportRestController $controller;
 
-    /**
-     * @var ImportRestController
-     */
-    private $controller;
-
-    public function setUp()
+    public function setUp(): void
     {
-        $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
-        $this->consumerRepository = new InMemoryConsumerRepository();
+        $consumerRepository = new InMemoryConsumerRepository();
 
         $this->apiKey = new ApiKey('7f037576-e7e3-460a-8e77-87d2b731b12a');
         $this->consumer = $this->createMock(ConsumerInterface::class);
 
-        $this->consumerRepository->setConsumer($this->apiKey, $this->consumer);
+        $consumerRepository->setConsumer($this->apiKey, $this->consumer);
 
         $this->importer = $this->createMock(DocumentImporterInterface::class);
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($item) {
                 return 'https://io.uitdatabank.be/mock/' . $item;
             }
         );
 
         $this->controller = new ImportRestController(
-            $this->apiKeyReader,
-            $this->consumerRepository,
+            new QueryParameterApiKeyReader('apiKey'),
+            $consumerRepository,
             $this->importer,
             $this->uuidGenerator,
-            $this->iriGenerator,
+            $iriGenerator,
             'mockId'
         );
     }
@@ -96,7 +74,7 @@ class ImportRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_set_the_id_url_on_the_json_body_and_import_the_document()
+    public function it_should_set_the_id_url_on_the_json_body_and_import_the_document(): void
     {
         $id = 'c25ea5b8-acd2-4987-a207-6ee11444fde8';
         $json = json_encode([
@@ -131,7 +109,7 @@ class ImportRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_make_the_importer_aware_of_the_consumer_if_one_could_be_identified()
+    public function it_should_make_the_importer_aware_of_the_consumer_if_one_could_be_identified(): void
     {
         $id = 'c25ea5b8-acd2-4987-a207-6ee11444fde8';
         $json = json_encode([
@@ -174,7 +152,7 @@ class ImportRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_override_the_id_url_on_the_json_body_and_import_the_document()
+    public function it_should_override_the_id_url_on_the_json_body_and_import_the_document(): void
     {
         $id = 'c25ea5b8-acd2-4987-a207-6ee11444fde8';
         $json = json_encode([
@@ -210,7 +188,7 @@ class ImportRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_generate_a_missing_id_and_import_the_document()
+    public function it_should_generate_a_missing_id_and_import_the_document(): void
     {
         $generatedId = '906572e1-e189-4b34-bbe3-b154e5ff553c';
         $this->uuidGenerator->expects($this->any())
@@ -249,7 +227,7 @@ class ImportRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_importing_with_id_and_no_json()
+    public function it_should_throw_an_exception_when_importing_with_id_and_no_json(): void
     {
         $request = Request::create('www.uitdatabank.dev');
 
@@ -262,7 +240,7 @@ class ImportRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_importing_without_id_and_no_json()
+    public function it_should_throw_an_exception_when_importing_without_id_and_no_json(): void
     {
         $request = Request::create('www.uitdatabank.dev');
 
