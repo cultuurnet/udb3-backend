@@ -22,18 +22,14 @@ use ValueObjects\Identity\UUID;
 
 class CommandHandler extends AbstractCommandHandler
 {
-    /**
-     * @var Repository
-     */
-    private $repository;
+    private Repository $repository;
 
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }
 
-
-    public function handleCreateRole(CreateRole $createRole)
+    public function handleCreateRole(CreateRole $createRole): void
     {
         $role = Role::create(
             $createRole->getUuid(),
@@ -43,8 +39,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
-    public function handleRenameRole(RenameRole $renameRole)
+    public function handleRenameRole(RenameRole $renameRole): void
     {
         $role = $this->load($renameRole->getUuid());
 
@@ -56,46 +51,34 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
     public function handleAddConstraint(AddConstraint $addConstraint): void
     {
         $role = $this->load($addConstraint->getUuid());
 
-        $role->addConstraint(
-            $addConstraint->getSapiVersion(),
-            $addConstraint->getQuery()
-        );
+        $role->addConstraint($addConstraint->getQuery());
 
         $this->save($role);
     }
-
 
     public function handleUpdateConstraint(UpdateConstraint $updateConstraint): void
     {
         $role = $this->load($updateConstraint->getUuid());
 
-        $role->updateConstraint(
-            $updateConstraint->getSapiVersion(),
-            $updateConstraint->getQuery()
-        );
+        $role->updateConstraint($updateConstraint->getQuery());
 
         $this->save($role);
     }
-
 
     public function handleRemoveConstraint(RemoveConstraint $removeConstraint): void
     {
         $role = $this->load($removeConstraint->getUuid());
 
-        $role->removeConstraint(
-            $removeConstraint->getSapiVersion()
-        );
+        $role->removeConstraint();
 
         $this->save($role);
     }
 
-
-    public function handleAddPermission(AddPermission $addPermission)
+    public function handleAddPermission(AddPermission $addPermission): void
     {
         $role = $this->load($addPermission->getUuid());
 
@@ -107,8 +90,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
-    public function handleRemovePermission(RemovePermission $removePermission)
+    public function handleRemovePermission(RemovePermission $removePermission): void
     {
         $role = $this->load($removePermission->getUuid());
 
@@ -120,8 +102,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
-    public function handleAddUser(AddUser $addUser)
+    public function handleAddUser(AddUser $addUser): void
     {
         $role = $this->load($addUser->getUuid());
 
@@ -132,8 +113,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
-    public function handleRemoveUser(RemoveUser $removeUser)
+    public function handleRemoveUser(RemoveUser $removeUser): void
     {
         $role = $this->load($removeUser->getUuid());
 
@@ -144,8 +124,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
-    public function handleDeleteRole(DeleteRole $deleteRole)
+    public function handleDeleteRole(DeleteRole $deleteRole): void
     {
         $role = $this->load($deleteRole->getUuid());
 
@@ -156,8 +135,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
-    public function handleAddLabel(AddLabel $addLabel)
+    public function handleAddLabel(AddLabel $addLabel): void
     {
         $role = $this->load($addLabel->getUuid());
 
@@ -168,8 +146,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-
-    public function handleRemoveLabel(RemoveLabel $removeLabel)
+    public function handleRemoveLabel(RemoveLabel $removeLabel): void
     {
         $role = $this->load($removeLabel->getUuid());
 
@@ -180,18 +157,14 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @return Role
-     */
-    private function load(UUID $uuid)
+    private function load(UUID $uuid): Role
     {
         /** @var Role $role */
         $role = $this->repository->load($uuid);
         return $role;
     }
 
-
-    private function save(Role $role)
+    private function save(Role $role): void
     {
         $this->repository->save($role);
     }

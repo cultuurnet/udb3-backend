@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
@@ -15,11 +14,6 @@ class UpdateConstraintTest extends TestCase
      * @var UUID
      */
     protected $uuid;
-
-    /**
-     * @var SapiVersion
-     */
-    protected $sapiVersion;
 
     /**
      * @var Query
@@ -34,12 +28,10 @@ class UpdateConstraintTest extends TestCase
     protected function setUp()
     {
         $this->uuid = new UUID();
-        $this->sapiVersion = SapiVersion::V2();
         $this->query = new Query('city:3000');
 
         $this->updateConstraint = new UpdateConstraint(
             $this->uuid,
-            $this->sapiVersion,
             $this->query
         );
     }

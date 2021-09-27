@@ -4,36 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
 class RemoveConstraintTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var SapiVersion
-     */
-    protected $sapiVersion;
-
-    /**
-     * @var RemoveConstraint
-     */
-    protected $removeConstraint;
+    private RemoveConstraint $removeConstraint;
 
     protected function setUp()
     {
         $this->uuid = new UUID();
-        $this->sapiVersion = SapiVersion::V2();
 
-        $this->removeConstraint = new RemoveConstraint(
-            $this->uuid,
-            $this->sapiVersion
-        );
+        $this->removeConstraint = new RemoveConstraint($this->uuid);
     }
 
     /**
@@ -53,13 +37,5 @@ class RemoveConstraintTest extends TestCase
     public function it_stores_a_uuid()
     {
         $this->assertEquals($this->uuid, $this->removeConstraint->getUuid());
-    }
-
-    /**
-     * @test
-     */
-    public function it_stores_a_sapi_version()
-    {
-        $this->assertEquals($this->sapiVersion, $this->removeConstraint->getSapiVersion());
     }
 }

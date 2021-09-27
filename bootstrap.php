@@ -60,7 +60,6 @@ use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use League\Flysystem\Filesystem;
@@ -861,7 +860,6 @@ $app['role_search_v3_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Projector(
             $app['role_search_v3_repository'],
-            SapiVersion::V3()
         );
     }
 );
