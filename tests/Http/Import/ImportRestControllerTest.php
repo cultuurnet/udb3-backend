@@ -99,13 +99,11 @@ class ImportRestControllerTest extends TestCase
     public function it_should_set_the_id_url_on_the_json_body_and_import_the_document()
     {
         $id = 'c25ea5b8-acd2-4987-a207-6ee11444fde8';
-        $json = json_encode(
-            [
-                'name' => [
-                    'nl' => 'Voorbeeld naam',
-                ],
-            ]
-        );
+        $json = json_encode([
+            'name' => [
+                'nl' => 'Voorbeeld naam',
+            ],
+        ], JSON_THROW_ON_ERROR);
         $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $json);
 
         $expectedDocument = new DecodedDocument(
@@ -124,7 +122,7 @@ class ImportRestControllerTest extends TestCase
 
         $response = $this->controller->importWithId($request, $id);
 
-        $expected = json_encode(['mockId' => $id]);
+        $expected = json_encode(['mockId' => $id], JSON_THROW_ON_ERROR);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals($expected, $response->getContent());
@@ -136,13 +134,11 @@ class ImportRestControllerTest extends TestCase
     public function it_should_make_the_importer_aware_of_the_consumer_if_one_could_be_identified()
     {
         $id = 'c25ea5b8-acd2-4987-a207-6ee11444fde8';
-        $json = json_encode(
-            [
-                'name' => [
-                    'nl' => 'Voorbeeld naam',
-                ],
-            ]
-        );
+        $json = json_encode([
+            'name' => [
+                'nl' => 'Voorbeeld naam',
+            ],
+        ], JSON_THROW_ON_ERROR);
         $request = Request::create(
             'www.uitdatabank.dev',
             'GET',
@@ -181,14 +177,12 @@ class ImportRestControllerTest extends TestCase
     public function it_should_override_the_id_url_on_the_json_body_and_import_the_document()
     {
         $id = 'c25ea5b8-acd2-4987-a207-6ee11444fde8';
-        $json = json_encode(
-            [
-                '@id' => 'http://io.uitdatabank.be/mock/8e83a8df-30a7-4b4c-b250-658c63fc7db0',
-                'name' => [
-                    'nl' => 'Voorbeeld naam',
-                ],
-            ]
-        );
+        $json = json_encode([
+            '@id' => 'http://io.uitdatabank.be/mock/8e83a8df-30a7-4b4c-b250-658c63fc7db0',
+            'name' => [
+                'nl' => 'Voorbeeld naam',
+            ],
+        ], JSON_THROW_ON_ERROR);
         $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $json);
 
         $expectedDocument = new DecodedDocument(
@@ -207,7 +201,7 @@ class ImportRestControllerTest extends TestCase
 
         $response = $this->controller->importWithId($request, $id);
 
-        $expected = json_encode(['mockId' => $id]);
+        $expected = json_encode(['mockId' => $id], JSON_THROW_ON_ERROR);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals($expected, $response->getContent());
@@ -223,13 +217,11 @@ class ImportRestControllerTest extends TestCase
             ->method('generate')
             ->willReturn($generatedId);
 
-        $json = json_encode(
-            [
-                'name' => [
-                    'nl' => 'Voorbeeld naam',
-                ],
-            ]
-        );
+        $json = json_encode([
+            'name' => [
+                'nl' => 'Voorbeeld naam',
+            ],
+        ], JSON_THROW_ON_ERROR);
         $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $json);
 
         $expectedDocument = new DecodedDocument(
@@ -248,7 +240,7 @@ class ImportRestControllerTest extends TestCase
 
         $response = $this->controller->importWithoutId($request);
 
-        $expected = json_encode(['mockId' => $generatedId]);
+        $expected = json_encode(['mockId' => $generatedId], JSON_THROW_ON_ERROR);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals($expected, $response->getContent());
