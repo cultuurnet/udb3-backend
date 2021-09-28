@@ -41,7 +41,7 @@ class UpdateBookingAvailabilityCommand extends AbstractCommand
         $sapiQuestion = new Question(
             'Provide SAPI query for events to update (periodic and permanent events are excluded by default)' . PHP_EOL
         );
-        $sapiQuery = $this->getHelper('question')->ask($input, $output, $sapiQuestion);
+        $sapiQuery = '(' . $this->getHelper('question')->ask($input, $output, $sapiQuestion) . ')';
         $sapiQuery .= ' AND (calendarType:single OR calendarType:multiple)';
 
         $output->writeln('');
