@@ -57,6 +57,7 @@
     "php-http/httplug": "^1.0.0",
     "phpoffice/phpspreadsheet": "^1.18",
     "predis/predis": "~1.0",
+    "psr/http-server-middleware": "^1.0",
     "psr/log": "dev-master",
     "publiq/stoplight-docs-uitdatabank": "dev-booking-availability",
     "rase/socket.io-emitter": "0.6.1",
