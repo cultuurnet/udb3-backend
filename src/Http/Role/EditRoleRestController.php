@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,30 +22,15 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EditRoleRestController
 {
-    /**
-     * @var RoleEditingServiceInterface
-     */
-    private $service;
+    private RoleEditingServiceInterface $service;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var UpdateRoleRequestDeserializer
-     */
-    private $updateRoleRequestDeserializer;
+    private UpdateRoleRequestDeserializer $updateRoleRequestDeserializer;
 
-    /**
-     * @var ReadServiceInterface
-     */
-    private $labelEntityService;
+    private ReadServiceInterface $labelEntityService;
 
-    /**
-     * @var DeserializerInterface
-     */
-    private $queryJsonDeserializer;
+    private DeserializerInterface $queryJsonDeserializer;
 
     public function __construct(
         RoleEditingServiceInterface $service,
@@ -85,42 +69,31 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    public function addConstraint(Request $request, string $id, string $sapiVersion): Response
+    public function addConstraint(Request $request, string $id): Response
     {
         $query = $this->queryJsonDeserializer->deserialize(
             new StringLiteral($request->getContent())
         );
 
-        $this->service->addConstraint(
-            new UUID($id),
-            SapiVersion::fromNative($sapiVersion),
-            $query
-        );
+        $this->service->addConstraint(new UUID($id), $query);
 
         return new NoContent();
     }
 
-    public function updateConstraint(Request $request, string $id, string $sapiVersion): Response
+    public function updateConstraint(Request $request, string $id): Response
     {
         $query = $this->queryJsonDeserializer->deserialize(
             new StringLiteral($request->getContent())
         );
 
-        $this->service->updateConstraint(
-            new UUID($id),
-            SapiVersion::fromNative($sapiVersion),
-            $query
-        );
+        $this->service->updateConstraint(new UUID($id), $query);
 
         return new NoContent();
     }
 
-    public function removeConstraint(string $id, string $sapiVersion): Response
+    public function removeConstraint(string $id): Response
     {
-        $this->service->removeConstraint(
-            new UUID($id),
-            SapiVersion::fromNative($sapiVersion)
-        );
+        $this->service->removeConstraint(new UUID($id));
 
         return new NoContent();
     }

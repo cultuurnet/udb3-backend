@@ -264,4 +264,14 @@ final class ApiProblem extends Exception
             $detail
         );
     }
+
+    public static function resourceIdAlreadyInUse(string $id): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/resource-id-already-in-use',
+            'Resource id already in use',
+            400,
+            'The id ' . $id . ' is already in use by a resource of a different type.'
+        );
+    }
 }

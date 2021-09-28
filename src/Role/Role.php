@@ -19,54 +19,41 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Role extends EventSourcedAggregateRoot
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private StringLiteral $name;
 
-    /**
-     * @var Query[]
-     */
-    private $queries = [];
+    private ?Query $query = null;
 
     /**
      * @var Permission[]
      */
-    private $permissions = [];
+    private array $permissions = [];
 
     /**
      * @var UUID[]
      */
-    private $labelIds = [];
+    private array $labelIds = [];
 
     /**
      * @var StringLiteral[]
      */
-    private $userIds = [];
+    private array $userIds = [];
 
     public function getAggregateRootId(): string
     {
         return $this->uuid->toNative();
     }
 
-    /**
-     * @return Role
-     */
     public static function create(
         UUID $uuid,
         StringLiteral $name
-    ) {
+    ): Role {
         $role = new Role();
 
         $role->apply(new RoleCreated(
@@ -77,196 +64,160 @@ class Role extends EventSourcedAggregateRoot
         return $role;
     }
 
-    /**
-     * Rename the role.
-     *
-     */
     public function rename(
         UUID $uuid,
         StringLiteral $name
-    ) {
+    ): void {
         $this->apply(new RoleRenamed($uuid, $name));
     }
 
-
-    public function addConstraint(SapiVersion $sapiVersion, Query $query): void
+    public function addConstraint(Query $query): void
     {
-        if ($this->queryEmpty($sapiVersion)) {
-            $this->apply(new ConstraintAdded($this->uuid, $sapiVersion, $query));
+        if ($this->isCurrentQueryEmpty() && !$query->isEmpty()) {
+            $this->apply(new ConstraintAdded($this->uuid, $query));
         }
     }
 
-
-    public function updateConstraint(SapiVersion $sapiVersion, Query $query): void
+    public function updateConstraint(Query $query): void
     {
-        if (!$this->queryEmpty($sapiVersion) &&
-            !$this->querySameValue($sapiVersion, $query)) {
-            $this->apply(new ConstraintUpdated($this->uuid, $sapiVersion, $query));
+        if (!$this->isCurrentQueryEmpty() && !$this->query->sameValueAs($query)) {
+            $this->apply(new ConstraintUpdated($this->uuid, $query));
         }
     }
 
-
-    public function removeConstraint(SapiVersion $sapiVersion): void
+    public function removeConstraint(): void
     {
-        if (!$this->queryEmpty($sapiVersion)) {
-            $this->apply(new ConstraintRemoved($this->uuid, $sapiVersion));
+        if (!$this->isCurrentQueryEmpty()) {
+            $this->apply(new ConstraintRemoved($this->uuid));
         }
     }
 
-
-    private function queryEmpty(SapiVersion $sapiVersion): bool
+    private function isCurrentQueryEmpty(): bool
     {
-        return empty($this->queries[$sapiVersion->toNative()]);
+        if ($this->query === null) {
+            return true;
+        }
+
+        return $this->query->isEmpty();
     }
 
-
-    private function querySameValue(SapiVersion $sapiVersion, Query $query): bool
-    {
-        return $this->queries[$sapiVersion->toNative()]->sameValueAs($query);
-    }
-
-    /**
-     * Add a permission to the role.
-     *
-     */
     public function addPermission(
         UUID $uuid,
         Permission $permission
-    ) {
+    ): void {
         if (!in_array($permission, $this->permissions)) {
             $this->apply(new PermissionAdded($uuid, $permission));
         }
     }
 
-    /**
-     * Remove a permission from the role.
-     *
-     */
     public function removePermission(
         UUID $uuid,
         Permission $permission
-    ) {
+    ): void {
         if (in_array($permission, $this->permissions)) {
             $this->apply(new PermissionRemoved($uuid, $permission));
         }
     }
 
-
     public function addLabel(
         UUID $labelId
-    ) {
+    ): void {
         if (!in_array($labelId, $this->labelIds)) {
             $this->apply(new LabelAdded($this->uuid, $labelId));
         }
     }
 
-
     public function removeLabel(
         UUID $labelId
-    ) {
+    ): void {
         if (in_array($labelId, $this->labelIds)) {
             $this->apply(new LabelRemoved($this->uuid, $labelId));
         }
     }
 
-
     public function addUser(
         StringLiteral $userId
-    ) {
+    ): void {
         if (!in_array($userId, $this->userIds)) {
             $this->apply(new UserAdded($this->uuid, $userId));
         }
     }
 
-
     public function removeUser(
         StringLiteral $userId
-    ) {
+    ): void {
         if (in_array($userId, $this->userIds)) {
             $this->apply(new UserRemoved($this->uuid, $userId));
         }
     }
 
-    /**
-     * Delete a role.
-     *
-     */
     public function delete(
         UUID $uuid
-    ) {
+    ): void {
         $this->apply(new RoleDeleted($uuid));
     }
 
-
-    public function applyRoleCreated(RoleCreated $roleCreated)
+    public function applyRoleCreated(RoleCreated $roleCreated): void
     {
         $this->uuid = $roleCreated->getUuid();
         $this->name = $roleCreated->getName();
     }
 
-
-    public function applyRoleRenamed(RoleRenamed $roleRenamed)
+    public function applyRoleRenamed(RoleRenamed $roleRenamed): void
     {
-        $this->name = $roleRenamed->getName();
+        if (!$roleRenamed->getName()->isEmpty() && !$this->name->sameValueAs($roleRenamed->getName())) {
+            $this->name = $roleRenamed->getName();
+        }
     }
 
-
-    public function applyConstraintAdded(ConstraintAdded $constraintAdded)
+    public function applyConstraintAdded(ConstraintAdded $constraintAdded): void
     {
-        $this->queries[$constraintAdded->getSapiVersion()->toNative()] = $constraintAdded->getQuery();
+        $this->query = $constraintAdded->getQuery();
     }
 
-
-    public function applyConstraintUpdated(ConstraintUpdated $constraintUpdated)
+    public function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
     {
-        $this->queries[$constraintUpdated->getSapiVersion()->toNative()] = $constraintUpdated->getQuery();
+        $this->query = $constraintUpdated->getQuery();
     }
 
-
-    public function applyConstraintRemoved(ConstraintRemoved $constraintRemoved)
+    public function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
-        unset($this->queries[$constraintRemoved->getSapiVersion()->toNative()]);
+        $this->query = null;
     }
 
-
-    public function applyPermissionAdded(PermissionAdded $permissionAdded)
+    public function applyPermissionAdded(PermissionAdded $permissionAdded): void
     {
         $permission = $permissionAdded->getPermission();
 
         $this->permissions[$permission->getName()] = $permission;
     }
 
-
-    public function applyPermissionRemoved(PermissionRemoved $permissionRemoved)
+    public function applyPermissionRemoved(PermissionRemoved $permissionRemoved): void
     {
         $permission = $permissionRemoved->getPermission();
 
         unset($this->permissions[$permission->getName()]);
     }
 
-
-    public function applyLabelAdded(LabelAdded $labelAdded)
+    public function applyLabelAdded(LabelAdded $labelAdded): void
     {
         $labelId = $labelAdded->getLabelId();
         $this->labelIds[] = $labelId;
     }
 
-
-    public function applyLabelRemoved(LabelRemoved $labelRemoved)
+    public function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
         $labelId = $labelRemoved->getLabelId();
         $this->labelIds = array_diff($this->labelIds, [$labelId]);
     }
 
-
-    public function applyUserAdded(UserAdded $userAdded)
+    public function applyUserAdded(UserAdded $userAdded): void
     {
         $userId = $userAdded->getUserId();
         $this->userIds[] = $userId;
     }
 
-
-    public function applyUserRemoved(UserRemoved $userRemoved)
+    public function applyUserRemoved(UserRemoved $userRemoved): void
     {
         $userId = $userRemoved->getUserId();
 

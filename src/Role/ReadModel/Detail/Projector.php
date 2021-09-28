@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 
 class Projector extends RoleProjector
 {
-    protected function applyRoleCreated(RoleCreated $roleCreated)
+    protected function applyRoleCreated(RoleCreated $roleCreated): void
     {
         $this->saveNewDocument(
             $roleCreated->getUuid()->toNative(),
@@ -29,8 +29,7 @@ class Projector extends RoleProjector
         );
     }
 
-
-    protected function applyRoleRenamed(RoleRenamed $roleRenamed)
+    protected function applyRoleRenamed(RoleRenamed $roleRenamed): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
             $roleRenamed->getUuid()->toNative()
@@ -42,16 +41,13 @@ class Projector extends RoleProjector
         $this->repository->save($document->withBody($json));
     }
 
-
-    protected function applyRoleDeleted(RoleDeleted $roleDeleted)
+    protected function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {
         $this->repository->remove($roleDeleted->getUuid());
     }
 
-
-    protected function applyConstraintAdded(
-        ConstraintAdded $constraintAdded
-    ) {
+    protected function applyConstraintAdded(ConstraintAdded $constraintAdded): void
+    {
         $document = $this->loadDocumentFromRepositoryByUuid(
             $constraintAdded->getUuid()->toNative()
         );
@@ -61,41 +57,36 @@ class Projector extends RoleProjector
         if (empty($json->constraints)) {
             $json->constraints = new \stdClass();
         }
-        $json->constraints->{$constraintAdded->getSapiVersion()->toNative()} = $constraintAdded->getQuery()->toNative();
+        $json->constraints->{'v3'} = $constraintAdded->getQuery()->toNative();
 
         $this->repository->save($document->withBody($json));
     }
 
-
-    protected function applyConstraintUpdated(
-        ConstraintUpdated $constraintUpdated
-    ) {
+    protected function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
+    {
         $document = $this->loadDocumentFromRepositoryByUuid(
             $constraintUpdated->getUuid()->toNative()
         );
 
         $json = $document->getBody();
-        $json->constraints->{$constraintUpdated->getSapiVersion()->toNative()} = $constraintUpdated->getQuery()->toNative();
+        $json->constraints->{'v3'} = $constraintUpdated->getQuery()->toNative();
 
         $this->repository->save($document->withBody($json));
     }
 
-
-    protected function applyConstraintRemoved(
-        ConstraintRemoved $constraintRemoved
-    ) {
+    protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
+    {
         $document = $this->loadDocumentFromRepositoryByUuid(
             $constraintRemoved->getUuid()->toNative()
         );
 
         $json = $document->getBody();
-        $json->constraints->{$constraintRemoved->getSapiVersion()->toNative()} = null;
+        $json->constraints->{'v3'} = null;
 
         $this->repository->save($document->withBody($json));
     }
 
-
-    public function applyPermissionAdded(PermissionAdded $permissionAdded)
+    public function applyPermissionAdded(PermissionAdded $permissionAdded): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
             $permissionAdded->getUuid()->toNative()
@@ -113,8 +104,7 @@ class Projector extends RoleProjector
         $this->repository->save($document->withBody($json));
     }
 
-
-    public function applyPermissionRemoved(PermissionRemoved $permissionRemoved)
+    public function applyPermissionRemoved(PermissionRemoved $permissionRemoved): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
             $permissionRemoved->getUuid()->toNative()

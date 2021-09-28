@@ -14,44 +14,24 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    /**
-     * @var DomainMessage
-     */
-    private $domainMessage;
+    private DomainMessage $domainMessage;
 
-    /**
-     * @var Projector
-     */
-    private $projector;
+    private Projector $projector;
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var RepositoryInterface|MockObject
-     */
     private $repository;
 
-    /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->createMock(RepositoryInterface::class);
-        $this->sapiVersion = SapiVersion::V2();
-        $this->projector = new Projector($this->repository, $this->sapiVersion);
+        $this->projector = new Projector($this->repository);
         $this->domainMessage = new DomainMessage('id', 0, new Metadata(), '', DateTime::now());
         $this->uuid = new UUID();
     }
@@ -59,7 +39,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_project_a_created_role()
+    public function it_can_project_a_created_role(): void
     {
         $roleCreated = new RoleCreated(
             $this->uuid,
@@ -77,7 +57,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_project_a_renamed_role()
+    public function it_can_project_a_renamed_role(): void
     {
         $roleRenamed = new RoleRenamed(
             $this->uuid,
@@ -95,7 +75,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_project_a_deleted_role()
+    public function it_can_project_a_deleted_role(): void
     {
         $roleDeleted = new RoleDeleted(
             $this->uuid
@@ -112,11 +92,10 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_update_constraint_on_constraint_created_event()
+    public function it_calls_update_constraint_on_constraint_created_event(): void
     {
         $constraintAdded = new ConstraintAdded(
             new UUID(),
-            SapiVersion::V2(),
             new Query('zipCode:3000')
         );
         $domainMessage = $this->createDomainMessage($constraintAdded);
@@ -131,30 +110,10 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_call_update_constraint_on_constraint_created_event_when_sapi_does_not_match()
-    {
-        $constraintAdded = new ConstraintAdded(
-            new UUID(),
-            SapiVersion::V3(),
-            new Query('zipCode:3000')
-        );
-        $domainMessage = $this->createDomainMessage($constraintAdded);
-
-        $this->repository->expects($this->never())
-            ->method('updateConstraint')
-            ->with($constraintAdded->getUuid(), $constraintAdded->getQuery());
-
-        $this->projector->handle($domainMessage);
-    }
-
-    /**
-     * @test
-     */
-    public function it_calls_update_constraint_on_constraint_updated_event()
+    public function it_calls_update_constraint_on_constraint_updated_event(): void
     {
         $constraintUpdated = new ConstraintUpdated(
             new UUID(),
-            SapiVersion::V2(),
             new Query('zipCode:3000')
         );
         $domainMessage = $this->createDomainMessage($constraintUpdated);
@@ -169,28 +128,9 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_calls_update_constraint_on_constraint_updated_event_when_sapi_does_not_match()
+    public function it_calls_update_constraint_on_constraint_removed_event(): void
     {
-        $constraintUpdated = new ConstraintUpdated(
-            new UUID(),
-            SapiVersion::V3(),
-            new Query('zipCode:3000')
-        );
-        $domainMessage = $this->createDomainMessage($constraintUpdated);
-
-        $this->repository->expects($this->never())
-            ->method('updateConstraint')
-            ->with($constraintUpdated->getUuid(), $constraintUpdated->getQuery());
-
-        $this->projector->handle($domainMessage);
-    }
-
-    /**
-     * @test
-     */
-    public function it_calls_update_constraint_on_constraint_removed_event()
-    {
-        $constraintRemoved = new ConstraintRemoved(new UUID(), SapiVersion::V2());
+        $constraintRemoved = new ConstraintRemoved(new UUID());
         $domainMessage = $this->createDomainMessage($constraintRemoved);
 
         $this->repository->expects($this->once())
@@ -200,25 +140,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @test
-     */
-    public function it_does_not_calls_update_constraint_on_constraint_removed_event_when_sapi_does_not_match()
-    {
-        $constraintRemoved = new ConstraintRemoved(new UUID(), SapiVersion::V3());
-        $domainMessage = $this->createDomainMessage($constraintRemoved);
-
-        $this->repository->expects($this->never())
-            ->method('updateConstraint')
-            ->with($constraintRemoved->getUuid());
-
-        $this->projector->handle($domainMessage);
-    }
-
-    /**
-     * @return DomainMessage
-     */
-    private function createDomainMessage($payload)
+    private function createDomainMessage($payload): DomainMessage
     {
         return new DomainMessage(
             'id',

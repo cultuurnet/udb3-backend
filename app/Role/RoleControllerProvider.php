@@ -70,15 +70,27 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->post(
+            '/roles/{id}/constraints/',
+            'role_edit_controller:addConstraint'
+        );
+        $controllers->post(
             '/roles/{id}/constraints/{sapiVersion}',
             'role_edit_controller:addConstraint'
         );
 
         $controllers->put(
+            '/roles/{id}/constraints/',
+            'role_edit_controller:updateConstraint'
+        );
+        $controllers->put(
             '/roles/{id}/constraints/{sapiVersion}',
             'role_edit_controller:updateConstraint'
         );
 
+        $controllers->delete(
+            '/roles/{id}/constraints/',
+            'role_edit_controller:removeConstraint'
+        );
         $controllers->delete(
             '/roles/{id}/constraints/{sapiVersion}',
             'role_edit_controller:removeConstraint'

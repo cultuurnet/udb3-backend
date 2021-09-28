@@ -33,98 +33,44 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private StringLiteral $name;
 
-    /**
-     * @var Permission
-     */
-    private $permission;
+    private Permission $permission;
 
-    /**
-     * @var Query
-     */
-    private $query;
+    private Query $query;
 
-    /**
-     * @var Query
-     */
-    private $updatedQuery;
+    private Query $updatedQuery;
 
-    /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
+    private UUID $labelId;
 
-    /**
-     * @var UUID
-     */
-    private $labelId;
+    private RoleCreated $roleCreated;
 
-    /**
-     * @var RoleCreated
-     */
-    private $roleCreated;
+    private RoleRenamed $roleRenamed;
 
-    /**
-     * @var RoleRenamed
-     */
-    private $roleRenamed;
+    private PermissionAdded $permissionAdded;
 
-    /**
-     * @var PermissionAdded
-     */
-    private $permissionAdded;
+    private PermissionRemoved $permissionRemoved;
 
-    /**
-     * @var PermissionRemoved
-     */
-    private $permissionRemoved;
+    private ConstraintAdded $constraintAdded;
 
-    /**
-     * @var ConstraintAdded
-     */
-    private $constraintAdded;
+    private ConstraintUpdated $constraintUpdated;
 
-    /**
-     * @var ConstraintUpdated
-     */
-    private $constraintUpdated;
+    private ConstraintRemoved $constraintRemoved;
 
-    /**
-     * @var ConstraintRemoved
-     */
-    private $constraintRemoved;
+    private LabelAdded $labelAdded;
 
-    /**
-     * @var LabelAdded
-     */
-    private $labelAdded;
+    private LabelRemoved $labelRemoved;
 
-    /**
-     * @var LabelRemoved
-     */
-    private $labelRemoved;
+    private RoleDeleted $roleDeleted;
 
-    /**
-     * @var RoleDeleted
-     */
-    private $roleDeleted;
-
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -133,7 +79,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->permission = Permission::AANBOD_BEWERKEN();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
-        $this->sapiVersion = SapiVersion::V2();
         $this->labelId = new UUID();
 
         $this->roleCreated = new RoleCreated(
@@ -158,19 +103,16 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->constraintAdded = new ConstraintAdded(
             $this->uuid,
-            SapiVersion::V2(),
             $this->query
         );
 
         $this->constraintUpdated = new ConstraintUpdated(
             $this->uuid,
-            SapiVersion::V2(),
             $this->updatedQuery
         );
 
         $this->constraintRemoved = new ConstraintRemoved(
             $this->uuid,
-            SapiVersion::V2()
         );
 
         $this->labelAdded = new LabelAdded(
@@ -204,7 +146,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_create()
+    public function it_handles_create(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -219,7 +161,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_rename()
+    public function it_handles_rename(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -234,7 +176,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_addPermission()
+    public function it_handles_addPermission(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -249,7 +191,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_removePermission()
+    public function it_handles_removePermission(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -264,7 +206,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_add_and_remove_users()
+    public function it_can_add_and_remove_users(): void
     {
         $userId = new StringLiteral('123456');
 
@@ -342,14 +284,13 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_addConstraint()
+    public function it_handles_addConstraint(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
             ->given([$this->roleCreated])
             ->when(new AddConstraint(
                 $this->uuid,
-                $this->sapiVersion,
                 $this->query
             ))
             ->then([$this->constraintAdded]);
@@ -358,14 +299,13 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_updateConstraint()
+    public function it_handles_updateConstraint(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
             ->given([$this->roleCreated, $this->constraintAdded])
             ->when(new UpdateConstraint(
                 $this->uuid,
-                $this->sapiVersion,
                 $this->updatedQuery
             ))
             ->then([$this->constraintUpdated]);
@@ -374,22 +314,19 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_removeConstraint()
+    public function it_handles_removeConstraint(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
             ->given([$this->roleCreated, $this->constraintAdded])
-            ->when(new RemoveConstraint(
-                $this->uuid,
-                $this->sapiVersion
-            ))
+            ->when(new RemoveConstraint($this->uuid))
             ->then([$this->constraintRemoved]);
     }
 
     /**
      * @test
      */
-    public function it_handles_addLabel()
+    public function it_handles_addLabel(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -406,7 +343,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_removeLabel()
+    public function it_handles_removeLabel(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -423,7 +360,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_deleteRole_by_deleting_the_role()
+    public function it_handles_deleteRole_by_deleting_the_role(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
