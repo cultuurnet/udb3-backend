@@ -11,6 +11,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
@@ -23,6 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ImportRestControllerTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
     private ApiKey $apiKey;
 
     /**
@@ -273,9 +276,6 @@ class ImportRestControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(ApiProblem::class);
-        $this->expectExceptionMessage('Resource id already in use');
-
         $this->importer->expects($this->once())
             ->method('import')
             ->with($expectedDocument)
@@ -287,6 +287,9 @@ class ImportRestControllerTest extends TestCase
                 )
             );
 
-        $this->controller->importWithId($request, $id);
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::resourceIdAlreadyInUse('c25ea5b8-acd2-4987-a207-6ee11444fde8'),
+            fn () => $this->controller->importWithId($request, $id)
+        );
     }
 }
