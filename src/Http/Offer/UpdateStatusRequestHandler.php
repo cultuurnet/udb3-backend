@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
-use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
@@ -19,8 +18,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class UpdateStatusRequestHandler implements RequestHandler
+class UpdateStatusRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
     private RequestBodyParser $parser;
