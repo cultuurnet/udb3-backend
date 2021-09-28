@@ -43,14 +43,14 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         IriGeneratorInterface $iriGenerator,
         PathGeneratorInterface $pathGenerator,
         Repository $repository,
-        FilesystemOperator $legacyFilesystem,
+        FilesystemOperator $localFilesystem,
         FilesystemOperator $s3FileSystem,
         $mediaDirectory
     ) {
         $this->iriGenerator = $iriGenerator;
         $this->pathGenerator = $pathGenerator;
         $this->mediaDirectory = $mediaDirectory;
-        $this->localFilesystem = $legacyFilesystem;
+        $this->localFilesystem = $localFilesystem;
         $this->s3FileSystem = $s3FileSystem;
         $this->repository = $repository;
 
