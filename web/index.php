@@ -201,10 +201,11 @@ $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSear
 /* @deprecated */
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
 $app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
-$app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 
 $app->mount('/event', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/events', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
+
+$app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
