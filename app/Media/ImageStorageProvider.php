@@ -17,7 +17,7 @@ class ImageStorageProvider implements ServiceProviderInterface
     {
         $app['local_file_system'] = $app->share(
             function ($app) {
-                $localAdapter = new LocalFilesystemAdapter(__DIR__.'/../../');
+                $localAdapter = new LocalFilesystemAdapter(__DIR__ . '/../../');
                 return new Filesystem($localAdapter);
             }
         );
@@ -27,7 +27,7 @@ class ImageStorageProvider implements ServiceProviderInterface
                 $s3Client = new S3Client([
                     'credentials' => [
                         'key'    => $app['config']['media']['aws']['credentials']['key'],
-                        'secret' => $app['config']['media']['aws']['credentials']['secret']
+                        'secret' => $app['config']['media']['aws']['credentials']['secret'],
                     ],
                     'region' => $app['config']['media']['aws']['region'],
                     'version' => $app['config']['media']['aws']['version'],
