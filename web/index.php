@@ -218,7 +218,7 @@ $app->mount('/event', $eventOfferControllerProvider);
 $app->mount('/events', new EventControllerProvider());
 $app->mount('/events', $eventOfferControllerProvider);
 
-// Workaround to make the old POST /place and POST /event work.
+// Workaround to make the old POST /place and POST /event work (without trailing slash).
 // Those requests will not be handled by the PlaceControllerProvider and EventControllerProvider registered above,
 // because those controller providers can only handle routes under /places/ and /events/ (note the trailing slash).
 $app->post('/place', 'place_editing_controller:createPlace');
