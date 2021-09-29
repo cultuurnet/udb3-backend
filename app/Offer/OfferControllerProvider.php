@@ -38,18 +38,6 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function connect(Application $app)
     {
-        $app[UpdateStatusRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateStatusRequestHandler($app['event_command_bus']);
-            }
-        );
-
-        $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateBookingAvailabilityRequestHandler($app['event_command_bus']);
-            }
-        );
-
         $controllerName = $this->getEditControllerName();
         $patchControllerName = $this->getPatchControllerName();
         $permissionsControllerName = $this->getPermissionsControllerName();
@@ -120,6 +108,18 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app)
     {
+        $app[UpdateStatusRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateStatusRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateBookingAvailabilityRequestHandler($app['event_command_bus']);
+            }
+        );
+
         $app[$this->getEditControllerName()] = $app->share(
             function (Application $app) {
                 $editorServiceName = $this->offerType === 'event' ? 'event_editor' : 'place_editing_service';
