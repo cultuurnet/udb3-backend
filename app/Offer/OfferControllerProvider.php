@@ -122,8 +122,8 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[$this->getEditControllerName()] = $app->share(
             function (Application $app) {
-                $editorServiceName = $this->offerType === 'event' ? 'event_editor' : 'place_editing_service';
-                $mainLanguageQueryServiceName = $this->offerType === 'event' ? 'event_main_language_query' : 'place_main_language_query';
+                $editorServiceName = $this->offerType === 'Event' ? 'event_editor' : 'place_editing_service';
+                $mainLanguageQueryServiceName = $this->offerType === 'Event' ? 'event_main_language_query' : 'place_main_language_query';
 
                 return new EditOfferRestController(
                     $app['event_command_bus'],
