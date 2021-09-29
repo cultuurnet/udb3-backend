@@ -88,6 +88,21 @@ class PlaceControllerProvider implements ControllerProviderInterface
 
         $controllers->put('/{placeId}/calendar', UpdateCalendarRequestHandler::class . ':handle');
 
+        /**
+         * Legacy routes that we need to keep for backward compatibility.
+         * These routes usually used an incorrect HTTP method or incorrect casing of resource names.
+         */
+        $controllers->get('/{cdbid}/events', 'place_editing_controller:getEvents');
+        $controllers->post('/{itemId}/images/main', 'place_editing_controller:selectMainImage');
+        $controllers->post('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
+        $controllers->post('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
+        $controllers->post('/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
+        $controllers->delete('/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
+        $controllers->post('/{placeId}/major-info', UpdateMajorInfoRequestHandler::class . ':handle');
+        $controllers->post('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
+        $controllers->post('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
+        $controllers->post('/{cdbid}/organizer', 'place_editing_controller:updateOrganizerFromJsonBody');
+
         return $controllers;
     }
 }

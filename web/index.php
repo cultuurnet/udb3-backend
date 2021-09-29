@@ -198,8 +198,7 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-/* @deprecated */
-$app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
+$app->mount('/place', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 
 $app->mount('/event', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
