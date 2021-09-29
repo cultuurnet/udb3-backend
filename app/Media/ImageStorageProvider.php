@@ -16,7 +16,7 @@ class ImageStorageProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['local_file_system'] = $app->share(
-            function ($app) {
+            function () {
                 $localAdapter = new LocalFilesystemAdapter(__DIR__ . '/../../');
                 return new Filesystem($localAdapter);
             }
