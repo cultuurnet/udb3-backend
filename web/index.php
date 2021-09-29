@@ -218,6 +218,12 @@ $app->mount('/event', $eventOfferControllerProvider);
 $app->mount('/events', new EventControllerProvider());
 $app->mount('/events', $eventOfferControllerProvider);
 
+// Workaround to make the old POST /place and POST /event work.
+// Those requests will not be handled by the PlaceControllerProvider and EventControllerProvider registered above,
+// because those controller providers can only handle routes under /places/ and /events/ (note the trailing slash).
+$app->post('/place', 'place_editing_controller:createPlace');
+$app->post('/event', 'event_editing_controller:createEvent');
+
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
