@@ -8,10 +8,14 @@ use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
+use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
+use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
+use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
 use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
@@ -198,15 +202,24 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-$app->mount('/place', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
-$app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
+$placeOfferControllerProvider = new OfferControllerProvider(OfferType::PLACE());
+$eventOfferControllerProvider = new OfferControllerProvider(OfferType::EVENT());
 
-$app->mount('/event', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
-$app->mount('/events', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
+$app->register($placeOfferControllerProvider);
+$app->register($eventOfferControllerProvider);
+
+$app->mount('/place', new PlaceControllerProvider());
+$app->mount('/place', $placeOfferControllerProvider);
+$app->mount('/places', new PlaceControllerProvider());
+$app->mount('/places', $placeOfferControllerProvider);
+
+$app->mount('/event', new EventControllerProvider());
+$app->mount('/event', $eventOfferControllerProvider);
+$app->mount('/events', new EventControllerProvider());
+$app->mount('/events', $eventOfferControllerProvider);
 
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());

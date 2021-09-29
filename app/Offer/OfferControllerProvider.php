@@ -24,10 +24,18 @@ use CultuurNet\UDB3\Http\Offer\PatchOfferRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferControllerProvider implements ControllerProviderInterface
+class OfferControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
+    private string $offerType;
+
+    public function __construct(OfferType $offerType)
+    {
+        $this->offerType = $offerType->toNative();
+    }
+
     public function connect(Application $app)
     {
         $app[UpdateStatusRequestHandler::class] = $app->share(
@@ -42,134 +50,154 @@ class OfferControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $controllerName = $this->getEditControllerName();
+        $patchControllerName = $this->getPatchControllerName();
+        $permissionsControllerName = $this->getPermissionsControllerName();
+        $deprecatedPermissionControllerName = $this->getDeprecatedPermissionControllerName();
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $offerServices = [
-            'event' => ['event_editor', 'event_main_language_query'],
-            'events' => ['event_editor', 'event_main_language_query'],
-            'place' => ['place_editing_service', 'place_main_language_query'],
-            'places' => ['place_editing_service', 'place_main_language_query'],
-        ];
+        $controllers->put("/{offerId}/status", UpdateStatusRequestHandler::class . ':handle');
+        $controllers->put("/{offerId}/bookingAvailability", UpdateBookingAvailabilityRequestHandler::class . ':handle');
 
-        foreach ($offerServices as $offerType => $serviceNames) {
-            $controllerName = "{$offerType}_offer_controller";
-            $patchControllerName = "patch_{$offerType}_controller";
-            $permissionsControllerName = "permissions_{$offerType}_controller";
-            /** @deprecated */
-            $permissionControllerName = "permission_{$offerType}_controller";
+        $controllers->put("/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
+        $controllers->put("/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
+        $controllers->put("/{cdbid}/facilities/", "{$controllerName}:updateFacilities");
 
-            $app[$controllerName] = $app->share(
-                function (Application $app) use ($serviceNames, $offerType) {
-                    return new EditOfferRestController(
-                        $app['event_command_bus'],
-                        $app[$serviceNames[0]],
-                        $app[$serviceNames[1]],
-                        new LabelJSONDeserializer(),
-                        new TitleJSONDeserializer(false, new StringLiteral('name')),
-                        new DescriptionJSONDeserializer(),
-                        new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
-                        new FacilitiesJSONDeserializer(
-                            $this->getFacilityResolver($offerType)
-                        )
-                    );
-                }
+        $controllers->delete("/{cdbid}/labels/{label}", "{$controllerName}:removeLabel")
+            ->assert('label', '.*');
+
+        $controllers->put("/{cdbid}/labels/{label}", "{$controllerName}:addLabel");
+
+        $controllers->put("/{cdbid}/name/{lang}", "{$controllerName}:updateTitle");
+        $controllers->put("/{cdbid}/description/{lang}", "{$controllerName}:updateDescription");
+        $controllers->put("/{cdbid}/priceInfo", "{$controllerName}:updatePriceInfo");
+        $controllers->patch("/{cdbid}", "{$patchControllerName}:handle");
+        $controllers->get("/{offerId}/permissions/", "{$permissionsControllerName}:getPermissionsForCurrentUser");
+        $controllers->get("/{offerId}/permissions/{userId}", "{$permissionsControllerName}:getPermissionsForGivenUser");
+
+
+        /* @deprecated */
+        $controllers
+            ->post(
+                "/{cdbid}/labels",
+                "{$controllerName}:addLabelFromJsonBody"
             );
 
-            $app[$patchControllerName] = $app->share(
-                function (Application $app) use ($offerType) {
-                    return new PatchOfferRestController(
-                        OfferType::fromCaseInsensitiveValue($offerType),
-                        $app['event_command_bus']
-                    );
-                }
+        $controllers
+            ->post(
+                "/{cdbid}/{lang}/title",
+                "{$controllerName}:updateTitle"
             );
 
-            $app[$permissionsControllerName] = $app->share(
-                function (Application $app) {
-                    $permissionsToCheck = [
-                        Permission::AANBOD_BEWERKEN(),
-                        Permission::AANBOD_MODEREREN(),
-                        Permission::AANBOD_VERWIJDEREN(),
-                    ];
-                    return new OfferPermissionsController(
-                        $permissionsToCheck,
-                        $app['offer_permission_voter'],
-                        $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
-                    );
-                }
+        $controllers
+            ->post(
+                "/{cdbid}/{lang}/description",
+                "{$controllerName}:updateDescription"
             );
 
-            /** @deprecated */
-            $app[$permissionControllerName] = $app->share(
-                function (Application $app) {
-                    return new OfferPermissionController(
-                        Permission::AANBOD_BEWERKEN(),
-                        $app['offer_permission_voter'],
-                        $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
-                    );
-                }
+        $controllers
+            ->post(
+                "/{cdbid}/facilities",
+                "{$controllerName}:updateFacilitiesWithLabel"
             );
 
-            $controllers->put("{$offerType}/{offerId}/status", UpdateStatusRequestHandler::class . ':handle');
-            $controllers->put("{$offerType}/{offerId}/bookingAvailability", UpdateBookingAvailabilityRequestHandler::class . ':handle');
+        $controllers
+            ->get(
+                "/{offerId}/permission",
+                "{$deprecatedPermissionControllerName}:currentUserHasPermission"
+            );
 
-            $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
-            $controllers->put("{$offerType}/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
-            $controllers->put("{$offerType}/{cdbid}/facilities/", "{$controllerName}:updateFacilities");
-
-            $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel")
-                ->assert('label', '.*');
-
-            $controllers->put("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:addLabel");
-
-            $controllers->put("{$offerType}/{cdbid}/name/{lang}", "{$controllerName}:updateTitle");
-            $controllers->put("{$offerType}/{cdbid}/description/{lang}", "{$controllerName}:updateDescription");
-            $controllers->put("{$offerType}/{cdbid}/priceInfo", "{$controllerName}:updatePriceInfo");
-            $controllers->patch("{$offerType}/{cdbid}", "{$patchControllerName}:handle");
-            $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionsControllerName}:getPermissionsForCurrentUser");
-            $controllers->get("{$offerType}/{offerId}/permissions/{userId}", "{$permissionsControllerName}:getPermissionsForGivenUser");
-
-
-            /* @deprecated */
-            $controllers
-                ->post(
-                    "{$offerType}/{cdbid}/labels",
-                    "{$controllerName}:addLabelFromJsonBody"
-                );
-
-            $controllers
-                ->post(
-                    "{$offerType}/{cdbid}/{lang}/title",
-                    "{$controllerName}:updateTitle"
-                );
-
-            $controllers
-                ->post(
-                    "{$offerType}/{cdbid}/{lang}/description",
-                    "{$controllerName}:updateDescription"
-                );
-
-            $controllers
-                ->post(
-                    "{$offerType}/{cdbid}/facilities",
-                    "{$controllerName}:updateFacilitiesWithLabel"
-                );
-
-            $controllers
-                ->get(
-                    "{$offerType}/{offerId}/permission",
-                    "{$permissionControllerName}:currentUserHasPermission"
-                );
-
-            $controllers
-                ->get(
-                    "{$offerType}/{offerId}/permission/{userId}",
-                    "{$permissionControllerName}:givenUserHasPermission"
-                );
-        }
+        $controllers
+            ->get(
+                "/{offerId}/permission/{userId}",
+                "{$deprecatedPermissionControllerName}:givenUserHasPermission"
+            );
 
         return $controllers;
+    }
+
+    public function register(Application $app)
+    {
+        $app[$this->getEditControllerName()] = $app->share(
+            function (Application $app) {
+                $editorServiceName = $this->offerType === 'event' ? 'event_editor' : 'place_editing_service';
+                $mainLanguageQueryServiceName = $this->offerType === 'event' ? 'event_main_language_query' : 'place_main_language_query';
+
+                return new EditOfferRestController(
+                    $app['event_command_bus'],
+                    $app[$editorServiceName],
+                    $app[$mainLanguageQueryServiceName],
+                    new LabelJSONDeserializer(),
+                    new TitleJSONDeserializer(false, new StringLiteral('name')),
+                    new DescriptionJSONDeserializer(),
+                    new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
+                    new FacilitiesJSONDeserializer(
+                        $this->getFacilityResolver($this->offerType)
+                    )
+                );
+            }
+        );
+
+        $app[$this->getPatchControllerName()] = $app->share(
+            function (Application $app) {
+                return new PatchOfferRestController(
+                    OfferType::fromCaseInsensitiveValue($this->offerType),
+                    $app['event_command_bus']
+                );
+            }
+        );
+
+        $app[$this->getPermissionsControllerName()] = $app->share(
+            function (Application $app) {
+                $permissionsToCheck = [
+                    Permission::AANBOD_BEWERKEN(),
+                    Permission::AANBOD_MODEREREN(),
+                    Permission::AANBOD_VERWIJDEREN(),
+                ];
+                return new OfferPermissionsController(
+                    $permissionsToCheck,
+                    $app['offer_permission_voter'],
+                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                );
+            }
+        );
+
+        /* Only for legacy routes used for backward compatibility */
+        $app[$this->getDeprecatedPermissionControllerName()] = $app->share(
+            function (Application $app) {
+                return new OfferPermissionController(
+                    Permission::AANBOD_BEWERKEN(),
+                    $app['offer_permission_voter'],
+                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                );
+            }
+        );
+    }
+
+    private function getEditControllerName(): string
+    {
+        return "{$this->offerType}_offer_controller";
+    }
+
+    private function getPatchControllerName(): string
+    {
+        return "patch_{$this->offerType}_controller";
+    }
+
+    private function getPermissionsControllerName(): string
+    {
+        return "permissions_{$this->offerType}_controller";
+    }
+
+    private function getDeprecatedPermissionControllerName(): string
+    {
+        return "permission_{$this->offerType}_controller";
+    }
+
+    public function boot(Application $app)
+    {
     }
 
     /**
