@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Media;
 
 use Aws\S3\S3Client;
+use CultuurNet\UDB3\Media\ImageStorage;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -34,6 +35,16 @@ class ImageStorageProvider implements ServiceProviderInterface
                 ]);
                 $s3Adapter = new AwsS3V3Adapter($s3Client, $app['config']['media']['aws']['bucket']);
                 return new Filesystem($s3Adapter);
+            }
+        );
+
+        $app['image_storage'] = $app->share(
+            function ($app) {
+                return new ImageStorage(
+                    $app['local_file_system'],
+                    $app['s3_file_system'],
+                    $app['media.media_directory']
+                );
             }
         );
     }
