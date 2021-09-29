@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -39,33 +38,23 @@ class MediaManagerTest extends TestCase
      */
     private $pathGenerator;
 
-    private string $mediaDirectory = '/media';
-
     /**
-     * @var FilesystemOperator|MockObject;
+     * @var ImageStorage|MockObject
      */
-    private $localFilesystem;
-
-    /**
-     * @var FilesystemOperator|MockObject;
-     */
-    private $s3Filesystem;
+    private $imageStorage;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(Repository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->pathGenerator = $this->createMock(PathGeneratorInterface::class);
-        $this->localFilesystem = $this->createMock(FilesystemOperator::class);
-        $this->s3Filesystem = $this->createMock(FilesystemOperator::class);
+        $this->imageStorage = $this->createMock(ImageStorage::class);
 
         $this->mediaManager = new MediaManager(
             $this->iriGenerator,
             $this->pathGenerator,
             $this->repository,
-            $this->localFilesystem,
-            $this->s3Filesystem,
-            $this->mediaDirectory
+            $this->imageStorage
         );
     }
 
@@ -141,31 +130,9 @@ class MediaManagerTest extends TestCase
             ->method('load')
             ->willThrowException(new AggregateNotFoundException());
 
-        $this->localFilesystem
-            ->expects($this->once())
-            ->method('copy')
-            ->with(
-                '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                '/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
-            );
-
-        $this->localFilesystem
-            ->expects($this->once())
-            ->method('readStream')
-            ->with(
-                '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-            );
-
-        $this->s3Filesystem
-            ->expects($this->once())
-            ->method('writeStream');
-
-        $this->localFilesystem
-            ->expects($this->once())
-            ->method('delete')
-            ->with(
-                '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-            );
+        $this->imageStorage->expects($this->once())
+            ->method('store')
+            ->with('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png', 'de305d54-75b4-431b-adb2-eb6b9e546014.png');
 
         $this->mediaManager->handleUploadImage($command);
     }
