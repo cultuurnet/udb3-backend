@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
@@ -62,8 +63,6 @@ use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\Psr7ServiceProvider;
@@ -74,9 +73,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 date_default_timezone_set('Europe/Brussels');
 
 $app = new Application();
-
-$localAdapter = new LocalFilesystemAdapter(__DIR__);
-$app['local_file_system'] = new Filesystem($localAdapter);
 
 $app['api_name'] = ApiName::UNKNOWN;
 
@@ -1058,6 +1054,8 @@ $app->register(
         ),
     )
 );
+
+$app->register(new ImageStorageProvider());
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
