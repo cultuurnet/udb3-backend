@@ -65,43 +65,16 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
         $controllers->get('/{offerId}/permissions/{userId}', "{$permissionsControllerName}:getPermissionsForGivenUser");
 
-
-        /* @deprecated */
-        $controllers
-            ->post(
-                '/{cdbid}/labels',
-                "{$controllerName}:addLabelFromJsonBody"
-            );
-
-        $controllers
-            ->post(
-                '/{cdbid}/{lang}/title',
-                "{$controllerName}:updateTitle"
-            );
-
-        $controllers
-            ->post(
-                '/{cdbid}/{lang}/description',
-                "{$controllerName}:updateDescription"
-            );
-
-        $controllers
-            ->post(
-                '/{cdbid}/facilities',
-                "{$controllerName}:updateFacilitiesWithLabel"
-            );
-
-        $controllers
-            ->get(
-                '/{offerId}/permission',
-                "{$deprecatedPermissionControllerName}:currentUserHasPermission"
-            );
-
-        $controllers
-            ->get(
-                '/{offerId}/permission/{userId}',
-                "{$deprecatedPermissionControllerName}:givenUserHasPermission"
-            );
+        /**
+         * Legacy routes that we need to keep for backward compatibility.
+         * These routes usually used an incorrect HTTP method or incorrect casing of resource names.
+         */
+        $controllers->post('/{cdbid}/labels', "{$controllerName}:addLabelFromJsonBody");
+        $controllers->post('/{cdbid}/{lang}/title', "{$controllerName}:updateTitle");
+        $controllers->post('/{cdbid}/{lang}/description', "{$controllerName}:updateDescription");
+        $controllers->post('/{cdbid}/facilities', "{$controllerName}:updateFacilitiesWithLabel");
+        $controllers->get('/{offerId}/permission', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
+        $controllers->get('/{offerId}/permission/{userId}', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
 
         return $controllers;
     }
