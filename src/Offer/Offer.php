@@ -23,6 +23,8 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
@@ -81,6 +83,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      * @var ImageCollection
      */
     protected $images;
+
+    protected VideoCollection $videos;
 
     /**
      * @var string|null
@@ -173,6 +177,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->descriptions = [];
         $this->labels = new LabelCollection();
         $this->images = new ImageCollection();
+        $this->videos = new VideoCollection();
         $this->facilities = [];
         $this->contactPoint = null;
         $this->calendar = null;
@@ -724,6 +729,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function addVideo(Video $video): void
+    {
+        $videosWithSameId = $this->videos->filter(function (Video $currentVideo) use ($video) {
+            return $currentVideo->getVideoId()->sameAs($video->getVideoId());
+        });
+
+        if ($videosWithSameId->isEmpty()) {
+            $this->apply($this->createVideoAddedEvent($video));
+        }
+    }
+
     /**
      * Delete the offer.
      */
@@ -948,6 +964,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyMainImageSelected(AbstractMainImageSelected $mainImageSelected)
     {
         $this->images = $this->images->withMain($mainImageSelected->getImage());
+    }
+
+    protected function applyVideoAdded(AbstractVideoAdded $abstractVideoAdded)
+    {
+        $this->videos = $this->videos->with($abstractVideoAdded->getVideo());
     }
 
     protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated)
