@@ -258,7 +258,7 @@ $app->match(
     '/{path}',
     function (Request $originalRequest, string $path) use ($app) {
         $rewrites = [
-            '/^(event|place)($|\/.*)/' => '${1}s${2}', // Make /event(/...) and /place(/...) plural
+            '/^(event|place)($|\/.*)/' => '${1}s${2}', // Pluralize /event and /place
         ];
         $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
 
