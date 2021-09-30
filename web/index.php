@@ -256,8 +256,10 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 $app->match(
     '/{path}',
     function (Request $originalRequest, string $path) use ($app) {
-        // Rewrite /event(/) and /place(/) to /events(/) and /places(/).
-        $path = preg_replace('/^(event|place)($|\/.*)/', '${1}s${2}', $path);
+        $rewrites = [
+            '/^(event|place)($|\/.*)/' => '${1}s${2}', // Make /event(/...) and /place(/...) plural
+        ];
+        $path = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
         $request = Request::create(
             $path,
             $originalRequest->getMethod(),
