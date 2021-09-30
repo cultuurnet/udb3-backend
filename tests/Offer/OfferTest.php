@@ -16,9 +16,13 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as ModelUUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description as ModelDescription;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url as ModelUrl;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
@@ -48,6 +52,7 @@ use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -783,6 +788,37 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ImageAdded('someId', $originalMainImage),
                     new ImageAdded('someId', $newMainImage),
                     new MainImageSelected('someId', $newMainImage),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_a_video_add(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $video = new Video(
+            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new ModelUrl('https://www.youtube.com/watch?v=123'),
+            new ModelDescription('Demo youtube video'),
+            new CopyrightHolder('Creative Commons')
+        );
+
+        $this->scenario
+            ->given(
+                [
+                    new ItemCreated($itemId),
+                ])
+            ->when(function (Item $item) use ($video) {
+                $item->addVideo($video);
+            })
+            ->then(
+                [
+                    new VideoAdded(
+                        new ModelUUID($itemId),
+                        $video
+                    ),
                 ]
             );
     }
