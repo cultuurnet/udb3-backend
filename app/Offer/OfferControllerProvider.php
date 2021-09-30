@@ -177,10 +177,9 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
      */
     private function getFacilityResolver($offerType)
     {
-        if (strpos($offerType, 'place') !== false) {
+        if (strpos($offerType, 'Place') !== false) {
             return new PlaceFacilityResolver();
         }
-
         return new EventFacilityResolver();
     }
 }
