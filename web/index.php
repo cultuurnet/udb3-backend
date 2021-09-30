@@ -273,6 +273,9 @@ $app->match(
             '/priceInfo/' => 'price-info',
             '/subEvents/' => 'sub-events',
             '/typicalAgeRange/' => 'typical-age-range',
+
+            // Add trailing slash if missing
+            '/^(.*)(?<!\/)$/' => '${1}/',
         ];
         $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
 
