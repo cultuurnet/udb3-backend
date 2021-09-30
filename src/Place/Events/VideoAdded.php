@@ -8,5 +8,4 @@ use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
 
 class VideoAdded extends AbstractVideoAdded
 {
-
 }

@@ -809,7 +809,8 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     new ItemCreated($itemId),
-                ])
+                ]
+            )
             ->when(function (Item $item) use ($video) {
                 $item->addVideo($video);
             })
