@@ -105,7 +105,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
                     new DescriptionJSONDeserializer(),
                     new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
                     new FacilitiesJSONDeserializer(
-                        $this->getFacilityResolver($this->offerType)
+                        $this->offerType === 'Event' ? new EventFacilityResolver : new PlaceFacilityResolver()
                     )
                 );
             }
@@ -169,17 +169,5 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function boot(Application $app): void
     {
-    }
-
-    /**
-     * @param string $offerType
-     * @return OfferFacilityResolverInterface
-     */
-    private function getFacilityResolver($offerType)
-    {
-        if (strpos($offerType, 'Place') !== false) {
-            return new PlaceFacilityResolver();
-        }
-        return new EventFacilityResolver();
     }
 }
