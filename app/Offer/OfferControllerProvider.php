@@ -95,6 +95,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
             function (Application $app) {
                 $editorServiceName = $this->offerType === 'Event' ? 'event_editor' : 'place_editing_service';
                 $mainLanguageQueryServiceName = $this->offerType === 'Event' ? 'event_main_language_query' : 'place_main_language_query';
+                $facilityResolver = $this->offerType === 'Event' ? new EventFacilityResolver : new PlaceFacilityResolver();
 
                 return new EditOfferRestController(
                     $app['event_command_bus'],
@@ -104,9 +105,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
                     new TitleJSONDeserializer(false, new StringLiteral('name')),
                     new DescriptionJSONDeserializer(),
                     new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
-                    new FacilitiesJSONDeserializer(
-                        $this->offerType === 'Event' ? new EventFacilityResolver : new PlaceFacilityResolver()
-                    )
+                    new FacilitiesJSONDeserializer($facilityResolver)
                 );
             }
         );
