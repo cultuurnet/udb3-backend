@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Http;
 
 use Silex\Application;
-use Silex\ServiceControllerResolver;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Makes it possible to register an instance of RequestHandlerInterface (PSR-15) as a route controller.

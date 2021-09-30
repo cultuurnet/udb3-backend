@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\LabelJSONDeserializer;
-use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -103,7 +102,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
                     default:
                         $editor = $app['event_editor'];
                         $mainLanguageQuery = $app['event_main_language_query'];
-                        $facilityResolver = new EventFacilityResolver;
+                        $facilityResolver = new EventFacilityResolver();
                 }
 
                 return new EditOfferRestController(
