@@ -86,6 +86,13 @@ media:
   upload_directory: "/web/uploads"
   media_directory: "/web/media"
   file_size_limit: 5000000
+  aws:
+    credentials:
+      key: ***
+      secret: ***
+    region: eu-west-1
+    version: latest
+    bucket: udb2-media-test.uitdatabank.be
 
 cdbxml_proxy:
   enabled: "true"

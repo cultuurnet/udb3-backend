@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -27,26 +26,22 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
     private IriGeneratorInterface $iriGenerator;
 
-    private string $mediaDirectory;
+    private PathGeneratorInterface $pathGenerator;
 
     private Repository $repository;
 
-    private FilesystemOperator $filesystem;
-
-    protected PathGeneratorInterface $pathGenerator;
+    private ImageStorage $imageStorage;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
         PathGeneratorInterface $pathGenerator,
         Repository $repository,
-        FilesystemOperator $filesystem,
-        $mediaDirectory
+        ImageStorage $imageStorage
     ) {
         $this->iriGenerator = $iriGenerator;
         $this->pathGenerator = $pathGenerator;
-        $this->mediaDirectory = $mediaDirectory;
-        $this->filesystem = $filesystem;
         $this->repository = $repository;
+        $this->imageStorage = $imageStorage;
 
         // Avoid conditional log calls by setting a null logger by default.
         $this->setLogger(new NullLogger());
@@ -97,10 +92,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
         $destinationIri = $this->iriGenerator->iri($destinationPath);
 
-        $this->filesystem->move(
-            $uploadImage->getFilePath()->toNative(),
-            $this->mediaDirectory . '/' . $destinationPath
-        );
+        $this->imageStorage->store($uploadImage->getFilePath()->toNative(), $destinationPath);
 
         $this->create(
             $uploadImage->getFileId(),

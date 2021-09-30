@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -39,26 +38,23 @@ class MediaManagerTest extends TestCase
      */
     private $pathGenerator;
 
-    private string $mediaDirectory = '/media';
-
     /**
-     * @var FilesystemOperator|MockObject;
+     * @var ImageStorage|MockObject
      */
-    private $filesystem;
+    private $imageStorage;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(Repository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->pathGenerator = $this->createMock(PathGeneratorInterface::class);
-        $this->filesystem = $this->createMock(FilesystemOperator::class);
+        $this->imageStorage = $this->createMock(ImageStorage::class);
 
         $this->mediaManager = new MediaManager(
             $this->iriGenerator,
             $this->pathGenerator,
             $this->repository,
-            $this->filesystem,
-            $this->mediaDirectory
+            $this->imageStorage
         );
     }
 
@@ -78,6 +74,11 @@ class MediaManagerTest extends TestCase
 
         $logger = $this->createMock(LoggerInterface::class);
         $this->mediaManager->setLogger($logger);
+
+        $this->pathGenerator
+            ->expects($this->once())
+            ->method('path')
+            ->willReturn('de305d54-75b4-431b-adb2-eb6b9e546014.png');
 
         $this->iriGenerator
             ->expects($this->once())
@@ -129,13 +130,9 @@ class MediaManagerTest extends TestCase
             ->method('load')
             ->willThrowException(new AggregateNotFoundException());
 
-        $this->filesystem
-            ->expects($this->once())
-            ->method('move')
-            ->with(
-                '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                '/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
-            );
+        $this->imageStorage->expects($this->once())
+            ->method('store')
+            ->with('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png', 'de305d54-75b4-431b-adb2-eb6b9e546014.png');
 
         $this->mediaManager->handleUploadImage($command);
     }

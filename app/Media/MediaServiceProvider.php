@@ -92,8 +92,7 @@ class MediaServiceProvider implements ServiceProviderInterface
                     $app['content_url_generator'],
                     new SimplePathGenerator(),
                     $app['media_object_repository'],
-                    $app['local_file_system'],
-                    $app['media.media_directory']
+                    $app['image_storage']
                 );
 
                 $mediaManager->setLogger(LoggerFactory::create($app, LoggerName::forService('media', 'manager')));
