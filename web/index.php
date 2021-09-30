@@ -251,7 +251,7 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
 // Match any path that does not match a registered route, rewrite it using a set of predefined pattern replacements and
 // send an internal sub-request to try and match an existing route. If the sub-request does not return a response either
-// a 404 will be returned.
+// an error response will be returned.
 // This makes it possible to support old endpoint names without having to register controllers/request handlers twice.
 $app->match(
     '/{path}',
