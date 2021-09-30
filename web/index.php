@@ -267,6 +267,9 @@ $app->match(
             return new ApiProblemJsonResponse(ApiProblem::notFound());
         }
 
+        // Create a new Request object with the rewritten path, because it's basically impossible to overwrite the path
+        // of an existing Request object even with initialize() or duplicate(). Approach copied from
+        // https://github.com/graze/silex-trailing-slash-handler/blob/1.x/src/TrailingSlashControllerProvider.php
         $request = Request::create(
             $rewrittenPath,
             $originalRequest->getMethod(),
@@ -281,6 +284,8 @@ $app->match(
             $originalRequest->request->all()
         );
         $request->headers->replace($app['request']->headers->all());
+
+        // Handle the request with the rewritten path.
         return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
     }
 )->assert('path', '^.+$');
