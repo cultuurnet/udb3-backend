@@ -22,30 +22,30 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'event_editing_controller:createEvent');
-        $controllers->get('/{cdbid}', 'event_controller:get');
-        $controllers->delete('/{cdbid}', 'event_editing_controller:deleteEvent');
+        $controllers->get('/{cdbid}/', 'event_controller:get');
+        $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
 
-        $controllers->get('/{cdbid}/history', 'event_controller:history');
+        $controllers->get('/{cdbid}/history/', 'event_controller:history');
 
-        $controllers->put('/{cdbid}/audience', 'event_editing_controller:updateAudience');
-        $controllers->put('/{cdbid}/booking-info', 'event_editing_controller:updateBookingInfo');
-        $controllers->put('/{cdbid}/contact-point', 'event_editing_controller:updateContactPoint');
-        $controllers->put('/{eventId}/major-info', UpdateMajorInfoRequestHandler::class);
-        $controllers->put('/{cdbid}/location/{locationId}', 'event_editing_controller:updateLocation');
-        $controllers->put('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:updateOrganizer');
-        $controllers->delete('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
-        $controllers->put('/{cdbid}/typical-age-range', 'event_editing_controller:updateTypicalAgeRange');
-        $controllers->delete('/{cdbid}/typical-age-range', 'event_editing_controller:deleteTypicalAgeRange');
+        $controllers->put('/{cdbid}/audience/', 'event_editing_controller:updateAudience');
+        $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
+        $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
+        $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
+        $controllers->put('/{cdbid}/location/{locationId}/', 'event_editing_controller:updateLocation');
+        $controllers->put('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:updateOrganizer');
+        $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:deleteOrganizer');
+        $controllers->put('/{cdbid}/typical-age-range/', 'event_editing_controller:updateTypicalAgeRange');
+        $controllers->delete('/{cdbid}/typical-age-range/', 'event_editing_controller:deleteTypicalAgeRange');
 
         $controllers->post('/{itemId}/images/', 'event_editing_controller:addImage');
-        $controllers->put('/{itemId}/images/main', 'event_editing_controller:selectMainImage');
-        $controllers->delete('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
-        $controllers->put('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
+        $controllers->put('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
+        $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:removeImage');
+        $controllers->put('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
 
-        $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
+        $controllers->get('/{cdbid}/calsum/', 'event_controller:getCalendarSummary');
 
-        $controllers->put('/{eventId}/calendar', UpdateCalendarRequestHandler::class);
-        $controllers->patch('/{eventId}/sub-events', UpdateSubEventsRequestHandler::class);
+        $controllers->put('/{eventId}/calendar/', UpdateCalendarRequestHandler::class);
+        $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
 
         $controllers->post('/{cdbid}/copies/', 'event_editing_controller:copyEvent');
 
@@ -53,13 +53,13 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
-        $controllers->post('/{itemId}/images/main', 'event_editing_controller:selectMainImage');
-        $controllers->post('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
-        $controllers->post('/{eventId}/major-info', UpdateMajorInfoRequestHandler::class);
-        $controllers->post('/{cdbid}/booking-info', 'event_editing_controller:updateBookingInfo');
-        $controllers->post('/{cdbid}/contact-point', 'event_editing_controller:updateContactPoint');
-        $controllers->post('/{cdbid}/typical-age-range', 'event_editing_controller:updateTypicalAgeRange');
-        $controllers->post('/{cdbid}/organizer', 'event_editing_controller:updateOrganizerFromJsonBody');
+        $controllers->post('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
+        $controllers->post('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
+        $controllers->post('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
+        $controllers->post('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
+        $controllers->post('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
+        $controllers->post('/{cdbid}/typical-age-range/', 'event_editing_controller:updateTypicalAgeRange');
+        $controllers->post('/{cdbid}/organizer/', 'event_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;
     }

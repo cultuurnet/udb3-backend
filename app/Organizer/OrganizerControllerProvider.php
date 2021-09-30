@@ -51,58 +51,58 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $controllers->post('/', 'organizer_edit_controller:create');
 
         $controllers
-            ->get('/{cdbid}', 'organizer_controller:get')
+            ->get('/{cdbid}/', 'organizer_controller:get')
             ->bind('organizer');
 
-        $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
+        $controllers->delete('/{cdbid}/', 'organizer_edit_controller:delete');
 
         $controllers->put(
-            '/{organizerId}/url',
+            '/{organizerId}/url/',
             'organizer_edit_controller:updateUrl'
         );
 
         $controllers->put(
-            '/{organizerId}/name',
+            '/{organizerId}/name/',
             'organizer_edit_controller:updateNameDeprecated'
         );
 
         $controllers->put(
-            '/{organizerId}/name/{lang}',
+            '/{organizerId}/name/{lang}/',
             'organizer_edit_controller:updateName'
         );
 
         $controllers->put(
-            '/{organizerId}/address',
+            '/{organizerId}/address/',
             'organizer_edit_controller:updateAddressDeprecated'
         );
 
         $controllers->put(
-            '/{organizerId}/address/{lang}',
+            '/{organizerId}/address/{lang}/',
             'organizer_edit_controller:updateAddress'
         );
 
         $controllers->delete(
-            '/{organizerId}/address',
+            '/{organizerId}/address/',
             'organizer_edit_controller:removeAddress'
         );
 
         $controllers->put(
-            '/{organizerId}/contact-point',
+            '/{organizerId}/contact-point/',
             'organizer_edit_controller:updateContactPoint'
         );
 
         $controllers->put(
-            '/{organizerId}/labels/{labelName}',
+            '/{organizerId}/labels/{labelName}/',
             'organizer_edit_controller:addLabel'
         );
 
         $controllers->delete(
-            '{organizerId}/labels/{labelName}',
+            '/{organizerId}/labels/{labelName}/',
             'organizer_edit_controller:removeLabel'
         );
 
-        $controllers->get('{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
-        $controllers->get('{offerId}/permissions/{userId}', 'organizer_permissions_controller:getPermissionsForGivenUser');
+        $controllers->get('/{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
+        $controllers->get('/{offerId}/permissions/{userId}/', 'organizer_permissions_controller:getPermissionsForGivenUser');
 
         return $controllers;
     }

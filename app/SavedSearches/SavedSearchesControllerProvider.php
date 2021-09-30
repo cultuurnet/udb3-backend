@@ -38,10 +38,10 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/v3', 'saved_searches_read_controller:ownedByCurrentUser');
+        $controllers->get('/v3/', 'saved_searches_read_controller:ownedByCurrentUser');
 
-        $controllers->post('/v3', 'saved_searches_edit_controller:save');
-        $controllers->delete('/v3/{id}', 'saved_searches_edit_controller:delete');
+        $controllers->post('/v3/', 'saved_searches_edit_controller:save');
+        $controllers->delete('/v3/{id}/', 'saved_searches_edit_controller:delete');
 
         return $controllers;
     }

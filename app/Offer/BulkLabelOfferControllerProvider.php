@@ -41,8 +41,8 @@ class BulkLabelOfferControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/query/labels', 'bulk_label_query_controller:handle');
-        $controllers->post('/offers/labels', 'bulk_label_selection_controller:handle');
+        $controllers->post('/query/labels/', 'bulk_label_query_controller:handle');
+        $controllers->post('/offers/labels/', 'bulk_label_selection_controller:handle');
 
         return $controllers;
     }
