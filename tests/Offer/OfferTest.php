@@ -871,6 +871,39 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_prevents_adding_an_identical_video(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $video = new Video(
+            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new ModelUrl('https://www.youtube.com/watch?v=123'),
+            new ModelDescription('Demo youtube video'),
+            new CopyrightHolder('Creative Commons')
+        );
+
+        $this->scenario
+            ->given(
+                [
+                    new ItemCreated($itemId),
+                ]
+            )
+            ->when(function (Item $item) use ($video) {
+                $item->addVideo($video);
+                $item->addVideo($video);
+            })
+            ->then(
+                [
+                    new VideoAdded(
+                        new ModelUUID($itemId),
+                        $video
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_publishes_an_offer_with_workflow_status_draft()
     {
         $itemId = 'itemId';
