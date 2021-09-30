@@ -16,9 +16,6 @@ use Silex\ServiceProviderInterface;
 
 class PlaceControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function connect(Application $app): ControllerCollection
     {
         /** @var ControllerCollection $controllers */
