@@ -19,7 +19,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
     /**
      * @inheritdoc
      */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
@@ -66,7 +66,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         return $controllers;
     }
 
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['place_controller'] = $app->share(
             function (Application $app) {
@@ -110,7 +110,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

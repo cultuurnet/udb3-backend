@@ -36,7 +36,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $this->offerType = $offerType->toNative();
     }
 
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         $controllerName = $this->getEditControllerName();
         $patchControllerName = $this->getPatchControllerName();
@@ -79,7 +79,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         return $controllers;
     }
 
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[UpdateStatusRequestHandler::class] = $app->share(
             function (Application $app) {
@@ -169,7 +169,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         return "permission_{$this->offerType}_controller";
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 
