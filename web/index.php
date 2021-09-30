@@ -2,10 +2,11 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -259,9 +260,15 @@ $app->match(
         $rewrites = [
             '/^(event|place)($|\/.*)/' => '${1}s${2}', // Make /event(/...) and /place(/...) plural
         ];
-        $path = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
+        $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
+
+        // Prevent an infinite loop by stopping if the path was not changed.
+        if (!$rewrittenPath || $rewrittenPath === $path) {
+            return new ApiProblemJsonResponse(ApiProblem::notFound());
+        }
+
         $request = Request::create(
-            $path,
+            $rewrittenPath,
             $originalRequest->getMethod(),
             [],
             $originalRequest->cookies->all(),
