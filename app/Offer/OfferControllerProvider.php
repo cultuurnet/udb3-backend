@@ -46,7 +46,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class);
-        $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class);
+        $controllers->put('/{offerId}/booking-availability', UpdateBookingAvailabilityRequestHandler::class);
 
         $controllers->put('/{cdbid}/type/{typeId}', "{$controllerName}:updateType");
         $controllers->put('/{cdbid}/theme/{themeId}', "{$controllerName}:updateTheme");
@@ -57,14 +57,14 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
 
         $controllers->put('/{cdbid}/name/{lang}', "{$controllerName}:updateTitle");
         $controllers->put('/{cdbid}/description/{lang}', "{$controllerName}:updateDescription");
-        $controllers->put('/{cdbid}/priceInfo', "{$controllerName}:updatePriceInfo");
+        $controllers->put('/{cdbid}/price-info', "{$controllerName}:updatePriceInfo");
         $controllers->patch('/{cdbid}', "{$patchControllerName}:handle");
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
         $controllers->get('/{offerId}/permissions/{userId}', "{$permissionsControllerName}:getPermissionsForGivenUser");
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
-         * These routes usually used an incorrect HTTP method or incorrect casing of resource names.
+         * These routes usually used an incorrect HTTP method.
          */
         $controllers->post('/{cdbid}/labels', "{$controllerName}:addLabelFromJsonBody");
         $controllers->post('/{cdbid}/{lang}/title', "{$controllerName}:updateTitle");
