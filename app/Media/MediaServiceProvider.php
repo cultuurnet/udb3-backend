@@ -68,6 +68,16 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['content_url_generator'] = $app->share(
+            function (Application $app) {
+                return new CallableIriGenerator(
+                    function ($filePath) use ($app) {
+                        return $app['config']['media']['content_url'] . '/' . $filePath;
+                    }
+                );
+            }
+        );
+
         $app['media_object_serializer'] = $app->share(
             function (Application $app) {
                 return new MediaObjectSerializer(
@@ -79,11 +89,10 @@ class MediaServiceProvider implements ServiceProviderInterface
         $app['media_manager'] = $app->share(
             function (Application $app) {
                 $mediaManager = new MediaManager(
-                    $app['media_object_iri_generator'],
+                    $app['content_url_generator'],
                     new SimplePathGenerator(),
                     $app['media_object_repository'],
-                    $app['local_file_system'],
-                    $app['media.media_directory']
+                    $app['image_storage']
                 );
 
                 $mediaManager->setLogger(LoggerFactory::create($app, LoggerName::forService('media', 'manager')));

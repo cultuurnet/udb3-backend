@@ -45,6 +45,7 @@
     "lcobucci/jwt": "3.3.*",
     "league/csv": "^9.1",
     "league/flysystem": "^2.2.3",
+    "league/flysystem-aws-s3-v3": "^2.1",
     "league/flysystem-ziparchive": "^2.0.6",
     "league/period": "^3.3",
     "league/uri": "~4.2",

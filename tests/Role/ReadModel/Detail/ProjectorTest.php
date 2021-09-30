@@ -198,6 +198,7 @@ class ProjectorTest extends TestCase
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();
+        $json->constraint = $this->query->toNative();
         $json->constraints->{'v3'} = $this->query->toNative();
 
         $document = $document->withBody($json);
@@ -239,6 +240,7 @@ class ProjectorTest extends TestCase
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();
+        $json->constraint = $constraintUpdated->getQuery()->toNative();
         $json->constraints->{'v3'} = $constraintUpdated->getQuery()->toNative();
 
         $document = $document->withBody($json);
@@ -281,6 +283,7 @@ class ProjectorTest extends TestCase
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();
+        $json->constraint = null;
         $json->constraints->{'v3'} = null;
 
         $document = $document->withBody($json);
