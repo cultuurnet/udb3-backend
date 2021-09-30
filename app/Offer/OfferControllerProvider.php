@@ -53,9 +53,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{cdbid}/theme/{themeId}', "{$controllerName}:updateTheme");
         $controllers->put('/{cdbid}/facilities/', "{$controllerName}:updateFacilities");
 
-        $controllers->delete('/{cdbid}/labels/{label}', "{$controllerName}:removeLabel")
-            ->assert('label', '.*');
-
+        $controllers->delete('/{cdbid}/labels/{label}', "{$controllerName}:removeLabel");
         $controllers->put('/{cdbid}/labels/{label}', "{$controllerName}:addLabel");
 
         $controllers->put('/{cdbid}/name/{lang}', "{$controllerName}:updateTitle");
