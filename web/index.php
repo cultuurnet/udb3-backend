@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
@@ -221,13 +222,9 @@ $app->register($placeOfferControllerProvider);
 $app->register($eventControllerProvider);
 $app->register($eventOfferControllerProvider);
 
-$app->mount('/place', $placeControllerProvider);
-$app->mount('/place', $placeOfferControllerProvider);
 $app->mount('/places', $placeControllerProvider);
 $app->mount('/places', $placeOfferControllerProvider);
 
-$app->mount('/event', $eventControllerProvider);
-$app->mount('/event', $eventOfferControllerProvider);
 $app->mount('/events', $eventControllerProvider);
 $app->mount('/events', $eventOfferControllerProvider);
 
@@ -251,6 +248,33 @@ $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
+
+// Match any path that does not match a registered route, rewrite it using a set of predefined pattern replacements and
+// send an internal sub-request to try and match an existing route. If the sub-request does not return a response either
+// a 404 will be returned.
+// This makes it possible to support old endpoint names without having to register controllers/request handlers twice.
+$app->match(
+    '/{path}',
+    function (Request $originalRequest, string $path) use ($app) {
+        // Rewrite /event(/) and /place(/) to /events(/) and /places(/).
+        $path = preg_replace('/^(event|place)($|\/.*)/', '${1}s${2}', $path);
+        $request = Request::create(
+            $path,
+            $originalRequest->getMethod(),
+            [],
+            $originalRequest->cookies->all(),
+            $originalRequest->files->all(),
+            $originalRequest->server->all(),
+            $originalRequest->getContent()
+        );
+        $request = $request->duplicate(
+            $originalRequest->query->all(),
+            $originalRequest->request->all()
+        );
+        $request->headers->replace($app['request']->headers->all());
+        return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
+    }
+)->assert('path', '^.+$');
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/stoplight-docs-uitdatabank/models');
 
