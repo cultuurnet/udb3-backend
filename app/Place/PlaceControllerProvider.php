@@ -33,7 +33,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
         $controllers->put('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
-        $controllers->put('/{placeId}/majorInfo', UpdateMajorInfoRequestHandler::class . ':handle');
+        $controllers->put('/{placeId}/majorInfo', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
         $controllers->delete('/{cdbid}/typicalAgeRange', 'place_editing_controller:deleteTypicalAgeRange');
@@ -46,7 +46,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
         $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
 
-        $controllers->put('/{placeId}/calendar', UpdateCalendarRequestHandler::class . ':handle');
+        $controllers->put('/{placeId}/calendar', UpdateCalendarRequestHandler::class);
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
@@ -58,7 +58,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
         $controllers->post('/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
         $controllers->delete('/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
-        $controllers->post('/{placeId}/major-info', UpdateMajorInfoRequestHandler::class . ':handle');
+        $controllers->post('/{placeId}/major-info', UpdateMajorInfoRequestHandler::class);
         $controllers->post('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
         $controllers->post('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
         $controllers->post('/{cdbid}/organizer', 'place_editing_controller:updateOrganizerFromJsonBody');

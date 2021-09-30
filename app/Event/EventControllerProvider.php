@@ -33,7 +33,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{cdbid}/audience', 'event_editing_controller:updateAudience');
         $controllers->put('/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
-        $controllers->put('/{eventId}/majorInfo', UpdateMajorInfoRequestHandler::class . ':handle');
+        $controllers->put('/{eventId}/majorInfo', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{cdbid}/location/{locationId}', 'event_editing_controller:updateLocation');
         $controllers->put('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
@@ -47,8 +47,8 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
-        $controllers->put('/{eventId}/calendar', UpdateCalendarRequestHandler::class . ':handle');
-        $controllers->patch('/{eventId}/subEvents', UpdateSubEventsRequestHandler::class . ':handle');
+        $controllers->put('/{eventId}/calendar', UpdateCalendarRequestHandler::class);
+        $controllers->patch('/{eventId}/subEvents', UpdateSubEventsRequestHandler::class);
 
         $controllers->post('/{cdbid}/copies/', 'event_editing_controller:copyEvent');
 
@@ -58,7 +58,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
          */
         $controllers->post('/{itemId}/images/main', 'event_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
-        $controllers->post('/{eventId}/major-info', UpdateMajorInfoRequestHandler::class . ':handle');
+        $controllers->post('/{eventId}/major-info', UpdateMajorInfoRequestHandler::class);
         $controllers->post('/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
         $controllers->post('/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
         $controllers->post('/{cdbid}/typical-age-range', 'event_editing_controller:updateTypicalAgeRange');

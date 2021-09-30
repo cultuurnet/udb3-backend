@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
+use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
@@ -36,6 +37,12 @@ $app->register(new WebErrorHandlerProvider());
  * Allow to use services as controllers.
  */
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
+/**
+ * Allow to use class names of PSR-15 RequestHandlerInterface implementations as controllers.
+ * The class name still needs to be registered as a service!
+ */
+$app->register(new RequestHandlerControllerServiceProvider());
 
 /**
  * Firewall configuration.

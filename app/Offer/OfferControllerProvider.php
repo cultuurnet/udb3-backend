@@ -46,8 +46,8 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class . ':handle');
-        $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class . ':handle');
+        $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class);
+        $controllers->put('/{offerId}/bookingAvailability', UpdateBookingAvailabilityRequestHandler::class);
 
         $controllers->put('/{cdbid}/type/{typeId}', "{$controllerName}:updateType");
         $controllers->put('/{cdbid}/theme/{themeId}', "{$controllerName}:updateTheme");
