@@ -48,6 +48,7 @@ use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
@@ -133,6 +134,10 @@ class Item extends Offer
         return new MainImageSelected($this->id, $image);
     }
 
+    protected function createVideoAddedEvent(Video $video): VideoAdded
+    {
+        return new VideoAdded(new ModelUUID($this->id), $video);
+    }
 
     public function getAggregateRootId()
     {

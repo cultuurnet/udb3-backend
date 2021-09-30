@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
@@ -507,6 +508,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function createMainImageSelectedEvent(Image $image)
     {
         return new MainImageSelected($this->eventId, $image);
+    }
+
+    protected function createVideoAddedEvent(Video $video): VideoAdded
+    {
+        return new VideoAdded(new ModelUUID($this->eventId), $video);
     }
 
     /**
