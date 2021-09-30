@@ -95,21 +95,21 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
             function (Application $app) {
                 switch ($this->offerType) {
                     case 'Place':
-                        $editorServiceName = 'place_editing_service';
-                        $mainLanguageQueryServiceName = 'place_main_language_query';
+                        $editor = $app['place_editing_service'];
+                        $mainLanguageQuery = $app['place_main_language_query'];
                         $facilityResolver = new PlaceFacilityResolver();
                         break;
                     case 'Event':
                     default:
-                        $editorServiceName = 'event_editor';
-                        $mainLanguageQueryServiceName = 'event_main_language_query';
+                        $editor = $app['event_editor'];
+                        $mainLanguageQuery = $app['event_main_language_query'];
                         $facilityResolver = new EventFacilityResolver;
                 }
 
                 return new EditOfferRestController(
                     $app['event_command_bus'],
-                    $app[$editorServiceName],
-                    $app[$mainLanguageQueryServiceName],
+                    $editor,
+                    $mainLanguageQuery,
                     new LabelJSONDeserializer(),
                     new TitleJSONDeserializer(false, new StringLiteral('name')),
                     new DescriptionJSONDeserializer(),
