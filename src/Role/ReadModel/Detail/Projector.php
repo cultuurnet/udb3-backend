@@ -57,6 +57,7 @@ class Projector extends RoleProjector
         if (empty($json->constraints)) {
             $json->constraints = new \stdClass();
         }
+        $json->constraint = $constraintAdded->getQuery()->toNative();
         $json->constraints->{'v3'} = $constraintAdded->getQuery()->toNative();
 
         $this->repository->save($document->withBody($json));
@@ -69,6 +70,7 @@ class Projector extends RoleProjector
         );
 
         $json = $document->getBody();
+        $json->constraint = $constraintUpdated->getQuery()->toNative();
         $json->constraints->{'v3'} = $constraintUpdated->getQuery()->toNative();
 
         $this->repository->save($document->withBody($json));
@@ -81,6 +83,7 @@ class Projector extends RoleProjector
         );
 
         $json = $document->getBody();
+        $json->constraint = null;
         $json->constraints->{'v3'} = null;
 
         $this->repository->save($document->withBody($json));
