@@ -204,17 +204,19 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
+$placeControllerProvider = new PlaceControllerProvider();
 $placeOfferControllerProvider = new OfferControllerProvider(OfferType::PLACE());
 $eventControllerProvider = new EventControllerProvider();
 $eventOfferControllerProvider = new OfferControllerProvider(OfferType::EVENT());
 
+$app->register($placeControllerProvider);
 $app->register($placeOfferControllerProvider);
 $app->register($eventControllerProvider);
 $app->register($eventOfferControllerProvider);
 
-$app->mount('/place', new PlaceControllerProvider());
+$app->mount('/place', $placeControllerProvider);
 $app->mount('/place', $placeOfferControllerProvider);
-$app->mount('/places', new PlaceControllerProvider());
+$app->mount('/places', $placeControllerProvider);
 $app->mount('/places', $placeOfferControllerProvider);
 
 $app->mount('/event', $eventControllerProvider);

@@ -12,55 +12,15 @@ use CultuurNet\UDB3\Http\Place\UpdateCalendarRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Silex\ServiceProviderInterface;
 
-class PlaceControllerProvider implements ControllerProviderInterface
+class PlaceControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
     /**
      * @inheritdoc
      */
     public function connect(Application $app)
     {
-        $app['place_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadPlaceRestController($app['place_jsonld_repository']);
-            }
-        );
-
-        $app['place_editing_controller'] = $app->share(
-            function (Application $app) {
-                return new EditPlaceRestController(
-                    $app['place_editing_service'],
-                    $app['event_relations_repository'],
-                    $app['media_manager'],
-                    $app['place_iri_generator'],
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['should_auto_approve_new_offer']
-                );
-            }
-        );
-
-        $app['place_history_controller'] = $app->share(
-            function (Application $app) {
-                return new HistoryPlaceRestController(
-                    $app['places_history_repository'],
-                    $app['current_user_is_god_user']
-                );
-            }
-        );
-
-        $app[UpdateCalendarRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateCalendarRequestHandler($app['event_command_bus']);
-            }
-        );
-
-        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
-            }
-        );
-
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -104,5 +64,53 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->post('/{cdbid}/organizer', 'place_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;
+    }
+
+    public function register(Application $app)
+    {
+        $app['place_controller'] = $app->share(
+            function (Application $app) {
+                return new ReadPlaceRestController($app['place_jsonld_repository']);
+            }
+        );
+
+        $app['place_editing_controller'] = $app->share(
+            function (Application $app) {
+                return new EditPlaceRestController(
+                    $app['place_editing_service'],
+                    $app['event_relations_repository'],
+                    $app['media_manager'],
+                    $app['place_iri_generator'],
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
+                    $app['should_auto_approve_new_offer']
+                );
+            }
+        );
+
+        $app['place_history_controller'] = $app->share(
+            function (Application $app) {
+                return new HistoryPlaceRestController(
+                    $app['places_history_repository'],
+                    $app['current_user_is_god_user']
+                );
+            }
+        );
+
+        $app[UpdateCalendarRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateCalendarRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
+            }
+        );
+    }
+
+    public function boot(Application $app)
+    {
     }
 }
