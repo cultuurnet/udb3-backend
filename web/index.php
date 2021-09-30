@@ -205,9 +205,11 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeOfferControllerProvider = new OfferControllerProvider(OfferType::PLACE());
+$eventControllerProvider = new EventControllerProvider();
 $eventOfferControllerProvider = new OfferControllerProvider(OfferType::EVENT());
 
 $app->register($placeOfferControllerProvider);
+$app->register($eventControllerProvider);
 $app->register($eventOfferControllerProvider);
 
 $app->mount('/place', new PlaceControllerProvider());
@@ -215,9 +217,9 @@ $app->mount('/place', $placeOfferControllerProvider);
 $app->mount('/places', new PlaceControllerProvider());
 $app->mount('/places', $placeOfferControllerProvider);
 
-$app->mount('/event', new EventControllerProvider());
+$app->mount('/event', $eventControllerProvider);
 $app->mount('/event', $eventOfferControllerProvider);
-$app->mount('/events', new EventControllerProvider());
+$app->mount('/events', $eventControllerProvider);
 $app->mount('/events', $eventOfferControllerProvider);
 
 // Workaround to make the old POST /place and POST /event work (without trailing slash).

@@ -12,55 +12,15 @@ use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Silex\ServiceProviderInterface;
 
-class EventControllerProvider implements ControllerProviderInterface
+class EventControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
     /**
      * @inheritdoc
      */
     public function connect(Application $app)
     {
-        $app['event_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadEventRestController(
-                    $app['event_jsonld_repository'],
-                    $app['event_history_repository'],
-                    $app['current_user_is_god_user']
-                );
-            }
-        );
-
-        $app['event_editing_controller'] = $app->share(
-            function (Application $app) {
-                return new EditEventRestController(
-                    $app['event_editor'],
-                    $app['media_manager'],
-                    $app['event_iri_generator'],
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['should_auto_approve_new_offer']
-                );
-            }
-        );
-
-        $app[UpdateCalendarRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateCalendarRequestHandler($app['event_command_bus']);
-            }
-        );
-
-        $app[UpdateSubEventsRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateSubEventsRequestHandler($app['event_command_bus']);
-            }
-        );
-
-        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
-            }
-        );
-
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -106,5 +66,53 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->post('/{cdbid}/organizer', 'event_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;
+    }
+
+    public function register(Application $app)
+    {
+        $app['event_controller'] = $app->share(
+            function (Application $app) {
+                return new ReadEventRestController(
+                    $app['event_jsonld_repository'],
+                    $app['event_history_repository'],
+                    $app['current_user_is_god_user']
+                );
+            }
+        );
+
+        $app['event_editing_controller'] = $app->share(
+            function (Application $app) {
+                return new EditEventRestController(
+                    $app['event_editor'],
+                    $app['media_manager'],
+                    $app['event_iri_generator'],
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
+                    $app['should_auto_approve_new_offer']
+                );
+            }
+        );
+
+        $app[UpdateCalendarRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateCalendarRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateSubEventsRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateSubEventsRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
+            }
+        );
+    }
+
+    public function boot(Application $app)
+    {
     }
 }
