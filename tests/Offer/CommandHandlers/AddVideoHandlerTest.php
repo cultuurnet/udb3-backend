@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
 
 class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -114,7 +113,7 @@ class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
                 new Street('Straat 1'),
                 new PostalCode('1000'),
                 new Locality('Brussel'),
-                 Country::fromNative('BE')
+                Country::fromNative('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );
