@@ -254,6 +254,8 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 // send an internal sub-request to try and match an existing route. If the sub-request does not return a response either
 // an error response will be returned.
 // This makes it possible to support old endpoint names without having to register controllers/request handlers twice.
+// When we have a router with support for PSR-15 middlewares, we should refactor this URL rewriting to a PSR-15
+// middleware instead.
 $app->match(
     '/{path}',
     function (Request $originalRequest, string $path) use ($app) {
