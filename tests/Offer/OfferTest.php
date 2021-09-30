@@ -874,11 +874,18 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_prevents_adding_an_identical_video(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $video = new Video(
+        $video1 = new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
             new ModelUrl('https://www.youtube.com/watch?v=123'),
             new ModelDescription('Demo youtube video'),
             new CopyrightHolder('Creative Commons')
+        );
+
+        $video2 = new Video(
+            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new ModelUrl('https://vimeo.com/98765432'),
+            new ModelDescription('Demo Vimeo video'),
+            new CopyrightHolder('Public Domain')
         );
 
         $this->scenario
@@ -887,15 +894,15 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ItemCreated($itemId),
                 ]
             )
-            ->when(function (Item $item) use ($video) {
-                $item->addVideo($video);
-                $item->addVideo($video);
+            ->when(function (Item $item) use ($video1, $video2) {
+                $item->addVideo($video1);
+                $item->addVideo($video2);
             })
             ->then(
                 [
                     new VideoAdded(
                         new ModelUUID($itemId),
-                        $video
+                        $video1
                     ),
                 ]
             );
