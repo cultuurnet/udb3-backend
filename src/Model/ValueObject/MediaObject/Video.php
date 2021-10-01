@@ -16,18 +16,23 @@ class Video
 
     private Description $description;
 
-    private CopyrightHolder $copyright;
+    private ?CopyrightHolder $copyright = null;
 
     public function __construct(
         UUID $videoId,
         Url $url,
-        Description $description,
-        CopyrightHolder $copyright
+        Description $description
     ) {
         $this->videoId = $videoId;
         $this->url = $url;
         $this->description = $description;
-        $this->copyright = $copyright;
+    }
+
+    public function withCopyrightHolder(CopyrightHolder $copyright): Video
+    {
+        $clone = clone $this;
+        $clone->copyright = $copyright;
+        return $clone;
     }
 
     public function getVideoId(): UUID
@@ -45,7 +50,7 @@ class Video
         return $this->description;
     }
 
-    public function getCopyright(): CopyrightHolder
+    public function getCopyright(): ?CopyrightHolder
     {
         return $this->copyright;
     }

@@ -798,12 +798,11 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_handles_a_video_add(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $video = new Video(
+        $video = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
             new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video'),
-            new CopyrightHolder('Creative Commons')
-        );
+            new ModelDescription('Demo youtube video')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $this->scenario
             ->given(
@@ -830,19 +829,17 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_handles_multiple_video_adds(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $video1 = new Video(
+        $video1 = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
             new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video'),
-            new CopyrightHolder('Creative Commons')
-        );
+            new ModelDescription('Demo youtube video')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
-        $video2 = new Video(
+        $video2 = (new Video(
             new ModelUUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
             new ModelUrl('https://vimeo.com/98765432'),
-            new ModelDescription('Demo Vimeo video'),
-            new CopyrightHolder('Public Domain')
-        );
+            new ModelDescription('Demo Vimeo video')
+        ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
             ->given(
@@ -874,19 +871,17 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_prevents_adding_an_identical_video(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $video1 = new Video(
+        $video1 = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
             new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video'),
-            new CopyrightHolder('Creative Commons')
-        );
+            new ModelDescription('Demo youtube video')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
-        $video2 = new Video(
+        $video2 = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
             new ModelUrl('https://vimeo.com/98765432'),
-            new ModelDescription('Demo Vimeo video'),
-            new CopyrightHolder('Public Domain')
-        );
+            new ModelDescription('Demo Vimeo video')
+        ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
             ->given(
