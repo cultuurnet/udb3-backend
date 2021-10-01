@@ -610,7 +610,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected function applyVideoAdded(AbstractVideoAdded $videoAdded): JsonDocument
     {
-        $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId());
+        $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId()->toString());
 
         $offerLd = $document->getBody();
         $offerLd->videos = isset($offerLd->videos) ? $offerLd->videos : [];
