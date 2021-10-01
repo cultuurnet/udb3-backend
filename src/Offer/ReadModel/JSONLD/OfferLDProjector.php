@@ -608,7 +608,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return strpos($mediaObject->{'@id'}, (string) $mediaObjectId) > 0;
     }
 
-    protected function applyVideoAdded(AbstractVideoAdded $videoAdded)
+    protected function applyVideoAdded(AbstractVideoAdded $videoAdded): JsonDocument
     {
         $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId());
 
