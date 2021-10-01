@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class Video
 {
-    private UUID $videoId;
+    private UUID $id;
 
     private Url $url;
 
@@ -19,11 +19,11 @@ class Video
     private ?CopyrightHolder $copyright = null;
 
     public function __construct(
-        UUID $videoId,
+        UUID $id,
         Url $url,
         Description $description
     ) {
-        $this->videoId = $videoId;
+        $this->id = $id;
         $this->url = $url;
         $this->description = $description;
     }
@@ -35,9 +35,9 @@ class Video
         return $clone;
     }
 
-    public function getVideoId(): UUID
+    public function getId(): UUID
     {
-        return $this->videoId;
+        return $this->id;
     }
 
     public function getUrl(): Url

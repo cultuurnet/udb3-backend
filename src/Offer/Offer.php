@@ -732,7 +732,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function addVideo(Video $video): void
     {
         $videosWithSameId = $this->videos->filter(function (Video $currentVideo) use ($video) {
-            return $currentVideo->getVideoId()->sameAs($video->getVideoId());
+            return $currentVideo->getId()->sameAs($video->getId());
         });
 
         if ($videosWithSameId->isEmpty()) {
