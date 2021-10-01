@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Event\Events\VideoAdded as VideoAddedToEvent;
-use CultuurNet\UDB3\Place\Events\VideoAdded as VideoAddedToPlace;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\PlaceRepository;
