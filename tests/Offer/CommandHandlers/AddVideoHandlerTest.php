@@ -32,7 +32,7 @@ use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
 
-class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
+final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(
         EventStore $eventStore,

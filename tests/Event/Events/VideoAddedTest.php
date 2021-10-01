@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
-class VideoAddedTest extends TestCase
+final class VideoAddedTest extends TestCase
 {
     /**
      * @test

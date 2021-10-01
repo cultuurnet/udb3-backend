@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
-class VideoCollection extends Collection
+final class VideoCollection extends Collection
 {
     public function __construct(Video ...$videos)
     {

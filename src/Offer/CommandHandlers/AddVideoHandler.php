@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
-class AddVideoHandler implements CommandHandler
+final class AddVideoHandler implements CommandHandler
 {
     private OfferRepository $offerRepository;
 
