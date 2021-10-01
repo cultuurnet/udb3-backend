@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
-class AbstractVideoAdded
+abstract class AbstractVideoAdded implements Serializable
 {
     private UUID $itemId;
 
@@ -27,5 +31,43 @@ class AbstractVideoAdded
     public function getVideo(): Video
     {
         return $this->video;
+    }
+
+    public static function deserialize(array $data): AbstractVideoAdded
+    {
+        $video = new Video(
+            new UUID($data['video']['id']),
+            new Url($data['video']['url']),
+            new Description($data['video']['description'])
+        );
+
+        if (isset($data['video']['copyright'])) {
+            $video = $video->withCopyrightHolder(
+                new CopyrightHolder($data['video']['copyright'])
+            );
+        }
+
+        return new static(
+            new UUID($data['item_id']),
+            $video
+        );
+    }
+
+    public function serialize(): array
+    {
+        $videoAdded = [
+            'item_id' => $this->itemId->toString(),
+            'video' => [
+                'id' => $this->video->getId()->toString(),
+                'url' => $this->video->getUrl()->toString(),
+                'description' => $this->video->getDescription()->toString(),
+            ],
+        ];
+
+        if ($this->video->getCopyright() !== null) {
+            $videoAdded['video']['copyright'] = $this->video->getCopyright()->toString();
+        }
+
+        return $videoAdded;
     }
 }
