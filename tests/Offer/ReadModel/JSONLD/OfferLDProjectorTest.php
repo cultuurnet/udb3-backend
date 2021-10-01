@@ -928,9 +928,11 @@ class OfferLDProjectorTest extends TestCase
         );
 
         $this->documentRepository->save($initialDocument);
+
         $videoAdded = new VideoAdded(new ModelUUID($eventId), $video);
         $eventBody = $this->project($videoAdded, $eventId);
 
+        unset($eventBody->modified);
         $this->assertEquals(
             (object) [
                 'name' => (object)[
