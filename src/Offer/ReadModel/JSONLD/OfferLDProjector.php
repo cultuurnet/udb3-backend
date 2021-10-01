@@ -215,6 +215,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      */
     abstract protected function getMainImageSelectedClassName();
 
+    abstract protected function getVideoAddedClassName(): string;
+
     /**
      * @return string
      */
