@@ -54,4 +54,20 @@ final class Video
     {
         return $this->copyright;
     }
+
+    public function serialize(): array
+    {
+        $videoArray = [
+            'id' => $this->getId()->toString(),
+            'url' => $this->getUrl()->toString(),
+            'description' => $this->getDescription()->toString(),
+        ];
+
+        if ($this->getCopyright() !== null) {
+            $videoArray['copyright'] = $this->getCopyright()->toString();
+        }
+
+        return $videoArray;
+    }
 }
+
