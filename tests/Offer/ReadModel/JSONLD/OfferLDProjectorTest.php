@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
@@ -42,7 +43,9 @@ use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as ModelUUID;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -59,6 +62,7 @@ use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Symfony\Component\Serializer\Tests\Model;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -899,6 +903,52 @@ class OfferLDProjectorTest extends TestCase
         $this->assertEquals(
             'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
             $eventBody->image
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_video_added(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+
+        $video = (new Video(
+            new \CultuurNet\UDB3\Model\ValueObject\Identity\UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new \CultuurNet\UDB3\Model\ValueObject\Web\Url('https://www.youtube.com/watch?v=123'),
+            new \CultuurNet\UDB3\Model\ValueObject\Text\Description('Demo youtube video')
+        ))->withCopyrightHolder( new CopyrightHolder('Creative Commons'));
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+        $videoAdded = new VideoAdded(new ModelUUID($eventId), $video);
+        $eventBody = $this->project($videoAdded, $eventId);
+
+        var_dump($eventBody);
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'description' => 'Demo youtube video',
+                        'copyright' => 'Creative Commons',
+
+                    ]
+                ]
+            ],
+            $eventBody
         );
     }
 
