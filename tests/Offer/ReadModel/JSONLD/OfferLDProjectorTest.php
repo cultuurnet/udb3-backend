@@ -62,7 +62,6 @@ use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Symfony\Component\Serializer\Tests\Model;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -917,7 +916,7 @@ class OfferLDProjectorTest extends TestCase
             new \CultuurNet\UDB3\Model\ValueObject\Identity\UUID('91c75325-3830-4000-b580-5778b2de4548'),
             new \CultuurNet\UDB3\Model\ValueObject\Web\Url('https://www.youtube.com/watch?v=123'),
             new \CultuurNet\UDB3\Model\ValueObject\Text\Description('Demo youtube video')
-        ))->withCopyrightHolder( new CopyrightHolder('Creative Commons'));
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $initialDocument = new JsonDocument(
             $eventId,
@@ -945,8 +944,8 @@ class OfferLDProjectorTest extends TestCase
                         'description' => 'Demo youtube video',
                         'copyright' => 'Creative Commons',
 
-                    ]
-                ]
+                    ],
+                ],
             ],
             $eventBody
         );

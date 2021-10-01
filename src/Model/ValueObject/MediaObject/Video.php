@@ -70,4 +70,3 @@ final class Video
         return $videoArray;
     }
 }
-
