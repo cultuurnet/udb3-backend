@@ -50,7 +50,7 @@ class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_will_add_video_to_event(): void
+    public function it_will_add_a_video_to_an_offer(): void
     {
         $id = new UUID('208dbe98-ffaa-41cb-9ada-7ec8e0651f48');
         $video = new Video(
@@ -65,26 +65,6 @@ class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$this->getEventCreated($id)])
             ->when(new AddVideo($id, $video))
             ->then([new VideoAddedToEvent($id, $video)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_add_video_to_place(): void
-    {
-        $id = new UUID('db82a7a4-a477-4f14-a535-7e6496206c77');
-        $video = new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123'),
-            new Description('Demo youtube video'),
-            new CopyrightHolder('Creative Commons')
-        );
-
-        $this->scenario
-            ->withAggregateId($id->toString())
-            ->given([$this->getPlaceCreated($id)])
-            ->when(new AddVideo($id, $video))
-            ->then([new VideoAddedToPlace($id, $video)]);
     }
 
     private function getEventCreated(UUID $id): EventCreated
