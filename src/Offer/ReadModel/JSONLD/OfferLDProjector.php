@@ -613,7 +613,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId()->toString());
 
         $offerLd = $document->getBody();
-        $offerLd->videos = isset($offerLd->videos) ? $offerLd->videos : [];
+        $offerLd->videos = $offerLd->videos ?? [];
         $offerLd->videos[] = $videoAdded->getVideo()->serialize();
 
         return $document->withBody($offerLd);
