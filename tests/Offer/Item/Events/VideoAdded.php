@@ -6,6 +6,6 @@ namespace CultuurNet\UDB3\Offer\Item\Events;
 
 use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
 
-class VideoAdded extends AbstractVideoAdded
+final class VideoAdded extends AbstractVideoAdded
 {
 }

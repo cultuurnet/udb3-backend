@@ -17,7 +17,7 @@ abstract class AbstractVideoAdded implements Serializable
 
     private Video $video;
 
-    public function __construct(UUID $itemId, Video $video)
+    final public function __construct(UUID $itemId, Video $video)
     {
         $this->itemId = $itemId;
         $this->video = $video;
