@@ -49,7 +49,7 @@ class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_will_add_a_video_to_an_offer(): void
+    public function it_will_add_a_video_to_an_event(): void
     {
         $id = new UUID('208dbe98-ffaa-41cb-9ada-7ec8e0651f48');
         $video = new Video(
