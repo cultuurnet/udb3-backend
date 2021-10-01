@@ -2,16 +2,22 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
+use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
+use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
+use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
+use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
 use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
@@ -21,6 +27,7 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
@@ -32,6 +39,12 @@ $app->register(new WebErrorHandlerProvider());
  * Allow to use services as controllers.
  */
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
+/**
+ * Allow to use class names of PSR-15 RequestHandlerInterface implementations as controllers.
+ * The class name still needs to be registered as a service!
+ */
+$app->register(new RequestHandlerControllerServiceProvider());
 
 /**
  * Firewall configuration.
@@ -52,17 +65,19 @@ $app['security.firewalls'] = array(
     'public' => [
         'pattern' => (new AnyOfRequestMatcher())
             ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
-            ->with(new RequestMatcher('^/(event|place|label)/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '/calsum$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
-            /* @deprecated */
-            ->with(new RequestMatcher('^/(event|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/calsum$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
+            ->with(new RequestMatcher('^/label/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/images/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(places|labels)$', null, 'GET'))
+            ->with(new RequestMatcher('^/(labels)$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
             ->with(new RequestMatcher('^/uitpas/.*', null, 'GET'))
@@ -198,15 +213,30 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-/* @deprecated */
-$app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
-$app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
+$placeControllerProvider = new PlaceControllerProvider();
+$placeOfferControllerProvider = new OfferControllerProvider(OfferType::PLACE());
+$eventControllerProvider = new EventControllerProvider();
+$eventOfferControllerProvider = new OfferControllerProvider(OfferType::EVENT());
+
+$app->register($placeControllerProvider);
+$app->register($placeOfferControllerProvider);
+$app->register($eventControllerProvider);
+$app->register($eventOfferControllerProvider);
+
+$app->mount('/places', $placeControllerProvider);
+$app->mount('/places', $placeOfferControllerProvider);
+
+$app->mount('/events', $eventControllerProvider);
+$app->mount('/events', $eventOfferControllerProvider);
+
+// Workaround to make the old POST /place(s) and POST /event(s) work (without trailing slash).
+// Those requests will not be handled by the PlaceControllerProvider and EventControllerProvider registered above,
+// because those controller providers can only handle routes under /places/ and /events/ (note the trailing slash).
+$app->post('/places', 'place_editing_controller:createPlace');
+$app->post('/events', 'event_editing_controller:createEvent');
+
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
-/* @deprecated */
-$app->mount('/', new \CultuurNet\UDB3\Silex\Event\DeprecatedEventControllerProvider());
-$app->mount('/events', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
@@ -219,6 +249,48 @@ $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
+
+// Match any path that does not match a registered route, rewrite it using a set of predefined pattern replacements and
+// send an internal sub-request to try and match an existing route. If the sub-request does not return a response either
+// an error response will be returned.
+// This makes it possible to support old endpoint names without having to register controllers/request handlers twice.
+// When we have a router with support for PSR-15 middlewares, we should refactor this URL rewriting to a PSR-15
+// middleware instead.
+$app->match(
+    '/{path}',
+    function (Request $originalRequest, string $path) use ($app) {
+        $rewrites = [
+            '/^(event|place)($|\/.*)/' => '${1}s${2}', // Pluralize /event and /place
+        ];
+        $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
+
+        // Prevent an infinite loop by stopping if the path was not changed.
+        if (!$rewrittenPath || $rewrittenPath === $path) {
+            return new ApiProblemJsonResponse(ApiProblem::notFound());
+        }
+
+        // Create a new Request object with the rewritten path, because it's basically impossible to overwrite the path
+        // of an existing Request object even with initialize() or duplicate(). Approach copied from
+        // https://github.com/graze/silex-trailing-slash-handler/blob/1.x/src/TrailingSlashControllerProvider.php
+        $request = Request::create(
+            $rewrittenPath,
+            $originalRequest->getMethod(),
+            [],
+            $originalRequest->cookies->all(),
+            $originalRequest->files->all(),
+            $originalRequest->server->all(),
+            $originalRequest->getContent()
+        );
+        $request = $request->duplicate(
+            $originalRequest->query->all(),
+            $originalRequest->request->all()
+        );
+        $request->headers->replace($app['request']->headers->all());
+
+        // Handle the request with the rewritten path.
+        return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
+    }
+)->assert('path', '^.+$');
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/stoplight-docs-uitdatabank/models');
 

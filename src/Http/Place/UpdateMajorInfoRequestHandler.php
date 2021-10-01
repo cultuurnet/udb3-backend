@@ -7,14 +7,14 @@ namespace CultuurNet\UDB3\Http\Place;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Http\Deserializer\Place\MajorInfoJSONDeserializer;
-use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class UpdateMajorInfoRequestHandler implements RequestHandler
+class UpdateMajorInfoRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 

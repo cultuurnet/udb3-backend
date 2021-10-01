@@ -11,15 +11,15 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
-use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventUpdatesDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdates;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class UpdateSubEventsRequestHandler implements RequestHandler
+class UpdateSubEventsRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
