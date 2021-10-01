@@ -87,7 +87,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->put(
-            '/{organizerId}/contactPoint',
+            '/{organizerId}/contact-point',
             'organizer_edit_controller:updateContactPoint'
         );
 

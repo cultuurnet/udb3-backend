@@ -28,13 +28,13 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->get('/{placeId}/history', 'place_history_controller:get');
 
         $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
-        $controllers->put('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
-        $controllers->put('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
-        $controllers->put('/{placeId}/majorInfo', UpdateMajorInfoRequestHandler::class);
+        $controllers->put('/{cdbid}/booking-info', 'place_editing_controller:updateBookingInfo');
+        $controllers->put('/{cdbid}/contact-point', 'place_editing_controller:updateContactPoint');
+        $controllers->put('/{placeId}/major-info', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
-        $controllers->delete('/{cdbid}/typicalAgeRange', 'place_editing_controller:deleteTypicalAgeRange');
-        $controllers->put('/{cdbid}/typicalAgeRange', 'place_editing_controller:updateTypicalAgeRange');
+        $controllers->delete('/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
+        $controllers->put('/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
 
         $controllers->post('/{itemId}/images/', 'place_editing_controller:addImage');
         $controllers->put('/{itemId}/images/main', 'place_editing_controller:selectMainImage');
@@ -47,17 +47,16 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
-         * These routes usually used an incorrect HTTP method or incorrect casing of resource names.
+         * These routes usually used an incorrect HTTP method.
          */
         $controllers->get('/{cdbid}/events', 'place_editing_controller:getEvents');
         $controllers->post('/{itemId}/images/main', 'place_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
         $controllers->post('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
         $controllers->post('/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
-        $controllers->delete('/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
         $controllers->post('/{placeId}/major-info', UpdateMajorInfoRequestHandler::class);
-        $controllers->post('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
-        $controllers->post('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
+        $controllers->post('/{cdbid}/booking-info', 'place_editing_controller:updateBookingInfo');
+        $controllers->post('/{cdbid}/contact-point', 'place_editing_controller:updateContactPoint');
         $controllers->post('/{cdbid}/organizer', 'place_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;

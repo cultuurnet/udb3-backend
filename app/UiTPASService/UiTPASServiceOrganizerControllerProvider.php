@@ -25,7 +25,7 @@ class UiTPASServiceOrganizerControllerProvider implements ControllerProviderInte
         $controllers = $app['controllers_factory'];
 
         $controllers->get(
-            '/{organizerId}/cardSystems/',
+            '/{organizerId}/card-systems/',
             'uitpas.organizer_card_systems_controller:get'
         );
 

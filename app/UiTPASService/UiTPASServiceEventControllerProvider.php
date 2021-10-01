@@ -45,25 +45,25 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
         )->bind(self::EVENT_DETAIL);
 
         $controllers->get(
-            '/{eventId}/cardSystems/',
+            '/{eventId}/card-systems/',
             'uitpas.event_card_systems_controller:get'
         )->bind(self::EVENT_CARD_SYSTEMS);
 
         $controllers->put(
-            '/{eventId}/cardSystems/',
+            '/{eventId}/card-systems/',
             'uitpas.event_card_systems_controller:set'
         );
         $controllers->put(
-            '/{eventId}/cardSystems/{cardSystemId}',
+            '/{eventId}/card-systems/{cardSystemId}',
             'uitpas.event_card_systems_controller:add'
         );
         $controllers->put(
-            '/{eventId}/cardSystems/{cardSystemId}/distributionKey/{distributionKeyId}',
+            '/{eventId}/card-systems/{cardSystemId}/distribution-key/{distributionKeyId}',
             'uitpas.event_card_systems_controller:add'
         );
 
         $controllers->delete(
-            '/{eventId}/cardSystems/{cardSystemId}',
+            '/{eventId}/card-systems/{cardSystemId}',
             'uitpas.event_card_systems_controller:delete'
         );
 

@@ -260,7 +260,19 @@ $app->match(
     '/{path}',
     function (Request $originalRequest, string $path) use ($app) {
         $rewrites = [
-            '/^(event|place)($|\/.*)/' => '${1}s${2}', // Pluralize /event and /place
+            // Pluralize /event and /place
+            '/^(event|place)($|\/.*)/' => '${1}s${2}',
+
+            // Convert known legacy camelCase resource/collection names to kebab-case
+            '/bookingAvailability/' => 'booking-availability',
+            '/bookingInfo/' => 'booking-info',
+            '/cardSystems/' => 'card-systems',
+            '/contactPoint/' => 'contact-point',
+            '/distributionKey/' => 'distribution-key',
+            '/majorInfo/' => 'major-info',
+            '/priceInfo/' => 'price-info',
+            '/subEvents/' => 'sub-events',
+            '/typicalAgeRange/' => 'typical-age-range',
         ];
         $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
 
