@@ -1019,6 +1019,52 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_projects_an_empty_copyright_with_a_video(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+
+        $video = new Video(
+            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new ModelUrl('https://www.youtube.com/watch?v=123'),
+            new ModelDescription('Demo youtube video')
+        );
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $videoAdded = new VideoAdded(new ModelUUID($eventId), $video);
+        $eventBody = $this->project($videoAdded, $eventId);
+
+        unset($eventBody->modified);
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'description' => 'Demo youtube video',
+                        //'copyright' => 'TODO: Fill in default copyright when known',
+                    ],
+                ],
+            ],
+            $eventBody
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_projects_the_updating_of_the_organizer()
     {
         $id = 'foo';
