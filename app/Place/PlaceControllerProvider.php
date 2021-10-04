@@ -12,13 +12,57 @@ use CultuurNet\UDB3\Http\Place\UpdateCalendarRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Silex\ServiceProviderInterface;
 
-class PlaceControllerProvider implements ControllerProviderInterface
+class PlaceControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
+    {
+        /** @var ControllerCollection $controllers */
+        $controllers = $app['controllers_factory'];
+
+        $controllers->post('/', 'place_editing_controller:createPlace');
+        $controllers->get('/{cdbid}', 'place_controller:get');
+        $controllers->delete('/{cdbid}', 'place_editing_controller:deletePlace');
+
+        $controllers->get('/{placeId}/history', 'place_history_controller:get');
+
+        $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
+        $controllers->put('/{cdbid}/booking-info', 'place_editing_controller:updateBookingInfo');
+        $controllers->put('/{cdbid}/contact-point', 'place_editing_controller:updateContactPoint');
+        $controllers->put('/{placeId}/major-info', UpdateMajorInfoRequestHandler::class);
+        $controllers->put('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:updateOrganizer');
+        $controllers->delete('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
+        $controllers->delete('/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
+        $controllers->put('/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
+
+        $controllers->post('/{itemId}/images/', 'place_editing_controller:addImage');
+        $controllers->put('/{itemId}/images/main', 'place_editing_controller:selectMainImage');
+        $controllers->delete('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
+        $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
+
+        $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
+
+        $controllers->put('/{placeId}/calendar', UpdateCalendarRequestHandler::class);
+
+        /**
+         * Legacy routes that we need to keep for backward compatibility.
+         * These routes usually used an incorrect HTTP method.
+         */
+        $controllers->get('/{cdbid}/events', 'place_editing_controller:getEvents');
+        $controllers->post('/{itemId}/images/main', 'place_editing_controller:selectMainImage');
+        $controllers->post('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
+        $controllers->post('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
+        $controllers->post('/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
+        $controllers->post('/{placeId}/major-info', UpdateMajorInfoRequestHandler::class);
+        $controllers->post('/{cdbid}/booking-info', 'place_editing_controller:updateBookingInfo');
+        $controllers->post('/{cdbid}/contact-point', 'place_editing_controller:updateContactPoint');
+        $controllers->post('/{cdbid}/organizer', 'place_editing_controller:updateOrganizerFromJsonBody');
+
+        return $controllers;
+    }
+
+    public function register(Application $app): void
     {
         $app['place_controller'] = $app->share(
             function (Application $app) {
@@ -60,34 +104,9 @@ class PlaceControllerProvider implements ControllerProviderInterface
                 return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
             }
         );
+    }
 
-        /** @var ControllerCollection $controllers */
-        $controllers = $app['controllers_factory'];
-
-        $controllers->post('/', 'place_editing_controller:createPlace');
-        $controllers->get('/{cdbid}', 'place_controller:get');
-        $controllers->delete('/{cdbid}', 'place_editing_controller:deletePlace');
-
-        $controllers->get('/{placeId}/history', 'place_history_controller:get');
-
-        $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
-        $controllers->put('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
-        $controllers->put('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
-        $controllers->put('/{placeId}/majorInfo', UpdateMajorInfoRequestHandler::class . ':handle');
-        $controllers->put('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:updateOrganizer');
-        $controllers->delete('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
-        $controllers->delete('/{cdbid}/typicalAgeRange', 'place_editing_controller:deleteTypicalAgeRange');
-        $controllers->put('/{cdbid}/typicalAgeRange', 'place_editing_controller:updateTypicalAgeRange');
-
-        $controllers->post('/{itemId}/images/', 'place_editing_controller:addImage');
-        $controllers->put('/{itemId}/images/main', 'place_editing_controller:selectMainImage');
-        $controllers->delete('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
-        $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
-
-        $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
-
-        $controllers->put('/{placeId}/calendar', UpdateCalendarRequestHandler::class . ':handle');
-
-        return $controllers;
+    public function boot(Application $app): void
+    {
     }
 }

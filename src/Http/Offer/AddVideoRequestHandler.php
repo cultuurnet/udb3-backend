@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
-use CultuurNet\UDB3\Http\Request\RequestHandler;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
@@ -17,9 +16,10 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Ramsey\Uuid\UuidFactoryInterface;
 
-final class AddVideoRequestHandler implements RequestHandler
+final class AddVideoRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
     private RequestBodyParser $parser;
