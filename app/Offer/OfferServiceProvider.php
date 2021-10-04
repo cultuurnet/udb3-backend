@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
@@ -123,6 +124,12 @@ class OfferServiceProvider implements ServiceProviderInterface
                     $app[OfferRepository::class],
                     $app['labels.constraint_aware_service']
                 );
+            }
+        );
+
+        $app[AddVideoHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddVideoHandler($app[OfferRepository::class]);
             }
         );
     }
