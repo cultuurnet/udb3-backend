@@ -31,7 +31,7 @@ final class VideoDenormalizer implements DenormalizerInterface
             new Url($data['url'])
         );
 
-        if (isset($data['copyright'])) {
+        if (isset($data['copyrightHolder'])) {
             $video = $video->withCopyrightHolder(new CopyrightHolder($data['copyrightHolder']));
         }
 
