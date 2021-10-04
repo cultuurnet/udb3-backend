@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
@@ -608,6 +609,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[AddLabelHandler::class]);
         $commandBus->subscribe($app[RemoveLabelHandler::class]);
         $commandBus->subscribe($app[ImportLabelsHandler::class]);
+        $commandBus->subscribe($app[AddVideoHandler::class]);
 
         // Organizer command handlers
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);
