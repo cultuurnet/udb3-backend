@@ -55,13 +55,13 @@ class ImportControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/events/', 'event_import_controller:importWithoutId');
-        $controllers->put('/events/{cdbid}', 'event_import_controller:importWithId');
+        $controllers->put('/events/{cdbid}/', 'event_import_controller:importWithId');
 
         $controllers->post('/places/', 'place_import_controller:importWithoutId');
-        $controllers->put('/places/{cdbid}', 'place_import_controller:importWithId');
+        $controllers->put('/places/{cdbid}/', 'place_import_controller:importWithId');
 
         $controllers->post('/organizers/', 'organizer_import_controller:importWithoutId');
-        $controllers->put('/organizers/{cdbid}', 'organizer_import_controller:importWithId');
+        $controllers->put('/organizers/{cdbid}/', 'organizer_import_controller:importWithId');
 
         return $controllers;
     }

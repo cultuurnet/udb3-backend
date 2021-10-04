@@ -25,7 +25,7 @@ class JobsControllerProvider implements ControllerProviderInterface
 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
-        $controllers->get('/{jobId}', 'jobs.read_rest_controller:get');
+        $controllers->get('/{jobId}/', 'jobs.read_rest_controller:get');
 
         return $controllers;
     }

@@ -40,7 +40,7 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
         $controllers = $app['controllers_factory'];
 
         $controllers->get(
-            '/{eventId}',
+            '/{eventId}/',
             'uitpas.event_detail_controller:get'
         )->bind(self::EVENT_DETAIL);
 
@@ -54,16 +54,16 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
             'uitpas.event_card_systems_controller:set'
         );
         $controllers->put(
-            '/{eventId}/card-systems/{cardSystemId}',
+            '/{eventId}/card-systems/{cardSystemId}/',
             'uitpas.event_card_systems_controller:add'
         );
         $controllers->put(
-            '/{eventId}/card-systems/{cardSystemId}/distribution-key/{distributionKeyId}',
+            '/{eventId}/card-systems/{cardSystemId}/distribution-key/{distributionKeyId}/',
             'uitpas.event_card_systems_controller:add'
         );
 
         $controllers->delete(
-            '/{eventId}/card-systems/{cardSystemId}',
+            '/{eventId}/card-systems/{cardSystemId}/',
             'uitpas.event_card_systems_controller:delete'
         );
 
