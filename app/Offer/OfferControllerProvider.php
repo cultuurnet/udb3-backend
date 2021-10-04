@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
+use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\LabelJSONDeserializer;
@@ -21,6 +22,7 @@ use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRestController;
+use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -39,6 +41,12 @@ class OfferControllerProvider implements ControllerProviderInterface
         $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateBookingAvailabilityRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[AddVideoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddVideoRequestHandler($app['event_command_bus'], new UuidFactory());
             }
         );
 
@@ -113,6 +121,8 @@ class OfferControllerProvider implements ControllerProviderInterface
 
             $controllers->put("{$offerType}/{offerId}/status", UpdateStatusRequestHandler::class . ':handle');
             $controllers->put("{$offerType}/{offerId}/bookingAvailability", UpdateBookingAvailabilityRequestHandler::class . ':handle');
+
+            $controllers->post("{$offerType}/{offerId}/videos", AddVideoRequestHandler::class . ':handle');
 
             $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
             $controllers->put("{$offerType}/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
