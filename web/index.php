@@ -2,9 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
@@ -16,6 +14,7 @@ use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
+use CultuurNet\UDB3\Silex\LegacyRoutesServiceProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -27,7 +26,6 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
@@ -244,62 +242,7 @@ $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider()
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
-// Match any path that does not match a registered route, rewrite it using a set of predefined pattern replacements and
-// send an internal sub-request to try and match an existing route. If the sub-request does not return a response either
-// an error response will be returned.
-// This makes it possible to support old endpoint names without having to register controllers/request handlers twice.
-// When we have a router with support for PSR-15 middlewares, we should refactor this URL rewriting to a PSR-15
-// middleware instead.
-$app->match(
-    '/{path}',
-    function (Request $originalRequest, string $path) use ($app) {
-        $rewrites = [
-            // Pluralize /event and /place
-            '/^(event|place)($|\/.*)/' => '${1}s${2}',
-
-            // Convert known legacy camelCase resource/collection names to kebab-case
-            '/bookingAvailability/' => 'booking-availability',
-            '/bookingInfo/' => 'booking-info',
-            '/cardSystems/' => 'card-systems',
-            '/contactPoint/' => 'contact-point',
-            '/distributionKey/' => 'distribution-key',
-            '/majorInfo/' => 'major-info',
-            '/priceInfo/' => 'price-info',
-            '/subEvents/' => 'sub-events',
-            '/typicalAgeRange/' => 'typical-age-range',
-
-            // Add trailing slash if missing
-            '/^(.*)(?<!\/)$/' => '${1}/',
-        ];
-        $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
-
-        // Prevent an infinite loop by stopping if the path was not changed.
-        if (!$rewrittenPath || $rewrittenPath === $path) {
-            return new ApiProblemJsonResponse(ApiProblem::notFound());
-        }
-
-        // Create a new Request object with the rewritten path, because it's basically impossible to overwrite the path
-        // of an existing Request object even with initialize() or duplicate(). Approach copied from
-        // https://github.com/graze/silex-trailing-slash-handler/blob/1.x/src/TrailingSlashControllerProvider.php
-        $request = Request::create(
-            $rewrittenPath,
-            $originalRequest->getMethod(),
-            [],
-            $originalRequest->cookies->all(),
-            $originalRequest->files->all(),
-            $originalRequest->server->all(),
-            $originalRequest->getContent()
-        );
-        $request = $request->duplicate(
-            $originalRequest->query->all(),
-            $originalRequest->request->all()
-        );
-        $request->headers->replace($app['request']->headers->all());
-
-        // Handle the request with the rewritten path.
-        return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
-    }
-)->assert('path', '^.+$');
+$app->register(new LegacyRoutesServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/stoplight-docs-uitdatabank/models');
 
