@@ -46,6 +46,8 @@ use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as ModelUUID;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url as ModelUrl;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description as ModelDescription;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -913,9 +915,9 @@ class OfferLDProjectorTest extends TestCase
         $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
 
         $video = (new Video(
-            new \CultuurNet\UDB3\Model\ValueObject\Identity\UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new \CultuurNet\UDB3\Model\ValueObject\Web\Url('https://www.youtube.com/watch?v=123'),
-            new \CultuurNet\UDB3\Model\ValueObject\Text\Description('Demo youtube video')
+            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new ModelUrl('https://www.youtube.com/watch?v=123'),
+            new ModelDescription('Demo youtube video')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $initialDocument = new JsonDocument(
@@ -945,6 +947,68 @@ class OfferLDProjectorTest extends TestCase
                         'description' => 'Demo youtube video',
                         'copyright' => 'Creative Commons',
 
+                    ],
+                ],
+            ],
+            $eventBody
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_multiple_videos_added(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+
+        $video2 = (new Video(
+            new ModelUUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
+            new ModelUrl('https://vimeo.com/98765432'),
+            new ModelDescription('Demo Vimeo video')
+        ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    [
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'description' => 'Demo youtube video',
+                        'copyright' => 'Creative Commons',
+                    ],
+                ],
+
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $videoAdded = new VideoAdded(new ModelUUID($eventId), $video2);
+        $eventBody = $this->project($videoAdded, $eventId);
+
+        unset($eventBody->modified);
+
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'description' => 'Demo youtube video',
+                        'copyright' => 'Creative Commons',
+                    ],
+                    (object)[
+                        'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                        'url' => 'https://vimeo.com/98765432',
+                        'description' => 'Demo Vimeo video',
+                        'copyright' => 'Public Domain',
                     ],
                 ],
             ],
