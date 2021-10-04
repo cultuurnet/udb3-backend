@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Ramsey\Uuid\UuidFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
