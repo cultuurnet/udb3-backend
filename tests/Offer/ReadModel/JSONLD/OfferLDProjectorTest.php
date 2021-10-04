@@ -47,7 +47,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as ModelUUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url as ModelUrl;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description as ModelDescription;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -916,8 +915,7 @@ class OfferLDProjectorTest extends TestCase
 
         $video = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video')
+            new ModelUrl('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $initialDocument = new JsonDocument(
@@ -944,7 +942,6 @@ class OfferLDProjectorTest extends TestCase
                     (object)[
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
-                        'description' => 'Demo youtube video',
                         'copyrightHolder' => 'Creative Commons',
 
                     ],
@@ -963,8 +960,7 @@ class OfferLDProjectorTest extends TestCase
 
         $video2 = (new Video(
             new ModelUUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
-            new ModelUrl('https://vimeo.com/98765432'),
-            new ModelDescription('Demo Vimeo video')
+            new ModelUrl('https://vimeo.com/98765432')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $initialDocument = new JsonDocument(
@@ -977,7 +973,6 @@ class OfferLDProjectorTest extends TestCase
                     [
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
-                        'description' => 'Demo youtube video',
                         'copyrightHolder' => 'Creative Commons',
                     ],
                 ],
@@ -1001,13 +996,11 @@ class OfferLDProjectorTest extends TestCase
                     (object)[
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
-                        'description' => 'Demo youtube video',
                         'copyrightHolder' => 'Creative Commons',
                     ],
                     (object)[
                         'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
                         'url' => 'https://vimeo.com/98765432',
-                        'description' => 'Demo Vimeo video',
                         'copyrightHolder' => 'Public Domain',
                     ],
                 ],
@@ -1025,8 +1018,7 @@ class OfferLDProjectorTest extends TestCase
 
         $video = new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video')
+            new ModelUrl('https://www.youtube.com/watch?v=123')
         );
 
         $initialDocument = new JsonDocument(
@@ -1053,7 +1045,6 @@ class OfferLDProjectorTest extends TestCase
                     (object)[
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
-                        'description' => 'Demo youtube video',
                         //'copyrightHolder' => 'TODO: Fill in default copyright when known',
                     ],
                 ],

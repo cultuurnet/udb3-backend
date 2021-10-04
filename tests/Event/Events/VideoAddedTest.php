@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
@@ -42,8 +41,7 @@ final class VideoAddedTest extends TestCase
     {
         $video = new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123'),
-            new Description('Demo youtube video')
+            new Url('https://www.youtube.com/watch?v=123')
         );
 
         return [
@@ -57,7 +55,6 @@ final class VideoAddedTest extends TestCase
                     'video' => [
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
-                        'description' => 'Demo youtube video',
                         'copyrightHolder' => 'Creative Commons',
                     ],
                 ],
@@ -72,7 +69,6 @@ final class VideoAddedTest extends TestCase
                     'video' => [
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
-                        'description' => 'Demo youtube video',
                     ],
                 ],
             ],

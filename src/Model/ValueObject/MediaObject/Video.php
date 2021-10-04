@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class Video
@@ -14,18 +13,14 @@ final class Video
 
     private Url $url;
 
-    private Description $description;
-
     private ?CopyrightHolder $copyrightHolder = null;
 
     public function __construct(
         UUID $id,
-        Url $url,
-        Description $description
+        Url $url
     ) {
         $this->id = $id;
         $this->url = $url;
-        $this->description = $description;
     }
 
     public function withCopyrightHolder(CopyrightHolder $copyright): Video
@@ -45,11 +40,6 @@ final class Video
         return $this->url;
     }
 
-    public function getDescription(): Description
-    {
-        return $this->description;
-    }
-
     public function getCopyrightHolder(): ?CopyrightHolder
     {
         return $this->copyrightHolder;
@@ -60,7 +50,6 @@ final class Video
         $videoArray = [
             'id' => $this->getId()->toString(),
             'url' => $this->getUrl()->toString(),
-            'description' => $this->getDescription()->toString(),
         ];
 
         if ($this->getCopyrightHolder() !== null) {

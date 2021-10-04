@@ -8,7 +8,6 @@ use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 abstract class AbstractVideoAdded implements Serializable
@@ -37,8 +36,7 @@ abstract class AbstractVideoAdded implements Serializable
     {
         $video = new Video(
             new UUID($data['video']['id']),
-            new Url($data['video']['url']),
-            new Description($data['video']['description'])
+            new Url($data['video']['url'])
         );
 
         if (isset($data['video']['copyrightHolder'])) {
@@ -60,7 +58,6 @@ abstract class AbstractVideoAdded implements Serializable
             'video' => [
                 'id' => $this->video->getId()->toString(),
                 'url' => $this->video->getUrl()->toString(),
-                'description' => $this->video->getDescription()->toString(),
             ],
         ];
 

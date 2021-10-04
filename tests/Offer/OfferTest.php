@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description as ModelDescription;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url as ModelUrl;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
@@ -800,8 +799,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video')
+            new ModelUrl('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $this->scenario
@@ -831,14 +829,12 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video')
+            new ModelUrl('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
             new ModelUUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
-            new ModelUrl('https://vimeo.com/98765432'),
-            new ModelDescription('Demo Vimeo video')
+            new ModelUrl('https://vimeo.com/98765432')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
@@ -873,14 +869,12 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123'),
-            new ModelDescription('Demo youtube video')
+            new ModelUrl('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
             new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://vimeo.com/98765432'),
-            new ModelDescription('Demo Vimeo video')
+            new ModelUrl('https://vimeo.com/98765432')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
