@@ -64,7 +64,7 @@ final class Video
         ];
 
         if ($this->getCopyrightHolder() !== null) {
-            $videoArray['copyright'] = $this->getCopyrightHolder()->toString();
+            $videoArray['copyrightHolder'] = $this->getCopyrightHolder()->toString();
         }
 
         return $videoArray;

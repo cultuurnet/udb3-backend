@@ -41,9 +41,9 @@ abstract class AbstractVideoAdded implements Serializable
             new Description($data['video']['description'])
         );
 
-        if (isset($data['video']['copyright'])) {
+        if (isset($data['video']['copyrightHolder'])) {
             $video = $video->withCopyrightHolder(
-                new CopyrightHolder($data['video']['copyright'])
+                new CopyrightHolder($data['video']['copyrightHolder'])
             );
         }
 
@@ -65,7 +65,7 @@ abstract class AbstractVideoAdded implements Serializable
         ];
 
         if ($this->video->getCopyrightHolder() !== null) {
-            $videoAdded['video']['copyright'] = $this->video->getCopyrightHolder()->toString();
+            $videoAdded['video']['copyrightHolder'] = $this->video->getCopyrightHolder()->toString();
         }
 
         return $videoAdded;

@@ -58,7 +58,7 @@ final class VideoAddedTest extends TestCase
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
                         'description' => 'Demo youtube video',
-                        'copyright' => 'Creative Commons',
+                        'copyrightHolder' => 'Creative Commons',
                     ],
                 ],
             ],
