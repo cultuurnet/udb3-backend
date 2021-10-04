@@ -64,8 +64,8 @@ abstract class AbstractVideoAdded implements Serializable
             ],
         ];
 
-        if ($this->video->getCopyright() !== null) {
-            $videoAdded['video']['copyright'] = $this->video->getCopyright()->toString();
+        if ($this->video->getCopyrightHolder() !== null) {
+            $videoAdded['video']['copyright'] = $this->video->getCopyrightHolder()->toString();
         }
 
         return $videoAdded;

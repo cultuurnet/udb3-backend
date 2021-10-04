@@ -16,7 +16,7 @@ final class Video
 
     private Description $description;
 
-    private ?CopyrightHolder $copyright = null;
+    private ?CopyrightHolder $copyrightHolder = null;
 
     public function __construct(
         UUID $id,
@@ -31,7 +31,7 @@ final class Video
     public function withCopyrightHolder(CopyrightHolder $copyright): Video
     {
         $clone = clone $this;
-        $clone->copyright = $copyright;
+        $clone->copyrightHolder = $copyright;
         return $clone;
     }
 
@@ -50,9 +50,9 @@ final class Video
         return $this->description;
     }
 
-    public function getCopyright(): ?CopyrightHolder
+    public function getCopyrightHolder(): ?CopyrightHolder
     {
-        return $this->copyright;
+        return $this->copyrightHolder;
     }
 
     public function serialize(): array
@@ -63,8 +63,8 @@ final class Video
             'description' => $this->getDescription()->toString(),
         ];
 
-        if ($this->getCopyright() !== null) {
-            $videoArray['copyright'] = $this->getCopyright()->toString();
+        if ($this->getCopyrightHolder() !== null) {
+            $videoArray['copyright'] = $this->getCopyrightHolder()->toString();
         }
 
         return $videoArray;
