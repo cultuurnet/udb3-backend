@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidFactoryInterface;
 
@@ -21,7 +22,10 @@ class AddVideoRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private UuidFactoryInterface $uuidFactory;
+    /**
+     * @var MockObject|UuidFactoryInterface
+     */
+    private $uuidFactory;
 
     private AddVideoRequestHandler $addVideoRequestHandler;
 
