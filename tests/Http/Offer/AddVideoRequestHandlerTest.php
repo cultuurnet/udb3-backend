@@ -123,4 +123,25 @@ class AddVideoRequestHandlerTest extends TestCase
             fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_only_allows_supported_video_platforms(): void
+    {
+        $addVideoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"url":"https://www.google.com/?v=sdsd234"}')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/url',
+                    'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))'
+                )
+            ),
+            fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
+        );
+    }
 }
