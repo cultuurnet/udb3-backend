@@ -68,7 +68,7 @@ class AddVideoRequestHandlerTest extends TestCase
                         new UUID($videoId->toString()),
                         new Url('https://www.youtube.com/?v=sdsd234')
                     ))->withCopyrightHolder(new CopyrightHolder('publiq'))
-                )
+                ),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -96,7 +96,7 @@ class AddVideoRequestHandlerTest extends TestCase
                 new AddVideo(
                     new UUID('609a8214-51c9-48c0-903f-840a4f38852f'),
                     new Video(new UUID($videoId->toString()), new Url('https://www.youtube.com/?v=sdsd234'))
-                )
+                ),
             ],
             $this->commandBus->getRecordedCommands()
         );
