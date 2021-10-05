@@ -105,4 +105,22 @@ class AddVideoRequestHandlerTest extends TestCase
             $this->commandBus->getRecordedCommands()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_url(): void
+    {
+        $addVideoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"copyrightHolder":"publiq"}')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'The required properties (url) are missing')
+            ),
+            fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
+        );
+    }
 }
