@@ -49,9 +49,9 @@ class ExportControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/json', 'json_export_controller:handle');
-        $controllers->post('/ooxml', 'ooxml_export_controller:handle');
-        $controllers->post('/pdf', 'pdf_export_controller:handle');
+        $controllers->post('/json/', 'json_export_controller:handle');
+        $controllers->post('/ooxml/', 'ooxml_export_controller:handle');
+        $controllers->post('/pdf/', 'pdf_export_controller:handle');
 
         return $controllers;
     }

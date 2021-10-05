@@ -35,7 +35,7 @@ class ContextControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $controllers->get('/{entityName}', self::JSONLD_CONTEXT_CONTROLLER . ':get');
+        $controllers->get('/{entityName}/', self::JSONLD_CONTEXT_CONTROLLER . ':get');
 
         return $controllers;
     }

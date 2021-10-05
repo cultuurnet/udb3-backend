@@ -61,11 +61,11 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $controllers
-            ->get('/roles/{id}', 'role_controller:get')
+            ->get('/roles/{id}/', 'role_controller:get')
             ->bind('role');
 
         $controllers->patch(
-            '/roles/{id}',
+            '/roles/{id}/',
             'role_edit_controller:update'
         );
 
@@ -84,7 +84,7 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:removeConstraint'
         );
 
-        $controllers->delete('/roles/{id}', 'role_edit_controller:delete');
+        $controllers->delete('/roles/{id}/', 'role_edit_controller:delete');
 
         $controllers
             ->get('/permissions/', 'role_controller:getPermissions');
@@ -98,12 +98,12 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->put(
-            '/roles/{roleId}/permissions/{permissionKey}',
+            '/roles/{roleId}/permissions/{permissionKey}/',
             'role_edit_controller:addPermission'
         );
 
         $controllers->delete(
-            '/roles/{roleId}/permissions/{permissionKey}',
+            '/roles/{roleId}/permissions/{permissionKey}/',
             'role_edit_controller:removePermission'
         );
 
@@ -113,22 +113,22 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->put(
-            '/roles/{roleId}/labels/{labelIdentifier}',
+            '/roles/{roleId}/labels/{labelIdentifier}/',
             'role_edit_controller:addLabel'
         );
 
         $controllers->delete(
-            '/roles/{roleId}/labels/{labelIdentifier}',
+            '/roles/{roleId}/labels/{labelIdentifier}/',
             'role_edit_controller:removeLabel'
         );
 
         $controllers->put(
-            '/roles/{roleId}/users/{userId}',
+            '/roles/{roleId}/users/{userId}/',
             'role_edit_controller:addUser'
         );
 
         $controllers->delete(
-            '/roles/{roleId}/users/{userId}',
+            '/roles/{roleId}/users/{userId}/',
             'role_edit_controller:removeUser'
         );
 

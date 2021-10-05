@@ -47,24 +47,25 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class);
-        $controllers->put('/{offerId}/booking-availability', UpdateBookingAvailabilityRequestHandler::class);
+        $controllers->put('/{offerId}/status/', UpdateStatusRequestHandler::class);
+        $controllers->put('/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
         $controllers->post('/{offerId}/videos', AddVideoRequestHandler::class);
 
         $controllers->put('/{cdbid}/type/{typeId}', "{$controllerName}:updateType");
         $controllers->put('/{cdbid}/theme/{themeId}', "{$controllerName}:updateTheme");
+
         $controllers->put('/{cdbid}/facilities/', "{$controllerName}:updateFacilities");
 
-        $controllers->delete('/{cdbid}/labels/{label}', "{$controllerName}:removeLabel");
-        $controllers->put('/{cdbid}/labels/{label}', "{$controllerName}:addLabel");
+        $controllers->delete('/{cdbid}/labels/{label}/', "{$controllerName}:removeLabel");
+        $controllers->put('/{cdbid}/labels/{label}/', "{$controllerName}:addLabel");
 
-        $controllers->put('/{cdbid}/name/{lang}', "{$controllerName}:updateTitle");
-        $controllers->put('/{cdbid}/description/{lang}', "{$controllerName}:updateDescription");
-        $controllers->put('/{cdbid}/price-info', "{$controllerName}:updatePriceInfo");
-        $controllers->patch('/{cdbid}', "{$patchControllerName}:handle");
+        $controllers->put('/{cdbid}/name/{lang}/', "{$controllerName}:updateTitle");
+        $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
+        $controllers->put('/{cdbid}/price-info/', "{$controllerName}:updatePriceInfo");
+        $controllers->patch('/{cdbid}/', "{$patchControllerName}:handle");
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
-        $controllers->get('/{offerId}/permissions/{userId}', "{$permissionsControllerName}:getPermissionsForGivenUser");
+        $controllers->get('/{offerId}/permissions/{userId}/', "{$permissionsControllerName}:getPermissionsForGivenUser");
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
