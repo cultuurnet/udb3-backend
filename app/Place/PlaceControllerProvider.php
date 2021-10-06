@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Http\Place\GetPlaceDetailRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
@@ -22,7 +23,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'place_editing_controller:createPlace');
-        $controllers->get('/{cdbid}/', 'place_controller:get');
+        $controllers->get('/{placeId}/', GetPlaceDetailRequestHandler::class);
         $controllers->delete('/{cdbid}/', 'place_editing_controller:deletePlace');
 
         $controllers->get('/{placeId}/history/', 'place_history_controller:get');
@@ -64,6 +65,10 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
+        $app[GetPlaceDetailRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPlaceDetailRequestHandler($app['place_jsonld_repository'])
+        );
+
         $app['place_controller'] = $app->share(
             function (Application $app) {
                 return new ReadPlaceRestController($app['place_jsonld_repository']);
