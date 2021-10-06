@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url as ModelUrl;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
@@ -60,7 +60,7 @@ use Exception;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class OfferTest extends AggregateRootScenarioTestCase
 {
@@ -103,7 +103,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/gif'),
             new Description('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
-            Url::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
             new Language('en')
         );
     }
@@ -473,7 +473,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
         );
         $image = $this->image;
@@ -512,7 +512,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
         );
 
@@ -683,7 +683,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/gif'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
         );
         $newerImage = new Image(
@@ -691,7 +691,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
-            Url::fromNative('http://foo.bar/media/pic.jpeg'),
+            LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
             new Language('en')
         );
         $originalMainImage = $this->image;
@@ -762,7 +762,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
-            Url::fromNative('http://foo.bar/media/pic.jpeg'),
+            LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
             new Language('en')
         );
 
@@ -799,7 +799,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $this->scenario
@@ -829,12 +829,12 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
             new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
-            new ModelUrl('https://vimeo.com/98765432')
+            new Url('https://vimeo.com/98765432')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
@@ -869,12 +869,12 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://vimeo.com/98765432')
+            new Url('https://vimeo.com/98765432')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
@@ -1575,7 +1575,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpg'),
             new Description('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
-            Url::fromNative('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
+            LegacyUrl::fromNative('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
             new Language('nl')
         );
 
@@ -1585,7 +1585,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new MIMEType('image/jpg'),
                 new Description('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
-                Url::fromNative('http://foo.bar/media/episch_panorama.jpg'),
+                LegacyUrl::fromNative('http://foo.bar/media/episch_panorama.jpg'),
                 new Language('nl')
             ),
         ]);
@@ -1640,7 +1640,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
