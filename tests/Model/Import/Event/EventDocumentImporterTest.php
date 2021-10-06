@@ -44,7 +44,7 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as Udb3ModelUUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
@@ -66,7 +66,7 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\Person\Age;
 use ValueObjects\Web\Url;
@@ -479,7 +479,7 @@ class EventDocumentImporterTest extends TestCase
         $expectedImages = ImageCollection::fromArray(
             [
                 new Image(
-                    new UUID('6984df33-62b4-4c94-ba2d-59d4a87d17dd'),
+                    new LegacyUUID('6984df33-62b4-4c94-ba2d-59d4a87d17dd'),
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Example description'),
                     new CopyrightHolder('Bob'),
@@ -487,7 +487,7 @@ class EventDocumentImporterTest extends TestCase
                     new Language('en')
                 ),
                 new Image(
-                    new UUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
+                    new LegacyUUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Voorbeeld beschrijving'),
                     new CopyrightHolder('Bob'),
@@ -502,13 +502,13 @@ class EventDocumentImporterTest extends TestCase
             ->with(
                 new MediaObjectReferences(
                     MediaObjectReference::createWithMediaObjectId(
-                        new Udb3ModelUUID('6984df33-62b4-4c94-ba2d-59d4a87d17dd'),
+                        new UUID('6984df33-62b4-4c94-ba2d-59d4a87d17dd'),
                         new Udb3ModelDescription('Example description'),
                         new CopyrightHolder('Bob'),
                         new Udb3ModelLanguage('en')
                     ),
                     MediaObjectReference::createWithMediaObjectId(
-                        new Udb3ModelUUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
+                        new UUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
                         new Udb3ModelDescription('Voorbeeld beschrijving'),
                         new CopyrightHolder('Bob'),
                         new Udb3ModelLanguage('nl')
@@ -598,7 +598,7 @@ class EventDocumentImporterTest extends TestCase
      */
     public function it_should_force_audience_type_to_education_for_dummy_place(): void
     {
-        $dummyPlaceId = UUID::generateAsString();
+        $dummyPlaceId = LegacyUUID::generateAsString();
         LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
         $document = $this->getEventDocument();
         $body = $document->getBody();

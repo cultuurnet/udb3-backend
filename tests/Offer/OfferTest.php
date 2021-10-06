@@ -16,12 +16,12 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as ModelUUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url as ModelUrl;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
@@ -57,10 +57,10 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Exception;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class OfferTest extends AggregateRootScenarioTestCase
 {
@@ -99,11 +99,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->with(new Label('label'))
             ->with(new Label('cultuurnet'));
         $this->image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/gif'),
             new Description('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
-            Url::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
             new Language('en')
         );
     }
@@ -143,7 +143,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_only_change_the_theme_when_updating_with_another_id()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $circusTheme = new Theme('0.52.0.0.0', 'Circus');
         $musicalTheme = new Theme('1.4.0.0.0', 'Musical');
 
@@ -169,7 +169,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_only_change_the_type_when_updating_with_another_id()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $filmType = new EventType('0.50.6.0.0', 'Film');
         $concertType = new EventType('0.50.4.0.0', 'Concert');
 
@@ -195,7 +195,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_updates_facilities_when_changed()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $facilities = [
             new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
@@ -254,7 +254,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_updates_contact_point_when_changed()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $contactPoint = new ContactPoint(
             ['016/101010'],
@@ -300,7 +300,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_updates_typical_age_range_when_changed()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $typicalAgeRange = new AgeRange(new Age(8), new Age(11));
         $sameAgeRange = new AgeRange(new Age(8), new Age(11));
@@ -340,7 +340,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_remember_added_labels()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->given([
@@ -369,7 +369,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_remember_which_labels_were_removed()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->given([
@@ -399,7 +399,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_handles_import_labels()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $labels = new Labels(
             new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
@@ -469,11 +469,11 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_set_the_main_image_when_selecting_another_one()
     {
         $anotherImage = new Image(
-            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new LegacyUUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
         );
         $image = $this->image;
@@ -508,11 +508,11 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_can_select_main_image_even_after_image_update(): void
     {
         $anotherImage = new Image(
-            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new LegacyUUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
         );
 
@@ -679,19 +679,19 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_make_the_oldest_image_main_when_deleting_the_current_main_image()
     {
         $oldestImage = new Image(
-            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new LegacyUUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/gif'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
             new Language('en')
         );
         $newerImage = new Image(
-            new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
+            new LegacyUUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
-            Url::fromNative('http://foo.bar/media/pic.jpeg'),
+            LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
             new Language('en')
         );
         $originalMainImage = $this->image;
@@ -758,11 +758,11 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $originalMainImage = $this->image;
         $newMainImage = new Image(
-            new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
+            new LegacyUUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
-            Url::fromNative('http://foo.bar/media/pic.jpeg'),
+            LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
             new Language('en')
         );
 
@@ -798,8 +798,8 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video = (new Video(
-            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123')
+            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new Url('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $this->scenario
@@ -814,7 +814,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new ModelUUID($itemId),
+                        new UUID($itemId),
                         $video
                     ),
                 ]
@@ -828,13 +828,13 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
-            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123')
+            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new Url('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
-            new ModelUUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
-            new ModelUrl('https://vimeo.com/98765432')
+            new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
+            new Url('https://vimeo.com/98765432')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
@@ -850,11 +850,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new ModelUUID($itemId),
+                        new UUID($itemId),
                         $video1
                     ),
                     new VideoAdded(
-                        new ModelUUID($itemId),
+                        new UUID($itemId),
                         $video2
                     ),
                 ]
@@ -868,13 +868,13 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
-            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://www.youtube.com/watch?v=123')
+            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new Url('https://www.youtube.com/watch?v=123')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
-            new ModelUUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new ModelUrl('https://vimeo.com/98765432')
+            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new Url('https://vimeo.com/98765432')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
@@ -890,7 +890,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new ModelUUID($itemId),
+                        new UUID($itemId),
                         $video1
                     ),
                 ]
@@ -964,7 +964,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_approve_an_offer_that_is_ready_for_validation()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -992,7 +992,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_approve_an_offer_more_than_once()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -1023,7 +1023,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_approve_an_offer_after_it_was_rejected()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $reason = new StringLiteral('There are spelling mistakes in the description.');
 
         $this->scenario
@@ -1047,7 +1047,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_more_than_once_for_the_same_reason()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $reason = new StringLiteral('The title is misleading.');
         $now = new \DateTime();
 
@@ -1079,7 +1079,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_that_is_already_rejected_for_a_different_reason()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $reason = new StringLiteral('The title is misleading.');
         $differentReason = new StringLiteral('I\'m afraid I can\'t let you do that.');
 
@@ -1104,7 +1104,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_reject_an_offer_that_is_ready_for_validation_with_a_reason()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $reason = new StringLiteral('You forgot to add an organizer.');
         $now = new \DateTime();
 
@@ -1133,7 +1133,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_flag_an_offer_that_is_ready_for_validation_as_duplicate()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -1163,7 +1163,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_reject_an_offer_when_it_is_flagged_as_duplicate()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $reason = new StringLiteral('The theme does not match the description.');
 
         $this->scenario
@@ -1187,7 +1187,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_flag_an_offer_that_is_ready_for_validation_as_inappropriate()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -1217,7 +1217,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_when_it_is_flagged_as_inappropriate()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $reason = new StringLiteral('The theme does not match the description.');
 
         $this->scenario
@@ -1243,7 +1243,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_that_is_flagged_as_approved()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $reason = new StringLiteral('Yeah, but no, but yeah...');
 
         $this->scenario
@@ -1267,8 +1267,8 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_update_an_offer_with_an_organizer_when_it_is_already_set()
     {
-        $itemId = UUID::generateAsString();
-        $organizerId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
+        $organizerId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1291,8 +1291,8 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_update_an_offer_with_the_same_organizer_after_removing_it()
     {
-        $itemId = UUID::generateAsString();
-        $organizerId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
+        $organizerId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1316,8 +1316,8 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_delete_the_current_organizer_regardless_of_the_id()
     {
-        $itemId = UUID::generateAsString();
-        $organizerId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
+        $organizerId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1340,7 +1340,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_delete_the_current_organizer_if_there_is_none()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1362,7 +1362,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_ignore_a_title_update_that_does_not_change_the_existing_title()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $title = new Title('Titel');
 
         $this->scenario
@@ -1386,7 +1386,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_translate_the_title_when_updating_with_a_foreign_language()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $title = new Title('The Title');
         $language = new Language('en');
 
@@ -1413,7 +1413,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_ignore_a_title_translation_that_does_not_translate_the_title()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $title = new Title('The Title');
         $language = new Language('en');
 
@@ -1442,7 +1442,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_ignore_a_description_update_that_does_not_change_the_existing_descriptions()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $description = new \CultuurNet\UDB3\Description('Een beschrijving');
 
         $this->scenario
@@ -1466,7 +1466,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_translate_the_description_when_updating_with_a_foreign_language()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $description = new \CultuurNet\UDB3\Description('La description');
         $language = new Language('fr');
 
@@ -1546,7 +1546,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         Image $image,
         ImageCollection $imageCollection
     ) {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1568,24 +1568,24 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_keep_images_translated_in_ubd3_when_updating_images_from_udb2(
         Image $image
     ) {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $dutchUdb3Image = new Image(
-            new UUID('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
+            new LegacyUUID('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
             new MIMEType('image/jpg'),
             new Description('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
-            Url::fromNative('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
+            LegacyUrl::fromNative('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
             new Language('nl')
         );
 
         $udb2Images = ImageCollection::fromArray([
             new Image(
-                new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+                new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
                 new MIMEType('image/jpg'),
                 new Description('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
-                Url::fromNative('http://foo.bar/media/episch_panorama.jpg'),
+                LegacyUrl::fromNative('http://foo.bar/media/episch_panorama.jpg'),
                 new Language('nl')
             ),
         ]);
@@ -1618,7 +1618,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         Image $image,
         ImageCollection $imageCollection
     ) {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1636,11 +1636,11 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function imageCollectionDataProvider()
     {
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
