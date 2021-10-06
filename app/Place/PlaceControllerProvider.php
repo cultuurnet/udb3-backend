@@ -94,15 +94,11 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         );
 
         $app[UpdateCalendarRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateCalendarRequestHandler($app['event_command_bus']);
-            }
+            fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateMajorInfoRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
-            }
+            fn (Application $app) => new UpdateMajorInfoRequestHandler($app['event_command_bus'])
         );
     }
 
