@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as ModelUUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -72,7 +72,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Place extends Offer implements UpdateableWithCdbXmlInterface
@@ -422,7 +422,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     protected function createImageUpdatedEvent(
-        UUID $mediaObjectId,
+        LegacyUUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ) {
@@ -441,7 +441,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function createVideoAddedEvent(Video $video): VideoAdded
     {
-        return new VideoAdded(new ModelUUID($this->placeId), $video);
+        return new VideoAdded(new UUID($this->placeId), $video);
     }
 
     /**
