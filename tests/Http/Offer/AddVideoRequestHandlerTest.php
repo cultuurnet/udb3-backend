@@ -129,6 +129,24 @@ class AddVideoRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_requires_a_valid_copyright_holder(): void
+    {
+        $addVideoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":123}')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/copyrightHolder', 'The data (integer) must match the type: string')
+            ),
+            fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_only_allows_supported_video_platforms(): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
