@@ -17,7 +17,15 @@ class InMemoryDocumentRepository implements DocumentRepository
             throw DocumentDoesNotExist::withId($id);
         }
 
-        return $this->documents[$id];
+        $document = $this->documents[$id];
+
+        if (!$includeMetadata) {
+            $body = $document->getAssocBody();
+            unset($body['metadata']);
+            $document = $document->withAssocBody($body);
+        }
+
+        return $document;
     }
 
     public function save(JsonDocument $readModel): void
