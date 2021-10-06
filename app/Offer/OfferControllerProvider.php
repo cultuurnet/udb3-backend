@@ -50,10 +50,10 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{offerId}/status/', UpdateStatusRequestHandler::class);
         $controllers->put('/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
-        $controllers->post('/{offerId}/videos', AddVideoRequestHandler::class);
+        $controllers->post('/{offerId}/videos/', AddVideoRequestHandler::class);
 
-        $controllers->put('/{cdbid}/type/{typeId}', "{$controllerName}:updateType");
-        $controllers->put('/{cdbid}/theme/{themeId}', "{$controllerName}:updateTheme");
+        $controllers->put('/{cdbid}/type/{typeId}/', "{$controllerName}:updateType");
+        $controllers->put('/{cdbid}/theme/{themeId}/', "{$controllerName}:updateTheme");
 
         $controllers->put('/{cdbid}/facilities/', "{$controllerName}:updateFacilities");
 
