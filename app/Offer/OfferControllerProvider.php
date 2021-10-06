@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
+use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\LabelJSONDeserializer;
@@ -20,6 +21,7 @@ use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRestController;
+use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -48,8 +50,11 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{offerId}/status/', UpdateStatusRequestHandler::class);
         $controllers->put('/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
+        $controllers->post('/{offerId}/videos/', AddVideoRequestHandler::class);
+
         $controllers->put('/{cdbid}/type/{typeId}/', "{$controllerName}:updateType");
         $controllers->put('/{cdbid}/theme/{themeId}/', "{$controllerName}:updateTheme");
+
         $controllers->put('/{cdbid}/facilities/', "{$controllerName}:updateFacilities");
 
         $controllers->delete('/{cdbid}/labels/{label}/', "{$controllerName}:removeLabel");
@@ -87,6 +92,12 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateBookingAvailabilityRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[AddVideoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddVideoRequestHandler($app['event_command_bus'], new UuidFactory());
             }
         );
 
