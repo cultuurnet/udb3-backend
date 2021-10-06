@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
-use CultuurNet\UDB3\Http\Event\EventDetailRequestHandler;
+use CultuurNet\UDB3\Http\Event\GetEventDetailRequestHandler;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
@@ -23,7 +23,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'event_editing_controller:createEvent');
-        $controllers->get('/{eventId}/', EventDetailRequestHandler::class);
+        $controllers->get('/{eventId}/', GetEventDetailRequestHandler::class);
         $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
 
         $controllers->get('/{cdbid}/history/', 'event_controller:history');
@@ -67,9 +67,9 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
-        $app[EventDetailRequestHandler::class] = $app->share(
+        $app[GetEventDetailRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new EventDetailRequestHandler($app['event_jsonld_repository']);
+                return new GetEventDetailRequestHandler($app['event_jsonld_repository']);
             }
         );
 

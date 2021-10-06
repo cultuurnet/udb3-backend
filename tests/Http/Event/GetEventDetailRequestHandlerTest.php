@@ -11,17 +11,17 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
-class EventDetailRequestHandlerTest extends TestCase
+class GetEventDetailRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
     private InMemoryDocumentRepository $documentRepository;
-    private EventDetailRequestHandler $eventDetailRequestHandler;
+    private GetEventDetailRequestHandler $getEventDetailRequestHandler;
 
     protected function setUp(): void
     {
         $this->documentRepository = new InMemoryDocumentRepository();
-        $this->eventDetailRequestHandler = new EventDetailRequestHandler($this->documentRepository);
+        $this->getEventDetailRequestHandler = new GetEventDetailRequestHandler($this->documentRepository);
     }
 
     /**
@@ -36,7 +36,7 @@ class EventDetailRequestHandlerTest extends TestCase
             ->withRouteParameter('eventId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
             ->build('GET');
 
-        $response = $this->eventDetailRequestHandler->handle($request);
+        $response = $this->getEventDetailRequestHandler->handle($request);
         $responseBody = $response->getBody()->getContents();
         $decodedResponseBody = json_decode($responseBody, true, JSON_THROW_ON_ERROR);
 
@@ -57,7 +57,7 @@ class EventDetailRequestHandlerTest extends TestCase
             ->withRouteParameter('eventId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
             ->build('GET');
 
-        $response = $this->eventDetailRequestHandler->handle($request);
+        $response = $this->getEventDetailRequestHandler->handle($request);
         $responseBody = $response->getBody()->getContents();
         $decodedResponseBody = json_decode($responseBody, true, JSON_THROW_ON_ERROR);
 
@@ -78,7 +78,7 @@ class EventDetailRequestHandlerTest extends TestCase
             ->withRouteParameter('eventId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
             ->build('GET');
 
-        $response = $this->eventDetailRequestHandler->handle($request);
+        $response = $this->getEventDetailRequestHandler->handle($request);
         $responseBody = $response->getBody()->getContents();
         $decodedResponseBody = json_decode($responseBody, true, JSON_THROW_ON_ERROR);
 
@@ -99,7 +99,7 @@ class EventDetailRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::notFound('The event with id "c09b7a51-b17c-4121-b278-eef71ef04e47" was not found.'),
-            fn () => $this->eventDetailRequestHandler->handle($request)
+            fn () => $this->getEventDetailRequestHandler->handle($request)
         );
     }
 

@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class EventDetailRequestHandler implements RequestHandlerInterface
+final class GetEventDetailRequestHandler implements RequestHandlerInterface
 {
     private DocumentRepository $documentRepository;
 
