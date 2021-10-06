@@ -68,9 +68,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
     public function register(Application $app): void
     {
         $app[GetEventDetailRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new GetEventDetailRequestHandler($app['event_jsonld_repository']);
-            }
+            fn (Application $app) => new GetEventDetailRequestHandler($app['event_jsonld_repository'])
         );
 
         $app['event_controller'] = $app->share(
