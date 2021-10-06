@@ -31,20 +31,6 @@ class ReadPlaceRestController
         $this->documentRepository = $documentRepository;
     }
 
-    public function get(string $cdbid, Request $request): JsonResponse
-    {
-        $includeMetadata = (bool) $request->query->get('includeMetadata', false);
-
-        $place = $this->fetchPlaceJson($cdbid, $includeMetadata);
-
-        $response = JsonLdResponse::create()
-            ->setContent($place->getRawBody());
-
-        $response->headers->set('Vary', 'Origin');
-
-        return $response;
-    }
-
     public function getCalendarSummary($cdbid, Request $request): Response
     {
         $style = $request->query->get('style', 'text');

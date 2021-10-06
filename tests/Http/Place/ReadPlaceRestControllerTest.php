@@ -95,38 +95,6 @@ class ReadPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_json_get_for_an_event(): void
-    {
-        $jsonResponse = $this->placeRestController->get(self::EXISTING_ID, new Request());
-
-        $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_http_response_with_json_including_metadata_for_an_event(): void
-    {
-        $request = new Request(['includeMetadata' => true]);
-        $jsonResponse = $this->placeRestController->get(self::EXISTING_ID, $request);
-
-        $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->jsonDocumentWithMetadata->getRawBody(), $jsonResponse->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_api_problem_exception_for_getting_a_non_existing_event(): void
-    {
-        $this->expectException(ApiProblem::class);
-        $this->placeRestController->get(self::NON_EXISTING_ID, new Request());
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_a_http_response_with_a_calendar_summary_for_a_place(): void
     {
         $request = new Request(['style' => 'text', 'format' => 'lg']);
