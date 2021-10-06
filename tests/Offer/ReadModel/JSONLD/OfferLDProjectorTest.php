@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
@@ -42,7 +43,10 @@ use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -59,10 +63,10 @@ use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class OfferLDProjectorTest extends TestCase
 {
@@ -524,11 +528,11 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $expectedMediaObjects = [
@@ -591,22 +595,22 @@ class OfferLDProjectorTest extends TestCase
             ];
 
         $image1 = new Image(
-            new UUID('de305d54-ddde-eddd-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-ddde-eddd-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('my best pokerface'),
             new CopyrightHolder('Hans Langucci'),
-            Url::fromNative(
+            LegacyUrl::fromNative(
                 'http://foo.bar/media/de305d54-ddde-eddd-adb2-eb6b9e546014.png'
             ),
             new Language('en')
         );
 
         $image2 = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative(
+            LegacyUrl::fromNative(
                 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
             ),
             new Language('en')
@@ -699,11 +703,11 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $initialDocument = new JsonDocument(
@@ -737,11 +741,11 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $initialDocument = new JsonDocument(
@@ -776,11 +780,11 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $initialDocument = new JsonDocument(
@@ -807,11 +811,11 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $initialDocument = new JsonDocument(
@@ -858,11 +862,11 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $selectedMainImage = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $initialDocument = new JsonDocument(
@@ -899,6 +903,153 @@ class OfferLDProjectorTest extends TestCase
         $this->assertEquals(
             'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
             $eventBody->image
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_video_added(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+
+        $video = (new Video(
+            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new Url('https://www.youtube.com/watch?v=123')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $videoAdded = new VideoAdded(new UUID($eventId), $video);
+        $eventBody = $this->project($videoAdded, $eventId);
+
+        unset($eventBody->modified);
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'copyrightHolder' => 'Creative Commons',
+
+                    ],
+                ],
+            ],
+            $eventBody
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_multiple_videos_added(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+
+        $video2 = (new Video(
+            new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
+            new Url('https://vimeo.com/98765432')
+        ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    [
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'copyrightHolder' => 'Creative Commons',
+                    ],
+                ],
+
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $videoAdded = new VideoAdded(new UUID($eventId), $video2);
+        $eventBody = $this->project($videoAdded, $eventId);
+
+        unset($eventBody->modified);
+
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'copyrightHolder' => 'Creative Commons',
+                    ],
+                    (object)[
+                        'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                        'url' => 'https://vimeo.com/98765432',
+                        'copyrightHolder' => 'Public Domain',
+                    ],
+                ],
+            ],
+            $eventBody
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_an_empty_copyright_with_a_video(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+
+        $video = new Video(
+            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            new Url('https://www.youtube.com/watch?v=123')
+        );
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $videoAdded = new VideoAdded(new UUID($eventId), $video);
+        $eventBody = $this->project($videoAdded, $eventId);
+
+        unset($eventBody->modified);
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        //'copyrightHolder' => 'TODO: Fill in default copyright when known',
+                    ],
+                ],
+            ],
+            $eventBody
         );
     }
 
@@ -1016,7 +1167,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_updates_the_workflow_status_and_available_from_when_an_offer_is_published()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $now = new \DateTime();
 
         $publishedEvent = new Published($itemId, $now);
@@ -1048,7 +1199,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_update_the_workflow_status_when_an_offer_is_approved()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         $approvedEvent = new Approved($itemId);
         $itemDocumentReadyForValidation = new JsonDocument(
@@ -1110,7 +1261,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function rejectionEventsDataProvider()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
 
         return [
             'offer rejected' => [
@@ -1139,7 +1290,7 @@ class OfferLDProjectorTest extends TestCase
         ImageCollection $images,
         array $expectedMediaObjects
     ) {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $imagesImportedEvent = new ImagesImportedFromUDB2($itemId, $images);
 
         $importedItem = $this->project($imagesImportedEvent, $itemId);
@@ -1154,7 +1305,7 @@ class OfferLDProjectorTest extends TestCase
         ImageCollection $images,
         array $expectedMediaObjects
     ) {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $imagesImportedEvent = new ImagesUpdatedFromUDB2($itemId, $images);
 
         $importedItem = $this->project($imagesImportedEvent, $itemId);
@@ -1168,7 +1319,7 @@ class OfferLDProjectorTest extends TestCase
     public function it_should_project_the_main_udb2_picture_as_image(
         ImageCollection $images
     ) {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $imagesImportedEvent = new ImagesImportedFromUDB2($itemId, $images);
         $expectedImage = 'http://foo.bar/media/my_pic.jpg';
 
@@ -1181,7 +1332,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_project_the_new_type_as_a_term_when_updated()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $type = new EventType('YVBc8KVdrU6XfTNvhMYUpg', 'Discotheek');
         $typeUpdatedEvent = new TypeUpdated($itemId, $type);
 
@@ -1202,7 +1353,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_replace_the_existing_type_term_when_updating_with_a_new_type()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
             json_encode([
@@ -1249,7 +1400,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_project_the_new_theme_as_a_term_when_updated()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $theme = new Theme('1.8.3.3.0', 'Dance');
         $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
 
@@ -1270,7 +1421,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_replace_the_existing_theme_term_when_updating_with_a_new_theme()
     {
-        $itemId = UUID::generateAsString();
+        $itemId = LegacyUUID::generateAsString();
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
             json_encode([
@@ -1375,11 +1526,11 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('ED5B9B25-8C16-48E5-9899-27BB2D110C57'),
+            new LegacyUUID('ED5B9B25-8C16-48E5-9899-27BB2D110C57'),
             new MIMEType('image/jpg'),
             new Description('epische panorama foto'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg'),
+            LegacyUrl::fromNative('http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg'),
             new Language('nl')
         );
         $expectedMediaObjects = [
@@ -1433,20 +1584,20 @@ class OfferLDProjectorTest extends TestCase
     public function imageCollectionDataProvider()
     {
         $coverPicture = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            LegacyUrl::fromNative('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
         $selfie = new Image(
-            new UUID('e56e8eb6-dcd7-47e7-8106-8a149f1d241b'),
+            new LegacyUUID('e56e8eb6-dcd7-47e7-8106-8a149f1d241b'),
             new MIMEType('image/jpg'),
             new Description('my favorite selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/img_182.jpg'),
+            LegacyUrl::fromNative('http://foo.bar/media/img_182.jpg'),
             new Language('en')
         );
 

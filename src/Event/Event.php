@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
@@ -64,7 +65,9 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -76,7 +79,7 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -489,7 +492,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
      * @return ImageUpdated
      */
     protected function createImageUpdatedEvent(
-        UUID $mediaObjectId,
+        LegacyUUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ) {
@@ -507,6 +510,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function createMainImageSelectedEvent(Image $image)
     {
         return new MainImageSelected($this->eventId, $image);
+    }
+
+    protected function createVideoAddedEvent(Video $video): VideoAdded
+    {
+        return new VideoAdded(new UUID($this->eventId), $video);
     }
 
     /**

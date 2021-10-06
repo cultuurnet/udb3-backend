@@ -23,6 +23,8 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
@@ -46,6 +48,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesEvent;
@@ -80,6 +83,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      * @var ImageCollection
      */
     protected $images;
+
+    protected VideoCollection $videos;
 
     /**
      * @var string|null
@@ -172,6 +177,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->descriptions = [];
         $this->labels = new LabelCollection();
         $this->images = new ImageCollection();
+        $this->videos = new VideoCollection();
         $this->facilities = [];
         $this->contactPoint = null;
         $this->calendar = null;
@@ -723,6 +729,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function addVideo(Video $video): void
+    {
+        $videosWithSameId = $this->videos->filter(function (Video $currentVideo) use ($video) {
+            return $currentVideo->getId()->sameAs($video->getId());
+        });
+
+        if ($videosWithSameId->isEmpty()) {
+            $this->apply($this->createVideoAddedEvent($video));
+        }
+    }
+
     /**
      * Delete the offer.
      */
@@ -949,6 +966,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = $this->images->withMain($mainImageSelected->getImage());
     }
 
+    protected function applyVideoAdded(AbstractVideoAdded $abstractVideoAdded)
+    {
+        $this->videos = $this->videos->with($abstractVideoAdded->getVideo());
+    }
+
     protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated)
     {
         $this->organizerId = $organizerUpdated->getOrganizerId();
@@ -1043,6 +1065,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      * @return AbstractMainImageSelected
      */
     abstract protected function createMainImageSelectedEvent(Image $image);
+
+    abstract protected function createVideoAddedEvent(Video $video): AbstractVideoAdded;
 
     /**
      * @return AbstractOfferDeleted

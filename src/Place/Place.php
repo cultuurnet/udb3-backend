@@ -17,7 +17,9 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -65,11 +67,12 @@ use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\Place\Events\TypeUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Place\Events\VideoAdded;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Place extends Offer implements UpdateableWithCdbXmlInterface
@@ -419,7 +422,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     protected function createImageUpdatedEvent(
-        UUID $mediaObjectId,
+        LegacyUUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ) {
@@ -434,6 +437,11 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function createMainImageSelectedEvent(Image $image)
     {
         return new MainImageSelected($this->placeId, $image);
+    }
+
+    protected function createVideoAddedEvent(Video $video): VideoAdded
+    {
+        return new VideoAdded(new UUID($this->placeId), $video);
     }
 
     /**
