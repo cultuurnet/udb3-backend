@@ -76,7 +76,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
         $controllers->post('/{cdbid}/facilities/', "{$controllerName}:updateFacilitiesWithLabel");
         $controllers->get('/{offerId}/permission/', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
-        $controllers->get('/{offerId}/permission/{userId}', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
+        $controllers->get('/{offerId}/permission/{userId}/', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
 
         return $controllers;
     }
