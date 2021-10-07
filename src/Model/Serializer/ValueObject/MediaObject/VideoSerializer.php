@@ -27,6 +27,7 @@ final class VideoSerializer
             'id' => $video->getId()->toString(),
             'url' => $video->getUrl()->toString(),
             'embedUrl' => $this->createEmbedUrl($video->getUrl())->toString(),
+            'language' => $video->getLanguage()->toString(),
         ];
 
         if ($video->getCopyrightHolder() !== null) {

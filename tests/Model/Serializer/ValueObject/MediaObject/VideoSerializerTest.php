@@ -37,6 +37,7 @@ final class VideoSerializerTest extends TestCase
                     'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
                     'url' => 'https://vimeo.com/98765432',
                     'embedUrl' => 'https://player.vimeo.com/video/98765432',
+                    'language' => 'nl',
                 ],
             ],
             'video_from_youtube' => [
@@ -46,9 +47,10 @@ final class VideoSerializerTest extends TestCase
                     new Language('nl')
                 ),
                 [
-                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
-                        'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
-                        'embedUrl' => 'https://www.youtube.com/embed/cEItmb_a20D',
+                    'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                    'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
+                    'embedUrl' => 'https://www.youtube.com/embed/cEItmb_a20D',
+                    'language' => 'nl',
                 ],
             ],
         ];
