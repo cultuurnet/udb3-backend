@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
-final class VideoSerializerTest extends TestCase
+final class VideoNormalizerTest extends TestCase
 {
     /**
      * @test
