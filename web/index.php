@@ -151,9 +151,6 @@ $app['security.entry_point.form._proto'] = $app::protect(
     }
 );
 
-// Enable CORS.
-$app->after($app["cors"]);
-
 if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
