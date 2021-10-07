@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\ReadModel;
 
 use Broadway\ReadModel\Identifiable;
+use CultuurNet\UDB3\Json;
 use stdClass;
 
 final class JsonDocument implements Identifiable
 {
-    private $id;
-    private $body;
+    private string $id;
+    private string $body;
 
-    public function __construct($id, $rawBody = '{}')
+    public function __construct(string $id, string $rawBody = '{}')
     {
         $this->id = $id;
         $this->body = $rawBody;
@@ -25,12 +26,12 @@ final class JsonDocument implements Identifiable
 
     public function getBody(): stdClass
     {
-        return (object) json_decode($this->body);
+        return (object) Json::decode($this->body);
     }
 
     public function getAssocBody(): array
     {
-        return json_decode($this->body, true);
+        return (array) Json::decodeAssociatively($this->body);
     }
 
     public function getRawBody(): string
@@ -40,12 +41,12 @@ final class JsonDocument implements Identifiable
 
     public function withBody(stdClass $body): self
     {
-        return new self($this->id, json_encode($body));
+        return new self($this->id, Json::encode($body));
     }
 
     public function withAssocBody(array $body): JsonDocument
     {
-        return new self($this->id, json_encode($body));
+        return new self($this->id, Json::encode($body));
     }
 
     public function apply(callable $fn): self

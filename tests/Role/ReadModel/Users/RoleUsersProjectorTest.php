@@ -308,7 +308,7 @@ class RoleUsersProjectorTest extends TestCase
     private function createEmptyJsonDocument(UUID $uuid)
     {
         return new JsonDocument(
-            $uuid,
+            $uuid->toNative(),
             json_encode([])
         );
     }
@@ -325,6 +325,6 @@ class RoleUsersProjectorTest extends TestCase
         $key = $userIdentityDetail->getUserId();
         $userIdentityDetails[$key] = $userIdentityDetail;
 
-        return new JsonDocument($uuid, json_encode($userIdentityDetails));
+        return new JsonDocument($uuid->toNative(), json_encode($userIdentityDetails));
     }
 }

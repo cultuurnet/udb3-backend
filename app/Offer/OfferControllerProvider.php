@@ -84,21 +84,15 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
     public function register(Application $app): void
     {
         $app[UpdateStatusRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateStatusRequestHandler($app['event_command_bus']);
-            }
+            fn (Application $app) => new UpdateStatusRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateBookingAvailabilityRequestHandler($app['event_command_bus']);
-            }
+            fn (Application $app) => new UpdateBookingAvailabilityRequestHandler($app['event_command_bus'])
         );
 
         $app[AddVideoRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new AddVideoRequestHandler($app['event_command_bus'], new UuidFactory());
-            }
+            fn (Application $app) => new AddVideoRequestHandler($app['event_command_bus'], new UuidFactory())
         );
 
         $app[$this->getEditControllerName()] = $app->share(
