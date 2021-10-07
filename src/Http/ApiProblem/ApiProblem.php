@@ -205,6 +205,11 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function eventNotFound(string $eventId): self
+    {
+        return self::urlNotFound('The event with id "' . $eventId . '" was not found.');
+    }
+
     public static function tokenNotSupported(string $detail): self
     {
         return self::create(
