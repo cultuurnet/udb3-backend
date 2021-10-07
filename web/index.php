@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
@@ -26,6 +27,7 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
@@ -151,9 +153,6 @@ $app['security.entry_point.form._proto'] = $app::protect(
     }
 );
 
-// Enable CORS.
-$app->after($app["cors"]);
-
 if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
@@ -241,6 +240,34 @@ $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
+
+// Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
+// ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
+// the needed CORS headers).
+$app->options('/{path}', fn () => new NoContentResponse())->assert('path', '^.+$');
+
+// Add CORS headers to every request. We explicitly allow everything, because we don't use cookies and our API is not on
+// an internal network, so CORS requests are never a security issue in our case. This greatly reduces the risk of CORS
+// bugs in our frontend and other integrations.
+$app->after(
+    function (Request $request, Response $response) {
+        // Allow any known method regardless of the URL.
+        $methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+        $response->headers->set('Allow', implode(',', $methods));
+        $response->headers->set('Access-Control-Allow-Methods', implode(',', $methods));
+
+        // Allow the Authorization header to be used.
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+
+        // If a specific origin has been requested to be used, echo it back. Otherwise allow *.
+        $requestedOrigin = $request->headers->get('Origin', '*');
+        $response->headers->set('Access-Control-Allow-Origin', $requestedOrigin);
+
+        // If specific headers have been requested to be used, echo them back. Otherwise allow the default headers.
+        $requestedHeaders = $request->headers->get('Access-Control-Request-Headers', 'authorization,x-api-key');
+        $response->headers->set('Access-Control-Allow-Headers', $requestedHeaders);
+    }
+);
 
 $app->register(new LegacyRoutesServiceProvider());
 
