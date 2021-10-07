@@ -12,9 +12,8 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use League\Uri\Modifiers\AbstractUriModifier;
-use League\Uri\Modifiers\Normalize;
 use League\Uri\Http;
+use League\Uri\UriModifier;
 use Psr\Http\Message\UriInterface;
 use ValueObjects\Identity\UUID;
 use Ramsey\Uuid\Uuid as BaseUuid;
@@ -28,19 +27,9 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
     ];
 
     /**
-     * @var AbstractUriModifier
-     */
-    protected $uriNormalizer;
-
-    /**
      * @var string|null
      */
     protected $uuidRegex;
-
-    public function __construct()
-    {
-        $this->uriNormalizer = new Normalize();
-    }
 
     public function withUuidRegex($mediaIdentifierRegex)
     {
@@ -129,7 +118,12 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
     private function normalize($link)
     {
         $originalUri = Http::createFromString($link)->withScheme('http');
-        return $this->uriNormalizer->__invoke($originalUri);
+
+        $uri = UriModifier::hostToAscii($originalUri);
+        $uri = UriModifier::sortQuery($uri);
+        $uri = UriModifier::removeDotSegments($uri);
+
+        return $uri;
     }
 
     private function identify(Http $httpUri): UUID
