@@ -46,6 +46,7 @@
     "league/flysystem": "^2.2.3",
     "league/flysystem-aws-s3-v3": "^2.1",
     "league/flysystem-ziparchive": "^2.0.6",
+    "league/openapi-psr7-validator": "^0.16.4",
     "league/period": "^3.3",
     "league/uri": "^6.3",
     "league/uri-components": "^2.4",
