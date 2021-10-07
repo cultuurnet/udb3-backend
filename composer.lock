@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1e332687d05f397663f0f995c2f6483",
+    "content-hash": "5175783f8ac8203db59ced7e3142bf14",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -2038,56 +2038,6 @@
                 "hash-map"
             ],
             "time": "2014-12-15T23:03:51+00:00"
-        },
-        {
-            "name": "jdesrosiers/silex-cors-provider",
-            "version": "v0.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jdesrosiers/silex-cors-provider.git",
-                "reference": "06954050d4a031884c4a68a8c3efb7ec7910ebde"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jdesrosiers/silex-cors-provider/zipball/06954050d4a031884c4a68a8c3efb7ec7910ebde",
-                "reference": "06954050d4a031884c4a68a8c3efb7ec7910ebde",
-                "shasum": ""
-            },
-            "require": {
-                "silex/silex": "~1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*",
-                "symfony/browser-kit": "2.3.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "JDesrosiers\\Silex\\Provider\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jason Desrosiers",
-                    "email": "jdesrosi@gmail.com"
-                }
-            ],
-            "description": "A silex service provider that adds CORS services to silex",
-            "keywords": [
-                "cors",
-                "cross",
-                "origin",
-                "provider",
-                "resource",
-                "service",
-                "sharing",
-                "silex"
-            ],
-            "time": "2015-09-12T22:16:14+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
