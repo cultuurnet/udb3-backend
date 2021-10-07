@@ -136,7 +136,7 @@ class ReadRoleRestControllerTest extends TestCase
             ->with($roleId)
             ->willReturn(
                 new JsonDocument(
-                    $roleId,
+                    $roleId->toNative(),
                     json_encode([])
                 )
             );

@@ -155,7 +155,7 @@ class LabelRolesProjectorTest extends TestCase
     private function createEmptyJsonDocument(UUID $uuid)
     {
         return new JsonDocument(
-            $uuid,
+            $uuid->toNative(),
             json_encode([])
         );
     }
@@ -166,7 +166,7 @@ class LabelRolesProjectorTest extends TestCase
     public function createJsonDocument(UUID $labelId, UUID $roleId)
     {
         return new JsonDocument(
-            $labelId,
+            $labelId->toNative(),
             json_encode([$roleId->toNative() => $roleId->toNative()])
         );
     }
