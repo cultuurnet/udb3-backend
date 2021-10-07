@@ -8,11 +8,9 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\CalendarSummaryV3\Offer\Offer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,20 +27,6 @@ class ReadPlaceRestController
         DocumentRepository $documentRepository
     ) {
         $this->documentRepository = $documentRepository;
-    }
-
-    public function get(string $cdbid, Request $request): JsonResponse
-    {
-        $includeMetadata = (bool) $request->query->get('includeMetadata', false);
-
-        $place = $this->fetchPlaceJson($cdbid, $includeMetadata);
-
-        $response = JsonLdResponse::create()
-            ->setContent($place->getRawBody());
-
-        $response->headers->set('Vary', 'Origin');
-
-        return $response;
     }
 
     public function getCalendarSummary($cdbid, Request $request): Response
