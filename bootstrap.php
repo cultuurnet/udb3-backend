@@ -378,7 +378,7 @@ $app['calendar_summary_repository'] = $app->share(
         if (isset($app['config']['url'])) {
             return new \CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository(
                 new Client(new \GuzzleHttp\Client()),
-                \League\Uri\Schemes\Http::createFromString($app['config']['url'])
+                \League\Uri\Http::createFromString($app['config']['url'])
             );
         } else {
             return null;
