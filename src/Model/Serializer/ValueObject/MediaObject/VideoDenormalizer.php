@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Ramsey\Uuid\UuidFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -28,7 +29,8 @@ final class VideoDenormalizer implements DenormalizerInterface
 
         $video = new Video(
             new UUID($data['id']),
-            new Url($data['url'])
+            new Url($data['url']),
+            new Language($data['language'])
         );
 
         if (isset($data['copyrightHolder'])) {

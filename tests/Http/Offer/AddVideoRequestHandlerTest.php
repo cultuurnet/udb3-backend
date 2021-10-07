@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -56,7 +57,9 @@ class AddVideoRequestHandlerTest extends TestCase
     {
         $addVideoRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"publiq"}')
+            ->withBodyFromString(
+                '{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"publiq", "language": "nl"}'
+            )
             ->build('POST');
 
         $videoId = \Ramsey\Uuid\Uuid::uuid4();
@@ -72,7 +75,8 @@ class AddVideoRequestHandlerTest extends TestCase
                     new UUID('609a8214-51c9-48c0-903f-840a4f38852f'),
                     (new Video(
                         new UUID($videoId->toString()),
-                        new Url('https://www.youtube.com/watch?v=sdsd234')
+                        new Url('https://www.youtube.com/watch?v=sdsd234'),
+                        new Language('nl')
                     ))->withCopyrightHolder(new CopyrightHolder('publiq'))
                 ),
             ],
@@ -87,7 +91,7 @@ class AddVideoRequestHandlerTest extends TestCase
     {
         $addVideoRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234"}')
+            ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "language":"nl"}')
             ->build('POST');
 
         $videoId = \Ramsey\Uuid\Uuid::uuid4();
@@ -101,7 +105,11 @@ class AddVideoRequestHandlerTest extends TestCase
             [
                 new AddVideo(
                     new UUID('609a8214-51c9-48c0-903f-840a4f38852f'),
-                    new Video(new UUID($videoId->toString()), new Url('https://www.youtube.com/watch?v=sdsd234'))
+                    new Video(
+                        new UUID($videoId->toString()),
+                        new Url('https://www.youtube.com/watch?v=sdsd234'),
+                        new Language('nl')
+                    )
                 ),
             ],
             $this->commandBus->getRecordedCommands()

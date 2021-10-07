@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
@@ -379,7 +380,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $titleTranslated = new TitleTranslated(
             'foo',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('English title')
         );
 
@@ -421,7 +422,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $descriptionTranslated = new DescriptionTranslated(
             'foo',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new \CultuurNet\UDB3\Description('English description')
         );
 
@@ -473,7 +474,7 @@ class OfferLDProjectorTest extends TestCase
         $priceInfo = $priceInfo->withExtraTariff(
             new Tariff(
                 new MultilingualString(
-                    new Language('nl'),
+                    new LegacyLanguage('nl'),
                     new StringLiteral('Werkloze dodo kwekers')
                 ),
                 new Price(0),
@@ -533,7 +534,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $expectedMediaObjects = [
             (object) [
@@ -602,7 +603,7 @@ class OfferLDProjectorTest extends TestCase
             LegacyUrl::fromNative(
                 'http://foo.bar/media/de305d54-ddde-eddd-adb2-eb6b9e546014.png'
             ),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $image2 = new Image(
@@ -613,7 +614,7 @@ class OfferLDProjectorTest extends TestCase
             LegacyUrl::fromNative(
                 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
             ),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $expectedWithoutLastImage = (object) [
@@ -708,7 +709,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -746,7 +747,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -785,7 +786,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -816,7 +817,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -867,7 +868,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             LegacyUrl::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $initialDocument = new JsonDocument(
             $eventId,
@@ -915,7 +916,8 @@ class OfferLDProjectorTest extends TestCase
 
         $video = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $initialDocument = new JsonDocument(
@@ -960,7 +962,8 @@ class OfferLDProjectorTest extends TestCase
 
         $video2 = (new Video(
             new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
-            new Url('https://vimeo.com/98765432')
+            new Url('https://vimeo.com/98765432'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $initialDocument = new JsonDocument(
@@ -1021,7 +1024,8 @@ class OfferLDProjectorTest extends TestCase
 
         $video = new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
         );
 
         $initialDocument = new JsonDocument(
@@ -1535,7 +1539,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('epische panorama foto'),
             new CopyrightHolder('Jean-François Millet'),
             LegacyUrl::fromNative('http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg'),
-            new Language('nl')
+            new LegacyLanguage('nl')
         );
         $expectedMediaObjects = [
             (object) [
@@ -1593,7 +1597,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
             LegacyUrl::fromNative('http://foo.bar/media/my_pic.jpg'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $selfie = new Image(
@@ -1602,7 +1606,7 @@ class OfferLDProjectorTest extends TestCase
             new Description('my favorite selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             LegacyUrl::fromNative('http://foo.bar/media/img_182.jpg'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         return [
