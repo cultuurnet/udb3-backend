@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
+use CultuurNet\UDB3\Http\Event\GetEventDetailRequestHandler;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
@@ -22,7 +23,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'event_editing_controller:createEvent');
-        $controllers->get('/{cdbid}/', 'event_controller:get');
+        $controllers->get('/{eventId}/', GetEventDetailRequestHandler::class);
         $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
 
         $controllers->get('/{cdbid}/history/', 'event_controller:history');
@@ -66,6 +67,10 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
+        $app[GetEventDetailRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetEventDetailRequestHandler($app['event_jsonld_repository'])
+        );
+
         $app['event_controller'] = $app->share(
             function (Application $app) {
                 return new ReadEventRestController(
@@ -90,21 +95,15 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         );
 
         $app[UpdateCalendarRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateCalendarRequestHandler($app['event_command_bus']);
-            }
+            fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateSubEventsRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateSubEventsRequestHandler($app['event_command_bus']);
-            }
+            fn (Application $app) => new UpdateSubEventsRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateMajorInfoRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new UpdateMajorInfoRequestHandler($app['event_command_bus']);
-            }
+            fn (Application $app) => new UpdateMajorInfoRequestHandler($app['event_command_bus'])
         );
     }
 

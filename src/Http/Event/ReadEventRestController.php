@@ -8,7 +8,6 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\CalendarSummaryV3\Offer\Offer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -44,20 +43,6 @@ class ReadEventRestController
         $this->jsonRepository = $jsonRepository;
         $this->historyRepository = $historyRepository;
         $this->userIsGodUser = $userIsGodUser;
-    }
-
-    public function get(string $cdbid, Request $request): JsonResponse
-    {
-        $includeMetadata = (bool) $request->query->get('includeMetadata', false);
-
-        $event = $this->fetchEventJson($cdbid, $includeMetadata);
-
-        $response = JsonLdResponse::create()
-            ->setContent($event->getRawBody());
-
-        $response->headers->set('Vary', 'Origin');
-
-        return $response;
     }
 
     public function history(string $cdbid): JsonResponse

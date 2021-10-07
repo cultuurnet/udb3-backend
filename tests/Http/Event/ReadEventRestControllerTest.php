@@ -178,47 +178,6 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_json_get_for_an_event(): void
-    {
-        $request = new Request();
-
-        $controller = $this->createController(true);
-        $jsonResponse = $controller->get(self::EXISTING_ID, $request);
-
-        $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_http_response_with_json_including_metadata_for_an_event(): void
-    {
-        $request = new Request(['includeMetadata' => 'true']);
-
-        $controller = $this->createController(true);
-        $jsonResponse = $controller->get(self::EXISTING_ID, $request);
-
-        $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->jsonDocumentWithMetadata->getRawBody(), $jsonResponse->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_api_problem_exception_for_getting_a_non_existing_event(): void
-    {
-        $this->expectException(ApiProblem::class);
-
-        $request = new Request();
-
-        $controller = $this->createController(true);
-        $controller->get(self::NON_EXISTING_ID, $request);
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_a_http_response_with_a_calendar_summary_for_an_event(): void
     {
         $request = new Request(['style' => 'text', 'format' => 'lg']);
