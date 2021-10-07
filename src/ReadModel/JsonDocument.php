@@ -10,10 +10,10 @@ use stdClass;
 
 final class JsonDocument implements Identifiable
 {
-    private $id;
-    private $body;
+    private string $id;
+    private string $body;
 
-    public function __construct($id, $rawBody = '{}')
+    public function __construct(string $id, string $rawBody = '{}')
     {
         $this->id = $id;
         $this->body = $rawBody;
