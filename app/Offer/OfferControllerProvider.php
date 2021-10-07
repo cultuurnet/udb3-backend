@@ -71,11 +71,11 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
-        $controllers->post('/{cdbid}/labels', "{$controllerName}:addLabelFromJsonBody");
-        $controllers->post('/{cdbid}/{lang}/title', "{$controllerName}:updateTitle");
-        $controllers->post('/{cdbid}/{lang}/description', "{$controllerName}:updateDescription");
-        $controllers->post('/{cdbid}/facilities', "{$controllerName}:updateFacilitiesWithLabel");
-        $controllers->get('/{offerId}/permission', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
+        $controllers->post('/{cdbid}/labels/', "{$controllerName}:addLabelFromJsonBody");
+        $controllers->post('/{cdbid}/{lang}/title/', "{$controllerName}:updateTitle");
+        $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
+        $controllers->post('/{cdbid}/facilities/', "{$controllerName}:updateFacilitiesWithLabel");
+        $controllers->get('/{offerId}/permission/', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
         $controllers->get('/{offerId}/permission/{userId}', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
 
         return $controllers;
