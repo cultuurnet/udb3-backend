@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
@@ -239,6 +240,11 @@ $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
+
+// Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
+// ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
+// the needed CORS headers).
+$app->options('/{path}', fn () => new NoContentResponse())->assert('path', '^.+$');
 
 // Add CORS headers to every request. We explicitly allow everything, because we don't use cookies and our API is not on
 // an internal network, so CORS requests are never a security issue in our case. This greatly reduces the risk of CORS
