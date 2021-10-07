@@ -99,7 +99,7 @@ class GetPlaceDetailRequestHandlerTest extends TestCase
             ->build('GET');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::notFound('The place with id "c09b7a51-b17c-4121-b278-eef71ef04e47" was not found.'),
+            ApiProblem::urlNotFound('The place with id "c09b7a51-b17c-4121-b278-eef71ef04e47" was not found.'),
             fn () => $this->getPlaceDetailRequestHandler->handle($request)
         );
     }

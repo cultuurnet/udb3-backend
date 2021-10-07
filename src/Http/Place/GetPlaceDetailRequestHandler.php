@@ -33,7 +33,7 @@ final class GetPlaceDetailRequestHandler implements RequestHandlerInterface
         try {
             $placeDocument = $this->documentRepository->fetch($placeId, $includeMetadata);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::notFound(
+            throw ApiProblem::urlNotFound(
                 'The place with id "' . $placeId . '" was not found.'
             );
         }

@@ -33,7 +33,7 @@ final class GetEventDetailRequestHandler implements RequestHandlerInterface
         try {
             $eventDocument = $this->documentRepository->fetch($eventId, $includeMetadata);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::notFound(
+            throw ApiProblem::urlNotFound(
                 'The event with id "' . $eventId . '" was not found.'
             );
         }

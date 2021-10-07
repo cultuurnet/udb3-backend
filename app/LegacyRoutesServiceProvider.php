@@ -52,7 +52,7 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
 
                 // Prevent an infinite loop by stopping if the path was not changed.
                 if (!$rewrittenPath || $rewrittenPath === $path) {
-                    return new ApiProblemJsonResponse(ApiProblem::notFound());
+                    return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
                 }
 
                 // Create a new Request object with the rewritten path, because it's basically impossible to overwrite

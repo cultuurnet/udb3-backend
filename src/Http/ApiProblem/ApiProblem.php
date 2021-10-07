@@ -195,7 +195,7 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function notFound(string $detail = null): self
+    public static function urlNotFound(string $detail = null): self
     {
         return self::create(
             'https://api.publiq.be/probs/url/not-found',
