@@ -7,8 +7,9 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use RuntimeException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class VideoNormalizer
+final class VideoNormalizer implements NormalizerInterface
 {
     private const REGEX_FOR_PLATFORM = '/^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))/';
 
@@ -21,7 +22,10 @@ final class VideoNormalizer
         7 => self::VIMEO_EMBED,
     ];
 
-    public function serialize(Video $video): array
+    /**
+     * @param Video $video
+     */
+    public function normalize($video, $format = null, array $context = []): array
     {
         $videoArray = [
             'id' => $video->getId()->toString(),
@@ -34,6 +38,11 @@ final class VideoNormalizer
         }
 
         return $videoArray;
+    }
+
+    public function supportsNormalization($data, $format = null): bool
+    {
+        return $data === Video::class;
     }
 
     private function createEmbedUrl(Url $url): Url

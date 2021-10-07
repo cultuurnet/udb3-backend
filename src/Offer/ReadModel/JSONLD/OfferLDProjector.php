@@ -615,7 +615,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
         $offerLd->videos = $offerLd->videos ?? [];
-        $offerLd->videos[] = (new VideoNormalizer())->serialize($videoAdded->getVideo());
+        $offerLd->videos[] = (new VideoNormalizer())->normalize($videoAdded->getVideo());
 
         return $document->withBody($offerLd);
     }

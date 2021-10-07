@@ -19,7 +19,7 @@ final class VideoNormalizerTest extends TestCase
     {
         $this->assertEquals(
             $videoArray,
-            (new VideoNormalizer())->serialize($video)
+            (new VideoNormalizer())->normalize($video)
         );
     }
 
