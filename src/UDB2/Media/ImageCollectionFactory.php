@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Uri\Modifiers\AbstractUriModifier;
 use League\Uri\Modifiers\Normalize;
-use League\Uri\Schemes\Http;
+use League\Uri\Http;
 use Psr\Http\Message\UriInterface;
 use ValueObjects\Identity\UUID;
 use Ramsey\Uuid\Uuid as BaseUuid;
