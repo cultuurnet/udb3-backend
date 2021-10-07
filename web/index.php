@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
@@ -238,6 +239,29 @@ $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
+
+// Add CORS headers to every request. We explicitly allow everything, because we don't use cookies and our API is not on
+// an internal network, so CORS requests are never a security issue in our case. This greatly reduces the risk of CORS
+// bugs in our frontend and other integrations.
+$app->after(
+    function (Request $request, Response $response) {
+        // Allow any known method regardless of the URL.
+        $methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+        $response->headers->set('Allow', implode(',', $methods));
+        $response->headers->set('Access-Control-Allow-Methods', implode(',', $methods));
+
+        // Allow the Authorization header to be used.
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+
+        // If a specific origin has been requested to be used, echo it back. Otherwise allow *.
+        $requestedOrigin = $request->headers->get('Origin', '*');
+        $response->headers->set('Access-Control-Allow-Origin', $requestedOrigin);
+
+        // If specific headers have been requested to be used, echo them back. Otherwise allow the default headers.
+        $requestedHeaders = $request->headers->get('Access-Control-Request-Headers', 'authorization,x-api-key');
+        $response->headers->set('Access-Control-Allow-Headers', $requestedHeaders);
+    }
+);
 
 $app->register(new LegacyRoutesServiceProvider());
 
