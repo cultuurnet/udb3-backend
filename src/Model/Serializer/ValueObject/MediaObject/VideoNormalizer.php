@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use RuntimeException;
 
-final class VideoSerializer
+final class VideoNormalizer
 {
     private const REGEX_FOR_PLATFORM = '/^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))/';
 
