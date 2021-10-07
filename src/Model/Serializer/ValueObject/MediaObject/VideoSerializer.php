@@ -8,8 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 
 final class VideoSerializer
 {
-
-
     public function serialize(Video $video): array
     {
         $videoArray = [
