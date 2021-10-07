@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Event;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class GetEventDetailRequestHandlerTest extends TestCase
 
         $response = $this->getEventDetailRequestHandler->handle($request);
         $responseBody = $response->getBody()->getContents();
-        $decodedResponseBody = json_decode($responseBody, true, JSON_THROW_ON_ERROR);
+        $decodedResponseBody = Json::decodeAssociatively($responseBody);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('@id', $decodedResponseBody);
@@ -59,7 +60,7 @@ class GetEventDetailRequestHandlerTest extends TestCase
 
         $response = $this->getEventDetailRequestHandler->handle($request);
         $responseBody = $response->getBody()->getContents();
-        $decodedResponseBody = json_decode($responseBody, true, JSON_THROW_ON_ERROR);
+        $decodedResponseBody = Json::decodeAssociatively($responseBody);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('@id', $decodedResponseBody);
@@ -80,7 +81,7 @@ class GetEventDetailRequestHandlerTest extends TestCase
 
         $response = $this->getEventDetailRequestHandler->handle($request);
         $responseBody = $response->getBody()->getContents();
-        $decodedResponseBody = json_decode($responseBody, true, JSON_THROW_ON_ERROR);
+        $decodedResponseBody = Json::decodeAssociatively($responseBody);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('@id', $decodedResponseBody);
@@ -105,12 +106,11 @@ class GetEventDetailRequestHandlerTest extends TestCase
 
     private function mockEventDocument(string $eventId): void
     {
-        $jsonLd = json_encode(
+        $jsonLd = Json::encode(
             [
                 '@id' => '/events/' . $eventId,
                 'metadata' => ['foo' => 'bar'],
-            ],
-            JSON_THROW_ON_ERROR
+            ]
         );
 
         $document = new JsonDocument($eventId, $jsonLd);
