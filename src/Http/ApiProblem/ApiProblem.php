@@ -210,6 +210,11 @@ final class ApiProblem extends Exception
         return self::urlNotFound('The event with id "' . $eventId . '" was not found.');
     }
 
+    public static function placeNotFound(string $placeId): self
+    {
+        return self::urlNotFound('The place with id "' . $placeId . '" was not found.');
+    }
+
     public static function tokenNotSupported(string $detail): self
     {
         return self::create(
