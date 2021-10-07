@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
-final class VideoSerializerTest extends TestCase
+final class VideoNormalizerTest extends TestCase
 {
     /**
      * @test
@@ -20,7 +20,7 @@ final class VideoSerializerTest extends TestCase
     {
         $this->assertEquals(
             $videoArray,
-            (new VideoSerializer())->serialize($video)
+            (new VideoNormalizer())->normalize($video)
         );
     }
 
