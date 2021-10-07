@@ -11,7 +11,7 @@ final class Json
     public static int $depth = 512;
 
     /**
-     * @param mixed @value
+     * @param mixed $value
      *   Data to encode as JSON, usually an array or stdClass object
      *
      * @return string
