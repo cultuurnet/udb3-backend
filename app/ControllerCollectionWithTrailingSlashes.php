@@ -16,6 +16,12 @@ final class ControllerCollectionWithTrailingSlashes extends ControllerCollection
      */
     public function match($pattern, $to = null)
     {
+        // Don't alter the pattern if its a catch-all route as registered for OPTIONS requests and for rewrites of URLs
+        // for other methods.
+        if ($pattern === '/{path}') {
+            return parent::match($pattern, $to);
+        }
+
         // Trim trailing slashes, if any.
         $pattern = rtrim($pattern, '/');
 
