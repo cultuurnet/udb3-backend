@@ -39,16 +39,10 @@ final class CalendarSummaryParameters
             return $this->getContentTypeFromStyleParameter();
         }
 
-        switch ($accept) {
-            case 'text/plain':
-            case 'text/html':
-                return $accept;
-
-            case '*/*':
-            case 'text/*':
-            default:
-                return 'text/plain';
+        if ($accept === 'text/html') {
+            return 'text/html';
         }
+        return 'text/plain';
     }
 
     private function getContentTypeFromStyleParameter(): string
