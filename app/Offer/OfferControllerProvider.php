@@ -22,17 +22,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{offerType}/{offerId}/calendar-summary', GetCalendarSummaryRequestHandler::class)
-            ->assert('offerType', '(events|places)');
+        $controllers->get('/{offerType}/{offerId}/calendar-summary', GetCalendarSummaryRequestHandler::class);
 
-        $controllers->put('/{offerType}/{offerId}/status/', UpdateStatusRequestHandler::class)
-            ->assert('offerType', '(events|places)');
+        $controllers->put('/{offerType}/{offerId}/status/', UpdateStatusRequestHandler::class);
+        $controllers->put('/{offerType}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
-        $controllers->put('/{offerType}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class)
-            ->assert('offerType', '(events|places)');
-
-        $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class)
-            ->assert('offerType', '(events|places)');
+        $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
 
         return $controllers;
     }

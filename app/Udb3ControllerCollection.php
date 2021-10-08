@@ -28,6 +28,13 @@ final class Udb3ControllerCollection extends ControllerCollection
         // Add a single trailing slash.
         $pattern .= '/';
 
-        return parent::match($pattern, $to);
+        $match = parent::match($pattern, $to);
+
+        // Make it possible use an offerType wildcard that only matches if its either "events" or "places".
+        if (strpos($pattern, '{offerType}') !== false) {
+            $match->assert('offerType', '(events|places)');
+        }
+
+        return $match;
     }
 }
