@@ -35,7 +35,7 @@ final class QueryParameters
         return (bool) filter_var($valueAsString, FILTER_VALIDATE_BOOL);
     }
 
-    public function guardValueIn(string $parameterName, array $allowedValues): void
+    public function guardEnum(string $parameterName, array $allowedValues): void
     {
         $value = $this->get($parameterName, null);
         if ($value !== null && !in_array($value, $allowedValues, true)) {
