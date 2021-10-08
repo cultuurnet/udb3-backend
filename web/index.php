@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\LegacyRoutesServiceProvider;
 use CultuurNet\UDB3\Silex\Offer\DeprecatedOfferControllerProvider;
+use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
@@ -220,17 +221,21 @@ $placeControllerProvider = new PlaceControllerProvider();
 $placeOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::PLACE());
 $eventControllerProvider = new EventControllerProvider();
 $eventOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::EVENT());
+$offerControllerProvider = new OfferControllerProvider();
 
 $app->register($placeControllerProvider);
 $app->register($placeOfferControllerProvider);
 $app->register($eventControllerProvider);
 $app->register($eventOfferControllerProvider);
+$app->register($offerControllerProvider);
 
 $app->mount('/places', $placeControllerProvider);
 $app->mount('/places', $placeOfferControllerProvider);
 
 $app->mount('/events', $eventControllerProvider);
 $app->mount('/events', $eventOfferControllerProvider);
+
+$app->mount('/', $offerControllerProvider);
 
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
