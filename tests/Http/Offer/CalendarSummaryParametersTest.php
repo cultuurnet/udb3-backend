@@ -88,7 +88,7 @@ class CalendarSummaryParametersTest extends TestCase
 
         $parameters = new CalendarSummaryParameters($request);
 
-        $this->assertEquals('text', $parameters->getContentType());
+        $this->assertEquals('text/plain', $parameters->getContentType());
         $this->assertEquals('nl', $parameters->getLanguageCode());
         $this->assertEquals('lg', $parameters->getFormat());
         $this->assertEquals(false, $parameters->shouldHidePastDates());
@@ -106,7 +106,7 @@ class CalendarSummaryParametersTest extends TestCase
 
         $parameters = new CalendarSummaryParameters($request);
 
-        $this->assertEquals('html', $parameters->getContentType());
+        $this->assertEquals('text/html', $parameters->getContentType());
     }
 
     /**

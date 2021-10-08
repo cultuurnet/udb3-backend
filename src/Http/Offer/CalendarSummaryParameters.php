@@ -26,7 +26,14 @@ final class CalendarSummaryParameters
 
     public function getContentType(): string
     {
-        return $this->queryParameters->get('style', 'text');
+        $style = $this->queryParameters->get('style', 'text');
+        switch ($style) {
+            case 'html':
+                return 'text/html';
+            case 'text':
+            default:
+                return 'text/plain';
+        }
     }
 
     public function getLanguageCode(): string
