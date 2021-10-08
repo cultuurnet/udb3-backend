@@ -72,7 +72,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $app['event_controller'] = $app->share(
             function (Application $app) {
                 return new ReadEventRestController(
-                    $app['event_jsonld_repository'],
                     $app['event_history_repository'],
                     $app['current_user_is_god_user']
                 );

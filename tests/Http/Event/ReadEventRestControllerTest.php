@@ -174,30 +174,4 @@ class ReadEventRestControllerTest extends TestCase
         $controller = $this->createController(false);
         $controller->history(self::EXISTING_ID);
     }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_http_response_with_a_calendar_summary_for_an_event(): void
-    {
-        $request = new Request(['style' => 'text', 'format' => 'lg']);
-
-        $controller = $this->createController(true);
-        $calSumResponse = $controller->getCalendarSummary(self::EXISTING_ID, $request);
-
-        $this->assertEquals($this->calSum, $calSumResponse);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_api_problem_exception_for_calendar_summary_for_non_existing_event(): void
-    {
-        $this->expectException(ApiProblem::class);
-
-        $request = new Request(['style' => 'text', 'format' => 'lg']);
-
-        $controller = $this->createController(true);
-        $controller->getCalendarSummary(self::NON_EXISTING_ID, $request);
-    }
 }
