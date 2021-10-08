@@ -9,6 +9,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class CalendarSummaryParameters
 {
+    public const TEXT = 'text/plain';
+    public const HTML = 'text/html';
+
     private ServerRequestInterface $request;
     private QueryParameters $queryParameters;
 
@@ -41,10 +44,10 @@ final class CalendarSummaryParameters
         $accept = $this->request->getHeaderLine('Accept');
         $acceptParts = explode(';', $accept);
         $accept = $acceptParts[0];
-        if ($accept === 'text/html') {
-            return 'text/html';
+        if ($accept === self::HTML) {
+            return self::HTML;
         }
-        return 'text/plain';
+        return self::TEXT;
     }
 
     private function getContentTypeFromStyleParameter(): string
@@ -52,10 +55,10 @@ final class CalendarSummaryParameters
         $style = $this->queryParameters->get('style', 'text');
         switch ($style) {
             case 'html':
-                return 'text/html';
+                return self::HTML;
             case 'text':
             default:
-                return 'text/plain';
+                return self::TEXT;
         }
     }
 
