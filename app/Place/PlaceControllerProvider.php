@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\Place\GetPlaceDetailRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
-use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
 use CultuurNet\UDB3\Http\Place\UpdateCalendarRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
