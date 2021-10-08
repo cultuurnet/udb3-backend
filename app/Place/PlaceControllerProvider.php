@@ -42,8 +42,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
 
-        $controllers->get('/{cdbid}/calsum/', 'place_controller:getCalendarSummary');
-
         $controllers->put('/{placeId}/calendar/', UpdateCalendarRequestHandler::class);
 
         /**

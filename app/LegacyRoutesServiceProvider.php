@@ -51,6 +51,9 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
                     '/subEvents/' => 'sub-events',
                     '/typicalAgeRange/' => 'typical-age-range',
 
+                    // Convert old "calsum" path to "calendar-summary"
+                    '/\/calsum/' => '/calendar-summary',
+
                     // Add trailing slash if missing
                     '/^(.*)(?<!\/)$/' => '${1}/',
                 ];
