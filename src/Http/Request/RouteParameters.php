@@ -24,4 +24,19 @@ final class RouteParameters
         }
         return (string) $this->routeParameters[$parameterName];
     }
+
+    public function getEventId(): string
+    {
+        return $this->get('eventId');
+    }
+
+    public function getPlaceId(): string
+    {
+        return $this->get('placeId');
+    }
+
+    public function getOfferId(): string
+    {
+        return $this->get('offerId');
+    }
 }

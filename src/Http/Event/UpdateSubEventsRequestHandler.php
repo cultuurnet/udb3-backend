@@ -39,7 +39,7 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $eventId = $routeParameters->get('eventId');
+        $eventId = $routeParameters->getEventId();
 
         /** @var SubEventUpdates $updates */
         $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();

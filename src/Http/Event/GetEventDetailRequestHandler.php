@@ -26,7 +26,7 @@ final class GetEventDetailRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $eventId = $routeParameters->get('eventId');
+        $eventId = $routeParameters->getEventId();
         $queryParameters = new QueryParameters($request);
         $includeMetadata = $queryParameters->getAsBoolean('includeMetadata');
 

@@ -26,7 +26,7 @@ final class GetPlaceDetailRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $placeId = $routeParameters->get('placeId');
+        $placeId = $routeParameters->getPlaceId();
         $queryParameters = new QueryParameters($request);
         $includeMetadata = $queryParameters->getAsBoolean('includeMetadata');
 

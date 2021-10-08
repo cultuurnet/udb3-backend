@@ -40,7 +40,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->get('offerId');
+        $offerId = $routeParameters->getOfferId();
 
         /** @var BookingAvailability $bookingAvailability */
         $bookingAvailability = $this->parser->parse($request)->getParsedBody();
