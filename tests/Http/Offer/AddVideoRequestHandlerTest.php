@@ -123,7 +123,7 @@ class AddVideoRequestHandlerTest extends TestCase
     {
         $addVideoRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"copyrightHolder":"publiq"}')
+            ->withBodyFromString('{"language":"nl", "copyrightHolder":"publiq"}')
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
@@ -137,11 +137,29 @@ class AddVideoRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_requires_a_language(): void
+    {
+        $addVideoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"publiq"}')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'The required properties (language) are missing')
+            ),
+            fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
+        );
+    }
+
+    /**
+ * @test
+ */
     public function it_requires_a_valid_copyright_holder(): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":123}')
+            ->withBodyFromString('{"language":"nl", "url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":123}')
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
@@ -155,11 +173,29 @@ class AddVideoRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_requires_a_valid_language_enum(): void
+    {
+        $addVideoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"language":"Gesproken", "url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"Publiq"}')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/language', 'The data should match one item from enum')
+            ),
+            fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_only_allows_supported_video_platforms(): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"url":"https://www.google.com/?v=sdsd234"}')
+            ->withBodyFromString('{"url":"https://www.google.com/?v=sdsd234", "language": "nl"}')
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
