@@ -1,0 +1,167 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Http\Offer;
+
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use PHPUnit\Framework\TestCase;
+
+class CalendarSummaryParametersTest extends TestCase
+{
+    use AssertApiProblemTrait;
+
+    private Psr7RequestBuilder $requestBuilder;
+
+    protected function setUp(): void
+    {
+        $this->requestBuilder = new Psr7RequestBuilder();
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_the_langCode_parameter_contains_an_invalid_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?langCode=foo')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue(
+                'langCode',
+                'foo',
+                ['nl', 'nl_BE', 'fr', 'fr_BE', 'de', 'de_BE', 'en', 'en_BE']
+            ),
+            fn () => new CalendarSummaryParameters($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_the_style_parameter_contains_an_invalid_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?style=foo')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue(
+                'style',
+                'foo',
+                ['html', 'text']
+            ),
+            fn () => new CalendarSummaryParameters($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_the_format_parameter_contains_an_invalid_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?format=foo')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue(
+                'format',
+                'foo',
+                ['xs', 'sm', 'md', 'lg']
+            ),
+            fn () => new CalendarSummaryParameters($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_default_values_if_no_parameters_are_set(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('text', $parameters->getContentType());
+        $this->assertEquals('nl', $parameters->getLanguageCode());
+        $this->assertEquals('lg', $parameters->getFormat());
+        $this->assertEquals(false, $parameters->shouldHidePastDates());
+        $this->assertEquals('Europe/Brussels', $parameters->getTimeZone());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_overridden_style_parameter_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?style=html')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('html', $parameters->getContentType());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_overridden_langCode_parameter_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?langCode=fr_BE')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('fr_BE', $parameters->getLanguageCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_overridden_format_parameter_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?format=xs')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('xs', $parameters->getFormat());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_overridden_hidePast_parameter_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?hidePast=false')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals(false, $parameters->shouldHidePastDates());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_overridden_time_parameter_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?timeZone=Europe/Amsterdam')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('Europe/Amsterdam', $parameters->getTimeZone());
+    }
+}
