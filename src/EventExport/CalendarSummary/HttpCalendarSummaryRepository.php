@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
-use League\Uri\Schemes\Http;
+use League\Uri\Http;
 
 class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterface
 {
