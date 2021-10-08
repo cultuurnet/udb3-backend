@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Silex\ControllerCollectionWithTrailingSlashes;
+use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
@@ -37,7 +37,7 @@ $app = require __DIR__ . '/../bootstrap.php';
 
 // Register our own ControllerCollection as controllers_factory so every route automatically gets a trailing slash.
 $app['controllers_factory'] = function () use ($app) {
-    return new ControllerCollectionWithTrailingSlashes($app['route_factory']);
+    return new Udb3ControllerCollection($app['route_factory']);
 };
 
 $app->register(new WebErrorHandlerProvider());

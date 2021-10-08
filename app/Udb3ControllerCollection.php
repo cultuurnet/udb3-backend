@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use Silex\ControllerCollection;
 
-final class ControllerCollectionWithTrailingSlashes extends ControllerCollection
+final class Udb3ControllerCollection extends ControllerCollection
 {
     /**
      * Overrides the ControllerCollection::match() method that gets called for every route registration, so it can add
