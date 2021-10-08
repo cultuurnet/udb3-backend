@@ -20,16 +20,6 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @var JsonDocument
      */
-    private $jsonDocument;
-
-    /**
-     * @var JsonDocument
-     */
-    private $jsonDocumentWithMetadata;
-
-    /**
-     * @var JsonDocument
-     */
     private $historyJsonDocument;
 
     /**
@@ -38,43 +28,10 @@ class ReadEventRestControllerTest extends TestCase
     private $historyReponseContent;
 
     /**
-     * @var string
-     */
-    private $calSum;
-
-    /**
      * @inheritdoc
      */
     public function setUp()
     {
-        $this->jsonDocument = new JsonDocument(
-            'id',
-            json_encode(
-                [
-                    '@context' => '/contexts/event',
-                    'status' => [
-                        'type' => 'Available',
-                    ],
-                    'bookingAvailability' => [
-                        'type' => 'Unavailable',
-                    ],
-                    'startDate' => '2018-10-07 12:15:00+0200',
-                    'endDate' => '2018-10-07 18:00:00+0200',
-                    'calendarType' => 'single',
-                ]
-            )
-        );
-
-        $this->jsonDocumentWithMetadata = new JsonDocument(
-            'id',
-            json_encode(
-                [
-                    '@type' => 'Event',
-                    'popularity' => 123456,
-                ]
-            )
-        );
-
         $this->historyJsonDocument = new JsonDocument(
             'id',
             json_encode(
@@ -99,27 +56,10 @@ class ReadEventRestControllerTest extends TestCase
                 ],
             ]
         );
-
-        $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00 (Volzet of uitverkocht)';
     }
 
     private function createController(bool $godUser): ReadEventRestController
     {
-        $jsonRepository = $this->createMock(DocumentRepository::class);
-        $jsonRepository->method('fetch')
-            ->willReturnCallback(
-                function (string $id, bool $includeMetadata = false) {
-                    switch ($id) {
-                        case self::EXISTING_ID:
-                            return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
-                        case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::withId($id);
-                        default:
-                            throw DocumentDoesNotExist::withId($id);
-                    }
-                }
-            );
-
         $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
         $documentRepositoryInterface->method('fetch')
             ->willReturnCallback(
@@ -136,7 +76,6 @@ class ReadEventRestControllerTest extends TestCase
             );
 
         return new ReadEventRestController(
-            $jsonRepository,
             $documentRepositoryInterface,
             $godUser
         );
