@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -614,7 +615,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
         $offerLd->videos = $offerLd->videos ?? [];
-        $offerLd->videos[] = $videoAdded->getVideo()->serialize();
+        $offerLd->videos[] = (new VideoNormalizer())->normalize($videoAdded->getVideo());
 
         return $document->withBody($offerLd);
     }

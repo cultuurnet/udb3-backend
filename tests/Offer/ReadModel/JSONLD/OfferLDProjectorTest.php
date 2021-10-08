@@ -943,7 +943,7 @@ class OfferLDProjectorTest extends TestCase
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
                         'copyrightHolder' => 'Creative Commons',
-
+                        'embedUrl' => 'https://www.youtube.com/embed/123',
                     ],
                 ],
             ],
@@ -973,6 +973,7 @@ class OfferLDProjectorTest extends TestCase
                     [
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
+                        'embedUrl' => 'https://www.youtube.com/embed/123',
                         'copyrightHolder' => 'Creative Commons',
                     ],
                 ],
@@ -996,11 +997,13 @@ class OfferLDProjectorTest extends TestCase
                     (object)[
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
+                        'embedUrl' => 'https://www.youtube.com/embed/123',
                         'copyrightHolder' => 'Creative Commons',
                     ],
                     (object)[
                         'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
                         'url' => 'https://vimeo.com/98765432',
+                        'embedUrl' => 'https://player.vimeo.com/video/98765432',
                         'copyrightHolder' => 'Public Domain',
                     ],
                 ],
@@ -1045,6 +1048,7 @@ class OfferLDProjectorTest extends TestCase
                     (object)[
                         'id' => '91c75325-3830-4000-b580-5778b2de4548',
                         'url' => 'https://www.youtube.com/watch?v=123',
+                        'embedUrl' => 'https://www.youtube.com/embed/123',
                         //'copyrightHolder' => 'TODO: Fill in default copyright when known',
                     ],
                 ],
