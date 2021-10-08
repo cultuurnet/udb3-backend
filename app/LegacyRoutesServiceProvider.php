@@ -19,6 +19,8 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app): void
     {
+        $pathHasBeenRewritten = false;
+
         // NOTE: THIS CATCH-ALL ROUTE HAS TO BE REGISTERED INSIDE boot() SO THAT (DYNAMICALLY GENERATED) OPTIONS ROUTES
         // FOR CORS GET REGISTERED FIRST BEFORE THIS ONE.
         // Matches any path that does not match a registered route, and rewrites it using a set of predefined pattern
@@ -29,7 +31,11 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
         // PSR-15 middleware instead.
         $app->match(
             '/{path}',
-            function (Request $originalRequest, string $path) use ($app) {
+            function (Request $originalRequest, string $path) use ($app, &$pathHasBeenRewritten) {
+                if ($pathHasBeenRewritten) {
+                    return new ApiProblemJsonResponse(ApiProblem::notFound());
+                }
+
                 $rewrites = [
                     // Pluralize /event and /place
                     '/^(event|place)($|\/.*)/' => '${1}s${2}',
@@ -50,10 +56,7 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
                 ];
                 $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
 
-                // Prevent an infinite loop by stopping if the path was not changed.
-                if (!$rewrittenPath || $rewrittenPath === $path) {
-                    return new ApiProblemJsonResponse(ApiProblem::notFound());
-                }
+                $pathHasBeenRewritten = true;
 
                 // Create a new Request object with the rewritten path, because it's basically impossible to overwrite
                 // the path of an existing Request object even with initialize() or duplicate(). Approach copied from

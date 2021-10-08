@@ -63,7 +63,6 @@ use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Http\Adapter\Guzzle6\Client;
-use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\Psr7ServiceProvider;
@@ -123,8 +122,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
-
-$app->register(new CorsServiceProvider());
 
 $app['local_domain'] = \ValueObjects\Web\Domain::specifyType(
     parse_url($app['config']['url'])['host']
@@ -381,7 +378,7 @@ $app['calendar_summary_repository'] = $app->share(
         if (isset($app['config']['url'])) {
             return new \CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository(
                 new Client(new \GuzzleHttp\Client()),
-                \League\Uri\Schemes\Http::createFromString($app['config']['url'])
+                \League\Uri\Http::createFromString($app['config']['url'])
             );
         } else {
             return null;
