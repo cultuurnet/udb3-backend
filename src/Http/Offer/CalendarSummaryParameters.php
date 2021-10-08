@@ -28,17 +28,19 @@ final class CalendarSummaryParameters
 
     public function getContentType(): string
     {
+        // Prioritize "style" query parameter because sometimes a browser will send a default Accept header, for example
+        // when accessing the URL directly it will send a text/html Accept header, which would override the style
+        // parameter entered by the visitor (for example someone testing the endpoint manually).
+        if ($this->queryParameters->get('style') !== null) {
+            return $this->getContentTypeFromStyleParameter();
+        }
+
         // Just take the first line of the Accept header. Additionally, ignore everything after the ; like the q
         // parameter for more advanced content negotiation which is never applicable here.
         // So a header like "Accept: text/plain; q=0.2, text/html" will just get interpreted as "text/plain".
         $accept = $this->request->getHeaderLine('Accept');
         $acceptParts = explode(';', $accept);
         $accept = $acceptParts[0];
-
-        if ($accept === '') {
-            return $this->getContentTypeFromStyleParameter();
-        }
-
         if ($accept === 'text/html') {
             return 'text/html';
         }

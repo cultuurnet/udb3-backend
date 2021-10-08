@@ -148,10 +148,25 @@ class CalendarSummaryParametersTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_overridden_style_parameter_value(): void
+    public function it_returns_content_type_from_style_parameter(): void
     {
         $request = $this->requestBuilder
             ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?style=html')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('text/html', $parameters->getContentType());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_content_type_from_style_parameter_if_accept_header_is_also_provided(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?style=html')
+            ->withHeader('accept', 'text/plain')
             ->build('GET');
 
         $parameters = new CalendarSummaryParameters($request);
