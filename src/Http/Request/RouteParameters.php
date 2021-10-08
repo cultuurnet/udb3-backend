@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request;
 
+use CultuurNet\UDB3\Offer\OfferType;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
@@ -38,5 +39,17 @@ final class RouteParameters
     public function getOfferId(): string
     {
         return $this->get('offerId');
+    }
+
+    public function getOfferType(): OfferType
+    {
+        $offerType = $this->get('offerType');
+        if ($offerType === 'events') {
+            return OfferType::EVENT();
+        }
+        if ($offerType === 'places') {
+            return OfferType::PLACE();
+        }
+        throw new RuntimeException('Unknown offer type ' . $offerType);
     }
 }
