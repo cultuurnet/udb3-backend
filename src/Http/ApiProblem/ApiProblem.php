@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
+use CultuurNet\UDB3\Offer\OfferType;
 use Exception;
 
 /**
@@ -210,14 +211,19 @@ final class ApiProblem extends Exception
         return self::urlNotFound('The ' . $resourceType . ' with id "' . $resourceId . '" was not found.');
     }
 
+    public static function offerNotFound(OfferType $offerType, string $offerId): self
+    {
+        return self::resourceNotFound(strtolower($offerType->toNative()), $offerId);
+    }
+
     public static function eventNotFound(string $eventId): self
     {
-        return self::resourceNotFound('event', $eventId);
+        return self::offerNotFound(OfferType::EVENT(), $eventId);
     }
 
     public static function placeNotFound(string $placeId): self
     {
-        return self::resourceNotFound('place', $placeId);
+        return self::offerNotFound(OfferType::PLACE(), $placeId);
     }
 
     public static function tokenNotSupported(string $detail): self
