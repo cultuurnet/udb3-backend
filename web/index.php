@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\LegacyRoutesServiceProvider;
-use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
+use CultuurNet\UDB3\Silex\Offer\DeprecatedOfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
@@ -217,9 +217,9 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeControllerProvider = new PlaceControllerProvider();
-$placeOfferControllerProvider = new OfferControllerProvider(OfferType::PLACE());
+$placeOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::PLACE());
 $eventControllerProvider = new EventControllerProvider();
-$eventOfferControllerProvider = new OfferControllerProvider(OfferType::EVENT());
+$eventOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::EVENT());
 
 $app->register($placeControllerProvider);
 $app->register($placeOfferControllerProvider);

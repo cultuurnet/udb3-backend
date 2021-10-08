@@ -28,7 +28,11 @@ use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
+/**
+ * @deprecated
+ *   Register RequestHandlerInterface implementations for offer routes in the new OfferControllerProvider.
+ */
+class DeprecatedOfferControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
     private string $offerType;
 
