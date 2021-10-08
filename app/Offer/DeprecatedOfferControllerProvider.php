@@ -51,11 +51,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->put('/{offerId}/status/', UpdateStatusRequestHandler::class);
-        $controllers->put('/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
-
-        $controllers->post('/{offerId}/videos/', AddVideoRequestHandler::class);
-
         $controllers->put('/{cdbid}/type/{typeId}/', "{$controllerName}:updateType");
         $controllers->put('/{cdbid}/theme/{themeId}/', "{$controllerName}:updateTheme");
 
@@ -87,18 +82,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
 
     public function register(Application $app): void
     {
-        $app[UpdateStatusRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateStatusRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateBookingAvailabilityRequestHandler($app['event_command_bus'])
-        );
-
-        $app[AddVideoRequestHandler::class] = $app->share(
-            fn (Application $app) => new AddVideoRequestHandler($app['event_command_bus'], new UuidFactory())
-        );
-
         $app[$this->getEditControllerName()] = $app->share(
             function (Application $app) {
                 switch ($this->offerType) {
