@@ -205,14 +205,19 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function resourceNotFound(string $resourceType, string $resourceId): self
+    {
+        return self::urlNotFound('The ' . $resourceType . ' with id "' . $resourceId . '" was not found.');
+    }
+
     public static function eventNotFound(string $eventId): self
     {
-        return self::urlNotFound('The event with id "' . $eventId . '" was not found.');
+        return self::resourceNotFound('event', $eventId);
     }
 
     public static function placeNotFound(string $placeId): self
     {
-        return self::urlNotFound('The place with id "' . $placeId . '" was not found.');
+        return self::resourceNotFound('place', $placeId);
     }
 
     public static function tokenNotSupported(string $detail): self
