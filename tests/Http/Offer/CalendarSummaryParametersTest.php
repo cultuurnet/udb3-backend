@@ -97,6 +97,56 @@ class CalendarSummaryParametersTest extends TestCase
 
     /**
      * @test
+     * @dataProvider acceptHeaderDataProvider
+     */
+    public function it_returns_content_type_from_accept_header(string $acceptHeader, string $expectedContentType): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary')
+            ->withHeader('accept', $acceptHeader)
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals($expectedContentType, $parameters->getContentType());
+    }
+
+    public function acceptHeaderDataProvider(): array
+    {
+        return [
+            [
+                'given' => 'text/plain',
+                'expected' => 'text/plain',
+            ],
+            [
+                'given' => 'text/html',
+                'expected' => 'text/html',
+            ],
+            [
+                'given' => 'text/*',
+                'expected' => 'text/plain',
+            ],
+            [
+                'given' => '*/*',
+                'expected' => 'text/plain',
+            ],
+            [
+                'given' => 'text/html; q=0.2, text/plain',
+                'expected' => 'text/html',
+            ],
+            [
+                'given' => 'text/plain; q=0.3, text/html',
+                'expected' => 'text/plain',
+            ],
+            [
+                'given' => 'foobar',
+                'expected' => 'text/plain',
+            ],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_returns_overridden_style_parameter_value(): void
     {

@@ -9,10 +9,12 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class CalendarSummaryParameters
 {
+    private ServerRequestInterface $request;
     private QueryParameters $queryParameters;
 
     public function __construct(ServerRequestInterface $request)
     {
+        $this->request = $request;
         $this->queryParameters = new QueryParameters($request);
 
         // nl, fr, de, en are the documented allowed values. In the past these were documented as nl_BE, fr_BE, de_BE
@@ -25,6 +27,31 @@ final class CalendarSummaryParameters
     }
 
     public function getContentType(): string
+    {
+        // Just take the first line of the Accept header. Additionally, ignore everything after the ; like the q
+        // parameter for more advanced content negotiation which is never applicable here.
+        // So a header like "Accept: text/plain; q=0.2, text/html" will just get interpreted as "text/plain".
+        $accept = $this->request->getHeaderLine('Accept');
+        $acceptParts = explode(';', $accept);
+        $accept = $acceptParts[0];
+
+        if ($accept === '') {
+            return $this->getContentTypeFromStyleParameter();
+        }
+
+        switch ($accept) {
+            case 'text/plain':
+            case 'text/html':
+                return $accept;
+
+            case '*/*':
+            case 'text/*':
+            default:
+                return 'text/plain';
+        }
+    }
+
+    private function getContentTypeFromStyleParameter(): string
     {
         $style = $this->queryParameters->get('style', 'text');
         switch ($style) {
