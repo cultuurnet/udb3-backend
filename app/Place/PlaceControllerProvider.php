@@ -67,12 +67,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
             fn (Application $app) => new GetPlaceDetailRequestHandler($app['place_jsonld_repository'])
         );
 
-        $app['place_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadPlaceRestController($app['place_jsonld_repository']);
-            }
-        );
-
         $app['place_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditPlaceRestController(
