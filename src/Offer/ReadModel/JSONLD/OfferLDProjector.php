@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesEvent;
@@ -618,6 +619,24 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd = $document->getBody();
         $offerLd->videos = $offerLd->videos ?? [];
         $offerLd->videos[] = (new VideoNormalizer())->normalize($videoAdded->getVideo());
+
+        return $document->withBody($offerLd);
+    }
+
+    protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($videoDeleted->getItemId()->toString());
+
+        $offerLd = $document->getBody();
+
+        $offerLd->videos = array_values(array_filter(
+            $offerLd->videos,
+            static fn ($video) => $video->id !== $videoDeleted->getVideoId()->toString()
+        ));
+
+        if (count($offerLd->videos) === 0) {
+            unset($offerLd->videos);
+        }
 
         return $document->withBody($offerLd);
     }
