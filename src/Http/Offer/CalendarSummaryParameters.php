@@ -77,8 +77,8 @@ final class CalendarSummaryParameters
         return  $this->queryParameters->getAsBoolean('hidePast', false);
     }
 
-    public function getTimeZone(): string
+    public function getTimezone(): string
     {
-        return $this->queryParameters->get('timeZone', 'Europe/Brussels');
+        return $this->queryParameters->get('timezone', 'Europe/Brussels');
     }
 }
