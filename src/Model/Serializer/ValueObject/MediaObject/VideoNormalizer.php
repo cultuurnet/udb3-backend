@@ -17,11 +17,21 @@ final class VideoNormalizer implements NormalizerInterface
 
     private const YOUTUBE_EMBED = 'https://www.youtube.com/embed/';
 
+    private const YOUTUBE_NAME = 'YouTube';
+
     private const VIMEO_EMBED = 'https://player.vimeo.com/video/';
 
+    private const VIMEO_NAME = 'Vimeo';
+
     private array $videoPlatforms = [
-        5 => self::YOUTUBE_EMBED,
-        7 => self::VIMEO_EMBED,
+        5 => [
+            'embed' => self::YOUTUBE_EMBED,
+            'name' => self::YOUTUBE_NAME,
+            ],
+        7 => [
+            'embed' => self::VIMEO_EMBED,
+            'name' => self::VIMEO_NAME,
+        ],
     ];
 
     /**
@@ -69,7 +79,7 @@ final class VideoNormalizer implements NormalizerInterface
         return $data === Video::class;
     }
 
-    private function createEmbedUrl(Url $url): Url
+    private function getVideoData(Url $url): array
     {
         $matches = [];
         preg_match(
@@ -77,30 +87,29 @@ final class VideoNormalizer implements NormalizerInterface
             $url->toString(),
             $matches
         );
+        return $matches;
+    }
 
-        foreach ($this->videoPlatforms as $videoPlatformIndex => $videoPlatformEmbed) {
+    private function createEmbedUrl(Url $url): Url
+    {
+        $matches = $this->getVideoData($url);
+        foreach ($this->videoPlatforms as $videoPlatformIndex => $videoPlatformData) {
             if (isset($matches[$videoPlatformIndex]) && !empty($matches[$videoPlatformIndex])) {
-                return new Url($videoPlatformEmbed . $matches[$videoPlatformIndex]);
+                return new Url($videoPlatformData['embed'] . $matches[$videoPlatformIndex]);
             }
         }
         throw new RuntimeException('Undefined Video Platform');
     }
 
-    private function getVideoPlatform(Url $url): string
-    {
-        if (stripos($url->toString(), 'YouTube')) {
-            return 'YouTube';
-        }
-        if (stripos($url->toString(), 'Vimeo')) {
-            return 'Vimeo';
-        }
-        throw new RuntimeException('Unsupported Video Platform');
-    }
-
     private function createDefaultCopyrightHolder(Language $language, Url $url): CopyrightHolder
     {
         $copyrightTranslation = $this->defaultCopyrightHolders[$language->toString()];
-        $videoPlatform = $this->getVideoPlatform($url);
-        return new CopyrightHolder($copyrightTranslation . ' ' . $videoPlatform);
+        $matches = $this->getVideoData($url);
+        foreach ($this->videoPlatforms as $videoPlatformIndex => $videoPlatformData) {
+            if (isset($matches[$videoPlatformIndex]) && !empty($matches[$videoPlatformIndex])) {
+                return new CopyrightHolder($copyrightTranslation . ' ' . $videoPlatformData['name']);
+            }
+        }
+        throw new RuntimeException('Unsupported Video Platform');
     }
 }
