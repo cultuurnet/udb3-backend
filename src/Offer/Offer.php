@@ -66,7 +66,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use Exception;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
@@ -274,7 +274,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Get the id of the main image if one is selected for this offer.
      *
-     * @return UUID|null
+     * @return LegacyUUID|null
      */
     protected function getMainImageId()
     {
@@ -614,8 +614,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
 
     public function updateImage(
-        UUID $mediaObjectId,
-        StringLiteral $description,
+        LegacyUUID      $mediaObjectId,
+        StringLiteral   $description,
         CopyrightHolder $copyrightHolder
     ) {
         if ($this->updateImageAllowed($mediaObjectId, $description, $copyrightHolder)) {
@@ -630,8 +630,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     private function updateImageAllowed(
-        UUID $mediaObjectId,
-        StringLiteral $description,
+        LegacyUUID      $mediaObjectId,
+        StringLiteral   $description,
         CopyrightHolder $copyrightHolder
     ): bool {
         $image = $this->images->findImageByUUID($mediaObjectId);
@@ -1056,8 +1056,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      * @return AbstractImageUpdated
      */
     abstract protected function createImageUpdatedEvent(
-        UUID $uuid,
-        StringLiteral $description,
+        LegacyUUID      $uuid,
+        StringLiteral   $description,
         CopyrightHolder $copyrightHolder
     );
 
