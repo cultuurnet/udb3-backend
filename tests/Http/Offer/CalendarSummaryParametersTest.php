@@ -262,4 +262,18 @@ class CalendarSummaryParametersTest extends TestCase
 
         $this->assertEquals('Europe/Amsterdam', $parameters->getTimezone());
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_overridden_timeZone_parameter_value_in_old_casing(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?timeZone=Europe/Amsterdam')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('Europe/Amsterdam', $parameters->getTimezone());
+    }
 }

@@ -77,6 +77,7 @@ final class CalendarSummaryParameters
 
     public function getTimezone(): string
     {
-        return $this->queryParameters->get('timezone', 'Europe/Brussels');
+        $timeZoneOldName = $this->queryParameters->get('timeZone');
+        return $timeZoneOldName ?? $this->queryParameters->get('timezone', 'Europe/Brussels');
     }
 }

@@ -83,25 +83,5 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
                 return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
             }
         )->assert('path', '^.+$');
-
-        // Middleware that rewrites old query parameter names to new query parameter names.
-        // Since the replacements are globally, make sure that the parameter name that you want to rename is not used in
-        // other places (or update all usages)!
-        $app->before(
-            function (Request $request) {
-                $renameQueryParameters = [
-                    // Fix casing of incorrectly cased words
-                    'timeZone' => 'timezone',
-                ];
-
-                foreach ($renameQueryParameters as $oldName => $newName) {
-                    if ($request->query->has($oldName)) {
-                        $value = $request->query->get($oldName);
-                        $request->query->set($newName, $value);
-                        $request->query->remove($oldName);
-                    }
-                }
-            }
-        );
     }
 }
