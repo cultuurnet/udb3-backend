@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
+use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
@@ -76,6 +77,11 @@ class ItemLDProjector extends OfferLDProjector
     protected function getVideoAddedClassName(): string
     {
         return VideoAdded::class;
+    }
+
+    protected function getVideoDeletedClassName(): string
+    {
+        return VideoDeleted::class;
     }
 
     /**
