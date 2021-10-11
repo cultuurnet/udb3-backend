@@ -219,10 +219,10 @@ class CalendarSummaryParametersTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_overridden_time_parameter_value(): void
+    public function it_returns_overridden_timezone_parameter_value(): void
     {
         $request = $this->requestBuilder
-            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?timeZone=Europe/Amsterdam')
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?timezone=Europe/Amsterdam')
             ->build('GET');
 
         $parameters = new CalendarSummaryParameters($request);
