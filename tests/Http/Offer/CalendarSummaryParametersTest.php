@@ -33,7 +33,26 @@ class CalendarSummaryParametersTest extends TestCase
             ApiProblem::queryParameterInvalidValue(
                 'langCode',
                 'foo',
-                ['nl', 'nl_BE', 'fr', 'fr_BE', 'de', 'de_BE', 'en', 'en_BE']
+                ['nl_BE', 'fr_BE', 'de_BE', 'en_BE']
+            ),
+            fn () => new CalendarSummaryParameters($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_the_language_parameter_contains_an_invalid_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?language=foo')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue(
+                'language',
+                'foo',
+                ['nl', 'fr', 'de', 'en']
             ),
             fn () => new CalendarSummaryParameters($request)
         );
@@ -186,6 +205,20 @@ class CalendarSummaryParametersTest extends TestCase
         $parameters = new CalendarSummaryParameters($request);
 
         $this->assertEquals('fr_BE', $parameters->getLanguageCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_overridden_language_parameter_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?language=fr')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('fr', $parameters->getLanguageCode());
     }
 
     /**
