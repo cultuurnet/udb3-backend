@@ -13,6 +13,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
+use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
@@ -60,7 +61,7 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
             ])
             ->when(new DeleteVideo($eventId, $videoId))
             ->then([
-                new VideoAdded($eventId, $video),
+                new VideoDeleted($eventId, $videoId),
             ]);
     }
 
