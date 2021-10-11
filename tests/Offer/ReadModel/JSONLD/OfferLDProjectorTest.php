@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
+use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -1051,6 +1052,114 @@ class OfferLDProjectorTest extends TestCase
                         'embedUrl' => 'https://www.youtube.com/embed/123',
                         //'copyrightHolder' => 'TODO: Fill in default copyright when known',
                     ],
+                ],
+            ],
+            $eventBody
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_deleting_a_video(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+        $videoToDeleteId = '5c549a24-bb97-4f83-8ea5-21a6d56aff72';
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'copyrightHolder' => 'Creative Commons',
+                        'embedUrl' => 'https://www.youtube.com/embed/123',
+                    ],
+                    (object)[
+                        'id' => $videoToDeleteId,
+                        'url' => 'https://vimeo.com/98765432',
+                        'embedUrl' => 'https://player.vimeo.com/video/98765432',
+                        'copyrightHolder' => 'Public Domain',
+                    ],
+                    (object)[
+                        'id' => 'e86a4d89-1f95-475e-b637-b986f669ecef',
+                        'url' => 'https://www.youtube.com/watch?v=4335',
+                        'copyrightHolder' => 'Creative Minds',
+                        'embedUrl' => 'https://www.youtube.com/embed/4335',
+                    ],
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $videoDeleted = new VideoDeleted(new UUID($eventId), new UUID($videoToDeleteId));
+        $eventBody = $this->project($videoDeleted, $eventId);
+
+        unset($eventBody->modified);
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'copyrightHolder' => 'Creative Commons',
+                        'embedUrl' => 'https://www.youtube.com/embed/123',
+                    ],
+                    (object)[
+                        'id' => 'e86a4d89-1f95-475e-b637-b986f669ecef',
+                        'url' => 'https://www.youtube.com/watch?v=4335',
+                        'copyrightHolder' => 'Creative Minds',
+                        'embedUrl' => 'https://www.youtube.com/embed/4335',
+                    ],
+                ],
+            ],
+            $eventBody
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_deleting_a_video_and_unsets_videos(): void
+    {
+        $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode([
+                'name' => [
+                    'nl' => 'Titel',
+                ],
+                'videos' => [
+                    (object)[
+                        'id' => $videoId,
+                        'url' => 'https://www.youtube.com/watch?v=123',
+                        'copyrightHolder' => 'Creative Commons',
+                        'embedUrl' => 'https://www.youtube.com/embed/123',
+                    ],
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $videoDeleted = new VideoDeleted(new UUID($eventId), new UUID($videoId));
+        $eventBody = $this->project($videoDeleted, $eventId);
+
+        unset($eventBody->modified);
+        $this->assertEquals(
+            (object) [
+                'name' => (object)[
+                    'nl' => 'Titel',
                 ],
             ],
             $eventBody
