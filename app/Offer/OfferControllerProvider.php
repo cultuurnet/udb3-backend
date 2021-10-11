@@ -8,6 +8,7 @@ use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\LabelJSONDeserializer;
@@ -51,6 +52,7 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
         $controllers->post('/{offerId}/videos/', AddVideoRequestHandler::class);
+        $controllers->delete('/{offerId}/videos/{videoId}', DeleteVideoRequestHandler::class);
 
         $controllers->put('/{cdbid}/type/{typeId}/', "{$controllerName}:updateType");
         $controllers->put('/{cdbid}/theme/{themeId}/', "{$controllerName}:updateTheme");
@@ -93,6 +95,10 @@ class OfferControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[AddVideoRequestHandler::class] = $app->share(
             fn (Application $app) => new AddVideoRequestHandler($app['event_command_bus'], new UuidFactory())
+        );
+
+        $app[DeleteVideoRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteVideoRequestHandler($app['event_command_bus'])
         );
 
         $app[$this->getEditControllerName()] = $app->share(
