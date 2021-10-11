@@ -742,6 +742,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function deleteVideo(UUID $videoID): void
+    {
+        $videosWithSameId = $this->videos->filter(
+            fn (Video $video) => $video->getId()->sameAs($videoID)
+        );
+
+        if (!$videosWithSameId->isEmpty()) {
+            $this->apply($this->createVideoDeletedEvent($videoID));
+        }
+    }
+
     /**
      * Delete the offer.
      */
@@ -968,9 +979,16 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = $this->images->withMain($mainImageSelected->getImage());
     }
 
-    protected function applyVideoAdded(AbstractVideoAdded $abstractVideoAdded)
+    protected function applyVideoAdded(AbstractVideoAdded $videoAdded): void
     {
-        $this->videos = $this->videos->with($abstractVideoAdded->getVideo());
+        $this->videos = $this->videos->with($videoAdded->getVideo());
+    }
+
+    protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): void
+    {
+        $this->videos = $this->videos->filter(
+            fn (Video $video) => !$video->getId()->sameAs($videoDeleted->getVideoId())
+        );
     }
 
     protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated)
