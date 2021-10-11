@@ -20,7 +20,11 @@ final class CalendarSummaryParameters
         $this->request = $request;
         $this->queryParameters = new QueryParameters($request);
 
+        // Validate query parameters.
         $this->queryParameters->guardEnum('language', ['nl', 'fr', 'de', 'en']);
+        $this->queryParameters->guardEnum('size', ['xs', 'sm', 'md', 'lg']);
+
+        // Validate deprecated query parameters.
         $this->queryParameters->guardEnum('langCode', ['nl_BE', 'fr_BE', 'de_BE', 'en_BE']);
         $this->queryParameters->guardEnum('style', ['html', 'text']);
         $this->queryParameters->guardEnum('format', ['xs', 'sm', 'md', 'lg']);
@@ -67,7 +71,8 @@ final class CalendarSummaryParameters
 
     public function getSize(): string
     {
-        return $this->queryParameters->get('format', 'lg');
+        $format = $this->queryParameters->get('format');
+        return $format ?? $this->queryParameters->get('size', 'lg');
     }
 
     public function shouldHidePastDates(): bool

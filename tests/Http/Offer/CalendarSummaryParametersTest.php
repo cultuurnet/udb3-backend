@@ -238,6 +238,20 @@ class CalendarSummaryParametersTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_overridden_size_parameter_value(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary?size=xs')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals('xs', $parameters->getSize());
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_overridden_hidePast_parameter_value(): void
     {
         $request = $this->requestBuilder
