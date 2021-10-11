@@ -8,10 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
@@ -24,12 +20,10 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
-use CultuurNet\UDB3\Event\Events\VideoAdded as VideoAddedToEvent;
+use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Geography\Country;
 
 final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -60,7 +54,7 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id->toString())
             ->given([$this->getEventCreated($id)])
             ->when(new AddVideo($id, $video))
-            ->then([new VideoAddedToEvent($id, $video)]);
+            ->then([new VideoAdded($id, $video)]);
     }
 
     private function getEventCreated(UUID $id): EventCreated
@@ -71,26 +65,6 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::PERMANENT())
-        );
-    }
-
-    private function getPlaceCreated(UUID $id): PlaceCreated
-    {
-        return new PlaceCreated(
-            $id->toString(),
-            new Language('fr'),
-            new Title('some place name'),
-            new EventType(
-                'BtVNd33sR0WntjALVbyp3w',
-                'Bioscoop'
-            ),
-            new Address(
-                new Street('Straat 1'),
-                new PostalCode('1000'),
-                new Locality('Brussel'),
-                Country::fromNative('BE')
-            ),
             new Calendar(CalendarType::PERMANENT())
         );
     }
