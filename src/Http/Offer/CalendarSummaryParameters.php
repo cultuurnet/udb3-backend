@@ -59,7 +59,7 @@ final class CalendarSummaryParameters
         }
     }
 
-    public function getLanguageCode(): string
+    public function getLanguage(): string
     {
         $langCode = $this->queryParameters->get('langCode');
         return $langCode ?? $this->queryParameters->get('language', 'nl');
