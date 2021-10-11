@@ -34,13 +34,7 @@ final class VideoNormalizer implements NormalizerInterface
         ],
     ];
 
-    /**
-     * Associative array of default copyrightholders.
-     * Key is the language, value is the translated string.
-     *
-     * @var string[]
-     */
-    private $defaultCopyrightHolders;
+    private array $defaultCopyrightHolders;
 
     /**
      * @param string[] $defaultCopyrightHolders
@@ -55,10 +49,11 @@ final class VideoNormalizer implements NormalizerInterface
      */
     public function normalize($video, $format = null, array $context = []): array
     {
+        $platformData = $this->getPlatformData($video->getUrl());
         $videoArray = [
             'id' => $video->getId()->toString(),
             'url' => $video->getUrl()->toString(),
-            'embedUrl' => $this->createEmbedUrl($video->getUrl())->toString(),
+            'embedUrl' => $this->createEmbedUrl($platformData)->toString(),
             'language' => $video->getLanguage()->toString(),
         ];
 
@@ -69,7 +64,7 @@ final class VideoNormalizer implements NormalizerInterface
 
         $videoArray['copyrightHolder'] = $this->createDefaultCopyrightHolder(
             $video->getLanguage(),
-            $video->getUrl()
+            $platformData
         )->toString();
         return $videoArray;
     }
@@ -99,17 +94,17 @@ final class VideoNormalizer implements NormalizerInterface
         throw new RuntimeException('Unsupported Video Platform');
     }
 
-    private function createEmbedUrl(Url $url): Url
+    private function createEmbedUrl(array $platformData): Url
     {
-        return new Url($this->getPlatformData($url)['embed'] . $this->getPlatformData($url)['video_id']);
+        return new Url($platformData['embed'] . $platformData['video_id']);
     }
 
-    private function createDefaultCopyrightHolder(Language $language, Url $url): CopyrightHolder
+    private function createDefaultCopyrightHolder(Language $language, array $platformData): CopyrightHolder
     {
         return new CopyrightHolder(
             $this->defaultCopyrightHolders[$language->toString()] .
             ' ' .
-            $this->getPlatformData($url)['name']
+            $platformData['name']
         );
     }
 }
