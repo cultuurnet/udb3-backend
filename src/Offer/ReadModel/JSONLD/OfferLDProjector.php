@@ -68,30 +68,15 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         DelegateEventHandlingToSpecificMethodTrait::handle as handleUnknownEvents;
     }
 
-    /**
-     * @var DocumentRepository
-     */
-    protected $repository;
+    protected DocumentRepository $repository;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    protected $iriGenerator;
+    protected IriGeneratorInterface $iriGenerator;
 
-    /**
-     * @var EntityServiceInterface
-     */
-    protected $organizerService;
+    protected EntityServiceInterface $organizerService;
 
-    /**
-     * @var JsonDocumentMetaDataEnricherInterface
-     */
-    protected $jsonDocumentMetaDataEnricher;
+    protected JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher;
 
-    /**
-     * @var MediaObjectSerializer
-     */
-    protected $mediaObjectSerializer;
+    protected MediaObjectSerializer $mediaObjectSerializer;
 
     /**
      * Associative array of bases prices.
@@ -99,12 +84,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      *
      * @var string[]
      */
-    private $basePriceTranslations;
+    private array $basePriceTranslations;
 
-    /**
-     * @var SluggerInterface
-     */
-    protected $slugger;
+    protected SluggerInterface $slugger;
 
     /**
      * @param string[] $basePriceTranslations

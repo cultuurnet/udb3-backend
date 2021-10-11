@@ -84,25 +84,13 @@ class EventLDProjector extends OfferLDProjector implements
     EventListener,
     PlaceServiceInterface
 {
-    /**
-     * @var LocalPlaceService
-     */
-    protected $placeService;
+    protected LocalPlaceService $placeService;
 
-    /**
-     * @var IriOfferIdentifierFactoryInterface
-     */
-    protected $iriOfferIdentifierFactory;
+    protected IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory;
 
-    /**
-     * @var CdbXMLImporter
-     */
-    protected $cdbXMLImporter;
+    protected CdbXMLImporter $cdbXMLImporter;
 
-    /**
-     * @var EventTypeResolver
-     */
-    private $eventTypeResolver;
+    private EventTypeResolver $eventTypeResolver;
 
     /**
      * @param string[] $basePriceTranslations

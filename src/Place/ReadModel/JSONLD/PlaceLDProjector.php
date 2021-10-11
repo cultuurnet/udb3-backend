@@ -73,10 +73,7 @@ use CultuurNet\UDB3\Theme;
  */
 class PlaceLDProjector extends OfferLDProjector implements EventListener
 {
-    /**
-     * @var CdbXMLImporter
-     */
-    protected $cdbXMLImporter;
+    protected CdbXMLImporter $cdbXMLImporter;
 
     /**
      * @param string[] $basePriceTranslations
