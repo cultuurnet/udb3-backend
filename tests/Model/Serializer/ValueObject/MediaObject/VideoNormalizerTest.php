@@ -50,14 +50,14 @@ final class VideoNormalizerTest extends TestCase
                 new Video(
                     new UUID('91c75325-3830-4000-b580-5778b2de4548'),
                     new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
-                    new Language('nl')
+                    new Language('fr')
                 ),
                 [
                     'id' => '91c75325-3830-4000-b580-5778b2de4548',
                     'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
                     'embedUrl' => 'https://www.youtube.com/embed/cEItmb_a20D',
-                    'language' => 'nl',
-                    'copyrightHolder' => 'Copyright afgehandeld door YouTube',
+                    'language' => 'fr',
+                    'copyrightHolder' => 'Droits d\'auteur gérés par YouTube',
                 ],
             ],
         ];
