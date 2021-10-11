@@ -42,21 +42,21 @@ final class GetCalendarSummaryRequestHandler implements RequestHandlerInterface
 
         $parameters = new CalendarSummaryParameters($request);
         $contentType = $parameters->getContentType();
-        $langCode = $parameters->getLanguageCode();
-        $format = $parameters->getSize();
+        $language = $parameters->getLanguageCode();
+        $size = $parameters->getSize();
         $hidePastDates = $parameters->shouldHidePastDates();
-        $timeZone = $parameters->getTimezone();
+        $timezone = $parameters->getTimezone();
 
         switch ($contentType) {
             case CalendarSummaryParameters::HTML:
-                $formatter = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
-                $summary = $formatter->format($offer, $format);
+                $formatter = new CalendarHTMLFormatter($language, $hidePastDates, $timezone);
+                $summary = $formatter->format($offer, $size);
                 return new HtmlResponse($summary);
 
             case CalendarSummaryParameters::TEXT:
             default:
-                $formatter = new CalendarPlainTextFormatter($langCode, $hidePastDates, $timeZone);
-                $summary = $formatter->format($offer, $format);
+                $formatter = new CalendarPlainTextFormatter($language, $hidePastDates, $timezone);
+                $summary = $formatter->format($offer, $size);
                 return new PlainTextResponse($summary);
         }
     }
