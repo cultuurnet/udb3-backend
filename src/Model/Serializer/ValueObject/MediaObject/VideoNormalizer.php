@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use RuntimeException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,6 +25,22 @@ final class VideoNormalizer implements NormalizerInterface
     ];
 
     /**
+     * Associative array of default copyrightholders.
+     * Key is the language, value is the translated string.
+     *
+     * @var string[]
+     */
+    private $defaultCopyrightHolders;
+
+    /**
+     * @param string[] $defaultCopyrightHolders
+     */
+    public function __construct(array $defaultCopyrightHolders)
+    {
+        $this->defaultCopyrightHolders = $defaultCopyrightHolders;
+    }
+
+    /**
      * @param Video $video
      */
     public function normalize($video, $format = null, array $context = []): array
@@ -36,6 +54,11 @@ final class VideoNormalizer implements NormalizerInterface
 
         if ($video->getCopyrightHolder() !== null) {
             $videoArray['copyrightHolder'] = $video->getCopyrightHolder()->toString();
+        } else {
+            $videoArray['copyrightHolder'] = $this->createDefaultCopyrightHolder(
+                $video->getLanguage(),
+                $video->getUrl()
+            )->toString();
         }
 
         return $videoArray;
@@ -61,5 +84,23 @@ final class VideoNormalizer implements NormalizerInterface
             }
         }
         throw new RuntimeException('Undefined Video Platform');
+    }
+
+    private function getVideoPlatform(Url $url): string
+    {
+        if (stripos($url->toString(), 'YouTube')) {
+            return 'YouTube';
+        }
+        if (stripos($url->toString(), 'Vimeo')) {
+            return 'Vimeo';
+        }
+        throw new RuntimeException('Unsupported Video Platform');
+    }
+
+    private function createDefaultCopyrightHolder(Language $language, Url $url): CopyrightHolder
+    {
+        $copyrightTranslation = $this->defaultCopyrightHolders[$language->toString()];
+        $videoPlatform = $this->getVideoPlatform($url);
+        return new CopyrightHolder($copyrightTranslation . ' ' . $videoPlatform);
     }
 }

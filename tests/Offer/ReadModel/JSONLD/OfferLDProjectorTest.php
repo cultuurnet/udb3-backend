@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -129,7 +130,15 @@ class OfferLDProjectorTest extends TestCase
                 'fr' => 'Tarif de base',
                 'en' => 'Base tariff',
                 'de' => 'Basisrate',
-            ]
+            ],
+            new VideoNormalizer(
+                [
+                    'nl' => 'Copyright afgehandeld door',
+                    'fr' => 'Droits d\'auteur gérés par',
+                    'de' => 'Urheberrecht gehandhabt von',
+                    'en' => 'Copyright handled by',
+                ]
+            )
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
@@ -1058,7 +1067,7 @@ class OfferLDProjectorTest extends TestCase
                         'url' => 'https://www.youtube.com/watch?v=123',
                         'embedUrl' => 'https://www.youtube.com/embed/123',
                         'language' => 'nl',
-                        //'copyrightHolder' => 'TODO: Fill in default copyright when known',
+                        'copyrightHolder' => 'Copyright afgehandeld door YouTube',
                     ],
                 ],
             ],

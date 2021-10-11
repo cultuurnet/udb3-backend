@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
@@ -87,7 +88,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         MediaObjectSerializer $mediaObjectSerializer,
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
-        array $basePriceTranslations
+        array $basePriceTranslations,
+        VideoNormalizer $videoNormalizer
     ) {
         parent::__construct(
             $repository,
@@ -95,7 +97,8 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $organizerService,
             $mediaObjectSerializer,
             $jsonDocumentMetaDataEnricher,
-            $basePriceTranslations
+            $basePriceTranslations,
+            $videoNormalizer
         );
 
         $this->cdbXMLImporter = $cdbXMLImporter;

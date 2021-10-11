@@ -20,7 +20,12 @@ final class VideoNormalizerTest extends TestCase
     {
         $this->assertEquals(
             $videoArray,
-            (new VideoNormalizer())->normalize($video)
+            (new VideoNormalizer([
+                'nl' => 'Copyright afgehandeld door',
+                'fr' => 'Droits d\'auteur gérés par',
+                'de' => 'Urheberrecht gehandhabt von',
+                'en' => 'Copyright handled by',
+            ]))->normalize($video)
         );
     }
 
@@ -38,6 +43,7 @@ final class VideoNormalizerTest extends TestCase
                     'url' => 'https://vimeo.com/98765432',
                     'embedUrl' => 'https://player.vimeo.com/video/98765432',
                     'language' => 'nl',
+                    'copyrightHolder' => 'Copyright afgehandeld door Vimeo',
                 ],
             ],
             'video_from_youtube' => [
@@ -51,6 +57,7 @@ final class VideoNormalizerTest extends TestCase
                     'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
                     'embedUrl' => 'https://www.youtube.com/embed/cEItmb_a20D',
                     'language' => 'nl',
+                    'copyrightHolder' => 'Copyright afgehandeld door YouTube',
                 ],
             ],
         ];
