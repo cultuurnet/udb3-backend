@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 final class VideoNormalizerTest extends TestCase
@@ -27,6 +28,25 @@ final class VideoNormalizerTest extends TestCase
                 'en' => 'Copyright handled by',
             ]))->normalize($video)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_for_unsupported_video_platforms(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        (new VideoNormalizer([
+            'nl' => 'Copyright afgehandeld door',
+            'fr' => 'Droits d\'auteur gérés par',
+            'de' => 'Urheberrecht gehandhabt von',
+            'en' => 'Copyright handled by',
+        ]))->normalize(new Video(
+            new UUID('6fad3c7e-2a7f-4957-94a1-8009bb6b7de4'),
+            new Url('https://myspace.com/myspace/video/publiq/901564992'),
+            new Language('nl')
+        ));
     }
 
     public function videoAddedProvider(): array
