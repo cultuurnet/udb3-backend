@@ -109,7 +109,7 @@ class CalendarSummaryParametersTest extends TestCase
 
         $this->assertEquals('text/plain', $parameters->getContentType());
         $this->assertEquals('nl', $parameters->getLanguageCode());
-        $this->assertEquals('lg', $parameters->getFormat());
+        $this->assertEquals('lg', $parameters->getSize());
         $this->assertEquals(false, $parameters->shouldHidePastDates());
         $this->assertEquals('Europe/Brussels', $parameters->getTimezone());
     }
@@ -232,7 +232,7 @@ class CalendarSummaryParametersTest extends TestCase
 
         $parameters = new CalendarSummaryParameters($request);
 
-        $this->assertEquals('xs', $parameters->getFormat());
+        $this->assertEquals('xs', $parameters->getSize());
     }
 
     /**

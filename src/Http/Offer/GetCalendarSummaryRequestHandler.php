@@ -43,7 +43,7 @@ final class GetCalendarSummaryRequestHandler implements RequestHandlerInterface
         $parameters = new CalendarSummaryParameters($request);
         $contentType = $parameters->getContentType();
         $langCode = $parameters->getLanguageCode();
-        $format = $parameters->getFormat();
+        $format = $parameters->getSize();
         $hidePastDates = $parameters->shouldHidePastDates();
         $timeZone = $parameters->getTimezone();
 

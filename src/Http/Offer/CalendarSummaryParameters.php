@@ -65,7 +65,7 @@ final class CalendarSummaryParameters
         return $langCode ?? $this->queryParameters->get('language', 'nl');
     }
 
-    public function getFormat(): string
+    public function getSize(): string
     {
         return $this->queryParameters->get('format', 'lg');
     }
