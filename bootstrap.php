@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
@@ -607,6 +608,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[RemoveLabelHandler::class]);
         $commandBus->subscribe($app[ImportLabelsHandler::class]);
         $commandBus->subscribe($app[AddVideoHandler::class]);
+        $commandBus->subscribe($app[DeleteVideoHandler::class]);
 
         // Organizer command handlers
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);

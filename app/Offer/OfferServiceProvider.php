@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
@@ -131,6 +132,10 @@ class OfferServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new AddVideoHandler($app[OfferRepository::class]);
             }
+        );
+
+        $app[DeleteVideoHandler::class] = $app->share(
+            fn (Application $application) => new DeleteVideoHandler($app[OfferRepository::class])
         );
     }
 
