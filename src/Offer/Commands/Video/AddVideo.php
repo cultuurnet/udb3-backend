@@ -21,11 +21,6 @@ final class AddVideo implements AuthorizableCommand
         $this->video = $video;
     }
 
-    public function getOfferId(): UUID
-    {
-        return $this->offerId;
-    }
-
     public function getVideo(): Video
     {
         return $this->video;
