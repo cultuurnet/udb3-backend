@@ -26,7 +26,7 @@ use Silex\ServiceProviderInterface;
 
 class OfferServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[OfferMetadataRepository::class] = $app->share(
             function (Application $app) {
@@ -140,7 +140,7 @@ class OfferServiceProvider implements ServiceProviderInterface
     }
 
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
