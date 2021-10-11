@@ -128,7 +128,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return $event;
     }
 
-    public function updateGeoCoordinates(Coordinates $coordinates)
+    public function updateGeoCoordinates(Coordinates $coordinates): void
     {
         if ($this->locationId) {
             return;
@@ -137,12 +137,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         parent::updateGeoCoordinates($coordinates);
     }
 
-    /**
-     * @param string $newEventId
-     *
-     * @return Event
-     */
-    public function copy($newEventId, Calendar $calendar)
+    public function copy(string $newEventId, Calendar $calendar): Event
     {
         if ($this->hasUncommittedEvents()) {
             throw new \RuntimeException('I refuse to copy, there are uncommitted events present.');
@@ -162,17 +157,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return $copy;
     }
 
-    /**
-     * @param string $eventId
-     * @param string $cdbXml
-     * @param string $cdbXmlNamespaceUri
-     * @return Event
-     */
     public static function importFromUDB2(
-        $eventId,
-        $cdbXml,
-        $cdbXmlNamespaceUri
-    ) {
+        string $eventId,
+        string $cdbXml,
+        string $cdbXmlNamespaceUri
+    ): Event {
         $event = new self();
         $event->apply(
             new EventImportedFromUDB2(
@@ -185,15 +174,12 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return $event;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAggregateRootId()
+    public function getAggregateRootId(): string
     {
         return $this->eventId;
     }
 
-    protected function applyEventCreated(EventCreated $eventCreated)
+    protected function applyEventCreated(EventCreated $eventCreated): void
     {
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
@@ -208,27 +194,23 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
-
-    protected function applyEventCopied(EventCopied $eventCopied)
+    protected function applyEventCopied(EventCopied $eventCopied): void
     {
         $this->eventId = $eventCopied->getItemId();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelCollection();
     }
 
-    protected function applyEventImportedFromUDB2(
-        EventImportedFromUDB2 $eventImported
-    ) {
+    protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
+    {
         $this->eventId = $eventImported->getEventId();
         // When importing from UDB2 the default main language is always 'nl'.
         $this->mainLanguage = new Language('nl');
         $this->setUDB2Data($eventImported);
     }
 
-
-    protected function applyEventUpdatedFromUDB2(
-        EventUpdatedFromUDB2 $eventUpdated
-    ) {
+    protected function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $eventUpdated): void
+    {
         // Note: when updating from UDB2 never change the main language.
         $this->setUDB2Data($eventUpdated);
     }
@@ -238,10 +220,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->isDeleted = true;
     }
 
-
-    protected function setUDB2Data(
-        EventCdbXMLInterface $eventCdbXML
-    ) {
+    protected function setUDB2Data(EventCdbXMLInterface $eventCdbXML): void
+    {
         $udb2Event = EventItemFactory::createEventFromCdbXml(
             $eventCdbXML->getCdbXmlNamespaceUri(),
             $eventCdbXML->getCdbXml()
@@ -278,17 +258,13 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->labels = LabelCollection::fromKeywords($udb2Event->getKeywords(true));
     }
 
-    /**
-     * Update the major info.
-     *
-     */
     public function updateMajorInfo(
         Title $title,
         EventType $eventType,
         LocationId $location,
         Calendar $calendar,
         Theme $theme = null
-    ) {
+    ): void {
         $this->apply(new MajorInfoUpdated($this->eventId, $title, $eventType, $location, $calendar, $theme));
 
         if ($location->isDummyPlaceForEducation()) {
@@ -300,14 +276,13 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
+    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         $this->locationId = $majorInfoUpdated->getLocation();
         $this->calendar = $majorInfoUpdated->getCalendar();
     }
 
-
-    public function updateLocation(LocationId $locationId)
+    public function updateLocation(LocationId $locationId): void
     {
         if (!is_null($this->locationId) && $this->locationId->sameValueAs($locationId)) {
             return;
@@ -324,8 +299,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-
-    public function applyLocationUpdated(LocationUpdated $locationUpdated)
+    public function applyLocationUpdated(LocationUpdated $locationUpdated): void
     {
         $this->locationId = $locationUpdated->getLocationId();
     }
@@ -376,9 +350,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-    public function updateAudience(
-        Audience $audience
-    ): void {
+    public function updateAudience(Audience $audience): void
+    {
         $audienceType = $audience->getAudienceType();
         if ($this->locationId &&
             $this->locationId->isDummyPlaceForEducation() &&
@@ -397,8 +370,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-
-    public function applyAudienceUpdated(AudienceUpdated $audienceUpdated)
+    public function applyAudienceUpdated(AudienceUpdated $audienceUpdated): void
     {
         $this->audience= $audienceUpdated->getAudience();
     }
@@ -408,28 +380,17 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return new OwnerChanged($this->eventId, $newOwnerId);
     }
 
-    /**
-     * @inheritDoc
-     * @return ImagesImportedFromUDB2
-     */
-    protected function createImagesImportedFromUDB2(ImageCollection $images)
+    protected function createImagesImportedFromUDB2(ImageCollection $images): ImagesImportedFromUDB2
     {
         return new ImagesImportedFromUDB2($this->eventId, $images);
     }
 
-    /**
-     * @inheritDoc
-     * @return ImagesUpdatedFromUDB2
-     */
-    protected function createImagesUpdatedFromUDB2(ImageCollection $images)
+    protected function createImagesUpdatedFromUDB2(ImageCollection $images): ImagesUpdatedFromUDB2
     {
         return new ImagesUpdatedFromUDB2($this->eventId, $images);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri)
+    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
     {
         $this->apply(
             new EventUpdatedFromUDB2(
@@ -440,54 +401,36 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         );
     }
 
-    /**
-     * @return LabelAdded
-     */
-    protected function createLabelAddedEvent(Label $label)
+    protected function createLabelAddedEvent(Label $label): LabelAdded
     {
         return new LabelAdded($this->eventId, $label);
     }
 
-    /**
-     * @return LabelRemoved
-     */
-    protected function createLabelRemovedEvent(Label $label)
+    protected function createLabelRemovedEvent(Label $label): LabelRemoved
     {
         return new LabelRemoved($this->eventId, $label);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createLabelsImportedEvent(Labels $labels)
+    protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
         return new LabelsImported($this->eventId, $labels);
     }
 
-    /**
-     * @return ImageAdded
-     */
-    protected function createImageAddedEvent(Image $image)
+    protected function createImageAddedEvent(Image $image): ImageAdded
     {
         return new ImageAdded($this->eventId, $image);
     }
 
-    /**
-     * @return ImageRemoved
-     */
-    protected function createImageRemovedEvent(Image $image)
+    protected function createImageRemovedEvent(Image $image): ImageRemoved
     {
         return new ImageRemoved($this->eventId, $image);
     }
 
-    /**
-     * @return ImageUpdated
-     */
     protected function createImageUpdatedEvent(
         LegacyUUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
-    ) {
+    ): ImageUpdated {
         return new ImageUpdated(
             $this->eventId,
             $mediaObjectId,
@@ -496,10 +439,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         );
     }
 
-    /**
-     * @return MainImageSelected
-     */
-    protected function createMainImageSelectedEvent(Image $image)
+    protected function createMainImageSelectedEvent(Image $image): MainImageSelected
     {
         return new MainImageSelected($this->eventId, $image);
     }
@@ -514,190 +454,120 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return new VideoDeleted(new UUID($this->eventId), $videoId);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createTitleTranslatedEvent(Language $language, Title $title)
+    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->eventId, $language, $title);
     }
 
-    /**
-     * @return TitleUpdated
-     */
-    protected function createTitleUpdatedEvent(Title $title)
+    protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
         return new TitleUpdated($this->eventId, $title);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createDescriptionTranslatedEvent(Language $language, Description $description)
+    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->eventId, $language, $description);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createDescriptionUpdatedEvent(Description $description)
+    protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->eventId, $description);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createCalendarUpdatedEvent(Calendar $calendar)
+    protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated
     {
         return new CalendarUpdated($this->eventId, $calendar);
     }
 
-    /**
-     * @param AgeRange $typicalAgeRange
-     * @return TypicalAgeRangeUpdated
-     */
-    protected function createTypicalAgeRangeUpdatedEvent($typicalAgeRange)
+    protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange): TypicalAgeRangeUpdated
     {
         return new TypicalAgeRangeUpdated($this->eventId, $typicalAgeRange);
     }
 
-    /**
-     * @return TypicalAgeRangeDeleted
-     */
-    protected function createTypicalAgeRangeDeletedEvent()
+    protected function createTypicalAgeRangeDeletedEvent(): TypicalAgeRangeDeleted
     {
         return new TypicalAgeRangeDeleted($this->eventId);
     }
 
-    /**
-     * @param string $organizerId
-     * @return OrganizerUpdated
-     */
-    protected function createOrganizerUpdatedEvent($organizerId)
+    protected function createOrganizerUpdatedEvent(string $organizerId): OrganizerUpdated
     {
         return new OrganizerUpdated($this->eventId, $organizerId);
     }
 
-    /**
-     * @param string $organizerId
-     * @return OrganizerDeleted
-     */
-    protected function createOrganizerDeletedEvent($organizerId)
+    protected function createOrganizerDeletedEvent(string $organizerId): OrganizerDeleted
     {
         return new OrganizerDeleted($this->eventId, $organizerId);
     }
 
-    /**
-     * @return ContactPointUpdated
-     */
-    protected function createContactPointUpdatedEvent(ContactPoint $contactPoint)
+    protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): ContactPointUpdated
     {
         return new ContactPointUpdated($this->eventId, $contactPoint);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates)
+    protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): GeoCoordinatesUpdated
     {
         return new GeoCoordinatesUpdated($this->eventId, $coordinates);
     }
 
-    /**
-     * @return BookingInfoUpdated
-     */
-    protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo)
+    protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo): BookingInfoUpdated
     {
         return new BookingInfoUpdated($this->eventId, $bookingInfo);
     }
 
-    /**
-     * @return PriceInfoUpdated
-     */
-    protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo)
+    protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo): PriceInfoUpdated
     {
         return new PriceInfoUpdated($this->eventId, $priceInfo);
     }
 
-    /**
-     * @return EventDeleted
-     */
-    protected function createOfferDeletedEvent()
+    protected function createOfferDeletedEvent(): EventDeleted
     {
         return new EventDeleted($this->eventId);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createPublishedEvent(\DateTimeInterface $publicationDate)
+    protected function createPublishedEvent(\DateTimeInterface $publicationDate): Published
     {
         return new Published($this->eventId, $publicationDate);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createApprovedEvent()
+    protected function createApprovedEvent(): Approved
     {
         return new Approved($this->eventId);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createRejectedEvent(StringLiteral $reason)
+    protected function createRejectedEvent(StringLiteral $reason): Rejected
     {
         return new Rejected($this->eventId, $reason);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createFlaggedAsDuplicate()
+    protected function createFlaggedAsDuplicate(): FlaggedAsDuplicate
     {
         return new FlaggedAsDuplicate($this->eventId);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createFlaggedAsInappropriate()
+    protected function createFlaggedAsInappropriate(): FlaggedAsInappropriate
     {
         return new FlaggedAsInappropriate($this->eventId);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createTypeUpdatedEvent(EventType $type)
+    protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
     {
         return new TypeUpdated($this->eventId, $type);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createThemeUpdatedEvent(Theme $theme)
+    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
     {
         return new ThemeUpdated($this->eventId, $theme);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createFacilitiesUpdatedEvent(array $facilities)
+    protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated
     {
         return new FacilitiesUpdated($this->eventId, $facilities);
     }
 
     /**
      * Use reflection to get check if the aggregate has uncommitted events.
-     * @return bool
      */
-    private function hasUncommittedEvents()
+    private function hasUncommittedEvents(): bool
     {
         $reflector = new \ReflectionClass(EventSourcedAggregateRoot::class);
         $property = $reflector->getProperty('uncommittedEvents');
