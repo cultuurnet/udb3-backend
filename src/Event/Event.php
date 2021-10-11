@@ -86,20 +86,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Event extends Offer implements UpdateableWithCdbXmlInterface
 {
-    /**
-     * @var string
-     */
-    protected $eventId;
+    protected string $eventId;
 
-    /**
-     * @var Audience|null
-     */
-    private $audience;
+    private ?Audience $audience = null;
 
-    /**
-     * @var LocationId|null
-     */
-    private $locationId;
+    private ?LocationId $locationId = null;
 
     public static function create(
         string $eventId,

@@ -76,103 +76,53 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public const DUPLICATE_REASON = 'duplicate';
     public const INAPPROPRIATE_REASON = 'inappropriate';
 
-    /**
-     * @var LabelCollection
-     */
-    protected $labels;
+    protected LabelCollection $labels;
 
-    /**
-     * @var ImageCollection
-     */
-    protected $images;
+    protected ImageCollection $images;
 
     protected VideoCollection $videos;
 
     /**
-     * @var string|null
-     *
      * Organizer ids can come from UDB2 which does not strictly use UUIDs.
      */
-    protected $organizerId;
+    protected ?string $organizerId = null;
 
-    /**
-     * @var WorkflowStatus
-     */
-    protected $workflowStatus;
+    protected WorkflowStatus $workflowStatus;
 
-    /**
-     * @var StringLiteral|null
-     */
-    protected $rejectedReason;
+    protected ?StringLiteral $rejectedReason = null;
 
-    /**
-     * @var PriceInfo|null
-     */
-    protected $priceInfo;
+    protected ?PriceInfo $priceInfo = null;
 
     /**
      * @var StringLiteral[]
      */
-    protected $titles;
+    protected array $titles;
 
     /**
      * @var Description[]
      */
-    protected $descriptions;
+    protected array $descriptions;
 
-    /**
-     * @var Language
-     */
-    protected $mainLanguage;
+    protected Language $mainLanguage;
 
-    /**
-     * @var string;
-     */
-    protected $typeId;
+    protected ?string $typeId = null;
 
-    /**
-     * @var string;
-     */
-    protected $themeId;
+    protected ?string $themeId = null;
 
-    /**
-     * @var array
-     */
-    protected $facilities;
+    protected array $facilities;
 
-    /**
-     * @var ContactPoint|null
-     */
-    protected $contactPoint;
+    protected ?ContactPoint $contactPoint = null;
 
-    /**
-     * @var Calendar|null
-     */
-    protected $calendar;
+    protected ?Calendar $calendar = null;
 
-    /**
-     * @var AgeRange|null
-     */
-    protected $typicalAgeRange;
+    protected ?AgeRange $typicalAgeRange = null;
 
-    /**
-     * @var BookingInfo|null
-     */
-    protected $bookingInfo;
+    protected ?BookingInfo $bookingInfo = null;
 
-    /**
-     * @var bool
-     */
-    protected $isDeleted = false;
+    protected bool $isDeleted = false;
 
-    /**
-     * @var string|null
-     */
-    private $ownerId;
+    private ?string $ownerId = null;
 
-    /**
-     * Offer constructor.
-     */
     public function __construct()
     {
         $this->titles = [];

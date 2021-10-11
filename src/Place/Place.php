@@ -77,30 +77,21 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Place extends Offer implements UpdateableWithCdbXmlInterface
 {
-    /**
-     * @var string
-     */
-    private $placeId;
+    private string $placeId;
 
     /**
      * @var Address[]
      */
-    private $addresses;
+    private array $addresses;
 
-    /**
-     * @var boolean
-     */
-    private $isDuplicate = false;
+    private bool $isDuplicate = false;
 
     /**
      * @var string[]
      */
-    private $duplicates = [];
+    private array $duplicates = [];
 
-    /**
-     * @var string|null
-     */
-    private $canonicalPlaceId;
+    private ?string $canonicalPlaceId = null;
 
     public function __construct()
     {
