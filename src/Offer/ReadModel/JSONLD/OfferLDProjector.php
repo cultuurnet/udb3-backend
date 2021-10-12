@@ -88,6 +88,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected SluggerInterface $slugger;
 
+    protected VideoNormalizer $videoNormalizer;
+
     /**
      * @param string[] $basePriceTranslations
      */
@@ -97,7 +99,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         EntityServiceInterface $organizerService,
         MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
-        array $basePriceTranslations
+        array $basePriceTranslations,
+        VideoNormalizer $videoNormalizer
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
@@ -105,6 +108,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->mediaObjectSerializer = $mediaObjectSerializer;
         $this->basePriceTranslations = $basePriceTranslations;
+        $this->videoNormalizer = $videoNormalizer;
 
         $this->slugger = new CulturefeedSlugger();
     }
@@ -600,7 +604,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
         $offerLd->videos = $offerLd->videos ?? [];
-        $offerLd->videos[] = (new VideoNormalizer())->normalize($videoAdded->getVideo());
+        $offerLd->videos[] = $this->videoNormalizer->normalize($videoAdded->getVideo());
 
         return $document->withBody($offerLd);
     }

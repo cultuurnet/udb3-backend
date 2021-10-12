@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
@@ -150,7 +151,15 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 'fr' => 'Tarif de base',
                 'en' => 'Base tariff',
                 'de' => 'Basisrate',
-            ]
+            ],
+            new VideoNormalizer(
+                [
+                    'nl' => 'Copyright afgehandeld door %s',
+                    'fr' => 'Droits d\'auteur gérés par %s',
+                    'de' => 'Urheberrecht gehandhabt von %s',
+                    'en' => 'Copyright handled by %s',
+                ]
+            )
         );
 
         $street = new Street('Kerkstraat 69');

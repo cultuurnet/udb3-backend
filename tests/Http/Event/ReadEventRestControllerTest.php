@@ -9,7 +9,6 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ReadEventRestControllerTest extends TestCase
@@ -17,16 +16,6 @@ class ReadEventRestControllerTest extends TestCase
     public const EXISTING_ID = 'existingId';
     public const NON_EXISTING_ID = 'nonExistingId';
     public const REMOVED_ID = 'removedId';
-
-    /**
-     * @var JsonDocument
-     */
-    private $jsonDocument;
-
-    /**
-     * @var JsonDocument
-     */
-    private $jsonDocumentWithMetadata;
 
     /**
      * @var JsonDocument
@@ -39,43 +28,10 @@ class ReadEventRestControllerTest extends TestCase
     private $historyReponseContent;
 
     /**
-     * @var string
-     */
-    private $calSum;
-
-    /**
      * @inheritdoc
      */
     public function setUp()
     {
-        $this->jsonDocument = new JsonDocument(
-            'id',
-            json_encode(
-                [
-                    '@context' => '/contexts/event',
-                    'status' => [
-                        'type' => 'Available',
-                    ],
-                    'bookingAvailability' => [
-                        'type' => 'Unavailable',
-                    ],
-                    'startDate' => '2018-10-07 12:15:00+0200',
-                    'endDate' => '2018-10-07 18:00:00+0200',
-                    'calendarType' => 'single',
-                ]
-            )
-        );
-
-        $this->jsonDocumentWithMetadata = new JsonDocument(
-            'id',
-            json_encode(
-                [
-                    '@type' => 'Event',
-                    'popularity' => 123456,
-                ]
-            )
-        );
-
         $this->historyJsonDocument = new JsonDocument(
             'id',
             json_encode(
@@ -100,27 +56,10 @@ class ReadEventRestControllerTest extends TestCase
                 ],
             ]
         );
-
-        $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00 (Volzet of uitverkocht)';
     }
 
     private function createController(bool $godUser): ReadEventRestController
     {
-        $jsonRepository = $this->createMock(DocumentRepository::class);
-        $jsonRepository->method('fetch')
-            ->willReturnCallback(
-                function (string $id, bool $includeMetadata = false) {
-                    switch ($id) {
-                        case self::EXISTING_ID:
-                            return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
-                        case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::withId($id);
-                        default:
-                            throw DocumentDoesNotExist::withId($id);
-                    }
-                }
-            );
-
         $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
         $documentRepositoryInterface->method('fetch')
             ->willReturnCallback(
@@ -137,7 +76,6 @@ class ReadEventRestControllerTest extends TestCase
             );
 
         return new ReadEventRestController(
-            $jsonRepository,
             $documentRepositoryInterface,
             $godUser
         );
@@ -173,31 +111,5 @@ class ReadEventRestControllerTest extends TestCase
         $this->expectException(ApiProblem::class);
         $controller = $this->createController(false);
         $controller->history(self::EXISTING_ID);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_http_response_with_a_calendar_summary_for_an_event(): void
-    {
-        $request = new Request(['style' => 'text', 'format' => 'lg']);
-
-        $controller = $this->createController(true);
-        $calSumResponse = $controller->getCalendarSummary(self::EXISTING_ID, $request);
-
-        $this->assertEquals($this->calSum, $calSumResponse);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_api_problem_exception_for_calendar_summary_for_non_existing_event(): void
-    {
-        $this->expectException(ApiProblem::class);
-
-        $request = new Request(['style' => 'text', 'format' => 'lg']);
-
-        $controller = $this->createController(true);
-        $controller->getCalendarSummary(self::NON_EXISTING_ID, $request);
     }
 }

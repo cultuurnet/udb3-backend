@@ -16,9 +16,10 @@ use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\Commands\Video\DeleteVideo;
@@ -50,7 +51,8 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
         $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
         $video = new Video(
             $videoId,
-            new Url('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
         );
 
         $this->scenario
@@ -69,7 +71,7 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new EventCreated(
             $eventId->toString(),
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),

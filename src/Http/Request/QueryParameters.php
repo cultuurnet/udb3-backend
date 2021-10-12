@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class QueryParameters
@@ -32,5 +33,13 @@ final class QueryParameters
         // example "false" as being cast to true (because a non-empty string = true when casting to bool).
         // See https://stackoverflow.com/questions/7336861/how-to-convert-string-to-boolean-php/15075609
         return (bool) filter_var($valueAsString, FILTER_VALIDATE_BOOL);
+    }
+
+    public function guardEnum(string $parameterName, array $allowedValues): void
+    {
+        $value = $this->get($parameterName, null);
+        if ($value !== null && !in_array($value, $allowedValues, true)) {
+            throw ApiProblem::queryParameterInvalidValue($parameterName, $value, $allowedValues);
+        }
     }
 }

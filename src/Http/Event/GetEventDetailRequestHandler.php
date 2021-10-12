@@ -26,16 +26,14 @@ final class GetEventDetailRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $eventId = $routeParameters->get('eventId');
+        $eventId = $routeParameters->getEventId();
         $queryParameters = new QueryParameters($request);
         $includeMetadata = $queryParameters->getAsBoolean('includeMetadata');
 
         try {
             $eventDocument = $this->documentRepository->fetch($eventId, $includeMetadata);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::notFound(
-                'The event with id "' . $eventId . '" was not found.'
-            );
+            throw ApiProblem::eventNotFound($eventId);
         }
 
         return new JsonLdResponse($eventDocument->getAssocBody());

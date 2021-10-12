@@ -10,13 +10,14 @@ use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Silex\ControllerCollectionWithTrailingSlashes;
+use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\LegacyRoutesServiceProvider;
+use CultuurNet\UDB3\Silex\Offer\DeprecatedOfferControllerProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -36,7 +37,7 @@ $app = require __DIR__ . '/../bootstrap.php';
 
 // Register our own ControllerCollection as controllers_factory so every route automatically gets a trailing slash.
 $app['controllers_factory'] = function () use ($app) {
-    return new ControllerCollectionWithTrailingSlashes($app['route_factory']);
+    return new Udb3ControllerCollection($app['route_factory']);
 };
 
 $app->register(new WebErrorHandlerProvider());
@@ -75,7 +76,7 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/(events|event|places|place)/$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/calsum$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/calendar-summary', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/label/' . $app['id_pattern'] . '$', null, 'GET'))
@@ -172,19 +173,6 @@ if (isset($app['config']['cdbxml_proxy']) &&
     );
 }
 
-if (isset($app['config']['calendar_summary_proxy']) &&
-    $app['config']['calendar_summary_proxy']['enabled']) {
-    $app->before(
-        function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy $calendarSummaryProxy */
-            $calendarSummaryProxy = $app['calendar_summary_proxy'];
-
-            return $calendarSummaryProxy->handle($request);
-        },
-        Application::EARLY_EVENT
-    );
-}
-
 if (isset($app['config']['search_proxy']) &&
     $app['config']['search_proxy']['enabled']) {
     $app->before(
@@ -217,20 +205,24 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeControllerProvider = new PlaceControllerProvider();
-$placeOfferControllerProvider = new OfferControllerProvider(OfferType::PLACE());
+$placeOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::PLACE());
 $eventControllerProvider = new EventControllerProvider();
-$eventOfferControllerProvider = new OfferControllerProvider(OfferType::EVENT());
+$eventOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::EVENT());
+$offerControllerProvider = new OfferControllerProvider();
 
 $app->register($placeControllerProvider);
 $app->register($placeOfferControllerProvider);
 $app->register($eventControllerProvider);
 $app->register($eventOfferControllerProvider);
+$app->register($offerControllerProvider);
 
 $app->mount('/places', $placeControllerProvider);
 $app->mount('/places', $placeOfferControllerProvider);
 
 $app->mount('/events', $eventControllerProvider);
 $app->mount('/events', $eventOfferControllerProvider);
+
+$app->mount('/', $offerControllerProvider);
 
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());

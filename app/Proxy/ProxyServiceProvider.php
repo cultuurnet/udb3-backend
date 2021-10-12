@@ -33,17 +33,6 @@ class ProxyServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['calendar_summary_proxy'] = $app->share(
-            function ($app) {
-                return $app['get_request_proxy_factory'](
-                    $app['config']['calendar_summary_proxy']['pathRegex'],
-                    $app['config']['calendar_summary_proxy']['redirect_domain'],
-                    $app['config']['calendar_summary_proxy']['redirect_port']
-                );
-            }
-        );
-
-
         $app['search_proxy'] = $app->share(
             function ($app) {
                 return $app['get_request_proxy_factory'](

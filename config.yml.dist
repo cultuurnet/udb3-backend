@@ -93,16 +93,15 @@ media:
     region: eu-west-1
     version: latest
     bucket: udb2-media-test.uitdatabank.be
+  video_default_copyright:
+    nl: Copyright afgehandeld door %s
+    fr: Droits d'auteur gérés par %s
+    de: Urheberrecht gehandhabt von %s
+    en: Copyright handled by %s
 
 cdbxml_proxy:
   enabled: "true"
   accept: "application/xml"
-  redirect_domain: "www.domain-cdbxml-service.be"
-  redirect_port: 80
-
-calendar_summary_proxy:
-  enabled: "true"
-  pathRegex: ^\/event\/(?<offerId>[a-zA-Z0-9\-]+)\/calendar-summary$
   redirect_domain: "www.domain-cdbxml-service.be"
   redirect_port: 80
 

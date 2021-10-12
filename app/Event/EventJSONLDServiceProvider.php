@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\RelatedEventLDProjector;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -93,7 +94,8 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                         new EventJsonDocumentLanguageAnalyzer()
                     ),
                     new EventTypeResolver(),
-                    $app['config']['base_price_translations']
+                    $app['config']['base_price_translations'],
+                    new VideoNormalizer($app['config']['media']['video_default_copyright'])
                 );
 
                 return $projector;

@@ -30,7 +30,7 @@ class UpdateMajorInfoRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $placeId = $routeParameters->get('placeId');
+        $placeId = $routeParameters->getPlaceId();
 
         $majorInfo = $this->majorInfoDeserializer->deserialize(new StringLiteral((string) $request->getBody()));
 
