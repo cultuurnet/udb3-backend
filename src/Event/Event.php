@@ -446,7 +446,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function createVideoAddedEvent(Video $video): VideoAdded
     {
-        return new VideoAdded(new UUID($this->eventId), $video);
+        return new VideoAdded($this->eventId, $video);
     }
 
     protected function createVideoDeletedEvent(UUID $videoId): VideoDeleted

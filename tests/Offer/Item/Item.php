@@ -129,7 +129,7 @@ class Item extends Offer
 
     protected function createVideoAddedEvent(Video $video): VideoAdded
     {
-        return new VideoAdded(new UUID($this->id), $video);
+        return new VideoAdded($this->id, $video);
     }
 
     protected function createVideoDeletedEvent(UUID $videoId): VideoDeleted

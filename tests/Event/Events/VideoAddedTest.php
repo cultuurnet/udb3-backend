@@ -49,7 +49,7 @@ final class VideoAddedTest extends TestCase
         return [
             'video_with_copyright' => [
                 new VideoAdded(
-                    new UUID('208dbe98-ffaa-41cb-9ada-7ec8e0651f48'),
+                    '208dbe98-ffaa-41cb-9ada-7ec8e0651f48',
                     $video->withCopyrightHolder(new CopyrightHolder('Creative Commons'))
                 ),
                 [
@@ -64,7 +64,7 @@ final class VideoAddedTest extends TestCase
             ],
             'video_without_copyright' => [
                 new VideoAdded(
-                    new UUID('208dbe98-ffaa-41cb-9ada-7ec8e0651f48'),
+                    '208dbe98-ffaa-41cb-9ada-7ec8e0651f48',
                     $video
                 ),
                 [

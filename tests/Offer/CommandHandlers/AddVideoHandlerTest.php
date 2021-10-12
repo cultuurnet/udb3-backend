@@ -45,7 +45,7 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_will_add_a_video_to_an_event(): void
     {
-        $id = new UUID('208dbe98-ffaa-41cb-9ada-7ec8e0651f48');
+        $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
         $video = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
             new Url('https://www.youtube.com/watch?v=123'),
@@ -53,16 +53,16 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $this->scenario
-            ->withAggregateId($id->toString())
-            ->given([$this->getEventCreated($id)])
-            ->when(new AddVideo($id, $video))
-            ->then([new VideoAdded($id, $video)]);
+            ->withAggregateId($eventId)
+            ->given([$this->getEventCreated($eventId)])
+            ->when(new AddVideo(new UUID($eventId), $video))
+            ->then([new VideoAdded($eventId, $video)]);
     }
 
-    private function getEventCreated(UUID $id): EventCreated
+    private function getEventCreated(string $eventId): EventCreated
     {
         return new EventCreated(
-            $id->toString(),
+            $eventId,
             new LegacyLanguage('nl'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),

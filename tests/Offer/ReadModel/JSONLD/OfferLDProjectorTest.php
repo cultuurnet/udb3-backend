@@ -941,7 +941,7 @@ class OfferLDProjectorTest extends TestCase
 
         $this->documentRepository->save($initialDocument);
 
-        $videoAdded = new VideoAdded(new UUID($eventId), $video);
+        $videoAdded = new VideoAdded($eventId, $video);
         $eventBody = $this->project($videoAdded, $eventId);
 
         unset($eventBody->modified);
@@ -998,7 +998,7 @@ class OfferLDProjectorTest extends TestCase
 
         $this->documentRepository->save($initialDocument);
 
-        $videoAdded = new VideoAdded(new UUID($eventId), $video2);
+        $videoAdded = new VideoAdded($eventId, $video2);
         $eventBody = $this->project($videoAdded, $eventId);
 
         unset($eventBody->modified);
@@ -1053,7 +1053,7 @@ class OfferLDProjectorTest extends TestCase
 
         $this->documentRepository->save($initialDocument);
 
-        $videoAdded = new VideoAdded(new UUID($eventId), $video);
+        $videoAdded = new VideoAdded($eventId, $video);
         $eventBody = $this->project($videoAdded, $eventId);
 
         unset($eventBody->modified);

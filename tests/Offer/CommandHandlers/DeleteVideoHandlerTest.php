@@ -46,7 +46,7 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_deleting_a_video_from_an_event(): void
     {
-        $eventId = new UUID('208dbe98-ffaa-41cb-9ada-7ec8e0651f48');
+        $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
 
         $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
         $video = new Video(
@@ -56,21 +56,21 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->scenario
-            ->withAggregateId($eventId->toString())
+            ->withAggregateId($eventId)
             ->given([
                 $this->getEventCreated($eventId),
                 new VideoAdded($eventId, $video),
             ])
-            ->when(new DeleteVideo($eventId, $videoId))
+            ->when(new DeleteVideo(new UUID($eventId), $videoId))
             ->then([
-                new VideoDeleted($eventId, $videoId),
+                new VideoDeleted(new UUID($eventId), $videoId),
             ]);
     }
 
-    private function getEventCreated(UUID $eventId): EventCreated
+    private function getEventCreated(string $eventId): EventCreated
     {
         return new EventCreated(
-            $eventId->toString(),
+            $eventId,
             new LegacyLanguage('nl'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),

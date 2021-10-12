@@ -13,17 +13,17 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 abstract class AbstractVideoAdded implements Serializable
 {
-    private UUID $itemId;
+    private string $itemId;
 
     private Video $video;
 
-    final public function __construct(UUID $itemId, Video $video)
+    final public function __construct(string $itemId, Video $video)
     {
         $this->itemId = $itemId;
         $this->video = $video;
     }
 
-    public function getItemId(): UUID
+    public function getItemId(): string
     {
         return $this->itemId;
     }
@@ -48,7 +48,7 @@ abstract class AbstractVideoAdded implements Serializable
         }
 
         return new static(
-            new UUID($data['item_id']),
+            $data['item_id'],
             $video
         );
     }
@@ -56,7 +56,7 @@ abstract class AbstractVideoAdded implements Serializable
     public function serialize(): array
     {
         $videoAdded = [
-            'item_id' => $this->itemId->toString(),
+            'item_id' => $this->itemId,
             'video' => [
                 'id' => $this->video->getId()->toString(),
                 'url' => $this->video->getUrl()->toString(),

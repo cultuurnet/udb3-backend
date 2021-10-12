@@ -417,7 +417,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function createVideoAddedEvent(Video $video): VideoAdded
     {
-        return new VideoAdded(new UUID($this->placeId), $video);
+        return new VideoAdded($this->placeId, $video);
     }
 
     protected function createVideoDeletedEvent(UUID $videoId): VideoDeleted

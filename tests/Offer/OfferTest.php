@@ -817,7 +817,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video
                     ),
                 ]
@@ -855,11 +855,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video1
                     ),
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video2
                     ),
                 ]
@@ -897,7 +897,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video1
                     ),
                 ]
@@ -909,7 +909,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_handles_deleting_a_video(): void
     {
-        $itemId = new UUID('d2b41f1d-598c-46af-a3a5-10e373faa6fe');
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
 
         $video = (new Video(
@@ -920,12 +920,12 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $this->scenario
             ->given([
-                new ItemCreated($itemId->toString()),
+                new ItemCreated($itemId),
                 new VideoAdded($itemId, $video),
             ])
             ->when(fn (Item $item) => $item->deleteVideo($videoId))
             ->then([
-                new VideoDeleted($itemId, $videoId),
+                new VideoDeleted(new UUID($itemId), $videoId),
             ]);
     }
 
@@ -934,7 +934,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_does_not_delete_a_video_twice(): void
     {
-        $itemId = new UUID('d2b41f1d-598c-46af-a3a5-10e373faa6fe');
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
 
         $video = (new Video(
@@ -945,9 +945,9 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $this->scenario
             ->given([
-                new ItemCreated($itemId->toString()),
+                new ItemCreated($itemId),
                 new VideoAdded($itemId, $video),
-                new VideoDeleted($itemId, $videoId),
+                new VideoDeleted(new UUID($itemId), $videoId),
             ])
             ->when(fn (Item $item) => $item->deleteVideo($videoId))
             ->then([]);
@@ -958,7 +958,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_ignores_deleting_an_unknown_video(): void
     {
-        $itemId = new UUID('d2b41f1d-598c-46af-a3a5-10e373faa6fe');
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
         $unknownVideoId = new UUID('b7857d2e-121c-4e1c-a04b-eba755f89289');
 
@@ -970,7 +970,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $this->scenario
             ->given([
-                new ItemCreated($itemId->toString()),
+                new ItemCreated($itemId),
                 new VideoAdded($itemId, $video),
             ])
             ->when(fn (Item $item) => $item->deleteVideo($unknownVideoId))
