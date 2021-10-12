@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
@@ -104,7 +105,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
             LegacyUrl::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
     }
 
@@ -474,7 +475,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $image = $this->image;
 
@@ -513,7 +514,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $this->scenario
@@ -684,7 +685,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
             LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $newerImage = new Image(
             new LegacyUUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
@@ -692,7 +693,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('pic'),
             new CopyrightHolder('Henk'),
             LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
         $originalMainImage = $this->image;
 
@@ -763,7 +764,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('pic'),
             new CopyrightHolder('Henk'),
             LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $this->scenario
@@ -799,7 +800,8 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $this->scenario
@@ -829,12 +831,14 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
             new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
-            new Url('https://vimeo.com/98765432')
+            new Url('https://vimeo.com/98765432'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
@@ -869,12 +873,14 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://vimeo.com/98765432')
+            new Url('https://vimeo.com/98765432'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
 
         $this->scenario
@@ -1375,7 +1381,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($title) {
-                    $item->updateTitle(new Language('nl'), $title);
+                    $item->updateTitle(new LegacyLanguage('nl'), $title);
                 }
             )
             ->then([]);
@@ -1388,7 +1394,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = LegacyUUID::generateAsString();
         $title = new Title('The Title');
-        $language = new Language('en');
+        $language = new LegacyLanguage('en');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1415,7 +1421,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = LegacyUUID::generateAsString();
         $title = new Title('The Title');
-        $language = new Language('en');
+        $language = new LegacyLanguage('en');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1429,7 +1435,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 function (Item $item) use ($title, $language) {
                     $item->updateTitle($language, $title);
                     $item->updateTitle($language, $title);
-                    $item->updateTitle(new Language('nl'), new Title('Een titel'));
+                    $item->updateTitle(new LegacyLanguage('nl'), new Title('Een titel'));
                 }
             )
             ->then([
@@ -1455,7 +1461,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Item $item) use ($description) {
-                    $item->updateDescription($description, new Language('nl'));
+                    $item->updateDescription($description, new LegacyLanguage('nl'));
                 }
             )
             ->then([]);
@@ -1468,7 +1474,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = LegacyUUID::generateAsString();
         $description = new \CultuurNet\UDB3\Description('La description');
-        $language = new Language('fr');
+        $language = new LegacyLanguage('fr');
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1497,21 +1503,21 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new Language('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
             '02 123 45 67',
             'info@publiq.be'
         );
 
         $sameBookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new Language('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
             '02 123 45 67',
             'info@publiq.be'
         );
 
         $otherBookingInfo = new BookingInfo(
             'www.2dotstwice.be',
-            new MultilingualString(new Language('nl'), new StringLiteral('2dotstwice')),
+            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('2dotstwice')),
             '016 12 34 56',
             'info@2dotstwice.be'
         );
@@ -1576,7 +1582,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
             LegacyUrl::fromNative('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
-            new Language('nl')
+            new LegacyLanguage('nl')
         );
 
         $udb2Images = ImageCollection::fromArray([
@@ -1586,7 +1592,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new Description('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
                 LegacyUrl::fromNative('http://foo.bar/media/episch_panorama.jpg'),
-                new Language('nl')
+                new LegacyLanguage('nl')
             ),
         ]);
 
@@ -1641,7 +1647,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
             LegacyUrl::fromNative('http://foo.bar/media/my_pic.jpg'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         return [

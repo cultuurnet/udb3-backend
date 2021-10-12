@@ -18,10 +18,11 @@ use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Event\Events\VideoAdded as VideoAddedToEvent;
@@ -53,7 +54,8 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
         $id = new UUID('208dbe98-ffaa-41cb-9ada-7ec8e0651f48');
         $video = (new Video(
             new UUID('91c75325-3830-4000-b580-5778b2de4548'),
-            new Url('https://www.youtube.com/watch?v=123')
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $this->scenario
@@ -67,7 +69,7 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new EventCreated(
             $id->toString(),
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
@@ -79,7 +81,7 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new PlaceCreated(
             $id->toString(),
-            new Language('fr'),
+            new LegacyLanguage('fr'),
             new Title('some place name'),
             new EventType(
                 'BtVNd33sR0WntjALVbyp3w',
