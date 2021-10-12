@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Psr\Http\Message\ResponseInterface;
@@ -43,7 +42,7 @@ final class AddVideoRequestHandler implements RequestHandlerInterface
         /** @var Video $video */
         $video = $this->parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch(new AddVideo(new UUID($offerId), $video));
+        $this->commandBus->dispatch(new AddVideo($offerId, $video));
 
         return new JsonLdResponse([
             'videoId' => $video->getId()->toString(),

@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands\Video;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 
 final class AddVideo implements AuthorizableCommand
 {
-    private UUID $offerId;
+    private string $offerId;
 
     private Video $video;
 
-    public function __construct(UUID $offerId, Video $video)
+    public function __construct(string $offerId, Video $video)
     {
         $this->offerId = $offerId;
         $this->video = $video;
@@ -28,7 +27,7 @@ final class AddVideo implements AuthorizableCommand
 
     public function getItemId(): string
     {
-        return $this->offerId->toString();
+        return $this->offerId;
     }
 
     public function getPermission(): Permission

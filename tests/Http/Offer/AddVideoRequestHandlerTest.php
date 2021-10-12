@@ -72,7 +72,7 @@ class AddVideoRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new AddVideo(
-                    new UUID('609a8214-51c9-48c0-903f-840a4f38852f'),
+                    '609a8214-51c9-48c0-903f-840a4f38852f',
                     (new Video(
                         new UUID($videoId->toString()),
                         new Url('https://www.youtube.com/watch?v=sdsd234'),
@@ -104,7 +104,7 @@ class AddVideoRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new AddVideo(
-                    new UUID('609a8214-51c9-48c0-903f-840a4f38852f'),
+                    '609a8214-51c9-48c0-903f-840a4f38852f',
                     new Video(
                         new UUID($videoId->toString()),
                         new Url('https://www.youtube.com/watch?v=sdsd234'),

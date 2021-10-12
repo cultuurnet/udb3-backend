@@ -55,7 +55,7 @@ final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($eventId)
             ->given([$this->getEventCreated($eventId)])
-            ->when(new AddVideo(new UUID($eventId), $video))
+            ->when(new AddVideo($eventId, $video))
             ->then([new VideoAdded($eventId, $video)]);
     }
 
