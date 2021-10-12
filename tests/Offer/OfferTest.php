@@ -923,7 +923,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new ItemCreated($itemId),
                 new VideoAdded($itemId, $video),
             ])
-            ->when(fn (Item $item) => $item->deleteVideo(new UUID($videoId)))
+            ->when(fn (Item $item) => $item->deleteVideo($videoId))
             ->then([
                 new VideoDeleted($itemId, $videoId),
             ]);
@@ -949,7 +949,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new VideoAdded($itemId, $video),
                 new VideoDeleted($itemId, $videoId),
             ])
-            ->when(fn (Item $item) => $item->deleteVideo(new UUID($videoId)))
+            ->when(fn (Item $item) => $item->deleteVideo($videoId))
             ->then([]);
     }
 
@@ -960,7 +960,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
-        $unknownVideoId = new UUID('b7857d2e-121c-4e1c-a04b-eba755f89289');
+        $unknownVideoId = 'b7857d2e-121c-4e1c-a04b-eba755f89289';
 
         $video = (new Video(
             $videoId,

@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -420,9 +419,9 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return new VideoAdded($this->placeId, $video);
     }
 
-    protected function createVideoDeletedEvent(UUID $videoId): VideoDeleted
+    protected function createVideoDeletedEvent(string $videoId): VideoDeleted
     {
-        return new VideoDeleted($this->placeId, $videoId->toString());
+        return new VideoDeleted($this->placeId, $videoId);
     }
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated

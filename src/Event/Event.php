@@ -68,7 +68,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -449,9 +448,9 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return new VideoAdded($this->eventId, $video);
     }
 
-    protected function createVideoDeletedEvent(UUID $videoId): VideoDeleted
+    protected function createVideoDeletedEvent(string $videoId): VideoDeleted
     {
-        return new VideoDeleted($this->eventId, $videoId->toString());
+        return new VideoDeleted($this->eventId, $videoId);
     }
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated

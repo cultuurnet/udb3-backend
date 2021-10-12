@@ -629,10 +629,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function deleteVideo(UUID $videoID): void
+    public function deleteVideo(string $videoID): void
     {
         $videosWithSameId = $this->videos->filter(
-            fn (Video $video) => $video->getId()->sameAs($videoID)
+            fn (Video $video) => $video->getId()->toString() === $videoID
         );
 
         if (!$videosWithSameId->isEmpty()) {
@@ -909,7 +909,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createVideoAddedEvent(Video $video): AbstractVideoAdded;
 
-    abstract protected function createVideoDeletedEvent(UUID $videoId): AbstractVideoDeleted;
+    abstract protected function createVideoDeletedEvent(string $videoId): AbstractVideoDeleted;
 
     abstract protected function createOfferDeletedEvent(): AbstractOfferDeleted;
 

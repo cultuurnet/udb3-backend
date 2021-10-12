@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -132,9 +131,9 @@ class Item extends Offer
         return new VideoAdded($this->id, $video);
     }
 
-    protected function createVideoDeletedEvent(UUID $videoId): VideoDeleted
+    protected function createVideoDeletedEvent(string $videoId): VideoDeleted
     {
-        return new VideoDeleted($this->id, $videoId->toString());
+        return new VideoDeleted($this->id, $videoId);
     }
 
     public function getAggregateRootId(): string

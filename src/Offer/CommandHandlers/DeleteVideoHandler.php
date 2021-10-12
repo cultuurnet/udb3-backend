@@ -24,7 +24,7 @@ final class DeleteVideoHandler implements CommandHandler
         }
 
         $offer = $this->offerRepository->load($command->getItemId());
-        $offer->deleteVideo($command->getVideoId());
+        $offer->deleteVideo($command->getVideoId()->toString());
         $this->offerRepository->save($offer);
     }
 }
