@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -74,7 +73,7 @@ class AddVideoRequestHandlerTest extends TestCase
                 new AddVideo(
                     '609a8214-51c9-48c0-903f-840a4f38852f',
                     (new Video(
-                        new UUID($videoId->toString()),
+                        $videoId->toString(),
                         new Url('https://www.youtube.com/watch?v=sdsd234'),
                         new Language('nl')
                     ))->withCopyrightHolder(new CopyrightHolder('publiq'))
@@ -106,7 +105,7 @@ class AddVideoRequestHandlerTest extends TestCase
                 new AddVideo(
                     '609a8214-51c9-48c0-903f-840a4f38852f',
                     new Video(
-                        new UUID($videoId->toString()),
+                        $videoId->toString(),
                         new Url('https://www.youtube.com/watch?v=sdsd234'),
                         new Language('nl')
                     )

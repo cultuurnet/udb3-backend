@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -800,7 +799,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
@@ -831,13 +830,13 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
-            new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
+            '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
             new Url('https://vimeo.com/98765432'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
@@ -873,13 +872,13 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://vimeo.com/98765432'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
@@ -913,7 +912,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $videoId = '91c75325-3830-4000-b580-5778b2de4548';
 
         $video = (new Video(
-            new UUID($videoId),
+            $videoId,
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
@@ -938,7 +937,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $videoId = '91c75325-3830-4000-b580-5778b2de4548';
 
         $video = (new Video(
-            new UUID($videoId),
+            $videoId,
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
@@ -959,7 +958,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_ignores_deleting_an_unknown_video(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
         $unknownVideoId = 'b7857d2e-121c-4e1c-a04b-eba755f89289';
 
         $video = (new Video(

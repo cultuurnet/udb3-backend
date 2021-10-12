@@ -45,7 +45,7 @@ final class AddVideoRequestHandler implements RequestHandlerInterface
         $this->commandBus->dispatch(new AddVideo($offerId, $video));
 
         return new JsonLdResponse([
-            'videoId' => $video->getId()->toString(),
+            'videoId' => $video->getId(),
         ]);
     }
 }

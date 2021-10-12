@@ -48,7 +48,6 @@ use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -925,7 +924,7 @@ class OfferLDProjectorTest extends TestCase
         $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
 
         $video = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
@@ -972,7 +971,7 @@ class OfferLDProjectorTest extends TestCase
         $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
 
         $video2 = (new Video(
-            new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
+            '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
             new Url('https://vimeo.com/98765432'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
@@ -1037,7 +1036,7 @@ class OfferLDProjectorTest extends TestCase
         $eventId = 'e2ba2d94-af6b-48e8-a421-0bdd415ce381';
 
         $video = new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         );

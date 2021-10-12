@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -50,7 +49,7 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
 
         $videoId = '91c75325-3830-4000-b580-5778b2de4548';
         $video = new Video(
-            new UUID($videoId),
+            $videoId,
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         );
