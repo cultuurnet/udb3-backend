@@ -134,7 +134,7 @@ class Item extends Offer
 
     protected function createVideoDeletedEvent(UUID $videoId): VideoDeleted
     {
-        return new VideoDeleted(new UUID($this->id), $videoId);
+        return new VideoDeleted($this->id, $videoId);
     }
 
     public function getAggregateRootId(): string

@@ -17,7 +17,7 @@ final class VideoDeletedTest extends TestCase
     protected function setUp(): void
     {
         $this->videoDeleted = new VideoDeleted(
-            new UUID('8164319a-f4c2-44ea-b666-f4dea4542628'),
+            '8164319a-f4c2-44ea-b666-f4dea4542628',
             new UUID('00cf030c-af27-4339-acea-f60b40aaaf0a')
         );
 

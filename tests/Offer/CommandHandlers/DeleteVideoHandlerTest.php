@@ -63,7 +63,7 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
             ])
             ->when(new DeleteVideo(new UUID($eventId), $videoId))
             ->then([
-                new VideoDeleted(new UUID($eventId), $videoId),
+                new VideoDeleted($eventId, $videoId),
             ]);
     }
 

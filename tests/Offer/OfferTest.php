@@ -925,7 +925,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Item $item) => $item->deleteVideo($videoId))
             ->then([
-                new VideoDeleted(new UUID($itemId), $videoId),
+                new VideoDeleted($itemId, $videoId),
             ]);
     }
 
@@ -947,7 +947,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->given([
                 new ItemCreated($itemId),
                 new VideoAdded($itemId, $video),
-                new VideoDeleted(new UUID($itemId), $videoId),
+                new VideoDeleted($itemId, $videoId),
             ])
             ->when(fn (Item $item) => $item->deleteVideo($videoId))
             ->then([]);

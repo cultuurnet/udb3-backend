@@ -1115,7 +1115,7 @@ class OfferLDProjectorTest extends TestCase
 
         $this->documentRepository->save($initialDocument);
 
-        $videoDeleted = new VideoDeleted(new UUID($eventId), new UUID($videoToDeleteId));
+        $videoDeleted = new VideoDeleted($eventId, new UUID($videoToDeleteId));
         $eventBody = $this->project($videoDeleted, $eventId);
 
         unset($eventBody->modified);
@@ -1170,7 +1170,7 @@ class OfferLDProjectorTest extends TestCase
 
         $this->documentRepository->save($initialDocument);
 
-        $videoDeleted = new VideoDeleted(new UUID($eventId), new UUID($videoId));
+        $videoDeleted = new VideoDeleted($eventId, new UUID($videoId));
         $eventBody = $this->project($videoDeleted, $eventId);
 
         unset($eventBody->modified);

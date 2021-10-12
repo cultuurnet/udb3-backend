@@ -9,17 +9,17 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class AbstractVideoDeleted implements Serializable
 {
-    private UUID $itemId;
+    private string $itemId;
 
     private UUID $videoId;
 
-    final public function __construct(UUID $itemId, UUID $videoId)
+    final public function __construct(string $itemId, UUID $videoId)
     {
         $this->itemId = $itemId;
         $this->videoId = $videoId;
     }
 
-    public function getItemId(): UUID
+    public function getItemId(): string
     {
         return $this->itemId;
     }
@@ -32,7 +32,7 @@ class AbstractVideoDeleted implements Serializable
     public static function deserialize(array $data): AbstractVideoDeleted
     {
         return new static(
-            new UUID($data['item_id']),
+            $data['item_id'],
             new UUID($data['video_id'])
         );
     }
@@ -40,7 +40,7 @@ class AbstractVideoDeleted implements Serializable
     public function serialize(): array
     {
         return [
-            'item_id' => $this->itemId->toString(),
+            'item_id' => $this->itemId,
             'video_id' => $this->videoId->toString(),
         ];
     }

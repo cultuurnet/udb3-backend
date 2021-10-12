@@ -611,7 +611,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): JsonDocument
     {
-        $document = $this->loadDocumentFromRepositoryByItemId($videoDeleted->getItemId()->toString());
+        $document = $this->loadDocumentFromRepositoryByItemId($videoDeleted->getItemId());
 
         $offerLd = $document->getBody();
 
