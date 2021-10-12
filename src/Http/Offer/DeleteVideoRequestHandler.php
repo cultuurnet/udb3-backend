@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Commands\Video\DeleteVideo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,7 +28,7 @@ final class DeleteVideoRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
         $videoId = $routeParameters->get('videoId');
 
-        $this->commandBus->dispatch(new DeleteVideo($offerId, new UUID($videoId)));
+        $this->commandBus->dispatch(new DeleteVideo($offerId, $videoId));
 
         return new NoContentResponse();
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands\Video;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 
@@ -12,15 +11,15 @@ final class DeleteVideo implements AuthorizableCommand
 {
     private string $offerId;
 
-    private UUID $videoId;
+    private string $videoId;
 
-    public function __construct(string $offerId, UUID $videoId)
+    public function __construct(string $offerId, string $videoId)
     {
         $this->offerId = $offerId;
         $this->videoId = $videoId;
     }
 
-    public function getVideoId(): UUID
+    public function getVideoId(): string
     {
         return $this->videoId;
     }
