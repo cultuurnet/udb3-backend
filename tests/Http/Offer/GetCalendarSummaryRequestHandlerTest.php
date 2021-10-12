@@ -181,7 +181,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_a_different_language_based_on_the_langCode_query_parameter(): void
+    public function it_uses_a_different_language_based_on_the_language_query_parameter(): void
     {
         $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
         $eventJson = Json::encode(
