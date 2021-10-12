@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -27,6 +28,13 @@ class OfferServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app[OfferJsonDocumentReadRepository::class] = $app->share(
+            fn (Application $app) => new OfferJsonDocumentReadRepository(
+                $app['event_jsonld_repository'],
+                $app['place_jsonld_repository']
+            )
+        );
+
         $app[OfferMetadataRepository::class] = $app->share(
             function (Application $app) {
                 return new OfferMetadataRepository($app['dbal_connection']);

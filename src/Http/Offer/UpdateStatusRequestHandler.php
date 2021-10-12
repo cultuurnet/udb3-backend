@@ -37,7 +37,7 @@ class UpdateStatusRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->get('offerId');
+        $offerId = $routeParameters->getOfferId();
 
         /** @var Status $status */
         $status = $this->parser->parse($request)->getParsedBody();

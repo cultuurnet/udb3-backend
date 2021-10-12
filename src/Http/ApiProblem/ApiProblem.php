@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
+use CultuurNet\UDB3\Offer\OfferType;
 use Exception;
 
 /**
@@ -195,7 +196,7 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function notFound(string $detail = null): self
+    public static function urlNotFound(string $detail = null): self
     {
         return self::create(
             'https://api.publiq.be/probs/url/not-found',
@@ -203,6 +204,26 @@ final class ApiProblem extends Exception
             404,
             $detail
         );
+    }
+
+    public static function resourceNotFound(string $resourceType, string $resourceId): self
+    {
+        return self::urlNotFound('The ' . $resourceType . ' with id "' . $resourceId . '" was not found.');
+    }
+
+    public static function offerNotFound(OfferType $offerType, string $offerId): self
+    {
+        return self::resourceNotFound(strtolower($offerType->toNative()), $offerId);
+    }
+
+    public static function eventNotFound(string $eventId): self
+    {
+        return self::offerNotFound(OfferType::EVENT(), $eventId);
+    }
+
+    public static function placeNotFound(string $placeId): self
+    {
+        return self::offerNotFound(OfferType::PLACE(), $placeId);
     }
 
     public static function tokenNotSupported(string $detail): self
@@ -242,6 +263,16 @@ final class ApiProblem extends Exception
             400,
             null,
             $schemaErrors
+        );
+    }
+
+    public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/url/query-parameter-invalid',
+            'Query parameter invalid',
+            400,
+            'Query parameter ' . $parameterName . ' has invalid value "' . $value . '". Should be one of ' . implode(', ', $allowedValues)
         );
     }
 

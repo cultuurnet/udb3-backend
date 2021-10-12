@@ -33,7 +33,7 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
             '/{path}',
             function (Request $originalRequest, string $path) use ($app, &$pathHasBeenRewritten) {
                 if ($pathHasBeenRewritten) {
-                    return new ApiProblemJsonResponse(ApiProblem::notFound());
+                    return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
                 }
 
                 $rewrites = [
@@ -50,6 +50,9 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
                     '/priceInfo/' => 'price-info',
                     '/subEvents/' => 'sub-events',
                     '/typicalAgeRange/' => 'typical-age-range',
+
+                    // Convert old "calsum" path to "calendar-summary"
+                    '/\/calsum/' => '/calendar-summary',
 
                     // Add trailing slash if missing
                     '/^(.*)(?<!\/)$/' => '${1}/',

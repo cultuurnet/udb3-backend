@@ -26,16 +26,14 @@ final class GetPlaceDetailRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $placeId = $routeParameters->get('placeId');
+        $placeId = $routeParameters->getPlaceId();
         $queryParameters = new QueryParameters($request);
         $includeMetadata = $queryParameters->getAsBoolean('includeMetadata');
 
         try {
             $placeDocument = $this->documentRepository->fetch($placeId, $includeMetadata);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::notFound(
-                'The place with id "' . $placeId . '" was not found.'
-            );
+            throw ApiProblem::placeNotFound($placeId);
         }
 
         return new JsonLdResponse($placeDocument->getAssocBody());

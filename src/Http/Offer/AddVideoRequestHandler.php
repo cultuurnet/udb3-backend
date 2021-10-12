@@ -38,7 +38,7 @@ final class AddVideoRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->get('offerId');
+        $offerId = $routeParameters->getOfferId();
 
         /** @var Video $video */
         $video = $this->parser->parse($request)->getParsedBody();

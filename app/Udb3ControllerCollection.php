@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use Silex\ControllerCollection;
 
-final class ControllerCollectionWithTrailingSlashes extends ControllerCollection
+final class Udb3ControllerCollection extends ControllerCollection
 {
     /**
      * Overrides the ControllerCollection::match() method that gets called for every route registration, so it can add
@@ -28,6 +28,13 @@ final class ControllerCollectionWithTrailingSlashes extends ControllerCollection
         // Add a single trailing slash.
         $pattern .= '/';
 
-        return parent::match($pattern, $to);
+        $match = parent::match($pattern, $to);
+
+        // Make it possible to use an offerType wildcard that only matches if it's either "events" or "places".
+        if (strpos($pattern, '{offerType}') !== false) {
+            $match->assert('offerType', '(events|places)');
+        }
+
+        return $match;
     }
 }

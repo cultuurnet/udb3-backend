@@ -43,8 +43,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
 
-        $controllers->get('/{cdbid}/calsum/', 'event_controller:getCalendarSummary');
-
         $controllers->put('/{eventId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
 
@@ -74,7 +72,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $app['event_controller'] = $app->share(
             function (Application $app) {
                 return new ReadEventRestController(
-                    $app['event_jsonld_repository'],
                     $app['event_history_repository'],
                     $app['current_user_is_god_user']
                 );

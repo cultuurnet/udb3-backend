@@ -39,7 +39,7 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->get('eventId');
+        $offerId = $routeParameters->getEventId();
 
         /** @var Calendar $calendar */
         $calendar = $this->parser->parse($request)->getParsedBody();
