@@ -48,9 +48,9 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
     {
         $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
 
-        $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
         $video = new Video(
-            $videoId,
+            new UUID($videoId),
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         );
@@ -61,7 +61,7 @@ final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
                 $this->getEventCreated($eventId),
                 new VideoAdded($eventId, $video),
             ])
-            ->when(new DeleteVideo($eventId, $videoId))
+            ->when(new DeleteVideo($eventId, new UUID($videoId)))
             ->then([
                 new VideoDeleted($eventId, $videoId),
             ]);

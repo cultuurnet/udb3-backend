@@ -617,7 +617,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd->videos = array_values(array_filter(
             $offerLd->videos,
-            static fn ($video) => $video->id !== $videoDeleted->getVideoId()->toString()
+            static fn ($video) => $video->id !== $videoDeleted->getVideoId()
         ));
 
         if (count($offerLd->videos) === 0) {

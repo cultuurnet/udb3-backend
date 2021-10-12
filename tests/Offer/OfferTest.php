@@ -910,10 +910,10 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_handles_deleting_a_video(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
 
         $video = (new Video(
-            $videoId,
+            new UUID($videoId),
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
@@ -923,7 +923,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new ItemCreated($itemId),
                 new VideoAdded($itemId, $video),
             ])
-            ->when(fn (Item $item) => $item->deleteVideo($videoId))
+            ->when(fn (Item $item) => $item->deleteVideo(new UUID($videoId)))
             ->then([
                 new VideoDeleted($itemId, $videoId),
             ]);
@@ -935,10 +935,10 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_does_not_delete_a_video_twice(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $videoId = new UUID('91c75325-3830-4000-b580-5778b2de4548');
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
 
         $video = (new Video(
-            $videoId,
+            new UUID($videoId),
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
@@ -949,7 +949,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new VideoAdded($itemId, $video),
                 new VideoDeleted($itemId, $videoId),
             ])
-            ->when(fn (Item $item) => $item->deleteVideo($videoId))
+            ->when(fn (Item $item) => $item->deleteVideo(new UUID($videoId)))
             ->then([]);
     }
 

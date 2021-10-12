@@ -838,7 +838,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): void
     {
         $this->videos = $this->videos->filter(
-            fn (Video $video) => !$video->getId()->sameAs($videoDeleted->getVideoId())
+            fn (Video $video) => !$video->getId()->sameAs(new UUID($videoDeleted->getVideoId()))
         );
     }
 
