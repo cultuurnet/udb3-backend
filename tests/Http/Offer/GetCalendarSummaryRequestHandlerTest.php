@@ -181,7 +181,7 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_a_different_language_based_on_the_langCode_query_parameter(): void
+    public function it_uses_a_different_language_based_on_the_language_query_parameter(): void
     {
         $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
         $eventJson = Json::encode(
@@ -201,6 +201,39 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
             ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', $eventId)
             ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?language=fr')
+            ->build('GET');
+
+        $expectedContent = 'Du vendredi 1 janvier 2021 à 00:00 au dimanche 10 janvier 2021 à 00:00';
+
+        $response = $this->getCalendarSummaryRequestHandler->handle($request);
+
+        $this->assertInstanceOf(PlainTextResponse::class, $response);
+        $this->assertEquals($expectedContent, $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_a_different_language_based_on_the_langCode_query_parameter(): void
+    {
+        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
+        $eventJson = Json::encode(
+            [
+                '@context' => '/contexts/event',
+                'calendarType' => 'single',
+                'startDate' => '2021-01-01T00:00:00+01:00',
+                'endDate' => '2021-01-10T00:00:00+01:00',
+                'status' => ['type' => 'Available'],
+                'bookingAvailability' => ['type' => 'Available'],
+            ]
+        );
+        $eventDocument = new JsonDocument($eventId, $eventJson);
+        $this->repositoryMockFactory->expectEventDocument($eventDocument);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', $eventId)
+            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?langCode=fr_BE')
             ->build('GET');
 
         $expectedContent = 'Du vendredi 1 janvier 2021 à 00:00 au dimanche 10 janvier 2021 à 00:00';
