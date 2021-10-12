@@ -10,11 +10,11 @@ use CultuurNet\UDB3\Security\AuthorizableCommand;
 
 final class DeleteVideo implements AuthorizableCommand
 {
-    private UUID $offerId;
+    private string $offerId;
 
     private UUID $videoId;
 
-    public function __construct(UUID $offerId, UUID $videoId)
+    public function __construct(string $offerId, UUID $videoId)
     {
         $this->offerId = $offerId;
         $this->videoId = $videoId;
@@ -27,7 +27,7 @@ final class DeleteVideo implements AuthorizableCommand
 
     public function getItemId(): string
     {
-        return $this->offerId->toString();
+        return $this->offerId;
     }
 
     public function getPermission(): Permission

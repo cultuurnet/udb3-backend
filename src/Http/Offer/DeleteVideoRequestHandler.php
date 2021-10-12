@@ -29,7 +29,7 @@ final class DeleteVideoRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
         $videoId = $routeParameters->get('videoId');
 
-        $this->commandBus->dispatch(new DeleteVideo(new UUID($offerId), new UUID($videoId)));
+        $this->commandBus->dispatch(new DeleteVideo($offerId, new UUID($videoId)));
 
         return new NoContentResponse();
     }
