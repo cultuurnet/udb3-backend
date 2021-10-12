@@ -512,8 +512,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     public function updateImage(
-        LegacyUUID      $mediaObjectId,
-        StringLiteral   $description,
+        LegacyUUID $mediaObjectId,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): void {
         if ($this->updateImageAllowed($mediaObjectId, $description, $copyrightHolder)) {
