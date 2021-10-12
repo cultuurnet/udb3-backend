@@ -102,9 +102,7 @@ final class VideoNormalizer implements NormalizerInterface
     private function createDefaultCopyrightHolder(Language $language, array $platformData): CopyrightHolder
     {
         return new CopyrightHolder(
-            $this->defaultCopyrightHolders[$language->toString()] .
-            ' ' .
-            $platformData['name']
+            sprintf($this->defaultCopyrightHolders[$language->toString()], $platformData['name'])
         );
     }
 }

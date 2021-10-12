@@ -154,10 +154,10 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             ],
             new VideoNormalizer(
                 [
-                    'nl' => 'Copyright afgehandeld door',
-                    'fr' => 'Droits d\'auteur gérés par',
-                    'de' => 'Urheberrecht gehandhabt von',
-                    'en' => 'Copyright handled by',
+                    'nl' => 'Copyright afgehandeld door %s',
+                    'fr' => 'Droits d\'auteur gérés pas %s',
+                    'de' => 'Urheberrecht gehandhabt von %s',
+                    'en' => 'Copyright handled by %s',
                 ]
             )
         );

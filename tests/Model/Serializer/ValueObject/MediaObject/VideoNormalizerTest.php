@@ -22,10 +22,10 @@ final class VideoNormalizerTest extends TestCase
         $this->assertEquals(
             $videoArray,
             (new VideoNormalizer([
-                'nl' => 'Copyright afgehandeld door',
-                'fr' => 'Droits d\'auteur gérés par',
-                'de' => 'Urheberrecht gehandhabt von',
-                'en' => 'Copyright handled by',
+                'nl' => 'Copyright afgehandeld door %s',
+                'fr' => 'Droits d\'auteur gérés par %s',
+                'de' => 'Urheberrecht gehandhabt von %s',
+                'en' => 'Copyright handled by %s',
             ]))->normalize($video)
         );
     }
@@ -38,10 +38,10 @@ final class VideoNormalizerTest extends TestCase
         $this->expectException(RuntimeException::class);
 
         (new VideoNormalizer([
-            'nl' => 'Copyright afgehandeld door',
-            'fr' => 'Droits d\'auteur gérés par',
-            'de' => 'Urheberrecht gehandhabt von',
-            'en' => 'Copyright handled by',
+            'nl' => 'Copyright afgehandeld door %s',
+            'fr' => 'Droits d\'auteur gérés par %s',
+            'de' => 'Urheberrecht gehandhabt von %s',
+            'en' => 'Copyright handled by %s',
         ]))->normalize(new Video(
             new UUID('6fad3c7e-2a7f-4957-94a1-8009bb6b7de4'),
             new Url('https://myspace.com/myspace/video/publiq/901564992'),
