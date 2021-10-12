@@ -8,6 +8,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -48,7 +49,8 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     new JsonDocumentLanguageEnricher(
                         new PlaceJsonDocumentLanguageAnalyzer()
                     ),
-                    $app['config']['base_price_translations']
+                    $app['config']['base_price_translations'],
+                    new VideoNormalizer($app['config']['media']['video_default_copyright'])
                 );
 
                 return $projector;

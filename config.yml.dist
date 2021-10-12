@@ -93,6 +93,11 @@ media:
     region: eu-west-1
     version: latest
     bucket: udb2-media-test.uitdatabank.be
+  video_default_copyright:
+    nl: Copyright afgehandeld door %s
+    fr: Droits d'auteur gérés par %s
+    de: Urheberrecht gehandhabt von %s
+    en: Copyright handled by %s
 
 cdbxml_proxy:
   enabled: "true"

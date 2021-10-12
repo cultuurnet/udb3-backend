@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 final class VideoNormalizerTest extends TestCase
@@ -20,8 +21,32 @@ final class VideoNormalizerTest extends TestCase
     {
         $this->assertEquals(
             $videoArray,
-            (new VideoNormalizer())->normalize($video)
+            (new VideoNormalizer([
+                'nl' => 'Copyright afgehandeld door %s',
+                'fr' => 'Droits d\'auteur gérés par %s',
+                'de' => 'Urheberrecht gehandhabt von %s',
+                'en' => 'Copyright handled by %s',
+            ]))->normalize($video)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_for_unsupported_video_platforms(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        (new VideoNormalizer([
+            'nl' => 'Copyright afgehandeld door %s',
+            'fr' => 'Droits d\'auteur gérés par %s',
+            'de' => 'Urheberrecht gehandhabt von %s',
+            'en' => 'Copyright handled by %s',
+        ]))->normalize(new Video(
+            new UUID('6fad3c7e-2a7f-4957-94a1-8009bb6b7de4'),
+            new Url('https://myspace.com/myspace/video/publiq/901564992'),
+            new Language('nl')
+        ));
     }
 
     public function videoAddedProvider(): array
@@ -38,19 +63,21 @@ final class VideoNormalizerTest extends TestCase
                     'url' => 'https://vimeo.com/98765432',
                     'embedUrl' => 'https://player.vimeo.com/video/98765432',
                     'language' => 'nl',
+                    'copyrightHolder' => 'Copyright afgehandeld door Vimeo',
                 ],
             ],
             'video_from_youtube' => [
                 new Video(
                     new UUID('91c75325-3830-4000-b580-5778b2de4548'),
                     new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
-                    new Language('nl')
+                    new Language('fr')
                 ),
                 [
                     'id' => '91c75325-3830-4000-b580-5778b2de4548',
                     'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
                     'embedUrl' => 'https://www.youtube.com/embed/cEItmb_a20D',
-                    'language' => 'nl',
+                    'language' => 'fr',
+                    'copyrightHolder' => 'Droits d\'auteur gérés par YouTube',
                 ],
             ],
         ];
