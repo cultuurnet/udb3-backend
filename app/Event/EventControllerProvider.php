@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
-use CultuurNet\UDB3\Http\Event\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
@@ -41,7 +40,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
 
-        $controllers->put('/{eventId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
 
         $controllers->post('/{cdbid}/copies/', 'event_editing_controller:copyEvent');
@@ -83,10 +81,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                     $app['should_auto_approve_new_offer']
                 );
             }
-        );
-
-        $app[UpdateCalendarRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateSubEventsRequestHandler::class] = $app->share(
