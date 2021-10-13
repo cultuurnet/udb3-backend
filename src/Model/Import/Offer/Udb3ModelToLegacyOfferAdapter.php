@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Offer\Offer;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -229,5 +230,10 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         }
 
         return $descriptions;
+    }
+
+    public function getVideos(): VideoCollection
+    {
+        return $this->offer->getVideos();
     }
 }
