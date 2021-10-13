@@ -51,7 +51,7 @@ final class VideoNormalizer implements NormalizerInterface
     {
         $platformData = $this->getPlatformData($video->getUrl());
         $videoArray = [
-            'id' => $video->getId()->toString(),
+            'id' => $video->getId(),
             'url' => $video->getUrl()->toString(),
             'embedUrl' => $this->createEmbedUrl($platformData)->toString(),
             'language' => $video->getLanguage()->toString(),

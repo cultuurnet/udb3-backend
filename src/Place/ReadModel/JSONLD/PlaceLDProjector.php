@@ -61,6 +61,7 @@ use CultuurNet\UDB3\Place\Events\TypeUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Place\Events\VideoAdded;
+use CultuurNet\UDB3\Place\VideoDeleted;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -73,10 +74,7 @@ use CultuurNet\UDB3\Theme;
  */
 class PlaceLDProjector extends OfferLDProjector implements EventListener
 {
-    /**
-     * @var CdbXMLImporter
-     */
-    protected $cdbXMLImporter;
+    protected CdbXMLImporter $cdbXMLImporter;
 
     /**
      * @param string[] $basePriceTranslations
@@ -457,6 +455,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected function getVideoAddedClassName(): string
     {
         return VideoAdded::class;
+    }
+
+    protected function getVideoDeletedClassName(): string
+    {
+        return VideoDeleted::class;
     }
 
     /**

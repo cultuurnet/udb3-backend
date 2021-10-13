@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -51,6 +50,7 @@ use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
+use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
@@ -64,10 +64,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Item extends Offer
 {
-    protected $id;
+    protected string $id;
 
-
-    protected function applyItemCreated(ItemCreated $created)
+    protected function applyItemCreated(ItemCreated $created): void
     {
         $this->id = $created->getItemId();
         $this->mainLanguage = $created->getMainLanguage();
@@ -84,36 +83,27 @@ class Item extends Offer
         return new OwnerChanged($this->id, $newOwnerId);
     }
 
-    /**
-     * @return LabelAdded
-     */
-    protected function createLabelAddedEvent(Label $label)
+    protected function createLabelAddedEvent(Label $label): LabelAdded
     {
         return new LabelAdded($this->id, $label);
     }
 
-    /**
-     * @return LabelRemoved
-     */
-    protected function createLabelRemovedEvent(Label $label)
+    protected function createLabelRemovedEvent(Label $label): LabelRemoved
     {
         return new LabelRemoved($this->id, $label);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createLabelsImportedEvent(Labels $labels)
+    protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
         return new LabelsImported($this->id, $labels);
     }
 
-    protected function createImageAddedEvent(Image $image)
+    protected function createImageAddedEvent(Image $image): ImageAdded
     {
         return new ImageAdded($this->id, $image);
     }
 
-    protected function createImageRemovedEvent(Image $image)
+    protected function createImageRemovedEvent(Image $image): ImageRemoved
     {
         return new ImageRemoved($this->id, $image);
     }
@@ -122,7 +112,7 @@ class Item extends Offer
         LegacyUUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
-    ) {
+    ): ImageUpdated {
         return new ImageUpdated(
             $this->id,
             $mediaObjectId,
@@ -131,208 +121,142 @@ class Item extends Offer
         );
     }
 
-    protected function createMainImageSelectedEvent(Image $image)
+    protected function createMainImageSelectedEvent(Image $image): MainImageSelected
     {
         return new MainImageSelected($this->id, $image);
     }
 
     protected function createVideoAddedEvent(Video $video): VideoAdded
     {
-        return new VideoAdded(new UUID($this->id), $video);
+        return new VideoAdded($this->id, $video);
     }
 
-    public function getAggregateRootId()
+    protected function createVideoDeletedEvent(string $videoId): VideoDeleted
+    {
+        return new VideoDeleted($this->id, $videoId);
+    }
+
+    public function getAggregateRootId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createTitleTranslatedEvent(Language $language, Title $title)
+    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->id, $language, $title);
     }
 
-    /**
-     * @return TitleUpdated
-     */
-    protected function createTitleUpdatedEvent(Title $title)
+    protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
         return new TitleUpdated($this->id, $title);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createDescriptionTranslatedEvent(Language $language, Description $description)
+    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->id, $language, $description);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createDescriptionUpdatedEvent(Description $description)
+    protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->id, $description);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createCalendarUpdatedEvent(Calendar $calendar)
+    protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated
     {
         return new CalendarUpdated($this->id, $calendar);
     }
 
-    /**
-     * @param AgeRange $typicalAgeRange
-     * @return TypicalAgeRangeUpdated
-     */
-    protected function createTypicalAgeRangeUpdatedEvent($typicalAgeRange)
+    protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange): TypicalAgeRangeUpdated
     {
         return new TypicalAgeRangeUpdated($this->id, $typicalAgeRange);
     }
 
-    /**
-     * @return TypicalAgeRangeDeleted
-     */
-    protected function createTypicalAgeRangeDeletedEvent()
+    protected function createTypicalAgeRangeDeletedEvent(): TypicalAgeRangeDeleted
     {
         return new TypicalAgeRangeDeleted($this->id);
     }
 
-    /**
-     * @param string $organizerId
-     * @return OrganizerUpdated
-     */
-    protected function createOrganizerUpdatedEvent($organizerId)
+    protected function createOrganizerUpdatedEvent(string $organizerId): OrganizerUpdated
     {
         return new OrganizerUpdated($this->id, $organizerId);
     }
 
-    /**
-     * @param string $organizerId
-     * @return OrganizerDeleted
-     */
-    protected function createOrganizerDeletedEvent($organizerId)
+    protected function createOrganizerDeletedEvent(string $organizerId): OrganizerDeleted
     {
         return new OrganizerDeleted($this->id, $organizerId);
     }
 
-    /**
-     * @return ContactPointUpdated
-     */
-    protected function createContactPointUpdatedEvent(ContactPoint $contactPoint)
+    protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): ContactPointUpdated
     {
         return new ContactPointUpdated($this->id, $contactPoint);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates)
+    protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): GeoCoordinatesUpdated
     {
         return new GeoCoordinatesUpdated($this->id, $coordinates);
     }
 
-    /**
-     * @return BookingInfoUpdated
-     */
-    protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo)
+    protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo): BookingInfoUpdated
     {
         return new BookingInfoUpdated($this->id, $bookingInfo);
     }
 
-    /**
-     * @return PriceInfoUpdated
-     */
-    protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo)
+    protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo): PriceInfoUpdated
     {
         return new PriceInfoUpdated($this->id, $priceInfo);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createOfferDeletedEvent()
+    protected function createOfferDeletedEvent(): ItemDeleted
     {
         return new ItemDeleted($this->id);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createPublishedEvent(\DateTimeInterface $publicationDate)
+    protected function createPublishedEvent(\DateTimeInterface $publicationDate): Published
     {
         return new Published($this->id, $publicationDate);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createApprovedEvent()
+    protected function createApprovedEvent(): Approved
     {
         return new Approved($this->id);
     }
 
-    /**
-     * @inheritDoc
-     * @return ImagesImportedFromUDB2
-     */
-    protected function createImagesImportedFromUDB2(ImageCollection $images)
+    protected function createImagesImportedFromUDB2(ImageCollection $images): ImagesImportedFromUDB2
     {
         return new ImagesImportedFromUDB2($this->id, $images);
     }
 
-    /**
-     * @inheritDoc
-     * @return ImagesUpdatedFromUDB2
-     */
-    protected function createImagesUpdatedFromUDB2(ImageCollection $images)
+    protected function createImagesUpdatedFromUDB2(ImageCollection $images): ImagesUpdatedFromUDB2
     {
         return new ImagesUpdatedFromUDB2($this->id, $images);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createRejectedEvent(StringLiteral $reason)
+    protected function createRejectedEvent(StringLiteral $reason): Rejected
     {
         return new Rejected($this->id, $reason);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createFlaggedAsDuplicate()
+    protected function createFlaggedAsDuplicate(): FlaggedAsDuplicate
     {
         return new FlaggedAsDuplicate($this->id);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createFlaggedAsInappropriate()
+    protected function createFlaggedAsInappropriate(): FlaggedAsInappropriate
     {
         return new FlaggedAsInappropriate($this->id);
     }
 
-    protected function createTypeUpdatedEvent(EventType $type)
+    protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
     {
         return new TypeUpdated($this->id, $type);
     }
 
-    protected function createThemeUpdatedEvent(Theme $theme)
+    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
     {
         return new ThemeUpdated($this->id, $theme);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createFacilitiesUpdatedEvent(array $facilities)
+    protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated
     {
         return new FacilitiesUpdated($this->id, $facilities);
     }

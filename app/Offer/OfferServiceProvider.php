@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
@@ -26,7 +27,7 @@ use Silex\ServiceProviderInterface;
 
 class OfferServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[OfferJsonDocumentReadRepository::class] = $app->share(
             fn (Application $app) => new OfferJsonDocumentReadRepository(
@@ -140,10 +141,14 @@ class OfferServiceProvider implements ServiceProviderInterface
                 return new AddVideoHandler($app[OfferRepository::class]);
             }
         );
+
+        $app[DeleteVideoHandler::class] = $app->share(
+            fn (Application $application) => new DeleteVideoHandler($app[OfferRepository::class])
+        );
     }
 
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

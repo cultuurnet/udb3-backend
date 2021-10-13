@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesEvent;
@@ -67,30 +68,15 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         DelegateEventHandlingToSpecificMethodTrait::handle as handleUnknownEvents;
     }
 
-    /**
-     * @var DocumentRepository
-     */
-    protected $repository;
+    protected DocumentRepository $repository;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    protected $iriGenerator;
+    protected IriGeneratorInterface $iriGenerator;
 
-    /**
-     * @var EntityServiceInterface
-     */
-    protected $organizerService;
+    protected EntityServiceInterface $organizerService;
 
-    /**
-     * @var JsonDocumentMetaDataEnricherInterface
-     */
-    protected $jsonDocumentMetaDataEnricher;
+    protected JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher;
 
-    /**
-     * @var MediaObjectSerializer
-     */
-    protected $mediaObjectSerializer;
+    protected MediaObjectSerializer $mediaObjectSerializer;
 
     /**
      * Associative array of bases prices.
@@ -98,12 +84,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      *
      * @var string[]
      */
-    private $basePriceTranslations;
+    private array $basePriceTranslations;
 
-    /**
-     * @var SluggerInterface
-     */
-    protected $slugger;
+    protected SluggerInterface $slugger;
 
     protected VideoNormalizer $videoNormalizer;
 
@@ -221,6 +204,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     abstract protected function getMainImageSelectedClassName();
 
     abstract protected function getVideoAddedClassName(): string;
+
+    abstract protected function getVideoDeletedClassName(): string;
 
     /**
      * @return string
@@ -615,11 +600,29 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected function applyVideoAdded(AbstractVideoAdded $videoAdded): JsonDocument
     {
-        $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId()->toString());
+        $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId());
 
         $offerLd = $document->getBody();
         $offerLd->videos = $offerLd->videos ?? [];
         $offerLd->videos[] = $this->videoNormalizer->normalize($videoAdded->getVideo());
+
+        return $document->withBody($offerLd);
+    }
+
+    protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($videoDeleted->getItemId());
+
+        $offerLd = $document->getBody();
+
+        $offerLd->videos = array_values(array_filter(
+            $offerLd->videos,
+            static fn ($video) => $video->id !== $videoDeleted->getVideoId()
+        ));
+
+        if (count($offerLd->videos) === 0) {
+            unset($offerLd->videos);
+        }
 
         return $document->withBody($offerLd);
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -28,7 +27,7 @@ final class VideoDenormalizer implements DenormalizerInterface
         }
 
         $video = new Video(
-            new UUID($data['id']),
+            $data['id'],
             new Url($data['url']),
             new Language($data['language'])
         );

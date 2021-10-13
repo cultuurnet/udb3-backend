@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class Video
 {
-    private UUID $id;
+    private string $id;
 
     private Url $url;
 
@@ -19,7 +18,7 @@ final class Video
     private ?CopyrightHolder $copyrightHolder = null;
 
     public function __construct(
-        UUID $id,
+        string $id,
         Url $url,
         Language $language
     ) {
@@ -35,7 +34,7 @@ final class Video
         return $clone;
     }
 
-    public function getId(): UUID
+    public function getId(): string
     {
         return $this->id;
     }
