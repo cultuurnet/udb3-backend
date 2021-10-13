@@ -640,6 +640,37 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function importVideos(VideoCollection $importVideos): void
+    {
+        $videoCompare = static fn (Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
+
+        $newVideos = array_udiff(
+            $importVideos->toArray(),
+            $this->videos->toArray(),
+            $videoCompare
+        );
+
+        $deletedVideos = array_udiff(
+            $this->videos->toArray(),
+            $importVideos->toArray(),
+            $videoCompare
+        );
+
+        $updatedVideos = array_uintersect(
+            $importVideos->toArray(),
+            $this->videos->toArray(),
+            $videoCompare
+        );
+
+        foreach ($newVideos as $newVideo) {
+            $this->apply($this->createVideoAddedEvent($newVideo));
+        }
+
+        foreach ($deletedVideos as $deletedVideo) {
+            $this->apply($this->createVideoDeletedEvent($deletedVideo));
+        }
+    }
+
     public function delete(): void
     {
         $this->apply(
