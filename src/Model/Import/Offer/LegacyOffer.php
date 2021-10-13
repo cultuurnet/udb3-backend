@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
@@ -91,4 +92,6 @@ interface LegacyOffer
      *   Language code as key, and Description as value.
      */
     public function getDescriptionTranslations();
+
+    public function getVideos(): VideoCollection;
 }
