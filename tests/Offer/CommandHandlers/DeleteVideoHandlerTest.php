@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\CommandHandlers;
+namespace CultuurNet\UDB3\Silex\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
@@ -12,50 +12,58 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\VideoAdded;
+use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
-use CultuurNet\UDB3\Event\Events\VideoAdded;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
+use CultuurNet\UDB3\Offer\Commands\Video\DeleteVideo;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 
-final class AddVideoHandlerTest extends CommandHandlerScenarioTestCase
+final class DeleteVideoHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(
         EventStore $eventStore,
-        EventBus $eventBus
+        EventBus   $eventBus
     ): CommandHandler {
         $repository = new OfferRepository(
             new EventRepository($eventStore, $eventBus),
             new PlaceRepository($eventStore, $eventBus)
         );
 
-        return new AddVideoHandler($repository);
+        return new DeleteVideoHandler($repository);
     }
 
     /**
      * @test
      */
-    public function it_will_add_a_video_to_an_event(): void
+    public function it_handles_deleting_a_video_from_an_event(): void
     {
         $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
-        $video = (new Video(
-            '91c75325-3830-4000-b580-5778b2de4548',
+
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
+        $video = new Video(
+            $videoId,
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
-        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
+        );
 
         $this->scenario
             ->withAggregateId($eventId)
-            ->given([$this->getEventCreated($eventId)])
-            ->when(new AddVideo($eventId, $video))
-            ->then([new VideoAdded($eventId, $video)]);
+            ->given([
+                $this->getEventCreated($eventId),
+                new VideoAdded($eventId, $video),
+            ])
+            ->when(new DeleteVideo($eventId, $videoId))
+            ->then([
+                new VideoDeleted($eventId, $videoId),
+            ]);
     }
 
     private function getEventCreated(string $eventId): EventCreated

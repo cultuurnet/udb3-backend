@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands\Video;
 
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class AddVideo implements AuthorizableCommand
+final class DeleteVideo implements AuthorizableCommand
 {
     private string $offerId;
 
-    private Video $video;
+    private string $videoId;
 
-    public function __construct(string $offerId, Video $video)
+    public function __construct(string $offerId, string $videoId)
     {
         $this->offerId = $offerId;
-        $this->video = $video;
+        $this->videoId = $videoId;
     }
 
-    public function getVideo(): Video
+    public function getVideoId(): string
     {
-        return $this->video;
+        return $this->videoId;
     }
 
     public function getItemId(): string

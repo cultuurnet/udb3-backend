@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -49,6 +50,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesEvent;
@@ -66,7 +68,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use Exception;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
@@ -74,103 +76,53 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public const DUPLICATE_REASON = 'duplicate';
     public const INAPPROPRIATE_REASON = 'inappropriate';
 
-    /**
-     * @var LabelCollection
-     */
-    protected $labels;
+    protected LabelCollection $labels;
 
-    /**
-     * @var ImageCollection
-     */
-    protected $images;
+    protected ImageCollection $images;
 
     protected VideoCollection $videos;
 
     /**
-     * @var string|null
-     *
      * Organizer ids can come from UDB2 which does not strictly use UUIDs.
      */
-    protected $organizerId;
+    protected ?string $organizerId = null;
 
-    /**
-     * @var WorkflowStatus
-     */
-    protected $workflowStatus;
+    protected WorkflowStatus $workflowStatus;
 
-    /**
-     * @var StringLiteral|null
-     */
-    protected $rejectedReason;
+    protected ?StringLiteral $rejectedReason = null;
 
-    /**
-     * @var PriceInfo|null
-     */
-    protected $priceInfo;
+    protected ?PriceInfo $priceInfo = null;
 
     /**
      * @var StringLiteral[]
      */
-    protected $titles;
+    protected array $titles;
 
     /**
      * @var Description[]
      */
-    protected $descriptions;
+    protected array $descriptions;
 
-    /**
-     * @var Language
-     */
-    protected $mainLanguage;
+    protected Language $mainLanguage;
 
-    /**
-     * @var string;
-     */
-    protected $typeId;
+    protected ?string $typeId = null;
 
-    /**
-     * @var string;
-     */
-    protected $themeId;
+    protected ?string $themeId = null;
 
-    /**
-     * @var array
-     */
-    protected $facilities;
+    protected array $facilities;
 
-    /**
-     * @var ContactPoint|null
-     */
-    protected $contactPoint;
+    protected ?ContactPoint $contactPoint = null;
 
-    /**
-     * @var Calendar|null
-     */
-    protected $calendar;
+    protected ?Calendar $calendar = null;
 
-    /**
-     * @var AgeRange|null
-     */
-    protected $typicalAgeRange;
+    protected ?AgeRange $typicalAgeRange = null;
 
-    /**
-     * @var BookingInfo|null
-     */
-    protected $bookingInfo;
+    protected ?BookingInfo $bookingInfo = null;
 
-    /**
-     * @var bool
-     */
-    protected $isDeleted = false;
+    protected bool $isDeleted = false;
 
-    /**
-     * @var string|null
-     */
-    private $ownerId;
+    private ?string $ownerId = null;
 
-    /**
-     * Offer constructor.
-     */
     public function __construct()
     {
         $this->titles = [];
@@ -228,7 +180,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         );
     }
 
-    public function updateTheme(Theme $theme)
+    public function updateTheme(Theme $theme): void
     {
         if (!$this->themeId || $this->themeId !== $theme->getId()) {
             $this->apply($this->createThemeUpdatedEvent($theme));
@@ -236,25 +188,19 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
 
-    public function updateFacilities(array $facilities)
+    public function updateFacilities(array $facilities): void
     {
         if (empty($this->facilities) || !$this->sameFacilities($this->facilities, $facilities)) {
             $this->apply($this->createFacilitiesUpdatedEvent($facilities));
         }
     }
 
-
-    protected function applyFacilitiesUpdated(AbstractFacilitiesUpdated $facilitiesUpdated)
+    protected function applyFacilitiesUpdated(AbstractFacilitiesUpdated $facilitiesUpdated): void
     {
         $this->facilities = $facilitiesUpdated->getFacilities();
     }
 
-    /**
-     * @param array $facilities1
-     * @param array $facilities2
-     * @return bool
-     */
-    private function sameFacilities($facilities1, $facilities2)
+    private function sameFacilities(array $facilities1, array $facilities2): bool
     {
         if (count($facilities1) !== count($facilities2)) {
             return false;
@@ -273,19 +219,14 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     /**
      * Get the id of the main image if one is selected for this offer.
-     *
-     * @return UUID|null
      */
-    protected function getMainImageId()
+    protected function getMainImageId(): ?LegacyUUID
     {
         $mainImage = $this->images->getMain();
         return isset($mainImage) ? $mainImage->getMediaObjectId() : null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function addLabel(Label $label)
+    public function addLabel(Label $label): void
     {
         if (!$this->labels->contains($label)) {
             $this->apply(
@@ -294,10 +235,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function removeLabel(Label $label)
+    public function removeLabel(Label $label): void
     {
         if ($this->labels->contains($label)) {
             $this->apply(
@@ -306,8 +244,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer, Labels $labelsToRemoveWhenOnOffer)
+    public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer, Labels $labelsToRemoveWhenOnOffer): void
     {
         $convertLabelClass = function (\CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $label) {
             return new Label(
@@ -369,8 +306,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    public function updateTitle(Language $language, Title $title)
+    public function updateTitle(Language $language, Title $title): void
     {
         if ($this->isTitleChanged($title, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
@@ -383,21 +319,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    public function applyTitleTranslated(AbstractTitleTranslated $titleTranslated)
+    public function applyTitleTranslated(AbstractTitleTranslated $titleTranslated): void
     {
         $this->titles[$titleTranslated->getLanguage()->getCode()] = $titleTranslated->getTitle();
     }
 
-
-
-    public function applyTitleUpdated(AbstractTitleUpdated $titleUpdated)
+    public function applyTitleUpdated(AbstractTitleUpdated $titleUpdated): void
     {
         $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
     }
 
-
-    public function updateDescription(Description $description, Language $language)
+    public function updateDescription(Description $description, Language $language): void
     {
         if ($this->isDescriptionChanged($description, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
@@ -410,8 +342,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    public function updateCalendar(Calendar $calendar)
+    public function updateCalendar(Calendar $calendar): void
     {
         if (is_null($this->calendar) || !$this->calendar->sameAs($calendar)) {
             $this->apply(
@@ -420,14 +351,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    protected function applyCalendarUpdated(AbstractCalendarUpdated $calendarUpdated)
+    protected function applyCalendarUpdated(AbstractCalendarUpdated $calendarUpdated): void
     {
         $this->calendar = $calendarUpdated->getCalendar();
     }
 
-
-    public function updateTypicalAgeRange(AgeRange $typicalAgeRange)
+    public function updateTypicalAgeRange(AgeRange $typicalAgeRange): void
     {
         $typicalAgeRangeUpdatedEvent = $this->createTypicalAgeRangeUpdatedEvent($typicalAgeRange);
 
@@ -436,13 +365,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    protected function applyTypicalAgeRangeUpdated(AbstractTypicalAgeRangeUpdated $typicalAgeRangeUpdated)
+    protected function applyTypicalAgeRangeUpdated(AbstractTypicalAgeRangeUpdated $typicalAgeRangeUpdated): void
     {
         $this->typicalAgeRange = $typicalAgeRangeUpdated->getTypicalAgeRange();
     }
 
-    public function deleteTypicalAgeRange()
+    public function deleteTypicalAgeRange(): void
     {
         if (!is_null($this->typicalAgeRange)) {
             $this->apply(
@@ -451,16 +379,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    public function applyTypicalAgeRangeDeleted(AbstractTypicalAgeRangeDeleted $typicalAgeRangeDeleted)
+    public function applyTypicalAgeRangeDeleted(AbstractTypicalAgeRangeDeleted $typicalAgeRangeDeleted): void
     {
         $this->typicalAgeRange = null;
     }
 
-    /**
-     * @param string $organizerId
-     */
-    public function updateOrganizer($organizerId)
+    public function updateOrganizer(string $organizerId): void
     {
         if ($this->organizerId !== $organizerId) {
             $this->apply(
@@ -469,12 +393,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    /**
-     * Delete the given organizer.
-     *
-     * @param string $organizerId
-     */
-    public function deleteOrganizer($organizerId)
+    public function deleteOrganizer($organizerId): void
     {
         if ($this->organizerId === $organizerId) {
             $this->apply(
@@ -486,7 +405,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Delete the current organizer regardless of the id.
      */
-    public function deleteCurrentOrganizer()
+    public function deleteCurrentOrganizer(): void
     {
         if (!is_null($this->organizerId)) {
             $this->apply(
@@ -495,10 +414,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    /**
-     * Updated the contact info.
-     */
-    public function updateContactPoint(ContactPoint $contactPoint)
+    public function updateContactPoint(ContactPoint $contactPoint): void
     {
         if (is_null($this->contactPoint) || !$this->contactPoint->sameAs($contactPoint)) {
             $this->apply(
@@ -507,14 +423,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    protected function applyContactPointUpdated(AbstractContactPointUpdated $contactPointUpdated)
+    protected function applyContactPointUpdated(AbstractContactPointUpdated $contactPointUpdated): void
     {
         $this->contactPoint = $contactPointUpdated->getContactPoint();
     }
 
-
-    public function updateGeoCoordinates(Coordinates $coordinates)
+    public function updateGeoCoordinates(Coordinates $coordinates): void
     {
         // Note: DON'T compare to previous coordinates and apply only on
         // changes. Various projectors expect GeoCoordinatesUpdated after
@@ -525,11 +439,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         );
     }
 
-    /**
-     * Updated the booking info.
-     *
-     */
-    public function updateBookingInfo(BookingInfo $bookingInfo)
+    public function updateBookingInfo(BookingInfo $bookingInfo): void
     {
         if (is_null($this->bookingInfo) || !$this->bookingInfo->sameAs($bookingInfo)) {
             $this->apply(
@@ -538,14 +448,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    public function applyBookingInfoUpdated(AbstractBookingInfoUpdated $bookingInfoUpdated)
+    public function applyBookingInfoUpdated(AbstractBookingInfoUpdated $bookingInfoUpdated): void
     {
         $this->bookingInfo = $bookingInfoUpdated->getBookingInfo();
     }
 
-
-    public function updatePriceInfo(PriceInfo $priceInfo)
+    public function updatePriceInfo(PriceInfo $priceInfo): void
     {
         if (is_null($this->priceInfo) || $priceInfo->serialize() !== $this->priceInfo->serialize()) {
             $this->apply(
@@ -554,53 +462,44 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    protected function applyPriceInfoUpdated(AbstractPriceInfoUpdated $priceInfoUpdated)
+    protected function applyPriceInfoUpdated(AbstractPriceInfoUpdated $priceInfoUpdated): void
     {
         $this->priceInfo = $priceInfoUpdated->getPriceInfo();
     }
 
-
-    protected function applyLabelAdded(AbstractLabelAdded $labelAdded)
+    protected function applyLabelAdded(AbstractLabelAdded $labelAdded): void
     {
         $this->labels = $this->labels->with($labelAdded->getLabel());
     }
 
-
-    protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved)
+    protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved): void
     {
         $this->labels = $this->labels->without($labelRemoved->getLabel());
     }
 
-
-    protected function applyThemeUpdated(AbstractThemeUpdated $themeUpdated)
+    protected function applyThemeUpdated(AbstractThemeUpdated $themeUpdated): void
     {
         $this->themeId = $themeUpdated->getTheme()->getId();
     }
 
-
-    protected function applyTypeUpdated(AbstractTypeUpdated $themeUpdated)
+    protected function applyTypeUpdated(AbstractTypeUpdated $themeUpdated): void
     {
         $this->typeId = $themeUpdated->getType()->getId();
     }
 
-    protected function applyDescriptionUpdated(AbstractDescriptionUpdated $descriptionUpdated)
+    protected function applyDescriptionUpdated(AbstractDescriptionUpdated $descriptionUpdated): void
     {
         $mainLanguageCode = $this->mainLanguage->getCode();
         $this->descriptions[$mainLanguageCode] = $descriptionUpdated->getDescription();
     }
 
-    protected function applyDescriptionTranslated(AbstractDescriptionTranslated $descriptionTranslated)
+    protected function applyDescriptionTranslated(AbstractDescriptionTranslated $descriptionTranslated): void
     {
         $languageCode = $descriptionTranslated->getLanguage()->getCode();
         $this->descriptions[$languageCode] = $descriptionTranslated->getDescription();
     }
 
-    /**
-     * Add a new image.
-     *
-     */
-    public function addImage(Image $image)
+    public function addImage(Image $image): void
     {
         // Find the image based on UUID inside the internal state.
         $existingImage = $this->images->findImageByUUID($image->getMediaObjectId());
@@ -612,12 +511,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
     public function updateImage(
-        UUID $mediaObjectId,
+        LegacyUUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
-    ) {
+    ): void {
         if ($this->updateImageAllowed($mediaObjectId, $description, $copyrightHolder)) {
             $this->apply(
                 $this->createImageUpdatedEvent(
@@ -630,8 +528,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     private function updateImageAllowed(
-        UUID $mediaObjectId,
-        StringLiteral $description,
+        LegacyUUID      $mediaObjectId,
+        StringLiteral   $description,
         CopyrightHolder $copyrightHolder
     ): bool {
         $image = $this->images->findImageByUUID($mediaObjectId);
@@ -646,11 +544,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             !$description->sameValueAs($image->getDescription());
     }
 
-    /**
-     * Remove an image.
-     *
-     */
-    public function removeImage(Image $image)
+    public function removeImage(Image $image): void
     {
         // Find the image based on UUID inside the internal state.
         // Use the image from the internal state.
@@ -663,11 +557,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    /**
-     * Make an existing image of the item the main image.
-     *
-     */
-    public function selectMainImage(Image $image)
+    public function selectMainImage(Image $image): void
     {
         if (!$this->images->findImageByUUID($image->getMediaObjectId())) {
             throw new \InvalidArgumentException('You can not select a random image to be main, it has to be added to the item.');
@@ -682,8 +572,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-
-    public function importImages(ImageCollection $imageCollection)
+    public function importImages(ImageCollection $imageCollection): void
     {
         $currentImageCollection = $this->images;
         $newMainImage = $imageCollection->getMain();
@@ -731,27 +620,34 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function addVideo(Video $video): void
     {
-        $videosWithSameId = $this->videos->filter(function (Video $currentVideo) use ($video) {
-            return $currentVideo->getId()->sameAs($video->getId());
-        });
+        $videosWithSameId = $this->videos->filter(
+            fn (Video $currentVideo) => $currentVideo->getId() === $video->getId()
+        );
 
         if ($videosWithSameId->isEmpty()) {
             $this->apply($this->createVideoAddedEvent($video));
         }
     }
 
-    /**
-     * Delete the offer.
-     */
-    public function delete()
+    public function deleteVideo(string $videoID): void
+    {
+        $videosWithSameId = $this->videos->filter(
+            fn (Video $video) => $video->getId() === $videoID
+        );
+
+        if (!$videosWithSameId->isEmpty()) {
+            $this->apply($this->createVideoDeletedEvent($videoID));
+        }
+    }
+
+    public function delete(): void
     {
         $this->apply(
             $this->createOfferDeletedEvent()
         );
     }
 
-
-    protected function importWorkflowStatus(CultureFeed_Cdb_Item_Base $cdbItem)
+    protected function importWorkflowStatus(CultureFeed_Cdb_Item_Base $cdbItem): void
     {
         try {
             $workflowStatus = WorkflowStatus::fromNative($cdbItem->getWfStatus());
@@ -764,18 +660,14 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Publish the offer when it has workflowstatus draft.
      */
-    public function publish(\DateTimeInterface $publicationDate)
+    public function publish(\DateTimeInterface $publicationDate): void
     {
         $this->guardPublish() ?: $this->apply(
             $this->createPublishedEvent($publicationDate)
         );
     }
 
-    /**
-     * @return bool
-     * @throws Exception
-     */
-    private function guardPublish()
+    private function guardPublish(): bool
     {
         if ($this->workflowStatus === WorkflowStatus::READY_FOR_VALIDATION()) {
             return true; // nothing left to do if the offer has already been published
@@ -788,19 +680,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    /**
-     * Approve the offer when it's waiting for validation.
-     */
-    public function approve()
+    public function approve(): void
     {
         $this->guardApprove() ?: $this->apply($this->createApprovedEvent());
     }
 
-    /**
-     * @return bool
-     * @throws Exception
-     */
-    private function guardApprove()
+    private function guardApprove(): bool
     {
         if ($this->workflowStatus === WorkflowStatus::APPROVED()) {
             return true; // nothing left to do if the offer has already been approved
@@ -813,32 +698,24 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    /**
-     * Reject an offer that is waiting for validation with a given reason.
-     */
-    public function reject(StringLiteral $reason)
+    public function reject(StringLiteral $reason): void
     {
         $this->guardRejection($reason) ?: $this->apply($this->createRejectedEvent($reason));
     }
 
-    public function flagAsDuplicate()
+    public function flagAsDuplicate(): void
     {
         $reason = new StringLiteral(self::DUPLICATE_REASON);
         $this->guardRejection($reason) ?: $this->apply($this->createFlaggedAsDuplicate());
     }
 
-    public function flagAsInappropriate()
+    public function flagAsInappropriate(): void
     {
         $reason = new StringLiteral(self::INAPPROPRIATE_REASON);
         $this->guardRejection($reason) ?: $this->apply($this->createFlaggedAsInappropriate());
     }
 
-    /**
-     * @return bool
-     *  false when the offer can still be rejected, true when the offer is already rejected for the same reason
-     * @throws Exception
-     */
-    private function guardRejection(StringLiteral $reason)
+    private function guardRejection(StringLiteral $reason): bool
     {
         if ($this->workflowStatus === WorkflowStatus::REJECTED()) {
             if ($this->rejectedReason && $reason->sameValueAs($this->rejectedReason)) {
@@ -855,10 +732,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    /**
-     * @return bool
-     */
-    private function isTitleChanged(Title $title, Language $language)
+    private function isTitleChanged(Title $title, Language $language): bool
     {
         $languageCode = $language->getCode();
 
@@ -866,10 +740,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             !$title->sameValueAs($this->titles[$languageCode]);
     }
 
-    /**
-     * @return bool
-     */
-    private function isDescriptionChanged(Description $description, Language $language)
+    private function isDescriptionChanged(Description $description, Language $language): bool
     {
         $languageCode = $language->getCode();
 
@@ -880,9 +751,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Overwrites or resets the main image and all media objects
      * by importing a new collection of images from UDB2.
-     *
      */
-    public function importImagesFromUDB2(ImageCollection $images)
+    public function importImagesFromUDB2(ImageCollection $images): void
     {
         $this->apply($this->createImagesImportedFromUDB2($images));
     }
@@ -890,52 +760,46 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Overwrites or resets the main image and all media objects
      * by updating with a new collection of images from UDB2.
-     *
      */
-    public function updateImagesFromUDB2(ImageCollection $images)
+    public function updateImagesFromUDB2(ImageCollection $images): void
     {
         $this->apply($this->createImagesUpdatedFromUDB2($images));
     }
 
-
-    protected function applyPublished(AbstractPublished $published)
+    protected function applyPublished(AbstractPublished $published): void
     {
         $this->workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
     }
 
-
-    protected function applyApproved(AbstractApproved $approved)
+    protected function applyApproved(AbstractApproved $approved): void
     {
         $this->workflowStatus = WorkflowStatus::APPROVED();
     }
 
-
-    protected function applyRejected(AbstractRejected $rejected)
+    protected function applyRejected(AbstractRejected $rejected): void
     {
         $this->rejectedReason = $rejected->getReason();
         $this->workflowStatus = WorkflowStatus::REJECTED();
     }
 
-
-    protected function applyFlaggedAsDuplicate(AbstractFlaggedAsDuplicate $flaggedAsDuplicate)
+    protected function applyFlaggedAsDuplicate(AbstractFlaggedAsDuplicate $flaggedAsDuplicate): void
     {
         $this->rejectedReason = new StringLiteral(self::DUPLICATE_REASON);
         $this->workflowStatus = WorkflowStatus::REJECTED();
     }
 
-
-    protected function applyFlaggedAsInappropriate(AbstractFlaggedAsInappropriate $flaggedAsInappropriate)
+    protected function applyFlaggedAsInappropriate(AbstractFlaggedAsInappropriate $flaggedAsInappropriate): void
     {
         $this->rejectedReason = new StringLiteral(self::INAPPROPRIATE_REASON);
         $this->workflowStatus = WorkflowStatus::REJECTED();
     }
 
-    protected function applyImageAdded(AbstractImageAdded $imageAdded)
+    protected function applyImageAdded(AbstractImageAdded $imageAdded): void
     {
         $this->images = $this->images->with($imageAdded->getImage());
     }
 
-    protected function applyImageUpdated(AbstractImageUpdated $imageUpdated)
+    protected function applyImageUpdated(AbstractImageUpdated $imageUpdated): void
     {
         $image = $this->images->findImageByUUID($imageUpdated->getMediaObjectId());
 
@@ -953,7 +817,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = $this->images->with($updatedImage);
     }
 
-    protected function applyImageRemoved(AbstractImageRemoved $imageRemoved)
+    protected function applyImageRemoved(AbstractImageRemoved $imageRemoved): void
     {
         try {
             $this->images = $this->images->without($imageRemoved->getImage());
@@ -961,34 +825,39 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    protected function applyMainImageSelected(AbstractMainImageSelected $mainImageSelected)
+    protected function applyMainImageSelected(AbstractMainImageSelected $mainImageSelected): void
     {
         $this->images = $this->images->withMain($mainImageSelected->getImage());
     }
 
-    protected function applyVideoAdded(AbstractVideoAdded $abstractVideoAdded)
+    protected function applyVideoAdded(AbstractVideoAdded $videoAdded): void
     {
-        $this->videos = $this->videos->with($abstractVideoAdded->getVideo());
+        $this->videos = $this->videos->with($videoAdded->getVideo());
     }
 
-    protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated)
+    protected function applyVideoDeleted(AbstractVideoDeleted $videoDeleted): void
+    {
+        $this->videos = $this->videos->filter(
+            fn (Video $video) => $video->getId() !== $videoDeleted->getVideoId()
+        );
+    }
+
+    protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated): void
     {
         $this->organizerId = $organizerUpdated->getOrganizerId();
     }
 
-    protected function applyOrganizerDeleted(AbstractOrganizerDeleted $organizerDeleted)
+    protected function applyOrganizerDeleted(AbstractOrganizerDeleted $organizerDeleted): void
     {
         $this->organizerId = null;
     }
 
-
-    protected function applyImagesImportedFromUDB2(AbstractImagesImportedFromUDB2 $imagesImportedFromUDB2)
+    protected function applyImagesImportedFromUDB2(AbstractImagesImportedFromUDB2 $imagesImportedFromUDB2): void
     {
         $this->applyUdb2ImagesEvent($imagesImportedFromUDB2);
     }
 
-
-    protected function applyImagesUpdatedFromUDB2(AbstractImagesUpdatedFromUDB2 $imagesUpdatedFromUDB2)
+    protected function applyImagesUpdatedFromUDB2(AbstractImagesUpdatedFromUDB2 $imagesUpdatedFromUDB2): void
     {
         $this->applyUdb2ImagesEvent($imagesUpdatedFromUDB2);
     }
@@ -998,9 +867,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      * Imports from UDB2 only contain the native Dutch content.
      * @see https://github.com/cultuurnet/udb3-udb2-bridge/blob/db0a7ab2444f55bb3faae3d59b82b39aaeba253b/test/Media/ImageCollectionFactoryTest.php#L79-L103
      * Because of this we have to make sure translated images are left in place.
-     *
      */
-    protected function applyUdb2ImagesEvent(AbstractImagesEvent $imagesEvent)
+    protected function applyUdb2ImagesEvent(AbstractImagesEvent $imagesEvent): void
     {
         $newMainImage = $imagesEvent->getImages()->getMain();
         $dutchImagesList = $imagesEvent->getImages()->toArray();
@@ -1017,167 +885,73 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = isset($newMainImage) ? $images->withMain($newMainImage) : $images;
     }
 
-    /**
-     * @return AbstractLabelAdded
-     */
-    abstract protected function createLabelAddedEvent(Label $label);
+    abstract protected function createLabelAddedEvent(Label $label): AbstractLabelAdded;
 
-    /**
-     * @return AbstractLabelRemoved
-     */
-    abstract protected function createLabelRemovedEvent(Label $label);
+    abstract protected function createLabelRemovedEvent(Label $label): AbstractLabelRemoved;
 
-    /**
-     * @return AbstractLabelsImported
-     */
-    abstract protected function createLabelsImportedEvent(Labels $labels);
+    abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 
-    /**
-     * @return AbstractTitleTranslated
-     */
-    abstract protected function createTitleTranslatedEvent(Language $language, Title $title);
+    abstract protected function createTitleTranslatedEvent(Language $language, Title $title): AbstractTitleTranslated;
 
-    /**
-     * @return AbstractDescriptionTranslated
-     */
-    abstract protected function createDescriptionTranslatedEvent(Language $language, Description $description);
+    abstract protected function createDescriptionTranslatedEvent(Language $language, Description $description): AbstractDescriptionTranslated;
 
-    /**
-     * @return AbstractImageAdded
-     */
-    abstract protected function createImageAddedEvent(Image $image);
+    abstract protected function createImageAddedEvent(Image $image): AbstractImageAdded;
 
-    /**
-     * @return AbstractImageRemoved
-     */
-    abstract protected function createImageRemovedEvent(Image $image);
+    abstract protected function createImageRemovedEvent(Image $image): AbstractImageRemoved;
 
-    /**
-     * @return AbstractImageUpdated
-     */
     abstract protected function createImageUpdatedEvent(
-        UUID $uuid,
-        StringLiteral $description,
+        LegacyUUID      $uuid,
+        StringLiteral   $description,
         CopyrightHolder $copyrightHolder
-    );
+    ): AbstractImageUpdated;
 
-    /**
-     * @return AbstractMainImageSelected
-     */
-    abstract protected function createMainImageSelectedEvent(Image $image);
+    abstract protected function createMainImageSelectedEvent(Image $image): AbstractMainImageSelected;
 
     abstract protected function createVideoAddedEvent(Video $video): AbstractVideoAdded;
 
-    /**
-     * @return AbstractOfferDeleted
-     */
-    abstract protected function createOfferDeletedEvent();
+    abstract protected function createVideoDeletedEvent(string $videoId): AbstractVideoDeleted;
 
-    /**
-     * @return AbstractTitleUpdated
-     */
-    abstract protected function createTitleUpdatedEvent(Title $title);
+    abstract protected function createOfferDeletedEvent(): AbstractOfferDeleted;
 
-    /**
-     * @return AbstractDescriptionUpdated
-     */
-    abstract protected function createDescriptionUpdatedEvent(Description $description);
+    abstract protected function createTitleUpdatedEvent(Title $title): AbstractTitleUpdated;
 
-    /**
-     * @return AbstractCalendarUpdated
-     */
-    abstract protected function createCalendarUpdatedEvent(Calendar $calendar);
+    abstract protected function createDescriptionUpdatedEvent(Description $description): AbstractDescriptionUpdated;
 
-    /**
-     * @param AgeRange $typicalAgeRange
-     * @return AbstractTypicalAgeRangeUpdated
-     */
-    abstract protected function createTypicalAgeRangeUpdatedEvent($typicalAgeRange);
+    abstract protected function createCalendarUpdatedEvent(Calendar $calendar): AbstractCalendarUpdated;
 
-    /**
-     * @return AbstractTypicalAgeRangeDeleted
-     */
-    abstract protected function createTypicalAgeRangeDeletedEvent();
+    abstract protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange): AbstractTypicalAgeRangeUpdated;
 
-    /**
-     * @param string $organizerId
-     * @return AbstractOrganizerUpdated
-     */
-    abstract protected function createOrganizerUpdatedEvent($organizerId);
+    abstract protected function createTypicalAgeRangeDeletedEvent(): AbstractTypicalAgeRangeDeleted;
 
-    /**
-     * @param string $organizerId
-     * @return AbstractOrganizerDeleted
-     */
-    abstract protected function createOrganizerDeletedEvent($organizerId);
+    abstract protected function createOrganizerUpdatedEvent(string $organizerId): AbstractOrganizerUpdated;
 
-    /**
-     * @return AbstractContactPointUpdated
-     */
-    abstract protected function createContactPointUpdatedEvent(ContactPoint $contactPoint);
+    abstract protected function createOrganizerDeletedEvent(string $organizerId): AbstractOrganizerDeleted;
 
-    /**
-     * @return AbstractGeoCoordinatesUpdated
-     */
-    abstract protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates);
+    abstract protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): AbstractContactPointUpdated;
 
-    /**
-     * @return AbstractBookingInfoUpdated
-     */
-    abstract protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo);
+    abstract protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): AbstractGeoCoordinatesUpdated;
 
-    /**
-     * @return AbstractPriceInfoUpdated
-     */
-    abstract protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo);
+    abstract protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo): AbstractBookingInfoUpdated;
 
-    /**
-     * @return AbstractPublished
-     */
-    abstract protected function createPublishedEvent(\DateTimeInterface $publicationDate);
+    abstract protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo): AbstractPriceInfoUpdated;
 
-    /**
-     * @return AbstractApproved
-     */
-    abstract protected function createApprovedEvent();
+    abstract protected function createPublishedEvent(\DateTimeInterface $publicationDate): AbstractPublished;
 
-    /**
-     * @return AbstractRejected
-     */
-    abstract protected function createRejectedEvent(StringLiteral $reason);
+    abstract protected function createApprovedEvent(): AbstractApproved;
 
-    /**
-     * @return AbstractFlaggedAsDuplicate
-     */
-    abstract protected function createFlaggedAsDuplicate();
+    abstract protected function createRejectedEvent(StringLiteral $reason): AbstractRejected;
 
-    /**
-     * @return AbstractFlaggedAsInappropriate
-     */
-    abstract protected function createFlaggedAsInappropriate();
+    abstract protected function createFlaggedAsDuplicate(): AbstractFlaggedAsDuplicate;
 
-    /**
-     * @return AbstractImagesImportedFromUDB2
-     */
-    abstract protected function createImagesImportedFromUDB2(ImageCollection $images);
+    abstract protected function createFlaggedAsInappropriate(): AbstractFlaggedAsInappropriate;
 
-    /**
-     * @return AbstractImagesUpdatedFromUDB2
-     */
-    abstract protected function createImagesUpdatedFromUDB2(ImageCollection $images);
+    abstract protected function createImagesImportedFromUDB2(ImageCollection $images): AbstractImagesImportedFromUDB2;
 
-    /**
-     * @return AbstractTypeUpdated
-     */
-    abstract protected function createTypeUpdatedEvent(EventType $type);
+    abstract protected function createImagesUpdatedFromUDB2(ImageCollection $images): AbstractImagesUpdatedFromUDB2;
 
-    /**
-     * @return AbstractThemeUpdated
-     */
-    abstract protected function createThemeUpdatedEvent(Theme $theme);
+    abstract protected function createTypeUpdatedEvent(EventType $type): AbstractTypeUpdated;
 
-    /**
-     * @return AbstractFacilitiesUpdated
-     */
-    abstract protected function createFacilitiesUpdatedEvent(array $facilities);
+    abstract protected function createThemeUpdatedEvent(Theme $theme): AbstractThemeUpdated;
+
+    abstract protected function createFacilitiesUpdatedEvent(array $facilities): AbstractFacilitiesUpdated;
 }

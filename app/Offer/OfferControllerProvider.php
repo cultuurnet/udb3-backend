@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
@@ -28,6 +29,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/videos/{videoId}', DeleteVideoRequestHandler::class);
 
         return $controllers;
     }
@@ -47,7 +49,18 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         );
 
         $app[AddVideoRequestHandler::class] = $app->share(
-            fn (Application $app) => new AddVideoRequestHandler($app['event_command_bus'], new UuidFactory())
+            fn (Application $app) => new AddVideoRequestHandler(
+                $app['event_command_bus'],
+                $app[OfferJsonDocumentReadRepository::class],
+                new UuidFactory()
+            )
+        );
+
+        $app[DeleteVideoRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteVideoRequestHandler(
+                $app['event_command_bus'],
+                $app[OfferJsonDocumentReadRepository::class]
+            )
         );
     }
 

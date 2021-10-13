@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -77,30 +76,21 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Place extends Offer implements UpdateableWithCdbXmlInterface
 {
-    /**
-     * @var string
-     */
-    private $placeId;
+    private string $placeId;
 
     /**
      * @var Address[]
      */
-    private $addresses;
+    private array $addresses;
 
-    /**
-     * @var boolean
-     */
-    private $isDuplicate = false;
+    private bool $isDuplicate = false;
 
     /**
      * @var string[]
      */
-    private $duplicates = [];
+    private array $duplicates = [];
 
-    /**
-     * @var string|null
-     */
-    private $canonicalPlaceId;
+    private ?string $canonicalPlaceId = null;
 
     public function __construct()
     {
@@ -109,10 +99,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->addresses = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAggregateRootId()
+    public function getAggregateRootId(): string
     {
         return $this->placeId;
     }
@@ -366,10 +353,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return $this->canonicalPlaceId;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri)
+    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
     {
         ActorItemFactory::createActorFromCdbXml($cdbXmlNamespaceUri, $cdbXml);
 
@@ -387,36 +371,27 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return new OwnerChanged($this->placeId, $newOwnerId);
     }
 
-    /**
-     * @return LabelAdded
-     */
-    protected function createLabelAddedEvent(Label $label)
+    protected function createLabelAddedEvent(Label $label): LabelAdded
     {
         return new LabelAdded($this->placeId, $label);
     }
 
-    /**
-     * @return LabelRemoved
-     */
-    protected function createLabelRemovedEvent(Label $label)
+    protected function createLabelRemovedEvent(Label $label): LabelRemoved
     {
         return new LabelRemoved($this->placeId, $label);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createLabelsImportedEvent(Labels $labels)
+    protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
         return new LabelsImported($this->placeId, $labels);
     }
 
-    protected function createImageAddedEvent(Image $image)
+    protected function createImageAddedEvent(Image $image): ImageAdded
     {
         return new ImageAdded($this->placeId, $image);
     }
 
-    protected function createImageRemovedEvent(Image $image)
+    protected function createImageRemovedEvent(Image $image): ImageRemoved
     {
         return new ImageRemoved($this->placeId, $image);
     }
@@ -425,7 +400,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         LegacyUUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
-    ) {
+    ): ImageUpdated {
         return new ImageUpdated(
             $this->placeId,
             $mediaObjectId,
@@ -434,203 +409,137 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         );
     }
 
-    protected function createMainImageSelectedEvent(Image $image)
+    protected function createMainImageSelectedEvent(Image $image): MainImageSelected
     {
         return new MainImageSelected($this->placeId, $image);
     }
 
     protected function createVideoAddedEvent(Video $video): VideoAdded
     {
-        return new VideoAdded(new UUID($this->placeId), $video);
+        return new VideoAdded($this->placeId, $video);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createTitleTranslatedEvent(Language $language, Title $title)
+    protected function createVideoDeletedEvent(string $videoId): VideoDeleted
+    {
+        return new VideoDeleted($this->placeId, $videoId);
+    }
+
+    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->placeId, $language, $title);
     }
 
-    /**
-     * @return TitleUpdated
-     */
-    protected function createTitleUpdatedEvent(Title $title)
+    protected function createTitleUpdatedEvent(Title $title): TitleUpdated
     {
         return new TitleUpdated($this->placeId, $title);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createDescriptionTranslatedEvent(Language $language, Description $description)
+    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->placeId, $language, $description);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createDescriptionUpdatedEvent(Description $description)
+    protected function createDescriptionUpdatedEvent(Description $description): DescriptionUpdated
     {
         return new DescriptionUpdated($this->placeId, $description);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createCalendarUpdatedEvent(Calendar $calendar)
+    protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated
     {
         return new CalendarUpdated($this->placeId, $calendar);
     }
 
-    /**
-     * @param AgeRange $typicalAgeRange
-     * @return TypicalAgeRangeUpdated
-     */
-    protected function createTypicalAgeRangeUpdatedEvent($typicalAgeRange)
+    protected function createTypicalAgeRangeUpdatedEvent(AgeRange $typicalAgeRange): TypicalAgeRangeUpdated
     {
         return new TypicalAgeRangeUpdated($this->placeId, $typicalAgeRange);
     }
 
-    /**
-     * @return TypicalAgeRangeDeleted
-     */
-    protected function createTypicalAgeRangeDeletedEvent()
+    protected function createTypicalAgeRangeDeletedEvent(): TypicalAgeRangeDeleted
     {
         return new TypicalAgeRangeDeleted($this->placeId);
     }
 
-    /**
-     * @param string $organizerId
-     * @return OrganizerUpdated
-     */
-    protected function createOrganizerUpdatedEvent($organizerId)
+    protected function createOrganizerUpdatedEvent(string $organizerId): OrganizerUpdated
     {
         return new OrganizerUpdated($this->placeId, $organizerId);
     }
 
-    /**
-     * @param string $organizerId
-     * @return OrganizerDeleted
-     */
-    protected function createOrganizerDeletedEvent($organizerId)
+    protected function createOrganizerDeletedEvent(string $organizerId): OrganizerDeleted
     {
         return new OrganizerDeleted($this->placeId, $organizerId);
     }
 
-    /**
-     * @return ContactPointUpdated
-     */
-    protected function createContactPointUpdatedEvent(ContactPoint $contactPoint)
+    protected function createContactPointUpdatedEvent(ContactPoint $contactPoint): ContactPointUpdated
     {
         return new ContactPointUpdated($this->placeId, $contactPoint);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates)
+    protected function createGeoCoordinatesUpdatedEvent(Coordinates $coordinates): GeoCoordinatesUpdated
     {
         return new GeoCoordinatesUpdated($this->placeId, $coordinates);
     }
 
-    /**
-     * @return BookingInfoUpdated
-     */
-    protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo)
+    protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo): BookingInfoUpdated
     {
         return new BookingInfoUpdated($this->placeId, $bookingInfo);
     }
 
-    /**
-     * @return PriceInfoUpdated
-     */
-    protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo)
+    protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo): PriceInfoUpdated
     {
         return new PriceInfoUpdated($this->placeId, $priceInfo);
     }
 
-    /**
-     * @return PlaceDeleted
-     */
-    protected function createOfferDeletedEvent()
+    protected function createOfferDeletedEvent(): PlaceDeleted
     {
         return new PlaceDeleted($this->placeId);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createPublishedEvent(\DateTimeInterface $publicationDate)
+    protected function createPublishedEvent(\DateTimeInterface $publicationDate): Published
     {
         return new Published($this->placeId, $publicationDate);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createApprovedEvent()
+    protected function createApprovedEvent(): Approved
     {
         return new Approved($this->placeId);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createRejectedEvent(StringLiteral $reason)
+    protected function createRejectedEvent(StringLiteral $reason): Rejected
     {
         return new Rejected($this->placeId, $reason);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createFlaggedAsDuplicate()
+    protected function createFlaggedAsDuplicate(): FlaggedAsDuplicate
     {
         return new FlaggedAsDuplicate($this->placeId);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createFlaggedAsInappropriate()
+    protected function createFlaggedAsInappropriate(): FlaggedAsInappropriate
     {
         return new FlaggedAsInappropriate($this->placeId);
     }
 
-    /**
-     * @inheritDoc
-     * @return ImagesImportedFromUDB2
-     */
-    protected function createImagesImportedFromUDB2(ImageCollection $images)
+    protected function createImagesImportedFromUDB2(ImageCollection $images): ImagesImportedFromUDB2
     {
         return new ImagesImportedFromUDB2($this->placeId, $images);
     }
 
-    /**
-     * @inheritDoc
-     * @return ImagesUpdatedFromUDB2
-     */
-    protected function createImagesUpdatedFromUDB2(ImageCollection $images)
+    protected function createImagesUpdatedFromUDB2(ImageCollection $images): ImagesUpdatedFromUDB2
     {
         return new ImagesUpdatedFromUDB2($this->placeId, $images);
     }
 
-    protected function createTypeUpdatedEvent(EventType $type)
+    protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
     {
         return new TypeUpdated($this->placeId, $type);
     }
 
-    protected function createThemeUpdatedEvent(Theme $theme)
+    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
     {
         return new ThemeUpdated($this->placeId, $theme);
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createFacilitiesUpdatedEvent(array $facilities)
+    protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated
     {
         return new FacilitiesUpdated($this->placeId, $facilities);
     }

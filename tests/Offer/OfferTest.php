@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -28,19 +27,15 @@ use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\LabelsImported;
-use CultuurNet\UDB3\Offer\Item\Events\OwnerChanged;
-use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
-use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
+use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ItemCreated;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use CultuurNet\UDB3\Offer\Item\Events\LabelRemoved;
+use CultuurNet\UDB3\Offer\Item\Events\LabelsImported;
 use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Approved;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\FlaggedAsDuplicate;
@@ -49,10 +44,15 @@ use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\OwnerChanged;
+use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
+use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
+use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -799,7 +799,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
@@ -816,7 +816,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video
                     ),
                 ]
@@ -830,13 +830,13 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
-            new UUID('5c549a24-bb97-4f83-8ea5-21a6d56aff72'),
+            '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
             new Url('https://vimeo.com/98765432'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
@@ -854,11 +854,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video1
                     ),
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video2
                     ),
                 ]
@@ -872,13 +872,13 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $video1 = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
         $video2 = (new Video(
-            new UUID('91c75325-3830-4000-b580-5778b2de4548'),
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://vimeo.com/98765432'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Public Domain'));
@@ -896,11 +896,84 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new VideoAdded(
-                        new UUID($itemId),
+                        $itemId,
                         $video1
                     ),
                 ]
             );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleting_a_video(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
+
+        $video = (new Video(
+            $videoId,
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new VideoAdded($itemId, $video),
+            ])
+            ->when(fn (Item $item) => $item->deleteVideo($videoId))
+            ->then([
+                new VideoDeleted($itemId, $videoId),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_delete_a_video_twice(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
+
+        $video = (new Video(
+            $videoId,
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new VideoAdded($itemId, $video),
+                new VideoDeleted($itemId, $videoId),
+            ])
+            ->when(fn (Item $item) => $item->deleteVideo($videoId))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_deleting_an_unknown_video(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
+        $unknownVideoId = 'b7857d2e-121c-4e1c-a04b-eba755f89289';
+
+        $video = (new Video(
+            $videoId,
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new VideoAdded($itemId, $video),
+            ])
+            ->when(fn (Item $item) => $item->deleteVideo($unknownVideoId))
+            ->then([]);
     }
 
     /**
