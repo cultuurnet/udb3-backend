@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\MediaObjectReferencesDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
@@ -26,6 +27,8 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
@@ -34,6 +37,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 abstract class OfferDenormalizer implements DenormalizerInterface
@@ -214,6 +218,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->denormalizeBookingInfo($data, $offer);
         $offer = $this->denormalizeContactPoint($data, $offer);
         $offer = $this->denormalizeMediaObjectReferences($data, $offer);
+        $offer = $this->denormalizeVideos($data, $offer);
         $offer = $this->denormalizeWorkflowStatus($data, $offer);
         $offer = $this->denormalizeAvailableFrom($data, $offer);
 
@@ -347,6 +352,21 @@ abstract class OfferDenormalizer implements DenormalizerInterface
                 ['originalLanguage' => $data['mainLanguage']]
             );
             $offer = $offer->withMediaObjectReferences($mediaObjectReferences);
+        }
+
+        return $offer;
+    }
+
+    protected function denormalizeVideos(array $data, ImmutableOffer $offer): ImmutableOffer
+    {
+        if (isset($data['videos'])) {
+            $videoDenormalizer = new VideoDenormalizer(new UuidFactory());
+            $videos = new VideoCollection();
+
+            foreach ($data['videos'] as $videoAsArray) {
+                $videos = $videos->with($videoDenormalizer->denormalize($videoAsArray, Video::class));
+            }
+            $offer = $offer->withVideos($videos);
         }
 
         return $offer;
