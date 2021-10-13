@@ -25,6 +25,8 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -456,6 +458,35 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($offer, $updatedOffer);
         $this->assertEquals(new MediaObjectReferences(), $offer->getMediaObjectReferences());
         $this->assertEquals($references, $updatedOffer->getMediaObjectReferences());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_videos_by_default(): void
+    {
+        $this->assertEquals(new VideoCollection(), $this->getOffer()->getVideos());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_add_videos_to_a_copy(): void
+    {
+        $videos = new VideoCollection(
+            new Video(
+                '91c75325-3830-4000-b580-5778b2de4548',
+                new Url('https://www.youtube.com/watch?v=123'),
+                new Language('nl')
+            )
+        );
+
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withVideos($videos);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals(new VideoCollection(), $offer->getVideos());
+        $this->assertEquals($videos, $updatedOffer->getVideos());
     }
 
     /**
