@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use Fig\Http\Message\StatusCodeInterface;
 use JsonException;
 use Slim\Psr7\Factory\StreamFactory;
+use Slim\Psr7\Headers;
 use Slim\Psr7\Interfaces\HeadersInterface;
 use Slim\Psr7\Response;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -23,7 +24,8 @@ class JsonResponse extends Response
             throw ApiProblem::internalServerError('Could not encode JSON response.');
         }
 
-        if ($headers instanceof HeadersInterface && !$headers->hasHeader('Content-Type')) {
+        $headers = $headers ?? new Headers();
+        if (!$headers->hasHeader('Content-Type')) {
             $headers->setHeader('Content-Type', 'application/json');
         }
 
