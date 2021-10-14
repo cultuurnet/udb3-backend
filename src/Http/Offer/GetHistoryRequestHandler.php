@@ -48,19 +48,8 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
             );
         }
 
-        switch (true) {
-            case $offerType->sameValueAs(OfferType::EVENT()):
-                $historyDocumentRepository = $this->eventHistoryDocumentRepository;
-                break;
-
-            case $offerType->sameValueAs(OfferType::PLACE()):
-            default:
-                $historyDocumentRepository = $this->placeHistoryDocumentRepository;
-                break;
-        }
-
         try {
-            $historyDocument = $historyDocumentRepository->fetch($offerId);
+            $historyDocument = $this->getDocumentRepository($offerType)->fetch($offerId);
         } catch (DocumentDoesNotExist $e) {
             throw ApiProblem::offerNotFound($offerType, $offerId);
         }
@@ -69,5 +58,16 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
         $history = array_reverse(array_values($decoded));
 
         return new JsonResponse($history, 200);
+    }
+
+    private function getDocumentRepository(OfferType $offerType): DocumentRepository
+    {
+        if ($offerType->sameValueAs(OfferType::EVENT())) {
+            return $this->eventHistoryDocumentRepository;
+        }
+        if ($offerType->sameValueAs(OfferType::PLACE())) {
+            return $this->placeHistoryDocumentRepository;
+        }
+        throw ApiProblem::internalServerError('Unknown offer type "' . $offerType->toNative() . '"');
     }
 }
