@@ -861,7 +861,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = $this->images->withMain($mainImageSelected->getImage());
     }
 
-    protected function applyVideoAdded(AbstractVideoAdded $videoAdded): void
+    protected function applyVideoAdded(AbstractVideoEvent $videoAdded): void
     {
         $this->videos = $this->videos->with($videoAdded->getVideo());
     }
@@ -938,7 +938,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createMainImageSelectedEvent(Image $image): AbstractMainImageSelected;
 
-    abstract protected function createVideoAddedEvent(Video $video): AbstractVideoAdded;
+    abstract protected function createVideoAddedEvent(Video $video): AbstractVideoEvent;
 
     abstract protected function createVideoDeletedEvent(string $videoId): AbstractVideoDeleted;
 

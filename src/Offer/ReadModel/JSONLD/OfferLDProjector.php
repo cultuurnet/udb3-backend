@@ -36,7 +36,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
@@ -598,7 +598,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return strpos($mediaObject->{'@id'}, (string) $mediaObjectId) > 0;
     }
 
-    protected function applyVideoAdded(AbstractVideoAdded $videoAdded): JsonDocument
+    protected function applyVideoAdded(AbstractVideoEvent $videoAdded): JsonDocument
     {
         $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId());
 
