@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
-use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
@@ -59,15 +58,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
-        $app['event_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadEventRestController(
-                    $app['event_history_repository'],
-                    $app['current_user_is_god_user']
-                );
-            }
-        );
-
         $app['event_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditEventRestController(
