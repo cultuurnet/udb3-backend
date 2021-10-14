@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Http\Place\GetPlaceDetailRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
-use CultuurNet\UDB3\Http\Place\UpdateCalendarRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -22,7 +20,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'place_editing_controller:createPlace');
-        $controllers->get('/{placeId}/', GetPlaceDetailRequestHandler::class);
         $controllers->delete('/{cdbid}/', 'place_editing_controller:deletePlace');
 
         $controllers->get('/{placeId}/history/', 'place_history_controller:get');
@@ -40,8 +37,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
-
-        $controllers->put('/{placeId}/calendar/', UpdateCalendarRequestHandler::class);
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
@@ -62,10 +57,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
-        $app[GetPlaceDetailRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetPlaceDetailRequestHandler($app['place_jsonld_repository'])
-        );
-
         $app['place_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditPlaceRestController(
@@ -87,10 +78,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                     $app['current_user_is_god_user']
                 );
             }
-        );
-
-        $app[UpdateCalendarRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateMajorInfoRequestHandler::class] = $app->share(
