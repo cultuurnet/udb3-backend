@@ -28,7 +28,7 @@ class GetDetailRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_requested_json_ld_if_found(): void
+    public function it_returns_the_requested_event_json_ld_if_found(): void
     {
         $this->mockEventDocument('c09b7a51-b17c-4121-b278-eef71ef04e47');
 
@@ -50,7 +50,7 @@ class GetDetailRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_metadata_if_the_parameter_is_set_to_true(): void
+    public function it_includes_event_metadata_if_the_parameter_is_set_to_true(): void
     {
         $this->mockEventDocument('c09b7a51-b17c-4121-b278-eef71ef04e47');
 
@@ -72,7 +72,7 @@ class GetDetailRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_include_metadata_if_the_parameter_is_set_to_false(): void
+    public function it_does_not_include_event_metadata_if_the_parameter_is_set_to_false(): void
     {
         $this->mockEventDocument('c09b7a51-b17c-4121-b278-eef71ef04e47');
 
@@ -94,7 +94,7 @@ class GetDetailRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_url_not_found_if_the_offer_does_not_exist(): void
+    public function it_returns_url_not_found_if_the_event_does_not_exist(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withUriFromString('/events/c09b7a51-b17c-4121-b278-eef71ef04e47')
