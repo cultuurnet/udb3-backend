@@ -942,6 +942,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createVideoDeletedEvent(string $videoId): AbstractVideoDeleted;
 
+    abstract protected function createVideoUpdatedEvent(Video $video): AbstractVideoEvent;
+
     abstract protected function createOfferDeletedEvent(): AbstractOfferDeleted;
 
     abstract protected function createTitleUpdatedEvent(Title $title): AbstractTitleUpdated;

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
+use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
@@ -451,6 +452,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function createVideoDeletedEvent(string $videoId): VideoDeleted
     {
         return new VideoDeleted($this->eventId, $videoId);
+    }
+
+    protected function createVideoUpdatedEvent(Video $video): VideoUpdated
+    {
+        return new VideoUpdated($this->eventId, $video);
     }
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated

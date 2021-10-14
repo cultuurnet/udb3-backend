@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Place\Events\TypeUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Place\Events\VideoAdded;
+use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -422,6 +423,11 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function createVideoDeletedEvent(string $videoId): VideoDeleted
     {
         return new VideoDeleted($this->placeId, $videoId);
+    }
+
+    protected function createVideoUpdatedEvent(Video $video): VideoUpdated
+    {
+        return new VideoUpdated($this->placeId, $video);
     }
 
     protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
