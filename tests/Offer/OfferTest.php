@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -974,6 +975,38 @@ class OfferTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Item $item) => $item->deleteVideo($unknownVideoId))
             ->then([]);
+    }
+
+    /**
+     * @dataProvider importVideosDataProvider
+     * @test
+     */
+    public function it_can_import_videos(array $given, VideoCollection $videoCollection, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Item $item) => $item->importVideos($videoCollection))
+            ->then($then);
+    }
+
+    public function importVideosDataProvider(): array
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
+
+        $video = (new Video(
+            $videoId,
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
+
+        return [
+            'import videos on an event without any videos' => [
+                [new ItemCreated($itemId)],
+                new VideoCollection($video),
+                [new VideoAdded($itemId, $video)]
+            ],
+        ];
     }
 
     /**
