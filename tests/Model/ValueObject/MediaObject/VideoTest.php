@@ -33,7 +33,7 @@ class VideoTest extends TestCase
                     new Url('https://www.youtube.com/watch?v=123'),
                     new Language('nl')
                 ))->withCopyrightHolder(new CopyrightHolder('publiq')),
-                false
+                false,
             ],
             'Different url' => [
                 (new Video(
@@ -46,7 +46,7 @@ class VideoTest extends TestCase
                     new Url('https://www.vimeo.com/123'),
                     new Language('nl')
                 ))->withCopyrightHolder(new CopyrightHolder('publiq')),
-                false
+                false,
             ],
             'Different language' => [
                 (new Video(
@@ -59,7 +59,7 @@ class VideoTest extends TestCase
                     new Url('https://www.youtube.com/watch?v=123'),
                     new Language('fr')
                 ))->withCopyrightHolder(new CopyrightHolder('publiq')),
-                false
+                false,
             ],
             'Different copyright, first empty' => [
                 new Video(
@@ -72,7 +72,7 @@ class VideoTest extends TestCase
                     new Url('https://www.youtube.com/watch?v=123'),
                     new Language('nl')
                 ))->withCopyrightHolder(new CopyrightHolder('publiq')),
-                false
+                false,
             ],
             'Different copyright, second empty' => [
                 (new Video(
@@ -85,7 +85,7 @@ class VideoTest extends TestCase
                     new Url('https://www.youtube.com/watch?v=123'),
                     new Language('nl')
                 ),
-                false
+                false,
             ],
             'Different copyright' => [
                 (new Video(
@@ -98,7 +98,7 @@ class VideoTest extends TestCase
                     new Url('https://www.youtube.com/watch?v=123'),
                     new Language('nl')
                 ))->withCopyrightHolder(new CopyrightHolder('madewithlove')),
-                false
+                false,
             ],
             'Videos are the same' => [
                 (new Video(
@@ -111,7 +111,7 @@ class VideoTest extends TestCase
                     new Url('https://www.youtube.com/watch?v=123'),
                     new Language('nl')
                 ))->withCopyrightHolder(new CopyrightHolder('publiq')),
-                true
+                true,
             ],
         ];
     }
