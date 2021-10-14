@@ -669,6 +669,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         foreach ($deletedVideos as $deletedVideo) {
             $this->apply($this->createVideoDeletedEvent($deletedVideo));
         }
+
+        foreach ($updatedVideos as $updatedVideo) {
+            $this->apply($this->createVideoUpdatedEvent($updatedVideo));
+        }
     }
 
     public function delete(): void
@@ -872,6 +876,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             fn (Video $video) => $video->getId() !== $videoDeleted->getVideoId()
         );
     }
+
+    protected function applyVideoUpdated(AbstractVideoEvent $videoUpdated): void
+    {
+        $videos = array_map(
+            static fn (Video $video) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated : $video,
+            $this->videos->toArray()
+        );
+
+        $this->videos = new VideoCollection($videos);
+    }
+
 
     protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated): void
     {
