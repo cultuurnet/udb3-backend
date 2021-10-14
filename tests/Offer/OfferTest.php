@@ -1057,7 +1057,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new VideoUpdated(
                         $itemId,
                         $video2->withCopyrightHolder(new CopyrightHolder('changed copyright'))
-                    )
+                    ),
                 ],
             ],
             'import videos resulting in a mix' => [
@@ -1076,7 +1076,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new VideoUpdated(
                         $itemId,
                         $video2->withCopyrightHolder(new CopyrightHolder('changed copyright'))
-                    )
+                    ),
                 ],
             ],
         ];
