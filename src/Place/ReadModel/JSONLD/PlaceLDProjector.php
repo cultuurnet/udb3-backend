@@ -61,6 +61,7 @@ use CultuurNet\UDB3\Place\Events\TypeUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Place\Events\VideoAdded;
+use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\Place\VideoDeleted;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -460,6 +461,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected function getVideoDeletedClassName(): string
     {
         return VideoDeleted::class;
+    }
+
+    protected function getVideoUpdatedClassName(): string
+    {
+        return VideoUpdated::class;
     }
 
     /**
