@@ -629,6 +629,21 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
+    protected function applyVideoUpdated(AbstractVideoEvent $videoUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($videoUpdated->getItemId());
+
+        $offerLd = $document->getBody();
+
+        $offerLd->videos = array_values(array_map(
+            fn ($video) => $video->id === $videoUpdated->getVideo()->getId() ?
+                $this->videoNormalizer->normalize($videoUpdated->getVideo()) : $video,
+            $offerLd->videos
+        ));
+
+        return $document->withBody($offerLd);
+    }
+
     /**
      * @return JsonDocument
      */
