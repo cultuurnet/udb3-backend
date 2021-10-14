@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
-use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
@@ -22,8 +21,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $controllers->post('/', 'event_editing_controller:createEvent');
         $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
-
-        $controllers->get('/{cdbid}/history/', 'event_controller:history');
 
         $controllers->put('/{cdbid}/audience/', 'event_editing_controller:updateAudience');
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
@@ -61,15 +58,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
-        $app['event_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadEventRestController(
-                    $app['event_history_repository'],
-                    $app['current_user_is_god_user']
-                );
-            }
-        );
-
         $app['event_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditEventRestController(
