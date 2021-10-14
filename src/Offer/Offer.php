@@ -880,11 +880,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyVideoUpdated(AbstractVideoEvent $videoUpdated): void
     {
         $videos = array_map(
-            static fn (Video $video) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated : $video,
+            static fn(Video $video) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated->getVideo() : $video,
             $this->videos->toArray()
         );
 
-        $this->videos = new VideoCollection($videos);
+        $this->videos = new VideoCollection(...$videos);
     }
 
 
