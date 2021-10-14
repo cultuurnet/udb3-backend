@@ -49,7 +49,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
