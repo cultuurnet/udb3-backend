@@ -667,7 +667,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         foreach ($deletedVideos as $deletedVideo) {
-            $this->apply($this->createVideoDeletedEvent($deletedVideo));
+            $this->apply($this->createVideoDeletedEvent($deletedVideo->getId()));
         }
 
         foreach ($updatedVideos as $updatedVideo) {
