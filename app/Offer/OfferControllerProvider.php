@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
@@ -27,6 +28,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->get('/{offerType}/{offerId}/', GetDetailRequestHandler::class);
 
+        $controllers->get('/{offerType}/{offerId}/history/', GetHistoryRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/calendar-summary', GetCalendarSummaryRequestHandler::class);
 
@@ -43,6 +46,14 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
     {
         $app[GetDetailRequestHandler::class] = $app->share(
             fn (Application $app) => new GetDetailRequestHandler($app[OfferJsonDocumentReadRepository::class])
+        );
+
+        $app[GetHistoryRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetHistoryRequestHandler(
+                $app['event_history_repository'],
+                $app['places_history_repository'],
+                $app['current_user_is_god_user']
+            )
         );
 
         $app[UpdateCalendarRequestHandler::class] = $app->share(
