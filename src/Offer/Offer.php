@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -49,8 +48,8 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesEvent;
@@ -642,24 +641,32 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function importVideos(VideoCollection $importVideos): void
     {
-        $videoCompare = static fn (Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
+        $videoCompareIds = static fn (Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
 
         $newVideos = array_udiff(
             $importVideos->toArray(),
             $this->videos->toArray(),
-            $videoCompare
+            $videoCompareIds
         );
 
         $deletedVideos = array_udiff(
             $this->videos->toArray(),
             $importVideos->toArray(),
-            $videoCompare
+            $videoCompareIds
         );
 
         $updatedVideos = array_uintersect(
             $importVideos->toArray(),
             $this->videos->toArray(),
-            $videoCompare
+            static function (Video $v1, Video $v2) {
+                $cmp = strcmp($v1->getId(), $v2->getId());
+
+                if ($cmp !== 0) {
+                    return $cmp;
+                }
+
+                return $v1->sameAs($v2) ? 1 : 0;
+            }
         );
 
         foreach ($newVideos as $newVideo) {
@@ -886,7 +893,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         $this->videos = new VideoCollection(...$videos);
     }
-
 
     protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated): void
     {
