@@ -1004,7 +1004,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             'import videos on an event without any videos' => [
                 [new ItemCreated($itemId)],
                 new VideoCollection($video),
-                [new VideoAdded($itemId, $video)]
+                [new VideoAdded($itemId, $video)],
             ],
         ];
     }
