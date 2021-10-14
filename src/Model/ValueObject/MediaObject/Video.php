@@ -53,4 +53,33 @@ final class Video
     {
         return $this->copyrightHolder;
     }
+
+    public function sameAs(Video $video): bool
+    {
+        if ($this->id !== $video->getId()) {
+            return false;
+        }
+
+        if (!$this->url->sameAs($video->url)) {
+            return false;
+        }
+
+        if (!$this->language->sameAs($video->language)) {
+            return false;
+        }
+
+        if ($this->copyrightHolder === null && $video->getCopyrightHolder() !== null) {
+            return false;
+        }
+
+        if ($this->copyrightHolder !== null && $video->getCopyrightHolder() === null) {
+            return false;
+        }
+
+        if (!$this->copyrightHolder->sameAs($video->getCopyrightHolder())) {
+            return false;
+        }
+
+        return true;
+    }
 }
