@@ -54,6 +54,7 @@ use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
+use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -992,19 +993,91 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function importVideosDataProvider(): array
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $videoId = '91c75325-3830-4000-b580-5778b2de4548';
 
-        $video = (new Video(
-            $videoId,
+        $video1 = (new Video(
+            '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         ))->withCopyrightHolder(new CopyrightHolder('Creative Commons'));
 
+        $video2 = (new Video(
+            'bcd9fcf8-c1dc-4a2e-87cc-1a61b394234a',
+            new Url('https://www.vimeo.com/123'),
+            new Language('nl')
+        ))->withCopyrightHolder(new CopyrightHolder('Creative Minds'));
+
+        $video3 = (new Video(
+            '33c44698-1d99-4e72-b41a-6f3b61bcafca',
+            new Url('https://www.vimeo.com/abc'),
+            new Language('fr')
+        ))->withCopyrightHolder(new CopyrightHolder('Minds from publiq'));
+
         return [
             'import videos on an event without any videos' => [
-                [new ItemCreated($itemId)],
-                new VideoCollection($video),
-                [new VideoAdded($itemId, $video)],
+                [
+                    new ItemCreated($itemId),
+                ],
+                new VideoCollection($video1),
+                [
+                    new VideoAdded($itemId, $video1),
+                ],
+            ],
+            'import videos resulting in adding one new video' => [
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                ],
+                new VideoCollection($video1, $video2),
+                [
+                    new VideoAdded($itemId, $video2),
+                ],
+            ],
+            'import videos resulting in deleting one video' => [
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                    new VideoAdded($itemId, $video2),
+                ],
+                new VideoCollection($video2),
+                [
+                    new VideoDeleted($itemId, $video1->getId()),
+                ],
+            ],
+            'import videos resulting in updating one video' => [
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                    new VideoAdded($itemId, $video2),
+                ],
+                new VideoCollection(
+                    $video1,
+                    $video2->withCopyrightHolder(new CopyrightHolder('changed copyright'))
+                ),
+                [
+                    new VideoUpdated(
+                        $itemId,
+                        $video2->withCopyrightHolder(new CopyrightHolder('changed copyright'))
+                    )
+                ],
+            ],
+            'import videos resulting in a mix' => [
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                    new VideoAdded($itemId, $video2),
+                ],
+                new VideoCollection(
+                    $video2->withCopyrightHolder(new CopyrightHolder('changed copyright')),
+                    $video3
+                ),
+                [
+                    new VideoAdded($itemId, $video3),
+                    new VideoDeleted($itemId, $video1->getId()),
+                    new VideoUpdated(
+                        $itemId,
+                        $video2->withCopyrightHolder(new CopyrightHolder('changed copyright'))
+                    )
+                ],
             ],
         ];
     }
