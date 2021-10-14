@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
-use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -65,15 +64,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                     $app['auth.api_key_reader'],
                     $app['auth.consumer_repository'],
                     $app['should_auto_approve_new_offer']
-                );
-            }
-        );
-
-        $app['place_history_controller'] = $app->share(
-            function (Application $app) {
-                return new HistoryPlaceRestController(
-                    $app['places_history_repository'],
-                    $app['current_user_is_god_user']
                 );
             }
         );
