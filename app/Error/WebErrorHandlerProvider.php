@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
+use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
@@ -15,6 +17,8 @@ use Exception;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
@@ -38,25 +42,26 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (Exception $e) use ($app) {
                 $app[ErrorLogger::class]->log($e);
+                $request = $app['request_stack']->getCurrentRequest();
 
                 $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
-                $problem = $this::createNewApiProblem($e, $defaultStatus);
+                $problem = $this::createNewApiProblem($request, $e, $defaultStatus);
                 return (new ApiProblemJsonResponse($problem))->toHttpFoundationResponse();
             }
         );
     }
 
-    public static function createNewApiProblem(Throwable $e, int $defaultStatus): ApiProblem
+    public static function createNewApiProblem(Request $request, Throwable $e, int $defaultStatus): ApiProblem
     {
-        $problem = self::convertThrowableToApiProblem($e, $defaultStatus);
+        $problem = self::convertThrowableToApiProblem($request, $e, $defaultStatus);
         if (self::$debug) {
             $problem->setDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }
         return $problem;
     }
 
-    private static function convertThrowableToApiProblem(Throwable $e, int $defaultStatus): ApiProblem
+    private static function convertThrowableToApiProblem(Request $request, Throwable $e, int $defaultStatus): ApiProblem
     {
         switch (true) {
             case $e instanceof ApiProblem:
@@ -78,6 +83,21 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                         $e->getCommand()->getItemId()
                     )
                 );
+
+            case $e instanceof AggregateNotFoundException:
+                $psr7Request = (new DiactorosFactory())->createRequest($request);
+                $routeParameters = new RouteParameters($psr7Request);
+                $problem = ApiProblem::urlNotFound();
+                if ($routeParameters->hasEventId()) {
+                    $problem = ApiProblem::eventNotFound($routeParameters->getEventId());
+                }
+                if ($routeParameters->hasPlaceId()) {
+                    $problem = ApiProblem::placeNotFound($routeParameters->getPlaceId());
+                }
+                if ($routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
+                    $problem = ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
+                }
+                return $problem;
 
             case $e instanceof DataValidationException:
                 $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
