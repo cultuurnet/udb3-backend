@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\HtmlResponse;
 use CultuurNet\UDB3\Http\Response\PlainTextResponse;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
