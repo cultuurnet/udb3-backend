@@ -14,8 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidFactoryInterface;
@@ -39,14 +37,10 @@ class AddVideoRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $offerJsonDocumentReadRepositoryMockFactory = new OfferJsonDocumentReadRepositoryMockFactory();
-        $offerJsonDocumentReadRepositoryMockFactory->expectEventDocument(new JsonDocument('609a8214-51c9-48c0-903f-840a4f38852f'));
-
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
 
         $this->addVideoRequestHandler = new AddVideoRequestHandler(
             $this->commandBus,
-            $offerJsonDocumentReadRepositoryMockFactory->create(),
             $this->uuidFactory
         );
 
@@ -217,25 +211,6 @@ class AddVideoRequestHandlerTest extends TestCase
                     'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))'
                 )
             ),
-            fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_api_problem_when_an_event_is_not_found(): void
-    {
-        $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', '39170736-0050-4f6c-b508-bb8f69afb204')
-            ->withBodyFromString(
-                '{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"publiq", "language": "nl"}'
-            )
-            ->build('POST');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::eventNotFound('39170736-0050-4f6c-b508-bb8f69afb204'),
             fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
         );
     }
