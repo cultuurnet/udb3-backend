@@ -85,6 +85,12 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                     )
                 );
 
+            // Do a best effort to convert "not found" exceptions into an ApiProblem with preferably a detail mentioning
+            // what kind of resource and with what id could not be found. Since the exceptions themselves do not contain
+            // enough info to detect this, we need to get this info from the current request. However this is not
+            // perfect because for example an event route might try to load another related resource and if that one is
+            // not found this logic might say that the event is not found. When that happens, try to manually catch the
+            // exception in the request handler or command handler and convert it to an ApiProblem with a better detail.
             case $e instanceof AggregateNotFoundException:
             case $e instanceof DocumentDoesNotExist:
                 $psr7Request = (new DiactorosFactory())->createRequest($request);
