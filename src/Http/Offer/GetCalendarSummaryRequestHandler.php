@@ -26,17 +26,16 @@ final class GetCalendarSummaryRequestHandler implements RequestHandlerInterface
         $this->documentRepository = $documentRepository;
     }
 
+    /**
+     * @throws ApiProblem
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
         $offerType = $routeParameters->getOfferType();
 
-        try {
-            $offerDocument = $this->documentRepository->fetch($offerType, $offerId);
-        } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::offerNotFound($offerType, $offerId);
-        }
+        $offerDocument = $this->documentRepository->fetch($offerType, $offerId);
 
         $offer = Offer::fromJsonLd($offerDocument->getRawBody());
 
