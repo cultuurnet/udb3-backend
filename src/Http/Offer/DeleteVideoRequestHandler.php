@@ -16,25 +16,17 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class DeleteVideoRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
-    private OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository;
 
-    public function __construct(
-        CommandBus $commandBus,
-        OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository
-    ) {
+    public function __construct(CommandBus $commandBus)
+    {
         $this->commandBus = $commandBus;
-        $this->offerJsonDocumentReadRepository = $offerJsonDocumentReadRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
         $videoId = $routeParameters->get('videoId');
-
-        // Fetch the event/place to validate the existence, if not an ApiProblem is thrown
-        $this->offerJsonDocumentReadRepository->fetch($offerType, $offerId);
 
         $this->commandBus->dispatch(new DeleteVideo($offerId, $videoId));
 
