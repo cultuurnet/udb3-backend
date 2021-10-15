@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
 use Exception;
@@ -85,6 +86,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                 );
 
             case $e instanceof AggregateNotFoundException:
+            case $e instanceof DocumentDoesNotExist:
                 $psr7Request = (new DiactorosFactory())->createRequest($request);
                 $routeParameters = new RouteParameters($psr7Request);
                 $problem = ApiProblem::urlNotFound();
