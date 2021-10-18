@@ -26,9 +26,19 @@ final class RouteParameters
         return (string) $this->routeParameters[$parameterName];
     }
 
+    public function has(string $parameterName): bool
+    {
+        return isset($this->routeParameters[$parameterName]);
+    }
+
     public function getEventId(): string
     {
         return $this->get('eventId');
+    }
+
+    public function hasEventId(): bool
+    {
+        return $this->has('eventId');
     }
 
     public function getPlaceId(): string
@@ -36,9 +46,19 @@ final class RouteParameters
         return $this->get('placeId');
     }
 
+    public function hasPlaceId(): bool
+    {
+        return $this->has('placeId');
+    }
+
     public function getOfferId(): string
     {
         return $this->get('offerId');
+    }
+
+    public function hasOfferId(): bool
+    {
+        return $this->has('offerId');
     }
 
     public function getOfferType(): OfferType
@@ -51,5 +71,16 @@ final class RouteParameters
             return OfferType::PLACE();
         }
         throw new RuntimeException('Unknown offer type ' . $offerType);
+    }
+
+    public function hasOfferType(): bool
+    {
+        // Do not use has() because that does not account for unknown offer types.
+        try {
+            $this->getOfferType();
+            return true;
+        } catch (RuntimeException $e) {
+            return false;
+        }
     }
 }

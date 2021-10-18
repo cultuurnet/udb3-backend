@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -25,15 +24,12 @@ final class AddVideoRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
     private RequestBodyParser $parser;
-    private OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository;
 
     public function __construct(
         CommandBus $commandBus,
-        OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository,
         UuidFactoryInterface $uuidFactory
     ) {
         $this->commandBus = $commandBus;
-        $this->offerJsonDocumentReadRepository = $offerJsonDocumentReadRepository;
 
         $this->parser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::OFFER_VIDEOS_POST),
@@ -44,11 +40,7 @@ final class AddVideoRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
-
-        // Fetch the event/place to validate the existence, if not an ApiProblem is thrown
-        $this->offerJsonDocumentReadRepository->fetch($offerType, $offerId);
 
         /** @var Video $video */
         $video = $this->parser->parse($request)->getParsedBody();

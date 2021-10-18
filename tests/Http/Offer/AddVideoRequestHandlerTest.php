@@ -14,10 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidFactoryInterface;
@@ -27,16 +23,6 @@ class AddVideoRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
 
     private TraceableCommandBus $commandBus;
-
-    /**
-     * @var DocumentRepository|MockObject
-     */
-    private $eventDocumentRepository;
-
-    /**
-     * @var DocumentRepository|MockObject
-     */
-    private $placeDocumentRepository;
 
     /**
      * @var MockObject|UuidFactoryInterface
@@ -51,21 +37,10 @@ class AddVideoRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->eventDocumentRepository = $this->createMock(DocumentRepository::class);
-        $this->eventDocumentRepository
-            ->method('fetch')
-            ->willReturn(new JsonDocument('id'));
-
-        $this->placeDocumentRepository = $this->createMock(DocumentRepository::class);
-
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
 
         $this->addVideoRequestHandler = new AddVideoRequestHandler(
             $this->commandBus,
-            new OfferJsonDocumentReadRepository(
-                $this->eventDocumentRepository,
-                $this->placeDocumentRepository
-            ),
             $this->uuidFactory
         );
 
@@ -236,29 +211,6 @@ class AddVideoRequestHandlerTest extends TestCase
                     'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))'
                 )
             ),
-            fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_api_problem_when_an_event_is_not_found(): void
-    {
-        $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString(
-                '{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"publiq", "language": "nl"}'
-            )
-            ->build('POST');
-
-        $this->eventDocumentRepository->expects($this->once())
-            ->method('fetch')
-            ->willThrowException(new DocumentDoesNotExist());
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::eventNotFound('609a8214-51c9-48c0-903f-840a4f38852f'),
             fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
         );
     }

@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
-use CultuurNet\UDB3\Http\Event\GetEventDetailRequestHandler;
-use CultuurNet\UDB3\Http\Event\ReadEventRestController;
-use CultuurNet\UDB3\Http\Event\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
@@ -23,10 +20,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'event_editing_controller:createEvent');
-        $controllers->get('/{eventId}/', GetEventDetailRequestHandler::class);
         $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
-
-        $controllers->get('/{cdbid}/history/', 'event_controller:history');
 
         $controllers->put('/{cdbid}/audience/', 'event_editing_controller:updateAudience');
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
@@ -43,7 +37,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
 
-        $controllers->put('/{eventId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
 
         $controllers->post('/{cdbid}/copies/', 'event_editing_controller:copyEvent');
@@ -65,19 +58,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
-        $app[GetEventDetailRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetEventDetailRequestHandler($app['event_jsonld_repository'])
-        );
-
-        $app['event_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadEventRestController(
-                    $app['event_history_repository'],
-                    $app['current_user_is_god_user']
-                );
-            }
-        );
-
         $app['event_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditEventRestController(
@@ -89,10 +69,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                     $app['should_auto_approve_new_offer']
                 );
             }
-        );
-
-        $app[UpdateCalendarRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateSubEventsRequestHandler::class] = $app->share(

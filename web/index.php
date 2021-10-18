@@ -76,7 +76,7 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/(events|event|places|place)/$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/calendar-summary', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/(calendar-summary|calsum)', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/label/' . $app['id_pattern'] . '$', null, 'GET'))
@@ -281,6 +281,7 @@ try {
     // Errors always get a status 500, but we still need a default status code in case of runtime exceptions that
     // weren't caught by Silex.
     $apiProblem = WebErrorHandlerProvider::createNewApiProblem(
+        $app['request_stack']->getCurrentRequest(),
         $throwable,
         500
     );
