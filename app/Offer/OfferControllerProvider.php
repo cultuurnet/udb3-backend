@@ -75,15 +75,13 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[AddVideoRequestHandler::class] = $app->share(
             fn (Application $app) => new AddVideoRequestHandler(
                 $app['event_command_bus'],
-                $app[OfferJsonDocumentReadRepository::class],
                 new UuidFactory()
             )
         );
 
         $app[DeleteVideoRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteVideoRequestHandler(
-                $app['event_command_bus'],
-                $app[OfferJsonDocumentReadRepository::class]
+                $app['event_command_bus']
             )
         );
     }

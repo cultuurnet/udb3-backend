@@ -281,6 +281,7 @@ try {
     // Errors always get a status 500, but we still need a default status code in case of runtime exceptions that
     // weren't caught by Silex.
     $apiProblem = WebErrorHandlerProvider::createNewApiProblem(
+        $app['request_stack']->getCurrentRequest(),
         $throwable,
         500
     );

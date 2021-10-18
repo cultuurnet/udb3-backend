@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
+use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
 use Exception;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
@@ -38,25 +43,26 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (Exception $e) use ($app) {
                 $app[ErrorLogger::class]->log($e);
+                $request = $app['request_stack']->getCurrentRequest();
 
                 $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
-                $problem = $this::createNewApiProblem($e, $defaultStatus);
+                $problem = $this::createNewApiProblem($request, $e, $defaultStatus);
                 return (new ApiProblemJsonResponse($problem))->toHttpFoundationResponse();
             }
         );
     }
 
-    public static function createNewApiProblem(Throwable $e, int $defaultStatus): ApiProblem
+    public static function createNewApiProblem(Request $request, Throwable $e, int $defaultStatus): ApiProblem
     {
-        $problem = self::convertThrowableToApiProblem($e, $defaultStatus);
+        $problem = self::convertThrowableToApiProblem($request, $e, $defaultStatus);
         if (self::$debug) {
             $problem->setDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }
         return $problem;
     }
 
-    private static function convertThrowableToApiProblem(Throwable $e, int $defaultStatus): ApiProblem
+    private static function convertThrowableToApiProblem(Request $request, Throwable $e, int $defaultStatus): ApiProblem
     {
         switch (true) {
             case $e instanceof ApiProblem:
@@ -78,6 +84,27 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                         $e->getCommand()->getItemId()
                     )
                 );
+
+            // Do a best effort to convert "not found" exceptions into an ApiProblem with preferably a detail mentioning
+            // what kind of resource and with what id could not be found. Since the exceptions themselves do not contain
+            // enough info to detect this, we need to get this info from the current request. However this is not
+            // perfect because for example an event route might try to load another related resource and if that one is
+            // not found this logic might say that the event is not found. When that happens, try to manually catch the
+            // exception in the request handler or command handler and convert it to an ApiProblem with a better detail.
+            case $e instanceof AggregateNotFoundException:
+            case $e instanceof DocumentDoesNotExist:
+                $psr7Request = (new DiactorosFactory())->createRequest($request);
+                $routeParameters = new RouteParameters($psr7Request);
+                if ($routeParameters->hasEventId()) {
+                    return ApiProblem::eventNotFound($routeParameters->getEventId());
+                }
+                if ($routeParameters->hasPlaceId()) {
+                    return ApiProblem::placeNotFound($routeParameters->getPlaceId());
+                }
+                if ($routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
+                    return ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
+                }
+                return ApiProblem::urlNotFound();
 
             case $e instanceof DataValidationException:
                 $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
