@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5175783f8ac8203db59ced7e3142bf14",
+    "content-hash": "5f7a017297b8cd0978ef7b6d269247d0",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5366,16 +5366,16 @@
         },
         {
             "name": "publiq/stoplight-docs-uitdatabank",
-            "version": "dev-unreleased",
+            "version": "dev-feature/III-4242-patch-video",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "919a869bc1a2055f06f1fc77fec4ddf80d7935d0"
+                "reference": "2d7c02cd5712c0bbe9b0f504d99f70b11e033fad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/919a869bc1a2055f06f1fc77fec4ddf80d7935d0",
-                "reference": "919a869bc1a2055f06f1fc77fec4ddf80d7935d0",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/2d7c02cd5712c0bbe9b0f504d99f70b11e033fad",
+                "reference": "2d7c02cd5712c0bbe9b0f504d99f70b11e033fad",
                 "shasum": ""
             },
             "type": "library",
@@ -5392,9 +5392,9 @@
             "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
             "support": {
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
-                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/unreleased"
+                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4242-patch-video"
             },
-            "time": "2021-10-12T07:49:51+00:00"
+            "time": "2021-10-18T13:51:26+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
