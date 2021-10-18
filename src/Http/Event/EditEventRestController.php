@@ -149,16 +149,6 @@ class EditEventRestController extends OfferRestBaseController
         return new NoContent();
     }
 
-    public function updateLocation(string $cdbid, string $locationId): Response
-    {
-        $this->editor->updateLocation(
-            $cdbid,
-            new LocationId($locationId)
-        );
-
-        return new NoContent();
-    }
-
     public function updateAudience(Request $request, string $cdbid): Response
     {
         if (empty($cdbid)) {
