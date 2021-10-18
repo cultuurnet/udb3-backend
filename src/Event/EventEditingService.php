@@ -179,18 +179,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
     /**
      * @inheritdoc
      */
-    public function updateLocation($eventId, LocationId $locationId)
-    {
-        $this->guardId($eventId);
-
-        return $this->commandBus->dispatch(
-            new UpdateLocation($eventId, $locationId)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function updateAudience($eventId, Audience $audience)
     {
         return $this->commandBus->dispatch(

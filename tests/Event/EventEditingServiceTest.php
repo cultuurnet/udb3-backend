@@ -471,35 +471,6 @@ class EventEditingServiceTest extends TestCase
         $this->assertEquals($expectedCommandId, $commandId);
     }
 
-    /**
-     * @test
-     */
-    public function it_can_dispatch_an_update_location_command()
-    {
-        $eventId = '3ed90f18-93a3-4340-981d-12e57efa0211';
-
-        $locationId = new LocationId('57738178-28a5-4afb-90c0-fd0beba172a8');
-
-        $updateLocation = new UpdateLocation($eventId, $locationId);
-
-        $expectedCommandId = 'commandId';
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updateLocation)
-            ->willReturn($expectedCommandId);
-
-        $this->readRepository->expects($this->once())
-            ->method('fetch')
-            ->with($eventId)
-            ->willReturn(new JsonDocument($eventId));
-
-        $commandId = $this->eventEditingService->updateLocation($eventId, $locationId);
-
-        $this->assertEquals($expectedCommandId, $commandId);
-    }
-
-
     private function setUpEventNotFound($id)
     {
         $this->readRepository->expects($this->once())
