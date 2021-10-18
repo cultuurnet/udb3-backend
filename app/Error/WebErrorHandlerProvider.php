@@ -95,17 +95,16 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             case $e instanceof DocumentDoesNotExist:
                 $psr7Request = (new DiactorosFactory())->createRequest($request);
                 $routeParameters = new RouteParameters($psr7Request);
-                $problem = ApiProblem::urlNotFound();
                 if ($routeParameters->hasEventId()) {
-                    $problem = ApiProblem::eventNotFound($routeParameters->getEventId());
+                    return ApiProblem::eventNotFound($routeParameters->getEventId());
                 }
                 if ($routeParameters->hasPlaceId()) {
-                    $problem = ApiProblem::placeNotFound($routeParameters->getPlaceId());
+                    return ApiProblem::placeNotFound($routeParameters->getPlaceId());
                 }
                 if ($routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
-                    $problem = ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
+                    return ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
                 }
-                return $problem;
+                return ApiProblem::urlNotFound();
 
             case $e instanceof DataValidationException:
                 $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
