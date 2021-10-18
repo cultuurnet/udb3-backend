@@ -6,9 +6,7 @@ namespace CultuurNet\UDB3\Model\Import\Validation\Event;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
-use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
