@@ -23,6 +23,7 @@ final class JsonSchemaLocator
     public const OFFER_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
     public const OFFER_STATUS = 'event-status.json';
     public const OFFER_VIDEOS_POST = 'event-videos-post.json';
+    public const OFFER_VIDEOS_PATCH = 'event-videos-patch.json';
 
     public static function setSchemaDirectory(string $schemaDirectory): void
     {
