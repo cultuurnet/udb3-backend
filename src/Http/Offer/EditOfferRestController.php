@@ -137,12 +137,6 @@ class EditOfferRestController
         return new NoContent();
     }
 
-    public function updateType(string $cdbid, string $typeId): Response
-    {
-        $this->editService->updateType($cdbid, new StringLiteral($typeId));
-        return new NoContent();
-    }
-
     public function updateTheme(string $cdbid, string $themeId): Response
     {
         $this->editService->updateTheme($cdbid, new StringLiteral($themeId));
