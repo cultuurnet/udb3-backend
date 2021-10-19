@@ -38,7 +38,7 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
             // non-existing places being linked.
             $this->locationDocumentRepository->fetch($locationId);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::placeNotFound($locationId);
+            throw ApiProblem::pathParameterInvalid('Location with id "' . $locationId . '" does not exist.');
         }
 
         $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));

@@ -51,7 +51,9 @@ final class UpdateLocationRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::placeNotFound('74e62b6c-9df4-42e4-bcd5-f4c242b4df2e'),
+            ApiProblem::pathParameterInvalid(
+                'Location with id "74e62b6c-9df4-42e4-bcd5-f4c242b4df2e" does not exist.'
+            ),
             fn () => $this->updateLocationRequestHandler->handle($request)
         );
     }
