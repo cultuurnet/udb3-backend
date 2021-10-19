@@ -63,7 +63,7 @@ interface OfferCommandFactoryInterface
 
     public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate;
 
-    public function createUpdateTypeCommand(string $id, EventType $type): AbstractUpdateType;
+    public function createUpdateTypeCommand(string $id, EventType $type): UpdateType;
 
     public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme;
 

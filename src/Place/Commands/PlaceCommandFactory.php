@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateType;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
@@ -149,7 +149,7 @@ class PlaceCommandFactory implements OfferCommandFactoryInterface
         return new FlagAsDuplicate($id);
     }
 
-    public function createUpdateTypeCommand(string $id, EventType $type): AbstractUpdateType
+    public function createUpdateTypeCommand(string $id, EventType $type): UpdateType
     {
         return new UpdateType($id, $type);
     }

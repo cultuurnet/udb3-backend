@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTheme;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateType;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractImportImages;
@@ -222,7 +222,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     abstract protected function getUpdateFacilitiesClassName();
 
 
-    public function handleUpdateType(AbstractUpdateType $updateType)
+    public function handleUpdateType(UpdateType $updateType)
     {
         $offer = $this->load($updateType->getItemId());
 
