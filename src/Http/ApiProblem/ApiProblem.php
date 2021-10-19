@@ -276,6 +276,16 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function pathParameterInvalid(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/url/path-parameter-invalid',
+            'Path parameter invalid',
+            400,
+            $detail
+        );
+    }
+
     public static function userNotFound(string $detail): self
     {
         return self::create(
