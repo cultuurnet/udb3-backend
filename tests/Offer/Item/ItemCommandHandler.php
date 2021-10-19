@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Offer\Item\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Item\Commands\SelectMainImage;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 
@@ -141,11 +140,6 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getFlagAsInappropriateClassName()
     {
         return FlagAsInappropriate::class;
-    }
-
-    protected function getUpdateTypeClassName()
-    {
-        return UpdateType::class;
     }
 
     protected function getUpdateThemeClassName()
