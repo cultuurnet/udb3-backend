@@ -27,7 +27,7 @@ final class UpdateVideosDenormalizer implements DenormalizerInterface
         return new UpdateVideos(...$updates);
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === UpdateVideos::class;
     }
