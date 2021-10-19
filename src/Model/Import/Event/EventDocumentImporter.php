@@ -211,8 +211,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        $videos = $adapter->getVideos();
-        foreach ($videos as $video) {
+        foreach ($import->getVideos() as $video) {
             $commands[] = new AddVideo($id, $video);
         }
 
