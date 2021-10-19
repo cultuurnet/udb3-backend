@@ -9,11 +9,11 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
-class UpdateVideoDenormalizerTest extends TestCase
+final class UpdateVideoDenormalizerTest extends TestCase
 {
     private UpdateVideoDenormalizer $denormalizer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->denormalizer = new UpdateVideoDenormalizer();
     }
@@ -21,13 +21,13 @@ class UpdateVideoDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_with_all_values()
+    public function it_should_denormalize_with_all_values(): void
     {
         $videoData = [
             'id' => '9b5ce026-e200-4885-8b3b-396ecd879ebd',
             'copyrightHolder' => 'publiq',
             'language' => 'fr',
-            'url' => 'https://www.youtube.com/watch?v=123',,
+            'url' => 'https://www.youtube.com/watch?v=123',
         ];
 
         $expected = (
@@ -44,7 +44,7 @@ class UpdateVideoDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_with_some_values_left_blank()
+    public function it_should_denormalize_with_some_values_left_blank(): void
     {
         $videoData = [
             'id' => '9b5ce026-e200-4885-8b3b-396ecd879ebd',
