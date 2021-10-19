@@ -53,7 +53,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
             $uuidGenerator,
             $readRepository,
             $commandFactory,
-            new EventTypeResolver(),
             new EventThemeResolver()
         );
         $this->eventService = $eventService;

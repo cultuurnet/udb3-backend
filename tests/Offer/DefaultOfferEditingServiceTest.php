@@ -69,11 +69,6 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $translateTitleCommand;
 
     /**
-     * @var TypeResolverInterface|MockObject
-     */
-    private $typeResolver;
-
-    /**
      * @var ThemeResolverInterface|MockObject
      */
     private $themeResolver;
@@ -84,7 +79,6 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->offerRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
-        $this->typeResolver = $this->createMock(TypeResolverInterface::class);
         $this->themeResolver = $this->createMock(ThemeResolverInterface::class);
 
         $this->translateTitleCommand = $this->getMockForAbstractClass(
@@ -97,7 +91,6 @@ class DefaultOfferEditingServiceTest extends TestCase
             $this->uuidGenerator,
             $this->offerRepository,
             $this->commandFactory,
-            $this->typeResolver,
             $this->themeResolver
         );
 
@@ -229,40 +222,6 @@ class DefaultOfferEditingServiceTest extends TestCase
             ->method('fetch')
             ->with($offerId)
             ->willReturn(new JsonDocument($offerId));
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_update_an_offer_type_and_return_the_resulting_command()
-    {
-        $expectedCommandId = 'f42802e4-c1f1-4aa6-9909-a08cfc66f355';
-        $offerId = '2D015370-7CBA-4CB9-B0E4-07D2DEAAB2FF';
-        $type = new EventType('0.15.0.0.0', 'Natuur, park of tuin');
-        $this->expectPlaceholderDocument($offerId);
-
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdateTypeCommand')
-            ->with($offerId, $type)
-            ->willReturn(new UpdateType($offerId, $type));
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with(new UpdateType($offerId, $type))
-            ->willReturn($expectedCommandId);
-
-        $this->typeResolver
-            ->expects($this->once())
-            ->method('byId')
-            ->with('0.15.0.0.0')
-            ->willReturn($type);
-
-        $commandId = $this->offerEditingService->updateType(
-            '2D015370-7CBA-4CB9-B0E4-07D2DEAAB2FF',
-            new StringLiteral('0.15.0.0.0')
-        );
-
-        $this->assertEquals($expectedCommandId, $commandId);
     }
 
     /**

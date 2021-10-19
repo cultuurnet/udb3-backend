@@ -38,7 +38,6 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
             $uuidGenerator,
             $readRepository,
             $commandFactory,
-            new PlaceTypeResolver(),
             new PlaceThemeResolver()
         );
 
