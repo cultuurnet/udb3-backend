@@ -24,8 +24,7 @@ final class ImportVideos implements AuthorizableCommand
     {
         return $this->videos;
     }
-
-
+    
     public function getItemId(): string
     {
         return $this->offerId;
