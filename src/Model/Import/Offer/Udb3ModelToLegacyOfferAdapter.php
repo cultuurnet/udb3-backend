@@ -231,9 +231,4 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 
         return $descriptions;
     }
-
-    public function getVideos(): VideoCollection
-    {
-        return $this->offer->getVideos();
-    }
 }

@@ -92,6 +92,4 @@ interface LegacyOffer
      *   Language code as key, and Description as value.
      */
     public function getDescriptionTranslations();
-
-    public function getVideos(): VideoCollection;
 }
