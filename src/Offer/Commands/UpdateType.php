@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Event\EventType;
 
-class UpdateType extends AbstractCommand
+final class UpdateType extends AbstractCommand
 {
     /**
      * @var EventType
