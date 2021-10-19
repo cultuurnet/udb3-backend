@@ -20,40 +20,39 @@ final class UpdateVideoDenormalizerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider updateVideoProvider
      */
-    public function it_should_denormalize_with_all_values(): void
+    public function it_should_denormalize(UpdateVideo $updateVideo, array $updateVideoAsArray): void
     {
-        $videoData = [
-            'id' => '9b5ce026-e200-4885-8b3b-396ecd879ebd',
-            'copyrightHolder' => 'publiq',
-            'language' => 'fr',
-            'url' => 'https://www.youtube.com/watch?v=123',
-        ];
-
-        $expected = (
-            new UpdateVideo('9b5ce026-e200-4885-8b3b-396ecd879ebd')
-        )->withCopyrightHolder(new CopyrightHolder('publiq'))
-            ->withLanguage(new Language('fr'))
-            ->withUrl(new Url('https://www.youtube.com/watch?v=123'));
-
-        $actual = $this->denormalizer->denormalize($videoData, UpdateVideo::class);
-
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals(
+            $updateVideo,
+            $this->denormalizer->denormalize($updateVideoAsArray, UpdateVideo::class)
+        );
     }
 
-    /**
-     * @test
-     */
-    public function it_should_denormalize_with_some_values_left_blank(): void
+    public function updateVideoProvider(): array
     {
-        $videoData = [
-            'id' => '9b5ce026-e200-4885-8b3b-396ecd879ebd',
-            'copyrightHolder' => 'publiq',
+        $updateVideo = new UpdateVideo('208dbe98-ffaa-41cb-9ada-7ec8e0651f48');
+
+        return [
+            'updatevideo_with_blank_fields' => [
+                $updateVideo->withCopyrightHolder(new CopyrightHolder('publiq')),
+                [
+                    'id' => '208dbe98-ffaa-41cb-9ada-7ec8e0651f48',
+                    'copyrightHolder' => 'publiq',
+                ],
+            ],
+            'updatevideo_with_all_values' => [
+                $updateVideo->withCopyrightHolder(new CopyrightHolder('publiq'))
+                    ->withLanguage(new Language('fr'))
+                    ->withUrl(new Url('https://www.youtube.com/watch?v=123')),
+                [
+                    'id' => '208dbe98-ffaa-41cb-9ada-7ec8e0651f48',
+                    'copyrightHolder' => 'publiq',
+                    'language' => 'fr',
+                    'url' => 'https://www.youtube.com/watch?v=123',
+                ],
+            ],
         ];
-
-        $expected = (new UpdateVideo('9b5ce026-e200-4885-8b3b-396ecd879ebd'))->withCopyrightHolder(new CopyrightHolder('publiq'));
-        $actual = $this->denormalizer->denormalize($videoData, UpdateVideo::class);
-
-        $this->assertEquals($expected, $actual);
     }
 }
