@@ -63,7 +63,7 @@ class DocumentLabelPermissionRule extends AbstractRule
             return true;
         }
 
-        $labelPermissionRule = new LabelPermissionRule(
+        $createLabelPermissionRule = fn () => new LabelPermissionRule(
             $id,
             $this->userId,
             $this->labelsRepository,
@@ -74,7 +74,7 @@ class DocumentLabelPermissionRule extends AbstractRule
         $invalidVisibleLabels = [];
         if (isset($input['labels'])) {
             $invalidVisibleLabels = $this->validateLabels(
-                $labelPermissionRule,
+                $createLabelPermissionRule(),
                 $input['labels']
             );
         }
@@ -83,7 +83,7 @@ class DocumentLabelPermissionRule extends AbstractRule
         $invalidHiddenLabels = [];
         if (isset($input['hiddenLabels'])) {
             $invalidHiddenLabels = $this->validateLabels(
-                $labelPermissionRule,
+                $createLabelPermissionRule(),
                 $input['hiddenLabels']
             );
         }

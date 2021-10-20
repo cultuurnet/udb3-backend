@@ -29,9 +29,12 @@ class EventImportValidator extends EventValidator
         LabelRelationsRepository $labelRelationsRepository
     ) {
         $extraRules = [
-            new PlaceReferenceExistsValidator(
-                new PlaceIDParser(),
-                $placeRepository
+            new Key(
+                'location',
+                new PlaceReferenceExistsValidator(
+                    new PlaceIDParser(),
+                    $placeRepository
+                )
             ),
             new Key(
                 'terms',

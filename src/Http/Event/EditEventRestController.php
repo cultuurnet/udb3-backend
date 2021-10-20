@@ -10,7 +10,6 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterfa
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
@@ -145,16 +144,6 @@ class EditEventRestController extends OfferRestBaseController
         }
 
         $this->editor->deleteEvent($cdbid);
-
-        return new NoContent();
-    }
-
-    public function updateLocation(string $cdbid, string $locationId): Response
-    {
-        $this->editor->updateLocation(
-            $cdbid,
-            new LocationId($locationId)
-        );
 
         return new NoContent();
     }

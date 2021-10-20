@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
+use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use Silex\Application;
@@ -26,7 +27,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
         $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->put('/{cdbid}/location/{locationId}/', 'event_editing_controller:updateLocation');
+        $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
         $controllers->put('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:deleteOrganizer');
         $controllers->put('/{cdbid}/typical-age-range/', 'event_editing_controller:updateTypicalAgeRange');
@@ -69,6 +70,13 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                     $app['should_auto_approve_new_offer']
                 );
             }
+        );
+
+        $app[UpdateLocationRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateLocationRequestHandler(
+                $app['event_command_bus'],
+                $app['place_jsonld_repository']
+            )
         );
 
         $app[UpdateSubEventsRequestHandler::class] = $app->share(

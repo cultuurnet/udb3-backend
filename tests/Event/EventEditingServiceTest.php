@@ -16,7 +16,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
-use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
@@ -30,7 +29,6 @@ use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -470,35 +468,6 @@ class EventEditingServiceTest extends TestCase
 
         $this->assertEquals($expectedCommandId, $commandId);
     }
-
-    /**
-     * @test
-     */
-    public function it_can_dispatch_an_update_location_command()
-    {
-        $eventId = '3ed90f18-93a3-4340-981d-12e57efa0211';
-
-        $locationId = new LocationId('57738178-28a5-4afb-90c0-fd0beba172a8');
-
-        $updateLocation = new UpdateLocation($eventId, $locationId);
-
-        $expectedCommandId = 'commandId';
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updateLocation)
-            ->willReturn($expectedCommandId);
-
-        $this->readRepository->expects($this->once())
-            ->method('fetch')
-            ->with($eventId)
-            ->willReturn(new JsonDocument($eventId));
-
-        $commandId = $this->eventEditingService->updateLocation($eventId, $locationId);
-
-        $this->assertEquals($expectedCommandId, $commandId);
-    }
-
 
     private function setUpEventNotFound($id)
     {

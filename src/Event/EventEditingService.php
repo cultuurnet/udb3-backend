@@ -10,7 +10,6 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
-use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
@@ -173,18 +172,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
 
         return $this->commandBus->dispatch(
             new UpdateMajorInfo($eventId, $title, $eventType, $location, $calendar, $theme)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function updateLocation($eventId, LocationId $locationId)
-    {
-        $this->guardId($eventId);
-
-        return $this->commandBus->dispatch(
-            new UpdateLocation($eventId, $locationId)
         );
     }
 

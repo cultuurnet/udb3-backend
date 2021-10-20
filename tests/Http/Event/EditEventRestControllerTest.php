@@ -237,26 +237,6 @@ class EditEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_location()
-    {
-        $eventId = '7f71ebbd-b22b-4b94-96df-947ad0c1534f';
-        $locationId = '9a1fe7fc-4129-4563-aafd-414ef25b2814';
-
-        $this->eventEditor->expects($this->once())
-            ->method('updateLocation')
-            ->with(
-                $eventId,
-                new LocationId('9a1fe7fc-4129-4563-aafd-414ef25b2814')
-            );
-
-        $response = $this->controller->updateLocation($eventId, $locationId);
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_audience()
     {
         $eventId = new UUID('7f71ebbd-b22b-4b94-96df-947ad0c1534f');
