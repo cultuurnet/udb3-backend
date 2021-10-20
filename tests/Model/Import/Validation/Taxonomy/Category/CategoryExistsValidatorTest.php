@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category;
 
-use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
 
@@ -18,7 +18,7 @@ class CategoryExistsValidatorTest extends TestCase
     public function setUp()
     {
         $this->validator = new CategoryExistsValidator(
-            new EventLegacyBridgeCategoryResolver(),
+            new EventCategoryResolver(),
             'Event'
         );
     }

@@ -134,7 +134,7 @@ class EventDocumentImporterTest extends TestCase
 
         $this->importer = new TermPreProcessingDocumentImporter(
             $eventDocumentImporter,
-            new EventLegacyBridgeCategoryResolver()
+            new EventCategoryResolver()
         );
     }
 

@@ -141,7 +141,7 @@ class PlaceDocumentImporterTest extends TestCase
 
         $this->termPreProcessingImporter = new TermPreProcessingDocumentImporter(
             $this->placeDocumentImporter,
-            new PlaceLegacyBridgeCategoryResolver()
+            new PlaceCategoryResolver()
         );
 
         $this->importer = $this->termPreProcessingImporter;
