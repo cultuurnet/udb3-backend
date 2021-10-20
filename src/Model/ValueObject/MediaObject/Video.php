@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class Video
 {
+    public const REGEX = '/^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))/';
+
     private string $id;
 
     private Url $url;
