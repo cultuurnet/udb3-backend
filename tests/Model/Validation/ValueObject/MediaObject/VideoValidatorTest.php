@@ -42,21 +42,21 @@ final class VideoValidatorTest extends ValidatorTestCase
                     'url' => 'https://www.youtube.com/watch?v=123',
                     'language' => 'nl',
                     'copyrightHolder' => 'publiq',
-                ]
+                ],
             ],
             'no id' => [
                 [
                     'url' => 'https://www.youtube.com/watch?v=123',
                     'language' => 'nl',
                     'copyrightHolder' => 'publiq',
-                ]
+                ],
             ],
             'no copyright holder' => [
                 [
                     'id' => 'd46a9fc1-fdba-4d37-98ab-26937be61845',
                     'url' => 'https://www.youtube.com/watch?v=123',
                     'language' => 'nl',
-                ]
+                ],
             ],
         ];
     }
