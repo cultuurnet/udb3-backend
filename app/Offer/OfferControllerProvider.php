@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
@@ -35,6 +36,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/status/', UpdateStatusRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
+
+        $controllers->put('/{offerType}/{offerType}/type/{termId}/', UpdateTypeRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/videos/{videoId}', DeleteVideoRequestHandler::class);
@@ -70,6 +73,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateBookingAvailabilityRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTypeRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateTypeRequestHandler($app['event_command_bus'])
         );
 
         $app[AddVideoRequestHandler::class] = $app->share(
