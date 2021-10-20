@@ -44,27 +44,28 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 
     public function byId(CategoryID $categoryID): ?Category
     {
-        $legacyCategory = null;
-
         try {
             $legacyCategory = $this->typeResolver->byId(new StringLiteral($categoryID->toString()));
+            return $this->convertLegacyCategory($legacyCategory);
         } catch (\Exception $e) {
-            // Do nothing.
+            // Continue to next resolver.
         }
 
         try {
             $legacyCategory = $this->themeResolver->byId(new StringLiteral($categoryID->toString()));
+            return $this->convertLegacyCategory($legacyCategory);
         } catch (\Exception $e) {
-            // Do nothing.
+            // Continue to next resolver.
         }
 
         try {
             $legacyCategory = $this->facilityResolver->byId(new StringLiteral($categoryID->toString()));
+            return $this->convertLegacyCategory($legacyCategory);
         } catch (\Exception $e) {
-            // Do nothing.
+            // Continue to next resolver.
         }
 
-        return $legacyCategory ? $this->convertLegacyCategory($legacyCategory) : null;
+        return null;
     }
 
     private function convertLegacyCategory(LegacyCategory $legacyCategory): Category
