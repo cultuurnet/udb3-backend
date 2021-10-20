@@ -8,10 +8,7 @@ final class UpdateType extends AbstractCommand
 {
     protected string $typeId;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, string $typeId)
+    public function __construct(string $itemId, string $typeId)
     {
         parent::__construct($itemId);
         $this->typeId = $typeId;
