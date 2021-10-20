@@ -29,6 +29,19 @@ class LegacyBridgeCategoryResolverTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_a_category_for_a_category_id_that_exists(): void
+    {
+        $id = new CategoryID('0.7.0.0.0');
+
+        $expected = new Category($id, new CategoryLabel('Begeleide rondleiding'), new CategoryDomain('eventtype'));
+        $actual = $this->legacyBridgeCategoryResolver->byId($id);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_a_category_for_a_category_id_that_exists_in_the_given_category_domain(): void
     {
         $id = new CategoryID('0.7.0.0.0');
@@ -59,10 +72,8 @@ class LegacyBridgeCategoryResolverTest extends TestCase
     public function it_returns_null_for_a_category_id_that_does_not_exist(): void
     {
         $id = new CategoryID('foobar');
-        $domain = new CategoryDomain('eventtype');
 
-        $actual = $this->legacyBridgeCategoryResolver->byIdInDomain($id, $domain);
-
-        $this->assertNull($actual);
+        $this->assertNull($this->legacyBridgeCategoryResolver->byId($id));
+        $this->assertNull($this->legacyBridgeCategoryResolver->byIdInDomain($id, new CategoryDomain('eventtype')));
     }
 }
