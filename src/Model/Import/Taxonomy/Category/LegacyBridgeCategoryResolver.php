@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Taxonomy\Category;
 
+use CultuurNet\UDB3\Category as LegacyCategory;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -43,34 +44,35 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 
     public function byId(CategoryID $categoryID): ?Category
     {
-        $category = null;
+        $legacyCategory = null;
 
         try {
-            $category = $this->typeResolver->byId(new StringLiteral($categoryID->toString()));
+            $legacyCategory = $this->typeResolver->byId(new StringLiteral($categoryID->toString()));
         } catch (\Exception $e) {
             // Do nothing.
         }
 
         try {
-            $category = $this->themeResolver->byId(new StringLiteral($categoryID->toString()));
+            $legacyCategory = $this->themeResolver->byId(new StringLiteral($categoryID->toString()));
         } catch (\Exception $e) {
             // Do nothing.
         }
 
         try {
-            $category = $this->facilityResolver->byId(new StringLiteral($categoryID->toString()));
+            $legacyCategory = $this->facilityResolver->byId(new StringLiteral($categoryID->toString()));
         } catch (\Exception $e) {
             // Do nothing.
         }
 
-        if (!$category) {
-            return null;
-        }
+        return $legacyCategory ? $this->convertLegacyCategory($legacyCategory) : null;
+    }
 
+    private function convertLegacyCategory(LegacyCategory $legacyCategory): Category
+    {
         return new Category(
-            $categoryID,
-            new CategoryLabel($category->getLabel()),
-            new CategoryDomain($category->getDomain())
+            new CategoryID($legacyCategory->getId()),
+            new CategoryLabel($legacyCategory->getLabel()),
+            new CategoryDomain($legacyCategory->getDomain())
         );
     }
 }
