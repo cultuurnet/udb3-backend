@@ -68,6 +68,30 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
         return null;
     }
 
+    public function byIdInDomain(CategoryID $categoryID, CategoryDomain $domain): ?Category
+    {
+        $resolverMap = [
+            'eventtype' => $this->typeResolver,
+            'theme' => $this->themeResolver,
+            'facility' => $this->facilityResolver,
+        ];
+
+        if (!isset($resolverMap[$domain->toString()])) {
+            return null;
+        }
+
+        /** @var TypeResolverInterface|ThemeResolverInterface|OfferFacilityResolverInterface $resolver */
+        $resolver = $resolverMap[$domain->toString()];
+
+        try {
+            /** @var LegacyCategory $legacyCategory */
+            $legacyCategory = $resolver->byId(new StringLiteral($categoryID->toString()));
+            return $this->convertLegacyCategory($legacyCategory);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
     private function convertLegacyCategory(LegacyCategory $legacyCategory): Category
     {
         return new Category(
