@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -18,7 +17,7 @@ class UpdateTypeRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var CommandBus|MockObject $commandBus */
+    /** @var CommandBus|MockObject */
     private CommandBus $commandBus;
     private UpdateTypeRequestHandler $updateTypeRequestHandler;
 
