@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
@@ -48,7 +47,6 @@ use CultuurNet\UDB3\Offer\Item\Events\OwnerChanged;
 use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
@@ -162,32 +160,6 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then([
                 new ThemeUpdated($itemId, $circusTheme),
                 new ThemeUpdated($itemId, $musicalTheme),
-            ]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_only_change_the_type_when_updating_with_another_id()
-    {
-        $itemId = LegacyUUID::generateAsString();
-        $filmType = new EventType('0.50.6.0.0', 'Film');
-        $concertType = new EventType('0.50.4.0.0', 'Concert');
-
-        $this->scenario
-            ->given([
-                new ItemCreated($itemId),
-            ])
-            ->when(
-                function (Item $item) use ($filmType, $concertType) {
-                    $item->updateType($filmType);
-                    $item->updateType($filmType);
-                    $item->updateType($concertType);
-                }
-            )
-            ->then([
-                new TypeUpdated($itemId, $filmType),
-                new TypeUpdated($itemId, $concertType),
             ]);
     }
 
