@@ -7,10 +7,14 @@ namespace CultuurNet\UDB3\Offer\Commands\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class UpdateVideo
+final class UpdateVideo implements AuthorizableCommand
 {
-    private string $id;
+    private string $offerId;
+
+    private string $videoId;
 
     private ?Url $url = null;
 
@@ -18,14 +22,15 @@ final class UpdateVideo
 
     private ?CopyrightHolder $copyrightHolder = null;
 
-    public function __construct(string $id)
+    public function __construct(string $offerId, string $videoId)
     {
-        $this->id = $id;
+        $this->offerId = $offerId;
+        $this->videoId = $videoId;
     }
 
-    public function getId(): string
+    public function getVideoId(): string
     {
-        return $this->id;
+        return $this->videoId;
     }
 
     public function getUrl(): ?Url
@@ -62,5 +67,15 @@ final class UpdateVideo
         $clone = clone $this;
         $clone->copyrightHolder = $copyright;
         return $clone;
+    }
+
+    public function getItemId(): string
+    {
+        return $this->offerId;
+    }
+
+    public function getPermission(): Permission
+    {
+        return Permission::AANBOD_BEWERKEN();
     }
 }
