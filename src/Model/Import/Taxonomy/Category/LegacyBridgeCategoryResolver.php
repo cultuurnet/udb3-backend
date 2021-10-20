@@ -41,7 +41,7 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
         $this->facilityResolver = $facilityResolver;
     }
 
-    public function byId(CategoryID $categoryID)
+    public function byId(CategoryID $categoryID): ?Category
     {
         $category = null;
 

@@ -9,8 +9,5 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 
 interface CategoryResolverInterface
 {
-    /**
-     * @return Category|null
-     */
-    public function byId(CategoryID $categoryID);
+    public function byId(CategoryID $categoryID): ?Category;
 }
