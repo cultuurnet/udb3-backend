@@ -72,6 +72,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -90,6 +91,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     private ?Audience $audience = null;
 
     private ?LocationId $locationId = null;
+
+    public static function getOfferType(): OfferType
+    {
+        return OfferType::EVENT();
+    }
 
     public static function create(
         string $eventId,
