@@ -309,7 +309,7 @@ class PlaceDocumentImporterTest extends TestCase
 
         $expectedCommands = [
             new UpdateTitle($id, new Language('nl'), new Title('Voorbeeld naam')),
-            new UpdateType($id, new EventType('0.14.0.0.0', 'Monument')),
+            new UpdateType($id, '0.14.0.0.0'),
             new UpdateAddress(
                 $id,
                 new Address(

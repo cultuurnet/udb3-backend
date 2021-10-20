@@ -145,7 +145,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
                 $title
             );
 
-            $commands[] = new UpdateType($id, $type);
+            $commands[] = new UpdateType($id, $type->getId());
             $commands[] = new UpdateAddress($id, $address, $mainLanguage);
             $commands[] = new UpdateCalendar($id, $calendar);
 

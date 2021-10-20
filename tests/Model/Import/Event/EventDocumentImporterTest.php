@@ -277,7 +277,7 @@ class EventDocumentImporterTest extends TestCase
 
         $expectedCommands = [
             new UpdateTitle($id, new Language('nl'), new Title('Voorbeeld naam')),
-            new UpdateType($id, new EventType('0.7.0.0.0', 'Begeleide rondleiding')),
+            new UpdateType($id, '0.7.0.0.0'),
             new UpdateLocation($id, new LocationId('f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0')),
             new UpdateCalendar(
                 $id,

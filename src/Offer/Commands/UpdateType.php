@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Event\EventType;
-
 final class UpdateType extends AbstractCommand
 {
     protected string $typeId;
@@ -13,10 +11,10 @@ final class UpdateType extends AbstractCommand
     /**
      * @param string $itemId
      */
-    public function __construct($itemId, EventType $type)
+    public function __construct($itemId, string $typeId)
     {
         parent::__construct($itemId);
-        $this->typeId = $type->getId();
+        $this->typeId = $typeId;
     }
 
     public function getTypeId(): string

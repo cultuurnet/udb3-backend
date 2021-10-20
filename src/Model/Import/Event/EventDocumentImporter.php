@@ -158,7 +158,7 @@ class EventDocumentImporter implements DocumentImporterInterface
                 $title
             );
 
-            $commands[] = new UpdateType($id, $type);
+            $commands[] = new UpdateType($id, $type->getId());
             $commands[] = new UpdateLocation($id, $location);
             $commands[] = new UpdateCalendar($id, $calendar);
 
