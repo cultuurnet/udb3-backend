@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
@@ -50,7 +49,7 @@ final class UpdateTypeHandler implements CommandHandler
             throw CategoryNotFound::withIdInDomainForOfferType($id, $domain, $offerType);
         }
 
-        $offer->updateType(EventType::fromUdb3ModelCategory($category));
+        $offer->updateType($category);
 
         $this->offerRepository->save($offer);
     }
