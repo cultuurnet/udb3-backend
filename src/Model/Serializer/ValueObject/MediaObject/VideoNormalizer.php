@@ -13,8 +13,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class VideoNormalizer implements NormalizerInterface
 {
-    private const REGEX_FOR_PLATFORM = '/^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))/';
-
     private const YOUTUBE_EMBED = 'https://www.youtube.com/embed/';
 
     private const YOUTUBE_NAME = 'YouTube';
@@ -78,7 +76,7 @@ final class VideoNormalizer implements NormalizerInterface
     {
         $matches = [];
         preg_match(
-            self::REGEX_FOR_PLATFORM,
+            Video::REGEX,
             $url->toString(),
             $matches
         );

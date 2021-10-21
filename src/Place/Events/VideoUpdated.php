@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Event\Events;
+namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 
-final class VideoAdded extends AbstractVideoEvent
+final class VideoUpdated extends AbstractVideoEvent
 {
 }

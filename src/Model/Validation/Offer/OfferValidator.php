@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\ConfigurableEnumValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\BookingInfoValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\MediaObject\MediaObjectsValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\MediaObject\VideosValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Moderation\WorkflowStatusValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Price\PriceInfoValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Category\CategoriesValidator;
@@ -56,6 +57,7 @@ abstract class OfferValidator extends Validator
             new Key('priceInfo', new PriceInfoValidator(), false),
             new HasMainLanguageRule('priceInfo.[].name'),
             new Key('mediaObject', new MediaObjectsValidator(), false),
+            new Key('videos', new VideosValidator(), false),
             new Key('workflowStatus', new WorkflowStatusValidator(), false),
             new Key('availableFrom', new Date(\DATE_ATOM), false),
         ];

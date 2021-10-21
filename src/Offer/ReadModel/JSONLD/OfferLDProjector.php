@@ -36,7 +36,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
@@ -206,6 +206,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     abstract protected function getVideoAddedClassName(): string;
 
     abstract protected function getVideoDeletedClassName(): string;
+
+    abstract protected function getVideoUpdatedClassName(): string;
 
     /**
      * @return string
@@ -598,7 +600,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return strpos($mediaObject->{'@id'}, (string) $mediaObjectId) > 0;
     }
 
-    protected function applyVideoAdded(AbstractVideoAdded $videoAdded): JsonDocument
+    protected function applyVideoAdded(AbstractVideoEvent $videoAdded): JsonDocument
     {
         $document = $this->loadDocumentFromRepositoryByItemId($videoAdded->getItemId());
 
@@ -623,6 +625,21 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         if (count($offerLd->videos) === 0) {
             unset($offerLd->videos);
         }
+
+        return $document->withBody($offerLd);
+    }
+
+    protected function applyVideoUpdated(AbstractVideoEvent $videoUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($videoUpdated->getItemId());
+
+        $offerLd = $document->getBody();
+
+        $offerLd->videos = array_values(array_map(
+            fn ($video) => $video->id === $videoUpdated->getVideo()->getId() ?
+                $this->videoNormalizer->normalize($videoUpdated->getVideo()) : $video,
+            $offerLd->videos
+        ));
 
         return $document->withBody($offerLd);
     }

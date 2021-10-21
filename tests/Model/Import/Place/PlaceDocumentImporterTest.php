@@ -18,27 +18,39 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\Import\DecodedDocument;
+use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
+use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
+use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description as Udb3ModelDescription;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
+use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
@@ -48,13 +60,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Commands\UpdateType;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place;
-use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\Import\DecodedDocument;
-use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
-use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
-use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
-use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -66,7 +71,7 @@ use ValueObjects\Geography\CountryCode;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\Person\Age;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class PlaceDocumentImporterTest extends TestCase
 {
@@ -157,7 +162,7 @@ class PlaceDocumentImporterTest extends TestCase
 
         $place = Place::createPlace(
             $id,
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('Voorbeeld naam'),
             new EventType('0.14.0.0.0', 'Monument'),
             new Address(
@@ -185,8 +190,8 @@ class PlaceDocumentImporterTest extends TestCase
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
-            new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
-            new UpdateTitle($id, new Language('en'), new Title('Example name')),
+            new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
+            new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new UpdateAddress(
                 $id,
                 new Address(
@@ -195,7 +200,7 @@ class PlaceDocumentImporterTest extends TestCase
                     new Locality('Bruxelles'),
                     new Country(CountryCode::fromNative('BE'))
                 ),
-                new Language('fr')
+                new LegacyLanguage('fr')
             ),
             new UpdateAddress(
                 $id,
@@ -205,10 +210,11 @@ class PlaceDocumentImporterTest extends TestCase
                     new Locality('Brussels'),
                     new Country(CountryCode::fromNative('BE'))
                 ),
-                new Language('en')
+                new LegacyLanguage('en')
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -231,7 +237,7 @@ class PlaceDocumentImporterTest extends TestCase
 
         $place = Place::createPlace(
             $id,
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('Voorbeeld naam'),
             new EventType('0.14.0.0.0', 'Monument'),
             new Address(
@@ -260,8 +266,8 @@ class PlaceDocumentImporterTest extends TestCase
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
-            new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
-            new UpdateTitle($id, new Language('en'), new Title('Example name')),
+            new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
+            new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new UpdateAddress(
                 $id,
                 new Address(
@@ -270,7 +276,7 @@ class PlaceDocumentImporterTest extends TestCase
                     new Locality('Bruxelles'),
                     new Country(CountryCode::fromNative('BE'))
                 ),
-                new Language('fr')
+                new LegacyLanguage('fr')
             ),
             new UpdateAddress(
                 $id,
@@ -280,10 +286,11 @@ class PlaceDocumentImporterTest extends TestCase
                     new Locality('Brussels'),
                     new Country(CountryCode::fromNative('BE'))
                 ),
-                new Language('en')
+                new LegacyLanguage('en')
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -308,7 +315,7 @@ class PlaceDocumentImporterTest extends TestCase
         $this->importer->import($document);
 
         $expectedCommands = [
-            new UpdateTitle($id, new Language('nl'), new Title('Voorbeeld naam')),
+            new UpdateTitle($id, new LegacyLanguage('nl'), new Title('Voorbeeld naam')),
             new UpdateType($id, new EventType('0.14.0.0.0', 'Monument')),
             new UpdateAddress(
                 $id,
@@ -318,15 +325,15 @@ class PlaceDocumentImporterTest extends TestCase
                     new Locality('Brussel'),
                     new Country(CountryCode::fromNative('BE'))
                 ),
-                new Language('nl')
+                new LegacyLanguage('nl')
             ),
             new UpdateCalendar($id, new Calendar(CalendarType::PERMANENT())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
-            new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
-            new UpdateTitle($id, new Language('en'), new Title('Example name')),
+            new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
+            new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new UpdateAddress(
                 $id,
                 new Address(
@@ -335,7 +342,7 @@ class PlaceDocumentImporterTest extends TestCase
                     new Locality('Bruxelles'),
                     new Country(CountryCode::fromNative('BE'))
                 ),
-                new Language('fr')
+                new LegacyLanguage('fr')
             ),
             new UpdateAddress(
                 $id,
@@ -345,10 +352,11 @@ class PlaceDocumentImporterTest extends TestCase
                     new Locality('Brussels'),
                     new Country(CountryCode::fromNative('BE'))
                 ),
-                new Language('en')
+                new LegacyLanguage('en')
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -381,12 +389,12 @@ class PlaceDocumentImporterTest extends TestCase
         $recordedCommands = $this->commandBus->getRecordedCommands();
 
         $this->assertContainsObject(
-            new UpdateDescription($id, new Language('nl'), new Description('Voorbeeld beschrijving')),
+            new UpdateDescription($id, new LegacyLanguage('nl'), new Description('Voorbeeld beschrijving')),
             $recordedCommands
         );
 
         $this->assertContainsObject(
-            new UpdateDescription($id, new Language('en'), new Description('Example description')),
+            new UpdateDescription($id, new LegacyLanguage('en'), new Description('Example description')),
             $recordedCommands
         );
     }
@@ -523,16 +531,16 @@ class PlaceDocumentImporterTest extends TestCase
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Example description'),
                     new CopyrightHolder('Bob'),
-                    Url::fromNative('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
-                    new Language('en')
+                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
+                    new LegacyLanguage('en')
                 ),
                 new Image(
                     new LegacyUUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Voorbeeld beschrijving'),
                     new CopyrightHolder('Bob'),
-                    Url::fromNative('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
-                    new Language('nl')
+                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
+                    new LegacyLanguage('nl')
                 ),
             ]
         );
@@ -565,6 +573,58 @@ class PlaceDocumentImporterTest extends TestCase
 
         $this->assertContainsObject(
             new ImportImages($id, $expectedImages),
+            $recordedCommands
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_import_videos(): void
+    {
+        $document = $this->getPlaceDocument();
+        $body = $document->getBody();
+        $body['videos'] = [
+            [
+                'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                'url' => 'https://vimeo.com/98765432',
+                'language' => 'nl',
+                'copyrightHolder' => 'publiq',
+            ],
+            [
+                'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
+                'language' => 'fr',
+            ],
+        ];
+        $document = $document->withBody($body);
+        $id = $document->getId();
+
+        $this->commandBus->record();
+
+        $this->expectNoImages();
+        $this->expectNoLockedLabels();
+
+        $this->importer->import($document);
+
+        $recordedCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertContainsObject(
+            new ImportVideos(
+                $id,
+                new VideoCollection(
+                    (new Video(
+                        '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                        new Url('https://vimeo.com/98765432'),
+                        new Language('nl'),
+                    ))->withCopyrightHolder(new CopyrightHolder('publiq')),
+                    new Video(
+                        '91c75325-3830-4000-b580-5778b2de4548',
+                        new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
+                        new Language('fr')
+                    )
+                )
+            ),
             $recordedCommands
         );
     }

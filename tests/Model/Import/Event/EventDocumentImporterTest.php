@@ -33,7 +33,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
@@ -48,14 +48,19 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description as Udb3ModelDescription;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -69,7 +74,7 @@ use Psr\Log\NullLogger;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\Person\Age;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class EventDocumentImporterTest extends TestCase
 {
@@ -148,7 +153,7 @@ class EventDocumentImporterTest extends TestCase
 
         $event = Event::create(
             $id,
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('Voorbeeld naam'),
             new EventType('0.7.0.0.0', 'Begeleide rondleiding'),
             new LocationId('f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0'),
@@ -183,9 +188,10 @@ class EventDocumentImporterTest extends TestCase
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteTypicalAgeRange($id),
-            new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
-            new UpdateTitle($id, new Language('en'), new Title('Example name')),
+            new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
+            new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
             new ImportLabels($id, new Labels()),
             new DeleteCurrentOrganizer($id),
         ];
@@ -210,7 +216,7 @@ class EventDocumentImporterTest extends TestCase
 
         $event = Event::create(
             $id,
-            new Language('nl'),
+            new LegacyLanguage('nl'),
             new Title('Voorbeeld naam'),
             new EventType('0.7.0.0.0', 'Begeleide rondleiding'),
             new LocationId('f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0'),
@@ -246,9 +252,10 @@ class EventDocumentImporterTest extends TestCase
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteTypicalAgeRange($id),
-            new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
-            new UpdateTitle($id, new Language('en'), new Title('Example name')),
+            new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
+            new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
             new ImportLabels($id, new Labels()),
             new DeleteCurrentOrganizer($id),
         ];
@@ -276,7 +283,7 @@ class EventDocumentImporterTest extends TestCase
         $this->importer->import($document);
 
         $expectedCommands = [
-            new UpdateTitle($id, new Language('nl'), new Title('Voorbeeld naam')),
+            new UpdateTitle($id, new LegacyLanguage('nl'), new Title('Voorbeeld naam')),
             new UpdateType($id, new EventType('0.7.0.0.0', 'Begeleide rondleiding')),
             new UpdateLocation($id, new LocationId('f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0')),
             new UpdateCalendar(
@@ -299,9 +306,10 @@ class EventDocumentImporterTest extends TestCase
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteTypicalAgeRange($id),
-            new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
-            new UpdateTitle($id, new Language('en'), new Title('Example name')),
+            new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
+            new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
             new ImportLabels($id, new Labels()),
             new DeleteCurrentOrganizer($id),
         ];
@@ -337,12 +345,12 @@ class EventDocumentImporterTest extends TestCase
         $recordedCommands = $this->commandBus->getRecordedCommands();
 
         $this->assertContainsObject(
-            new UpdateDescription($id, new Language('nl'), new Description('Voorbeeld beschrijving')),
+            new UpdateDescription($id, new LegacyLanguage('nl'), new Description('Voorbeeld beschrijving')),
             $recordedCommands
         );
 
         $this->assertContainsObject(
-            new UpdateDescription($id, new Language('en'), new Description('Example description')),
+            new UpdateDescription($id, new LegacyLanguage('en'), new Description('Example description')),
             $recordedCommands
         );
     }
@@ -483,16 +491,16 @@ class EventDocumentImporterTest extends TestCase
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Example description'),
                     new CopyrightHolder('Bob'),
-                    Url::fromNative('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
-                    new Language('en')
+                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
+                    new LegacyLanguage('en')
                 ),
                 new Image(
                     new LegacyUUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Voorbeeld beschrijving'),
                     new CopyrightHolder('Bob'),
-                    Url::fromNative('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
-                    new Language('nl')
+                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
+                    new LegacyLanguage('nl')
                 ),
             ]
         );
@@ -525,6 +533,59 @@ class EventDocumentImporterTest extends TestCase
 
         $this->assertContainsObject(
             new ImportImages($id, $expectedImages),
+            $recordedCommands
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_import_videos(): void
+    {
+        $document = $this->getEventDocument();
+        $body = $document->getBody();
+        $body['videos'] = [
+            [
+                'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                'url' => 'https://vimeo.com/98765432',
+                'language' => 'nl',
+                'copyrightHolder' => 'publiq',
+            ],
+            [
+                'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
+                'language' => 'fr',
+            ],
+        ];
+        $document = $document->withBody($body);
+        $id = $document->getId();
+
+        $this->commandBus->record();
+
+        $this->expectEventIdExists($id);
+        $this->expectNoImages();
+        $this->expectNoLockedLabels();
+
+        $this->importer->import($document);
+
+        $recordedCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertContainsObject(
+            new ImportVideos(
+                $id,
+                new VideoCollection(
+                    (new Video(
+                        '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                        new Url('https://vimeo.com/98765432'),
+                        new Language('nl'),
+                    ))->withCopyrightHolder(new CopyrightHolder('publiq')),
+                    new Video(
+                        '91c75325-3830-4000-b580-5778b2de4548',
+                        new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
+                        new Language('fr')
+                    )
+                )
+            ),
             $recordedCommands
         );
     }

@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Validation\Organizer;
 
-use PHPUnit\Framework\TestCase;
-use Respect\Validation\Exceptions\NestedValidationException;
+use CultuurNet\UDB3\Model\Validation\ValidatorTestCase;
 use Respect\Validation\Validator;
 
-class OrganizerValidatorTest extends TestCase
+class OrganizerValidatorTest extends ValidatorTestCase
 {
-    /**
-     * @var OrganizerValidator
-     */
-    private $validator;
+    private OrganizerValidator $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->validator = new OrganizerValidator();
+    }
+
+    protected function getValidator(): Validator
+    {
+        return $this->validator;
     }
 
     /**
@@ -57,7 +58,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_url_is_required_and_missing()
     {
-        $validator = new OrganizerValidator([], true);
+        $this->validator = new OrganizerValidator([], true);
 
         $organizer = [
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
@@ -71,7 +72,7 @@ class OrganizerValidatorTest extends TestCase
             'Key url must be present',
         ];
 
-        $this->assertValidationErrors($organizer, $expectedErrors, $validator);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -702,27 +703,5 @@ class OrganizerValidatorTest extends TestCase
         ];
 
         $this->assertTrue($this->validator->validate($organizer));
-    }
-
-
-    private function assertValidationErrors($data, array $expectedMessages, Validator $validator = null)
-    {
-        $validator = $validator ? $validator : $this->getValidator();
-
-        try {
-            $validator->assert($data);
-            $this->fail('No error messages found.');
-        } catch (NestedValidationException $e) {
-            $actualMessages = $e->getMessages();
-            $this->assertEquals($expectedMessages, $actualMessages);
-        }
-    }
-
-    /**
-     * @return Validator
-     */
-    private function getValidator()
-    {
-        return $this->validator;
     }
 }

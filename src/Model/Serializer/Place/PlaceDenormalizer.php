@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Place\PlaceValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
@@ -55,7 +56,8 @@ class PlaceDenormalizer extends OfferDenormalizer
         DenormalizerInterface $priceInfoDenormalizer = null,
         DenormalizerInterface $bookingInfoDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
-        DenormalizerInterface $mediaObjectReferencesDenormalizer = null
+        DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
+        VideoDenormalizer $videoDenormalizer = null
     ) {
         if (!$placeValidator) {
             $placeValidator = new PlaceValidator();
@@ -89,7 +91,8 @@ class PlaceDenormalizer extends OfferDenormalizer
             $priceInfoDenormalizer,
             $bookingInfoDenormalizer,
             $contactPointDenormalizer,
-            $mediaObjectReferencesDenormalizer
+            $mediaObjectReferencesDenormalizer,
+            $videoDenormalizer
         );
     }
 
