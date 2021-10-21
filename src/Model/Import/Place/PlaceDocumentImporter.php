@@ -207,9 +207,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        if (!$import->getVideos()->isEmpty()) {
-            $commands[] = new ImportVideos($id, $import->getVideos());
-        }
+        $commands[] = new ImportVideos($id, $import->getVideos());
 
         foreach ($commands as $command) {
             $this->commandBus->dispatch($command);
