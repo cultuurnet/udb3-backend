@@ -49,6 +49,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -59,7 +60,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
-use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -567,24 +568,19 @@ class EventDocumentImporterTest extends TestCase
         $recordedCommands = $this->commandBus->getRecordedCommands();
 
         $this->assertContainsObject(
-            new AddVideo(
+            new ImportVideos(
                 $id,
-                (new Video(
-                    '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
-                    new Url('https://vimeo.com/98765432'),
-                    new Language('nl'),
-                ))->withCopyrightHolder(new CopyrightHolder('publiq'))
-            ),
-            $recordedCommands
-        );
-
-        $this->assertContainsObject(
-            new AddVideo(
-                $id,
-                new Video(
-                    '91c75325-3830-4000-b580-5778b2de4548',
-                    new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
-                    new Language('fr')
+                new VideoCollection(
+                    (new Video(
+                        '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                        new Url('https://vimeo.com/98765432'),
+                        new Language('nl'),
+                    ))->withCopyrightHolder(new CopyrightHolder('publiq')),
+                    new Video(
+                        '91c75325-3830-4000-b580-5778b2de4548',
+                        new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
+                        new Language('fr')
+                    )
                 )
             ),
             $recordedCommands
