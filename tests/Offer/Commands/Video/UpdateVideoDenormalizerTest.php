@@ -13,9 +13,11 @@ final class UpdateVideoDenormalizerTest extends TestCase
 {
     private UpdateVideoDenormalizer $denormalizer;
 
+    private string $offerId = 'a7337d83-291e-4f41-827a-4513268cae90';
+
     public function setUp(): void
     {
-        $this->denormalizer = new UpdateVideoDenormalizer();
+        $this->denormalizer = new UpdateVideoDenormalizer($this->offerId);
     }
 
     /**
@@ -32,22 +34,29 @@ final class UpdateVideoDenormalizerTest extends TestCase
 
     public function updateVideoProvider(): array
     {
-        $updateVideo = new UpdateVideo('208dbe98-ffaa-41cb-9ada-7ec8e0651f48');
+        $videoId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+        $updateVideo = new UpdateVideo($this->offerId, $videoId);
 
         return [
-            'updatevideo_with_blank_fields' => [
+            'update_video_with_only_an_id' => [
+                $updateVideo,
+                [
+                    'id' => $videoId,
+                ],
+            ],
+            'update_video_with_some_values' => [
                 $updateVideo->withCopyrightHolder(new CopyrightHolder('publiq')),
                 [
-                    'id' => '208dbe98-ffaa-41cb-9ada-7ec8e0651f48',
+                    'id' => $videoId,
                     'copyrightHolder' => 'publiq',
                 ],
             ],
-            'updatevideo_with_all_values' => [
+            'update_video_with_all_values' => [
                 $updateVideo->withCopyrightHolder(new CopyrightHolder('publiq'))
                     ->withLanguage(new Language('fr'))
                     ->withUrl(new Url('https://www.youtube.com/watch?v=123')),
                 [
-                    'id' => '208dbe98-ffaa-41cb-9ada-7ec8e0651f48',
+                    'id' => $videoId,
                     'copyrightHolder' => 'publiq',
                     'language' => 'fr',
                     'url' => 'https://www.youtube.com/watch?v=123',
