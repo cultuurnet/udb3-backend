@@ -11,11 +11,15 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateVideosDenormalizerTest extends TestCase
 {
+    private string $offerId = 'b20f171d-747a-46a3-8fd7-f7ab8ae11231';
+
     private UpdateVideosDenormalizer $denormalizer;
 
     public function setUp(): void
     {
-        $this->denormalizer = new UpdateVideosDenormalizer();
+        $this->denormalizer = new UpdateVideosDenormalizer(
+            new UpdateVideoDenormalizer($this->offerId)
+        );
     }
 
     /**
@@ -23,12 +27,12 @@ class UpdateVideosDenormalizerTest extends TestCase
      */
     public function it_can_denormalize_multiple_updates(): void
     {
-        $videoDatas = [
+        $videoData = [
             [
-            'id' => '9b5ce026-e200-4885-8b3b-396ecd879ebd',
-            'copyrightHolder' => 'publiq',
-            'language' => 'fr',
-            'url' => 'https://www.youtube.com/watch?v=123',
+                'id' => '9b5ce026-e200-4885-8b3b-396ecd879ebd',
+                'copyrightHolder' => 'publiq',
+                'language' => 'fr',
+                'url' => 'https://www.youtube.com/watch?v=123',
             ],
             [
                 'id' => 'e16e3819-f63e-40c7-904e-80103b270a58',
@@ -39,17 +43,17 @@ class UpdateVideosDenormalizerTest extends TestCase
         ];
 
         $expected = new UpdateVideos(
-            (new UpdateVideo('9b5ce026-e200-4885-8b3b-396ecd879ebd')
-            )->withCopyrightHolder(new CopyrightHolder('publiq'))
-            ->withLanguage(new Language('fr'))
-            ->withUrl(new Url('https://www.youtube.com/watch?v=123')),
-            (new UpdateVideo('e16e3819-f63e-40c7-904e-80103b270a58')
-            )->withCopyrightHolder(new CopyrightHolder('creative commons'))
+            (new UpdateVideo($this->offerId, '9b5ce026-e200-4885-8b3b-396ecd879ebd'))
+                ->withCopyrightHolder(new CopyrightHolder('publiq'))
+                ->withLanguage(new Language('fr'))
+                ->withUrl(new Url('https://www.youtube.com/watch?v=123')),
+            (new UpdateVideo($this->offerId, 'e16e3819-f63e-40c7-904e-80103b270a58'))
+                ->withCopyrightHolder(new CopyrightHolder('creative commons'))
                 ->withLanguage(new Language('nl'))
                 ->withUrl(new Url('https://vimeo.com/98765432')),
         );
 
-        $actual = $this->denormalizer->denormalize($videoDatas, UpdateVideos::class);
+        $actual = $this->denormalizer->denormalize($videoData, UpdateVideos::class);
 
         $this->assertEquals($expected, $actual);
     }
@@ -59,7 +63,7 @@ class UpdateVideosDenormalizerTest extends TestCase
      */
     public function it_can_denormalize_a_single_updates(): void
     {
-        $videoDatas = [
+        $videoData = [
             [
                 'id' => '9b5ce026-e200-4885-8b3b-396ecd879ebd',
                 'copyrightHolder' => 'publiq',
@@ -69,13 +73,13 @@ class UpdateVideosDenormalizerTest extends TestCase
         ];
 
         $expected = new UpdateVideos(
-            (new UpdateVideo('9b5ce026-e200-4885-8b3b-396ecd879ebd')
-            )->withCopyrightHolder(new CopyrightHolder('publiq'))
+            (new UpdateVideo($this->offerId, '9b5ce026-e200-4885-8b3b-396ecd879ebd'))
+                ->withCopyrightHolder(new CopyrightHolder('publiq'))
                 ->withLanguage(new Language('fr'))
                 ->withUrl(new Url('https://www.youtube.com/watch?v=123')),
         );
 
-        $actual = $this->denormalizer->denormalize($videoDatas, UpdateVideos::class);
+        $actual = $this->denormalizer->denormalize($videoData, UpdateVideos::class);
 
         $this->assertEquals($expected, $actual);
     }
