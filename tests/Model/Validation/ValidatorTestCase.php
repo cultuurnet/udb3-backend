@@ -17,11 +17,6 @@ abstract class ValidatorTestCase extends TestCase
             $this->fail('No error messages found.');
         } catch (NestedValidationException $e) {
             $actualMessages = $e->getMessages();
-
-            if (count(array_diff($actualMessages, $expectedMessages)) > 0) {
-                var_dump($actualMessages);
-            }
-
             $this->assertEquals($expectedMessages, $actualMessages);
         }
     }
