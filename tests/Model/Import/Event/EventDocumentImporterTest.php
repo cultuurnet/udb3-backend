@@ -191,6 +191,7 @@ class EventDocumentImporterTest extends TestCase
             new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
             new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
             new ImportLabels($id, new Labels()),
             new DeleteCurrentOrganizer($id),
         ];
@@ -254,6 +255,7 @@ class EventDocumentImporterTest extends TestCase
             new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
             new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
             new ImportLabels($id, new Labels()),
             new DeleteCurrentOrganizer($id),
         ];
@@ -307,6 +309,7 @@ class EventDocumentImporterTest extends TestCase
             new UpdateTitle($id, new LegacyLanguage('fr'), new Title('Nom example')),
             new UpdateTitle($id, new LegacyLanguage('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
             new ImportLabels($id, new Labels()),
             new DeleteCurrentOrganizer($id),
         ];

@@ -214,6 +214,7 @@ class PlaceDocumentImporterTest extends TestCase
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -289,6 +290,7 @@ class PlaceDocumentImporterTest extends TestCase
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -354,6 +356,7 @@ class PlaceDocumentImporterTest extends TestCase
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
