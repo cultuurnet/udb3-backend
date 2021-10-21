@@ -10,9 +10,9 @@ final class UpdateVideosDenormalizer implements DenormalizerInterface
 {
     private UpdateVideoDenormalizer $updateVideoDenormalizer;
 
-    public function __construct()
+    public function __construct(UpdateVideoDenormalizer $updateVideoDenormalizer)
     {
-        $this->updateVideoDenormalizer = new UpdateVideoDenormalizer();
+        $this->updateVideoDenormalizer = $updateVideoDenormalizer;
     }
 
     public function denormalize($data, $class, $format = null, array $context = []): UpdateVideos
