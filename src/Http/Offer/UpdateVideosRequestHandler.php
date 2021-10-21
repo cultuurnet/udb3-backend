@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateVideoRequestHandler implements RequestHandlerInterface
+final class UpdateVideosRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
     private RequestBodyParser $parser;
