@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -72,7 +73,9 @@ use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\UuidFactoryInterface;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class EventDenormalizerTest extends TestCase
@@ -82,9 +85,32 @@ class EventDenormalizerTest extends TestCase
      */
     private $denormalizer;
 
+    /**
+     * @var MockObject|UuidFactoryInterface
+     */
+    private $uuidFactory;
+
     public function setUp()
     {
-        $this->denormalizer = new EventDenormalizer();
+        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
+
+        $this->denormalizer = new EventDenormalizer(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            new VideoDenormalizer($this->uuidFactory)
+        );
     }
 
     /**
@@ -1534,6 +1560,10 @@ class EventDenormalizerTest extends TestCase
                     'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
                     'language' => 'fr',
                 ],
+                [
+                    'url' => 'https://www.youtube.com/watch?v=cEItmb_234',
+                    'language' => 'nl',
+                ],
             ],
             'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
@@ -1671,12 +1701,21 @@ class EventDenormalizerTest extends TestCase
                         '91c75325-3830-4000-b580-5778b2de4548',
                         new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
                         new Language('fr')
+                    ),
+                    new Video(
+                        '7bddfbb5-7c79-48af-a154-4a44df395608',
+                        new Url('https://www.youtube.com/watch?v=cEItmb_234'),
+                        new Language('nl')
                     )
                 )
             )
             ->withWorkflowStatus(
                 WorkflowStatus::APPROVED()
             );
+
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn(\Ramsey\Uuid\Uuid::fromString('7bddfbb5-7c79-48af-a154-4a44df395608'));
 
         $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
 

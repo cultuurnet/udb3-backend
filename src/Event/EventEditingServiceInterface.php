@@ -128,13 +128,6 @@ interface EventEditingServiceInterface
 
     /**
      * @param string $eventId
-     *
-     * @return string $commandId
-     */
-    public function updateLocation($eventId, LocationId $locationId);
-
-    /**
-     * @param string $eventId
      * @return string $commandId
      */
     public function updateAudience($eventId, Audience $audience);

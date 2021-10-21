@@ -18,17 +18,24 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\Import\DecodedDocument;
+use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
+use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
+use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -39,10 +46,11 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
-use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
+use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
@@ -52,13 +60,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Commands\UpdateType;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place;
-use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Language as LegacyLanguage;
-use CultuurNet\UDB3\Model\Import\DecodedDocument;
-use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
-use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
-use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
-use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -213,6 +214,7 @@ class PlaceDocumentImporterTest extends TestCase
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -288,6 +290,7 @@ class PlaceDocumentImporterTest extends TestCase
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -353,6 +356,7 @@ class PlaceDocumentImporterTest extends TestCase
             ),
             new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportVideos($id, new VideoCollection()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -606,24 +610,19 @@ class PlaceDocumentImporterTest extends TestCase
         $recordedCommands = $this->commandBus->getRecordedCommands();
 
         $this->assertContainsObject(
-            new AddVideo(
+            new ImportVideos(
                 $id,
-                (new Video(
-                    '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
-                    new Url('https://vimeo.com/98765432'),
-                    new Language('nl'),
-                ))->withCopyrightHolder(new CopyrightHolder('publiq'))
-            ),
-            $recordedCommands
-        );
-
-        $this->assertContainsObject(
-            new AddVideo(
-                $id,
-                new Video(
-                    '91c75325-3830-4000-b580-5778b2de4548',
-                    new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
-                    new Language('fr')
+                new VideoCollection(
+                    (new Video(
+                        '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                        new Url('https://vimeo.com/98765432'),
+                        new Language('nl'),
+                    ))->withCopyrightHolder(new CopyrightHolder('publiq')),
+                    new Video(
+                        '91c75325-3830-4000-b580-5778b2de4548',
+                        new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
+                        new Language('fr')
+                    )
                 )
             ),
             $recordedCommands

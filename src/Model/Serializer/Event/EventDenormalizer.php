@@ -50,7 +50,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $priceInfoDenormalizer = null,
         DenormalizerInterface $bookingInfoDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
-        DenormalizerInterface $mediaObjectReferencesDenormalizer = null
+        DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
+        DenormalizerInterface $videoDenormalizer = null
     ) {
         if (!$eventValidator) {
             $eventValidator = new EventValidator();
@@ -82,7 +83,8 @@ class EventDenormalizer extends OfferDenormalizer
             $priceInfoDenormalizer,
             $bookingInfoDenormalizer,
             $contactPointDenormalizer,
-            $mediaObjectReferencesDenormalizer
+            $mediaObjectReferencesDenormalizer,
+            $videoDenormalizer
         );
     }
 

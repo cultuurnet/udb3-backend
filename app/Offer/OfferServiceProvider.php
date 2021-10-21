@@ -151,7 +151,7 @@ class OfferServiceProvider implements ServiceProviderInterface
         );
 
         $app[ImportVideosHandler::class] = $app->share(
-            fn (Application $app) => new AddVideoHandler($app[OfferRepository::class])
+            fn (Application $app) => new ImportVideosHandler($app[OfferRepository::class])
         );
     }
 
