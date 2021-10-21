@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Validation\Event;
 
-use PHPUnit\Framework\TestCase;
-use Respect\Validation\Exceptions\NestedValidationException;
+use CultuurNet\UDB3\Model\Validation\ValidatorTestCase;
 use Respect\Validation\Validator;
 
-class EventValidatorTest extends TestCase
+class EventValidatorTest extends ValidatorTestCase
 {
-    /**
-     * @var EventValidator
-     */
-    private $validator;
+    private EventValidator $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->validator = new EventValidator();
+    }
+
+    protected function getValidator(): Validator
+    {
+        return $this->validator;
     }
 
     /**
@@ -3529,30 +3530,5 @@ class EventValidatorTest extends TestCase
         ];
 
         $this->assertTrue($this->validator->validate($event));
-    }
-
-
-    private function assertValidationErrors($data, array $expectedMessages)
-    {
-        try {
-            $this->getValidator()->assert($data);
-            $this->fail('No error messages found.');
-        } catch (NestedValidationException $e) {
-            $actualMessages = $e->getMessages();
-
-            if (count(array_diff($actualMessages, $expectedMessages)) > 0) {
-                var_dump($actualMessages);
-            }
-
-            $this->assertEquals($expectedMessages, $actualMessages);
-        }
-    }
-
-    /**
-     * @return Validator
-     */
-    private function getValidator()
-    {
-        return $this->validator;
     }
 }
