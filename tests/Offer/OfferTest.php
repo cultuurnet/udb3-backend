@@ -1079,6 +1079,18 @@ class OfferTest extends AggregateRootScenarioTestCase
                     ),
                 ],
             ],
+            'import zero videos results in deleting all existing videos' => [
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                    new VideoAdded($itemId, $video2),
+                ],
+                new VideoCollection(),
+                [
+                    new VideoDeleted($itemId, $video1->getId()),
+                    new VideoDeleted($itemId, $video2->getId()),
+                ],
+            ],
         ];
     }
 
