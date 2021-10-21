@@ -44,28 +44,32 @@ class UpdateVideoHandlerTest extends CommandHandlerScenarioTestCase
     {
         $offerId = 'b26a4aef-c32e-40a4-9ac2-03272b2b73c5';
         $videoId = 'c263ce95-44b4-41b0-916f-ce72063b929b';
+
         $initialVideo = new Video(
             $videoId,
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
         );
 
-        $updateVideo = (new UpdateVideo($offerId, $videoId))->withLanguage(new Language('fr'));
-
-        $expectedEvent = new VideoUpdated(
-            $offerId,
-            new Video(
-                $videoId,
-                new Url('https://www.youtube.com/watch?v=123'),
-                new Language('fr')
-            )
-        );
-
         $this->scenario
             ->withAggregateId($offerId)
-            ->given([$this->getEventCreated($offerId), new VideoAdded($offerId, $initialVideo)])
-            ->when($updateVideo)
-            ->then([$expectedEvent]);
+            ->given([
+                $this->getEventCreated($offerId),
+                new VideoAdded($offerId, $initialVideo),
+            ])
+            ->when(
+                (new UpdateVideo($offerId, $videoId))->withLanguage(new Language('fr'))
+            )
+            ->then([
+                new VideoUpdated(
+                    $offerId,
+                    new Video(
+                        $videoId,
+                        new Url('https://www.youtube.com/watch?v=123'),
+                        new Language('fr')
+                    )
+                ),
+            ]);
     }
 
     private function getEventCreated(string $eventId): EventCreated
