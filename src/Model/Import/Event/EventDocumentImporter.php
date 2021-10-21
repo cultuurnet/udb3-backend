@@ -34,7 +34,7 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
-use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -211,8 +211,8 @@ class EventDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        foreach ($import->getVideos() as $video) {
-            $commands[] = new AddVideo($id, $video);
+        if (!$import->getVideos()->isEmpty()) {
+            $commands[] = new ImportVideos($id, $import->getVideos());
         }
 
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);

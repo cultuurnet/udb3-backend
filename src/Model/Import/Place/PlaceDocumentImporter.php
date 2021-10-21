@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
-use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
@@ -207,8 +207,8 @@ class PlaceDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        foreach ($import->getVideos() as $video) {
-            $commands[] = new AddVideo($id, $video);
+        if (!$import->getVideos()->isEmpty()) {
+            $commands[] = new ImportVideos($id, $import->getVideos());
         }
 
         foreach ($commands as $command) {
