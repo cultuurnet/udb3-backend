@@ -11,9 +11,16 @@ use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
 
 class UpdateVideoDenormalizer implements DenormalizableInterface
 {
+    private string $offerId;
+
+    public function __construct(string $offerId)
+    {
+        $this->offerId = $offerId;
+    }
+
     public function denormalize($data, $class, $format = null, array $context = []): UpdateVideo
     {
-        $updateVideo = new UpdateVideo($data['id']);
+        $updateVideo = new UpdateVideo($this->offerId, $data['id']);
 
         if (isset($data['copyrightHolder'])) {
             $updateVideo = $updateVideo->withCopyrightHolder(
