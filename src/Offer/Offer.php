@@ -637,19 +637,28 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             fn (Video $currentVideo) => $currentVideo->getId() === $videoId
         );
 
-        if ($videosWithSameId->count() === 1) {
-            /** @var Video $videoWithSameId */
-            $videoWithSameId = $videosWithSameId->getFirst();
-            $updatedVideo = new Video(
-                $videoId,
-                $url ?? $videoWithSameId->getUrl(),
-                $language ?? $videoWithSameId->getLanguage()
-            );
-            if ($copyrightHolder !== null) {
-                $updatedVideo = $updatedVideo->withCopyrightHolder($copyrightHolder);
-            }
-            $this->apply($this->createVideoUpdatedEvent($updatedVideo));
+        if ($videosWithSameId->count() !== 1) {
+            return;
         }
+
+        if ($url === null && $language === null && $copyrightHolder === null) {
+            return;
+        }
+
+        /** @var Video $videoWithSameId */
+        $videoWithSameId = $videosWithSameId->getFirst();
+
+        $updatedVideo = new Video(
+            $videoId,
+            $url ?? $videoWithSameId->getUrl(),
+            $language ?? $videoWithSameId->getLanguage()
+        );
+
+        if ($copyrightHolder !== null) {
+            $updatedVideo = $updatedVideo->withCopyrightHolder($copyrightHolder);
+        }
+
+        $this->apply($this->createVideoUpdatedEvent($updatedVideo));
     }
 
     public function deleteVideo(string $videoID): void
