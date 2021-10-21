@@ -81,6 +81,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             )
         );
 
+        $app[UpdateVideosRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateVideosRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
         $app[DeleteVideoRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteVideoRequestHandler(
                 $app['event_command_bus']
