@@ -102,6 +102,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
      */
     private $mediaObjectReferencesDenormalizer;
 
+    private DenormalizerInterface $videoDenormalizer;
 
     public function __construct(
         UUIDParser $idParser,
@@ -115,7 +116,8 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         DenormalizerInterface $priceInfoDenormalizer = null,
         DenormalizerInterface $bookingInfoDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
-        DenormalizerInterface $mediaObjectReferencesDenormalizer = null
+        DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
+        DenormalizerInterface $videoDenormalizer = null
     ) {
         if (!$titleDenormalizer) {
             $titleDenormalizer = new TranslatedTitleDenormalizer();
@@ -164,6 +166,10 @@ abstract class OfferDenormalizer implements DenormalizerInterface
             $mediaObjectReferencesDenormalizer = new MediaObjectReferencesDenormalizer();
         }
 
+        if (!$videoDenormalizer) {
+            $videoDenormalizer = new VideoDenormalizer(new UuidFactory());
+        }
+
         $this->idParser = $idParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->descriptionDenormalizer = $descriptionDenormalizer;
@@ -176,6 +182,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $this->bookingInfoDenormalizer = $bookingInfoDenormalizer;
         $this->contactPointDenormalizer = $contactPointDenormalizer;
         $this->mediaObjectReferencesDenormalizer = $mediaObjectReferencesDenormalizer;
+        $this->videoDenormalizer = $videoDenormalizer;
     }
 
     /**
@@ -360,11 +367,10 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     protected function denormalizeVideos(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['videos'])) {
-            $videoDenormalizer = new VideoDenormalizer(new UuidFactory());
             $videos = new VideoCollection();
 
             foreach ($data['videos'] as $videoAsArray) {
-                $videos = $videos->with($videoDenormalizer->denormalize($videoAsArray, Video::class));
+                $videos = $videos->with($this->videoDenormalizer->denormalize($videoAsArray, Video::class));
             }
             $offer = $offer->withVideos($videos);
         }
