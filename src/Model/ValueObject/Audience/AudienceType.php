@@ -13,10 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  */
 class AudienceType extends Enum
 {
-    /**
-     * @return array
-     */
-    public static function getAllowedValues()
+    public static function getAllowedValues(): array
     {
         return [
             'everyone',

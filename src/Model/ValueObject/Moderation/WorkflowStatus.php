@@ -18,7 +18,7 @@ class WorkflowStatus extends Enum
     /**
      * @inheritdoc
      */
-    public static function getAllowedValues()
+    public static function getAllowedValues(): array
     {
         return [
             'READY_FOR_VALIDATION',
