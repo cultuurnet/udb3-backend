@@ -21,11 +21,7 @@ use DateTimeImmutable;
 
 class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 {
-    /**
-     * @var Offer
-     */
-    private $offer;
-
+    private Offer $offer;
 
     public function __construct(Offer $offer)
     {

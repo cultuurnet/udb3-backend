@@ -10,11 +10,7 @@ use CultuurNet\UDB3\Model\Import\Offer\Udb3ModelToLegacyOfferAdapter;
 
 class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implements LegacyPlace
 {
-    /**
-     * @var Place
-     */
-    private $place;
-
+    private Place $place;
 
     public function __construct(Place $place)
     {

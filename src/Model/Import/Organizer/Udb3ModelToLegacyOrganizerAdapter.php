@@ -13,11 +13,7 @@ use ValueObjects\Web\Url;
 
 class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
 {
-    /**
-     * @var Organizer
-     */
-    private $organizer;
-
+    private Organizer $organizer;
 
     public function __construct(Organizer $organizer)
     {
