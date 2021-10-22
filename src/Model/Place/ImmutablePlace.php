@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use InvalidArgumentException;
 
 final class ImmutablePlace extends ImmutableOffer implements Place
 {
@@ -36,7 +37,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         // We can not enforce this particular requirement because categories can
         // be POSTed using only their id.
         if ($categories->isEmpty() && !$id->sameAs(self::getDummyLocationId())) {
-            throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
+            throw new InvalidArgumentException('Categories should not be empty (eventtype required).');
         }
 
         parent::__construct($id, $mainLanguage, $title, $calendar, $categories);
@@ -105,7 +106,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     protected function guardCalendarType(Calendar $calendar): void
     {
         if (!($calendar instanceof CalendarWithOpeningHours)) {
-            throw new \InvalidArgumentException('Given calendar should have opening hours.');
+            throw new InvalidArgumentException('Given calendar should have opening hours.');
         }
     }
 }
