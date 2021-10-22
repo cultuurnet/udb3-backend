@@ -46,10 +46,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $this->placeReference;
     }
 
-    /**
-     * @return ImmutableEvent
-     */
-    public function withPlaceReference(PlaceReference $placeReference)
+    public function withPlaceReference(PlaceReference $placeReference): ImmutableEvent
     {
         $c = clone $this;
         $c->placeReference = $placeReference;
@@ -61,10 +58,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $this->audience;
     }
 
-    /**
-     * @return ImmutableEvent
-     */
-    public function withAudienceType(AudienceType $audience)
+    public function withAudienceType(AudienceType $audience): ImmutableEvent
     {
         $c = clone $this;
         $c->audience = $audience;
