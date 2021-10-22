@@ -15,9 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  */
 class WorkflowStatus extends Enum
 {
-    /**
-     * @inheritdoc
-     */
     public static function getAllowedValues(): array
     {
         return [
