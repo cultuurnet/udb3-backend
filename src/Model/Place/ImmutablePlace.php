@@ -48,10 +48,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         return $this->address;
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    public function withAddress(TranslatedAddress $address)
+    public function withAddress(TranslatedAddress $address): ImmutablePlace
     {
         $c = clone $this;
         $c->address = $address;
@@ -63,20 +60,14 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         return $this->coordinates;
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    public function withGeoCoordinates(Coordinates $coordinates)
+    public function withGeoCoordinates(Coordinates $coordinates): ImmutablePlace
     {
         $c = clone $this;
         $c->coordinates = $coordinates;
         return $c;
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    public function withoutGeoCoordinates()
+    public function withoutGeoCoordinates(): ImmutablePlace
     {
         $c = clone $this;
         $c->coordinates = null;
@@ -88,14 +79,11 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         return $this->getId()->sameAs(self::getDummyLocationId());
     }
 
-    /**
-     * @return ImmutablePlace
-     */
     public static function createDummyLocation(
         Language $mainLanguage,
         TranslatedTitle $title,
         TranslatedAddress $address
-    ) {
+    ): ImmutablePlace {
         return new ImmutablePlace(
             self::getDummyLocationId(),
             $mainLanguage,
@@ -106,10 +94,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         );
     }
 
-    /**
-     * @return UUID
-     */
-    public static function getDummyLocationId()
+    public static function getDummyLocationId(): UUID
     {
         return new UUID('00000000-0000-0000-0000-000000000000');
     }
