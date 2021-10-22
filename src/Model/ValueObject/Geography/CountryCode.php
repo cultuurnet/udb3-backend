@@ -14,19 +14,13 @@ class CountryCode
 
     public const REGEX = '/^[A-Z]{2}$/';
 
-    /**
-     * @param string $code
-     */
-    public function __construct($code)
+    public function __construct(string $code)
     {
         $this->guardRegexPattern(self::REGEX, $code);
         $this->setValue($code);
     }
 
-    /**
-     * @return string
-     */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->toString();
     }
