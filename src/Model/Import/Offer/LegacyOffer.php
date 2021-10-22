@@ -18,65 +18,29 @@ use DateTimeImmutable;
 
 interface LegacyOffer
 {
-    /**
-     * @return string
-     */
-    public function getId();
+    public function getId(): string;
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage();
+    public function getMainLanguage(): Language;
 
-    /**
-     * @return Title
-     */
-    public function getTitle();
+    public function getTitle(): Title;
 
-    /**
-     * @return Description|null
-     */
-    public function getDescription();
+    public function getDescription(): ?Description;
 
-    /**
-     * @return EventType
-     */
-    public function getType();
+    public function getType(): EventType;
 
-    /**
-     * @return Theme|null
-     */
-    public function getTheme();
+    public function getTheme(): ?Theme;
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar();
+    public function getCalendar(): Calendar;
 
-    /**
-     * @return string|null
-     */
-    public function getOrganizerId();
+    public function getOrganizerId(): ?string;
 
-    /**
-     * @return AgeRange|null
-     */
-    public function getAgeRange();
+    public function getAgeRange(): ?AgeRange;
 
-    /**
-     * @return PriceInfo|null
-     */
-    public function getPriceInfo();
+    public function getPriceInfo(): ?PriceInfo;
 
-    /**
-     * @return BookingInfo|null
-     */
-    public function getBookingInfo();
+    public function getBookingInfo(): ?BookingInfo;
 
-    /**
-     * @return ContactPoint|null
-     */
-    public function getContactPoint();
+    public function getContactPoint(): ?ContactPoint;
 
     public function getAvailableFrom(\DateTimeImmutable $default): DateTimeImmutable;
 
@@ -84,11 +48,11 @@ interface LegacyOffer
      * @return Title[]
      *   Language code as key, and Title as value.
      */
-    public function getTitleTranslations();
+    public function getTitleTranslations(): array;
 
     /**
      * @return Description[]
      *   Language code as key, and Description as value.
      */
-    public function getDescriptionTranslations();
+    public function getDescriptionTranslations(): array;
 }
