@@ -24,83 +24,37 @@ use DateTimeImmutable;
 
 abstract class ImmutableOffer implements Offer
 {
-    /**
-     * @var UUID
-     */
-    private $id;
+    private UUID $id;
 
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private Language $mainLanguage;
 
-    /**
-     * @var TranslatedTitle
-     */
-    private $title;
+    private TranslatedTitle $title;
 
-    /**
-     * @var TranslatedDescription|null
-     */
-    private $description;
+    private ?TranslatedDescription $description = null;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @var Categories
-     */
-    private $categories;
+    private Categories $categories;
 
-    /**
-     * @var Labels
-     */
-    private $labels;
+    private Labels $labels;
 
-    /**
-     * @var OrganizerReference|null
-     */
-    private $organizerReference;
+    private ?OrganizerReference $organizerReference = null;
 
-    /**
-     * @var AgeRange|null
-     */
-    private $ageRange;
+    private ?AgeRange $ageRange = null;
 
-    /**
-     * @var PriceInfo|null
-     */
-    private $priceInfo;
+    private ?PriceInfo $priceInfo = null;
 
-    /**
-     * @var BookingInfo
-     */
-    private $bookingInfo;
+    private BookingInfo $bookingInfo;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
+    private ContactPoint $contactPoint;
 
-    /**
-     * @var MediaObjectReferences
-     */
-    private $mediaObjectReferences;
+    private MediaObjectReferences $mediaObjectReferences;
 
     private VideoCollection $videos;
 
-    /**
-     * @var WorkflowStatus
-     */
-    private $workflowStatus;
+    private WorkflowStatus $workflowStatus;
 
-    /**
-     * @var \DateTimeImmutable|null
-     */
-    private $availableFrom;
-
+    private ?DateTimeImmutable $availableFrom = null;
 
     public function __construct(
         UUID $id,
