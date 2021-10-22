@@ -58,9 +58,9 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         if ($translatedDescription) {
             $description = $translatedDescription->getTranslation($translatedDescription->getOriginalLanguage());
             return Description::fromUdb3ModelDescription($description);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function getType(): EventType
@@ -102,9 +102,9 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 
         if ($reference) {
             return $reference->getOrganizerId()->toString();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function getAgeRange(): ?AgeRange
@@ -113,9 +113,9 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 
         if ($ageRange) {
             return AgeRange::fromUbd3ModelAgeRange($ageRange);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function getPriceInfo(): ?PriceInfo
@@ -124,9 +124,9 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 
         if ($priceInfo) {
             return PriceInfo::fromUdb3ModelPriceInfo($priceInfo);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function getBookingInfo(): ?BookingInfo

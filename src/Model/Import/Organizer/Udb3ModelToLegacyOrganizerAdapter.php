@@ -59,9 +59,9 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
         if ($address) {
             $address = $address->getTranslation($address->getOriginalLanguage());
             return Address::fromUdb3ModelAddress($address);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function getContactPoint(): ContactPoint
