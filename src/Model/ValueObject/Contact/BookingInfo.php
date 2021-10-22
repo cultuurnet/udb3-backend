@@ -9,26 +9,13 @@ use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 
 class BookingInfo
 {
-    /**
-     * @var WebsiteLink|null
-     */
-    private $website;
+    private ?WebsiteLink $website;
 
-    /**
-     * @var TelephoneNumber|null
-     */
-    private $telephoneNumber;
+    private ?TelephoneNumber $telephoneNumber;
 
-    /**
-     * @var EmailAddress|null
-     */
-    private $emailAddress;
+    private ?EmailAddress $emailAddress;
 
-    /**
-     * @var BookingAvailability|null
-     */
-    private $availability;
-
+    private ?BookingAvailability $availability;
 
     public function __construct(
         WebsiteLink $website = null,
