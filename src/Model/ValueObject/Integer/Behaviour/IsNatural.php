@@ -9,7 +9,7 @@ trait IsNatural
     /**
      * @param int $value
      */
-    public function guardNatural($value)
+    public function guardNatural($value): void
     {
         /* @var IsInteger $this */
         $this->guardInteger($value);
