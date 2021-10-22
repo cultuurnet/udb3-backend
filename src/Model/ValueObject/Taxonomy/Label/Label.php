@@ -6,37 +6,22 @@ namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
 class Label
 {
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private LabelName $name;
 
-    /**
-     * @var bool
-     */
-    private $visible;
+    private bool $visible;
 
-    /**
-     * @param bool $visible
-     */
-    public function __construct(LabelName $name, $visible = true)
+    public function __construct(LabelName $name, bool $visible = true)
     {
         $this->name = $name;
         $this->visible = $visible;
     }
 
-    /**
-     * @return LabelName
-     */
-    public function getName()
+    public function getName(): LabelName
     {
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->visible;
     }
