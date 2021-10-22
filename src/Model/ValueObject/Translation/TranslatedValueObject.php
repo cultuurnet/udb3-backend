@@ -29,7 +29,7 @@ abstract class TranslatedValueObject
      * @todo Use generics instead, if/when ever available in PHP.
      * @return string
      */
-    abstract protected function getValueObjectClassName();
+    abstract protected function getValueObjectClassName(): string;
 
     /**
      * @return static
