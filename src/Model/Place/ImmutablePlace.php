@@ -18,16 +18,9 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 final class ImmutablePlace extends ImmutableOffer implements Place
 {
-    /**
-     * @var TranslatedAddress
-     */
-    private $address;
+    private TranslatedAddress $address;
 
-    /**
-     * @var Coordinates|null
-     */
-    private $coordinates;
-
+    private ?Coordinates $coordinates = null;
 
     public function __construct(
         UUID $id,
