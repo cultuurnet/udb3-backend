@@ -15,45 +15,21 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class ImmutableOrganizer implements Organizer
 {
-    /**
-     * @var UUID
-     */
-    private $id;
+    private UUID $id;
 
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private Language $mainLanguage;
 
-    /**
-     * @var TranslatedTitle
-     */
-    private $name;
+    private TranslatedTitle $name;
 
-    /**
-     * @var Url|null
-     */
-    private $url;
+    private ?Url $url = null;
 
-    /**
-     * @var TranslatedAddress|null
-     */
-    private $address;
+    private ?TranslatedAddress $address = null;
 
-    /**
-     * @var Coordinates|null
-     */
-    private $coordinates;
+    private ?Coordinates $coordinates = null;
 
-    /**
-     * @var Labels
-     */
-    private $labels;
+    private Labels $labels;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
+    private ContactPoint $contactPoint;
 
     /**
      * @param Url|null $url
