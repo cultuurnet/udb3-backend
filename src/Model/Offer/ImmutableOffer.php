@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use DateTimeImmutable;
 
 abstract class ImmutableOffer implements Offer
 {
@@ -124,26 +125,17 @@ abstract class ImmutableOffer implements Offer
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
+    public function getId(): UUID
     {
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getTitle()
+    public function getTitle(): TranslatedTitle
     {
         return $this->title;
     }
@@ -158,10 +150,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getDescription()
+    public function getDescription(): ?TranslatedDescription
     {
         return $this->description;
     }
@@ -186,10 +175,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getCalendar()
+    public function getCalendar(): Calendar
     {
         return $this->calendar;
     }
@@ -206,10 +192,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return Categories
-     */
-    public function getTerms()
+    public function getTerms(): Categories
     {
         return $this->categories;
     }
@@ -224,10 +207,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return Labels
-     */
-    public function getLabels()
+    public function getLabels(): Labels
     {
         return $this->labels;
     }
@@ -242,10 +222,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return OrganizerReference|null
-     */
-    public function getOrganizerReference()
+    public function getOrganizerReference(): ?OrganizerReference
     {
         return $this->organizerReference;
     }
@@ -270,10 +247,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return AgeRange|null
-     */
-    public function getAgeRange()
+    public function getAgeRange(): ?AgeRange
     {
         return $this->ageRange;
     }
@@ -298,10 +272,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPriceInfo()
+    public function getPriceInfo(): ?PriceInfo
     {
         return $this->priceInfo;
     }
@@ -326,10 +297,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return BookingInfo
-     */
-    public function getBookingInfo()
+    public function getBookingInfo(): BookingInfo
     {
         return $this->bookingInfo;
     }
@@ -344,10 +312,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ContactPoint
     {
         return $this->contactPoint;
     }
@@ -362,10 +327,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return MediaObjectReferences
-     */
-    public function getMediaObjectReferences()
+    public function getMediaObjectReferences(): MediaObjectReferences
     {
         return $this->mediaObjectReferences;
     }
@@ -392,10 +354,7 @@ abstract class ImmutableOffer implements Offer
         return $clone;
     }
 
-    /**
-     * @return WorkflowStatus
-     */
-    public function getWorkflowStatus()
+    public function getWorkflowStatus(): WorkflowStatus
     {
         return $this->workflowStatus;
     }
@@ -410,10 +369,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getAvailableFrom()
+    public function getAvailableFrom(): ?DateTimeImmutable
     {
         return $this->availableFrom;
     }
@@ -438,10 +394,7 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getAvailableTo()
+    public function getAvailableTo(): DateTimeImmutable
     {
         return AvailableTo::createFromCalendar($this->calendar);
     }
