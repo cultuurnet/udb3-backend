@@ -28,28 +28,19 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
         $this->organizer = $organizer;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->organizer->getId()->toString();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return new Language(
             $this->organizer->getMainLanguage()->toString()
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         $translatedTitle = $this->organizer->getName();
 
@@ -60,18 +51,12 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getWebsite()
+    public function getWebsite(): Url
     {
         return Url::fromNative($this->organizer->getUrl()->toString());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAddress()
+    public function getAddress(): ?Address
     {
         $address = $this->organizer->getAddress();
 
@@ -83,10 +68,7 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ContactPoint
     {
         $contactPoint = $this->organizer->getContactPoint();
         return ContactPoint::fromUdb3ModelContactPoint($contactPoint);
@@ -96,7 +78,7 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
      * @return Title[]
      *   Language code as key, and Title as value.
      */
-    public function getTitleTranslations()
+    public function getTitleTranslations(): array
     {
         $titles = [];
 
@@ -115,7 +97,7 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
      * @return Address[]
      *   Language code as key, and Address as value.
      */
-    public function getAddressTranslations()
+    public function getAddressTranslations(): array
     {
         $addresses = [];
 
