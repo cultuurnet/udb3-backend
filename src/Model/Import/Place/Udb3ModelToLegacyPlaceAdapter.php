@@ -22,10 +22,7 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
         $this->place = $place;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAddress()
+    public function getAddress(): Address
     {
         $address = $this->place->getAddress();
 
@@ -36,10 +33,7 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAddressTranslations()
+    public function getAddressTranslations(): array
     {
         $translatedAddress = $this->place->getAddress();
         $addresses = [];
