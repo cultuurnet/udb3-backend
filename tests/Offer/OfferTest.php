@@ -67,18 +67,10 @@ use ValueObjects\Web\Url as LegacyUrl;
 
 class OfferTest extends AggregateRootScenarioTestCase
 {
-    /**
-     * @inheritdoc
-     */
-    protected function getAggregateRootClass()
-    {
-        return Item::class;
-    }
-
     protected Item $offer;
 
     protected LabelCollection $labels;
-    
+
     protected Image $image;
 
     public function setUp()
@@ -100,6 +92,14 @@ class OfferTest extends AggregateRootScenarioTestCase
             LegacyUrl::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
             new LegacyLanguage('en')
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAggregateRootClass()
+    {
+        return Item::class;
     }
 
     /**
