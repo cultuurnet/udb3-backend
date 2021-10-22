@@ -67,10 +67,7 @@ class ImmutableOrganizer implements Organizer
         return $this->name;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withName(TranslatedTitle $name)
+    public function withName(TranslatedTitle $name): ImmutableOrganizer
     {
         $c = clone $this;
         $c->name = $name;
@@ -83,10 +80,7 @@ class ImmutableOrganizer implements Organizer
         return $this->url;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withUrl(Url $url)
+    public function withUrl(Url $url): ImmutableOrganizer
     {
         $c = clone $this;
         $c->url = $url;
@@ -98,20 +92,14 @@ class ImmutableOrganizer implements Organizer
         return $this->address;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withAddress(TranslatedAddress $address)
+    public function withAddress(TranslatedAddress $address): ImmutableOrganizer
     {
         $c = clone $this;
         $c->address = $address;
         return $c;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withoutAddress()
+    public function withoutAddress(): ImmutableOrganizer
     {
         $c = clone $this;
         $c->address = null;
@@ -123,20 +111,14 @@ class ImmutableOrganizer implements Organizer
         return $this->coordinates;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withGeoCoordinates(Coordinates $coordinates)
+    public function withGeoCoordinates(Coordinates $coordinates): ImmutableOrganizer
     {
         $c = clone $this;
         $c->coordinates = $coordinates;
         return $c;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withoutGeoCoordinates()
+    public function withoutGeoCoordinates(): ImmutableOrganizer
     {
         $c = clone $this;
         $c->coordinates = null;
@@ -148,10 +130,7 @@ class ImmutableOrganizer implements Organizer
         return $this->labels;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withLabels(Labels $labels)
+    public function withLabels(Labels $labels): ImmutableOrganizer
     {
         $c = clone $this;
         $c->labels = $labels;
@@ -163,10 +142,7 @@ class ImmutableOrganizer implements Organizer
         return $this->contactPoint;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withContactPoint(ContactPoint $contactPoint)
+    public function withContactPoint(ContactPoint $contactPoint): ImmutableOrganizer
     {
         $c = clone $this;
         $c->contactPoint = $contactPoint;
