@@ -408,5 +408,5 @@ abstract class ImmutableOffer implements Offer
      *
      * @throws \InvalidArgumentException
      */
-    abstract protected function guardCalendarType(Calendar $calendar);
+    abstract protected function guardCalendarType(Calendar $calendar): void;
 }

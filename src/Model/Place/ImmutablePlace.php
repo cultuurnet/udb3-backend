@@ -124,7 +124,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     /**
      * @inheritdoc
      */
-    protected function guardCalendarType(Calendar $calendar)
+    protected function guardCalendarType(Calendar $calendar): void
     {
         if (!($calendar instanceof CalendarWithOpeningHours)) {
             throw new \InvalidArgumentException('Given calendar should have opening hours.');
