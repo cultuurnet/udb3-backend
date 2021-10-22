@@ -6,16 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Translation;
 
 abstract class TranslatedValueObject
 {
-    /**
-     * @var Language
-     */
-    private $originalLanguage;
+    private Language $originalLanguage;
 
-    /**
-     * @var array
-     */
-    private $translations;
-
+    private array $translations;
 
     public function __construct(Language $originalLanguage, $originalValueObject)
     {
@@ -27,7 +20,6 @@ abstract class TranslatedValueObject
 
     /**
      * @todo Use generics instead, if/when ever available in PHP.
-     * @return string
      */
     abstract protected function getValueObjectClassName(): string;
 
@@ -71,18 +63,12 @@ abstract class TranslatedValueObject
         return $this->translations[$languageCode];
     }
 
-    /**
-     * @return Language
-     */
-    public function getOriginalLanguage()
+    public function getOriginalLanguage(): Language
     {
         return $this->originalLanguage;
     }
 
-    /**
-     * @return Languages
-     */
-    public function getLanguages()
+    public function getLanguages(): Languages
     {
         $languageKeys = array_keys($this->translations);
 
@@ -96,10 +82,7 @@ abstract class TranslatedValueObject
         return new Languages(...$languageObjects);
     }
 
-    /**
-     * @return Languages
-     */
-    public function getLanguagesWithoutOriginal()
+    public function getLanguagesWithoutOriginal(): Languages
     {
         return $this->getLanguages()->filter(
             function (Language $language) {
@@ -108,8 +91,7 @@ abstract class TranslatedValueObject
         );
     }
 
-
-    private function guardValueObjectClassName($valueObject)
+    private function guardValueObjectClassName($valueObject): void
     {
         $className = $this->getValueObjectClassName();
         if (!($valueObject instanceof $className)) {
