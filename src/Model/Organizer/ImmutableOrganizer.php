@@ -21,7 +21,7 @@ class ImmutableOrganizer implements Organizer
 
     private TranslatedTitle $name;
 
-    private ?Url $url = null;
+    private ?Url $url;
 
     private ?TranslatedAddress $address = null;
 
