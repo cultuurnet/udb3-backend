@@ -75,20 +75,11 @@ class OfferTest extends AggregateRootScenarioTestCase
         return Item::class;
     }
 
-    /**
-     * @var Item
-     */
-    protected $offer;
+    protected Item $offer;
 
-    /**
-     * @var LabelCollection
-     */
-    protected $labels;
-
-    /**
-     * @var Image
-     */
-    protected $image;
+    protected LabelCollection $labels;
+    
+    protected Image $image;
 
     public function setUp()
     {
