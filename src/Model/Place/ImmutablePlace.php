@@ -50,10 +50,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         $this->address = $address;
     }
 
-    /**
-     * @return TranslatedAddress
-     */
-    public function getAddress()
+    public function getAddress(): TranslatedAddress
     {
         return $this->address;
     }
@@ -68,10 +65,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         return $c;
     }
 
-    /**
-     * @return Coordinates|null
-     */
-    public function getGeoCoordinates()
+    public function getGeoCoordinates(): ?Coordinates
     {
         return $this->coordinates;
     }
@@ -96,10 +90,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         return $c;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDummyLocation()
+    public function isDummyLocation(): bool
     {
         return $this->getId()->sameAs(self::getDummyLocationId());
     }
