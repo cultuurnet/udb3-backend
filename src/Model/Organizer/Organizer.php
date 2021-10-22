@@ -15,43 +15,19 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 interface Organizer
 {
-    /**
-     * @return UUID
-     */
-    public function getId();
+    public function getId(): UUID;
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage();
+    public function getMainLanguage(): Language;
 
-    /**
-     * @return TranslatedTitle
-     */
-    public function getName();
+    public function getName(): TranslatedTitle;
 
-    /**
-     * @return Url|null
-     */
-    public function getUrl();
+    public function getUrl(): ?Url;
 
-    /**
-     * @return TranslatedAddress|null
-     */
-    public function getAddress();
+    public function getAddress(): ?TranslatedAddress;
 
-    /**
-     * @return Coordinates|null
-     */
-    public function getGeoCoordinates();
+    public function getGeoCoordinates(): ?Coordinates;
 
-    /**
-     * @return Labels
-     */
-    public function getLabels();
+    public function getLabels(): Labels;
 
-    /**
-     * @return ContactPoint
-     */
-    public function getContactPoint();
+    public function getContactPoint(): ContactPoint;
 }

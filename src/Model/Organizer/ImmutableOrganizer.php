@@ -76,26 +76,17 @@ class ImmutableOrganizer implements Organizer
         $this->contactPoint = new ContactPoint();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
+    public function getId(): UUID
     {
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getName()
+    public function getName(): TranslatedTitle
     {
         return $this->name;
     }
@@ -111,10 +102,7 @@ class ImmutableOrganizer implements Organizer
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUrl()
+    public function getUrl(): ?Url
     {
         return $this->url;
     }
@@ -129,10 +117,7 @@ class ImmutableOrganizer implements Organizer
         return $c;
     }
 
-    /**
-     * @return TranslatedAddress|null
-     */
-    public function getAddress()
+    public function getAddress(): ?TranslatedAddress
     {
         return $this->address;
     }
@@ -157,10 +142,7 @@ class ImmutableOrganizer implements Organizer
         return $c;
     }
 
-    /**
-     * @return Coordinates|null
-     */
-    public function getGeoCoordinates()
+    public function getGeoCoordinates(): ?Coordinates
     {
         return $this->coordinates;
     }
@@ -185,10 +167,7 @@ class ImmutableOrganizer implements Organizer
         return $c;
     }
 
-    /**
-     * @return Labels
-     */
-    public function getLabels()
+    public function getLabels(): Labels
     {
         return $this->labels;
     }
@@ -203,10 +182,7 @@ class ImmutableOrganizer implements Organizer
         return $c;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ContactPoint
     {
         return $this->contactPoint;
     }
