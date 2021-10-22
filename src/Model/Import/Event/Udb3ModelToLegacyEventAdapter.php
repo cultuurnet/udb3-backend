@@ -37,10 +37,7 @@ class Udb3ModelToLegacyEventAdapter extends Udb3ModelToLegacyOfferAdapter implem
         return new LocationId($this->placeId->toString());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAudienceType()
+    public function getAudienceType(): AudienceType
     {
         $audienceType = $this->event->getAudienceType();
         return AudienceType::fromNative($audienceType->toString());
