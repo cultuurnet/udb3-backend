@@ -6,21 +6,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
 class OpeningHour
 {
-    /**
-     * @var Days
-     */
-    private $days;
+    private Days $days;
 
-    /**
-     * @var Time
-     */
-    private $openingTime;
+    private Time $openingTime;
 
-    /**
-     * @var Time
-     */
-    private $closingTime;
-
+    private Time $closingTime;
 
     public function __construct(Days $days, Time $openingTime, Time $closingTime)
     {
@@ -29,26 +19,17 @@ class OpeningHour
         $this->closingTime = $closingTime;
     }
 
-    /**
-     * @return Days
-     */
-    public function getDays()
+    public function getDays(): Days
     {
         return $this->days;
     }
 
-    /**
-     * @return Time
-     */
-    public function getOpeningTime()
+    public function getOpeningTime(): Time
     {
         return $this->openingTime;
     }
 
-    /**
-     * @return Time
-     */
-    public function getClosingTime()
+    public function getClosingTime(): Time
     {
         return $this->closingTime;
     }
