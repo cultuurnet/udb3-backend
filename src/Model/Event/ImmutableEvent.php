@@ -48,10 +48,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         $this->audience = AudienceType::everyone();
     }
 
-    /**
-     * @return PlaceReference
-     */
-    public function getPlaceReference()
+    public function getPlaceReference(): PlaceReference
     {
         return $this->placeReference;
     }
@@ -66,10 +63,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAudienceType()
+    public function getAudienceType(): AudienceType
     {
         return $this->audience;
     }
