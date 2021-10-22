@@ -156,7 +156,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged;
 
 
-    public function updateType(EventType $type)
+    public function updateType(EventType $type): void
     {
         if (!$this->typeId || $this->typeId !== $type->getId()) {
             $this->apply($this->createTypeUpdatedEvent($type));
