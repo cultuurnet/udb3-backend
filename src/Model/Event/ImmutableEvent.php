@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use InvalidArgumentException;
 
 class ImmutableEvent extends ImmutableOffer implements Event
 {
@@ -33,7 +34,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         // We can not enforce the exact requirement that "eventtype" is required
         // because categories can be POSTed using only their id.
         if ($categories->isEmpty()) {
-            throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
+            throw new InvalidArgumentException('Categories should not be empty (eventtype required).');
         }
 
         parent::__construct($id, $mainLanguage, $title, $calendar, $categories);
@@ -71,6 +72,5 @@ class ImmutableEvent extends ImmutableOffer implements Event
     protected function guardCalendarType(Calendar $calendar): void
     {
         // Any calendar is fine for events.
-        return;
     }
 }
