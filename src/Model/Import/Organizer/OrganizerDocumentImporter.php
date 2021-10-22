@@ -24,25 +24,13 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class OrganizerDocumentImporter implements DocumentImporterInterface
 {
-    /**
-     * @var Repository
-     */
-    private $aggregateRepository;
+    private Repository $aggregateRepository;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $organizerDenormalizer;
+    private DenormalizerInterface $organizerDenormalizer;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var LockedLabelRepository
-     */
-    private $lockedLabelRepository;
+    private LockedLabelRepository $lockedLabelRepository;
 
     public function __construct(
         Repository $aggregateRepository,

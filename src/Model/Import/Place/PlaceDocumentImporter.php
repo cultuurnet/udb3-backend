@@ -36,35 +36,17 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class PlaceDocumentImporter implements DocumentImporterInterface
 {
-    /**
-     * @var Repository
-     */
-    private $aggregateRepository;
+    private Repository $aggregateRepository;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $placeDenormalizer;
+    private DenormalizerInterface $placeDenormalizer;
 
-    /**
-     * @var ImageCollectionFactory
-     */
-    private $imageCollectionFactory;
+    private ImageCollectionFactory $imageCollectionFactory;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var ConsumerSpecificationInterface
-     */
-    private $shouldApprove;
+    private ConsumerSpecificationInterface $shouldApprove;
 
-    /**
-     * @var LockedLabelRepository
-     */
-    private $lockedLabelRepository;
+    private LockedLabelRepository $lockedLabelRepository;
 
     public function __construct(
         Repository $aggregateRepository,
