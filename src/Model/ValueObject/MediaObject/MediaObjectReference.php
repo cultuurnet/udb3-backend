@@ -10,31 +10,15 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 final class MediaObjectReference
 {
-    /**
-     * @var UUID
-     */
-    private $mediaObjectId;
+    private UUID $mediaObjectId;
 
-    /**
-     * @var MediaObject|null
-     */
-    private $mediaObject;
+    private ?MediaObject $mediaObject;
 
-    /**
-     * @var Description
-     */
-    private $description;
+    private Description $description;
 
-    /**
-     * @var CopyrightHolder
-     */
-    private $copyrightHolder;
+    private CopyrightHolder $copyrightHolder;
 
-    /**
-     * @var Language
-     */
-    private $language;
-
+    private Language $language;
 
     private function __construct(
         UUID $mediaObjectId,
@@ -54,62 +38,41 @@ final class MediaObjectReference
         $this->mediaObject = $mediaObject;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getMediaObjectId()
+    public function getMediaObjectId(): UUID
     {
         return $this->mediaObjectId;
     }
 
-    /**
-     * @return MediaObject|null
-     */
-    public function getEmbeddedMediaObject()
+    public function getEmbeddedMediaObject(): ?MediaObject
     {
         return $this->mediaObject;
     }
 
-    /**
-     * @return Description
-     */
-    public function getDescription()
+    public function getDescription(): Description
     {
         return $this->description;
     }
 
-    /**
-     * @return MediaObjectReference
-     */
-    public function withDescription(Description $description)
+    public function withDescription(Description $description): MediaObjectReference
     {
         $c = clone $this;
         $c->description = $description;
         return $c;
     }
 
-    /**
-     * @return CopyrightHolder
-     */
-    public function getCopyrightHolder()
+    public function getCopyrightHolder(): CopyrightHolder
     {
         return $this->copyrightHolder;
     }
 
-    /**
-     * @return MediaObjectReference
-     */
-    public function withCopyrightHolder(CopyrightHolder $copyrightHolder)
+    public function withCopyrightHolder(CopyrightHolder $copyrightHolder): MediaObjectReference
     {
         $c = clone $this;
         $c->copyrightHolder = $copyrightHolder;
         return $c;
     }
 
-    /**
-     * @return Language
-     */
-    public function getLanguage()
+    public function getLanguage(): Language
     {
         return $this->language;
     }

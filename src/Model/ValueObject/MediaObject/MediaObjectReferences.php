@@ -16,10 +16,7 @@ class MediaObjectReferences extends Collection
         parent::__construct(...$mediaObjectReferences);
     }
 
-    /**
-     * @return MediaObjectReferences
-     */
-    public function getReferencesWithEmbeddedMediaObject()
+    public function getReferencesWithEmbeddedMediaObject(): MediaObjectReferences
     {
         return $this->filter(
             function (MediaObjectReference $reference) {
@@ -28,10 +25,7 @@ class MediaObjectReferences extends Collection
         );
     }
 
-    /**
-     * @return MediaObjectReferences
-     */
-    public function getReferencesWithoutEmbeddedMediaObject()
+    public function getReferencesWithoutEmbeddedMediaObject(): MediaObjectReferences
     {
         return $this->filter(
             function (MediaObjectReference $reference) {

@@ -12,9 +12,6 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  */
 class MediaObjectType extends Enum
 {
-    /**
-     * @inheritdoc
-     */
     public static function getAllowedValues(): array
     {
         return [
