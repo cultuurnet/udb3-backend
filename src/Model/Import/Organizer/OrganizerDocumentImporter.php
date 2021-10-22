@@ -56,10 +56,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         $this->lockedLabelRepository = $lockedLabelRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
     {
         $id = $decodedDocument->getId();
 

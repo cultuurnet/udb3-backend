@@ -41,8 +41,7 @@ class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
         $this->labelRelationsRepository = $labelRelationsRepository;
     }
 
-
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
     {
         $data = $decodedDocument->getBody();
         $id = $decodedDocument->getId();

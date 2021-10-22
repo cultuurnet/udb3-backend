@@ -82,10 +82,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
         $this->shouldApprove = $shouldApprove;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
     {
         $id = $decodedDocument->getId();
 

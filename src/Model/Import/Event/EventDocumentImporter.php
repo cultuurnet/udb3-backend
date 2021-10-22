@@ -94,10 +94,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
     {
         $id = $decodedDocument->getId();
 
