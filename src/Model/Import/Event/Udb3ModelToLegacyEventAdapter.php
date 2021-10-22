@@ -12,16 +12,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class Udb3ModelToLegacyEventAdapter extends Udb3ModelToLegacyOfferAdapter implements LegacyEvent
 {
-    /**
-     * @var Event
-     */
-    private $event;
+    private Event $event;
 
-    /**
-     * @var UUID
-     */
-    private $placeId;
-
+    private UUID $placeId;
 
     public function __construct(Event $event)
     {
