@@ -15,16 +15,9 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class ImmutableEvent extends ImmutableOffer implements Event
 {
-    /**
-     * @var PlaceReference
-     */
-    private $placeReference;
+    private PlaceReference $placeReference;
 
-    /**
-     * @var AudienceType
-     */
-    private $audience;
-
+    private AudienceType $audience;
 
     public function __construct(
         UUID $id,
