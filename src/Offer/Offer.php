@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\LabelCollection;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
@@ -27,6 +27,9 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\Commands\Video\UpdateVideo;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
@@ -102,7 +105,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      */
     protected array $descriptions;
 
-    protected Language $mainLanguage;
+    protected LegacyLanguage $mainLanguage;
 
     protected ?string $typeId = null;
 
@@ -305,7 +308,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function updateTitle(Language $language, Title $title): void
+    public function updateTitle(LegacyLanguage $language, Title $title): void
     {
         if ($this->isTitleChanged($title, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
@@ -328,7 +331,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->titles[$this->mainLanguage->getCode()] = $titleUpdated->getTitle();
     }
 
-    public function updateDescription(Description $description, Language $language): void
+    public function updateDescription(Description $description, LegacyLanguage $language): void
     {
         if ($this->isDescriptionChanged($description, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
@@ -628,6 +631,36 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function updateVideo(string $videoId, ?Url $url, ?Language $language, ?CopyrightHolder $copyrightHolder): void
+    {
+        $videosWithSameId = $this->videos->filter(
+            fn (Video $currentVideo) => $currentVideo->getId() === $videoId
+        );
+
+        if ($videosWithSameId->count() !== 1) {
+            return;
+        }
+
+        if ($url === null && $language === null && $copyrightHolder === null) {
+            return;
+        }
+
+        /** @var Video $videoWithSameId */
+        $videoWithSameId = $videosWithSameId->getFirst();
+
+        $updatedVideo = new Video(
+            $videoId,
+            $url ?? $videoWithSameId->getUrl(),
+            $language ?? $videoWithSameId->getLanguage()
+        );
+
+        if ($copyrightHolder !== null) {
+            $updatedVideo = $updatedVideo->withCopyrightHolder($copyrightHolder);
+        }
+
+        $this->apply($this->createVideoUpdatedEvent($updatedVideo));
+    }
+
     public function deleteVideo(string $videoID): void
     {
         $videosWithSameId = $this->videos->filter(
@@ -774,7 +807,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         return false;
     }
 
-    private function isTitleChanged(Title $title, Language $language): bool
+    private function isTitleChanged(Title $title, LegacyLanguage $language): bool
     {
         $languageCode = $language->getCode();
 
@@ -782,7 +815,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             !$title->sameValueAs($this->titles[$languageCode]);
     }
 
-    private function isDescriptionChanged(Description $description, Language $language): bool
+    private function isDescriptionChanged(Description $description, LegacyLanguage $language): bool
     {
         $languageCode = $language->getCode();
 
@@ -943,9 +976,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 
-    abstract protected function createTitleTranslatedEvent(Language $language, Title $title): AbstractTitleTranslated;
+    abstract protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): AbstractTitleTranslated;
 
-    abstract protected function createDescriptionTranslatedEvent(Language $language, Description $description): AbstractDescriptionTranslated;
+    abstract protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): AbstractDescriptionTranslated;
 
     abstract protected function createImageAddedEvent(Image $image): AbstractImageAdded;
 

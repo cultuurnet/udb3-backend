@@ -908,6 +908,129 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_handles_updating_a_video(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $video1 = new Video(
+            '91c75325-3830-4000-b580-5778b2de4548',
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
+        );
+
+        $this->scenario
+            ->given(
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                ]
+            )
+            ->when(function (Item $item) {
+                $item->updateVideo(
+                    '91c75325-3830-4000-b580-5778b2de4548',
+                    new Url('https://www.vimeo.com/123'),
+                    new Language('fr'),
+                    new CopyrightHolder('publiq')
+                );
+            })
+            ->then([
+                new VideoUpdated(
+                    $itemId,
+                    (new Video(
+                        '91c75325-3830-4000-b580-5778b2de4548',
+                        new Url('https://www.vimeo.com/123'),
+                        new Language('fr'),
+                    ))->withCopyrightHolder(new CopyrightHolder('publiq'))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_a_video_when_none_are_present(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->scenario
+            ->given(
+                [
+                    new ItemCreated($itemId),
+                ]
+            )
+            ->when(function (Item $item) {
+                $item->updateVideo(
+                    '65d29008-a8da-4479-863c-beba35ec7412',
+                    null,
+                    new Language('fr'),
+                    null
+                );
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_a_video_with_an_unknown_id(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $video1 = new Video(
+            '91c75325-3830-4000-b580-5778b2de4548',
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
+        );
+
+        $this->scenario
+            ->given(
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                ]
+            )
+            ->when(function (Item $item) {
+                $item->updateVideo(
+                    '65d29008-a8da-4479-863c-beba35ec7412',
+                    null,
+                    new Language('fr'),
+                    null
+                );
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_a_video_when_no_changes_are_given(): void
+    {
+        $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $video1 = new Video(
+            '91c75325-3830-4000-b580-5778b2de4548',
+            new Url('https://www.youtube.com/watch?v=123'),
+            new Language('nl')
+        );
+
+        $this->scenario
+            ->given(
+                [
+                    new ItemCreated($itemId),
+                    new VideoAdded($itemId, $video1),
+                ]
+            )
+            ->when(function (Item $item) {
+                $item->updateVideo(
+                    '91c75325-3830-4000-b580-5778b2de4548',
+                    null,
+                    null,
+                    null
+                );
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_deleting_a_video(): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
