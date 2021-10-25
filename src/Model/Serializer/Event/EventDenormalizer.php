@@ -88,9 +88,6 @@ class EventDenormalizer extends OfferDenormalizer
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function createOffer(
         array $originalData,
         UUID $id,
@@ -98,7 +95,7 @@ class EventDenormalizer extends OfferDenormalizer
         TranslatedTitle $title,
         Calendar $calendar,
         Categories $categories
-    ) {
+    ): ImmutableEvent {
         $placeReference = $this->placeReferenceDenormalizer->denormalize(
             $originalData['location'],
             PlaceReference::class

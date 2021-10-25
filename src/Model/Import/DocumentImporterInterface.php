@@ -8,5 +8,5 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 
 interface DocumentImporterInterface
 {
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null);
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void;
 }

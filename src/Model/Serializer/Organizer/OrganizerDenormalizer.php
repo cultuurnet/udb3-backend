@@ -27,40 +27,19 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class OrganizerDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var Validator
-     */
-    private $organizerValidator;
+    private Validator $organizerValidator;
 
-    /**
-     * @var UUIDParser
-     */
-    private $organizerIDParser;
+    private UUIDParser $organizerIDParser;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $titleDenormalizer;
+    private DenormalizerInterface $titleDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $addressDenormalizer;
+    private DenormalizerInterface $addressDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $labelsDenormalizer;
+    private DenormalizerInterface $labelsDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $contactPointDenormalizer;
+    private DenormalizerInterface $contactPointDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $geoCoordinatesDenormalizer;
+    private DenormalizerInterface $geoCoordinatesDenormalizer;
 
     public function __construct(
         Validator $organizerValidator = null,
@@ -157,10 +136,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         return $organizer;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    private function denormalizeAddress(array $data, ImmutableOrganizer $organizer)
+    private function denormalizeAddress(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
     {
         if (isset($data['address'])) {
             /* @var TranslatedAddress $address */
@@ -171,19 +147,13 @@ class OrganizerDenormalizer implements DenormalizerInterface
         return $organizer;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    private function denormalizeLabels(array $data, ImmutableOrganizer $organizer)
+    private function denormalizeLabels(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
     {
         $labels = $this->labelsDenormalizer->denormalize($data, Labels::class);
         return $organizer->withLabels($labels);
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    private function denormalizeGeoCoordinates(array $data, ImmutableOrganizer $organizer)
+    private function denormalizeGeoCoordinates(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
     {
         if (isset($data['geo'])) {
             try {
@@ -197,10 +167,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         return $organizer;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    protected function denormalizeContactPoint(array $data, ImmutableOrganizer $organizer)
+    protected function denormalizeContactPoint(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
     {
         if (isset($data['contactPoint'])) {
             $contactPoint = $this->contactPointDenormalizer->denormalize(
@@ -215,10 +182,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         return $organizer;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ImmutableOrganizer::class || $type === Organizer::class;
     }

@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 
 class AgeRange
 {
-    /**
-     * @var ?Age
-     */
-    private $from;
+    private ?Age $from;
 
-    /**
-     * @var ?Age
-     */
-    private $to;
+    private ?Age $to;
 
     public function __construct(?Age $from = null, ?Age $to = null)
     {

@@ -20,7 +20,7 @@ class Day extends Enum
     /**
      * @inheritdoc
      */
-    public static function getAllowedValues()
+    public static function getAllowedValues(): array
     {
         return [
             'monday',

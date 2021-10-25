@@ -96,9 +96,6 @@ class PlaceDenormalizer extends OfferDenormalizer
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function createOffer(
         array $originalData,
         UUID $id,
@@ -106,7 +103,7 @@ class PlaceDenormalizer extends OfferDenormalizer
         TranslatedTitle $title,
         Calendar $calendar,
         Categories $categories
-    ) {
+    ): ImmutablePlace {
         /* @var TranslatedAddress $address */
         $address = $this->addressDenormalizer->denormalize(
             $originalData['address'],

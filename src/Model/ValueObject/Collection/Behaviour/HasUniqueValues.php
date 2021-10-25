@@ -9,7 +9,7 @@ trait HasUniqueValues
     /**
      * @throws \InvalidArgumentException
      */
-    private function guardUniqueValues(array $values)
+    private function guardUniqueValues(array $values): void
     {
         $uniqueValues = array_unique($values, SORT_REGULAR);
         $amountOfDuplicates = count($values) - count($uniqueValues);

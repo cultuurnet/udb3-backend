@@ -13,15 +13,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class OrganizerReferenceDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var OrganizerIDParser
-     */
-    private $organizerIDParser;
+    private OrganizerIDParser $organizerIDParser;
 
-    /**
-     * @var OrganizerDenormalizer
-     */
-    private $organizerDenormalizer;
+    private OrganizerDenormalizer $organizerDenormalizer;
 
     public function __construct(
         OrganizerIDParser $organizerIDParser,
@@ -54,12 +48,12 @@ class OrganizerReferenceDenormalizer implements DenormalizerInterface
 
         if ($organizer) {
             return OrganizerReference::createWithEmbeddedOrganizer($organizer);
-        } else {
-            return OrganizerReference::createWithOrganizerId($organizerId);
         }
+
+        return OrganizerReference::createWithOrganizerId($organizerId);
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === OrganizerReference::class;
     }

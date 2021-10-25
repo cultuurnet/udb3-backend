@@ -37,7 +37,7 @@ abstract class Enum
     /**
      * @return string[]
      */
-    public static function getAllowedValues()
+    public static function getAllowedValues(): array
     {
         return [];
     }

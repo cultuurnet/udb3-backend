@@ -15,45 +15,21 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class ImmutableOrganizer implements Organizer
 {
-    /**
-     * @var UUID
-     */
-    private $id;
+    private UUID $id;
 
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private Language $mainLanguage;
 
-    /**
-     * @var TranslatedTitle
-     */
-    private $name;
+    private TranslatedTitle $name;
 
-    /**
-     * @var Url|null
-     */
-    private $url;
+    private ?Url $url;
 
-    /**
-     * @var TranslatedAddress|null
-     */
-    private $address;
+    private ?TranslatedAddress $address = null;
 
-    /**
-     * @var Coordinates|null
-     */
-    private $coordinates;
+    private ?Coordinates $coordinates = null;
 
-    /**
-     * @var Labels
-     */
-    private $labels;
+    private Labels $labels;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
+    private ContactPoint $contactPoint;
 
     /**
      * @param Url|null $url
@@ -76,34 +52,22 @@ class ImmutableOrganizer implements Organizer
         $this->contactPoint = new ContactPoint();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
+    public function getId(): UUID
     {
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getName()
+    public function getName(): TranslatedTitle
     {
         return $this->name;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withName(TranslatedTitle $name)
+    public function withName(TranslatedTitle $name): ImmutableOrganizer
     {
         $c = clone $this;
         $c->name = $name;
@@ -111,110 +75,74 @@ class ImmutableOrganizer implements Organizer
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUrl()
+    public function getUrl(): ?Url
     {
         return $this->url;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withUrl(Url $url)
+    public function withUrl(Url $url): ImmutableOrganizer
     {
         $c = clone $this;
         $c->url = $url;
         return $c;
     }
 
-    /**
-     * @return TranslatedAddress|null
-     */
-    public function getAddress()
+    public function getAddress(): ?TranslatedAddress
     {
         return $this->address;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withAddress(TranslatedAddress $address)
+    public function withAddress(TranslatedAddress $address): ImmutableOrganizer
     {
         $c = clone $this;
         $c->address = $address;
         return $c;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withoutAddress()
+    public function withoutAddress(): ImmutableOrganizer
     {
         $c = clone $this;
         $c->address = null;
         return $c;
     }
 
-    /**
-     * @return Coordinates|null
-     */
-    public function getGeoCoordinates()
+    public function getGeoCoordinates(): ?Coordinates
     {
         return $this->coordinates;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withGeoCoordinates(Coordinates $coordinates)
+    public function withGeoCoordinates(Coordinates $coordinates): ImmutableOrganizer
     {
         $c = clone $this;
         $c->coordinates = $coordinates;
         return $c;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withoutGeoCoordinates()
+    public function withoutGeoCoordinates(): ImmutableOrganizer
     {
         $c = clone $this;
         $c->coordinates = null;
         return $c;
     }
 
-    /**
-     * @return Labels
-     */
-    public function getLabels()
+    public function getLabels(): Labels
     {
         return $this->labels;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withLabels(Labels $labels)
+    public function withLabels(Labels $labels): ImmutableOrganizer
     {
         $c = clone $this;
         $c->labels = $labels;
         return $c;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ContactPoint
     {
         return $this->contactPoint;
     }
 
-    /**
-     * @return ImmutableOrganizer
-     */
-    public function withContactPoint(ContactPoint $contactPoint)
+    public function withContactPoint(ContactPoint $contactPoint): ImmutableOrganizer
     {
         $c = clone $this;
         $c->contactPoint = $contactPoint;

@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
  */
 class TranslatedDescription extends TranslatedValueObject
 {
-    protected function getValueObjectClassName()
+    protected function getValueObjectClassName(): string
     {
         return Description::class;
     }

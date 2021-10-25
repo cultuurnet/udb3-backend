@@ -9,7 +9,7 @@ trait IsNotEmpty
     /**
      * @throws \InvalidArgumentException
      */
-    private function guardNotEmpty(array $values)
+    private function guardNotEmpty(array $values): void
     {
         if (empty($values)) {
             throw new \InvalidArgumentException('Array should not be empty.');

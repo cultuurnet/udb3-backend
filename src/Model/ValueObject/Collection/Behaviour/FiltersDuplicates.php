@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour;
 
 trait FiltersDuplicates
 {
-    /**
-     * @return array
-     */
-    private function filterDuplicateValues(array $values)
+    private function filterDuplicateValues(array $values): array
     {
         return array_unique($values, SORT_REGULAR);
     }

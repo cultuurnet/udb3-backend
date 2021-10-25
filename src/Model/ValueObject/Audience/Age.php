@@ -12,10 +12,7 @@ class Age
     use IsInteger;
     use IsNatural;
 
-    /**
-     * @param int $value
-     */
-    public function __construct($value)
+    public function __construct(int $value)
     {
         $this->guardNatural($value);
         $this->setValue($value);

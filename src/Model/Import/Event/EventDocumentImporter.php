@@ -41,40 +41,19 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EventDocumentImporter implements DocumentImporterInterface
 {
-    /**
-     * @var Repository
-     */
-    private $aggregateRepository;
+    private Repository $aggregateRepository;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $eventDenormalizer;
+    private DenormalizerInterface $eventDenormalizer;
 
-    /**
-     * @var ImageCollectionFactory
-     */
-    private $imageCollectionFactory;
+    private ImageCollectionFactory $imageCollectionFactory;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var ConsumerSpecificationInterface
-     */
-    private $shouldApprove;
+    private ConsumerSpecificationInterface $shouldApprove;
 
-    /**
-     * @var LockedLabelRepository
-     */
-    private $lockedLabelRepository;
+    private LockedLabelRepository $lockedLabelRepository;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -94,10 +73,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
     {
         $id = $decodedDocument->getId();
 

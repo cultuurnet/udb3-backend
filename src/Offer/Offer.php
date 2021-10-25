@@ -29,7 +29,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Offer\Commands\Video\UpdateVideo;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
@@ -157,7 +156,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged;
 
 
-    public function updateType(EventType $type)
+    public function updateType(EventType $type): void
     {
         if (!$this->typeId || $this->typeId !== $type->getId()) {
             $this->apply($this->createTypeUpdatedEvent($type));

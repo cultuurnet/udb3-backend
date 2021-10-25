@@ -12,19 +12,13 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use InvalidArgumentException;
 
 class ImmutableEvent extends ImmutableOffer implements Event
 {
-    /**
-     * @var PlaceReference
-     */
-    private $placeReference;
+    private PlaceReference $placeReference;
 
-    /**
-     * @var AudienceType
-     */
-    private $audience;
-
+    private AudienceType $audience;
 
     public function __construct(
         UUID $id,
@@ -40,7 +34,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         // We can not enforce the exact requirement that "eventtype" is required
         // because categories can be POSTed using only their id.
         if ($categories->isEmpty()) {
-            throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
+            throw new InvalidArgumentException('Categories should not be empty (eventtype required).');
         }
 
         parent::__construct($id, $mainLanguage, $title, $calendar, $categories);
@@ -48,36 +42,24 @@ class ImmutableEvent extends ImmutableOffer implements Event
         $this->audience = AudienceType::everyone();
     }
 
-    /**
-     * @return PlaceReference
-     */
-    public function getPlaceReference()
+    public function getPlaceReference(): PlaceReference
     {
         return $this->placeReference;
     }
 
-    /**
-     * @return ImmutableEvent
-     */
-    public function withPlaceReference(PlaceReference $placeReference)
+    public function withPlaceReference(PlaceReference $placeReference): ImmutableEvent
     {
         $c = clone $this;
         $c->placeReference = $placeReference;
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAudienceType()
+    public function getAudienceType(): AudienceType
     {
         return $this->audience;
     }
 
-    /**
-     * @return ImmutableEvent
-     */
-    public function withAudienceType(AudienceType $audience)
+    public function withAudienceType(AudienceType $audience): ImmutableEvent
     {
         $c = clone $this;
         $c->audience = $audience;
@@ -87,9 +69,8 @@ class ImmutableEvent extends ImmutableOffer implements Event
     /**
      * @inheritdoc
      */
-    protected function guardCalendarType(Calendar $calendar)
+    protected function guardCalendarType(Calendar $calendar): void
     {
         // Any calendar is fine for events.
-        return;
     }
 }

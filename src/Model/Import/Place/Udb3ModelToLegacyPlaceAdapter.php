@@ -10,11 +10,7 @@ use CultuurNet\UDB3\Model\Import\Offer\Udb3ModelToLegacyOfferAdapter;
 
 class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implements LegacyPlace
 {
-    /**
-     * @var Place
-     */
-    private $place;
-
+    private Place $place;
 
     public function __construct(Place $place)
     {
@@ -22,10 +18,7 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
         $this->place = $place;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAddress()
+    public function getAddress(): Address
     {
         $address = $this->place->getAddress();
 
@@ -36,10 +29,7 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAddressTranslations()
+    public function getAddressTranslations(): array
     {
         $translatedAddress = $this->place->getAddress();
         $addresses = [];

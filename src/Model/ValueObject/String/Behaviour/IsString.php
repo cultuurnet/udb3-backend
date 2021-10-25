@@ -6,24 +6,17 @@ namespace CultuurNet\UDB3\Model\ValueObject\String\Behaviour;
 
 trait IsString
 {
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
-    /**
-     * @return string
-     */
-    public function toString()
+    public function toString(): string
     {
         return $this->value;
     }
 
     /**
      * @param IsString|mixed $other
-     * @return bool
      */
-    public function sameAs($other)
+    public function sameAs($other): bool
     {
         /* @var IsString $other */
         return get_class($this) === get_class($other) &&
@@ -33,7 +26,7 @@ trait IsString
     /**
      * @throws \InvalidArgumentException
      */
-    private function guardString($value)
+    private function guardString($value): void
     {
         if (!is_string($value)) {
             throw new \InvalidArgumentException('Given value should be a string, got ' . gettype($value) . ' instead.');
@@ -43,7 +36,7 @@ trait IsString
     /**
      * @param string $value
      */
-    private function setValue($value)
+    private function setValue($value): void
     {
         $this->guardString($value);
         $this->value = $value;

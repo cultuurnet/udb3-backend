@@ -6,16 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
 class Time
 {
-    /**
-     * @var Hour
-     */
-    private $hour;
+    private Hour $hour;
 
-    /**
-     * @var Minute
-     */
-    private $minute;
-
+    private Minute $minute;
 
     public function __construct(Hour $hour, Minute $minute)
     {
@@ -23,18 +16,12 @@ class Time
         $this->minute = $minute;
     }
 
-    /**
-     * @return Hour
-     */
-    public function getHour()
+    public function getHour(): Hour
     {
         return $this->hour;
     }
 
-    /**
-     * @return Minute
-     */
-    public function getMinute()
+    public function getMinute(): Minute
     {
         return $this->minute;
     }

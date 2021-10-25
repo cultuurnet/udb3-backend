@@ -8,16 +8,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class OrganizerReference
 {
-    /**
-     * @var UUID
-     */
-    private $organizerId;
+    private UUID $organizerId;
 
-    /**
-     * @var Organizer|null
-     */
-    private $embeddedOrganizer;
-
+    private ?Organizer $embeddedOrganizer;
 
     private function __construct(UUID $organizerId, Organizer $embeddedOrganizer = null)
     {
@@ -29,34 +22,22 @@ class OrganizerReference
         $this->embeddedOrganizer = $embeddedOrganizer;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getOrganizerId()
+    public function getOrganizerId(): UUID
     {
         return $this->organizerId;
     }
 
-    /**
-     * @return Organizer|null
-     */
-    public function getEmbeddedOrganizer()
+    public function getEmbeddedOrganizer(): ?Organizer
     {
         return $this->embeddedOrganizer;
     }
 
-    /**
-     * @return OrganizerReference
-     */
-    public static function createWithOrganizerId(UUID $organizerId)
+    public static function createWithOrganizerId(UUID $organizerId): OrganizerReference
     {
         return new self($organizerId);
     }
 
-    /**
-     * @return OrganizerReference
-     */
-    public static function createWithEmbeddedOrganizer(Organizer $organizer)
+    public static function createWithEmbeddedOrganizer(Organizer $organizer): OrganizerReference
     {
         return new self($organizer->getId(), $organizer);
     }

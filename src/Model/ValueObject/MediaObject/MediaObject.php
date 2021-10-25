@@ -9,26 +9,13 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class MediaObject
 {
-    /**
-     * @var UUID
-     */
-    private $id;
+    private UUID $id;
 
-    /**
-     * @var MediaObjectType
-     */
-    private $type;
+    private MediaObjectType $type;
 
-    /**
-     * @var Url
-     */
-    private $contentUrl;
+    private Url $contentUrl;
 
-    /**
-     * @var Url
-     */
-    private $thumbnailUrl;
-
+    private Url $thumbnailUrl;
 
     public function __construct(
         UUID $id,
@@ -42,34 +29,22 @@ class MediaObject
         $this->thumbnailUrl = $thumbnailUrl;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getId()
+    public function getId(): UUID
     {
         return $this->id;
     }
 
-    /**
-     * @return MediaObjectType
-     */
-    public function getType()
+    public function getType(): MediaObjectType
     {
         return $this->type;
     }
 
-    /**
-     * @return Url
-     */
-    public function getContentUrl()
+    public function getContentUrl(): Url
     {
         return $this->contentUrl;
     }
 
-    /**
-     * @return Url
-     */
-    public function getThumbnailUrl()
+    public function getThumbnailUrl(): Url
     {
         return $this->thumbnailUrl;
     }

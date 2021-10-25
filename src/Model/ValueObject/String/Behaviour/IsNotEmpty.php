@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\String\Behaviour;
 
 trait IsNotEmpty
 {
-    /**
-     * @param string $value
-     */
-    private function guardNotEmpty($value)
+    private function guardNotEmpty(string $value): void
     {
         /* @var IsString $this */
         $this->guardString($value);
