@@ -58,7 +58,7 @@ class PlaceRepositoryTest extends TestCase
      */
     public function it_should_save_multiple_places_in_a_single_transaction()
     {
-        $place1 = Place::createPlace(
+        $place1 = Place::create(
             '41c94f16-9edf-4eaf-914a-cfc01336b66e',
             new Language('nl'),
             new Title('Test title 1'),
@@ -76,7 +76,7 @@ class PlaceRepositoryTest extends TestCase
             new AgeRange(new Age(0), new Age(12))
         );
 
-        $place2 = Place::createPlace(
+        $place2 = Place::create(
             'aed3f3cd-e3de-4361-8e53-1099cce8fef6',
             new Language('nl'),
             new Title('Test title 2'),

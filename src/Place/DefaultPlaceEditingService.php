@@ -53,7 +53,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
     ) {
         $id = $this->uuidGenerator->generate();
 
-        $place = Place::createPlace(
+        $place = Place::create(
             $id,
             $mainLanguage,
             $title,
@@ -80,7 +80,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
     ) {
         $id = $this->uuidGenerator->generate();
 
-        $place = Place::createPlace(
+        $place = Place::create(
             $id,
             $mainLanguage,
             $title,

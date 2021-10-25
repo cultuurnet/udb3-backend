@@ -111,10 +111,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return $this->placeId;
     }
 
-    /**
-     * @todo Rename this method to create() after moving this part of the codebase to udb3-silex
-     */
-    public static function createPlace(
+    public static function create(
         string $id,
         Language $mainLanguage,
         Title $title,

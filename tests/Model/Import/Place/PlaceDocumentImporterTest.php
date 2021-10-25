@@ -160,7 +160,7 @@ class PlaceDocumentImporterTest extends TestCase
         $document = $this->getPlaceDocument();
         $id = $document->getId();
 
-        $place = Place::createPlace(
+        $place = Place::create(
             $id,
             new LegacyLanguage('nl'),
             new Title('Voorbeeld naam'),
@@ -234,7 +234,7 @@ class PlaceDocumentImporterTest extends TestCase
             ->with($this->consumer)
             ->willReturn(true);
 
-        $place = Place::createPlace(
+        $place = Place::create(
             $id,
             new LegacyLanguage('nl'),
             new Title('Voorbeeld naam'),

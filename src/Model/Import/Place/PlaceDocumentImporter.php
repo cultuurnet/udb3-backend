@@ -89,7 +89,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
 
         $commands = [];
         if (!$exists) {
-            $place = PlaceAggregate::createPlace(
+            $place = PlaceAggregate::create(
                 $id,
                 $mainLanguage,
                 $title,
