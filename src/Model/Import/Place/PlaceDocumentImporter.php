@@ -84,7 +84,6 @@ class PlaceDocumentImporter implements DocumentImporterInterface
         $mainLanguage = $adapter->getMainLanguage();
         $title = $adapter->getTitle();
         $type = $adapter->getType();
-        $theme = $adapter->getTheme();
         $address = $adapter->getAddress();
         $calendar = $adapter->getCalendar();
         $publishDate = $adapter->getAvailableFrom(new \DateTimeImmutable());
@@ -98,7 +97,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
                 $type,
                 $address,
                 $calendar,
-                $theme,
+                null,
                 $publishDate
             );
 
@@ -128,10 +127,6 @@ class PlaceDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateType($id, $type->getId());
             $commands[] = new UpdateAddress($id, $address, $mainLanguage);
             $commands[] = new UpdateCalendar($id, $calendar);
-
-            if ($theme) {
-                $commands[] = new UpdateTheme($id, $theme);
-            }
         }
 
         $bookingInfo = $adapter->getBookingInfo();
