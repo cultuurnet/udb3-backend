@@ -866,16 +866,17 @@ class OfferTest extends AggregateRootScenarioTestCase
     }
 
     /**
+     * @dataProvider updateVideoDataProvider
      * @test
      */
-    public function it_handles_updating_a_video(): void
+    public function it_handles_updating_a_video(?Url $url, ?Language $language, ?CopyrightHolder $copyrightHolder): void
     {
         $itemId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $video1 = new Video(
+        $video1 = (new Video(
             '91c75325-3830-4000-b580-5778b2de4548',
             new Url('https://www.youtube.com/watch?v=123'),
             new Language('nl')
-        );
+        ))->withCopyrightHolder(new CopyrightHolder('madewithlove'));
 
         $this->scenario
             ->given(
@@ -884,12 +885,12 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new VideoAdded($itemId, $video1),
                 ]
             )
-            ->when(function (Item $item) {
+            ->when(function (Item $item) use ($url, $language, $copyrightHolder) {
                 $item->updateVideo(
                     '91c75325-3830-4000-b580-5778b2de4548',
-                    new Url('https://www.vimeo.com/123'),
-                    new Language('fr'),
-                    new CopyrightHolder('publiq')
+                    $url,
+                    $language,
+                    $copyrightHolder
                 );
             })
             ->then([
@@ -897,11 +898,52 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $itemId,
                     (new Video(
                         '91c75325-3830-4000-b580-5778b2de4548',
-                        new Url('https://www.vimeo.com/123'),
-                        new Language('fr'),
-                    ))->withCopyrightHolder(new CopyrightHolder('publiq'))
+                        $url ?? new Url('https://www.youtube.com/watch?v=123'),
+                        $language ?? new Language('nl'),
+                    ))->withCopyrightHolder($copyrightHolder ?? new CopyrightHolder('madewithlove'))
                 ),
             ]);
+    }
+
+    public function updateVideoDataProvider(): array
+    {
+        return [
+            'Update url' => [
+                new Url('https://www.vimeo.com/123'),
+                null,
+                null,
+            ],
+            'Update language' => [
+                null,
+                new Language('fr'),
+                null,
+            ],
+            'Update copyright holder' => [
+                null,
+                null,
+                new CopyrightHolder('publiq'),
+            ],
+            'Update url and copyright holder' => [
+                new Url('https://www.vimeo.com/123'),
+                null,
+                new CopyrightHolder('publiq'),
+            ],
+            'Update url and language' => [
+                new Url('https://www.vimeo.com/123'),
+                new Language('fr'),
+                null,
+            ],
+            'Update copyright holder and language' => [
+                null,
+                new Language('fr'),
+                new CopyrightHolder('publiq'),
+            ],
+            'Update all properties' => [
+                new Url('https://www.vimeo.com/123'),
+                new Language('fr'),
+                new CopyrightHolder('publiq'),
+            ],
+        ];
     }
 
     /**

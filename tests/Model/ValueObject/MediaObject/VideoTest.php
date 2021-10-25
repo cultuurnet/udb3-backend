@@ -113,6 +113,19 @@ class VideoTest extends TestCase
                 ))->withCopyrightHolder(new CopyrightHolder('publiq')),
                 true,
             ],
+            'Videos are the same with empty copyright' => [
+                new Video(
+                    'f1e27cec-8912-4275-b6bc-7013a727d75c',
+                    new Url('https://www.youtube.com/watch?v=123'),
+                    new Language('nl')
+                ),
+                new Video(
+                    'f1e27cec-8912-4275-b6bc-7013a727d75c',
+                    new Url('https://www.youtube.com/watch?v=123'),
+                    new Language('nl')
+                ),
+                true,
+            ],
         ];
     }
 }
