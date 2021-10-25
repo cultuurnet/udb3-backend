@@ -74,6 +74,7 @@ class ImportRestController
             if ($exception->getPrevious() instanceof UniqueConstraintViolationException) {
                 throw ApiProblem::resourceIdAlreadyInUse($cdbid);
             }
+            throw $exception;
         }
 
         $data = [$this->idProperty => $cdbid];
