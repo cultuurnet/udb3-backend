@@ -264,4 +264,12 @@ final class HistoryProjector extends BaseHistoryProjector
             )
         );
     }
+
+    private function projectThemeUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Thema aangepast')
+        );
+    }
 }
