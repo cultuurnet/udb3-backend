@@ -102,18 +102,6 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, Calendar $calendar, Theme $theme = null)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            new UpdateMajorInfo($id, $title, $eventType, $address, $calendar, $theme)
-        );
-    }
-
-    /**
      * @inheritdoc
      */
     public function updateAddress($id, Address $address, Language $language)

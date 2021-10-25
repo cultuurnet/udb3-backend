@@ -51,13 +51,6 @@ interface PlaceEditingServiceInterface
     public function deletePlace($id);
 
     /**
-     * Update the major info of a place.
-     *
-     * @param string $id
-     */
-    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, Calendar $calendar, Theme $theme = null);
-
-    /**
      * @param string $id
      */
     public function updateAddress($id, Address $address, Language $language);
