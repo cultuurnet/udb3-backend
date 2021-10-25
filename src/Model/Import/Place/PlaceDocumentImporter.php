@@ -188,10 +188,16 @@ class PlaceDocumentImporter implements DocumentImporterInterface
 
         $commands[] = new ImportVideos($id, $import->getVideos());
 
+        $lastCommandId = null;
+
         foreach ($commands as $command) {
-            $this->commandBus->dispatch($command);
+            /** @var string|null $commandId */
+            $commandId = $this->commandBus->dispatch($command);
+            if ($commandId) {
+                $lastCommandId = $commandId;
+            }
         }
 
-        return null;
+        return $lastCommandId;
     }
 }
