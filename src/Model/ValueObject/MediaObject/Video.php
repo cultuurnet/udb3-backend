@@ -29,16 +29,16 @@ final class Video
         $this->language = $language;
     }
 
-    public function withCopyrightHolder(CopyrightHolder $copyright): Video
-    {
-        $clone = clone $this;
-        $clone->copyrightHolder = $copyright;
-        return $clone;
-    }
-
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function withUrl(Url $url): Video
+    {
+        $clone = clone $this;
+        $clone->url = $url;
+        return $clone;
     }
 
     public function getUrl(): Url
@@ -46,9 +46,23 @@ final class Video
         return $this->url;
     }
 
+    public function withLanguage(Language $language): Video
+    {
+        $clone = clone $this;
+        $clone->language = $language;
+        return $clone;
+    }
+
     public function getLanguage(): Language
     {
         return $this->language;
+    }
+
+    public function withCopyrightHolder(CopyrightHolder $copyright): Video
+    {
+        $clone = clone $this;
+        $clone->copyrightHolder = $copyright;
+        return $clone;
     }
 
     public function getCopyrightHolder(): ?CopyrightHolder
