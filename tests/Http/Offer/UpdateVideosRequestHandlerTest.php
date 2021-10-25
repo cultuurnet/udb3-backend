@@ -38,12 +38,13 @@ class UpdateVideosRequestHandlerTest extends TestCase
     }
 
     /**
+     * @dataProvider offerTypeProvider
      * @test
      */
-    public function it_allows_updating_a_video(): void
+    public function it_allows_updating_a_video(string $offerType): void
     {
         $updateVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString(
                 '[
@@ -71,12 +72,13 @@ class UpdateVideosRequestHandlerTest extends TestCase
     }
 
     /**
+     * @dataProvider offerTypeProvider
      * @test
      */
-    public function it_allows_updating_multiple_videos(): void
+    public function it_allows_updating_multiple_videos(string $offerType): void
     {
         $updateVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString(
                 '[
@@ -110,12 +112,13 @@ class UpdateVideosRequestHandlerTest extends TestCase
     }
 
     /**
+     * @dataProvider offerTypeProvider
      * @test
      */
-    public function it_requires_an_id(): void
+    public function it_requires_an_id(string $offerType): void
     {
         $updateVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString(
                 '[
@@ -134,5 +137,17 @@ class UpdateVideosRequestHandlerTest extends TestCase
             ),
             fn () => $this->updateVideosRequestHandler->handle($updateVideoRequest)
         );
+    }
+
+    public function offerTypeProvider(): array
+    {
+        return [
+            'events' => [
+                'events',
+            ],
+            'places' => [
+                'places',
+            ],
+        ];
     }
 }
