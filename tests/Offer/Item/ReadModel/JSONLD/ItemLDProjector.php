@@ -205,11 +205,6 @@ class ItemLDProjector extends OfferLDProjector
         return TypeUpdated::class;
     }
 
-    protected function getThemeUpdatedClassName()
-    {
-        return ThemeUpdated::class;
-    }
-
     protected function getFacilitiesUpdatedClassName()
     {
         return FacilitiesUpdated::class;

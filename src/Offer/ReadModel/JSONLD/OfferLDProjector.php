@@ -312,11 +312,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     /**
      * @return string
      */
-    abstract protected function getThemeUpdatedClassName();
-
-    /**
-     * @return string
-     */
     abstract protected function getFacilitiesUpdatedClassName();
 
     /**
