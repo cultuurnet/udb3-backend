@@ -34,7 +34,7 @@ class TermPreProcessingDocumentImporter implements DocumentImporterInterface
     /**
      * Pre-processes the JSON to polyfill missing term properties if possible.
      */
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): ?string
     {
         $data = $decodedDocument->getBody();
 
@@ -60,6 +60,6 @@ class TermPreProcessingDocumentImporter implements DocumentImporterInterface
 
         $decodedDocument = $decodedDocument->withBody($data);
 
-        $this->jsonImporter->import($decodedDocument, $consumer);
+        return $this->jsonImporter->import($decodedDocument, $consumer);
     }
 }

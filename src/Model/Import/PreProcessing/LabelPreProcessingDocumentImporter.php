@@ -41,7 +41,7 @@ class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
         $this->labelRelationsRepository = $labelRelationsRepository;
     }
 
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): ?string
     {
         $data = $decodedDocument->getBody();
         $id = $decodedDocument->getId();
@@ -105,6 +105,6 @@ class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
         }
 
         $decodedDocument = $decodedDocument->withBody($data);
-        $this->jsonImporter->import($decodedDocument, $consumer);
+        return $this->jsonImporter->import($decodedDocument, $consumer);
     }
 }

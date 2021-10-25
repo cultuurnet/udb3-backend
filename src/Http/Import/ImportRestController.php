@@ -69,15 +69,21 @@ class ImportRestController
         $document = $document->withBody($body);
 
         try {
-            $this->documentImporter->import($document, $consumer);
+            $commandId = $this->documentImporter->import($document, $consumer);
         } catch (DBALEventStoreException $exception) {
             if ($exception->getPrevious() instanceof UniqueConstraintViolationException) {
                 throw ApiProblem::resourceIdAlreadyInUse($cdbid);
             }
+            throw $exception;
+        }
+
+        $data = [$this->idProperty => $cdbid];
+        if ($commandId) {
+            $data['commandId'] = $commandId;
         }
 
         return (new JsonResponse())
-            ->setData([$this->idProperty => $cdbid])
+            ->setData($data)
             ->setPrivate();
     }
 
