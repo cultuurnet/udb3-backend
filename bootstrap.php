@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
@@ -611,6 +612,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[RemoveLabelHandler::class]);
         $commandBus->subscribe($app[ImportLabelsHandler::class]);
         $commandBus->subscribe($app[AddVideoHandler::class]);
+        $commandBus->subscribe($app[UpdateVideoHandler::class]);
         $commandBus->subscribe($app[DeleteVideoHandler::class]);
         $commandBus->subscribe($app[ImportVideosHandler::class]);
 

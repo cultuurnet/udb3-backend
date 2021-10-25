@@ -6,16 +6,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Price;
 
 class PriceInfo
 {
-    /**
-     * @var Tariff
-     */
-    private $basePrice;
+    private Tariff $basePrice;
 
-    /**
-     * @var Tariffs
-     */
-    private $tariffs;
-
+    private Tariffs $tariffs;
 
     public function __construct(Tariff $basePrice, Tariffs $tariffs)
     {
@@ -23,36 +16,24 @@ class PriceInfo
         $this->tariffs = $tariffs;
     }
 
-    /**
-     * @return Tariff
-     */
-    public function getBasePrice()
+    public function getBasePrice(): Tariff
     {
         return $this->basePrice;
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public function withBasePrice(Tariff $basePrice)
+    public function withBasePrice(Tariff $basePrice): PriceInfo
     {
         $c = clone $this;
         $c->basePrice = $basePrice;
         return $c;
     }
 
-    /**
-     * @return Tariffs
-     */
-    public function getTariffs()
+    public function getTariffs(): Tariffs
     {
         return $this->tariffs;
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public function withTariffs(Tariffs $tariffs)
+    public function withTariffs(Tariffs $tariffs): PriceInfo
     {
         $c = clone $this;
         $c->tariffs = $tariffs;

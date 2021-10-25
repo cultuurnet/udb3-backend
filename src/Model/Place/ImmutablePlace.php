@@ -15,19 +15,13 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use InvalidArgumentException;
 
 final class ImmutablePlace extends ImmutableOffer implements Place
 {
-    /**
-     * @var TranslatedAddress
-     */
-    private $address;
+    private TranslatedAddress $address;
 
-    /**
-     * @var Coordinates|null
-     */
-    private $coordinates;
-
+    private ?Coordinates $coordinates = null;
 
     public function __construct(
         UUID $id,
@@ -43,75 +37,54 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         // We can not enforce this particular requirement because categories can
         // be POSTed using only their id.
         if ($categories->isEmpty() && !$id->sameAs(self::getDummyLocationId())) {
-            throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
+            throw new InvalidArgumentException('Categories should not be empty (eventtype required).');
         }
 
         parent::__construct($id, $mainLanguage, $title, $calendar, $categories);
         $this->address = $address;
     }
 
-    /**
-     * @return TranslatedAddress
-     */
-    public function getAddress()
+    public function getAddress(): TranslatedAddress
     {
         return $this->address;
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    public function withAddress(TranslatedAddress $address)
+    public function withAddress(TranslatedAddress $address): ImmutablePlace
     {
         $c = clone $this;
         $c->address = $address;
         return $c;
     }
 
-    /**
-     * @return Coordinates|null
-     */
-    public function getGeoCoordinates()
+    public function getGeoCoordinates(): ?Coordinates
     {
         return $this->coordinates;
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    public function withGeoCoordinates(Coordinates $coordinates)
+    public function withGeoCoordinates(Coordinates $coordinates): ImmutablePlace
     {
         $c = clone $this;
         $c->coordinates = $coordinates;
         return $c;
     }
 
-    /**
-     * @return ImmutablePlace
-     */
-    public function withoutGeoCoordinates()
+    public function withoutGeoCoordinates(): ImmutablePlace
     {
         $c = clone $this;
         $c->coordinates = null;
         return $c;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDummyLocation()
+    public function isDummyLocation(): bool
     {
         return $this->getId()->sameAs(self::getDummyLocationId());
     }
 
-    /**
-     * @return ImmutablePlace
-     */
     public static function createDummyLocation(
         Language $mainLanguage,
         TranslatedTitle $title,
         TranslatedAddress $address
-    ) {
+    ): ImmutablePlace {
         return new ImmutablePlace(
             self::getDummyLocationId(),
             $mainLanguage,
@@ -122,10 +95,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         );
     }
 
-    /**
-     * @return UUID
-     */
-    public static function getDummyLocationId()
+    public static function getDummyLocationId(): UUID
     {
         return new UUID('00000000-0000-0000-0000-000000000000');
     }
@@ -133,10 +103,10 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     /**
      * @inheritdoc
      */
-    protected function guardCalendarType(Calendar $calendar)
+    protected function guardCalendarType(Calendar $calendar): void
     {
         if (!($calendar instanceof CalendarWithOpeningHours)) {
-            throw new \InvalidArgumentException('Given calendar should have opening hours.');
+            throw new InvalidArgumentException('Given calendar should have opening hours.');
         }
     }
 }

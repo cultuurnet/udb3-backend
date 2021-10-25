@@ -12,10 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
  */
 class TranslatedAddress extends TranslatedValueObject
 {
-    /**
-     * @inheritdoc
-     */
-    protected function getValueObjectClassName()
+    protected function getValueObjectClassName(): string
     {
         return Address::class;
     }

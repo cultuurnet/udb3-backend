@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 
 class TranslatedWebsiteLabel extends TranslatedValueObject
 {
-    /**
-     * @inheritdoc
-     */
-    protected function getValueObjectClassName()
+    protected function getValueObjectClassName(): string
     {
         return WebsiteLabel::class;
     }

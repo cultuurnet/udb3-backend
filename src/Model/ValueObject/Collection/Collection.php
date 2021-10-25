@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Collection;
 
 abstract class Collection implements \IteratorAggregate, \Countable
 {
-    /**
-     * @var array
-     */
-    private $values;
+    private array $values;
 
     /**
      * @param array ...$values
@@ -28,10 +25,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
         $this->values = $values;
     }
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->values;
     }
@@ -59,38 +53,34 @@ abstract class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return bool
      * @see array_search
      */
-    public function contains($value)
+    public function contains($value): bool
     {
         $index = array_search($value, $this->values);
         return is_int($index);
     }
 
     /**
-     * @return int
      * @see count
      */
-    public function getLength()
+    public function getLength(): int
     {
         return count($this->values);
     }
 
     /**
-     * @return bool
      * @see empty
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->values);
     }
 
     /**
-     * @param int $index
      * @return mixed|null
      */
-    public function getByIndex($index)
+    public function getByIndex(int $index)
     {
         if (!isset($this->values[$index])) {
             throw new \OutOfBoundsException("No value exists at index {$index}.");
@@ -121,18 +111,12 @@ abstract class Collection implements \IteratorAggregate, \Countable
         return null;
     }
 
-    /**
-     * @return \ArrayIterator
-     */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->values);
     }
 
-    /**
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return $this->getLength();
     }

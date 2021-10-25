@@ -9,16 +9,9 @@ use Money\Money;
 
 class Tariff
 {
-    /**
-     * @var TranslatedTariffName
-     */
-    private $name;
+    private TranslatedTariffName $name;
 
-    /**
-     * @var Money
-     */
-    private $price;
-
+    private Money $price;
 
     public function __construct(TranslatedTariffName $name, Money $price)
     {
@@ -26,46 +19,31 @@ class Tariff
         $this->price = $price;
     }
 
-    /**
-     * @return TranslatedTariffName
-     */
-    public function getName()
+    public function getName(): TranslatedTariffName
     {
         return $this->name;
     }
 
-    /**
-     * @return Tariff
-     */
-    public function withName(TranslatedTariffName $name)
+    public function withName(TranslatedTariffName $name): Tariff
     {
         $c = clone $this;
         $c->name = $name;
         return $c;
     }
 
-    /**
-     * @return Money
-     */
-    public function getPrice()
+    public function getPrice(): Money
     {
         return $this->price;
     }
 
-    /**
-     * @return Tariff
-     */
-    public function withPrice(Money $price)
+    public function withPrice(Money $price): Tariff
     {
         $c = clone $this;
         $c->price = $price;
         return $c;
     }
 
-    /**
-     * @return Tariff
-     */
-    public static function createBasePrice(Money $price)
+    public static function createBasePrice(Money $price): Tariff
     {
         return new Tariff(
             new TranslatedTariffName(

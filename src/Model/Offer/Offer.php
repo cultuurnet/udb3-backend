@@ -19,88 +19,41 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use DateTimeImmutable;
 
 interface Offer
 {
-    /**
-     * @return UUID
-     */
-    public function getId();
+    public function getId(): UUID;
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage();
+    public function getMainLanguage(): Language;
 
-    /**
-     * @return TranslatedTitle
-     */
-    public function getTitle();
+    public function getTitle(): TranslatedTitle;
 
-    /**
-     * @return TranslatedDescription|null
-     */
-    public function getDescription();
+    public function getDescription(): ?TranslatedDescription;
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar();
+    public function getCalendar(): Calendar;
 
-    /**
-     * @return Categories
-     */
-    public function getTerms();
+    public function getTerms(): Categories;
 
-    /**
-     * @return Labels
-     */
-    public function getLabels();
+    public function getLabels(): Labels;
 
-    /**
-     * @return OrganizerReference|null
-     */
-    public function getOrganizerReference();
+    public function getOrganizerReference(): ?OrganizerReference;
 
-    /**
-     * @return AgeRange|null
-     */
-    public function getAgeRange();
+    public function getAgeRange(): ?AgeRange;
 
-    /**
-     * @return PriceInfo|null
-     */
-    public function getPriceInfo();
+    public function getPriceInfo(): ?PriceInfo;
 
-    /**
-     * @return BookingInfo
-     */
-    public function getBookingInfo();
+    public function getBookingInfo(): BookingInfo;
 
-    /**
-     * @return ContactPoint
-     */
-    public function getContactPoint();
+    public function getContactPoint(): ContactPoint;
 
-    /**
-     * @return MediaObjectReferences
-     */
-    public function getMediaObjectReferences();
+    public function getMediaObjectReferences(): MediaObjectReferences;
 
     public function getVideos(): VideoCollection;
 
-    /**
-     * @return WorkflowStatus
-     */
-    public function getWorkflowStatus();
+    public function getWorkflowStatus(): WorkflowStatus;
 
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getAvailableFrom();
+    public function getAvailableFrom(): ?DateTimeImmutable;
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getAvailableTo();
+    public function getAvailableTo(): DateTimeImmutable;
 }

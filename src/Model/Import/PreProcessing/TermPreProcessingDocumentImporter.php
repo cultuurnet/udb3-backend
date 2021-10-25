@@ -33,9 +33,8 @@ class TermPreProcessingDocumentImporter implements DocumentImporterInterface
 
     /**
      * Pre-processes the JSON to polyfill missing term properties if possible.
-     *
      */
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
     {
         $data = $decodedDocument->getBody();
 

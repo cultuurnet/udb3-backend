@@ -9,94 +9,59 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 
 class ContactPoint
 {
-    /**
-     * @var TelephoneNumbers
-     */
-    private $telephoneNumbers;
+    private TelephoneNumbers $telephoneNumbers;
 
-    /**
-     * @var EmailAddresses
-     */
-    private $emailAddresses;
+    private EmailAddresses $emailAddresses;
 
-    /**
-     * @var Urls
-     */
-    private $urls;
+    private Urls $urls;
 
-    /**
-     * @param TelephoneNumbers $telephoneNumbers
-     * @param EmailAddresses $emailAddresses
-     * @param Urls $urls
-     */
     public function __construct(
         TelephoneNumbers $telephoneNumbers = null,
         EmailAddresses $emailAddresses = null,
         Urls $urls = null
     ) {
-        $this->telephoneNumbers = $telephoneNumbers ? $telephoneNumbers : new TelephoneNumbers();
-        $this->emailAddresses = $emailAddresses ? $emailAddresses : new EmailAddresses();
-        $this->urls = $urls ? $urls : new Urls();
+        $this->telephoneNumbers = $telephoneNumbers ?: new TelephoneNumbers();
+        $this->emailAddresses = $emailAddresses ?: new EmailAddresses();
+        $this->urls = $urls ?: new Urls();
     }
 
-    /**
-     * @return TelephoneNumbers
-     */
-    public function getTelephoneNumbers()
+    public function getTelephoneNumbers(): TelephoneNumbers
     {
         return $this->telephoneNumbers;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function withTelephoneNumbers(TelephoneNumbers $telephoneNumbers)
+    public function withTelephoneNumbers(TelephoneNumbers $telephoneNumbers): ContactPoint
     {
         $c = clone $this;
         $c->telephoneNumbers = $telephoneNumbers;
         return $c;
     }
 
-    /**
-     * @return EmailAddresses
-     */
-    public function getEmailAddresses()
+    public function getEmailAddresses(): EmailAddresses
     {
         return $this->emailAddresses;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function withEmailAddresses(EmailAddresses $emailAddresses)
+    public function withEmailAddresses(EmailAddresses $emailAddresses): ContactPoint
     {
         $c = clone $this;
         $c->emailAddresses = $emailAddresses;
         return $c;
     }
 
-    /**
-     * @return Urls
-     */
-    public function getUrls()
+    public function getUrls(): Urls
     {
         return $this->urls;
     }
 
-    /**
-     * @return ContactPoint
-     */
-    public function withUrls(Urls $urls)
+    public function withUrls(Urls $urls): ContactPoint
     {
         $c = clone $this;
         $c->urls = $urls;
         return $c;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->telephoneNumbers->getLength() === 0 && $this->emailAddresses->getLength() === 0 &&
             $this->urls->getLength() === 0;

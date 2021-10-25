@@ -42,65 +42,29 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 abstract class OfferDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var UUIDParser
-     */
-    private $idParser;
+    private UUIDParser $idParser;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $titleDenormalizer;
+    private DenormalizerInterface $titleDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $descriptionDenormalizer;
+    private DenormalizerInterface $descriptionDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $calendarDenormalizer;
+    private DenormalizerInterface $calendarDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $categoriesDenormalizer;
+    private DenormalizerInterface $categoriesDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $labelsDenormalizer;
+    private DenormalizerInterface $labelsDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $organizerReferenceDenormalizer;
+    private DenormalizerInterface $organizerReferenceDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $ageRangeDenormalizer;
+    private DenormalizerInterface $ageRangeDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $priceInfoDenormalizer;
+    private DenormalizerInterface $priceInfoDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $bookingInfoDenormalizer;
+    private DenormalizerInterface $bookingInfoDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $contactPointDenormalizer;
+    private DenormalizerInterface $contactPointDenormalizer;
 
-    /**
-     * @var DenormalizerInterface
-     */
-    private $mediaObjectReferencesDenormalizer;
+    private DenormalizerInterface $mediaObjectReferencesDenormalizer;
 
     private DenormalizerInterface $videoDenormalizer;
 
@@ -185,9 +149,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $this->videoDenormalizer = $videoDenormalizer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
     abstract protected function createOffer(
         array $originalData,
         UUID $id,
@@ -195,9 +156,9 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         TranslatedTitle $title,
         Calendar $calendar,
         Categories $categories
-    );
+    ): ImmutableOffer;
 
-    protected function denormalizeOffer(array $data)
+    protected function denormalizeOffer(array $data): ImmutableOffer
     {
         $idUrl = new Url($data['@id']);
         $id = $this->idParser->fromUrl($idUrl);
@@ -232,10 +193,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeDescription(array $data, ImmutableOffer $offer)
+    protected function denormalizeDescription(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['description'])) {
             /* @var TranslatedDescription $description */
@@ -252,19 +210,13 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeLabels(array $data, ImmutableOffer $offer)
+    protected function denormalizeLabels(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         $labels = $this->labelsDenormalizer->denormalize($data, Labels::class);
         return $offer->withLabels($labels);
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeOrganizerReference(array $data, ImmutableOffer $offer)
+    protected function denormalizeOrganizerReference(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['organizer'])) {
             $organizerReference = $this->organizerReferenceDenormalizer->denormalize(
@@ -278,10 +230,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeAgeRange(array $data, ImmutableOffer $offer)
+    protected function denormalizeAgeRange(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['typicalAgeRange'])) {
             $ageRange = $this->ageRangeDenormalizer->denormalize($data['typicalAgeRange'], AgeRange::class);
@@ -291,10 +240,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizePriceInfo(array $data, ImmutableOffer $offer)
+    protected function denormalizePriceInfo(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['priceInfo'])) {
             $priceInfo = $this->priceInfoDenormalizer->denormalize(
@@ -309,10 +255,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeBookingInfo(array $data, ImmutableOffer $offer)
+    protected function denormalizeBookingInfo(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['bookingInfo'])) {
             $bookingInfo = $this->bookingInfoDenormalizer->denormalize(
@@ -327,10 +270,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeContactPoint(array $data, ImmutableOffer $offer)
+    protected function denormalizeContactPoint(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['contactPoint'])) {
             $contactPoint = $this->contactPointDenormalizer->denormalize(
@@ -345,10 +285,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeMediaObjectReferences(array $data, ImmutableOffer $offer)
+    protected function denormalizeMediaObjectReferences(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['mediaObject'])) {
             /* @var MediaObjectReferences $mediaObjectReferences */
@@ -378,10 +315,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeWorkflowStatus(array $data, ImmutableOffer $offer)
+    protected function denormalizeWorkflowStatus(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['workflowStatus'])) {
             $workflowStatus = new WorkflowStatus($data['workflowStatus']);
@@ -391,10 +325,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    /**
-     * @return ImmutableOffer
-     */
-    protected function denormalizeAvailableFrom(array $data, ImmutableOffer $offer)
+    protected function denormalizeAvailableFrom(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['availableFrom'])) {
             $availableFrom = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availableFrom']);

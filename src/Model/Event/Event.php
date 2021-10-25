@@ -10,13 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 
 interface Event extends Offer
 {
-    /**
-     * @return AudienceType
-     */
-    public function getAudienceType();
+    public function getAudienceType(): AudienceType;
 
-    /**
-     * @return PlaceReference
-     */
-    public function getPlaceReference();
+    public function getPlaceReference(): PlaceReference;
 }

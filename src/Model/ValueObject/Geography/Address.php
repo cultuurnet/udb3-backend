@@ -6,26 +6,13 @@ namespace CultuurNet\UDB3\Model\ValueObject\Geography;
 
 class Address
 {
-    /**
-     * @var Street
-     */
-    private $street;
+    private Street $street;
 
-    /**
-     * @var PostalCode
-     */
-    private $postalCode;
+    private PostalCode $postalCode;
 
-    /**
-     * @var Locality
-     */
-    private $locality;
+    private Locality $locality;
 
-    /**
-     * @var CountryCode
-     */
-    private $countryCode;
-
+    private CountryCode $countryCode;
 
     public function __construct(
         Street $street,
@@ -39,72 +26,48 @@ class Address
         $this->countryCode = $countryCode;
     }
 
-    /**
-     * @return Street
-     */
-    public function getStreet()
+    public function getStreet(): Street
     {
         return $this->street;
     }
 
-    /**
-     * @return Address
-     */
-    public function withStreet(Street $street)
+    public function withStreet(Street $street): Address
     {
         $c = clone $this;
         $c->street = $street;
         return $c;
     }
 
-    /**
-     * @return PostalCode
-     */
-    public function getPostalCode()
+    public function getPostalCode(): PostalCode
     {
         return $this->postalCode;
     }
 
-    /**
-     * @return Address
-     */
-    public function withPostalCode(PostalCode $postalCode)
+    public function withPostalCode(PostalCode $postalCode): Address
     {
         $c = clone $this;
         $c->postalCode = $postalCode;
         return $c;
     }
 
-    /**
-     * @return Locality
-     */
-    public function getLocality()
+    public function getLocality(): Locality
     {
         return $this->locality;
     }
 
-    /**
-     * @return Address
-     */
-    public function withLocality(Locality $locality)
+    public function withLocality(Locality $locality): Address
     {
         $c = clone $this;
         $c->locality = $locality;
         return $c;
     }
 
-    /**
-     * @return CountryCode
-     */
-    public function getCountryCode()
+    public function getCountryCode(): CountryCode
     {
         return $this->countryCode;
     }
 
-    /**
-     * @return Address
-     */
-    public function withCountryCode(CountryCode $countryCode)
+    public function withCountryCode(CountryCode $countryCode): Address
     {
         $c = clone $this;
         $c->countryCode = $countryCode;

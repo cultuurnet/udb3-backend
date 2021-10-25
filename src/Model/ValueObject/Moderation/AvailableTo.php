@@ -6,28 +6,23 @@ namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
+use DateTimeImmutable;
 use DateTimeInterface;
 
 class AvailableTo
 {
-    /**
-     * @return \DateTimeImmutable
-     */
-    public static function createFromCalendar(Calendar $calendar)
+    public static function createFromCalendar(Calendar $calendar): DateTimeImmutable
     {
         if ($calendar instanceof CalendarWithDateRange) {
             return $calendar->getEndDate();
-        } else {
-            return self::forever();
         }
+
+        return self::forever();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public static function forever()
+    public static function forever(): DateTimeImmutable
     {
-        return \DateTimeImmutable::createFromFormat(
+        return DateTimeImmutable::createFromFormat(
             DateTimeInterface::ATOM,
             '2100-01-01T00:00:00+00:00'
         );

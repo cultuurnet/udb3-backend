@@ -6,33 +6,25 @@ namespace CultuurNet\UDB3\Model\ValueObject\Integer\Behaviour;
 
 trait IsInteger
 {
-    /**
-     * @var int
-     */
-    private $value;
+    private int $value;
 
-    /**
-     * @return int
-     */
-    public function toInteger()
+    public function toInteger(): int
     {
         return $this->value;
     }
 
     /**
      * @param IsInteger|mixed $other
-     * @return bool
      */
-    public function sameAs($other)
+    public function sameAs($other): bool
     {
         return get_class($this) === get_class($other) && $this->toInteger() === $other->toInteger();
     }
 
     /**
      * @param IsInteger|mixed $other
-     * @return bool
      */
-    public function equals($other)
+    public function equals($other): bool
     {
         $this->guardSameType($other);
         return $this->toInteger() === $other->toInteger();
@@ -40,9 +32,8 @@ trait IsInteger
 
     /**
      * @param IsInteger|mixed $other
-     * @return bool
      */
-    public function lt($other)
+    public function lt($other): bool
     {
         $this->guardSameType($other);
         return $this->toInteger() < $other->toInteger();
@@ -50,9 +41,8 @@ trait IsInteger
 
     /**
      * @param IsInteger|mixed $other
-     * @return bool
      */
-    public function lte($other)
+    public function lte($other): bool
     {
         $this->guardSameType($other);
         return $this->toInteger() <= $other->toInteger();
@@ -60,9 +50,8 @@ trait IsInteger
 
     /**
      * @param IsInteger|mixed $other
-     * @return bool
      */
-    public function gt($other)
+    public function gt($other): bool
     {
         $this->guardSameType($other);
         return $this->toInteger() > $other->toInteger();
@@ -70,9 +59,8 @@ trait IsInteger
 
     /**
      * @param IsInteger|mixed $other
-     * @return bool
      */
-    public function gte($other)
+    public function gte($other): bool
     {
         $this->guardSameType($other);
         return $this->toInteger() >= $other->toInteger();
@@ -81,7 +69,7 @@ trait IsInteger
     /**
      * @throws \InvalidArgumentException
      */
-    private function guardSameType($other)
+    private function guardSameType($other): void
     {
         $thisClass = get_class($this);
         $otherClass = get_class($other);
@@ -94,17 +82,14 @@ trait IsInteger
     /**
      * @throws \InvalidArgumentException
      */
-    private function guardInteger($value)
+    private function guardInteger($value): void
     {
         if (!is_int($value)) {
             throw new \InvalidArgumentException('Given value should be an int, got ' . gettype($value) . ' instead.');
         }
     }
 
-    /**
-     * @param int $value
-     */
-    private function setValue($value)
+    private function setValue($value): void
     {
         $this->guardInteger($value);
         $this->value = $value;

@@ -8,37 +8,20 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class RegexUUIDParser implements UUIDParser
 {
-    /**
-     * @var string
-     */
-    private $regex;
+    private string $regex;
 
-    /**
-     * @var string
-     */
-    private $idName;
+    private string $idName;
 
-    /**
-     * @var int
-     */
-    private $matchIndex;
+    private int $matchIndex;
 
-    /**
-     * @param string $regex
-     * @param string $idName
-     * @param int $matchIndex
-     */
-    public function __construct($regex, $idName = 'ID', $matchIndex = 1)
+    public function __construct(string $regex, string $idName = 'ID', int $matchIndex = 1)
     {
         $this->regex = $regex;
         $this->idName = $idName;
         $this->matchIndex = $matchIndex;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function fromUrl(Url $url)
+    public function fromUrl(Url $url): UUID
     {
         $url = $url->toString();
 
@@ -47,8 +30,8 @@ class RegexUUIDParser implements UUIDParser
 
         if (count($matches) > 1) {
             return new UUID($matches[$this->matchIndex]);
-        } else {
-            throw new \InvalidArgumentException("No {$this->idName} found in given Url.");
         }
+
+        throw new \InvalidArgumentException("No {$this->idName} found in given Url.");
     }
 }

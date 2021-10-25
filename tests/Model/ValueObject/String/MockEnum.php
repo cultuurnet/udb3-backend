@@ -13,7 +13,7 @@ class MockEnum extends Enum
     /**
      * @return string[]
      */
-    public static function getAllowedValues()
+    public static function getAllowedValues(): array
     {
         return [
             'foo',

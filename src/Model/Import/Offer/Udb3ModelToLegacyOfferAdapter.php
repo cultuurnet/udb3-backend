@@ -21,39 +21,26 @@ use DateTimeImmutable;
 
 class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 {
-    /**
-     * @var Offer
-     */
-    private $offer;
-
+    private Offer $offer;
 
     public function __construct(Offer $offer)
     {
         $this->offer = $offer;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->offer->getId()->toString();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getMainLanguage()
+    public function getMainLanguage(): Language
     {
         return Language::fromUdb3ModelLanguage(
             $this->offer->getMainLanguage()
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         $translatedTitle = $this->offer->getTitle();
 
@@ -64,25 +51,19 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getDescription()
+    public function getDescription(): ?Description
     {
         $translatedDescription = $this->offer->getDescription();
 
         if ($translatedDescription) {
             $description = $translatedDescription->getTranslation($translatedDescription->getOriginalLanguage());
             return Description::fromUdb3ModelDescription($description);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getType()
+    public function getType(): EventType
     {
         $type = $this->offer->getTerms()
             ->filter(
@@ -96,10 +77,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         return EventType::fromUdb3ModelCategory($type);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getTheme()
+    public function getTheme(): ?Theme
     {
         $theme = $this->offer->getTerms()
             ->filter(
@@ -113,69 +91,51 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         return $theme ? Theme::fromUdb3ModelCategory($theme) : null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getCalendar()
+    public function getCalendar(): Calendar
     {
         return Calendar::fromUdb3ModelCalendar($this->offer->getCalendar());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getOrganizerId()
+    public function getOrganizerId(): ?string
     {
         $reference = $this->offer->getOrganizerReference();
 
         if ($reference) {
             return $reference->getOrganizerId()->toString();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAgeRange()
+    public function getAgeRange(): ?AgeRange
     {
         $ageRange = $this->offer->getAgeRange();
 
         if ($ageRange) {
             return AgeRange::fromUbd3ModelAgeRange($ageRange);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPriceInfo()
+    public function getPriceInfo(): ?PriceInfo
     {
         $priceInfo = $this->offer->getPriceInfo();
 
         if ($priceInfo) {
             return PriceInfo::fromUdb3ModelPriceInfo($priceInfo);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getBookingInfo()
+    public function getBookingInfo(): ?BookingInfo
     {
         $bookingInfo = $this->offer->getBookingInfo();
         return BookingInfo::fromUdb3ModelBookingInfo($bookingInfo);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getContactPoint()
+    public function getContactPoint(): ?ContactPoint
     {
         $contactPoint = $this->offer->getContactPoint();
         return ContactPoint::fromUdb3ModelContactPoint($contactPoint);
@@ -190,10 +150,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         return $availableFrom;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getTitleTranslations()
+    public function getTitleTranslations(): array
     {
         $titles = [];
 
@@ -208,10 +165,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         return $titles;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getDescriptionTranslations()
+    public function getDescriptionTranslations(): array
     {
         $descriptions = [];
 
