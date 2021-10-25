@@ -37,8 +37,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
             $commandBus,
             $uuidGenerator,
             $readRepository,
-            $commandFactory,
-            new PlaceThemeResolver()
+            $commandFactory
         );
 
         $this->writeRepository = $writeRepository;
