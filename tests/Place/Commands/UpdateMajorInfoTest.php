@@ -12,7 +12,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 

@@ -46,7 +46,6 @@ use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
