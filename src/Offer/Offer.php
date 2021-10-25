@@ -183,14 +183,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         );
     }
 
-    public function updateTheme(Theme $theme): void
-    {
-        if (!$this->themeId || $this->themeId !== $theme->getId()) {
-            $this->apply($this->createThemeUpdatedEvent($theme));
-        }
-    }
-
-
     public function updateFacilities(array $facilities): void
     {
         if (empty($this->facilities) || !$this->sameFacilities($this->facilities, $facilities)) {

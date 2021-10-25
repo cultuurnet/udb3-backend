@@ -376,6 +376,13 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
+    public function updateTheme(Theme $theme): void
+    {
+        if (!$this->themeId || $this->themeId !== $theme->getId()) {
+            $this->apply(new ThemeUpdated($this->eventId, $theme));
+        }
+    }
+
     public function applyAudienceUpdated(AudienceUpdated $audienceUpdated): void
     {
         $this->audience= $audienceUpdated->getAudience();

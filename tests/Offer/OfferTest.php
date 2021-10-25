@@ -130,32 +130,6 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_should_only_change_the_theme_when_updating_with_another_id(): void
-    {
-        $itemId = LegacyUUID::generateAsString();
-        $circusTheme = new Theme('0.52.0.0.0', 'Circus');
-        $musicalTheme = new Theme('1.4.0.0.0', 'Musical');
-
-        $this->scenario
-            ->given([
-                new ItemCreated($itemId),
-            ])
-            ->when(
-                function (Item $item) use ($circusTheme, $musicalTheme) {
-                    $item->updateTheme($circusTheme);
-                    $item->updateTheme($circusTheme);
-                    $item->updateTheme($musicalTheme);
-                }
-            )
-            ->then([
-                new ThemeUpdated($itemId, $circusTheme),
-                new ThemeUpdated($itemId, $musicalTheme),
-            ]);
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_facilities_when_changed(): void
     {
         $itemId = LegacyUUID::generateAsString();
