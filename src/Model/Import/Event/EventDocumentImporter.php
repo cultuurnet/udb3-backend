@@ -209,7 +209,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         return null;
     }
 
-    private function dispatchCommands(array $commands, string $entityId)
+    private function dispatchCommands(array $commands, string $entityId): ?string
     {
         $logContext = [
             'entity_id' => $entityId,
@@ -223,20 +223,26 @@ class EventDocumentImporter implements DocumentImporterInterface
             ]
         );
 
+        $lastCommandId = null;
+
         foreach ($commands as $command) {
+            /** @var string|null $commandId */
             $commandId = $this->commandBus->dispatch($command);
-            if (empty($commandId)) {
-                $commandId = '(((empty)))';
-            }
 
             $this->logger->log(
                 LogLevel::DEBUG,
                 'dispatched command: {class} with id {command_id}, targeting event {entity_id}',
                 $logContext + [
                     'class' => get_class($command),
-                    'command_id' => $commandId,
+                    'command_id' => $commandId ?? '(((empty)))',
                 ]
             );
+
+            if ($commandId) {
+                $lastCommandId = $commandId;
+            }
         }
+
+        return $lastCommandId;
     }
 }
