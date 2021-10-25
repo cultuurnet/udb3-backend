@@ -214,8 +214,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
             $updateMajorInfo->getTitle(),
             $updateMajorInfo->getEventType(),
             $updateMajorInfo->getAddress(),
-            $updateMajorInfo->getCalendar(),
-            $updateMajorInfo->getTheme()
+            $updateMajorInfo->getCalendar()
         );
 
         $this->offerRepository->save($place);
