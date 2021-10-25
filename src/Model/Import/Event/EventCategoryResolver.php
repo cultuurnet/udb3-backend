@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\LegacyBridgeCategoryResolver;
 
-class EventLegacyBridgeCategoryResolver extends LegacyBridgeCategoryResolver
+class EventCategoryResolver extends LegacyBridgeCategoryResolver
 {
     public function __construct()
     {

@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -138,6 +139,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->bookingInfo = null;
     }
 
+    abstract public static function getOfferType(): OfferType;
+
     public function changeOwner(string $newOwnerId): void
     {
         // Will always be true for the first call to changeOwner() since we have no way to know who the creator was
@@ -155,11 +158,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged;
 
-
-    public function updateType(EventType $type): void
+    public function updateType(Category $category): void
     {
-        if (!$this->typeId || $this->typeId !== $type->getId()) {
-            $this->apply($this->createTypeUpdatedEvent($type));
+        if (!$this->typeId || $this->typeId !== $category->getId()->toString()) {
+            $this->apply($this->createTypeUpdatedEvent(EventType::fromUdb3ModelCategory($category)));
         }
     }
 

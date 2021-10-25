@@ -46,6 +46,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
@@ -57,7 +58,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
-use CultuurNet\UDB3\Place\Commands\UpdateType;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -146,7 +146,7 @@ class PlaceDocumentImporterTest extends TestCase
 
         $this->termPreProcessingImporter = new TermPreProcessingDocumentImporter(
             $this->placeDocumentImporter,
-            new PlaceLegacyBridgeCategoryResolver()
+            new PlaceCategoryResolver()
         );
 
         $this->importer = $this->termPreProcessingImporter;
@@ -316,7 +316,7 @@ class PlaceDocumentImporterTest extends TestCase
 
         $expectedCommands = [
             new UpdateTitle($id, new LegacyLanguage('nl'), new Title('Voorbeeld naam')),
-            new UpdateType($id, new EventType('0.14.0.0.0', 'Monument')),
+            new UpdateType($id, '0.14.0.0.0'),
             new UpdateAddress(
                 $id,
                 new Address(

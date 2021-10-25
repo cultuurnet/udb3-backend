@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Import\Validation\Event;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
-use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceReferenceExistsValidator;
 use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\CategoriesExistValidator;
 use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\EventTypeCountValidator;
@@ -39,7 +39,7 @@ class EventImportValidator extends EventValidator
             new Key(
                 'terms',
                 new AllOf(
-                    new CategoriesExistValidator(new EventLegacyBridgeCategoryResolver(), 'event'),
+                    new CategoriesExistValidator(new EventCategoryResolver(), 'event'),
                     new EventTypeCountValidator(),
                     new ThemeCountValidator()
                 ),

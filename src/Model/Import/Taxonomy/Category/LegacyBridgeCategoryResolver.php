@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Taxonomy\Category;
 
+use CultuurNet\UDB3\Category as LegacyCategory;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -41,36 +42,56 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
         $this->facilityResolver = $facilityResolver;
     }
 
-    public function byId(CategoryID $categoryID)
+    public function byId(CategoryID $categoryID): ?Category
     {
-        $category = null;
-
-        try {
-            $category = $this->typeResolver->byId(new StringLiteral($categoryID->toString()));
-        } catch (\Exception $e) {
-            // Do nothing.
+        $eventtype = $this->byIdInDomain($categoryID, new CategoryDomain('eventtype'));
+        if ($eventtype) {
+            return $eventtype;
         }
 
-        try {
-            $category = $this->themeResolver->byId(new StringLiteral($categoryID->toString()));
-        } catch (\Exception $e) {
-            // Do nothing.
+        $theme = $this->byIdInDomain($categoryID, new CategoryDomain('theme'));
+        if ($theme) {
+            return $theme;
         }
 
-        try {
-            $category = $this->facilityResolver->byId(new StringLiteral($categoryID->toString()));
-        } catch (\Exception $e) {
-            // Do nothing.
+        $facility = $this->byIdInDomain($categoryID, new CategoryDomain('facility'));
+        if ($facility) {
+            return $theme;
         }
 
-        if (!$category) {
+        return null;
+    }
+
+    public function byIdInDomain(CategoryID $categoryID, CategoryDomain $domain): ?Category
+    {
+        $resolverMap = [
+            'eventtype' => $this->typeResolver,
+            'theme' => $this->themeResolver,
+            'facility' => $this->facilityResolver,
+        ];
+
+        if (!isset($resolverMap[$domain->toString()])) {
             return null;
         }
 
+        /** @var TypeResolverInterface|ThemeResolverInterface|OfferFacilityResolverInterface $resolver */
+        $resolver = $resolverMap[$domain->toString()];
+
+        try {
+            /** @var LegacyCategory $legacyCategory */
+            $legacyCategory = $resolver->byId(new StringLiteral($categoryID->toString()));
+            return $this->convertLegacyCategory($legacyCategory);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    private function convertLegacyCategory(LegacyCategory $legacyCategory): Category
+    {
         return new Category(
-            $categoryID,
-            new CategoryLabel($category->getLabel()),
-            new CategoryDomain($category->getDomain())
+            new CategoryID($legacyCategory->getId()),
+            new CategoryLabel($legacyCategory->getLabel()),
+            new CategoryDomain($legacyCategory->getDomain())
         );
     }
 }

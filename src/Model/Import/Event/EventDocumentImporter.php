@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
-use CultuurNet\UDB3\Event\Commands\UpdateType;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
@@ -34,6 +33,7 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -135,7 +135,7 @@ class EventDocumentImporter implements DocumentImporterInterface
                 $title
             );
 
-            $commands[] = new UpdateType($id, $type);
+            $commands[] = new UpdateType($id, $type->getId());
             $commands[] = new UpdateLocation($id, $location);
             $commands[] = new UpdateCalendar($id, $calendar);
 

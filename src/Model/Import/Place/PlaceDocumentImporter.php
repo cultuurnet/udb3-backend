@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
@@ -27,7 +28,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateTheme;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
-use CultuurNet\UDB3\Place\Commands\UpdateType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
@@ -125,7 +125,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
                 $title
             );
 
-            $commands[] = new UpdateType($id, $type);
+            $commands[] = new UpdateType($id, $type->getId());
             $commands[] = new UpdateAddress($id, $address, $mainLanguage);
             $commands[] = new UpdateCalendar($id, $calendar);
 
