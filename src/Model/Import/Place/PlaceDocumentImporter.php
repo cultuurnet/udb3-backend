@@ -96,7 +96,6 @@ class PlaceDocumentImporter implements DocumentImporterInterface
                 $type,
                 $address,
                 $calendar,
-                null,
                 $publishDate
             );
 
