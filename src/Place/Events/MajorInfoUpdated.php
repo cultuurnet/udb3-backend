@@ -43,8 +43,7 @@ final class MajorInfoUpdated extends PlaceEvent
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        ?Theme $theme = null
+        Calendar $calendar
     ) {
         parent::__construct($placeId);
 
@@ -52,7 +51,7 @@ final class MajorInfoUpdated extends PlaceEvent
         $this->eventType = $eventType;
         $this->address = $address;
         $this->calendar = $calendar;
-        $this->theme = $theme;
+        $this->theme = null;
     }
 
     public function getTitle(): Title
@@ -82,14 +81,9 @@ final class MajorInfoUpdated extends PlaceEvent
 
     public function serialize(): array
     {
-        $theme = null;
-        if ($this->getTheme() !== null) {
-            $theme = $this->getTheme()->serialize();
-        }
         return parent::serialize() + [
             'title' => (string)$this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
-            'theme' => $theme,
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),
         ];
@@ -102,8 +96,7 @@ final class MajorInfoUpdated extends PlaceEvent
             new Title($data['title']),
             EventType::deserialize($data['event_type']),
             Address::deserialize($data['address']),
-            Calendar::deserialize($data['calendar']),
-            empty($data['theme']) ? null : Theme::deserialize($data['theme'])
+            Calendar::deserialize($data['calendar'])
         );
     }
 }

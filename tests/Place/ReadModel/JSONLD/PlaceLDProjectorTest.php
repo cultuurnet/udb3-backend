@@ -698,8 +698,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
         );
-        $theme = new Theme('123', 'theme label');
-        $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $this->address, $calendar, $theme);
+        $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $this->address, $calendar);
 
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://io.uitdatabank.be/place/foo';
@@ -747,11 +746,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 'id' => '0.50.4.0.1',
                 'label' => 'concertnew',
                 'domain' => 'eventtype',
-            ],
-            (object)[
-                'id' => '123',
-                'label' => 'theme label',
-                'domain' => 'theme',
             ],
         ];
         $expectedJsonLD->startDate = '2015-01-26T13:25:21+01:00';
