@@ -204,9 +204,7 @@ class EventDocumentImporter implements DocumentImporterInterface
             $commands[] = new DeleteCurrentOrganizer($id);
         }
 
-        $this->dispatchCommands($commands, $id);
-
-        return null;
+        return $this->dispatchCommands($commands, $id);
     }
 
     private function dispatchCommands(array $commands, string $entityId): ?string
