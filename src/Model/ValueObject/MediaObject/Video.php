@@ -84,18 +84,9 @@ final class Video
             return false;
         }
 
-        if ($this->copyrightHolder === null && $video->getCopyrightHolder() !== null) {
-            return false;
-        }
+        $copyrightHolder = $this->copyrightHolder ? $this->copyrightHolder->toString() : null;
+        $otherCopyrightHolder = $video->getCopyrightHolder() ? $video->getCopyrightHolder()->toString() : null;
 
-        if ($this->copyrightHolder !== null && $video->getCopyrightHolder() === null) {
-            return false;
-        }
-
-        if ($this->copyrightHolder !== null && !$this->copyrightHolder->sameAs($video->getCopyrightHolder())) {
-            return false;
-        }
-
-        return true;
+        return $copyrightHolder === $otherCopyrightHolder;
     }
 }
