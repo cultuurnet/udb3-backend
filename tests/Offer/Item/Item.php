@@ -43,7 +43,6 @@ use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\OwnerChanged;
 use CultuurNet\UDB3\Offer\Item\Events\PriceInfoUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
@@ -266,11 +265,6 @@ class Item extends Offer
     protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
     {
         return new TypeUpdated($this->id, $type);
-    }
-
-    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
-    {
-        return new ThemeUpdated($this->id, $theme);
     }
 
     protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated
