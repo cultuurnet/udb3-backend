@@ -108,10 +108,15 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         $commands[] = (new ImportLabels($id, $import->getLabels()))
             ->withLabelsToKeepIfAlreadyOnOrganizer($lockedLabels);
 
+        $lastCommandId = null;
         foreach ($commands as $command) {
-            $this->commandBus->dispatch($command);
+            /** @var string|null $commandId */
+            $commandId = $this->commandBus->dispatch($command);
+            if ($commandId) {
+                $lastCommandId = $commandId;
+            }
         }
 
-        return null;
+        return $lastCommandId;
     }
 }
