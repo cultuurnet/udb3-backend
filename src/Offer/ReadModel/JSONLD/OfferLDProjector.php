@@ -330,20 +330,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @return JsonDocument
-     */
-    protected function applyThemeUpdated(AbstractThemeUpdated $themeUpdated)
-    {
-        $document = $this->loadDocumentFromRepository($themeUpdated);
-
-        return $this->updateTerm($document, $themeUpdated->getTheme());
-    }
-
-    /**
      *
      * @return JsonDocument
      */
-    private function updateTerm(JsonDocument $document, Category $category)
+    protected function updateTerm(JsonDocument $document, Category $category)
     {
         $offerLD = $document->getBody();
 
