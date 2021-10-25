@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Taxonomy\Category;
 
-use CultuurNet\UDB3\Event\EventFacilityResolver;
-use CultuurNet\UDB3\Event\EventThemeResolver;
-use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
