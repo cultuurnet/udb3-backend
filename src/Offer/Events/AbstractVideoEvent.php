@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
-abstract class AbstractVideoAdded implements Serializable
+abstract class AbstractVideoEvent implements Serializable
 {
     private string $itemId;
 
@@ -32,7 +32,7 @@ abstract class AbstractVideoAdded implements Serializable
         return $this->video;
     }
 
-    public static function deserialize(array $data): AbstractVideoAdded
+    public static function deserialize(array $data): AbstractVideoEvent
     {
         $video = new Video(
             $data['video']['id'],

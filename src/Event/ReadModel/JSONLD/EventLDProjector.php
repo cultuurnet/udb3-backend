@@ -51,6 +51,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
+use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
@@ -563,6 +564,11 @@ class EventLDProjector extends OfferLDProjector implements
     protected function getVideoDeletedClassName(): string
     {
         return VideoDeleted::class;
+    }
+
+    protected function getVideoUpdatedClassName(): string
+    {
+        return VideoUpdated::class;
     }
 
     /**

@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class Video
 {
+    public const REGEX = '/^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))/';
+
     private string $id;
 
     private Url $url;
@@ -52,5 +54,34 @@ final class Video
     public function getCopyrightHolder(): ?CopyrightHolder
     {
         return $this->copyrightHolder;
+    }
+
+    public function sameAs(Video $video): bool
+    {
+        if ($this->id !== $video->getId()) {
+            return false;
+        }
+
+        if (!$this->url->sameAs($video->url)) {
+            return false;
+        }
+
+        if (!$this->language->sameAs($video->language)) {
+            return false;
+        }
+
+        if ($this->copyrightHolder === null && $video->getCopyrightHolder() !== null) {
+            return false;
+        }
+
+        if ($this->copyrightHolder !== null && $video->getCopyrightHolder() === null) {
+            return false;
+        }
+
+        if (!$this->copyrightHolder->sameAs($video->getCopyrightHolder())) {
+            return false;
+        }
+
+        return true;
     }
 }

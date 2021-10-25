@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -50,8 +49,8 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractVideoAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageAdded;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageRemoved;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesEvent;
@@ -643,6 +642,49 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function importVideos(VideoCollection $importVideos): void
+    {
+        $videoCompareIds = static fn (Video $v1, Video $v2) => strcmp($v1->getId(), $v2->getId());
+
+        $newVideos = array_udiff(
+            $importVideos->toArray(),
+            $this->videos->toArray(),
+            $videoCompareIds
+        );
+
+        $deletedVideos = array_udiff(
+            $this->videos->toArray(),
+            $importVideos->toArray(),
+            $videoCompareIds
+        );
+
+        $updatedVideos = array_uintersect(
+            $importVideos->toArray(),
+            $this->videos->toArray(),
+            static function (Video $v1, Video $v2) {
+                $cmp = strcmp($v1->getId(), $v2->getId());
+
+                if ($cmp !== 0) {
+                    return $cmp;
+                }
+
+                return $v1->sameAs($v2) ? 1 : 0;
+            }
+        );
+
+        foreach ($newVideos as $newVideo) {
+            $this->apply($this->createVideoAddedEvent($newVideo));
+        }
+
+        foreach ($deletedVideos as $deletedVideo) {
+            $this->apply($this->createVideoDeletedEvent($deletedVideo->getId()));
+        }
+
+        foreach ($updatedVideos as $updatedVideo) {
+            $this->apply($this->createVideoUpdatedEvent($updatedVideo));
+        }
+    }
+
     public function delete(): void
     {
         $this->apply(
@@ -833,7 +875,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = $this->images->withMain($mainImageSelected->getImage());
     }
 
-    protected function applyVideoAdded(AbstractVideoAdded $videoAdded): void
+    protected function applyVideoAdded(AbstractVideoEvent $videoAdded): void
     {
         $this->videos = $this->videos->with($videoAdded->getVideo());
     }
@@ -843,6 +885,16 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->videos = $this->videos->filter(
             fn (Video $video) => $video->getId() !== $videoDeleted->getVideoId()
         );
+    }
+
+    protected function applyVideoUpdated(AbstractVideoEvent $videoUpdated): void
+    {
+        $videos = array_map(
+            static fn (Video $video) => $video->getId() === $videoUpdated->getVideo()->getId() ? $videoUpdated->getVideo() : $video,
+            $this->videos->toArray()
+        );
+
+        $this->videos = new VideoCollection(...$videos);
     }
 
     protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated): void
@@ -910,9 +962,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createMainImageSelectedEvent(Image $image): AbstractMainImageSelected;
 
-    abstract protected function createVideoAddedEvent(Video $video): AbstractVideoAdded;
+    abstract protected function createVideoAddedEvent(Video $video): AbstractVideoEvent;
 
     abstract protected function createVideoDeletedEvent(string $videoId): AbstractVideoDeleted;
+
+    abstract protected function createVideoUpdatedEvent(Video $video): AbstractVideoEvent;
 
     abstract protected function createOfferDeletedEvent(): AbstractOfferDeleted;
 

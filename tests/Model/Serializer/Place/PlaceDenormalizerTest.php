@@ -43,6 +43,8 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -794,6 +796,19 @@ class PlaceDenormalizerTest extends TestCase
                     'thumbnailUrl' => 'https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png',
                 ],
             ],
+            'videos' => [
+                [
+                    'id' => '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                    'url' => 'https://vimeo.com/98765432',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'publiq',
+                ],
+                [
+                    'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                    'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
+                    'language' => 'fr',
+                ],
+            ],
             'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
@@ -926,6 +941,20 @@ class PlaceDenormalizerTest extends TestCase
                         ),
                         new Description('Example image 2'),
                         new CopyrightHolder('Bob'),
+                        new Language('fr')
+                    )
+                )
+            )
+            ->withVideos(
+                new VideoCollection(
+                    (new Video(
+                        '5c549a24-bb97-4f83-8ea5-21a6d56aff72',
+                        new Url('https://vimeo.com/98765432'),
+                        new Language('nl'),
+                    ))->withCopyrightHolder(new CopyrightHolder('publiq')),
+                    new Video(
+                        '91c75325-3830-4000-b580-5778b2de4548',
+                        new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
                         new Language('fr')
                     )
                 )

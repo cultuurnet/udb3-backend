@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -87,6 +88,8 @@ abstract class ImmutableOffer implements Offer
      */
     private $mediaObjectReferences;
 
+    private VideoCollection $videos;
+
     /**
      * @var WorkflowStatus
      */
@@ -117,6 +120,7 @@ abstract class ImmutableOffer implements Offer
         $this->bookingInfo = new BookingInfo();
         $this->contactPoint = new ContactPoint();
         $this->mediaObjectReferences = new MediaObjectReferences();
+        $this->videos = new VideoCollection();
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
@@ -374,6 +378,18 @@ abstract class ImmutableOffer implements Offer
         $c = clone $this;
         $c->mediaObjectReferences = $mediaObjectReferences;
         return $c;
+    }
+
+    public function getVideos(): VideoCollection
+    {
+        return $this->videos;
+    }
+
+    public function withVideos(VideoCollection $videos): ImmutableOffer
+    {
+        $clone = clone $this;
+        $clone->videos = $videos;
+        return $clone;
     }
 
     /**
