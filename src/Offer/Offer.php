@@ -642,10 +642,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             return;
         }
 
-        if ($url === null && $language === null && $copyrightHolder === null) {
-            return;
-        }
-
         /** @var Video $updatedVideo */
         $updatedVideo = $videosWithSameId->getFirst();
 
@@ -659,6 +655,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         if ($copyrightHolder) {
             $updatedVideo = $updatedVideo->withCopyrightHolder($copyrightHolder);
+        }
+
+        if ($updatedVideo->sameAs($videosWithSameId->getFirst())) {
+            return;
         }
 
         $this->apply($this->createVideoUpdatedEvent($updatedVideo));
