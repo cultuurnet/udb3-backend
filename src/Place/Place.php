@@ -128,7 +128,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
             $eventType,
             $address,
             $calendar,
-            null,
             $publicationDate
         ));
 

@@ -242,7 +242,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
                     $eventType,
                     $address,
                     $calendar,
-                    null,
                     $publicationDate
                 ),
             ],

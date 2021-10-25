@@ -690,26 +690,6 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_theme_after_place_created()
-    {
-        $this->scenario
-            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
-            ->given([
-                $this->createPlaceCreatedEventWithTheme(),
-            ])
-            ->when(
-                function (Place $place) {
-                    $place->updateTheme(
-                        new Theme('1.1.1', 'Fake theme')
-                    );
-                }
-            )
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
     public function it_can_be_marked_as_duplicate()
     {
         $placeCreated = $this->createPlaceCreatedEvent();
@@ -869,31 +849,6 @@ class PlaceTest extends AggregateRootScenarioTestCase
             new EventType('0.1.1', 'Jeugdhuis'),
             $address,
             new Calendar(CalendarType::PERMANENT())
-        );
-    }
-
-    /**
-     * @return PlaceCreated
-     */
-    private function createPlaceCreatedEventWithTheme()
-    {
-        $placeId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-
-        $address = new Address(
-            new Street('Eenmeilaan'),
-            new PostalCode('3010'),
-            new Locality('Kessel-Lo'),
-            Country::fromNative('BE')
-        );
-
-        return  new PlaceCreated(
-            $placeId,
-            new Language('nl'),
-            new Title('Test place'),
-            new EventType('0.1.1', 'Jeugdhuis'),
-            $address,
-            new Calendar(CalendarType::PERMANENT()),
-            new Theme('1.1.1', 'Fake theme')
         );
     }
 }

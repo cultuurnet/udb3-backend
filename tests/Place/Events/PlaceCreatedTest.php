@@ -58,7 +58,6 @@ class PlaceCreatedTest extends TestCase
             new EventType('id', 'label'),
             $this->address,
             new Calendar(CalendarType::PERMANENT()),
-            new Theme('id', 'label'),
             $this->publicationDate
         );
     }
@@ -111,17 +110,6 @@ class PlaceCreatedTest extends TestCase
 
     /**
      * @test
-     */
-    public function it_stores_a_place_theme()
-    {
-        $this->assertEquals(
-            new Theme('id', 'label'),
-            $this->placeCreated->getTheme()
-        );
-    }
-
-    /**
-     * @test
      * @dataProvider serializationDataProvider
      */
     public function it_can_be_serialized_into_an_array(
@@ -156,7 +144,6 @@ class PlaceCreatedTest extends TestCase
                     'place_id' => 'test 456',
                     'main_language' => 'es',
                     'title' => 'title',
-                    'theme' => null,
                     'address' => [
                         'streetAddress' => 'De straat',
                         'postalCode' => '9620',
@@ -200,11 +187,6 @@ class PlaceCreatedTest extends TestCase
                     'place_id' => 'test 456',
                     'main_language' => 'es',
                     'title' => 'title',
-                    'theme' => [
-                        'id' => '123',
-                        'label' => 'foo',
-                        'domain' => 'theme',
-                    ],
                     'address' => [
                         'streetAddress' => 'De straat',
                         'postalCode' => '9620',
@@ -240,8 +222,7 @@ class PlaceCreatedTest extends TestCase
                     ),
                     new Calendar(
                         CalendarType::PERMANENT()
-                    ),
-                    new Theme('123', 'foo')
+                    )
                 ),
             ],
             [
@@ -249,7 +230,6 @@ class PlaceCreatedTest extends TestCase
                     'place_id' => 'test 456',
                     'main_language' => 'es',
                     'title' => 'title',
-                    'theme' => null,
                     'address' => [
                         'streetAddress' => 'De straat',
                         'postalCode' => '9620',
@@ -286,7 +266,6 @@ class PlaceCreatedTest extends TestCase
                     new Calendar(
                         CalendarType::PERMANENT()
                     ),
-                    null,
                     \DateTimeImmutable::createFromFormat(
                         DateTimeInterface::ATOM,
                         '2016-08-01T00:00:00+02:00'
