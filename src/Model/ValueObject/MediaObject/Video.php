@@ -92,7 +92,7 @@ final class Video
             return false;
         }
 
-        if (!$this->copyrightHolder->sameAs($video->getCopyrightHolder())) {
+        if ($this->copyrightHolder !== null && !$this->copyrightHolder->sameAs($video->getCopyrightHolder())) {
             return false;
         }
 
