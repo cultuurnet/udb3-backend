@@ -72,6 +72,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
+use CultuurNet\UDB3\Offer\Events\AbstractThemeUpdated;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
@@ -376,6 +377,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
+    public function applyAudienceUpdated(AudienceUpdated $audienceUpdated): void
+    {
+        $this->audience= $audienceUpdated->getAudience();
+    }
+
     public function updateTheme(Theme $theme): void
     {
         if (!$this->themeId || $this->themeId !== $theme->getId()) {
@@ -383,9 +389,9 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-    public function applyAudienceUpdated(AudienceUpdated $audienceUpdated): void
+    protected function applyThemeUpdated(ThemeUpdated $themeUpdated): void
     {
-        $this->audience= $audienceUpdated->getAudience();
+        $this->themeId = $themeUpdated->getTheme()->getId();
     }
 
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
