@@ -73,7 +73,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         $this->logger = $logger;
     }
 
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): ?string
     {
         $id = $decodedDocument->getId();
 
@@ -205,6 +205,8 @@ class EventDocumentImporter implements DocumentImporterInterface
         }
 
         $this->dispatchCommands($commands, $id);
+
+        return null;
     }
 
     private function dispatchCommands(array $commands, string $entityId)

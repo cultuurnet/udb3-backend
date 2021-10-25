@@ -64,7 +64,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
         $this->shouldApprove = $shouldApprove;
     }
 
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): ?string
     {
         $id = $decodedDocument->getId();
 
@@ -191,5 +191,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
         foreach ($commands as $command) {
             $this->commandBus->dispatch($command);
         }
+
+        return null;
     }
 }

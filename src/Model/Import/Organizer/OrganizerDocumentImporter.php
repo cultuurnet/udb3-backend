@@ -44,7 +44,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         $this->lockedLabelRepository = $lockedLabelRepository;
     }
 
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): void
+    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): ?string
     {
         $id = $decodedDocument->getId();
 
@@ -111,5 +111,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         foreach ($commands as $command) {
             $this->commandBus->dispatch($command);
         }
+
+        return null;
     }
 }
