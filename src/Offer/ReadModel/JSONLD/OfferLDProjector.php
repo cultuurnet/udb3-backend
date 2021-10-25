@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
 use CultuurNet\UDB3\Offer\Events\AbstractOrganizerDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractOrganizerUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractPriceInfoUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractThemeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTitleTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
