@@ -171,8 +171,7 @@ class PlaceDocumentImporterTest extends TestCase
                 new Locality('Brussel'),
                 new Country(CountryCode::fromNative('BE'))
             ),
-            new Calendar(CalendarType::PERMANENT()),
-            null
+            new Calendar(CalendarType::PERMANENT())
         );
         $place->publish(\DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'));
 
@@ -246,8 +245,7 @@ class PlaceDocumentImporterTest extends TestCase
                 new Locality('Brussel'),
                 new Country(CountryCode::fromNative('BE'))
             ),
-            new Calendar(CalendarType::PERMANENT()),
-            null
+            new Calendar(CalendarType::PERMANENT())
         );
         $place->publish(\DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'));
         $place->approve();

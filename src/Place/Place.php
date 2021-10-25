@@ -121,7 +121,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         EventType $eventType,
         Address $address,
         Calendar $calendar,
-        Theme $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
         $place = new self();
@@ -132,7 +131,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
             $eventType,
             $address,
             $calendar,
-            $theme,
+            null,
             $publicationDate
         ));
 

@@ -60,7 +60,6 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
             $eventType,
             $address,
             $calendar,
-            null,
             $this->publicationDate
         );
 
