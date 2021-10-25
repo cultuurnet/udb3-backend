@@ -62,7 +62,5 @@ interface OfferCommandFactoryInterface
 
     public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate;
 
-    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme;
-
     public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities;
 }

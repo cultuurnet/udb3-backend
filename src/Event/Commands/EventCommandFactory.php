@@ -43,11 +43,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCommandFactory implements OfferCommandFactoryInterface
 {
-    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme
-    {
-        return new UpdateTheme($id, $theme);
-    }
-
     public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities
     {
         return new UpdateFacilities($id, $facilities);

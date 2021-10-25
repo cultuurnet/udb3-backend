@@ -147,11 +147,6 @@ class PlaceCommandFactory implements OfferCommandFactoryInterface
         return new FlagAsDuplicate($id);
     }
 
-    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme
-    {
-        return new UpdateTheme($id, $theme);
-    }
-
     public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities
     {
         return new UpdateFacilities($id, $facilities);
