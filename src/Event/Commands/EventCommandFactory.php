@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTheme;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
@@ -37,7 +36,6 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Theme;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
