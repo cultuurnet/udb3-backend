@@ -109,8 +109,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected ?string $typeId = null;
 
-    protected ?string $themeId = null;
-
     protected array $facilities;
 
     protected ?ContactPoint $contactPoint = null;

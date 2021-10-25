@@ -94,6 +94,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     private ?LocationId $locationId = null;
 
+    private ?string $themeId = null;
+
     public static function getOfferType(): OfferType
     {
         return OfferType::EVENT();
