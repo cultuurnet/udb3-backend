@@ -13,6 +13,6 @@ class PlaceCategoryResolver extends LegacyBridgeCategoryResolver
 {
     public function __construct()
     {
-        parent::__construct(new PlaceTypeResolver(), new PlaceThemeResolver(), new PlaceFacilityResolver());
+        parent::__construct(new PlaceTypeResolver(), new PlaceFacilityResolver(), null);
     }
 }

@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Model\Import\Taxonomy\Category;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\EventTypeResolver;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -19,11 +21,7 @@ class LegacyBridgeCategoryResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->legacyBridgeCategoryResolver = new LegacyBridgeCategoryResolver(
-            new EventTypeResolver(),
-            new EventThemeResolver(),
-            new EventFacilityResolver()
-        );
+        $this->legacyBridgeCategoryResolver = new EventCategoryResolver();
     }
 
     /**
@@ -75,5 +73,23 @@ class LegacyBridgeCategoryResolverTest extends TestCase
 
         $this->assertNull($this->legacyBridgeCategoryResolver->byId($id));
         $this->assertNull($this->legacyBridgeCategoryResolver->byIdInDomain($id, new CategoryDomain('eventtype')));
+    }
+
+    /**
+     * @test
+     */
+    public function it_works_without_theme_resolver(): void
+    {
+        // "Actie en avontuur" theme.
+        $id = new CategoryID('1.7.2.0.0');
+
+        // Not found in PlaceCategoryResolver
+        $resolver = new PlaceCategoryResolver();
+        $this->assertNull($resolver->byId($id));
+        $this->assertNull($resolver->byIdInDomain($id, new CategoryDomain('theme')));
+
+        // Found in EventCategoryResolver that uses a ThemeResolver
+        $this->assertInstanceOf(Category::class, $this->legacyBridgeCategoryResolver->byId($id));
+        $this->assertInstanceOf(Category::class, $this->legacyBridgeCategoryResolver->byIdInDomain($id, new CategoryDomain('theme')));
     }
 }
