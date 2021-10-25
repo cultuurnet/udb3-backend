@@ -29,8 +29,7 @@ interface PlaceEditingServiceInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     );
 
     /**
@@ -41,8 +40,7 @@ interface PlaceEditingServiceInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     );
 
     /**

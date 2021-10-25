@@ -118,7 +118,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $address = new Address($street, $postalCode, $locality, $country);
         $calendar = new Calendar(CalendarType::PERMANENT());
-        $theme = null;
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -131,8 +130,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
             $title,
             $eventType,
             $address,
-            $calendar,
-            $theme
+            $calendar
         );
 
         $this->assertEquals(
@@ -143,8 +141,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
                     $title,
                     $eventType,
                     $address,
-                    $calendar,
-                    $theme
+                    $calendar
                 ),
             ],
             $this->eventStore->getEvents()
@@ -167,7 +164,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $address = new Address($street, $postalCode, $locality, $country);
         $calendar = new Calendar(CalendarType::PERMANENT());
-        $theme = null;
 
         $publicationDate = new \DateTimeImmutable();
         $service = $this->placeEditingService->withFixedPublicationDateForNewOffers($publicationDate);
@@ -183,8 +179,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
             $title,
             $eventType,
             $address,
-            $calendar,
-            $theme
+            $calendar
         );
 
         $this->assertEquals(
@@ -195,8 +190,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
                     $title,
                     $eventType,
                     $address,
-                    $calendar,
-                    $theme
+                    $calendar
                 ),
                 new Published($placeId, $publicationDate),
                 new Approved($placeId),
@@ -222,7 +216,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $eventType = new EventType('0.50.4.0.0', 'concert');
         $address = new Address($street, $postalCode, $locality, $country);
         $calendar = new Calendar(CalendarType::PERMANENT());
-        $theme = null;
 
         $this->uuidGenerator->expects($this->once())
           ->method('generate')
@@ -237,8 +230,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
             $title,
             $eventType,
             $address,
-            $calendar,
-            $theme
+            $calendar
         );
 
         $this->assertEquals(
@@ -250,7 +242,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
                     $eventType,
                     $address,
                     $calendar,
-                    $theme,
+                    null,
                     $publicationDate
                 ),
             ],

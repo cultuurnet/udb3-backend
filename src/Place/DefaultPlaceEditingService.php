@@ -51,8 +51,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ) {
         $id = $this->uuidGenerator->generate();
 
@@ -63,7 +62,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
             $eventType,
             $address,
             $calendar,
-            $theme,
+            null,
             $this->publicationDate
         );
 
@@ -80,8 +79,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ) {
         $id = $this->uuidGenerator->generate();
 
@@ -91,8 +89,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
             $title,
             $eventType,
             $address,
-            $calendar,
-            $theme
+            $calendar
         );
 
         $publicationDate = $this->publicationDate ? $this->publicationDate : new \DateTimeImmutable();
