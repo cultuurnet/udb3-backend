@@ -216,11 +216,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $eventType->toJsonLd(),
         ];
 
-        $theme = $placeCreated->getTheme();
-        if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
-        }
-
         $recordedOn = $domainMessage->getRecordedOn()->toString();
         $jsonLD->created = \DateTime::createFromFormat(
             DateTime::FORMAT_STRING,

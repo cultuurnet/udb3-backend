@@ -32,11 +32,6 @@ final class PlaceCreated extends PlaceEvent
     private $eventType;
 
     /**
-     * @var Theme
-     */
-    private $theme;
-
-    /**
      * @var Address
      */
     private $address;
@@ -70,7 +65,6 @@ final class PlaceCreated extends PlaceEvent
         $this->eventType = $eventType;
         $this->address = $address;
         $this->calendar = $calendar;
-        $this->theme = null;
         $this->publicationDate = $publicationDate;
     }
 
@@ -87,11 +81,6 @@ final class PlaceCreated extends PlaceEvent
     public function getEventType(): EventType
     {
         return $this->eventType;
-    }
-
-    public function getTheme(): ?Theme
-    {
-        return $this->theme;
     }
 
     public function getCalendar(): Calendar
