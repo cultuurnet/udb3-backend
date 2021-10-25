@@ -959,7 +959,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             'Update url and language' => [
                 new Url('https://www.vimeo.com/123'),
                 new Language('fr'),
-                null
+                null,
             ],
             'Update copyright holder and language' => [
                 null,

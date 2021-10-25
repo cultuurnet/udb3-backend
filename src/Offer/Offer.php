@@ -657,6 +657,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $updatedVideo = $updatedVideo->withCopyrightHolder($copyrightHolder);
         }
 
+        if ($copyrightHolder === null && $videoWithSameId->getCopyrightHolder() !== null) {
+            $updatedVideo = $updatedVideo->withCopyrightHolder($videoWithSameId->getCopyrightHolder());
+        }
+
         $this->apply($this->createVideoUpdatedEvent($updatedVideo));
     }
 
