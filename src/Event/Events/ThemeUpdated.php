@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Offer\Events\AbstractThemeUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Theme;
 
-final class ThemeUpdated extends AbstractThemeUpdated
+final class ThemeUpdated extends AbstractEvent
 {
     /**
      * @var Theme
