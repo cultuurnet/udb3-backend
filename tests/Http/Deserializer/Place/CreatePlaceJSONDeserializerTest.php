@@ -40,7 +40,6 @@ class CreatePlaceJSONDeserializerTest extends TestCase
         $this->assertEquals('Test place', $createPlace->getTitle());
         $this->assertEquals(new EventType('3CuHvenJ+EGkcvhXLg9Ykg', 'Archeologische Site'), $createPlace->getType());
         $this->assertEquals($expectedAddress, $createPlace->getAddress());
-        $this->assertEquals(null, $createPlace->getTheme());
         $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $createPlace->getCalendar());
     }
 }

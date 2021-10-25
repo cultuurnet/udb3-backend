@@ -52,8 +52,7 @@ class CreatePlaceJSONDeserializer extends JSONDeserializer
             $majorInfo->getTitle(),
             $majorInfo->getType(),
             $majorInfo->getAddress(),
-            $majorInfo->getCalendar(),
-            $majorInfo->getTheme()
+            $majorInfo->getCalendar()
         );
     }
 }

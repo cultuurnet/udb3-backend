@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
 class CreatePlace extends MajorInfo
@@ -24,15 +23,13 @@ class CreatePlace extends MajorInfo
         Title $title,
         EventType $type,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ) {
         parent::__construct(
             $title,
             $type,
             $address,
-            $calendar,
-            $theme
+            $calendar
         );
 
         $this->mainLanguage = $mainLanguage;
