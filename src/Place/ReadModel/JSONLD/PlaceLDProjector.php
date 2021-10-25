@@ -278,11 +278,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $eventType->toJsonLd(),
         ];
 
-        $theme = $majorInfoUpdated->getTheme();
-        if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
-        }
-
         // Remove geocoordinates, because the address might have been
         // updated and we might get inconsistent data if it takes a while
         // before the new geocoordinates are added.

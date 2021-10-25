@@ -51,7 +51,6 @@ final class MajorInfoUpdated extends PlaceEvent
         $this->eventType = $eventType;
         $this->address = $address;
         $this->calendar = $calendar;
-        $this->theme = null;
     }
 
     public function getTitle(): Title
@@ -62,11 +61,6 @@ final class MajorInfoUpdated extends PlaceEvent
     public function getEventType(): EventType
     {
         return $this->eventType;
-    }
-
-    public function getTheme(): ?Theme
-    {
-        return $this->theme;
     }
 
     public function getCalendar(): Calendar

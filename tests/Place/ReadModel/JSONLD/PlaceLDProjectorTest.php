@@ -173,7 +173,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_places_without_theme()
+    public function it_handles_new_places()
     {
         $id = 'foo';
         $created = '2015-01-20T13:25:21+01:00';
