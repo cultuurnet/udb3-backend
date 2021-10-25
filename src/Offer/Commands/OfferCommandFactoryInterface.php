@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer\Commands;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -62,8 +61,6 @@ interface OfferCommandFactoryInterface
     public function createFlagAsInappropriate(string $id): AbstractFlagAsInappropriate;
 
     public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate;
-
-    public function createUpdateTypeCommand(string $id, EventType $type): AbstractUpdateType;
 
     public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme;
 

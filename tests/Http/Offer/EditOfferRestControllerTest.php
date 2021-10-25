@@ -273,28 +273,6 @@ class EditOfferRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_the_type_by_id()
-    {
-        $this->editService
-            ->expects($this->once())
-            ->method('updateType')
-            ->with(
-                'BA403978-7378-41F7-A416-C5D2155D6EDE',
-                new StringLiteral('6B22AC5E-83AF-4590-91C9-91B4D66426CD')
-            );
-
-        $response = $this->controller
-            ->updateType(
-                'BA403978-7378-41F7-A416-C5D2155D6EDE',
-                '6B22AC5E-83AF-4590-91C9-91B4D66426CD'
-            );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_the_facilities_of_a_place()
     {
         $json = json_encode(

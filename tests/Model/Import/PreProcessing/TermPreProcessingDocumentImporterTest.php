@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Import\PreProcessing;
 
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
-use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +18,7 @@ class TermPreProcessingDocumentImporterTest extends TestCase
     private $importer;
 
     /**
-     * @var EventLegacyBridgeCategoryResolver
+     * @var EventCategoryResolver
      */
     private $categoryResolver;
 
@@ -30,7 +30,7 @@ class TermPreProcessingDocumentImporterTest extends TestCase
     public function setUp()
     {
         $this->importer = $this->createMock(DocumentImporterInterface::class);
-        $this->categoryResolver = new EventLegacyBridgeCategoryResolver();
+        $this->categoryResolver = new EventCategoryResolver();
 
         $this->preProcessor = new TermPreProcessingDocumentImporter(
             $this->importer,

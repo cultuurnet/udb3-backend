@@ -48,11 +48,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     protected $publicationDate;
 
     /**
-     * @var TypeResolverInterface
-     */
-    protected $typeResolver;
-
-    /**
      * @var ThemeResolverInterface
      */
     protected $themeResolver;
@@ -62,14 +57,12 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
-        TypeResolverInterface $typeResolver,
         ThemeResolverInterface $themeResolver
     ) {
         $this->commandBus = $commandBus;
         $this->uuidGenerator = $uuidGenerator;
         $this->readRepository = $readRepository;
         $this->commandFactory = $commandFactory;
-        $this->typeResolver = $typeResolver;
         $this->themeResolver = $themeResolver;
         $this->publicationDate = null;
     }
@@ -83,20 +76,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $c = clone $this;
         $c->publicationDate = $publicationDate;
         return $c;
-    }
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateType($id, StringLiteral $typeId)
-    {
-        $this->guardId($id);
-        $type = $this->typeResolver->byId($typeId);
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createUpdateTypeCommand($id, $type)
-        );
     }
 
     /**

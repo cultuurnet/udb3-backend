@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Import\Validation\Place;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
-use CultuurNet\UDB3\Model\Import\Place\PlaceLegacyBridgeCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\CategoriesExistValidator;
 use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\EventTypeCountValidator;
 use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\ThemeCountValidator;
@@ -28,7 +28,7 @@ class PlaceImportValidator extends PlaceValidator
             new Key(
                 'terms',
                 new AllOf(
-                    new CategoriesExistValidator(new PlaceLegacyBridgeCategoryResolver(), 'place'),
+                    new CategoriesExistValidator(new PlaceCategoryResolver(), 'place'),
                     new EventTypeCountValidator(),
                     new ThemeCountValidator()
                 ),

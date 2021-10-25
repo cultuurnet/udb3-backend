@@ -56,16 +56,27 @@ use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use RuntimeException;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated
+ *   Use a real Offer implementation in tests instead.
+ */
 class Item extends Offer
 {
     protected string $id;
+
+    public static function getOfferType(): OfferType
+    {
+        throw new RuntimeException('Item is a deprecated Offer implementation for legacy unit tests and has no real offer type.');
+    }
 
     protected function applyItemCreated(ItemCreated $created): void
     {

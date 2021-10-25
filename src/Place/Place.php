@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
@@ -98,6 +99,11 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         parent::__construct();
 
         $this->addresses = [];
+    }
+
+    public static function getOfferType(): OfferType
+    {
+        return OfferType::PLACE();
     }
 
     public function getAggregateRootId(): string

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Import\Event\EventDocumentImporter;
-use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\PreProcessing\LabelPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Validation\Event\EventImportValidator;
@@ -52,7 +52,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
 
                 $termPreProcessor = new TermPreProcessingDocumentImporter(
                     $eventImporter,
-                    new EventLegacyBridgeCategoryResolver()
+                    new EventCategoryResolver()
                 );
 
                 $labelPreProcessor = new LabelPreProcessingDocumentImporter(

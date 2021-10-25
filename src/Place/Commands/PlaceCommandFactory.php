@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place\Commands;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -23,7 +22,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateType;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
@@ -147,11 +145,6 @@ class PlaceCommandFactory implements OfferCommandFactoryInterface
     public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate
     {
         return new FlagAsDuplicate($id);
-    }
-
-    public function createUpdateTypeCommand(string $id, EventType $type): AbstractUpdateType
-    {
-        return new UpdateType($id, $type);
     }
 
     public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme

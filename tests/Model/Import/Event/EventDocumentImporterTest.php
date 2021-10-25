@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
-use CultuurNet\UDB3\Event\Commands\UpdateType;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventType;
@@ -60,6 +59,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -139,7 +139,7 @@ class EventDocumentImporterTest extends TestCase
 
         $this->importer = new TermPreProcessingDocumentImporter(
             $eventDocumentImporter,
-            new EventLegacyBridgeCategoryResolver()
+            new EventCategoryResolver()
         );
     }
 
@@ -284,7 +284,7 @@ class EventDocumentImporterTest extends TestCase
 
         $expectedCommands = [
             new UpdateTitle($id, new LegacyLanguage('nl'), new Title('Voorbeeld naam')),
-            new UpdateType($id, new EventType('0.7.0.0.0', 'Begeleide rondleiding')),
+            new UpdateType($id, '0.7.0.0.0'),
             new UpdateLocation($id, new LocationId('f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0')),
             new UpdateCalendar(
                 $id,
