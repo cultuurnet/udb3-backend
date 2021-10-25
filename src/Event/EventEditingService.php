@@ -162,18 +162,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function updateMajorInfo($eventId, Title $title, EventType $eventType, LocationId $location, Calendar $calendar, $theme = null)
-    {
-        $this->guardId($eventId);
-
-        return $this->commandBus->dispatch(
-            new UpdateMajorInfo($eventId, $title, $eventType, $location, $calendar, $theme)
-        );
-    }
-
-    /**
      * @inheritdoc
      */
     public function updateAudience($eventId, Audience $audience)
