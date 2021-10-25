@@ -151,8 +151,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ): void {
         $this->apply(
             new MajorInfoUpdated(
@@ -160,8 +159,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
                 $title,
                 $eventType,
                 $address,
-                $calendar,
-                $theme
+                $calendar
             )
         );
     }
