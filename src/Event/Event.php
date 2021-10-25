@@ -572,11 +572,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return new TypeUpdated($this->eventId, $type);
     }
 
-    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
-    {
-        return new ThemeUpdated($this->eventId, $theme);
-    }
-
     protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated
     {
         return new FacilitiesUpdated($this->eventId, $facilities);

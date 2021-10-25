@@ -1031,7 +1031,5 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createTypeUpdatedEvent(EventType $type): AbstractTypeUpdated;
 
-    abstract protected function createThemeUpdatedEvent(Theme $theme): AbstractThemeUpdated;
-
     abstract protected function createFacilitiesUpdatedEvent(array $facilities): AbstractFacilitiesUpdated;
 }

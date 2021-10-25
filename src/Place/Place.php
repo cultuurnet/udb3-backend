@@ -538,11 +538,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return new TypeUpdated($this->placeId, $type);
     }
 
-    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
-    {
-        return new ThemeUpdated($this->placeId, $theme);
-    }
-
     protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated
     {
         return new FacilitiesUpdated($this->placeId, $facilities);
