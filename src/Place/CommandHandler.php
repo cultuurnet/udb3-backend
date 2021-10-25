@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 use CultuurNet\UDB3\Place\Commands\AddImage;
-use CultuurNet\UDB3\Place\Commands\CreatePlace;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve;
@@ -193,24 +192,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     {
         return FlagAsInappropriate::class;
     }
-
-
-    protected function handleCreatePlace(CreatePlace $command)
-    {
-        $place = Place::createPlace(
-            $command->getItemId(),
-            $command->getMainLanguage(),
-            $command->getTitle(),
-            $command->getEventType(),
-            $command->getAddress(),
-            $command->getCalendar(),
-            $command->getTheme(),
-            $command->getPublicationDate()
-        );
-
-        $this->offerRepository->save($place);
-    }
-
 
     protected function handleUpdateAddress(UpdateAddress $updateAddress)
     {
