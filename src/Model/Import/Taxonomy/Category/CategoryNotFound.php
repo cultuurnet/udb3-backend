@@ -11,6 +11,19 @@ use RuntimeException;
 
 final class CategoryNotFound extends RuntimeException
 {
+    public static function withIdInDomain(
+        CategoryID $id,
+        CategoryDomain $domain
+    ): CategoryNotFound {
+        return new self(
+            sprintf(
+                'Category with id %s not found in %s domain.',
+                $id->toString(),
+                $domain->toString()
+            )
+        );
+    }
+
     public static function withIdInDomainForOfferType(
         CategoryID $id,
         CategoryDomain $domain,
