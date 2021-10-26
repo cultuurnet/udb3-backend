@@ -208,7 +208,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/url',
-                    'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*)))'
+                    'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*))|(youtu\.be\/([^\/#&?]*)))'
                 )
             ),
             fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
