@@ -11,10 +11,7 @@ class UpdateTheme extends AbstractCommand
 {
     private string $themeId;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Theme $theme)
+    public function __construct(string $itemId, Theme $theme)
     {
         parent::__construct($itemId);
         $this->themeId = $theme->getId();
