@@ -61,6 +61,16 @@ final class RouteParameters
         return $this->has('offerId');
     }
 
+    public function hasOrganizerId(): bool
+    {
+        return $this->has('organizerId');
+    }
+
+    public function getOrganizerId(): string
+    {
+        return $this->get('organizerId');
+    }
+
     public function getOfferType(): OfferType
     {
         $offerType = $this->get('offerType');
