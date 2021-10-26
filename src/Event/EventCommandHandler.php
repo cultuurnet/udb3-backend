@@ -257,14 +257,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     /**
      * @inheritdoc
      */
-    protected function getUpdateThemeClassName()
-    {
-        return UpdateTheme::class;
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function getUpdateFacilitiesClassName()
     {
         return UpdateFacilities::class;
