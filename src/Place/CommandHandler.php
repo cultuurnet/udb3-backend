@@ -27,7 +27,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateImage;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Place\Commands\UpdateTheme;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use Psr\Log\LoggerAwareInterface;
@@ -218,11 +217,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         );
 
         $this->offerRepository->save($place);
-    }
-
-    protected function getUpdateThemeClassName()
-    {
-        return UpdateTheme::class;
     }
 
     /**
