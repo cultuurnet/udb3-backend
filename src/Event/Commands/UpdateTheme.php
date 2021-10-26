@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Theme;
 
 class UpdateTheme extends AbstractCommand
 {
-    /**
-     * @var Theme
-     */
-    protected $theme;
+    private string $themeId;
 
     /**
      * @param string $itemId
@@ -20,14 +17,11 @@ class UpdateTheme extends AbstractCommand
     public function __construct($itemId, Theme $theme)
     {
         parent::__construct($itemId);
-        $this->theme = $theme;
+        $this->themeId = $theme->getId();
     }
 
-    /**
-     * @return Theme
-     */
-    public function getTheme()
+    public function getThemeId(): string
     {
-        return $this->theme;
+        return $this->themeId;
     }
 }
