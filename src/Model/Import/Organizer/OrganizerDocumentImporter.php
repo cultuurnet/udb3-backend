@@ -8,11 +8,12 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
@@ -78,7 +79,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateTitle(
                 $id,
                 $title,
-                $mainLanguage
+                new Language($mainLanguage->getCode())
             );
 
             $commands[] = new UpdateWebsite($id, $url);
@@ -95,13 +96,12 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         }
 
         foreach ($adapter->getAddressTranslations() as $language => $address) {
-            $language = new Language($language);
+            $language = new LegacyLanguage($language);
             $commands[] = new UpdateAddress($id, $address, $language);
         }
 
         foreach ($adapter->getTitleTranslations() as $language => $title) {
-            $language = new Language($language);
-            $commands[] = new UpdateTitle($id, $title, $language);
+            $commands[] = new UpdateTitle($id, $title, new Language($language));
         }
 
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);

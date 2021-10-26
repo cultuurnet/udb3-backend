@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\Repository\Repository;
+use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
@@ -99,7 +100,7 @@ class OrganizerCommandHandler implements CommandHandler
 
         $organizer->updateTitle(
             $updateTitle->getTitle(),
-            $updateTitle->getLanguage()
+            new Language($updateTitle->getLanguage()->getCode())
         );
 
         $this->organizerRepository->save($organizer);

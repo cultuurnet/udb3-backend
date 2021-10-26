@@ -15,7 +15,8 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
@@ -140,7 +141,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new CreateOrganizer(
                     $id,
-                    new Language('nl'),
+                    new LegacyLanguage('nl'),
                     Url::fromNative('http://www.depot.be'),
                     new Title('Het depot')
                 )
@@ -149,7 +150,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new OrganizerCreatedWithUniqueWebsite(
                         $id,
-                        new Language('nl'),
+                        new LegacyLanguage('nl'),
                         Url::fromNative('http://www.depot.be'),
                         new Title('Het depot')
                     ),
@@ -232,7 +233,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             Country::fromNative('BE')
         );
 
-        $language = new Language('nl');
+        $language = new LegacyLanguage('nl');
 
         $this->scenario
             ->withAggregateId($organizerId)
