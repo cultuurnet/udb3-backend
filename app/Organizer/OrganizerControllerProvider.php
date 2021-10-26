@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Http\Organizer\EditOrganizerRestController;
@@ -61,15 +62,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             'organizer_edit_controller:updateUrl'
         );
 
-        $controllers->put(
-            '/{organizerId}/name/',
-            'organizer_edit_controller:updateNameDeprecated'
-        );
-
-        $controllers->put(
-            '/{organizerId}/name/{lang}/',
-            'organizer_edit_controller:updateName'
-        );
+        $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
+        $controllers->put('/{organizerId}/name/{lang}/', UpdateTitleRequestHandler::class);
 
         $controllers->put(
             '/{organizerId}/address/',

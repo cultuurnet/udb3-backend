@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -41,6 +43,14 @@ final class OrganizerServiceProvider implements ServiceProviderInterface
                     $app['labels.constraint_aware_service']
                 );
             }
+        );
+
+        $app[UpdateTitleRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateTitleRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTitleHandler::class] = $app->share(
+            fn (Application $application) => new UpdateTitleHandler($app['organizer_repository'])
         );
     }
 
