@@ -625,21 +625,23 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             return;
         }
 
-        if ($url === null && $language === null && $copyrightHolder === null) {
-            return;
+        /** @var Video $updatedVideo */
+        $updatedVideo = $videosWithSameId->getFirst();
+
+        if ($url) {
+            $updatedVideo = $updatedVideo->withUrl($url);
         }
 
-        /** @var Video $videoWithSameId */
-        $videoWithSameId = $videosWithSameId->getFirst();
+        if ($language) {
+            $updatedVideo = $updatedVideo->withLanguage($language);
+        }
 
-        $updatedVideo = new Video(
-            $videoId,
-            $url ?? $videoWithSameId->getUrl(),
-            $language ?? $videoWithSameId->getLanguage()
-        );
-
-        if ($copyrightHolder !== null) {
+        if ($copyrightHolder) {
             $updatedVideo = $updatedVideo->withCopyrightHolder($copyrightHolder);
+        }
+
+        if ($updatedVideo->sameAs($videosWithSameId->getFirst())) {
+            return;
         }
 
         $this->apply($this->createVideoUpdatedEvent($updatedVideo));

@@ -38,15 +38,95 @@ class UpdateVideosRequestHandlerTest extends TestCase
     }
 
     /**
-     * @dataProvider offerTypeProvider
+     * @dataProvider updateVideoDataProvider
      * @test
      */
-    public function it_allows_updating_a_video(string $offerType): void
+    public function it_allows_updating_a_video(string $body, UpdateVideo $updateVideo): void
     {
         $updateVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString(
+            ->withBodyFromString($body)
+            ->build('PATCH');
+
+        $this->updateVideosRequestHandler->handle($updateVideoRequest);
+
+        $this->assertEquals(
+            [$updateVideo],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    public function updateVideoDataProvider(): array
+    {
+        return [
+            'Update url' => [
+                '[
+                    {
+                        "id": "a927e515-7020-460f-a47e-718ecc785cca",
+                        "url":"https://www.youtube.com/watch?v=sdsd234"
+                    }
+                ]',
+                (new UpdateVideo('609a8214-51c9-48c0-903f-840a4f38852f', 'a927e515-7020-460f-a47e-718ecc785cca'))
+                    ->withUrl(new Url('https://www.youtube.com/watch?v=sdsd234')),
+            ],
+            'Update copyright holder' => [
+                '[
+                    {
+                        "id": "a927e515-7020-460f-a47e-718ecc785cca",
+                        "copyrightHolder":"publiq"
+                    }
+                ]',
+                (new UpdateVideo('609a8214-51c9-48c0-903f-840a4f38852f', 'a927e515-7020-460f-a47e-718ecc785cca'))
+                    ->withCopyrightHolder(new CopyrightHolder('publiq')),
+            ],
+            'Update language' => [
+                '[
+                    {
+                        "id": "a927e515-7020-460f-a47e-718ecc785cca",
+                        "language": "nl"
+                    }
+                ]',
+                (new UpdateVideo('609a8214-51c9-48c0-903f-840a4f38852f', 'a927e515-7020-460f-a47e-718ecc785cca'))
+                    ->withLanguage(new Language('nl')),
+            ],
+            'Update url and copyright holder' => [
+                '[
+                    {
+                        "id": "a927e515-7020-460f-a47e-718ecc785cca",
+                        "url":"https://www.youtube.com/watch?v=sdsd234",
+                        "copyrightHolder":"publiq"
+                    }
+                ]',
+                (new UpdateVideo('609a8214-51c9-48c0-903f-840a4f38852f', 'a927e515-7020-460f-a47e-718ecc785cca'))
+                    ->withUrl(new Url('https://www.youtube.com/watch?v=sdsd234'))
+                    ->withCopyrightHolder(new CopyrightHolder('publiq')),
+            ],
+            'Update url and language' => [
+                '[
+                    {
+                        "id": "a927e515-7020-460f-a47e-718ecc785cca",
+                        "url":"https://www.youtube.com/watch?v=sdsd234",
+                        "language": "nl"
+                    }
+                ]',
+                (new UpdateVideo('609a8214-51c9-48c0-903f-840a4f38852f', 'a927e515-7020-460f-a47e-718ecc785cca'))
+                    ->withUrl(new Url('https://www.youtube.com/watch?v=sdsd234'))
+                    ->withLanguage(new Language('nl')),
+            ],
+            'Update copyright holder and language' => [
+                '[
+                    {
+                        "id": "a927e515-7020-460f-a47e-718ecc785cca",
+                        "copyrightHolder":"publiq",
+                        "language": "nl"
+                    }
+                ]',
+                (new UpdateVideo('609a8214-51c9-48c0-903f-840a4f38852f', 'a927e515-7020-460f-a47e-718ecc785cca'))
+                    ->withLanguage(new Language('nl'))
+                    ->withCopyrightHolder(new CopyrightHolder('publiq')),
+            ],
+            'Update all properties' => [
                 '[
                     {
                         "id": "a927e515-7020-460f-a47e-718ecc785cca",
@@ -54,21 +134,13 @@ class UpdateVideosRequestHandlerTest extends TestCase
                         "copyrightHolder":"publiq",
                         "language": "nl"
                     }
-                ]'
-            )
-            ->build('PATCH');
-
-        $this->updateVideosRequestHandler->handle($updateVideoRequest);
-
-        $this->assertEquals(
-            [
+                ]',
                 (new UpdateVideo('609a8214-51c9-48c0-903f-840a4f38852f', 'a927e515-7020-460f-a47e-718ecc785cca'))
                     ->withUrl(new Url('https://www.youtube.com/watch?v=sdsd234'))
                     ->withLanguage(new Language('nl'))
                     ->withCopyrightHolder(new CopyrightHolder('publiq')),
             ],
-            $this->commandBus->getRecordedCommands()
-        );
+        ];
     }
 
     /**
