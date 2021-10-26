@@ -11,9 +11,10 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -41,7 +42,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     private $id;
 
     /**
-     * @var Language
+     * @var LegacyLanguage
      */
     private $mainLanguage;
 
@@ -65,13 +66,13 @@ class OrganizerTest extends AggregateRootScenarioTestCase
         parent::setUp();
 
         $this->id = '18eab5bf-09bf-4521-a8b4-c0f4a585c096';
-        $this->mainLanguage = new Language('en');
+        $this->mainLanguage = new LegacyLanguage('en');
         $this->website = Url::fromNative('http://www.stuk.be');
         $this->title = new Title('STUK');
 
         $this->organizerCreatedWithUniqueWebsite = new OrganizerCreatedWithUniqueWebsite(
             $this->id,
-            new Language('en'),
+            new LegacyLanguage('en'),
             $this->website,
             $this->title
         );
@@ -465,12 +466,12 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new TitleTranslated(
                         $this->id,
                         new Title('Le Depot'),
-                        new Language('fr')
+                        new LegacyLanguage('fr')
                     ),
                     new TitleTranslated(
                         $this->id,
                         new Title('STUK'),
-                        new Language('fr')
+                        new LegacyLanguage('fr')
                     ),
                 ]
             );
@@ -500,7 +501,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new TitleTranslated(
                         $this->id,
                         new Title('Pièce'),
-                        new Language('fr')
+                        new LegacyLanguage('fr')
                     ),
                 ]
             );
@@ -544,11 +545,11 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 function (Organizer $organizer) use ($addressFr, $addressEn) {
                     $organizer->updateAddress(
                         $addressFr,
-                        new Language('fr')
+                        new LegacyLanguage('fr')
                     );
                     $organizer->updateAddress(
                         $addressEn,
-                        new Language('de')
+                        new LegacyLanguage('de')
                     );
                 }
             )
@@ -557,12 +558,12 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new AddressTranslated(
                         $this->id,
                         $addressFr,
-                        new Language('fr')
+                        new LegacyLanguage('fr')
                     ),
                     new AddressTranslated(
                         $this->id,
                         $addressEn,
-                        new Language('de')
+                        new LegacyLanguage('de')
                     ),
                 ]
             );
