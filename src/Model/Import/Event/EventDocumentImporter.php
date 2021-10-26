@@ -140,7 +140,7 @@ class EventDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateCalendar($id, $calendar);
 
             if ($theme) {
-                $commands[] = new UpdateTheme($id, $theme);
+                $commands[] = new UpdateTheme($id, $theme->getId());
             }
         }
 
