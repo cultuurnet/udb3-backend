@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
 
 final class UpdateTitleHandler implements CommandHandler
 {
@@ -26,7 +25,7 @@ final class UpdateTitleHandler implements CommandHandler
 
         $organizer = $this->organizerRepository->load($command->getItemId());
 
-        $organizer->updateTitle(Title::fromUdb3ModelTitle($command->getTitle()), $command->getLanguage());
+        $organizer->updateTitle($command->getTitle(), $command->getLanguage());
 
         $this->organizerRepository->save($organizer);
     }

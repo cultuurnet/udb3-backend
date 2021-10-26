@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
@@ -30,7 +31,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use ValueObjects\Geography\Country;
 use ValueObjects\Web\Url;
 
@@ -52,7 +53,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     private $website;
 
     /**
-     * @var Title
+     * @var LegacyTitle
      */
     private $title;
 
@@ -68,7 +69,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
         $this->id = '18eab5bf-09bf-4521-a8b4-c0f4a585c096';
         $this->mainLanguage = new LegacyLanguage('en');
         $this->website = Url::fromNative('http://www.stuk.be');
-        $this->title = new Title('STUK');
+        $this->title = new LegacyTitle('STUK');
 
         $this->organizerCreatedWithUniqueWebsite = new OrganizerCreatedWithUniqueWebsite(
             $this->id,
@@ -125,7 +126,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new OrganizerCreated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        new Title('DE Studio'),
+                        new LegacyTitle('DE Studio'),
                         [
                             new Address(
                                 new Street('Wetstraat 1'),
@@ -461,16 +462,16 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with 'nl' title STUK.
                     new TitleUpdated(
                         $this->id,
-                        new Title('Het Depot')
+                        new LegacyTitle('Het Depot')
                     ),
                     new TitleTranslated(
                         $this->id,
-                        new Title('Le Depot'),
+                        new LegacyTitle('Le Depot'),
                         new LegacyLanguage('fr')
                     ),
                     new TitleTranslated(
                         $this->id,
-                        new Title('STUK'),
+                        new LegacyTitle('STUK'),
                         new LegacyLanguage('fr')
                     ),
                 ]
@@ -500,7 +501,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new TitleTranslated(
                         $this->id,
-                        new Title('Pièce'),
+                        new LegacyTitle('Pièce'),
                         new LegacyLanguage('fr')
                     ),
                 ]
@@ -603,7 +604,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was imported with title 'DE Studio'.
                     new TitleUpdated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        new Title('STUK')
+                        new LegacyTitle('STUK')
                     ),
                 ]
             );
@@ -649,7 +650,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                     new TitleUpdated(
                         $this->id,
-                        new Title('Het Depot')
+                        new LegacyTitle('Het Depot')
                     ),
                 ]
             );
