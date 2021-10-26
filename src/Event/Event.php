@@ -68,6 +68,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -383,10 +384,10 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->audience= $audienceUpdated->getAudience();
     }
 
-    public function updateTheme(Theme $theme): void
+    public function updateTheme(Category $category): void
     {
-        if (!$this->themeId || $this->themeId !== $theme->getId()) {
-            $this->apply(new ThemeUpdated($this->eventId, $theme));
+        if (!$this->themeId || $this->themeId !== $category->getId()->toString()) {
+            $this->apply(new ThemeUpdated($this->eventId, Theme::fromUdb3ModelCategory($category)));
         }
     }
 
