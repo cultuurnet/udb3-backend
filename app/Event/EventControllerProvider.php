@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -23,6 +24,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
+        $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
 
         $controllers->post('/', 'event_editing_controller:createEvent');
         $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
@@ -81,6 +83,10 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[UpdateSubEventsRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateSubEventsRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateThemeRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateThemeRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateMajorInfoRequestHandler::class] = $app->share(
