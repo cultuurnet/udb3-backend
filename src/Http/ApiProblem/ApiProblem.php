@@ -226,6 +226,11 @@ final class ApiProblem extends Exception
         return self::offerNotFound(OfferType::PLACE(), $placeId);
     }
 
+    public static function organizerNotFound(string $organizerId): self
+    {
+        return self::resourceNotFound('Organizer', $organizerId);
+    }
+
     public static function tokenNotSupported(string $detail): self
     {
         return self::create(
