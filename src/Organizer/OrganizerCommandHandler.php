@@ -94,19 +94,6 @@ class OrganizerCommandHandler implements CommandHandler
     }
 
 
-    protected function updateTitle(UpdateTitle $updateTitle)
-    {
-        $organizer = $this->loadOrganizer($updateTitle->getOrganizerId());
-
-        $organizer->updateTitle(
-            $updateTitle->getTitle(),
-            new Language($updateTitle->getLanguage()->getCode())
-        );
-
-        $this->organizerRepository->save($organizer);
-    }
-
-
     protected function updateAddress(UpdateAddress $updateAddress)
     {
         $organizer = $this->loadOrganizer($updateAddress->getOrganizerId());

@@ -191,37 +191,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_title()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateTitle(
-                    $organizerId,
-                    new Title('Het Depot'),
-                    new Language('nl')
-                )
-            )
-            ->then(
-                [
-                    new TitleUpdated(
-                        $organizerId,
-                        new Title('Het Depot')
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_update_address()
     {
         $organizerId = $this->organizerCreated->getOrganizerId();
