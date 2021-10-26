@@ -22,13 +22,17 @@ final class VideoNormalizer implements NormalizerInterface
     private const VIMEO_NAME = 'Vimeo';
 
     private array $videoPlatforms = [
-        5 => [
+        6 => [
             'embed' => self::YOUTUBE_EMBED,
             'name' => self::YOUTUBE_NAME,
             ],
-        7 => [
+        8 => [
             'embed' => self::VIMEO_EMBED,
             'name' => self::VIMEO_NAME,
+        ],
+        10 => [
+            'embed' => self::YOUTUBE_EMBED,
+            'name' => self::YOUTUBE_NAME,
         ],
     ];
 
@@ -80,6 +84,7 @@ final class VideoNormalizer implements NormalizerInterface
             $url->toString(),
             $matches
         );
+
         foreach ($this->videoPlatforms as $videoPlatformIndex => $videoPlatformData) {
             if (isset($matches[$videoPlatformIndex]) && !empty($matches[$videoPlatformIndex])) {
                 return [
