@@ -22,15 +22,15 @@ final class VideoNormalizer implements NormalizerInterface
     private const VIMEO_NAME = 'Vimeo';
 
     private array $videoPlatforms = [
-        6 => [
+        5 => [
             'embed' => self::YOUTUBE_EMBED,
             'name' => self::YOUTUBE_NAME,
             ],
-        8 => [
+        7 => [
             'embed' => self::VIMEO_EMBED,
             'name' => self::VIMEO_NAME,
         ],
-        10 => [
+        9 => [
             'embed' => self::YOUTUBE_EMBED,
             'name' => self::YOUTUBE_NAME,
         ],
