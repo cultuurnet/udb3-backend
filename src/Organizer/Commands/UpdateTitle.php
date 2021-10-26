@@ -4,27 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Title;
 
 class UpdateTitle extends AbstractUpdateOrganizerCommand
 {
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
-    /**
-     * UpdateTitle constructor.
-     * @param string $organizerId
-     */
     public function __construct(
-        $organizerId,
+        string $organizerId,
         Title $title,
         Language $language
     ) {
@@ -33,10 +23,7 @@ class UpdateTitle extends AbstractUpdateOrganizerCommand
         $this->language = $language;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }

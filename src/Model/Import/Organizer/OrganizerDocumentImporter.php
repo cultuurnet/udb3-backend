@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
@@ -78,7 +79,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         } else {
             $commands[] = new UpdateTitle(
                 $id,
-                $title,
+                new Title($title->toNative()),
                 new Language($mainLanguage->getCode())
             );
 
@@ -101,7 +102,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         }
 
         foreach ($adapter->getTitleTranslations() as $language => $title) {
-            $commands[] = new UpdateTitle($id, $title, new Language($language));
+            $commands[] = new UpdateTitle($id, new Title($title->toNative()), new Language($language));
         }
 
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);

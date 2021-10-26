@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Serializers;
 
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
-use CultuurNet\UDB3\Title;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class UpdateTitleDenormalizer implements DenormalizerInterface

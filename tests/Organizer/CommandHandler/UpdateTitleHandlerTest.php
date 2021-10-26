@@ -13,12 +13,13 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use ValueObjects\Geography\Country;
 
 final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
@@ -39,14 +40,14 @@ final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
             ->when(new UpdateTitle($id, new Title('New Title'), new Language('fr')))
-            ->then([new TitleTranslated($id, new Title('New Title'), new LegacyLanguage('fr'))]);
+            ->then([new TitleTranslated($id, new LegacyTitle('New Title'), new LegacyLanguage('fr'))]);
     }
 
     private function organizerCreated(string $id): OrganizerCreated
     {
         return new OrganizerCreated(
             $id,
-            new Title('Organizer Title'),
+            new LegacyTitle('Organizer Title'),
             [
                 new Address(
                     new Street('Kerkstraat 69'),

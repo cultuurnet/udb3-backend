@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Address\Address;
@@ -28,7 +29,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
@@ -97,7 +98,7 @@ class OrganizerDocumentImporterTest extends TestCase
                 $id,
                 new LegacyLanguage('nl'),
                 Url::fromNative('https://www.publiq.be'),
-                new Title('Voorbeeld naam')
+                new LegacyTitle('Voorbeeld naam')
             )
         );
         $this->expectNoLockedLabels();
@@ -134,8 +135,7 @@ class OrganizerDocumentImporterTest extends TestCase
 
         $this->importer->import($document);
 
-        $expectedCommands = [
-            new UpdateTitle($id, new Title('Voorbeeld naam'), new Language('nl')),
+        $expectedCommands = [new UpdateTitle($id, new Title('Voorbeeld naam'), new Language('nl')),
             new UpdateWebsite($id, Url::fromNative('https://www.publiq.be')),
             new UpdateContactPoint($id, new ContactPoint()),
             new RemoveAddress($id),
