@@ -137,17 +137,6 @@ class EditOfferRestController
         return new NoContent();
     }
 
-    public function updateFacilities(Request $request, string $cdbid): Response
-    {
-        $facilities = $this->facilityDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editService->updateFacilities($cdbid, $facilities);
-
-        return new NoContent();
-    }
-
     public function updatePriceInfo(Request $request, string $cdbid): Response
     {
         $mainLanguage = null;
