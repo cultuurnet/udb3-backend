@@ -39,42 +39,25 @@ use ValueObjects\Web\Url;
 
 class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
 {
-    /**
-     * The actor id.
-     *
-     * @var string
-     */
-    protected $actorId;
+    protected string $actorId;
 
-    /**
-     * @var LegacyLanguage
-     */
-    private $mainLanguage;
+    private LegacyLanguage $mainLanguage;
 
-    /**
-     * @var Url|null
-     */
-    private $website;
+    private ?Url $website = null;
 
     /**
      * @var LegacyTitle[]
      */
-    private $titles;
+    private array $titles;
 
     /**
      * @var Address[]|null
      */
-    private $addresses;
+    private ?array $addresses;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
+    private ContactPoint $contactPoint;
 
-    /**
-     * @var LabelCollection|Label[]
-     */
-    private $labels;
+    private LabelCollection $labels;
 
     /**
      * {@inheritdoc}
