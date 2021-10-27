@@ -28,7 +28,6 @@ final class JsonSchemaLocator
     public const PLACE_VIDEOS_POST = 'place-videos-post.json';
 
     // For OFFER schemas, use the ones for events
-    public const OFFER_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
     public const OFFER_STATUS = 'event-status.json';
     public const OFFER_VIDEOS_POST = 'event-videos-post.json';
 
