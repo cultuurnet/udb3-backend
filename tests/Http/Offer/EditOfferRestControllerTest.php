@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
@@ -73,11 +72,6 @@ class EditOfferRestControllerTest extends TestCase
     private $calendarDataValidator;
 
     /**
-     * @var DeserializerInterface|MockObject
-     */
-    private $facilitiesJSONDeserializer;
-
-    /**
      * @var EditOfferRestController
      */
     private $controller;
@@ -95,7 +89,6 @@ class EditOfferRestControllerTest extends TestCase
         $this->titleDeserializer = new TitleJSONDeserializer();
         $this->descriptionDeserializer = new DescriptionJSONDeserializer();
         $this->priceInfoDeserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
-        $this->facilitiesJSONDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->controller = new EditOfferRestController(
             $this->commandBus,
@@ -104,8 +97,7 @@ class EditOfferRestControllerTest extends TestCase
             $this->labelDeserializer,
             $this->titleDeserializer,
             $this->descriptionDeserializer,
-            $this->priceInfoDeserializer,
-            $this->facilitiesJSONDeserializer
+            $this->priceInfoDeserializer
         );
     }
 
