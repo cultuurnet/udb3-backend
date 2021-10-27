@@ -61,7 +61,6 @@ use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
-use CultuurNet\UDB3\Place\Events\ThemeUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\Place\Events\TypeUpdated;
@@ -71,7 +70,6 @@ use CultuurNet\UDB3\Place\Events\VideoAdded;
 use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use ValueObjects\Identity\UUID as LegacyUUID;
@@ -112,17 +110,13 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return $this->placeId;
     }
 
-    /**
-     * @todo Rename this method to create() after moving this part of the codebase to udb3-silex
-     */
-    public static function createPlace(
+    public static function create(
         string $id,
         Language $mainLanguage,
         Title $title,
         EventType $eventType,
         Address $address,
         Calendar $calendar,
-        Theme $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
         $place = new self();
@@ -133,7 +127,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
             $eventType,
             $address,
             $calendar,
-            $theme,
             $publicationDate
         ));
 
@@ -148,7 +141,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $placeCreated->getEventType()->getId();
-        $this->themeId = $placeCreated->getTheme() ? $placeCreated->getTheme()->getId() : null;
         $this->addresses[$this->mainLanguage->getCode()] = $placeCreated->getAddress();
         $this->placeId = $placeCreated->getPlaceId();
         $this->workflowStatus = WorkflowStatus::DRAFT();
@@ -158,8 +150,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ): void {
         $this->apply(
             new MajorInfoUpdated(
@@ -167,8 +158,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
                 $title,
                 $eventType,
                 $address,
-                $calendar,
-                $theme
+                $calendar
             )
         );
     }
@@ -545,11 +535,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
     {
         return new TypeUpdated($this->placeId, $type);
-    }
-
-    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
-    {
-        return new ThemeUpdated($this->placeId, $theme);
     }
 
     protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated

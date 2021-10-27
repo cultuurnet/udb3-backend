@@ -22,7 +22,7 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
     private $typeResolver;
 
     /**
-     * @var ThemeResolverInterface
+     * @var ThemeResolverInterface|null
      */
     private $themeResolver;
 
@@ -34,8 +34,8 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 
     public function __construct(
         TypeResolverInterface $typeResolver,
-        ThemeResolverInterface $themeResolver,
-        OfferFacilityResolverInterface $facilityResolver
+        OfferFacilityResolverInterface $facilityResolver,
+        ?ThemeResolverInterface $themeResolver = null
     ) {
         $this->typeResolver = $typeResolver;
         $this->themeResolver = $themeResolver;
@@ -74,8 +74,11 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
             return null;
         }
 
-        /** @var TypeResolverInterface|ThemeResolverInterface|OfferFacilityResolverInterface $resolver */
+        /** @var TypeResolverInterface|ThemeResolverInterface|OfferFacilityResolverInterface|null $resolver */
         $resolver = $resolverMap[$domain->toString()];
+        if ($resolver === null) {
+            return null;
+        }
 
         try {
             /** @var LegacyCategory $legacyCategory */

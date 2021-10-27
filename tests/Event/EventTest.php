@@ -1242,26 +1242,6 @@ class EventTest extends AggregateRootScenarioTestCase
     }
 
     /**
-     * @test
-     */
-    public function it_does_not_update_the_same_theme_after_event_created()
-    {
-        $this->scenario
-            ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
-            ->given([
-                $this->getCreationEventWithTheme(),
-            ])
-            ->when(
-                function (Event $event) {
-                    $event->updateTheme(
-                        new Theme('1.8.3.1.0', 'Pop en rock')
-                    );
-                }
-            )
-            ->then([]);
-    }
-
-    /**
      * @param string $file
      * @return string
      */

@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTheme;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
@@ -37,7 +36,6 @@ use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Theme;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -145,11 +143,6 @@ class PlaceCommandFactory implements OfferCommandFactoryInterface
     public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate
     {
         return new FlagAsDuplicate($id);
-    }
-
-    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme
-    {
-        return new UpdateTheme($id, $theme);
     }
 
     public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities

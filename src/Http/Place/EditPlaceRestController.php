@@ -122,8 +122,7 @@ class EditPlaceRestController extends OfferRestBaseController
             $createPlace->getTitle(),
             $createPlace->getType(),
             $createPlace->getAddress(),
-            $createPlace->getCalendar(),
-            $createPlace->getTheme()
+            $createPlace->getCalendar()
         );
 
         return new JsonResponse(

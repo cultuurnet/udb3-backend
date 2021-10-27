@@ -61,7 +61,6 @@ use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
-use CultuurNet\UDB3\Place\Events\ThemeUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\Place\Events\TypeUpdated;
@@ -72,7 +71,6 @@ use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -808,25 +806,6 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             "Afgekeurd, reden: 'not good enough'"
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_projects_ThemeUpdated_event(): void
-    {
-        $event = new ThemeUpdated(
-            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Theme('0.1', 'theme label')
-        );
-
-        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
-
-        $this->historyProjector->handle($domainMessage);
-        $this->assertHistoryContainsLogWithDescription(
-            $event->getItemId(),
-            'Thema aangepast'
         );
     }
 

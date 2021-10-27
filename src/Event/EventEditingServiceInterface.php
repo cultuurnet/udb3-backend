@@ -120,14 +120,6 @@ interface EventEditingServiceInterface
 
     /**
      * @param string $eventId
-     * @param Theme|null $theme
-     *
-     * @return string $commandId
-     */
-    public function updateMajorInfo($eventId, Title $title, EventType $eventType, LocationId $location, Calendar $calendar, $theme = null);
-
-    /**
-     * @param string $eventId
      * @return string $commandId
      */
     public function updateAudience($eventId, Audience $audience);

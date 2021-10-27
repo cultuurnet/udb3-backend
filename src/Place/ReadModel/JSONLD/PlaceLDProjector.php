@@ -54,7 +54,6 @@ use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
-use CultuurNet\UDB3\Place\Events\ThemeUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\Place\Events\TypeUpdated;
@@ -216,11 +215,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $eventType->toJsonLd(),
         ];
 
-        $theme = $placeCreated->getTheme();
-        if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
-        }
-
         $recordedOn = $domainMessage->getRecordedOn()->toString();
         $jsonLD->created = \DateTime::createFromFormat(
             DateTime::FORMAT_STRING,
@@ -282,11 +276,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $jsonLD->terms = [
             $eventType->toJsonLd(),
         ];
-
-        $theme = $majorInfoUpdated->getTheme();
-        if (!empty($theme)) {
-            $jsonLD->terms[] = $theme->toJsonLd();
-        }
 
         // Remove geocoordinates, because the address might have been
         // updated and we might get inconsistent data if it takes a while
@@ -581,11 +570,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected function getTypeUpdatedClassName()
     {
         return TypeUpdated::class;
-    }
-
-    protected function getThemeUpdatedClassName()
-    {
-        return ThemeUpdated::class;
     }
 
     protected function getFacilitiesUpdatedClassName()

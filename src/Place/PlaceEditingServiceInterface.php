@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Identity\UUID;
 
@@ -29,8 +28,7 @@ interface PlaceEditingServiceInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     );
 
     /**
@@ -41,8 +39,7 @@ interface PlaceEditingServiceInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     );
 
     /**
@@ -51,13 +48,6 @@ interface PlaceEditingServiceInterface
      * @return string $id
      */
     public function deletePlace($id);
-
-    /**
-     * Update the major info of a place.
-     *
-     * @param string $id
-     */
-    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, Calendar $calendar, Theme $theme = null);
 
     /**
      * @param string $id

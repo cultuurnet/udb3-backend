@@ -250,29 +250,6 @@ class EditOfferRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_the_theme_by_id()
-    {
-        $this->editService
-            ->expects($this->once())
-            ->method('updateTheme')
-            ->with(
-                'B904CD9E-0125-473E-ADDB-EC5E7ED12875',
-                new StringLiteral('CEFFE9F0-AD3C-446B-838A-0E309843C5E1')
-            )
-            ->willReturn('EBFF0B3A-0401-4C4D-A355-D326C8A4F31A');
-
-        $response = $this->controller
-            ->updateTheme(
-                'B904CD9E-0125-473E-ADDB-EC5E7ED12875',
-                'CEFFE9F0-AD3C-446B-838A-0E309843C5E1'
-            );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_the_facilities_of_a_place()
     {
         $json = json_encode(
