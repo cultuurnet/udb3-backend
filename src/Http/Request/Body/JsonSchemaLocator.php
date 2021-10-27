@@ -16,15 +16,15 @@ final class JsonSchemaLocator
 
     public const EVENT_CALENDAR_PUT = 'event-calendar-put.json';
     public const EVENT_SUB_EVENT_PATCH = 'event-subEvent-patch.json';
+    public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
 
     public const PLACE_CALENDAR_PUT = 'place-calendar-put.json';
+    public const PLACE_VIDEOS_PATCH = 'place-videos-patch.json';
 
     // For OFFER schemas, use the ones for events
     public const OFFER_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
     public const OFFER_STATUS = 'event-status.json';
     public const OFFER_VIDEOS_POST = 'event-videos-post.json';
-    public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
-    public const PLACE_VIDEOS_PATCH = 'place-videos-patch.json';
 
     public const ORGANIZER_NAME_PUT = 'organizer-name-put.json';
 
