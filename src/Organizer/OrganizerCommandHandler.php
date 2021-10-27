@@ -50,7 +50,6 @@ class OrganizerCommandHandler implements CommandHandler
         return [
             CreateOrganizer::class => 'createOrganizer',
             UpdateWebsite::class => 'updateWebsite',
-            UpdateTitle::class => 'updateTitle',
             UpdateAddress::class => 'updateAddress',
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
