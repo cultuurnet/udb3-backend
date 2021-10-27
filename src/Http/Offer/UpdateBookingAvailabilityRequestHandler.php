@@ -16,12 +16,10 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDen
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability as LegacyBookingAvailability;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use RuntimeException;
 
 final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInterface
 {
@@ -40,7 +38,13 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
         $offerId = $routeParameters->getOfferId();
 
         $parser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser($this->getSchemaLocation($offerType)),
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY,
+                    JsonSchemaLocator::PLACE_BOOKING_AVAILABILITY
+                )
+            ),
             new DenormalizingRequestBodyParser(new BookingAvailabilityDenormalizer(), BookingAvailability::class)
         );
 
@@ -59,16 +63,5 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
         }
 
         return new NoContentResponse();
-    }
-
-    private function getSchemaLocation(OfferType $offerType): string
-    {
-        if ($offerType->sameValueAs(OfferType::EVENT())) {
-            return JsonSchemaLocator::EVENT_BOOKING_AVAILABILITY;
-        }
-        if ($offerType->sameValueAs(OfferType::PLACE())) {
-            return JsonSchemaLocator::PLACE_BOOKING_AVAILABILITY;
-        }
-        throw new RuntimeException('No schema found for unknown offer type ' . $offerType->toNative());
     }
 }

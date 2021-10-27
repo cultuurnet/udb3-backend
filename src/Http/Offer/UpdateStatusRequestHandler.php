@@ -15,11 +15,9 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\StatusDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
-use CultuurNet\UDB3\Offer\OfferType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use RuntimeException;
 
 class UpdateStatusRequestHandler implements RequestHandlerInterface
 {
@@ -37,7 +35,13 @@ class UpdateStatusRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
 
         $parser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser($this->getSchemaLocation($offerType)),
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_STATUS,
+                    JsonSchemaLocator::PLACE_STATUS
+                )
+            ),
             new DenormalizingRequestBodyParser(new StatusDenormalizer(), Status::class)
         );
 
@@ -49,16 +53,5 @@ class UpdateStatusRequestHandler implements RequestHandlerInterface
         );
 
         return new NoContentResponse();
-    }
-
-    private function getSchemaLocation(OfferType $offerType): string
-    {
-        if ($offerType->sameValueAs(OfferType::EVENT())) {
-            return JsonSchemaLocator::EVENT_STATUS;
-        }
-        if ($offerType->sameValueAs(OfferType::PLACE())) {
-            return JsonSchemaLocator::PLACE_STATUS;
-        }
-        throw new RuntimeException('No schema found for unknown offer type ' . $offerType->toNative());
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request\Body;
 
+use CultuurNet\UDB3\Offer\OfferType;
 use InvalidArgumentException;
 use Opis\JsonSchema\Resolvers\SchemaResolver;
 use Opis\JsonSchema\Uri;
@@ -48,11 +49,7 @@ final class JsonSchemaLocator
     public static function createSchemaUri(string $schemaFileName): Uri
     {
         // Prevent usages of hardcoded strings so we can easily refactor the file locations later if they ever change.
-        if (!in_array($schemaFileName, self::getConstants(), true)) {
-            throw new InvalidArgumentException(
-                $schemaFileName . ' is not in the list of known schema files, please use a predefined constant on the JsonSchemaLocator class (or add one).'
-            );
-        }
+        self::guardFileNameInKnownConstants($schemaFileName);
 
         $schemaFileName = ltrim($schemaFileName, '/');
         $schemaFileLocation = self::getSchemaDirectory() . '/' . $schemaFileName;
@@ -61,6 +58,20 @@ final class JsonSchemaLocator
         }
 
         return Uri::create(self::getSchemaDirectoryUri() . $schemaFileName);
+    }
+
+    public static function getSchemaFileByOfferType(OfferType $offerType, string $eventSchema, string $placeSchema): string
+    {
+        // Prevent usages of hardcoded strings so we can easily refactor the file locations later if they ever change.
+        self::guardFileNameInKnownConstants($eventSchema);
+        self::guardFileNameInKnownConstants($placeSchema);
+        if ($offerType->sameValueAs(OfferType::EVENT())) {
+            return $eventSchema;
+        }
+        if ($offerType->sameValueAs(OfferType::PLACE())) {
+            return $placeSchema;
+        }
+        throw new RuntimeException('No schema found for unknown offer type ' . $offerType->toNative());
     }
 
     private static function getSchemaDirectory(): string
@@ -76,6 +87,15 @@ final class JsonSchemaLocator
     private static function getSchemaDirectoryUri(): string
     {
         return 'file://' . self::getSchemaDirectory() . '/';
+    }
+
+    private static function guardFileNameInKnownConstants(string $schemaFileName): void
+    {
+        if (!in_array($schemaFileName, self::getConstants(), true)) {
+            throw new InvalidArgumentException(
+                $schemaFileName . ' is not in the list of known schema files, please use a predefined constant on the JsonSchemaLocator class (or add one).'
+            );
+        }
     }
 
     private static function getConstants(): array
