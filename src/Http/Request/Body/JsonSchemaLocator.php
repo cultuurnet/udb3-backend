@@ -27,9 +27,6 @@ final class JsonSchemaLocator
     public const PLACE_STATUS = 'place-status.json';
     public const PLACE_VIDEOS_POST = 'place-videos-post.json';
 
-    // For OFFER schemas, use the ones for events
-    public const OFFER_VIDEOS_POST = 'event-videos-post.json';
-
     public const ORGANIZER_NAME_PUT = 'organizer-name-put.json';
 
     public static function setSchemaDirectory(string $schemaDirectory): void
