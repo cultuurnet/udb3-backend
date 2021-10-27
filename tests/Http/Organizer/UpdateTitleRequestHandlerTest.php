@@ -67,6 +67,34 @@ final class UpdateTitleRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_updating_the_title_without_language_param(): void
+    {
+        $updateTitleRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withBodyFromString(
+                '{
+                    "name": "De nieuwe titel"
+                }'
+            )
+            ->build('PUT');
+
+        $this->updateTitleRequestHandler->handle($updateTitleRequest);
+
+        $this->assertEquals(
+            [
+                new UpdateTitle(
+                    'a088f396-ac96-45c4-b6b2-e2b6afe8af07',
+                    new Title('De nieuwe titel'),
+                    new Language('nl')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_requires_a_name(): void
     {
         $updateTitleRequest = $this->psr7RequestBuilder
