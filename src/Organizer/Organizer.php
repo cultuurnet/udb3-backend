@@ -402,7 +402,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         return null;
     }
-    
+
     private function setTitle(LegacyTitle $title, LegacyLanguage $language): void
     {
         $this->titles[$language->getCode()] = $title;
