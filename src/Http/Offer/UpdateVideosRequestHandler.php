@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\Video\UpdateVideoDenormalizer;
 use CultuurNet\UDB3\Offer\Commands\Video\UpdateVideos;
 use CultuurNet\UDB3\Offer\Commands\Video\UpdateVideosDenormalizer;
-use CultuurNet\UDB3\Offer\OfferType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,12 +30,16 @@ final class UpdateVideosRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
+        $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
         $parser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(
-                $routeParameters->getOfferType()->sameValueAs(OfferType::EVENT()) ?
-                    JsonSchemaLocator::EVENT_VIDEOS_PATCH : JsonSchemaLocator::PLACE_VIDEOS_PATCH
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_VIDEOS_PATCH,
+                    JsonSchemaLocator::PLACE_VIDEOS_PATCH
+                )
             ),
             new DenormalizingRequestBodyParser(
                 new UpdateVideosDenormalizer(

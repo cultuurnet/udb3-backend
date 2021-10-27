@@ -33,10 +33,12 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeParameterProvider
      */
-    public function it_allows_a_valid_type(): void
+    public function it_allows_a_valid_type(string $offerType): void
     {
         $given = $this->requestBuilder
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"type":"Available"}')
             ->build('PUT');
@@ -56,10 +58,12 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeParameterProvider
      */
-    public function it_fails_on_empty_body(): void
+    public function it_fails_on_empty_body(string $offerType): void
     {
         $given = $this->requestBuilder
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('')
             ->build('PUT');
@@ -74,10 +78,12 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeParameterProvider
      */
-    public function it_fails_on_unparsable_body(): void
+    public function it_fails_on_unparsable_body(string $offerType): void
     {
         $given = $this->requestBuilder
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{{}')
             ->build('PUT');
@@ -92,10 +98,12 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeParameterProvider
      */
-    public function it_fails_on_missing_type(): void
+    public function it_fails_on_missing_type(string $offerType): void
     {
         $given = $this->requestBuilder
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{}')
             ->build('PUT');
@@ -110,10 +118,12 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeParameterProvider
      */
-    public function it_fails_on_invalid_type(): void
+    public function it_fails_on_invalid_type(string $offerType): void
     {
         $given = $this->requestBuilder
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"type":"foo"}')
             ->build('PUT');
@@ -124,5 +134,13 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
+
+    public function offerTypeParameterProvider(): array
+    {
+        return [
+            ['events'],
+            ['places'],
+        ];
     }
 }

@@ -51,11 +51,12 @@ class AddVideoRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_allows_adding_a_video_with_copyright_holder(): void
+    public function it_allows_adding_a_video_with_copyright_holder(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString(
                 '{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"publiq", "language": "nl"}'
@@ -86,11 +87,12 @@ class AddVideoRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_allows_adding_a_video_without_copyright_holder(): void
+    public function it_allows_adding_a_video_without_copyright_holder(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "language":"nl"}')
             ->build('POST');
@@ -119,11 +121,12 @@ class AddVideoRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_requires_a_url(): void
+    public function it_requires_a_url(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"language":"nl", "copyrightHolder":"publiq"}')
             ->build('POST');
@@ -138,11 +141,12 @@ class AddVideoRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_requires_a_language(): void
+    public function it_requires_a_language(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"publiq"}')
             ->build('POST');
@@ -156,12 +160,13 @@ class AddVideoRequestHandlerTest extends TestCase
     }
 
     /**
- * @test
- */
-    public function it_requires_a_valid_copyright_holder(): void
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_requires_a_valid_copyright_holder(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"language":"nl", "url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":123}')
             ->build('POST');
@@ -176,11 +181,12 @@ class AddVideoRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_requires_a_valid_language_enum(): void
+    public function it_requires_a_valid_language_enum(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"language":"Gesproken", "url":"https://www.youtube.com/watch?v=sdsd234", "copyrightHolder":"Publiq"}')
             ->build('POST');
@@ -195,11 +201,12 @@ class AddVideoRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
      */
-    public function it_only_allows_supported_video_platforms(): void
+    public function it_only_allows_supported_video_platforms(string $offerType): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{"url":"https://www.google.com/?v=sdsd234", "language": "nl"}')
             ->build('POST');
@@ -213,5 +220,13 @@ class AddVideoRequestHandlerTest extends TestCase
             ),
             fn () => $this->addVideoRequestHandler->handle($addVideoRequest)
         );
+    }
+
+    public function offerTypeDataProvider(): array
+    {
+        return [
+            ['events'],
+            ['places'],
+        ];
     }
 }
