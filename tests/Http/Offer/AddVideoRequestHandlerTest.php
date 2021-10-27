@@ -120,7 +120,7 @@ class AddVideoRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_adding_a_youtube_url_shortener(): void
+    public function it_allows_adding_a_shortened_youtube_url(): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', 'events')
