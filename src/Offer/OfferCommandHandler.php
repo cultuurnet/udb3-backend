@@ -204,21 +204,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      */
     abstract protected function getFlagAsInappropriateClassName();
 
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateFacilitiesClassName();
-
-
-    public function handleUpdateFacilities(AbstractUpdateFacilities $updateFacilities)
-    {
-        $offer = $this->load($updateFacilities->getItemId());
-
-        $offer->updateFacilities($updateFacilities->getFacilities());
-
-        $this->offerRepository->save($offer);
-    }
-
 
     private function handleUpdateTitle(AbstractUpdateTitle $translateTitle)
     {

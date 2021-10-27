@@ -286,26 +286,6 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_facilities_of_a_place()
-    {
-        $facilities = [
-            new Facility('facility1', 'facility label'),
-        ];
-
-        $this->scenario
-            ->withAggregateId($this->id)
-            ->given([
-                $this->itemCreated,
-            ])
-            ->when(new UpdateFacilities($this->id, $facilities))
-            ->then([
-                new FacilitiesUpdated($this->id, $facilities),
-            ]);
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_delete_current_organizer_commands()
     {
         $this->scenario
