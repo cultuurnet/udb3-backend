@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
@@ -43,15 +45,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
         $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
 
-        $controllers->put(
-            '/{organizerId}/address/',
-            'organizer_edit_controller:updateAddressDeprecated'
-        );
-
-        $controllers->put(
-            '/{organizerId}/address/{lang}/',
-            'organizer_edit_controller:updateAddress'
-        );
+        $controllers->put('/{organizerId}/address/', UpdateAddressRequestHandler::class);
+        $controllers->put('/{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
 
         $controllers->delete(
             '/{organizerId}/address/',
@@ -141,8 +136,16 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             fn (Application $application) => new UpdateTitleRequestHandler($app['event_command_bus'])
         );
 
+        $app[UpdateAddressRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateAddressRequestHandler($app['event_command_bus'])
+        );
+
         $app[UpdateTitleHandler::class] = $app->share(
             fn (Application $application) => new UpdateTitleHandler($app['organizer_repository'])
+        );
+
+        $app[UpdateAddressHandler::class] = $app->share(
+            fn (Application $application) => new UpdateAddressHandler($app['organizer_repository'])
         );
     }
 
