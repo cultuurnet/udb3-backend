@@ -31,7 +31,7 @@ final class UpdateTitleRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $organizerId = $routeParameters->getOrganizerId();
-        $language = $routeParameters->has('language') ? $routeParameters->get('language') : 'nl';
+        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage() : 'nl';
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_NAME_PUT),

@@ -71,6 +71,16 @@ final class RouteParameters
         return $this->get('organizerId');
     }
 
+    public function hasLanguage(): bool
+    {
+        return $this->has('language');
+    }
+
+    public function getLanguage(): string
+    {
+        return $this->get('language');
+    }
+
     public function getOfferType(): OfferType
     {
         $offerType = $this->get('offerType');
