@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
@@ -180,46 +179,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                     new WebsiteUpdated(
                         $organizerId,
                         Url::fromNative('http://www.depot.be')
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_address()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $address = new Address(
-            new Street('Martelarenplein 1'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
-            Country::fromNative('BE')
-        );
-
-        $language = new LegacyLanguage('nl');
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateAddress(
-                    $organizerId,
-                    $address,
-                    $language
-                )
-            )
-            ->then(
-                [
-                    new AddressUpdated(
-                        $organizerId,
-                        $address
                     ),
                 ]
             );
