@@ -205,6 +205,10 @@ class TabularDataEventFormatter
                 'calendarSummary.short',
                 'calendarSummary.long',
             ],
+            'video' => [
+                'video.url',
+                'video.copyrightHolder',
+            ],
         ];
 
         foreach ($properties as $property) {
@@ -682,6 +686,30 @@ class TabularDataEventFormatter
                     return $this->formatBookingAvailability($event->bookingAvailability);
                 },
                 'property' => 'bookingAvailability',
+            ],
+            'video.url' => [
+                'name' => 'video URL',
+                'include' => function ($event) {
+                    if (!property_exists($event, 'videos') || !is_array($event->videos)) {
+                        return '';
+                    }
+                    foreach ($event->videos as $video) {
+                            return $video->url;
+                    }
+                },
+                'property' => 'video',
+            ],
+            'video.copyrightHolder' => [
+                'name' => 'afbeelding video',
+                'include' => function ($event) {
+                    if (!property_exists($event, 'videos') || !is_array($event->videos)) {
+                        return '';
+                    }
+                    foreach ($event->videos as $video) {
+                        return $video->copyrightHolder;
+                    }
+                },
+                'property' => 'video',
             ],
         ];
     }
