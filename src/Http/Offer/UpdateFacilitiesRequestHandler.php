@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\CommandHandling\UnauthorizableCommandException;
 use CultuurNet\UDB3\Event\Commands\UpdateFacilities as UpdateEventFacilities;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
