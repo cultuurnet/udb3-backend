@@ -120,6 +120,39 @@ class AddVideoRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_allows_adding_a_youtube_url_shortener(): void
+    {
+        $addVideoRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', '91c75325-3830-4000-b580-5778b2de4548')
+            ->withBodyFromString('{"url":"https://youtu.be/bsaAOun-dec", "language":"nl"}')
+            ->build('POST');
+
+        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn($videoId);
+
+        $this->addVideoRequestHandler->handle($addVideoRequest);
+
+        $this->assertEquals(
+            [
+                new AddVideo(
+                    '91c75325-3830-4000-b580-5778b2de4548',
+                    new Video(
+                        $videoId->toString(),
+                        new Url('https://youtu.be/bsaAOun-dec'),
+                        new Language('nl')
+                    )
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_requires_a_url(): void
     {
         $addVideoRequest = $this->psr7RequestBuilder
