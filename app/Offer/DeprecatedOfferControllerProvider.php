@@ -64,7 +64,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $controllers->post('/{cdbid}/labels/', "{$controllerName}:addLabelFromJsonBody");
         $controllers->post('/{cdbid}/{lang}/title/', "{$controllerName}:updateTitle");
         $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
-        $controllers->post('/{cdbid}/facilities/', "{$controllerName}:updateFacilitiesWithLabel");
         $controllers->get('/{offerId}/permission/', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
         $controllers->get('/{offerId}/permission/{userId}/', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
 
