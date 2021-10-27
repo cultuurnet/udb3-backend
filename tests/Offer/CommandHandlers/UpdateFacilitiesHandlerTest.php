@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Facility;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -40,18 +41,46 @@ class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '1';
 
-        $facilities = [
-            new Facility('3.13.1.0.0', 'Voorzieningen voor assistentiehonden'),
-            new Facility('3.23.3.0.0', 'Rolstoel ter beschikking'),
+        $facilityIds = [
+            '3.13.1.0.0',
+            '3.27.0.0.0',
         ];
 
-        $command = new UpdateFacilities($id, $facilities);
+        $facilities = [
+            new Facility('3.13.1.0.0', 'Voorzieningen voor assistentiehonden'),
+            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
+        ];
+
+        $command = new UpdateFacilities($id, $facilityIds);
 
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->getEventCreated($id)])
             ->when($command)
             ->then([new FacilitiesUpdated($id, $facilities)])
+            ->when($command)
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_a_facility_is_invalid(): void
+    {
+        $id = '1';
+
+        $facilityIds = [
+            '3.13.1.0.0',
+            'foobar',
+        ];
+
+        $command = new UpdateFacilities($id, $facilityIds);
+
+        $this->expectException(ApiProblem::class);
+
+        $this->scenario
+            ->withAggregateId($id)
+            ->given([$this->getEventCreated($id)])
             ->when($command)
             ->then([]);
     }

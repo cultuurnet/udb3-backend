@@ -51,38 +51,9 @@ class UpdateFacilitiesRequestHandler implements RequestHandlerInterface
 
         /** @var array $facilityIds */
         $facilityIds = $parser->parse($request)->getParsedBody();
-        $facilityResolver = $this->getFacilityResolver($offerType);
 
-        $facilities = array_map(
-            static function (string $facilityId) use ($facilityResolver, $offerType) {
-                try {
-                    return $facilityResolver->byId(new StringLiteral($facilityId));
-                } catch (Exception $e) {
-                    throw ApiProblem::bodyInvalidDataWithDetail(
-                        sprintf(
-                            'Facility id "%s" is invalid or not applicable to %s.',
-                            $facilityId,
-                            $offerType->toNative()
-                        )
-                    );
-                }
-            },
-            $facilityIds
-        );
-
-        $this->commandBus->dispatch(new UpdateFacilities($offerId, $facilities));
+        $this->commandBus->dispatch(new UpdateFacilities($offerId, $facilityIds));
 
         return new NoContentResponse();
-    }
-
-    private function getFacilityResolver(OfferType $offerType): OfferFacilityResolverInterface
-    {
-        if ($offerType->sameValueAs(OfferType::EVENT())) {
-            return new EventFacilityResolver();
-        }
-        if ($offerType->sameValueAs(OfferType::PLACE())) {
-            return new PlaceFacilityResolver();
-        }
-        throw new RuntimeException('No OfferFacilityResolverInterface found for unknown type ' . $offerType->toNative());
     }
 }
