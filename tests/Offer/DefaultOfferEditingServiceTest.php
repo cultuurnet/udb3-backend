@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateTitle;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -199,45 +198,5 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->expectException(EntityNotFoundException::class);
 
         $this->offerEditingService->guardId($unknownId);
-    }
-
-    /**
-     * @param string $offerId
-     */
-    private function expectPlaceholderDocument($offerId)
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('fetch')
-            ->with($offerId)
-            ->willReturn(new JsonDocument($offerId));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_facilities_and_return_resulting_command()
-    {
-        $expectedCommandId = 'f42802e4-c1f1-4aa6-9909-a08cfc66f355';
-        $offerId = '2D015370-7CBA-4CB9-B0E4-07D2DEAAB2FF';
-        $facilities = [
-            'facility1',
-            'facility2',
-        ];
-        $updateFacilities = new UpdateFacilities($offerId, $facilities);
-        $this->expectPlaceholderDocument($offerId);
-
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdateFacilitiesCommand')
-            ->with($offerId, $facilities)
-            ->willReturn($updateFacilities);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updateFacilities)
-            ->willReturn($expectedCommandId);
-
-        $commandId = $this->offerEditingService->updateFacilities($offerId, $facilities);
-
-        $this->assertEquals($expectedCommandId, $commandId);
     }
 }
