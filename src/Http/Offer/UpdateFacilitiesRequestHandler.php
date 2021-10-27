@@ -51,7 +51,7 @@ class UpdateFacilitiesRequestHandler implements RequestHandlerInterface
             )
         );
 
-        /** @var array $data */
+        /** @var array $facilityIds */
         $facilityIds = $parser->parse($request)->getParsedBody();
         $facilityResolver = $this->getFacilityResolver($offerType);
 
