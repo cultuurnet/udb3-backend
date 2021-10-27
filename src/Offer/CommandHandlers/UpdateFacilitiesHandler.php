@@ -6,17 +6,18 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Event\Event;
-use CultuurNet\UDB3\Event\EventFacilityResolver;
+use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\Offer;
-use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\Place;
-use CultuurNet\UDB3\Place\PlaceFacilityResolver;
-use Exception;
 use RuntimeException;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class UpdateFacilitiesHandler implements CommandHandler
 {
@@ -36,13 +37,16 @@ final class UpdateFacilitiesHandler implements CommandHandler
         $offer = $this->offerRepository->load($command->getItemId());
 
         $facilityIds = $command->getFacilityIds();
-        $facilityResolver = $this->getFacilityResolver($offer);
+        $facilityResolver = $this->getCategoryResolver($offer);
 
         $facilities = array_map(
             static function (string $facilityId) use ($facilityResolver, $offer) {
-                try {
-                    return $facilityResolver->byId(new StringLiteral($facilityId));
-                } catch (Exception $e) {
+                $category = $facilityResolver->byIdInDomain(
+                    new CategoryID($facilityId),
+                    new CategoryDomain('facility')
+                );
+
+                if (!$category) {
                     throw ApiProblem::bodyInvalidDataWithDetail(
                         sprintf(
                             'Facility id "%s" is invalid or not applicable to %s.',
@@ -51,6 +55,8 @@ final class UpdateFacilitiesHandler implements CommandHandler
                         )
                     );
                 }
+
+                return Facility::fromUdb3ModelCategory($category);
             },
             $facilityIds
         );
@@ -59,14 +65,14 @@ final class UpdateFacilitiesHandler implements CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    private function getFacilityResolver(Offer $offer): OfferFacilityResolverInterface
+    private function getCategoryResolver(Offer $offer): CategoryResolverInterface
     {
         if ($offer instanceof Event) {
-            return new EventFacilityResolver();
+            return new EventCategoryResolver();
         }
         if ($offer instanceof Place) {
-            return new PlaceFacilityResolver();
+            return new PlaceCategoryResolver();
         }
-        throw new RuntimeException('No OfferFacilityResolverInterface found for unknown type ' . $offer::getOfferType()->toNative());
+        throw new RuntimeException('No CategoryResolverInterface found for unknown type ' . $offer::getOfferType()->toNative());
     }
 }
