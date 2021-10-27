@@ -15,14 +15,13 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -30,7 +29,6 @@ use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
-use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -140,7 +138,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new CreateOrganizer(
                     $id,
-                    new Language('nl'),
+                    new LegacyLanguage('nl'),
                     Url::fromNative('http://www.depot.be'),
                     new Title('Het depot')
                 )
@@ -149,7 +147,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new OrganizerCreatedWithUniqueWebsite(
                         $id,
-                        new Language('nl'),
+                        new LegacyLanguage('nl'),
                         Url::fromNative('http://www.depot.be'),
                         new Title('Het depot')
                     ),
@@ -190,37 +188,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_title()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateTitle(
-                    $organizerId,
-                    new Title('Het Depot'),
-                    new Language('nl')
-                )
-            )
-            ->then(
-                [
-                    new TitleUpdated(
-                        $organizerId,
-                        new Title('Het Depot')
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_update_address()
     {
         $organizerId = $this->organizerCreated->getOrganizerId();
@@ -232,7 +199,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             Country::fromNative('BE')
         );
 
-        $language = new Language('nl');
+        $language = new LegacyLanguage('nl');
 
         $this->scenario
             ->withAggregateId($organizerId)

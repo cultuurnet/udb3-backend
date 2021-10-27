@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
@@ -175,28 +174,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
             ->with($expectedUpdateWebsite);
 
         $this->service->updateWebsite($organizerId, $website);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_title()
-    {
-        $organizerId = 'baee2963-e1ba-4777-a803-4c645c6fd31c';
-        $title = new Title('Het Depot');
-        $language = new Language('nl');
-
-        $expectedUpdateTitle = new UpdateTitle(
-            $organizerId,
-            $title,
-            $language
-        );
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($expectedUpdateTitle);
-
-        $this->service->updateTitle($organizerId, $title, $language);
     }
 
     /**

@@ -168,62 +168,6 @@ class EditOrganizerRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_the_name_of_an_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $name = new Title('Le Depot');
-        $language = new Language('fr');
-
-        $this->editService->expects($this->once())
-            ->method('updateTitle')
-            ->with(
-                $organizerId,
-                $name,
-                $language
-            );
-
-        $content = '{"name":"' . $name->toNative() . '"}';
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $response = $this->controller->updateName(
-            $organizerId,
-            'fr',
-            $request
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_supports_deprecated_update_name_of_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $name = new Title('Het Depot');
-
-        $this->editService->expects($this->once())
-            ->method('updateTitle')
-            ->with(
-                $organizerId,
-                $name,
-                new Language('nl')
-            );
-
-        $content = '{"name":"' . $name->toNative() . '"}';
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $response = $this->controller->updateNameDeprecated(
-            $organizerId,
-            $request
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_address_of_an_organizer()
     {
         $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
