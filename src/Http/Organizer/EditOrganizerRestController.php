@@ -9,11 +9,9 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
-use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\UrlJSONDeserializer;
@@ -109,36 +107,6 @@ class EditOrganizerRestController
             );
             throw $e;
         }
-
-        return new NoContent();
-    }
-
-    /**
-     * @deprecated Use updateAddress with language parameter instead.
-     */
-    public function updateAddressDeprecated(
-        string $organizerId,
-        Request $request
-    ): Response {
-        return $this->updateAddress($organizerId, 'nl', $request);
-    }
-
-    public function updateAddress(
-        string $organizerId,
-        string $lang,
-        Request $request
-    ): Response {
-        $addressJSONDeserializer = new AddressJSONDeserializer();
-
-        $address = $addressJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editingService->updateAddress(
-            $organizerId,
-            $address,
-            new Language($lang)
-        );
 
         return new NoContent();
     }
