@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -45,7 +46,11 @@ class UpdateFacilitiesRequestHandler implements RequestHandlerInterface
         /** @var array $facilityIds */
         $facilityIds = $parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch(new UpdateFacilities($offerId, $facilityIds));
+        try {
+            $this->commandBus->dispatch(new UpdateFacilities($offerId, $facilityIds));
+        } catch (CategoryNotFound $e) {
+            throw ApiProblem::bodyInvalidDataWithDetail($e->getMessage());
+        }
 
         return new NoContentResponse();
     }

@@ -15,8 +15,8 @@ use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
@@ -76,7 +76,7 @@ class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
 
         $command = new UpdateFacilities($id, $facilityIds);
 
-        $this->expectException(ApiProblem::class);
+        $this->expectException(CategoryNotFound::class);
 
         $this->scenario
             ->withAggregateId($id)

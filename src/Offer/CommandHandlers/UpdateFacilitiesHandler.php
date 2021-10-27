@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -41,19 +42,13 @@ final class UpdateFacilitiesHandler implements CommandHandler
 
         $facilities = array_map(
             static function (string $facilityId) use ($facilityResolver, $offer) {
-                $category = $facilityResolver->byIdInDomain(
-                    new CategoryID($facilityId),
-                    new CategoryDomain('facility')
-                );
+                $id = new CategoryID($facilityId);
+                $domain = new CategoryDomain('facility');
+
+                $category = $facilityResolver->byIdInDomain($id, $domain);
 
                 if (!$category) {
-                    throw ApiProblem::bodyInvalidDataWithDetail(
-                        sprintf(
-                            'Facility id "%s" is invalid or not applicable to %s.',
-                            $facilityId,
-                            $offer::getOfferType()->toNative()
-                        )
-                    );
+                    throw CategoryNotFound::withIdInDomainForOfferType($id, $domain, $offer::getOfferType());
                 }
 
                 return Facility::fromUdb3ModelCategory($category);
