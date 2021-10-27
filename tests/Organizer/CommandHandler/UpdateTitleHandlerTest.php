@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
+use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use ValueObjects\Geography\Country;
@@ -32,7 +33,21 @@ final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_title(): void
+    public function it_handles_updating_title_in_default_language_nl(): void
+    {
+        $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
+
+        $this->scenario
+            ->withAggregateId($id)
+            ->given([$this->organizerCreated($id)])
+            ->when(new UpdateTitle($id, new Title('Nieuwe Titel'), new Language('nl')))
+            ->then([new TitleUpdated($id, new LegacyTitle('Nieuwe Titel'))]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_updating_title_in_non_default_language(): void
     {
         $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
 
