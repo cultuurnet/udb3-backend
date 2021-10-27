@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
+use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
@@ -70,7 +70,7 @@ class UpdateFacilitiesRequestHandler implements RequestHandlerInterface
             $facilityIds
         );
 
-        $this->commandBus->dispatch(new AbstractUpdateFacilities($offerId, $facilities));
+        $this->commandBus->dispatch(new UpdateFacilities($offerId, $facilities));
 
         return new NoContentResponse();
     }

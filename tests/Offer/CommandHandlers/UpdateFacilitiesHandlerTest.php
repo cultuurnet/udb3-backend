@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
+use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
@@ -45,7 +45,7 @@ class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
             new Facility('3.23.3.0.0', 'Rolstoel ter beschikking'),
         ];
 
-        $command = new AbstractUpdateFacilities($id, $facilities);
+        $command = new UpdateFacilities($id, $facilities);
 
         $this->scenario
             ->withAggregateId($id)

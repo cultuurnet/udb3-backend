@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class AbstractUpdateFacilities extends AbstractCommand
+final class UpdateFacilities extends AbstractCommand
 {
     /**
      * Facilities to be added.

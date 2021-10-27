@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
+use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
 final class UpdateFacilitiesHandler implements CommandHandler
@@ -19,7 +19,7 @@ final class UpdateFacilitiesHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!($command instanceof AbstractUpdateFacilities)) {
+        if (!($command instanceof UpdateFacilities)) {
             return;
         }
 
