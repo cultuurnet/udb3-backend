@@ -9,7 +9,6 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Event\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
@@ -17,6 +16,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
@@ -45,7 +45,7 @@ class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
             new Facility('3.23.3.0.0', 'Rolstoel ter beschikking'),
         ];
 
-        $command = new UpdateFacilities($id, $facilities);
+        $command = new AbstractUpdateFacilities($id, $facilities);
 
         $this->scenario
             ->withAggregateId($id)

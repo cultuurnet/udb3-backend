@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateFacilities as UpdateEventFacilities;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -16,7 +15,6 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\UpdateFacilities as UpdatePlaceFacilities;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -72,9 +70,7 @@ class UpdateFacilitiesRequestHandler implements RequestHandlerInterface
             $facilityIds
         );
 
-        $this->commandBus->dispatch(
-            $this->createCommand($offerType, $offerId, $facilities)
-        );
+        $this->commandBus->dispatch(new AbstractUpdateFacilities($offerId, $facilities));
 
         return new NoContentResponse();
     }
@@ -88,16 +84,5 @@ class UpdateFacilitiesRequestHandler implements RequestHandlerInterface
             return new PlaceFacilityResolver();
         }
         throw new RuntimeException('No OfferFacilityResolverInterface found for unknown type ' . $offerType->toNative());
-    }
-
-    private function createCommand(OfferType $offerType, string $offerId, array $facilities): AbstractUpdateFacilities
-    {
-        if ($offerType->sameValueAs(OfferType::EVENT())) {
-            return new UpdateEventFacilities($offerId, $facilities);
-        }
-        if ($offerType->sameValueAs(OfferType::PLACE())) {
-            return new UpdatePlaceFacilities($offerId, $facilities);
-        }
-        throw new RuntimeException('No AbstractUpdateFacilities command found for unknown type ' . $offerType->toNative());
     }
 }
