@@ -63,7 +63,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
-        $controllers->put('/{organizerId}/name/{lang}/', UpdateTitleRequestHandler::class);
+        $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
 
         $controllers->put(
             '/{organizerId}/address/',
