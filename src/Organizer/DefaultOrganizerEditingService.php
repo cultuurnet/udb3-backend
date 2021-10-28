@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Title;
