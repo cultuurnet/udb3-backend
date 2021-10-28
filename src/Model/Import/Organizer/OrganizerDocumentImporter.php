@@ -88,15 +88,17 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         $contactPoint = $adapter->getContactPoint();
         $commands[] = new UpdateContactPoint($id, $contactPoint);
 
-        $address = $adapter->getAddress();
+        $address = $import->getAddress();
         if ($address) {
-            $commands[] = new UpdateAddress($id, $address, new Language($mainLanguage->getCode()));
+            foreach ($address->getLanguages() as $language) {
+                $commands[] = new UpdateAddress(
+                    $id,
+                    $address->getTranslation($language),
+                    $language
+                );
+            }
         } else {
             $commands[] = new RemoveAddress($id);
-        }
-
-        foreach ($adapter->getAddressTranslations() as $language => $address) {
-            $commands[] = new UpdateAddress($id, $address, new Language($language));
         }
 
         foreach ($adapter->getTitleTranslations() as $language => $title) {

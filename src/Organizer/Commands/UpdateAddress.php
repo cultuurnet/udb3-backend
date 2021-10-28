@@ -4,24 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class UpdateAddress extends AbstractUpdateOrganizerCommand
 {
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
     private Language $language;
 
-    /**
-     * UpdateAddress constructor.
-     * @param string $organizerId
-     */
     public function __construct(
-        $organizerId,
+        string $organizerId,
         Address $address,
         Language $language
     ) {

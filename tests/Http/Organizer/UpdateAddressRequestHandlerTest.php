@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class UpdateAddressRequestHandlerTest extends TestCase
 {
@@ -67,7 +67,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
                         new Street('Nieuwstraat 3'),
                         new PostalCode('1000'),
                         new Locality('Brussel'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     ),
                     new Language('fr')
                 ),
@@ -103,7 +103,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
                         new Street('Nieuwstraat 3'),
                         new PostalCode('1000'),
                         new Locality('Brussel'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     ),
                     new Language('nl')
                 ),

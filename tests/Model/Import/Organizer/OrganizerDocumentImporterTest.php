@@ -8,16 +8,17 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
@@ -32,7 +33,6 @@ use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 use ValueObjects\Web\Url;
 
 class OrganizerDocumentImporterTest extends TestCase
@@ -230,7 +230,7 @@ class OrganizerDocumentImporterTest extends TestCase
                     new Street('Henegouwenkaai 41-43'),
                     new PostalCode('1080'),
                     new Locality('Brussel'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 new Language('nl')
             ),
@@ -243,7 +243,7 @@ class OrganizerDocumentImporterTest extends TestCase
                     new Street('Quai du Hainaut 41-43'),
                     new PostalCode('1080'),
                     new Locality('Bruxelles'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 new Language('fr')
             ),
