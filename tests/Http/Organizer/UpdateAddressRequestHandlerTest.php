@@ -119,6 +119,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
     {
         $updateAddressRequest = $this->psr7RequestBuilder
             ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withRouteParameter('language', 'nl')
             ->withBodyFromString(
                 '{
                     "street": "Nieuwstraat 3",
@@ -147,6 +148,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
     {
         $updateAddressRequest = $this->psr7RequestBuilder
             ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withRouteParameter('language', 'nl')
             ->withBodyFromString(
                 '{
                     "streetAddress": "Nieuwstraat 3",
@@ -175,6 +177,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
     {
         $updateAddressRequest = $this->psr7RequestBuilder
             ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withRouteParameter('language', 'nl')
             ->withBodyFromString(
                 '{
                     "streetAddress": "",
