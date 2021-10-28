@@ -17,6 +17,7 @@ class Version20211028130632 extends AbstractMigration
         $table->addColumn('recommended_event_id', Type::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('score', 'decimal', ['notnull' => true, 'scale' => 2]);
         $table->setPrimaryKey(['event_id']);
+        $table->addIndex(['recommended_event_id']);
     }
 
     public function down(Schema $schema): void
