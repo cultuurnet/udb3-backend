@@ -173,6 +173,30 @@ class UpdateAddressRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_requires_a_valid_code_for_language(): void
+    {
+        $updateAddressRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withRouteParameter('language', 'BENL')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "Nieuwstraat 3",
+                    "postalCode": "1000",
+                    "addressLocality": "Brussel",
+                    "addressCountry": "BE"
+                }'
+            )
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::pathParameterInvalid('The provided language route parameter is not supported.'),
+            fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_requires_non_empty_values(): void
     {
         $updateAddressRequest = $this->psr7RequestBuilder
