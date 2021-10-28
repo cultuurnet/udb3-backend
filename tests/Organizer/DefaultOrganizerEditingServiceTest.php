@@ -179,33 +179,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_update_address()
-    {
-        $organizerId = 'baee2963-e1ba-4777-a803-4c645c6fd31c';
-        $address = new Address(
-            new Street('Martelarenplein 1'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
-            Country::fromNative('BE')
-        );
-        $language = new Language('nl');
-
-        $expectedUpdateAddress = new UpdateAddress(
-            $organizerId,
-            $address,
-            $language
-        );
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($expectedUpdateAddress);
-
-        $this->service->updateAddress($organizerId, $address, $language);
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_remove_address()
     {
         $organizerId = 'baee2963-e1ba-4777-a803-4c645c6fd31c';
