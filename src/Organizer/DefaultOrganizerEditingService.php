@@ -8,8 +8,9 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
@@ -45,18 +46,18 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     }
 
     public function create(
-        Language $mainLanguage,
-        Url $website,
-        Title $title,
-        ?Address $address = null,
-        ?ContactPoint $contactPoint = null
+        LegacyLanguage $mainLanguage,
+        Url            $website,
+        Title          $title,
+        ?Address       $address = null,
+        ?ContactPoint  $contactPoint = null
     ): string {
         $id = $this->uuidGenerator->generate();
 
         $organizer = Organizer::create($id, $mainLanguage, $website, $title);
 
         if (!is_null($address)) {
-            $organizer->updateAddress($address, $mainLanguage);
+            $organizer->updateAddress($address, new Language($mainLanguage->getCode()));
         }
 
         if (!is_null($contactPoint)) {

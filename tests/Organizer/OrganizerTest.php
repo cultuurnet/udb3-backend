@@ -268,7 +268,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             Country::fromNative('BE')
         );
 
-        $language = $this->organizerCreatedWithUniqueWebsite->getMainLanguage();
+        $language = new Language($this->organizerCreatedWithUniqueWebsite->getMainLanguage()->getCode());
 
         $this->scenario
             ->given([$this->organizerCreatedWithUniqueWebsite])
@@ -546,11 +546,11 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 function (Organizer $organizer) use ($addressFr, $addressEn) {
                     $organizer->updateAddress(
                         $addressFr,
-                        new LegacyLanguage('fr')
+                        new Language('fr')
                     );
                     $organizer->updateAddress(
                         $addressEn,
-                        new LegacyLanguage('de')
+                        new Language('de')
                     );
                 }
             )

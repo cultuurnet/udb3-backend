@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
@@ -51,7 +51,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private array $titles;
 
     /**
-     * @var Address[]|null
+     * @var LegacyAddress[]|null
      */
     private ?array $addresses;
 
@@ -152,15 +152,15 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     }
 
     public function updateAddress(
-        Address $address,
-        LegacyLanguage $language
+        LegacyAddress  $address,
+        Language $language
     ): void {
         if ($this->isAddressChanged($address, $language)) {
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
                 $event = new AddressTranslated(
                     $this->actorId,
                     $address,
-                    $language
+                    LegacyLanguage::fromUdb3ModelLanguage($language)
                 );
             } else {
                 $event = new AddressUpdated(
@@ -414,12 +414,12 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             $title->toString() !== $this->titles[$language->getCode()]->toNative();
     }
 
-    private function setAddress(Address $address, LegacyLanguage $language): void
+    private function setAddress(LegacyAddress $address, LegacyLanguage $language): void
     {
         $this->addresses[$language->getCode()] = $address;
     }
 
-    private function isAddressChanged(Address $address, LegacyLanguage $language): bool
+    private function isAddressChanged(LegacyAddress $address, Language $language): bool
     {
         return !isset($this->addresses[$language->getCode()]) ||
             !$address->sameAs($this->addresses[$language->getCode()]);

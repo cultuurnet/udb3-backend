@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
@@ -29,7 +28,7 @@ final class UpdateAddressHandler implements CommandHandler
 
         $organizer->updateAddress(
             Address::fromUdb3ModelAddress($command->getAddress()),
-            Language::fromUdb3ModelLanguage($command->getLanguage())
+            $command->getLanguage()
         );
 
         $this->organizerRepository->save($organizer);
