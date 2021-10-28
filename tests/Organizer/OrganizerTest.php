@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Address\Locality as LegacyLocality;
+use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
+use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -128,10 +133,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
                         new LegacyTitle('DE Studio'),
                         [
-                            new Address(
-                                new Street('Wetstraat 1'),
-                                new PostalCode('1000'),
-                                new Locality('Brussel'),
+                            new LegacyAddress(
+                                new LegacyStreet('Wetstraat 1'),
+                                new LegacyPostalCode('1000'),
+                                new LegacyLocality('Brussel'),
                                 Country::fromNative('BE')
                             ),
                         ],
@@ -258,14 +263,14 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
             new Locality('Brussel'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $updatedAddress = new Address(
             new Street('Martelarenlaan 1'),
             new PostalCode('3000'),
             new Locality('Leuven'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $language = new Language($this->organizerCreatedWithUniqueWebsite->getMainLanguage()->getCode());
@@ -284,8 +289,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new AddressUpdated($this->id, $initialAddress),
-                    new AddressUpdated($this->id, $updatedAddress),
+                    new AddressUpdated($this->id, LegacyAddress::fromUdb3ModelAddress($initialAddress)),
+                    new AddressUpdated($this->id, LegacyAddress::fromUdb3ModelAddress($updatedAddress)),
                 ]
             );
     }
@@ -295,10 +300,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
      */
     public function it_can_set_an_initial_address_and_remove_it_later()
     {
-        $initialAddress = new Address(
-            new Street('Wetstraat 1'),
-            new PostalCode('1000'),
-            new Locality('Brussel'),
+        $initialAddress = new LegacyAddress(
+            new LegacyStreet('Wetstraat 1'),
+            new LegacyPostalCode('1000'),
+            new LegacyLocality('Brussel'),
             Country::fromNative('BE')
         );
 
@@ -517,14 +522,14 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             new Street('Rue de la Loi 1'),
             new PostalCode('1000'),
             new Locality('Bruxelles'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $addressEn = new Address(
             new Street('Gesetz Straße 1'),
             new PostalCode('1000'),
             new Locality('Brüssel'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $this->scenario
@@ -533,10 +538,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $this->organizerCreatedWithUniqueWebsite,
                     new AddressUpdated(
                         $this->id,
-                        new Address(
-                            new Street('Wetstraat 1'),
-                            new PostalCode('1000'),
-                            new Locality('Brussel'),
+                        new LegacyAddress(
+                            new LegacyStreet('Wetstraat 1'),
+                            new LegacyPostalCode('1000'),
+                            new LegacyLocality('Brussel'),
                             Country::fromNative('BE')
                         )
                     ),
@@ -558,12 +563,12 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new AddressTranslated(
                         $this->id,
-                        $addressFr,
+                        LegacyAddress::fromUdb3ModelAddress($addressFr),
                         new LegacyLanguage('fr')
                     ),
                     new AddressTranslated(
                         $this->id,
-                        $addressEn,
+                        LegacyAddress::fromUdb3ModelAddress($addressEn),
                         new LegacyLanguage('de')
                     ),
                 ]

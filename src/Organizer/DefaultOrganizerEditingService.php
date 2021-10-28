@@ -7,9 +7,14 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
@@ -49,7 +54,7 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
         LegacyLanguage $mainLanguage,
         Url            $website,
         Title          $title,
-        ?Address       $address = null,
+        ?LegacyAddress $address = null,
         ?ContactPoint  $contactPoint = null
     ): string {
         $id = $this->uuidGenerator->generate();
@@ -57,7 +62,15 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
         $organizer = Organizer::create($id, $mainLanguage, $website, $title);
 
         if (!is_null($address)) {
-            $organizer->updateAddress($address, new Language($mainLanguage->getCode()));
+            $organizer->updateAddress(
+                new Address(
+                    new Street($address->getStreetAddress()->toNative()),
+                    new PostalCode($address->getPostalCode()->toNative()),
+                    new Locality($address->getLocality()->toNative()),
+                    new CountryCode($address->getCountry()->getCode()->toNative())
+                ),
+                new Language($mainLanguage->getCode())
+            );
         }
 
         if (!is_null($contactPoint)) {
