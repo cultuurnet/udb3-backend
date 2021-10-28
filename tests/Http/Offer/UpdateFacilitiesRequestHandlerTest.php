@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -207,6 +208,44 @@ class UpdateFacilitiesRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
+            fn () => $this->updateFacilitiesRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_throws_an_api_problem_if_a_facility_id_is_invalid(string $offerType): void
+    {
+        $json = Json::encode(
+            [
+                '3.23.3.0.0',
+                '3.13.0.0.0',
+            ]
+        );
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', '84dcd140-a33f-4c52-83ad-7500cecb1652')
+            ->withBodyFromString($json)
+            ->build('PUT');
+
+        $expectedCommand = new UpdateFacilities(
+            '84dcd140-a33f-4c52-83ad-7500cecb1652',
+            [
+                '3.23.3.0.0',
+                '3.13.0.0.0',
+            ]
+        );
+
+        $this->commandBus->expects($this->once())
+            ->method('dispatch')
+            ->with($expectedCommand)
+            ->willThrowException(new CategoryNotFound('Facility with id 3.13.0.0.0 not found.'));
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail('Facility with id 3.13.0.0.0 not found.'),
             fn () => $this->updateFacilitiesRequestHandler->handle($request)
         );
     }
