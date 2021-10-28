@@ -45,7 +45,6 @@ use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\OwnerChanged;
-use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeDeleted;
@@ -54,7 +53,6 @@ use CultuurNet\UDB3\Offer\Item\Events\VideoAdded;
 use CultuurNet\UDB3\Offer\Item\Events\VideoDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\VideoUpdated;
 use CultuurNet\UDB3\Offer\Item\Item;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Exception;
@@ -124,32 +122,6 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new OwnerChanged($itemId, $newOwner1),
                 new OwnerChanged($itemId, $newOwner2),
                 new OwnerChanged($itemId, $newOwner1),
-            ]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_only_change_the_theme_when_updating_with_another_id(): void
-    {
-        $itemId = LegacyUUID::generateAsString();
-        $circusTheme = new Theme('0.52.0.0.0', 'Circus');
-        $musicalTheme = new Theme('1.4.0.0.0', 'Musical');
-
-        $this->scenario
-            ->given([
-                new ItemCreated($itemId),
-            ])
-            ->when(
-                function (Item $item) use ($circusTheme, $musicalTheme) {
-                    $item->updateTheme($circusTheme);
-                    $item->updateTheme($circusTheme);
-                    $item->updateTheme($musicalTheme);
-                }
-            )
-            ->then([
-                new ThemeUpdated($itemId, $circusTheme),
-                new ThemeUpdated($itemId, $musicalTheme),
             ]);
     }
 

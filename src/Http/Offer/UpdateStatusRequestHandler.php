@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Event\ValueObjects\Status as LegacyStatus;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -23,24 +22,31 @@ use Psr\Http\Server\RequestHandlerInterface;
 class UpdateStatusRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
-    private RequestBodyParser $parser;
 
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
-        $this->parser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::OFFER_STATUS),
-            new DenormalizingRequestBodyParser(new StatusDenormalizer(), Status::class)
-        );
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
+        $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
+        $parser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_STATUS,
+                    JsonSchemaLocator::PLACE_STATUS
+                )
+            ),
+            new DenormalizingRequestBodyParser(new StatusDenormalizer(), Status::class)
+        );
+
         /** @var Status $status */
-        $status = $this->parser->parse($request)->getParsedBody();
+        $status = $parser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch(
             new UpdateStatus($offerId, LegacyStatus::fromUdb3ModelStatus($status))

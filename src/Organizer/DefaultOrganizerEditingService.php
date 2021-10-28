@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Web\Url;
@@ -74,16 +73,6 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     {
         $this->commandBus->dispatch(
             new UpdateWebsite($organizerId, $website)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function updateTitle(string $organizerId, Title $title, Language $language): void
-    {
-        $this->commandBus->dispatch(
-            new UpdateTitle($organizerId, $title, $language)
         );
     }
 

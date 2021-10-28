@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 
 class OrganizerCommandHandler implements CommandHandler
@@ -50,7 +49,6 @@ class OrganizerCommandHandler implements CommandHandler
         return [
             CreateOrganizer::class => 'createOrganizer',
             UpdateWebsite::class => 'updateWebsite',
-            UpdateTitle::class => 'updateTitle',
             UpdateAddress::class => 'updateAddress',
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
@@ -88,19 +86,6 @@ class OrganizerCommandHandler implements CommandHandler
         $organizer = $this->loadOrganizer($updateWebsite->getOrganizerId());
 
         $organizer->updateWebsite($updateWebsite->getWebsite());
-
-        $this->organizerRepository->save($organizer);
-    }
-
-
-    protected function updateTitle(UpdateTitle $updateTitle)
-    {
-        $organizer = $this->loadOrganizer($updateTitle->getOrganizerId());
-
-        $organizer->updateTitle(
-            $updateTitle->getTitle(),
-            $updateTitle->getLanguage()
-        );
 
         $this->organizerRepository->save($organizer);
     }

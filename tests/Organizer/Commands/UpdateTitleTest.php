@@ -4,33 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
 class UpdateTitleTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
-    /**
-     * @var UpdateTitle
-     */
-    private $updateTitle;
+    private UpdateTitle $updateTitle;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = '3c16f422-33ea-4a5b-b70c-dd22b9fddcba';
 
@@ -48,7 +36,7 @@ class UpdateTitleTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_organizer_id()
+    public function it_stores_an_organizer_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
@@ -59,7 +47,7 @@ class UpdateTitleTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_title()
+    public function it_stores_a_title(): void
     {
         $this->assertEquals(
             $this->title,
@@ -70,7 +58,7 @@ class UpdateTitleTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_language()
+    public function it_stores_a_language(): void
     {
         $this->assertEquals(
             $this->language,

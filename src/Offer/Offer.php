@@ -45,7 +45,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractOrganizerDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractOrganizerUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Events\AbstractPriceInfoUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractThemeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTitleTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
@@ -67,7 +66,6 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use Exception;
 use ValueObjects\Identity\UUID as LegacyUUID;
@@ -108,8 +106,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected LegacyLanguage $mainLanguage;
 
     protected ?string $typeId = null;
-
-    protected ?string $themeId = null;
 
     protected array $facilities;
 
@@ -182,14 +178,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
                 ->withBookingAvailabilityOnTimestamps($bookingAvailability)
         );
     }
-
-    public function updateTheme(Theme $theme): void
-    {
-        if (!$this->themeId || $this->themeId !== $theme->getId()) {
-            $this->apply($this->createThemeUpdatedEvent($theme));
-        }
-    }
-
 
     public function updateFacilities(array $facilities): void
     {
@@ -478,11 +466,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved): void
     {
         $this->labels = $this->labels->without($labelRemoved->getLabel());
-    }
-
-    protected function applyThemeUpdated(AbstractThemeUpdated $themeUpdated): void
-    {
-        $this->themeId = $themeUpdated->getTheme()->getId();
     }
 
     protected function applyTypeUpdated(AbstractTypeUpdated $themeUpdated): void
@@ -1040,8 +1023,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createImagesUpdatedFromUDB2(ImageCollection $images): AbstractImagesUpdatedFromUDB2;
 
     abstract protected function createTypeUpdatedEvent(EventType $type): AbstractTypeUpdated;
-
-    abstract protected function createThemeUpdatedEvent(Theme $theme): AbstractThemeUpdated;
 
     abstract protected function createFacilitiesUpdatedEvent(array $facilities): AbstractFacilitiesUpdated;
 }

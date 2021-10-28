@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated as PlacePriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted as PlaceTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated as PlaceTypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use ValueObjects\Identity\UUID;
 
@@ -424,6 +425,22 @@ class BackwardsCompatiblePayloadSerializerFactory
                 return $serializedObject;
             }
         );
+
+        /**
+         * Update events whose class has been moved or renamed.
+         */
+        $movedEventClasses = [
+            'CultuurNet\UDB3\Place\VideoDeleted' => VideoDeleted::class,
+        ];
+        foreach ($movedEventClasses as $oldClass => $newClass) {
+            $payloadManipulatingSerializer->manipulateEventsOfClass(
+                $oldClass,
+                function (array $serializedObject) use ($newClass) {
+                    $serializedObject['class'] = $newClass;
+                    return $serializedObject;
+                }
+            );
+        }
 
         return $payloadManipulatingSerializer;
     }

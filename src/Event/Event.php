@@ -68,6 +68,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -92,6 +93,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     private ?Audience $audience = null;
 
     private ?LocationId $locationId = null;
+
+    private ?string $themeId = null;
 
     public static function getOfferType(): OfferType
     {
@@ -381,6 +384,18 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->audience= $audienceUpdated->getAudience();
     }
 
+    public function updateTheme(Category $category): void
+    {
+        if (!$this->themeId || $this->themeId !== $category->getId()->toString()) {
+            $this->apply(new ThemeUpdated($this->eventId, Theme::fromUdb3ModelCategory($category)));
+        }
+    }
+
+    protected function applyThemeUpdated(ThemeUpdated $themeUpdated): void
+    {
+        $this->themeId = $themeUpdated->getTheme()->getId();
+    }
+
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
     {
         return new OwnerChanged($this->eventId, $newOwnerId);
@@ -563,11 +578,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function createTypeUpdatedEvent(EventType $type): TypeUpdated
     {
         return new TypeUpdated($this->eventId, $type);
-    }
-
-    protected function createThemeUpdatedEvent(Theme $theme): ThemeUpdated
-    {
-        return new ThemeUpdated($this->eventId, $theme);
     }
 
     protected function createFacilitiesUpdatedEvent(array $facilities): FacilitiesUpdated

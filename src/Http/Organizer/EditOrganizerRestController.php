@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\UrlJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -110,39 +109,6 @@ class EditOrganizerRestController
             );
             throw $e;
         }
-
-        return new NoContent();
-    }
-
-    /**
-     * @deprecated Use updateName with language parameter instead.
-     */
-    public function updateNameDeprecated(
-        string $organizerId,
-        Request $request
-    ): Response {
-        return $this->updateName($organizerId, 'nl', $request);
-    }
-
-    public function updateName(
-        string $organizerId,
-        string $lang,
-        Request $request
-    ): Response {
-        $titleJSONDeserializer = new TitleJSONDeserializer(
-            false,
-            new StringLiteral('name')
-        );
-
-        $title = $titleJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editingService->updateTitle(
-            $organizerId,
-            $title,
-            empty($lang) ? new Language('nl') : new Language($lang)
-        );
 
         return new NoContent();
     }

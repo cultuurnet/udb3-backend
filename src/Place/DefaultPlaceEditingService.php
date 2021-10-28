@@ -14,9 +14,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
-use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
 class DefaultPlaceEditingService extends DefaultOfferEditingService implements PlaceEditingServiceInterface
@@ -37,8 +35,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
             $commandBus,
             $uuidGenerator,
             $readRepository,
-            $commandFactory,
-            new PlaceThemeResolver()
+            $commandFactory
         );
 
         $this->writeRepository = $writeRepository;
@@ -52,19 +49,17 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ) {
         $id = $this->uuidGenerator->generate();
 
-        $place = Place::createPlace(
+        $place = Place::create(
             $id,
             $mainLanguage,
             $title,
             $eventType,
             $address,
             $calendar,
-            $theme,
             $this->publicationDate
         );
 
@@ -81,19 +76,17 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ) {
         $id = $this->uuidGenerator->generate();
 
-        $place = Place::createPlace(
+        $place = Place::create(
             $id,
             $mainLanguage,
             $title,
             $eventType,
             $address,
-            $calendar,
-            $theme
+            $calendar
         );
 
         $publicationDate = $this->publicationDate ? $this->publicationDate : new \DateTimeImmutable();
@@ -103,18 +96,6 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         $this->writeRepository->save($place);
 
         return $id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, Calendar $calendar, Theme $theme = null)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            new UpdateMajorInfo($id, $title, $eventType, $address, $calendar, $theme)
-        );
     }
 
     /**

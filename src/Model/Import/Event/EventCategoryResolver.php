@@ -13,6 +13,6 @@ class EventCategoryResolver extends LegacyBridgeCategoryResolver
 {
     public function __construct()
     {
-        parent::__construct(new EventTypeResolver(), new EventThemeResolver(), new EventFacilityResolver());
+        parent::__construct(new EventTypeResolver(), new EventFacilityResolver(), new EventThemeResolver());
     }
 }

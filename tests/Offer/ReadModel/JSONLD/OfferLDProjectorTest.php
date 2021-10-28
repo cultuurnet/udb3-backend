@@ -41,7 +41,6 @@ use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\PriceInfoUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TypeUpdated;
@@ -59,7 +58,6 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
@@ -1610,74 +1608,6 @@ class OfferLDProjectorTest extends TestCase
         ];
 
         $updatedItem = $this->project($typeUpdatedEvent, $itemId);
-        $this->assertEquals($expectedTerms, $updatedItem->terms);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_project_the_new_theme_as_a_term_when_updated()
-    {
-        $itemId = LegacyUUID::generateAsString();
-        $theme = new Theme('1.8.3.3.0', 'Dance');
-        $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
-
-        $expectedTerms = [
-            (object) [
-                'id' => '1.8.3.3.0',
-                'label' => 'Dance',
-                'domain' => 'theme',
-            ],
-        ];
-
-        $updatedItem = $this->project($themeUpdatedEvent, $itemId);
-        $this->assertEquals($expectedTerms, $updatedItem->terms);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_replace_the_existing_theme_term_when_updating_with_a_new_theme()
-    {
-        $itemId = LegacyUUID::generateAsString();
-        $documentWithExistingTerms = new JsonDocument(
-            $itemId,
-            json_encode([
-                '@id' => $itemId,
-                '@type' => 'event',
-                'terms' => [
-                    (object) [
-                        'id' => '1.8.3.3.0',
-                        'label' => 'Dance',
-                        'domain' => 'theme',
-                    ],
-                    (object) [
-                        'id' => '3CuHvenJ+EGkcvhXLg9Ykg',
-                        'label' => 'Archeologische Site',
-                        'domain' => 'eventtype',
-                    ],
-                ],
-            ])
-        );
-        $theme = new Theme('1.8.2.0.0', 'Jazz en booze');
-        $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
-
-        $this->documentRepository->save($documentWithExistingTerms);
-
-        $expectedTerms = [
-            (object) [
-                'id' => '3CuHvenJ+EGkcvhXLg9Ykg',
-                'label' => 'Archeologische Site',
-                'domain' => 'eventtype',
-            ],
-            (object) [
-                'id' => '1.8.2.0.0',
-                'label' => 'Jazz en booze',
-                'domain' => 'theme',
-            ],
-        ];
-
-        $updatedItem = $this->project($themeUpdatedEvent, $itemId);
         $this->assertEquals($expectedTerms, $updatedItem->terms);
     }
 

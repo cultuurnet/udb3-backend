@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
 use CultuurNet\UDB3\Offer\Events\AbstractOrganizerDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractOrganizerUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractPriceInfoUpdated;
-use CultuurNet\UDB3\Offer\Events\AbstractThemeUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTitleTranslated;
 use CultuurNet\UDB3\Offer\Events\AbstractTitleUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
@@ -312,11 +311,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     /**
      * @return string
      */
-    abstract protected function getThemeUpdatedClassName();
-
-    /**
-     * @return string
-     */
     abstract protected function getFacilitiesUpdatedClassName();
 
     /**
@@ -330,20 +324,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @return JsonDocument
-     */
-    protected function applyThemeUpdated(AbstractThemeUpdated $themeUpdated)
-    {
-        $document = $this->loadDocumentFromRepository($themeUpdated);
-
-        return $this->updateTerm($document, $themeUpdated->getTheme());
-    }
-
-    /**
      *
      * @return JsonDocument
      */
-    private function updateTerm(JsonDocument $document, Category $category)
+    protected function updateTerm(JsonDocument $document, Category $category)
     {
         $offerLD = $document->getBody();
 

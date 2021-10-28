@@ -83,19 +83,11 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
             new StringLiteral(json_encode($data['calendar']))
         );
 
-        $theme = null;
-        if (!empty($data['theme'])) {
-            $theme = $this->themeDeserializer->deserialize(
-                new StringLiteral(json_encode($data['theme']))
-            );
-        }
-
         return new MajorInfo(
             new Title($data['name']),
             $type,
             $address,
-            $calendar,
-            $theme
+            $calendar
         );
     }
 }

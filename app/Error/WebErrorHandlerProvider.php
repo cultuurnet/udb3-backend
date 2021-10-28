@@ -101,6 +101,9 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                 if ($routeParameters->hasPlaceId()) {
                     return ApiProblem::placeNotFound($routeParameters->getPlaceId());
                 }
+                if ($routeParameters->hasOrganizerId()) {
+                    return ApiProblem::organizerNotFound($routeParameters->getOrganizerId());
+                }
                 if ($routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
                     return ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
                 }

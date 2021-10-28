@@ -56,7 +56,6 @@ class ContentTypes
             TypicalAgeRangeUpdated::class => 'application/vnd.cultuurnet.udb3-events.place-typical-age-range-updated+json',
             TypicalAgeRangeDeleted::class => 'application/vnd.cultuurnet.udb3-events.place-typical-age-range-deleted+json',
             TypeUpdated::class => 'application/vnd.cultuurnet.udb3-events.place-type-updated+json',
-            ThemeUpdated::class => 'application/vnd.cultuurnet.udb3-events.place-theme-updated+json',
             // Moderation
             Published::class => 'application/vnd.cultuurnet.udb3-events.moderation.place-published+json',
             Approved::class => 'application/vnd.cultuurnet.udb3-events.moderation.place-approved+json',

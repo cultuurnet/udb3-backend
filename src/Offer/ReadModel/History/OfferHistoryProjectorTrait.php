@@ -281,14 +281,6 @@ trait OfferHistoryProjectorTrait
         );
     }
 
-    private function projectThemeUpdated(DomainMessage $domainMessage): void
-    {
-        $this->writeHistory(
-            $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Thema aangepast')
-        );
-    }
-
     private function projectTitleTranslated(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();

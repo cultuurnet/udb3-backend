@@ -46,15 +46,13 @@ class UpdateMajorInfo extends AbstractCommand
         Title $title,
         EventType $eventType,
         Address $address,
-        Calendar $calendar,
-        Theme $theme = null
+        Calendar $calendar
     ) {
         parent::__construct($placeId);
         $this->title = $title;
         $this->eventType = $eventType;
         $this->address = $address;
         $this->calendar = $calendar;
-        $this->theme = $theme;
     }
 
     /**
@@ -71,14 +69,6 @@ class UpdateMajorInfo extends AbstractCommand
     public function getEventType()
     {
         return $this->eventType;
-    }
-
-    /**
-     * @return Theme|null
-     */
-    public function getTheme()
-    {
-        return $this->theme;
     }
 
     /**

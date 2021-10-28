@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Place\Commands\UpdateTheme;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
@@ -84,21 +83,19 @@ class PlaceDocumentImporter implements DocumentImporterInterface
         $mainLanguage = $adapter->getMainLanguage();
         $title = $adapter->getTitle();
         $type = $adapter->getType();
-        $theme = $adapter->getTheme();
         $address = $adapter->getAddress();
         $calendar = $adapter->getCalendar();
         $publishDate = $adapter->getAvailableFrom(new \DateTimeImmutable());
 
         $commands = [];
         if (!$exists) {
-            $place = PlaceAggregate::createPlace(
+            $place = PlaceAggregate::create(
                 $id,
                 $mainLanguage,
                 $title,
                 $type,
                 $address,
                 $calendar,
-                $theme,
                 $publishDate
             );
 
@@ -128,10 +125,6 @@ class PlaceDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateType($id, $type->getId());
             $commands[] = new UpdateAddress($id, $address, $mainLanguage);
             $commands[] = new UpdateCalendar($id, $calendar);
-
-            if ($theme) {
-                $commands[] = new UpdateTheme($id, $theme);
-            }
         }
 
         $bookingInfo = $adapter->getBookingInfo();

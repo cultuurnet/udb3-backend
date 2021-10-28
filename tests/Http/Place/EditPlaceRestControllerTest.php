@@ -244,10 +244,6 @@ class EditPlaceRestControllerTest extends TestCase
                     'id' => '1.8.2',
                     'label' => 'PARTY!',
                 ],
-                'theme' => [
-                    'id' => '6.6.6',
-                    'label' => 'Pentagrams',
-                ],
                 'address' => [
                     'streetAddress' => 'acmelane 12',
                     'postalCode' => '3000',

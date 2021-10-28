@@ -12,7 +12,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 
@@ -35,8 +34,7 @@ class UpdateMajorInfoTest extends TestCase
                 new Locality('Leuven'),
                 Country::fromNative('BE')
             ),
-            new Calendar(CalendarType::PERMANENT()),
-            new Theme('themeid', 'theme_label')
+            new Calendar(CalendarType::PERMANENT())
         );
     }
 
@@ -55,13 +53,11 @@ class UpdateMajorInfoTest extends TestCase
             Country::fromNative('BE')
         );
         $expectedCalendar = new Calendar(CalendarType::PERMANENT());
-        $expectedTheme = new Theme('themeid', 'theme_label');
 
         $this->assertEquals($expectedId, $this->updateMajorInfo->getItemId());
         $this->assertEquals($expectedTitle, $this->updateMajorInfo->getTitle());
         $this->assertEquals($expectedEventType, $this->updateMajorInfo->getEventType());
         $this->assertEquals($expectedAddress, $this->updateMajorInfo->getAddress());
         $this->assertEquals($expectedCalendar, $this->updateMajorInfo->getCalendar());
-        $this->assertEquals($expectedTheme, $this->updateMajorInfo->getTheme());
     }
 }

@@ -22,8 +22,6 @@ interface OrganizerEditingServiceInterface
 
     public function updateWebsite(string $organizerId, Url $website): void;
 
-    public function updateTitle(string $organizerId, Title $title, Language $language): void;
-
     public function updateAddress(string $organizerId, Address $address, Language $language): void;
 
     public function removeAddress(string $organizerId): void;

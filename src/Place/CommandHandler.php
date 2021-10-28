@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 use CultuurNet\UDB3\Place\Commands\AddImage;
-use CultuurNet\UDB3\Place\Commands\CreatePlace;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve;
@@ -28,7 +27,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateImage;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Place\Commands\UpdateTheme;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use Psr\Log\LoggerAwareInterface;
@@ -194,24 +192,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         return FlagAsInappropriate::class;
     }
 
-
-    protected function handleCreatePlace(CreatePlace $command)
-    {
-        $place = Place::createPlace(
-            $command->getItemId(),
-            $command->getMainLanguage(),
-            $command->getTitle(),
-            $command->getEventType(),
-            $command->getAddress(),
-            $command->getCalendar(),
-            $command->getTheme(),
-            $command->getPublicationDate()
-        );
-
-        $this->offerRepository->save($place);
-    }
-
-
     protected function handleUpdateAddress(UpdateAddress $updateAddress)
     {
         /** @var Place $place */
@@ -233,16 +213,10 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
             $updateMajorInfo->getTitle(),
             $updateMajorInfo->getEventType(),
             $updateMajorInfo->getAddress(),
-            $updateMajorInfo->getCalendar(),
-            $updateMajorInfo->getTheme()
+            $updateMajorInfo->getCalendar()
         );
 
         $this->offerRepository->save($place);
-    }
-
-    protected function getUpdateThemeClassName()
-    {
-        return UpdateTheme::class;
     }
 
     /**
