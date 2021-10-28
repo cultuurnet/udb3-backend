@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
