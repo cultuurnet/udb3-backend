@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Serializers\UpdateAddressDenormalizer;
 use Psr\Http\Message\ResponseInterface;
@@ -31,12 +31,12 @@ final class UpdateAddressRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $organizerId = $routeParameters->getOrganizerId();
-        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage()->toString() : 'nl';
+        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage() : new Language('nl');
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_ADDRESS_PUT),
             new DenormalizingRequestBodyParser(
-                new UpdateAddressDenormalizer($organizerId, new Language($language)),
+                new UpdateAddressDenormalizer($organizerId, $language),
                 UpdateAddress::class
             )
         );

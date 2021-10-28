@@ -232,7 +232,7 @@ class OrganizerDocumentImporterTest extends TestCase
                     new Locality('Brussel'),
                     Country::fromNative('BE')
                 ),
-                new LegacyLanguage('nl')
+                new Language('nl')
             ),
             $recordedCommands
         );
@@ -245,7 +245,7 @@ class OrganizerDocumentImporterTest extends TestCase
                     new Locality('Bruxelles'),
                     Country::fromNative('BE')
                 ),
-                new LegacyLanguage('fr')
+                new Language('fr')
             ),
             $recordedCommands
         );

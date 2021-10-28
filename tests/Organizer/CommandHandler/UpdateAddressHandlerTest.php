@@ -12,12 +12,13 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
 
@@ -79,7 +80,7 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
                     new Language('fr')
                 )
             )
-            ->then([new AddressTranslated($id, $updatedAddress, new Language('fr'))]);
+            ->then([new AddressTranslated($id, $updatedAddress, new LegacyLanguage('fr'))]);
     }
 
     private function organizerCreated(string $id): OrganizerCreated

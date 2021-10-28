@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 
@@ -24,10 +24,7 @@ class UpdateAddressTest extends TestCase
      */
     private $address;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
     /**
      * @var UpdateAddress
