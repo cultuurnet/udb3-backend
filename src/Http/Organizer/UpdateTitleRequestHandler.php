@@ -31,12 +31,12 @@ final class UpdateTitleRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $organizerId = $routeParameters->getOrganizerId();
-        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage() : 'nl';
+        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage() : new Language('nl');
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_NAME_PUT),
             new DenormalizingRequestBodyParser(
-                new UpdateTitleDenormalizer($organizerId, new Language($language)),
+                new UpdateTitleDenormalizer($organizerId, $language),
                 UpdateTitle::class
             )
         );

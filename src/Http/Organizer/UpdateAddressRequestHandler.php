@@ -31,7 +31,7 @@ final class UpdateAddressRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $organizerId = $routeParameters->getOrganizerId();
-        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage() : 'nl';
+        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage()->toString() : 'nl';
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_ADDRESS_PUT),
