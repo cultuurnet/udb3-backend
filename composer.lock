@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5eb2fe029396dc270558ca8d1e3f9115",
+    "content-hash": "5175783f8ac8203db59ced7e3142bf14",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5366,16 +5366,16 @@
         },
         {
             "name": "publiq/stoplight-docs-uitdatabank",
-            "version": "dev-feature/III-4308-new-regex-youtube",
+            "version": "dev-unreleased",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "7b304ff5694ca13f12310358f330292a35d020ed"
+                "reference": "7ab023c18cc2e230252fc58e6cd548d1a5f8d9bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/7b304ff5694ca13f12310358f330292a35d020ed",
-                "reference": "7b304ff5694ca13f12310358f330292a35d020ed",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/7ab023c18cc2e230252fc58e6cd548d1a5f8d9bf",
+                "reference": "7ab023c18cc2e230252fc58e6cd548d1a5f8d9bf",
                 "shasum": ""
             },
             "type": "library",
@@ -5392,9 +5392,9 @@
             "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
             "support": {
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
-                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4308-new-regex-youtube"
+                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/unreleased"
             },
-            "time": "2021-10-26T14:29:57+00:00"
+            "time": "2021-10-28T10:18:03+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -11100,5 +11100,5 @@
         "ext-xmlreader": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
