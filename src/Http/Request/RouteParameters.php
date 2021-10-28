@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\OfferType;
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
@@ -76,9 +79,13 @@ final class RouteParameters
         return $this->has('language');
     }
 
-    public function getLanguage(): string
+    public function getLanguage(): Language
     {
-        return $this->get('language');
+        try {
+            return new Language($this->get('language'));
+        } catch (InvalidArgumentException $exception) {
+            throw ApiProblem::pathParameterInvalid('The provided language route parameter is not supported.');
+        }
     }
 
     public function getOfferType(): OfferType

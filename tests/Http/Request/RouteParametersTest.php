@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 class RouteParametersTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
     /**
      * @test
      */
@@ -44,5 +49,36 @@ class RouteParametersTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $routeParameters->get('foo');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_valid_language(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('language', 'nl')
+            ->build('PUT');
+        $routeParameters = new RouteParameters($request);
+
+        $this->assertEquals(new Language('nl'), $routeParameters->getLanguage());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_invalid_language(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('language', 'BE-nl')
+            ->build('PUT');
+        $routeParameters = new RouteParameters($request);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::pathParameterInvalid(
+                'The provided language route parameter is not supported.'
+            ),
+            fn () => $routeParameters->getLanguage()
+        );
     }
 }
