@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
-use CultuurNet\UDB3\Place\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Place\Commands\UpdateImage;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
@@ -217,13 +216,5 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         );
 
         $this->offerRepository->save($place);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getUpdateFacilitiesClassName()
-    {
-        return UpdateFacilities::class;
     }
 }

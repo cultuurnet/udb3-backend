@@ -79,6 +79,20 @@ final class VideoNormalizerTest extends TestCase
                     'copyrightHolder' => 'Droits d\'auteur gérés par YouTube',
                 ],
             ],
+            'video_from_youtube_url_shortener' => [
+                new Video(
+                    '91c75325-3830-4000-b580-5778b2de4548',
+                    new Url('https://youtu.be/bsaAOun-dec'),
+                    new Language('nl')
+                ),
+                [
+                    'id' => '91c75325-3830-4000-b580-5778b2de4548',
+                    'url' => 'https://youtu.be/bsaAOun-dec',
+                    'embedUrl' => 'https://www.youtube.com/embed/bsaAOun-dec',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'Copyright afgehandeld door YouTube',
+                ],
+            ],
         ];
     }
 }

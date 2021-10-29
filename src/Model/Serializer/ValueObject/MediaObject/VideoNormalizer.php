@@ -30,6 +30,10 @@ final class VideoNormalizer implements NormalizerInterface
             'embed' => self::VIMEO_EMBED,
             'name' => self::VIMEO_NAME,
         ],
+        9 => [
+            'embed' => self::YOUTUBE_EMBED,
+            'name' => self::YOUTUBE_NAME,
+        ],
     ];
 
     private array $defaultCopyrightHolders;
@@ -80,6 +84,7 @@ final class VideoNormalizer implements NormalizerInterface
             $url->toString(),
             $matches
         );
+
         foreach ($this->videoPlatforms as $videoPlatformIndex => $videoPlatformData) {
             if (isset($matches[$videoPlatformIndex]) && !empty($matches[$videoPlatformIndex])) {
                 return [
