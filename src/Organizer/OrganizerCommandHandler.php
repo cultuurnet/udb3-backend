@@ -109,7 +109,7 @@ class OrganizerCommandHandler implements CommandHandler
 
     public function deleteOrganizer(DeleteOrganizer $deleteOrganizer)
     {
-        $id = $deleteOrganizer->getOrganizerId();
+        $id = $deleteOrganizer->getItemId();
 
         // First remove all relations to the given organizer.
         foreach ($this->organizerRelationServices as $relationService) {
