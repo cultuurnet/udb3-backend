@@ -76,7 +76,7 @@ class OrganizerCommandHandler implements CommandHandler
 
     public function removeAddress(RemoveAddress $removeAddress)
     {
-        $organizer = $this->loadOrganizer($removeAddress->getOrganizerId());
+        $organizer = $this->loadOrganizer($removeAddress->getItemId());
 
         $organizer->removeAddress();
 
