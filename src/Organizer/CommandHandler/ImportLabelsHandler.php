@@ -43,7 +43,7 @@ final class ImportLabelsHandler implements CommandHandler
             );
         }
 
-        $organizer = $this->organizerRepository->load($command->getOrganizerId());
+        $organizer = $this->organizerRepository->load($command->getItemId());
         $organizer->importLabels($command->getLabels(), $command->getLabelsToKeepIfAlreadyOnOrganizer());
         $this->organizerRepository->save($organizer);
     }

@@ -11,23 +11,19 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ImportLabels extends AbstractOrganizerCommand implements AuthorizableCommand, AuthorizableLabelCommand
+final class ImportLabels implements AuthorizableCommand, AuthorizableLabelCommand
 {
-    /**
-     * @var Labels
-     */
-    private $labels;
+    private string $organizerId;
 
-    /**
-     * @var Labels
-     */
-    private $labelsToKeepIfAlreadyOnOrganizer;
+    private Labels $labels;
+
+    private Labels $labelsToKeepIfAlreadyOnOrganizer;
 
     public function __construct(
         string $organizerId,
         Labels $label
     ) {
-        parent::__construct($organizerId);
+        $this->organizerId = $organizerId;
         $this->labels = $label;
         $this->labelsToKeepIfAlreadyOnOrganizer = new Labels();
     }
@@ -62,7 +58,7 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
 
     public function getItemId(): string
     {
-        return $this->getOrganizerId();
+        return $this->organizerId;
     }
 
     public function getPermission(): Permission
