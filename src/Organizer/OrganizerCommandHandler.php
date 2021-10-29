@@ -81,7 +81,7 @@ class OrganizerCommandHandler implements CommandHandler
 
     protected function updateWebsite(UpdateWebsite $updateWebsite)
     {
-        $organizer = $this->loadOrganizer($updateWebsite->getOrganizerId());
+        $organizer = $this->loadOrganizer($updateWebsite->getItemId());
 
         $organizer->updateWebsite($updateWebsite->getWebsite());
 

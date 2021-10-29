@@ -4,32 +4,36 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use ValueObjects\Web\Url;
 
-class UpdateWebsite extends AbstractUpdateOrganizerCommand
+final class UpdateWebsite implements AuthorizableCommand
 {
-    /**
-     * @var Url
-     */
-    private $website;
+    private string $organizerId;
 
-    /**
-     * UpdateUrl constructor.
-     * @param string $organizerId
-     */
+    private Url $website;
+
     public function __construct(
-        $organizerId,
+        string $organizerId,
         Url $website
     ) {
-        parent::__construct($organizerId);
+        $this->organizerId = $organizerId;
         $this->website = $website;
     }
 
-    /**
-     * @return Url
-     */
-    public function getWebsite()
+    public function getWebsite(): Url
     {
         return $this->website;
+    }
+
+    public function getItemId(): string
+    {
+        return $this->organizerId;
+    }
+
+    public function getPermission(): Permission
+    {
+        return Permission::ORGANISATIES_BEWERKEN();
     }
 }
