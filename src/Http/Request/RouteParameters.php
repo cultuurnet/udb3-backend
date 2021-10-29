@@ -79,8 +79,18 @@ final class RouteParameters
         return $this->has('language');
     }
 
+    /**
+     * There are 3 possible scenarios:
+     *  1. The given language parameter is correct, the given language is returned
+     *  2. The given language parameter is incorrect, an ApiProblem is thrown
+     *  3. The language parameter is missing (for a deprecated route), the language nl is returned
+     */
     public function getLanguage(): Language
     {
+        if (!$this->hasLanguage()) {
+            return new Language('nl');
+        }
+
         try {
             return new Language($this->get('language'));
         } catch (InvalidArgumentException $exception) {

@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Serializers\UpdateTitleDenormalizer;
 use Psr\Http\Message\ResponseInterface;
@@ -31,7 +30,7 @@ final class UpdateTitleRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $organizerId = $routeParameters->getOrganizerId();
-        $language = $routeParameters->hasLanguage() ? $routeParameters->getLanguage() : new Language('nl');
+        $language = $routeParameters->getLanguage();
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_NAME_PUT),

@@ -67,6 +67,18 @@ class RouteParametersTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_nl_when_language_parameter_is_missing(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->build('PUT');
+        $routeParameters = new RouteParameters($request);
+
+        $this->assertEquals(new Language('nl'), $routeParameters->getLanguage());
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_on_invalid_language(): void
     {
         $request = (new Psr7RequestBuilder())
