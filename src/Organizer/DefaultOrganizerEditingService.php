@@ -52,10 +52,10 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
 
     public function create(
         LegacyLanguage $mainLanguage,
-        Url            $website,
-        Title          $title,
+        Url $website,
+        Title $title,
         ?LegacyAddress $address = null,
-        ?ContactPoint  $contactPoint = null
+        ?ContactPoint $contactPoint = null
     ): string {
         $id = $this->uuidGenerator->generate();
 
