@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class OrganizerServiceProvider implements ServiceProviderInterface
+class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {

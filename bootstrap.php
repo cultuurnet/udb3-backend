@@ -61,7 +61,7 @@ use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -739,7 +739,7 @@ $app['organizer_editing_service'] = $app->share(
 
 $app->register(new OrganizerControllerProvider());
 $app->register(new OrganizerJSONLDServiceProvider());
-$app->register(new OrganizerServiceProvider());
+$app->register(new OrganizerCommandHandlerProvider());
 
 $app['eventstore_payload_serializer'] = $app->share(
     function ($app) {
