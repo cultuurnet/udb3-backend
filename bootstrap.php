@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
@@ -610,6 +611,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
         $commandBus->subscribe($app[UpdateBookingAvailabilityHandler::class]);
         $commandBus->subscribe($app[UpdateTypeHandler::class]);
+        $commandBus->subscribe($app[UpdateFacilitiesHandler::class]);
         $commandBus->subscribe($app[ChangeOwnerHandler::class]);
         $commandBus->subscribe($app[AddLabelHandler::class]);
         $commandBus->subscribe($app[RemoveLabelHandler::class]);

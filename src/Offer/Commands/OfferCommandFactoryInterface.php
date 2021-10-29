@@ -60,6 +60,4 @@ interface OfferCommandFactoryInterface
     public function createFlagAsInappropriate(string $id): AbstractFlagAsInappropriate;
 
     public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate;
-
-    public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities;
 }

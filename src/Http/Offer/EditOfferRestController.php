@@ -56,11 +56,6 @@ class EditOfferRestController
      */
     private $priceInfoJsonDeserializer;
 
-    /**
-     * @var DeserializerInterface
-     */
-    private $facilityDeserializer;
-
     public function __construct(
         CommandBus $commandBus,
         OfferEditingServiceInterface $editingServiceInterface,
@@ -68,8 +63,7 @@ class EditOfferRestController
         DeserializerInterface $labelJsonDeserializer,
         DeserializerInterface $titleJsonDeserializer,
         DeserializerInterface $descriptionJsonDeserializer,
-        DeserializerInterface $priceInfoJsonDeserializer,
-        DeserializerInterface $facilityDeserializer
+        DeserializerInterface $priceInfoJsonDeserializer
     ) {
         $this->commandBus = $commandBus;
         $this->editService = $editingServiceInterface;
@@ -78,7 +72,6 @@ class EditOfferRestController
         $this->titleJsonDeserializer = $titleJsonDeserializer;
         $this->descriptionJsonDeserializer = $descriptionJsonDeserializer;
         $this->priceInfoJsonDeserializer = $priceInfoJsonDeserializer;
-        $this->facilityDeserializer = $facilityDeserializer;
     }
 
     public function addLabel(string $cdbid, string $label): Response
@@ -133,17 +126,6 @@ class EditOfferRestController
             new Language($lang),
             $description
         );
-
-        return new NoContent();
-    }
-
-    public function updateFacilities(Request $request, string $cdbid): Response
-    {
-        $facilities = $this->facilityDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editService->updateFacilities($cdbid, $facilities);
 
         return new NoContent();
     }

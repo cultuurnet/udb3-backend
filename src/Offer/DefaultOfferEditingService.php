@@ -75,19 +75,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
      * @param string $id
      * @return string
      */
-    public function updateFacilities($id, array $facilities)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createUpdateFacilitiesCommand($id, $facilities)
-        );
-    }
-
-    /**
-     * @param string $id
-     * @return string
-     */
     public function updateTitle($id, Language $language, StringLiteral $title)
     {
         $this->guardId($id);

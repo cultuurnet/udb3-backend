@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
-use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Http\Deserializer\Place\FacilitiesJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
@@ -47,8 +44,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->put('/{cdbid}/facilities/', "{$controllerName}:updateFacilities");
-
         $controllers->delete('/{cdbid}/labels/{label}/', "{$controllerName}:removeLabel");
         $controllers->put('/{cdbid}/labels/{label}/', "{$controllerName}:addLabel");
 
@@ -66,7 +61,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $controllers->post('/{cdbid}/labels/', "{$controllerName}:addLabelFromJsonBody");
         $controllers->post('/{cdbid}/{lang}/title/', "{$controllerName}:updateTitle");
         $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
-        $controllers->post('/{cdbid}/facilities/', "{$controllerName}:updateFacilitiesWithLabel");
         $controllers->get('/{offerId}/permission/', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
         $controllers->get('/{offerId}/permission/{userId}/', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
 
@@ -81,13 +75,11 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                     case 'Place':
                         $editor = $app['place_editing_service'];
                         $mainLanguageQuery = $app['place_main_language_query'];
-                        $facilityResolver = new PlaceFacilityResolver();
                         break;
                     case 'Event':
                     default:
                         $editor = $app['event_editor'];
                         $mainLanguageQuery = $app['event_main_language_query'];
-                        $facilityResolver = new EventFacilityResolver();
                 }
 
                 return new EditOfferRestController(
@@ -97,8 +89,7 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                     new LabelJSONDeserializer(),
                     new TitleJSONDeserializer(false, new StringLiteral('name')),
                     new DescriptionJSONDeserializer(),
-                    new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
-                    new FacilitiesJSONDeserializer($facilityResolver)
+                    new PriceInfoJSONDeserializer(new PriceInfoDataValidator())
                 );
             }
         );

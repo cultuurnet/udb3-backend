@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
-use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelJSONDeserializer;
@@ -74,11 +72,6 @@ class EditOfferRestControllerTest extends TestCase
     private $calendarDataValidator;
 
     /**
-     * @var DeserializerInterface|MockObject
-     */
-    private $facilitiesJSONDeserializer;
-
-    /**
      * @var EditOfferRestController
      */
     private $controller;
@@ -96,7 +89,6 @@ class EditOfferRestControllerTest extends TestCase
         $this->titleDeserializer = new TitleJSONDeserializer();
         $this->descriptionDeserializer = new DescriptionJSONDeserializer();
         $this->priceInfoDeserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
-        $this->facilitiesJSONDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->controller = new EditOfferRestController(
             $this->commandBus,
@@ -105,8 +97,7 @@ class EditOfferRestControllerTest extends TestCase
             $this->labelDeserializer,
             $this->titleDeserializer,
             $this->descriptionDeserializer,
-            $this->priceInfoDeserializer,
-            $this->facilitiesJSONDeserializer
+            $this->priceInfoDeserializer
         );
     }
 
@@ -243,49 +234,6 @@ class EditOfferRestControllerTest extends TestCase
 
         $response = $this->controller
             ->updateDescription($request, 'EC545F35-C76E-4EFC-8AB0-5024DA866CA0', 'nl');
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_the_facilities_of_a_place()
-    {
-        $json = json_encode(
-            [
-                'facilities' =>
-                    [
-                        '3.23.1.0.0',
-                        '3.23.2.0.0',
-                        '3.23.3.0.0',
-                    ],
-            ]
-        );
-
-        $facilities = [
-            new Facility('3.23.1.0.0', 'Voorzieningen voor rolstoelgebruikers'),
-            new Facility('3.23.2.0.0', 'Assistentie'),
-            new Facility('3.23.3.0.0', 'Rolstoel ter beschikking'),
-        ];
-
-        $request = new Request([], [], [], [], [], [], $json);
-
-        $placeId = '6645274f-d969-4d70-865e-3ec799db9624';
-
-        $this->facilitiesJSONDeserializer->expects($this->once())
-            ->method('deserialize')
-            ->with(new StringLiteral($json))
-            ->willReturn($facilities);
-
-        $this->editService->expects($this->once())
-            ->method('updateFacilities')
-            ->with(
-                $placeId,
-                $facilities
-            );
-
-        $response = $this->controller->updateFacilities($request, $placeId);
 
         $this->assertEquals(204, $response->getStatusCode());
     }

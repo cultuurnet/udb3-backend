@@ -271,6 +271,16 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function bodyInvalidDataWithDetail(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/body/invalid-data',
+            'Invalid body data',
+            400,
+            $detail
+        );
+    }
+
     public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
     {
         return self::create(

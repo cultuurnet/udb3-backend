@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
@@ -203,21 +202,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      * @return string
      */
     abstract protected function getFlagAsInappropriateClassName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateFacilitiesClassName();
-
-
-    public function handleUpdateFacilities(AbstractUpdateFacilities $updateFacilities)
-    {
-        $offer = $this->load($updateFacilities->getItemId());
-
-        $offer->updateFacilities($updateFacilities->getFacilities());
-
-        $this->offerRepository->save($offer);
-    }
 
 
     private function handleUpdateTitle(AbstractUpdateTitle $translateTitle)
