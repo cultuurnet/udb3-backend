@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-class UpdateAddress implements AuthorizableCommand
+final class UpdateAddress implements AuthorizableCommand
 {
     private string $organizerId;
 
