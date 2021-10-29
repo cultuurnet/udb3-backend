@@ -100,7 +100,7 @@ class OrganizerCommandHandler implements CommandHandler
 
     protected function updateContactPoint(UpdateContactPoint $updateContactPoint)
     {
-        $organizer = $this->loadOrganizer($updateContactPoint->getOrganizerId());
+        $organizer = $this->loadOrganizer($updateContactPoint->getItemId());
 
         $organizer->updateContactPoint($updateContactPoint->getContactPoint());
 
