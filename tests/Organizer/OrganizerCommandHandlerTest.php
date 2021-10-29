@@ -15,9 +15,7 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
@@ -26,7 +24,6 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
-use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title;
@@ -123,35 +120,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 $eventBus
             )
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_create_organizer()
-    {
-        $id = (new UUID())->toNative();
-
-        $this->scenario
-            ->withAggregateId($id)
-            ->when(
-                new CreateOrganizer(
-                    $id,
-                    new LegacyLanguage('nl'),
-                    Url::fromNative('http://www.depot.be'),
-                    new Title('Het depot')
-                )
-            )
-            ->then(
-                [
-                    new OrganizerCreatedWithUniqueWebsite(
-                        $id,
-                        new LegacyLanguage('nl'),
-                        Url::fromNative('http://www.depot.be'),
-                        new Title('Het depot')
-                    ),
-                ]
-            );
     }
 
     /**

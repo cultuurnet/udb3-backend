@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
@@ -46,7 +45,6 @@ class OrganizerCommandHandler implements CommandHandler
     protected function getCommandHandlerMethods()
     {
         return [
-            CreateOrganizer::class => 'createOrganizer',
             UpdateWebsite::class => 'updateWebsite',
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
@@ -64,18 +62,6 @@ class OrganizerCommandHandler implements CommandHandler
             $method = $handlers[$class];
             $this->{$method}($command);
         }
-    }
-
-    protected function createOrganizer(CreateOrganizer $createOrganizer)
-    {
-        $organizer = Organizer::create(
-            $createOrganizer->getItemId(),
-            $createOrganizer->getMainLanguage(),
-            $createOrganizer->getWebsite(),
-            $createOrganizer->getTitle()
-        );
-
-        $this->organizerRepository->save($organizer);
     }
 
 
