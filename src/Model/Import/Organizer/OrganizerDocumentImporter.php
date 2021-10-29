@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
@@ -89,16 +88,17 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         $contactPoint = $adapter->getContactPoint();
         $commands[] = new UpdateContactPoint($id, $contactPoint);
 
-        $address = $adapter->getAddress();
+        $address = $import->getAddress();
         if ($address) {
-            $commands[] = new UpdateAddress($id, $address, $mainLanguage);
+            foreach ($address->getLanguages() as $language) {
+                $commands[] = new UpdateAddress(
+                    $id,
+                    $address->getTranslation($language),
+                    $language
+                );
+            }
         } else {
             $commands[] = new RemoveAddress($id);
-        }
-
-        foreach ($adapter->getAddressTranslations() as $language => $address) {
-            $language = new LegacyLanguage($language);
-            $commands[] = new UpdateAddress($id, $address, $language);
         }
 
         foreach ($adapter->getTitleTranslations() as $language => $title) {

@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -174,33 +173,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
             ->with($expectedUpdateWebsite);
 
         $this->service->updateWebsite($organizerId, $website);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_address()
-    {
-        $organizerId = 'baee2963-e1ba-4777-a803-4c645c6fd31c';
-        $address = new Address(
-            new Street('Martelarenplein 1'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
-            Country::fromNative('BE')
-        );
-        $language = new Language('nl');
-
-        $expectedUpdateAddress = new UpdateAddress(
-            $organizerId,
-            $address,
-            $language
-        );
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($expectedUpdateAddress);
-
-        $this->service->updateAddress($organizerId, $address, $language);
     }
 
     /**

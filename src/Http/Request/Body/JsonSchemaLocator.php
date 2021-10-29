@@ -31,6 +31,7 @@ final class JsonSchemaLocator
     public const PLACE_VIDEOS_POST = 'place-videos-post.json';
 
     public const ORGANIZER_NAME_PUT = 'organizer-name-put.json';
+    public const ORGANIZER_ADDRESS_PUT = 'organizer-address-put.json';
 
     public static function setSchemaDirectory(string $schemaDirectory): void
     {

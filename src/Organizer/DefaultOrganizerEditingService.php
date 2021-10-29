@@ -7,12 +7,17 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Title;
@@ -46,10 +51,10 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     }
 
     public function create(
-        Language $mainLanguage,
+        LegacyLanguage $mainLanguage,
         Url $website,
         Title $title,
-        ?Address $address = null,
+        ?LegacyAddress $address = null,
         ?ContactPoint $contactPoint = null
     ): string {
         $id = $this->uuidGenerator->generate();
@@ -57,7 +62,15 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
         $organizer = Organizer::create($id, $mainLanguage, $website, $title);
 
         if (!is_null($address)) {
-            $organizer->updateAddress($address, $mainLanguage);
+            $organizer->updateAddress(
+                new Address(
+                    new Street($address->getStreetAddress()->toNative()),
+                    new PostalCode($address->getPostalCode()->toNative()),
+                    new Locality($address->getLocality()->toNative()),
+                    new CountryCode($address->getCountry()->getCode()->toNative())
+                ),
+                new Language($mainLanguage->getCode())
+            );
         }
 
         if (!is_null($contactPoint)) {
@@ -73,16 +86,6 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     {
         $this->commandBus->dispatch(
             new UpdateWebsite($organizerId, $website)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function updateAddress(string $organizerId, Address $address, Language $language): void
-    {
-        $this->commandBus->dispatch(
-            new UpdateAddress($organizerId, $address, $language)
         );
     }
 

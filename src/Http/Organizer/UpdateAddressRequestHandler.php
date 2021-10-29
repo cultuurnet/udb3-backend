@@ -11,13 +11,13 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
-use CultuurNet\UDB3\Organizer\Serializers\UpdateTitleDenormalizer;
+use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
+use CultuurNet\UDB3\Organizer\Serializers\UpdateAddressDenormalizer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateTitleRequestHandler implements RequestHandlerInterface
+final class UpdateAddressRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -33,10 +33,10 @@ final class UpdateTitleRequestHandler implements RequestHandlerInterface
         $language = $routeParameters->getLanguage();
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_NAME_PUT),
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_ADDRESS_PUT),
             new DenormalizingRequestBodyParser(
-                new UpdateTitleDenormalizer($organizerId, $language),
-                UpdateTitle::class
+                new UpdateAddressDenormalizer($organizerId, $language),
+                UpdateAddress::class
             )
         );
 
