@@ -7,24 +7,15 @@ namespace CultuurNet\UDB3\Organizer\Commands;
 use CultuurNet\UDB3\ContactPoint;
 use PHPUnit\Framework\TestCase;
 
-class UpdateContactPointTest extends TestCase
+final class UpdateContactPointTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var ContactPoint
-     */
-    private $contactPoint;
+    private ContactPoint $contactPoint;
 
-    /**
-     * @var UpdateContactPoint
-     */
-    private $updateContactPoint;
+    private UpdateContactPoint $updateContactPoint;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = 'c45b4f1a-7420-4f74-ab68-ff16d31b090c';
 
@@ -51,18 +42,18 @@ class UpdateContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_organizer_id()
+    public function it_stores_an_organizer_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
-            $this->updateContactPoint->getOrganizerId()
+            $this->updateContactPoint->getItemId()
         );
     }
 
     /**
      * @test
      */
-    public function it_stores_a_contact_point()
+    public function it_stores_a_contact_point(): void
     {
         $this->assertEquals(
             $this->contactPoint,

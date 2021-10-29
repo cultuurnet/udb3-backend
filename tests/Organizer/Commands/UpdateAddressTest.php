@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
-class UpdateAddressTest extends TestCase
+final class UpdateAddressTest extends TestCase
 {
     private string $organizerId;
 
@@ -49,7 +49,7 @@ class UpdateAddressTest extends TestCase
     {
         $this->assertEquals(
             $this->organizerId,
-            $this->updateAddress->getOrganizerId()
+            $this->updateAddress->getItemId()
         );
     }
 

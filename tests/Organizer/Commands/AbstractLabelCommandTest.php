@@ -46,7 +46,7 @@ class AbstractLabelCommandTest extends TestCase
     {
         $this->assertEquals(
             $this->organizerId,
-            $this->abstractLabelCommand->getOrganizerId()
+            $this->abstractLabelCommand->getItemId()
         );
     }
 

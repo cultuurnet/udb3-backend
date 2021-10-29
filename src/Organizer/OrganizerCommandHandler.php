@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
@@ -46,7 +45,6 @@ class OrganizerCommandHandler implements CommandHandler
     protected function getCommandHandlerMethods()
     {
         return [
-            CreateOrganizer::class => 'createOrganizer',
             UpdateWebsite::class => 'updateWebsite',
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
@@ -66,22 +64,10 @@ class OrganizerCommandHandler implements CommandHandler
         }
     }
 
-    protected function createOrganizer(CreateOrganizer $createOrganizer)
-    {
-        $organizer = Organizer::create(
-            $createOrganizer->getOrganizerId(),
-            $createOrganizer->getMainLanguage(),
-            $createOrganizer->getWebsite(),
-            $createOrganizer->getTitle()
-        );
-
-        $this->organizerRepository->save($organizer);
-    }
-
 
     protected function updateWebsite(UpdateWebsite $updateWebsite)
     {
-        $organizer = $this->loadOrganizer($updateWebsite->getOrganizerId());
+        $organizer = $this->loadOrganizer($updateWebsite->getItemId());
 
         $organizer->updateWebsite($updateWebsite->getWebsite());
 
@@ -90,7 +76,7 @@ class OrganizerCommandHandler implements CommandHandler
 
     public function removeAddress(RemoveAddress $removeAddress)
     {
-        $organizer = $this->loadOrganizer($removeAddress->getOrganizerId());
+        $organizer = $this->loadOrganizer($removeAddress->getItemId());
 
         $organizer->removeAddress();
 
@@ -100,7 +86,7 @@ class OrganizerCommandHandler implements CommandHandler
 
     protected function updateContactPoint(UpdateContactPoint $updateContactPoint)
     {
-        $organizer = $this->loadOrganizer($updateContactPoint->getOrganizerId());
+        $organizer = $this->loadOrganizer($updateContactPoint->getItemId());
 
         $organizer->updateContactPoint($updateContactPoint->getContactPoint());
 
@@ -109,7 +95,7 @@ class OrganizerCommandHandler implements CommandHandler
 
     public function deleteOrganizer(DeleteOrganizer $deleteOrganizer)
     {
-        $id = $deleteOrganizer->getOrganizerId();
+        $id = $deleteOrganizer->getItemId();
 
         // First remove all relations to the given organizer.
         foreach ($this->organizerRelationServices as $relationService) {

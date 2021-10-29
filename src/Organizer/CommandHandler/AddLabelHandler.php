@@ -58,7 +58,7 @@ final class AddLabelHandler implements CommandHandler
 
         $labelWithCorrectVisibility = new Label($name->toNative(), $visible);
 
-        $organizer = $this->organizerRepository->load($command->getOrganizerId());
+        $organizer = $this->organizerRepository->load($command->getItemId());
         $organizer->addLabel($labelWithCorrectVisibility);
         $this->organizerRepository->save($organizer);
     }
