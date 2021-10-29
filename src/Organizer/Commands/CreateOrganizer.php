@@ -8,59 +8,44 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Web\Url;
 
-class CreateOrganizer extends AbstractOrganizerCommand
+final class CreateOrganizer
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private string $organizerId;
 
-    /**
-     * @var Url
-     */
-    private $website;
+    private Language $mainLanguage;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private Url $website;
 
-    /**
-     * @param string $id
-     */
+    private Title $title;
+
     public function __construct(
-        $id,
+        string $organizerId,
         Language $mainLanguage,
         Url $website,
         Title $title
     ) {
-        parent::__construct($id);
-
+        $this->organizerId = $organizerId;
         $this->website = $website;
         $this->mainLanguage = $mainLanguage;
         $this->title = $title;
     }
 
-    /**
-     * @return Language
-     */
-    public function getMainLanguage()
+    public function getItemId(): string
+    {
+        return $this->organizerId;
+    }
+
+    public function getMainLanguage(): Language
     {
         return $this->mainLanguage;
     }
 
-    /**
-     * @return Url
-     */
-    public function getWebsite()
+    public function getWebsite(): Url
     {
         return $this->website;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }

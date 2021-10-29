@@ -69,7 +69,7 @@ class OrganizerCommandHandler implements CommandHandler
     protected function createOrganizer(CreateOrganizer $createOrganizer)
     {
         $organizer = Organizer::create(
-            $createOrganizer->getOrganizerId(),
+            $createOrganizer->getItemId(),
             $createOrganizer->getMainLanguage(),
             $createOrganizer->getWebsite(),
             $createOrganizer->getTitle()
