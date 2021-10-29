@@ -6,9 +6,13 @@ namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-class UpdateAddress extends AbstractUpdateOrganizerCommand
+class UpdateAddress implements AuthorizableCommand
 {
+    private string $organizerId;
+
     private Address $address;
 
     private Language $language;
@@ -18,7 +22,7 @@ class UpdateAddress extends AbstractUpdateOrganizerCommand
         Address $address,
         Language $language
     ) {
-        parent::__construct($organizerId);
+        $this->organizerId = $organizerId;
         $this->address = $address;
         $this->language = $language;
     }
@@ -31,5 +35,15 @@ class UpdateAddress extends AbstractUpdateOrganizerCommand
     public function getLanguage(): Language
     {
         return $this->language;
+    }
+
+    public function getItemId(): string
+    {
+        return $this->organizerId;
+    }
+
+    public function getPermission(): Permission
+    {
+        return Permission::ORGANISATIES_BEWERKEN();
     }
 }
