@@ -45,7 +45,6 @@ class OrganizerCommandHandler implements CommandHandler
     protected function getCommandHandlerMethods()
     {
         return [
-            UpdateWebsite::class => 'updateWebsite',
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
             DeleteOrganizer::class => 'deleteOrganizer',

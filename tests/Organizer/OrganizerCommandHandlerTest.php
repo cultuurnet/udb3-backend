@@ -19,18 +19,15 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
-use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Identity\UUID;
-use ValueObjects\Web\Url;
 
 class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -120,36 +117,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 $eventBus
             )
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_website()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateWebsite(
-                    $organizerId,
-                    Url::fromNative('http://www.depot.be')
-                )
-            )
-            ->then(
-                [
-                    new WebsiteUpdated(
-                        $organizerId,
-                        Url::fromNative('http://www.depot.be')
-                    ),
-                ]
-            );
     }
 
     /**
