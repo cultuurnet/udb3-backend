@@ -85,8 +85,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateWebsite($id, $import->getUrl());
         }
 
-        $contactPoint = $adapter->getContactPoint();
-        $commands[] = new UpdateContactPoint($id, $contactPoint);
+        $commands[] = new UpdateContactPoint($id, $import->getContactPoint());
 
         $address = $import->getAddress();
         if ($address) {

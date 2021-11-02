@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use PHPUnit\Framework\TestCase;
 
@@ -66,9 +72,9 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     "phone": ["016 10 20 30"]
                 }',
                 new ContactPoint(
-                    ['016 10 20 30'],
-                    [],
-                    []
+                    new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
+                    null,
+                    null
                 ),
             ],
             'update contact point email' => [
@@ -76,9 +82,9 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     "email": ["info@publiq.be"]
                 }',
                 new ContactPoint(
-                    [],
-                    ['info@publiq.be'],
-                    []
+                    null,
+                    new EmailAddresses(new EmailAddress('info@publiq.be')),
+                    null
                 ),
             ],
             'update contact point url' => [
@@ -86,9 +92,9 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     "url": ["https://www.publiq.be"]
                 }',
                 new ContactPoint(
-                    [],
-                    [],
-                    ['https://www.publiq.be']
+                    null,
+                    null,
+                    new Urls(new Url('https://www.publiq.be'))
                 ),
             ],
             'update all contact point information' => [
@@ -98,9 +104,9 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     "url": ["https://www.publiq.be"]
                 }',
                 new ContactPoint(
-                    ['016 10 20 30'],
-                    ['info@publiq.be'],
-                    ['https://www.publiq.be']
+                    new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
+                    new EmailAddresses(new EmailAddress('info@publiq.be')),
+                    new Urls(new Url('https://www.publiq.be'))
                 ),
             ],
             'update multiple contact point information' => [
@@ -110,9 +116,18 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     "url": ["https://www.publiq.be", "https://www.cn.be"]
                 }',
                 new ContactPoint(
-                    ['016 10 20 30', '016 11 22 33'],
-                    ['info@publiq.be', 'info@cn.be'],
-                    ['https://www.publiq.be', 'https://www.cn.be']
+                    new TelephoneNumbers(
+                        new TelephoneNumber('016 10 20 30'),
+                        new TelephoneNumber('016 11 22 33')
+                    ),
+                    new EmailAddresses(
+                        new EmailAddress('info@publiq.be'),
+                        new EmailAddress('info@cn.be')
+                    ),
+                    new Urls(
+                        new Url('https://www.publiq.be'),
+                        new Url('https://www.cn.be')
+                    )
                 ),
             ],
         ];
@@ -140,10 +155,10 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                 new UpdateContactPoint(
                     'a088f396-ac96-45c4-b6b2-e2b6afe8af07',
                     new ContactPoint(
-                        ['016 10 20 30'],
-                        [],
-                        ['https://www.publiq.be']
-                    )
+                        new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
+                        null,
+                        new Urls(new Url('https://www.publiq.be'))
+                    ),
                 ),
             ],
             $this->commandBus->getRecordedCommands()

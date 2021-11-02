@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateContactPointTest extends TestCase
@@ -20,17 +26,9 @@ final class UpdateContactPointTest extends TestCase
         $this->organizerId = 'c45b4f1a-7420-4f74-ab68-ff16d31b090c';
 
         $this->contactPoint = new ContactPoint(
-            [
-                [
-                    '0123456789',
-                ],
-                [
-                    'info@company.be',
-                ],
-                [
-                    'www.company.be',
-                ],
-            ]
+            new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
+            new EmailAddresses(new EmailAddress('info@publiq.be')),
+            new Urls(new Url('https://www.publiq.be'))
         );
 
         $this->updateContactPoint = new UpdateContactPoint(
