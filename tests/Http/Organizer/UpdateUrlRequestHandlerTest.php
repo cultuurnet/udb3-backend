@@ -9,9 +9,9 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 final class UpdateUrlRequestHandlerTest extends TestCase
 {
@@ -54,7 +54,7 @@ final class UpdateUrlRequestHandlerTest extends TestCase
             [
                 new UpdateWebsite(
                     'a088f396-ac96-45c4-b6b2-e2b6afe8af07',
-                    Url::fromNative('https://www.publiq.be'),
+                    new Url('https://www.publiq.be'),
                 ),
             ],
             $this->commandBus->getRecordedCommands()
