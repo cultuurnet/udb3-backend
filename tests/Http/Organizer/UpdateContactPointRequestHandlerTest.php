@@ -69,7 +69,7 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     ['016 10 20 30'],
                     [],
                     []
-                )
+                ),
             ],
             'update contact point email' => [
                 '{
@@ -79,7 +79,7 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     [],
                     ['info@publiq.be'],
                     []
-                )
+                ),
             ],
             'update contact point url' => [
                 '{
@@ -89,7 +89,7 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     [],
                     [],
                     ['https://www.publiq.be']
-                )
+                ),
             ],
             'update all contact point information' => [
                 '{
@@ -101,7 +101,7 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     ['016 10 20 30'],
                     ['info@publiq.be'],
                     ['https://www.publiq.be']
-                )
+                ),
             ],
             'update multiple contact point information' => [
                 '{
@@ -113,7 +113,7 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                     ['016 10 20 30', '016 11 22 33'],
                     ['info@publiq.be', 'info@cn.be'],
                     ['https://www.publiq.be', 'https://www.cn.be']
-                )
+                ),
             ],
         ];
     }
