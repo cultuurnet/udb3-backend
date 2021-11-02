@@ -45,7 +45,6 @@ class OrganizerCommandHandler implements CommandHandler
     {
         return [
             RemoveAddress::class => 'removeAddress',
-            UpdateContactPoint::class => 'updateContactPoint',
             DeleteOrganizer::class => 'deleteOrganizer',
         ];
     }
