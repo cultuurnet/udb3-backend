@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -38,7 +39,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use ValueObjects\Geography\Country;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerTest extends AggregateRootScenarioTestCase
 {
@@ -53,7 +54,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     private $mainLanguage;
 
     /**
-     * @var Url
+     * @var LegacyUrl
      */
     private $website;
 
@@ -73,7 +74,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
 
         $this->id = '18eab5bf-09bf-4521-a8b4-c0f4a585c096';
         $this->mainLanguage = new LegacyLanguage('en');
-        $this->website = Url::fromNative('http://www.stuk.be');
+        $this->website = LegacyUrl::fromNative('http://www.stuk.be');
         $this->title = new LegacyTitle('STUK');
 
         $this->organizerCreatedWithUniqueWebsite = new OrganizerCreatedWithUniqueWebsite(
@@ -375,8 +376,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->updateWebsite(Url::fromNative('http://www.stuk.be'));
-                    $organizer->updateWebsite(Url::fromNative('http://www.hetdepot.be'));
+                    $organizer->updateWebsite(new Url('http://www.stuk.be'));
+                    $organizer->updateWebsite(new Url('http://www.hetdepot.be'));
                 }
             )
             ->then(
@@ -384,7 +385,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with website 'http://www.stuk.be'.
                     new WebsiteUpdated(
                         $this->id,
-                        Url::fromNative('http://www.hetdepot.be')
+                        LegacyUrl::fromNative('http://www.hetdepot.be')
                     ),
                 ]
             );
@@ -409,7 +410,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->updateWebsite(Url::fromNative('http://www.hetdepot.be'));
+                    $organizer->updateWebsite(new Url('http://www.hetdepot.be'));
                 }
             )
             ->then(
@@ -417,7 +418,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with an empty website.
                     new WebsiteUpdated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        Url::fromNative('http://www.hetdepot.be')
+                        LegacyUrl::fromNative('http://www.hetdepot.be')
                     ),
                 ]
             );
