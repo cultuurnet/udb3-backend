@@ -160,45 +160,6 @@ class EditOrganizerRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_contact_point_of_an_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $contactPoint = new ContactPoint(
-            [
-                '+32 498 71 49 96',
-            ],
-            [
-                'jos@hetdepot.be',
-                'info@hetdepot.be',
-            ],
-            [
-                'https://www.facebook.com/hetdepot',
-                'https://www.depot.be',
-            ]
-        );
-
-        $this->editService->expects($this->once())
-            ->method('updateContactPoint')
-            ->with(
-                $organizerId,
-                $contactPoint
-            );
-
-        $request = $this->createRequest(
-            Request::METHOD_PUT,
-            'organizer_update_contact_point.json'
-        );
-        $response = $this->controller->updateContactPoint(
-            $organizerId,
-            $request
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_deletes_an_organizer()
     {
         $cdbId = '123';
