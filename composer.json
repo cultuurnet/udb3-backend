@@ -60,7 +60,7 @@
     "predis/predis": "~1.0",
     "psr/http-server-middleware": "^1.0",
     "psr/log": "dev-master",
-    "publiq/stoplight-docs-uitdatabank": "dev-feature/III-4287-update-organizer-url",
+    "publiq/stoplight-docs-uitdatabank": "dev-feature/III-4290-update-contact-point",
     "rase/socket.io-emitter": "0.6.1",
     "respect/validation": "~1.1",
     "sentry/sdk": "^2.2",
