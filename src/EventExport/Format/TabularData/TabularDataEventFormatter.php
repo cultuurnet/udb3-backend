@@ -693,21 +693,17 @@ class TabularDataEventFormatter
                     if (!property_exists($event, 'videos') || !is_array($event->videos)) {
                         return '';
                     }
-                    foreach ($event->videos as $video) {
-                            return $video->url;
-                    }
+                    return $this->formatVideo($event->videos, 'url');
                 },
                 'property' => 'video',
             ],
             'video.copyrightHolder' => [
-                'name' => 'afbeelding video',
+                'name' => 'video copyright',
                 'include' => function ($event) {
                     if (!property_exists($event, 'videos') || !is_array($event->videos)) {
                         return '';
                     }
-                    foreach ($event->videos as $video) {
-                        return $video->copyrightHolder;
-                    }
+                    return $this->formatVideo($event->videos, 'copyrightHolder');
                 },
                 'property' => 'video',
             ],
@@ -871,5 +867,14 @@ class TabularDataEventFormatter
         }
 
         return $map[$bookingAvailability->type];
+    }
+
+    private function formatVideo(array $videos, string $property): string
+    {
+        $properties = [];
+        foreach ($videos as $video) {
+            $properties[] = $video->{$property};
+        }
+        return implode(';', $properties);
     }
 }

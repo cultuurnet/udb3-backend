@@ -751,14 +751,14 @@ class TabularDataEventFormatterTest extends TestCase
             'video',
         ];
 
-        $event = $this->getJSONEventFromFile('event_with_videos.json');
+        $event = $this->getJSONEventFromFile('event_with_multiple_videos.json');
         $formatter = new TabularDataEventFormatter($includedProperties);
         $formattedEvent = $formatter->formatEvent($event);
 
         $expectedFormattedEvent = [
             'id' => '0c70b8f3-66a0-4532-959f-2e13b4624f04',
-            'video.url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
-            'video.copyrightHolder' => 'publiq',
+            'video.url' => 'https://www.youtube.com/watch?v=cEItmb_a20D;https://www.youtube.com/watch?v=sXYtmb_q19C',
+            'video.copyrightHolder' => 'Copyright afgehandeld door YouTube;publiq',
         ];
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
