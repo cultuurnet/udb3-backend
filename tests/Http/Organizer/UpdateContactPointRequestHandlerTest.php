@@ -44,11 +44,11 @@ class UpdateContactPointRequestHandlerTest extends TestCase
      * @dataProvider contactPointDataProvider
      * @test
      */
-    public function it_handles_updating_a_contact_point(string $body, ContactPoint $contactPoint): void
+    public function it_handles_updating_a_contact_point(array $body, ContactPoint $contactPoint): void
     {
         $updateUrlRequest = $this->psr7RequestBuilder
             ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
-            ->withBodyFromString($body)
+            ->withBodyFromArray($body)
             ->build('PUT');
 
         $this->updateContactPointRequestHandler->handle($updateUrlRequest);
@@ -68,9 +68,9 @@ class UpdateContactPointRequestHandlerTest extends TestCase
     {
         return [
             'update contact point phone' => [
-                '{
-                    "phone": ["016 10 20 30"]
-                }',
+                [
+                    'phone' => ['016 10 20 30'],
+                ],
                 new ContactPoint(
                     new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
                     null,
@@ -78,9 +78,9 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                 ),
             ],
             'update contact point email' => [
-                '{
-                    "email": ["info@publiq.be"]
-                }',
+                [
+                    'email' => ['info@publiq.be'],
+                ],
                 new ContactPoint(
                     null,
                     new EmailAddresses(new EmailAddress('info@publiq.be')),
@@ -88,9 +88,9 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                 ),
             ],
             'update contact point url' => [
-                '{
-                    "url": ["https://www.publiq.be"]
-                }',
+                [
+                    'url' => ['https://www.publiq.be'],
+                ],
                 new ContactPoint(
                     null,
                     null,
@@ -98,11 +98,11 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                 ),
             ],
             'update all contact point information' => [
-                '{
-                    "phone": ["016 10 20 30"],
-                    "email": ["info@publiq.be"],
-                    "url": ["https://www.publiq.be"]
-                }',
+                [
+                    'phone' => ['016 10 20 30'],
+                    'email' => ['info@publiq.be'],
+                    'url' => ['https://www.publiq.be'],
+                ],
                 new ContactPoint(
                     new TelephoneNumbers(new TelephoneNumber('016 10 20 30')),
                     new EmailAddresses(new EmailAddress('info@publiq.be')),
@@ -110,11 +110,11 @@ class UpdateContactPointRequestHandlerTest extends TestCase
                 ),
             ],
             'update multiple contact point information' => [
-                '{
-                    "phone": ["016 10 20 30", "016 11 22 33"],
-                    "email": ["info@publiq.be", "info@cn.be"],
-                    "url": ["https://www.publiq.be", "https://www.cn.be"]
-                }',
+                [
+                    'phone' => ['016 10 20 30', '016 11 22 33'],
+                    'email' => ['info@publiq.be', 'info@cn.be'],
+                    'url' => ['https://www.publiq.be', 'https://www.cn.be'],
+                ],
                 new ContactPoint(
                     new TelephoneNumbers(
                         new TelephoneNumber('016 10 20 30'),
