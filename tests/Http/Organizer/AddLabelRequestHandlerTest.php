@@ -67,7 +67,7 @@ class AddLabelRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('The provided label name is not valid.'),
+            ApiProblem::pathParameterInvalid('The label should match pattern: \A[^;]{2,255}\z'),
             fn () => $this->addLabelRequestHandler->handle($addLabelRequest)
         );
     }

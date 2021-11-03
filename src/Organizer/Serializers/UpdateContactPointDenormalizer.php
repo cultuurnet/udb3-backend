@@ -25,26 +25,9 @@ final class UpdateContactPointDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, $type, $format = null, array $context = []): UpdateContactPoint
     {
-        $telephoneNumbers = [];
-        if (isset($data['phone'])) {
-            foreach ($data['phone'] as $phone) {
-                $telephoneNumbers[] = new TelephoneNumber($phone);
-            }
-        }
-
-        $emailAddresses = [];
-        if (isset($data['email'])) {
-            foreach ($data['email'] as $emailAddress) {
-                $emailAddresses[] = new EmailAddress($emailAddress);
-            }
-        }
-
-        $urls = [];
-        if (isset($data['url'])) {
-            foreach ($data['url'] as $url) {
-                $urls[] = new Url($url);
-            }
-        }
+        $telephoneNumbers = array_map(static fn ($phone) => new TelephoneNumber($phone), $data['phone'] ?? []);
+        $emailAddresses = array_map(static fn ($email) => new EmailAddress($email), $data['email'] ?? []);
+        $urls = array_map(static fn ($url) => new Url($url), $data['url'] ?? []);
 
         return new UpdateContactPoint(
             $this->organizerId,
