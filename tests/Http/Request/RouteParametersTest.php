@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Request;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -91,6 +92,35 @@ class RouteParametersTest extends TestCase
                 'The provided language route parameter is not supported.'
             ),
             fn () => $routeParameters->getLanguage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_label_name(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('labelName', 'MyLabel')
+            ->build('PUT');
+        $routeParameters = new RouteParameters($request);
+
+        $this->assertEquals(new LabelName('MyLabel'), $routeParameters->getLabelName());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_invalid_label_name(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('labelName', 'Invalid;Label')
+            ->build('PUT');
+        $routeParameters = new RouteParameters($request);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::pathParameterInvalid('The label should match pattern: \A[^;]{2,255}\z'),
+            fn () => $routeParameters->getLabelName()
         );
     }
 }

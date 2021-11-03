@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
@@ -90,12 +89,6 @@ class EditOrganizerRestController
             $organizerId
         );
 
-        return new NoContent();
-    }
-
-    public function addLabel(string $organizerId, string $labelName): Response
-    {
-        $this->commandBus->dispatch(new AddLabel($organizerId, new Label($labelName)));
         return new NoContent();
     }
 

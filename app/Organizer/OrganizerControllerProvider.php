@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
@@ -43,14 +44,11 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->put('/{organizerId}/contact-point/', UpdateContactPointRequestHandler::class);
 
+        $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+
         $controllers->delete(
             '/{organizerId}/address/',
             'organizer_edit_controller:removeAddress'
-        );
-
-        $controllers->put(
-            '/{organizerId}/labels/{labelName}/',
-            'organizer_edit_controller:addLabel'
         );
 
         $controllers->delete(
@@ -108,6 +106,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[UpdateContactPointRequestHandler::class] = $app->share(
             fn (Application $application) => new UpdateContactPointRequestHandler($app['event_command_bus'])
+        );
+
+        $app[AddLabelRequestHandler::class] = $app->share(
+            fn (Application $application) => new AddLabelRequestHandler($app['event_command_bus'])
         );
     }
 

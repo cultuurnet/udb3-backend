@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Request;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\OfferType;
 use InvalidArgumentException;
@@ -95,6 +96,15 @@ final class RouteParameters
             return new Language($this->get('language'));
         } catch (InvalidArgumentException $exception) {
             throw ApiProblem::pathParameterInvalid('The provided language route parameter is not supported.');
+        }
+    }
+
+    public function getLabelName(): LabelName
+    {
+        try {
+            return new LabelName($this->get('labelName'));
+        } catch (InvalidArgumentException $exception) {
+            throw ApiProblem::pathParameterInvalid('The label should match pattern: \A[^;]{2,255}\z');
         }
     }
 
