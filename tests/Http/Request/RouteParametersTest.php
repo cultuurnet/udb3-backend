@@ -119,7 +119,7 @@ class RouteParametersTest extends TestCase
         $routeParameters = new RouteParameters($request);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('The label should match pattern: \A[^;]{2,255}\z'),
+            ApiProblem::pathParameterInvalid('The label should match pattern: ^[^;]{2,255}$'),
             fn () => $routeParameters->getLabelName()
         );
     }

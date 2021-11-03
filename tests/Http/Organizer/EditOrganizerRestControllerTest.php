@@ -13,9 +13,7 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Title;
 use InvalidArgumentException;
@@ -170,25 +168,6 @@ class EditOrganizerRestControllerTest extends TestCase
         $response = $this->controller->delete($cdbId);
 
         $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_removes_a_label(): void
-    {
-        $organizerId = 'organizerId';
-        $labelName = 'publiq';
-
-        $this->commandBus->record();
-
-        $response = $this->controller->removeLabel($organizerId, $labelName);
-
-        $this->assertEquals(204, $response->getStatusCode());
-        $this->assertEquals(
-            [new RemoveLabel($organizerId, new Label($labelName))],
-            $this->commandBus->getRecordedCommands()
-        );
     }
 
     /**

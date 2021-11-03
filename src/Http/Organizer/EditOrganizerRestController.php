@@ -8,8 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
@@ -89,12 +87,6 @@ class EditOrganizerRestController
             $organizerId
         );
 
-        return new NoContent();
-    }
-
-    public function removeLabel($organizerId, $labelName): Response
-    {
-        $this->commandBus->dispatch(new RemoveLabel($organizerId, new Label($labelName)));
         return new NoContent();
     }
 
