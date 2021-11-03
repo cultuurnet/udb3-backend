@@ -67,7 +67,9 @@ class AddLabelRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('The provided label name is not valid.'),
+            ApiProblem::pathParameterInvalid(
+                'The label must be longer than 1 character and shorter than 255 characters. The label can also not contain the semicolon character.'
+            ),
             fn () => $this->addLabelRequestHandler->handle($addLabelRequest)
         );
     }
