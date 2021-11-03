@@ -51,6 +51,15 @@ final class Psr7RequestBuilder
         return $c;
     }
 
+    public function withBodyFromArray(array $body): self
+    {
+        $c = clone $this;
+        $c->body = self::getStreamFactory()->createStream(
+            json_encode($body, JSON_THROW_ON_ERROR)
+        );
+        return $c;
+    }
+
     public function withRouteParameter(string $parameterName, string $parameterValue): self
     {
         $c = clone $this;
