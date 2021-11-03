@@ -33,7 +33,7 @@ class UpdateFacilitiesRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
 
         $parser = RequestBodyParserFactory::createBaseParser(
-            new UpdateFacilitiesBackwardCompatibilityRequestBodyParser(),
+            new LegacyUpdateFacilitiesRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(
                 JsonSchemaLocator::getSchemaFileByOfferType(
                     $offerType,

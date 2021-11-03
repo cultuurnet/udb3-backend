@@ -11,7 +11,7 @@ use stdClass;
 /**
  * Does a best effort to convert the old UpdateFacilities JSON schemas to the new schema.
  */
-final class UpdateFacilitiesBackwardCompatibilityRequestBodyParser implements RequestBodyParser
+final class LegacyUpdateFacilitiesRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
