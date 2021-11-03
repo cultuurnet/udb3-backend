@@ -104,7 +104,9 @@ final class RouteParameters
         try {
             return new LabelName($this->get('labelName'));
         } catch (InvalidArgumentException $exception) {
-            throw ApiProblem::pathParameterInvalid('The provided label name is not valid.');
+            throw ApiProblem::pathParameterInvalid(
+                'The label must be longer than 1 character and shorter than 255 characters. The label can also not contain the semicolon character.'
+            );
         }
     }
 
