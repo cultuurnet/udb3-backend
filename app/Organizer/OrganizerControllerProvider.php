@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -40,14 +41,11 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->put('/{organizerId}/url/', UpdateUrlRequestHandler::class);
 
+        $controllers->put('/{organizerId}/contact-point/', UpdateContactPointRequestHandler::class);
+
         $controllers->delete(
             '/{organizerId}/address/',
             'organizer_edit_controller:removeAddress'
-        );
-
-        $controllers->put(
-            '/{organizerId}/contact-point/',
-            'organizer_edit_controller:updateContactPoint'
         );
 
         $controllers->put(
@@ -106,6 +104,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[UpdateUrlRequestHandler::class] = $app->share(
             fn (Application $application) => new UpdateUrlRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateContactPointRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateContactPointRequestHandler($app['event_command_bus'])
         );
     }
 

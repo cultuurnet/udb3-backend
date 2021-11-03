@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
-use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use InvalidArgumentException;
@@ -89,22 +88,6 @@ class EditOrganizerRestController
     {
         $this->editingService->removeAddress(
             $organizerId
-        );
-
-        return new NoContent();
-    }
-
-    public function updateContactPoint(string $organizerId, Request $request): Response
-    {
-        $contactPointJSONDeserializer = new ContactPointJSONDeserializer();
-
-        $contactPoint = $contactPointJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editingService->updateContactPoint(
-            $organizerId,
-            $contactPoint
         );
 
         return new NoContent();

@@ -14,14 +14,11 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
-use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Title;
@@ -153,45 +150,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new AddressRemoved(
                         $organizerId
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_contact_point()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $contactPoint = new ContactPoint(
-            [
-                '0123456789',
-            ],
-            [
-                'info@hetdepot.be',
-            ]
-        );
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateContactPoint(
-                    $organizerId,
-                    $contactPoint
-                )
-            )
-            ->then(
-                [
-                    new ContactPointUpdated(
-                        $organizerId,
-                        $contactPoint
                     ),
                 ]
             );

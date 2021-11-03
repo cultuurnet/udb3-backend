@@ -11,7 +11,7 @@ use stdClass;
 /**
  * Does a best effort to convert the old UpdateCalendar JSON schema to the new schema.
  */
-final class UpdateCalendarBackwardCompatibilityRequestBodyParser implements RequestBodyParser
+final class LegacyUpdateCalendarRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {

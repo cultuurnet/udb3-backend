@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 
 class OrganizerCommandHandler implements CommandHandler
 {
@@ -45,7 +44,6 @@ class OrganizerCommandHandler implements CommandHandler
     {
         return [
             RemoveAddress::class => 'removeAddress',
-            UpdateContactPoint::class => 'updateContactPoint',
             DeleteOrganizer::class => 'deleteOrganizer',
         ];
     }
@@ -67,16 +65,6 @@ class OrganizerCommandHandler implements CommandHandler
         $organizer = $this->loadOrganizer($removeAddress->getItemId());
 
         $organizer->removeAddress();
-
-        $this->organizerRepository->save($organizer);
-    }
-
-
-    protected function updateContactPoint(UpdateContactPoint $updateContactPoint)
-    {
-        $organizer = $this->loadOrganizer($updateContactPoint->getItemId());
-
-        $organizer->updateContactPoint($updateContactPoint->getContactPoint());
 
         $this->organizerRepository->save($organizer);
     }

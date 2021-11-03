@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -173,31 +172,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
             ->with($expectedUpdateAddress);
 
         $this->service->removeAddress($organizerId);
-    }
-
-
-    /**
-     * @test
-     */
-    public function it_handles_update_contact_point()
-    {
-        $organizerId = 'baee2963-e1ba-4777-a803-4c645c6fd31c';
-        $contactPoint = new ContactPoint(
-            [
-                '01213456789',
-            ],
-            [
-                'info@hetdepot.be',
-            ]
-        );
-
-        $updateContactPoint = new UpdateContactPoint($organizerId, $contactPoint);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updateContactPoint);
-
-        $this->service->updateContactPoint($organizerId, $contactPoint);
     }
 
     /**

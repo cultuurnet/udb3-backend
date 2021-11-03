@@ -37,7 +37,7 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
         $jsonSchema = $offerType->sameValueAs(OfferType::EVENT()) ? JsonSchemaLocator::EVENT_CALENDAR_PUT : JsonSchemaLocator::PLACE_CALENDAR_PUT;
 
         $parser = RequestBodyParserFactory::createBaseParser(
-            new UpdateCalendarBackwardCompatibilityRequestBodyParser(),
+            new LegacyUpdateCalendarRequestBodyParser(),
             new UpdateCalendarValidationRequestBodyParser($jsonSchema),
             new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class)
         );
