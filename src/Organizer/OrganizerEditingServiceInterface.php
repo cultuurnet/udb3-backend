@@ -20,8 +20,6 @@ interface OrganizerEditingServiceInterface
         ?ContactPoint $contactPoint = null
     ): string;
 
-    public function updateWebsite(string $organizerId, Url $website): void;
-
     public function removeAddress(string $organizerId): void;
 
     public function updateContactPoint(string $organizerId, ContactPoint $contactPoint): void;

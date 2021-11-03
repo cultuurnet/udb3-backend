@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
@@ -629,6 +630,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class]);
         $commandBus->subscribe($app[UpdateTitleHandler::class]);
         $commandBus->subscribe($app[UpdateAddressHandler::class]);
+        $commandBus->subscribe($app[UpdateWebsiteHandler::class]);
 
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
     };

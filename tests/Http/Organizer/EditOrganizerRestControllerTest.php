@@ -142,32 +142,6 @@ class EditOrganizerRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_the_url_of_an_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $url = Url::fromNative('http://www.depot.be');
-
-        $this->editService->expects($this->once())
-            ->method('updateWebsite')
-            ->with(
-                $organizerId,
-                $url
-            );
-
-        $content = '{"url":"' . (string) $url . '"}';
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $response = $this->controller->updateUrl(
-            $organizerId,
-            $request
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_removes_address_of_an_organizer()
     {
         $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';

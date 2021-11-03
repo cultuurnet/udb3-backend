@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
@@ -33,7 +34,7 @@ use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerDocumentImporterTest extends TestCase
 {
@@ -97,7 +98,7 @@ class OrganizerDocumentImporterTest extends TestCase
             Organizer::create(
                 $id,
                 new LegacyLanguage('nl'),
-                Url::fromNative('https://www.publiq.be'),
+                LegacyUrl::fromNative('https://www.publiq.be'),
                 new LegacyTitle('Voorbeeld naam')
             )
         );
@@ -136,7 +137,7 @@ class OrganizerDocumentImporterTest extends TestCase
         $this->importer->import($document);
 
         $expectedCommands = [new UpdateTitle($id, new Title('Voorbeeld naam'), new Language('nl')),
-            new UpdateWebsite($id, Url::fromNative('https://www.publiq.be')),
+            new UpdateWebsite($id, new Url('https://www.publiq.be')),
             new UpdateContactPoint($id, new ContactPoint()),
             new RemoveAddress($id),
             new UpdateTitle($id, new Title('Nom example'), new Language('fr')),

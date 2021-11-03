@@ -82,7 +82,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
                 new Language($mainLanguage->getCode())
             );
 
-            $commands[] = new UpdateWebsite($id, $url);
+            $commands[] = new UpdateWebsite($id, $import->getUrl());
         }
 
         $contactPoint = $adapter->getContactPoint();

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Http\Organizer\EditOrganizerRestController;
@@ -31,16 +32,13 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->delete('/{cdbid}/', 'organizer_edit_controller:delete');
 
-        $controllers->put(
-            '/{organizerId}/url/',
-            'organizer_edit_controller:updateUrl'
-        );
-
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
         $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
 
         $controllers->put('/{organizerId}/address/', UpdateAddressRequestHandler::class);
         $controllers->put('/{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
+
+        $controllers->put('/{organizerId}/url/', UpdateUrlRequestHandler::class);
 
         $controllers->delete(
             '/{organizerId}/address/',
@@ -104,6 +102,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[UpdateAddressRequestHandler::class] = $app->share(
             fn (Application $application) => new UpdateAddressRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateUrlRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateUrlRequestHandler($app['event_command_bus'])
         );
     }
 

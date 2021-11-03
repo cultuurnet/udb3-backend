@@ -9,7 +9,6 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 
 class OrganizerCommandHandler implements CommandHandler
 {
@@ -45,7 +44,6 @@ class OrganizerCommandHandler implements CommandHandler
     protected function getCommandHandlerMethods()
     {
         return [
-            UpdateWebsite::class => 'updateWebsite',
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
             DeleteOrganizer::class => 'deleteOrganizer',
@@ -62,16 +60,6 @@ class OrganizerCommandHandler implements CommandHandler
             $method = $handlers[$class];
             $this->{$method}($command);
         }
-    }
-
-
-    protected function updateWebsite(UpdateWebsite $updateWebsite)
-    {
-        $organizer = $this->loadOrganizer($updateWebsite->getItemId());
-
-        $organizer->updateWebsite($updateWebsite->getWebsite());
-
-        $this->organizerRepository->save($organizer);
     }
 
     public function removeAddress(RemoveAddress $removeAddress)

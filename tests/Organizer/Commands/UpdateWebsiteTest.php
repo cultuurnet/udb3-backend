@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 final class UpdateWebsiteTest extends TestCase
 {
@@ -19,7 +19,7 @@ final class UpdateWebsiteTest extends TestCase
     {
         $this->organizerId = '8f9f5180-1099-474e-804c-461fc3701e5c';
 
-        $this->website = Url::fromNative('http://www.company.be');
+        $this->website = new Url('http://www.company.be');
 
         $this->updateWebsite = new UpdateWebsite(
             $this->organizerId,

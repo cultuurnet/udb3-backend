@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -36,7 +37,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title as LegacyTitle;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
 {
@@ -44,7 +45,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private LegacyLanguage $mainLanguage;
 
-    private ?Url $website = null;
+    private ?LegacyUrl $website = null;
 
     /**
      * @var LegacyTitle[]
@@ -95,7 +96,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     public static function create(
         string $id,
         LegacyLanguage $mainLanguage,
-        Url $website,
+        LegacyUrl $website,
         LegacyTitle $title
     ): Organizer {
         $organizer = new self();
@@ -120,11 +121,13 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateWebsite(Url $website): void
     {
-        if (is_null($this->website) || !$this->website->sameValueAs($website)) {
+        $newWebsite = LegacyUrl::fromNative($website->toString());
+
+        if (is_null($this->website) || !$this->website->sameValueAs($newWebsite)) {
             $this->apply(
                 new WebsiteUpdated(
                     $this->actorId,
-                    $website
+                    $newWebsite
                 )
             );
         }

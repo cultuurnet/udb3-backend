@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Organizer\UrlJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -84,31 +83,6 @@ class EditOrganizerRestController
             ],
             201
         );
-    }
-
-    public function updateUrl(string $organizerId, Request $request): Response
-    {
-        $websiteJSONDeserializer = new UrlJSONDeserializer();
-        $website = $websiteJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        try {
-            $this->editingService->updateWebsite(
-                $organizerId,
-                $website
-            );
-        } catch (UniqueConstraintException $e) {
-            $e = new DataValidationException();
-            $e->setValidationMessages(
-                [
-                    'url' => 'Should be unique but is already in use.',
-                ]
-            );
-            throw $e;
-        }
-
-        return new NoContent();
     }
 
     public function removeAddress(string $organizerId): Response
