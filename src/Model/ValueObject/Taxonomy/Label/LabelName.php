@@ -14,7 +14,7 @@ class LabelName
     use Trims;
     use MatchesRegexPattern;
 
-    public const REGEX = '/\A[^;]{2,255}\z/';
+    public const REGEX = '/^[^;]{2,255}$/';
 
     /**
      * @param string $value

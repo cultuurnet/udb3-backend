@@ -67,7 +67,7 @@ class DeleteLabelRequestHandlerTest extends TestCase
             ->build('DELETE');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('The label should match pattern: \A[^;]{2,255}\z'),
+            ApiProblem::pathParameterInvalid('The label should match pattern: ^[^;]{2,255}$'),
             fn () => $this->deleteLabelRequestHandler->handle($removeLabelRequest)
         );
     }

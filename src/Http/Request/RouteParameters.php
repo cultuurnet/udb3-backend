@@ -104,7 +104,7 @@ final class RouteParameters
         try {
             return new LabelName($this->get('labelName'));
         } catch (InvalidArgumentException $exception) {
-            throw ApiProblem::pathParameterInvalid('The label should match pattern: \A[^;]{2,255}\z');
+            throw ApiProblem::pathParameterInvalid('The label should match pattern: ^[^;]{2,255}$');
         }
     }
 
