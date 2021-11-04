@@ -33,8 +33,7 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
         $this->geocodingService = $geocodingService;
     }
 
-
-    protected function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates)
+    protected function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates): void
     {
         $coordinates = $this->geocodingService->getCoordinates(
             $this->defaultAddressFormatter->format(
@@ -54,13 +53,12 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
             return;
         }
 
-        /** @var Organizer $organizer */
         $organizer = $this->loadOrganizer($updateGeoCoordinates->organizerId());
         $organizer->updateGeoCoordinates($coordinates);
         $this->organizerRepository->save($organizer);
     }
 
-    protected function loadOrganizer(string $id)
+    protected function loadOrganizer(string $id): Organizer
     {
         return $this->organizerRepository->load($id);
     }
