@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
+use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\OfferType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,13 +36,13 @@ final class DeleteRequestHandler implements RequestHandlerInterface
         return new NoContentResponse();
     }
 
-    private function createDeleteCommand(OfferType $offerType, string $offerId): AbstractDeleteOffer
+    private function createDeleteCommand(OfferType $offerType, string $offerId): DeleteOffer
     {
         if ($offerType->sameValueAs(OfferType::EVENT())) {
-            return new AbstractDeleteOffer($offerId);
+            return new DeleteOffer($offerId);
         }
         if ($offerType->sameValueAs(OfferType::PLACE())) {
-            return new AbstractDeleteOffer($offerId);
+            return new DeleteOffer($offerId);
         }
         throw new RuntimeException('No AbstractDeleteOffer implementation found for unknown offer type ' . $offerType->toNative());
     }
