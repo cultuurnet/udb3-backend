@@ -13,22 +13,16 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class AbstractLabelCommandTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var Label
-     */
-    private $label;
+    private Label $label;
 
     /**
      * @var AbstractLabelCommand|MockObject
      */
     private $abstractLabelCommand;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = 'organizerId';
 
@@ -43,7 +37,7 @@ class AbstractLabelCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_organizer_id()
+    public function it_stores_an_organizer_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
@@ -54,7 +48,7 @@ class AbstractLabelCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_label()
+    public function it_stores_a_label(): void
     {
         $this->assertEquals(
             $this->label,
@@ -65,7 +59,7 @@ class AbstractLabelCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_item_id()
+    public function it_returns_an_item_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
@@ -76,7 +70,7 @@ class AbstractLabelCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_permission()
+    public function it_returns_a_permission(): void
     {
         $this->assertEquals(
             Permission::ORGANISATIES_BEWERKEN(),
@@ -87,7 +81,7 @@ class AbstractLabelCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_identifies_by_label_name()
+    public function it_identifies_by_label_name(): void
     {
         $this->assertEquals(
             [
