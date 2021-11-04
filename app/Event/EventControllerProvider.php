@@ -27,7 +27,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
 
         $controllers->post('/', 'event_editing_controller:createEvent');
-        $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
 
         $controllers->put('/{cdbid}/audience/', 'event_editing_controller:updateAudience');
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
