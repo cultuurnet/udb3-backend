@@ -123,11 +123,4 @@ interface EventEditingServiceInterface
      * @return string $commandId
      */
     public function updateAudience($eventId, Audience $audience);
-
-    /**
-     * @param string $eventId
-     *
-     * @return string $commandId
-     */
-    public function deleteEvent($eventId);
 }

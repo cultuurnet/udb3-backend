@@ -109,13 +109,4 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
             new UpdateAddress($id, $address, $language)
         );
     }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deletePlace($id)
-    {
-        return $this->delete($id);
-    }
 }

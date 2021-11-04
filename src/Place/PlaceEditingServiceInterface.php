@@ -44,13 +44,6 @@ interface PlaceEditingServiceInterface
 
     /**
      * @param string $id
-     *
-     * @return string $id
-     */
-    public function deletePlace($id);
-
-    /**
-     * @param string $id
      */
     public function updateAddress($id, Address $address, Language $language);
 

@@ -258,17 +258,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @return string
-     */
-    public function delete($id)
-    {
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createDeleteOfferCommand($id)
-        );
-    }
-
-    /**
-     * @param string $id
      *
      * @throws EntityNotFoundException
      */
