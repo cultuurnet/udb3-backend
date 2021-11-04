@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "686db5eac52b83e02daf0409cfd07115",
+    "content-hash": "3e1f778f2b9a38f9b3d7404a5dd1e62b",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -2487,56 +2487,6 @@
                 "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/2.1.0"
             },
             "time": "2021-05-24T15:37:00+00:00"
-        },
-        {
-            "name": "league/flysystem-ziparchive",
-            "version": "2.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem-ziparchive.git",
-                "reference": "e626e580eb807595c0e98fbab92dca00bdde2bf5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/e626e580eb807595c0e98fbab92dca00bdde2bf5",
-                "reference": "e626e580eb807595c0e98fbab92dca00bdde2bf5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-zip": "*",
-                "league/flysystem": "^2.0.0",
-                "league/mime-type-detection": "^1.0.0",
-                "php": "^7.2 || ^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\Flysystem\\ZipArchive\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Frank de Jonge",
-                    "email": "info@frankdejonge.nl"
-                }
-            ],
-            "description": "ZIP filesystem adapter for Flysystem.",
-            "keywords": [
-                "Flysystem",
-                "file",
-                "files",
-                "filesystem",
-                "zip"
-            ],
-            "support": {
-                "issues": "https://github.com/thephpleague/flysystem-ziparchive/issues",
-                "source": "https://github.com/thephpleague/flysystem-ziparchive/tree/2.0.6"
-            },
-            "time": "2020-11-24T14:30:57+00:00"
         },
         {
             "name": "league/geotools",
