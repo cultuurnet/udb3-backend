@@ -13,26 +13,13 @@ use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
 class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
 {
-    /**
-     * @var OrganizerRepository
-     */
-    private $organizerRepository;
+    private OrganizerRepository $organizerRepository;
 
-    /**
-     * @var AddressFormatterInterface
-     */
-    private $defaultAddressFormatter;
+    private AddressFormatterInterface $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatterInterface
-     */
-    private $fallbackAddressFormatter;
+    private AddressFormatterInterface $fallbackAddressFormatter;
 
-    /**
-     * @var GeocodingService
-     */
-    private $geocodingService;
-
+    private GeocodingService $geocodingService;
 
     public function __construct(
         OrganizerRepository $organizerRepository,
