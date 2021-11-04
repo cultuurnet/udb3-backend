@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
-use CultuurNet\UDB3\Place\Commands\DeletePlace;
 use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
@@ -30,7 +29,6 @@ use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
-use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -129,23 +127,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ],
         ];
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_delete_places()
-    {
-        $id = 'event-id';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(
-                new DeletePlace($id)
-            )
-            ->then([new PlaceDeleted($id)]);
     }
 
     /**

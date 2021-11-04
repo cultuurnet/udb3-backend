@@ -8,7 +8,6 @@ use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
-use CultuurNet\UDB3\Event\Commands\DeleteEvent;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
 use CultuurNet\UDB3\Event\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
@@ -217,14 +216,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     protected function getUpdatePriceInfoClassName()
     {
         return UpdatePriceInfo::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDeleteOfferClassName()
-    {
-        return DeleteEvent::class;
     }
 
     protected function getPublishClassName()

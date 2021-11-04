@@ -9,7 +9,6 @@ use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
@@ -172,11 +171,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      * @return string
      */
     abstract protected function getUpdatePriceInfoClassName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getDeleteOfferClassName();
 
     /**
      * @return string
@@ -379,15 +373,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
         $this->offerRepository->save($offer);
     }
-
-
-    private function handleDeleteOffer(AbstractDeleteOffer $deleteOffer)
-    {
-        $offer = $this->load($deleteOffer->getItemId());
-        $offer->delete();
-        $this->offerRepository->save($offer);
-    }
-
 
     private function handlePublish(AbstractPublish $publish)
     {
