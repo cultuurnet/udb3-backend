@@ -748,7 +748,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'video',
+            'videos',
         ];
 
         $event = $this->getJSONEventFromFile('event_with_multiple_videos.json');
@@ -757,8 +757,8 @@ class TabularDataEventFormatterTest extends TestCase
 
         $expectedFormattedEvent = [
             'id' => '0c70b8f3-66a0-4532-959f-2e13b4624f04',
-            'video.url' => 'https://www.youtube.com/watch?v=cEItmb_a20D;https://www.youtube.com/watch?v=sXYtmb_q19C',
-            'video.copyrightHolder' => 'Copyright afgehandeld door YouTube;publiq',
+            'videos.url' => 'https://www.youtube.com/watch?v=cEItmb_a20D;https://www.youtube.com/watch?v=sXYtmb_q19C',
+            'videos.copyrightHolder' => 'Copyright afgehandeld door YouTube;publiq',
         ];
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);

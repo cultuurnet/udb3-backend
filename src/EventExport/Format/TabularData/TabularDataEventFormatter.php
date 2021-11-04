@@ -205,9 +205,9 @@ class TabularDataEventFormatter
                 'calendarSummary.short',
                 'calendarSummary.long',
             ],
-            'video' => [
-                'video.url',
-                'video.copyrightHolder',
+            'videos' => [
+                'videos.url',
+                'videos.copyrightHolder',
             ],
         ];
 
@@ -687,25 +687,25 @@ class TabularDataEventFormatter
                 },
                 'property' => 'bookingAvailability',
             ],
-            'video.url' => [
-                'name' => 'video URL',
+            'videos.url' => [
+                'name' => 'videos URL',
                 'include' => function ($event) {
                     if (!property_exists($event, 'videos') || !is_array($event->videos)) {
                         return '';
                     }
                     return $this->formatVideo($event->videos, 'url');
                 },
-                'property' => 'video',
+                'property' => 'videos',
             ],
-            'video.copyrightHolder' => [
-                'name' => 'video copyright',
+            'videos.copyrightHolder' => [
+                'name' => 'videos copyright',
                 'include' => function ($event) {
                     if (!property_exists($event, 'videos') || !is_array($event->videos)) {
                         return '';
                     }
                     return $this->formatVideo($event->videos, 'copyrightHolder');
                 },
-                'property' => 'video',
+                'property' => 'videos',
             ],
         ];
     }
