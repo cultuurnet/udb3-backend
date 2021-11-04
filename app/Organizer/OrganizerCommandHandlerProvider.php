@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
@@ -53,6 +54,10 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 
         $app[UpdateAddressHandler::class] = $app->share(
             fn (Application $application) => new UpdateAddressHandler($app['organizer_repository'])
+        );
+
+        $app[RemoveAddressHandler::class] = $app->share(
+            fn (Application $application) => new RemoveAddressHandler($app['organizer_repository'])
         );
 
         $app[UpdateWebsiteHandler::class] = $app->share(
