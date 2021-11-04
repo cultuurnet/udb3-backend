@@ -24,35 +24,15 @@ class DeleteRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_a_delete_command_for_events(): void
+    public function it_dispatches_a_delete_command(): void
     {
         $eventId = '9a79a8f4-3602-4852-91b9-9132167837f7';
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', $eventId)
             ->build('DELETE');
 
         $expectedCommand = new DeleteOffer($eventId);
-
-        $this->deleteRequestHandler->handle($request);
-
-        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
-    }
-
-    /**
-     * @test
-     */
-    public function it_dispatches_a_delete_command_for_places(): void
-    {
-        $placeId = '9a79a8f4-3602-4852-91b9-9132167837f7';
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'places')
-            ->withRouteParameter('offerId', $placeId)
-            ->build('DELETE');
-
-        $expectedCommand = new DeleteOffer($placeId);
 
         $this->deleteRequestHandler->handle($request);
 
