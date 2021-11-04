@@ -55,7 +55,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     /**
      * @var LegacyAddress[]|null
      */
-    private ?array $addresses;
+    private ?array $addresses = null;
 
     private ContactPoint $contactPoint;
 
