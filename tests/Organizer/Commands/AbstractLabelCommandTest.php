@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -31,7 +32,7 @@ class AbstractLabelCommandTest extends TestCase
     {
         $this->organizerId = 'organizerId';
 
-        $this->label = new Label('foo');
+        $this->label = new Label(new LabelName('foo'));
 
         $this->abstractLabelCommand = $this->getMockForAbstractClass(
             AbstractLabelCommand::class,
@@ -56,7 +57,7 @@ class AbstractLabelCommandTest extends TestCase
     public function it_stores_a_label()
     {
         $this->assertEquals(
-            $this->label,
+            new \CultuurNet\UDB3\Label('foo'),
             $this->abstractLabelCommand->getLabel()
         );
     }

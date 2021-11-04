@@ -11,11 +11,13 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
@@ -66,17 +68,17 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_add_label(): void
     {
         $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
-        $label = new Label('foo', true);
+        $label = new Label(new LabelName('foo'), true);
 
         $this->labelService
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'), true);
+            ->with(new LegacyLabelName('foo'), true);
 
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
             ->when(new AddLabel($id, $label))
-            ->then([new LabelAdded($id, $label)]);
+            ->then([new LabelAdded($id, new LegacyLabel('foo'))]);
     }
 
     /**
@@ -85,17 +87,17 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_add_invisible_label(): void
     {
         $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
-        $label = new Label('bar', false);
+        $label = new Label(new LabelName('bar'), false);
 
         $this->labelService
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('bar'), false);
+            ->with(new LegacyLabelName('bar'), false);
 
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
             ->when(new AddLabel($id, $label))
-            ->then([new LabelAdded($id, $label)]);
+            ->then([new LabelAdded($id, new LegacyLabel('bar', false))]);
     }
 
     /**
@@ -104,17 +106,17 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_does_not_add_the_same_label_twice(): void
     {
         $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
-        $label = new Label('foo', true);
+        $label = new Label(new LabelName('foo'), true);
 
         $this->labelService
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'), true);
+            ->with(new LegacyLabelName('foo'), true);
 
         $this->scenario
             ->withAggregateId($id)
             ->given([
                 $this->organizerCreated($id),
-                new LabelAdded($id, $label),
+                new LabelAdded($id, new LegacyLabel('foo')),
             ])
             ->when(new AddLabel($id, $label))
             ->then([]);

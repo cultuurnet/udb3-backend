@@ -11,8 +11,10 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
@@ -40,16 +42,16 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_removes_an_attached_label(): void
     {
         $id = '60abd28a-8856-4167-ad59-014108259444';
-        $label = new Label('foo', true);
+        $label = new Label(new LabelName('foo'), true);
 
         $this->scenario
             ->withAggregateId($id)
             ->given([
                 $this->organizerCreated($id),
-                new LabelAdded($id, $label),
+                new LabelAdded($id, new LegacyLabel('foo')),
             ])
             ->when(new RemoveLabel($id, $label))
-            ->then([new LabelRemoved($id, $label)]);
+            ->then([new LabelRemoved($id, new LegacyLabel('foo'))]);
     }
 
     /**
@@ -58,16 +60,16 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_removes_an_attached_invisible_label(): void
     {
         $id = '60abd28a-8856-4167-ad59-014108259444';
-        $label = new Label('bar', false);
+        $label = new Label(new LabelName('bar'), false);
 
         $this->scenario
             ->withAggregateId($id)
             ->given([
                 $this->organizerCreated($id),
-                new LabelAdded($id, $label),
+                new LabelAdded($id, new LegacyLabel('bar', false)),
             ])
             ->when(new RemoveLabel($id, $label))
-            ->then([new LabelRemoved($id, $label)]);
+            ->then([new LabelRemoved($id, new LegacyLabel('bar', false))]);
     }
 
     /**
@@ -76,7 +78,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_does_not_remove_a_missing_label(): void
     {
         $id = '60abd28a-8856-4167-ad59-014108259444';
-        $label = new Label('foo');
+        $label = new Label(new LabelName('foo'));
 
         $this->scenario
             ->withAggregateId($id)
