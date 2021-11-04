@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -25,12 +24,9 @@ abstract class AbstractLabelCommand implements AuthorizableCommand, Authorizable
         $this->label = $label;
     }
 
-    public function getLabel(): LegacyLabel
+    public function getLabel(): Label
     {
-        return new LegacyLabel(
-            $this->label->getName()->toString(),
-            $this->label->isVisible()
-        );
+        return $this->label;
     }
 
     public function getItemId(): string

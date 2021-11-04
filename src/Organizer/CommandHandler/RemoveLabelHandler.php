@@ -30,7 +30,7 @@ final class RemoveLabelHandler implements CommandHandler
             return;
         }
 
-        $labelName = new StringLiteral((string) $command->getLabel());
+        $labelName = new StringLiteral($command->getLabel()->getName()->toString());
         $visible = $command->getLabel()->isVisible();
 
         $readModelLabelEntity = $this->labelRepository->getByName($labelName);

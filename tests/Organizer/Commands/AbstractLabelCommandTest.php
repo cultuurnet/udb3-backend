@@ -57,7 +57,7 @@ class AbstractLabelCommandTest extends TestCase
     public function it_stores_a_label()
     {
         $this->assertEquals(
-            new \CultuurNet\UDB3\Label('foo'),
+            $this->label,
             $this->abstractLabelCommand->getLabel()
         );
     }
