@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
-use CultuurNet\UDB3\Place\Commands\DeletePlace;
 use PHPUnit\Framework\TestCase;
 
 class DeleteRequestHandlerTest extends TestCase
@@ -53,7 +52,7 @@ class DeleteRequestHandlerTest extends TestCase
             ->withRouteParameter('offerId', $placeId)
             ->build('DELETE');
 
-        $expectedCommand = new DeletePlace($placeId);
+        $expectedCommand = new AbstractDeleteOffer($placeId);
 
         $this->deleteRequestHandler->handle($request);
 

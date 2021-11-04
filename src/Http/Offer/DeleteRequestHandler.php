@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\DeletePlace;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -43,7 +42,7 @@ final class DeleteRequestHandler implements RequestHandlerInterface
             return new AbstractDeleteOffer($offerId);
         }
         if ($offerType->sameValueAs(OfferType::PLACE())) {
-            return new DeletePlace($offerId);
+            return new AbstractDeleteOffer($offerId);
         }
         throw new RuntimeException('No AbstractDeleteOffer implementation found for unknown offer type ' . $offerType->toNative());
     }
