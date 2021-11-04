@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -154,24 +153,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
         );
 
         $this->assertEquals($expectedUuid, $organizerId);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_remove_address()
-    {
-        $organizerId = 'baee2963-e1ba-4777-a803-4c645c6fd31c';
-
-        $expectedUpdateAddress = new RemoveAddress(
-            $organizerId
-        );
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($expectedUpdateAddress);
-
-        $this->service->removeAddress($organizerId);
     }
 
     /**
