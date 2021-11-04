@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
@@ -30,6 +31,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/{offerType}/{offerId}/', GetDetailRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/', DeleteRequestHandler::class);
 
         $controllers->get('/{offerType}/{offerId}/history/', GetHistoryRequestHandler::class);
 
@@ -53,6 +55,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
     {
         $app[GetDetailRequestHandler::class] = $app->share(
             fn (Application $app) => new GetDetailRequestHandler($app[OfferJsonDocumentReadRepository::class])
+        );
+
+        $app[DeleteRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
         );
 
         $app[GetHistoryRequestHandler::class] = $app->share(
