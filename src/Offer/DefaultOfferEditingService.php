@@ -47,23 +47,16 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
      */
     protected $publicationDate;
 
-    /**
-     * @var ThemeResolverInterface
-     */
-    protected $themeResolver;
-
     public function __construct(
         CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
-        OfferCommandFactoryInterface $commandFactory,
-        ThemeResolverInterface $themeResolver
+        OfferCommandFactoryInterface $commandFactory
     ) {
         $this->commandBus = $commandBus;
         $this->uuidGenerator = $uuidGenerator;
         $this->readRepository = $readRepository;
         $this->commandFactory = $commandFactory;
-        $this->themeResolver = $themeResolver;
         $this->publicationDate = null;
     }
 
@@ -76,33 +69,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $c = clone $this;
         $c->publicationDate = $publicationDate;
         return $c;
-    }
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateTheme($id, StringLiteral $themeId)
-    {
-        $this->guardId($id);
-        $theme = $this->themeResolver->byId($themeId);
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createUpdateThemeCommand($id, $theme)
-        );
-    }
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateFacilities($id, array $facilities)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createUpdateFacilitiesCommand($id, $facilities)
-        );
     }
 
     /**

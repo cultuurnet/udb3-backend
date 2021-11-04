@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Http\Organizer\EditOrganizerRestController;
 use CultuurNet\UDB3\Http\Organizer\ReadOrganizerRestController;
-use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -35,42 +35,22 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->delete('/{cdbid}/', 'organizer_edit_controller:delete');
 
-        $controllers->put(
-            '/{organizerId}/url/',
-            'organizer_edit_controller:updateUrl'
-        );
-
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
         $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
 
-        $controllers->put(
-            '/{organizerId}/address/',
-            'organizer_edit_controller:updateAddressDeprecated'
-        );
+        $controllers->put('/{organizerId}/address/', UpdateAddressRequestHandler::class);
+        $controllers->put('/{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
 
-        $controllers->put(
-            '/{organizerId}/address/{lang}/',
-            'organizer_edit_controller:updateAddress'
-        );
+        $controllers->put('/{organizerId}/url/', UpdateUrlRequestHandler::class);
+
+        $controllers->put('/{organizerId}/contact-point/', UpdateContactPointRequestHandler::class);
+
+        $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+        $controllers->delete('/{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
         $controllers->delete(
             '/{organizerId}/address/',
             'organizer_edit_controller:removeAddress'
-        );
-
-        $controllers->put(
-            '/{organizerId}/contact-point/',
-            'organizer_edit_controller:updateContactPoint'
-        );
-
-        $controllers->put(
-            '/{organizerId}/labels/{labelName}/',
-            'organizer_edit_controller:addLabel'
-        );
-
-        $controllers->delete(
-            '/{organizerId}/labels/{labelName}/',
-            'organizer_edit_controller:removeLabel'
         );
 
         $controllers->get('/{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
@@ -109,40 +89,28 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             }
         );
 
-        $app[AddLabelHandler::class] = $app->share(
-            function (Application $app) {
-                return new AddLabelHandler(
-                    $app['organizer_repository'],
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app['labels.constraint_aware_service']
-                );
-            }
-        );
-
-        $app[RemoveLabelHandler::class] = $app->share(
-            function (Application $app) {
-                return new RemoveLabelHandler(
-                    $app['organizer_repository'],
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-                );
-            }
-        );
-
-        $app[ImportLabelsHandler::class] = $app->share(
-            function (Application $app) {
-                return new ImportLabelsHandler(
-                    $app['organizer_repository'],
-                    $app['labels.constraint_aware_service']
-                );
-            }
-        );
-
         $app[UpdateTitleRequestHandler::class] = $app->share(
             fn (Application $application) => new UpdateTitleRequestHandler($app['event_command_bus'])
         );
 
-        $app[UpdateTitleHandler::class] = $app->share(
-            fn (Application $application) => new UpdateTitleHandler($app['organizer_repository'])
+        $app[UpdateAddressRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateAddressRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateUrlRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateUrlRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateContactPointRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateContactPointRequestHandler($app['event_command_bus'])
+        );
+
+        $app[AddLabelRequestHandler::class] = $app->share(
+            fn (Application $application) => new AddLabelRequestHandler($app['event_command_bus'])
+        );
+
+        $app[DeleteLabelRequestHandler::class] = $app->share(
+            fn (Application $application) => new DeleteLabelRequestHandler($app['event_command_bus'])
         );
     }
 

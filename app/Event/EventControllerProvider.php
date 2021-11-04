@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -20,14 +21,17 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
+        $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
+        $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
+        $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
+        $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
+
         $controllers->post('/', 'event_editing_controller:createEvent');
         $controllers->delete('/{cdbid}/', 'event_editing_controller:deleteEvent');
 
         $controllers->put('/{cdbid}/audience/', 'event_editing_controller:updateAudience');
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
-        $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
         $controllers->put('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:deleteOrganizer');
         $controllers->put('/{cdbid}/typical-age-range/', 'event_editing_controller:updateTypicalAgeRange');
@@ -37,8 +41,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
-
-        $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
 
         $controllers->post('/{cdbid}/copies/', 'event_editing_controller:copyEvent');
 
@@ -81,6 +83,10 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[UpdateSubEventsRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateSubEventsRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateThemeRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateThemeRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateMajorInfoRequestHandler::class] = $app->share(

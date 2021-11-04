@@ -38,7 +38,6 @@ class MajorInfoJSONDeserializerTest extends TestCase
         $this->assertEquals('Test place', $majorInfo->getTitle());
         $this->assertEquals(new EventType('3CuHvenJ+EGkcvhXLg9Ykg', 'Archeologische Site'), $majorInfo->getType());
         $this->assertEquals($expectedAddress, $majorInfo->getAddress());
-        $this->assertEquals(null, $majorInfo->getTheme());
         $this->assertEquals(new Calendar(CalendarType::PERMANENT()), $majorInfo->getCalendar());
     }
 }

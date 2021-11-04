@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Theme;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use CultuurNet\UDB3\Language;
@@ -61,8 +60,4 @@ interface OfferCommandFactoryInterface
     public function createFlagAsInappropriate(string $id): AbstractFlagAsInappropriate;
 
     public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate;
-
-    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme;
-
-    public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities;
 }

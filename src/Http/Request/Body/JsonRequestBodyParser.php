@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Request\Body;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use InvalidArgumentException;
 use JsonException;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -23,6 +25,10 @@ final class JsonRequestBodyParser implements RequestBodyParser
             throw ApiProblem::bodyInvalidSyntax('JSON');
         }
 
-        return $request->withParsedBody($decoded);
+        try {
+            return $request->withParsedBody($decoded);
+        } catch (InvalidArgumentException $e) {
+            throw ApiProblem::bodyInvalidData(new SchemaError('/', 'Root element must be an array or object'));
+        }
     }
 }

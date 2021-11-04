@@ -19,9 +19,7 @@ use CultuurNet\UDB3\Offer\Item\Commands\RemoveImage;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateImage;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateTheme;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Item\Commands\SelectMainImage;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateOrganizer;
@@ -140,15 +138,5 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getFlagAsInappropriateClassName()
     {
         return FlagAsInappropriate::class;
-    }
-
-    protected function getUpdateThemeClassName()
-    {
-        return UpdateTheme::class;
-    }
-
-    protected function getUpdateFacilitiesClassName()
-    {
-        return UpdateFacilities::class;
     }
 }

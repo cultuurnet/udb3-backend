@@ -455,6 +455,12 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
+    protected function applyThemeUpdated(ThemeUpdated $themeUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($themeUpdated);
+        return $this->updateTerm($document, $themeUpdated->getTheme());
+    }
+
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): JsonDocument
     {
         return $this->loadDocumentFromRepositoryByItemId($ownerChanged->getOfferId())
@@ -684,11 +690,6 @@ class EventLDProjector extends OfferLDProjector implements
     protected function getTypeUpdatedClassName()
     {
         return TypeUpdated::class;
-    }
-
-    protected function getThemeUpdatedClassName()
-    {
-        return ThemeUpdated::class;
     }
 
     protected function getFacilitiesUpdatedClassName()

@@ -40,7 +40,7 @@ class UpdateTitleTest extends TestCase
     {
         $this->assertEquals(
             $this->organizerId,
-            $this->updateTitle->getOrganizerId()
+            $this->updateTitle->getItemId()
         );
     }
 

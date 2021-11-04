@@ -4,31 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
-class UpdateWebsiteTest extends TestCase
+final class UpdateWebsiteTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var Url
-     */
-    private $website;
+    private Url $website;
 
-    /**
-     * @var UpdateWebsite
-     */
-    private $updateWebsite;
+    private UpdateWebsite $updateWebsite;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = '8f9f5180-1099-474e-804c-461fc3701e5c';
 
-        $this->website = Url::fromNative('http://www.company.be');
+        $this->website = new Url('http://www.company.be');
 
         $this->updateWebsite = new UpdateWebsite(
             $this->organizerId,
@@ -39,18 +30,18 @@ class UpdateWebsiteTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_organizer_id()
+    public function it_stores_an_organizer_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
-            $this->updateWebsite->getOrganizerId()
+            $this->updateWebsite->getItemId()
         );
     }
 
     /**
      * @test
      */
-    public function it_stores_a_url()
+    public function it_stores_a_url(): void
     {
         $this->assertEquals(
             $this->website,

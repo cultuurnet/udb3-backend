@@ -4,37 +4,25 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
-class UpdateAddressTest extends TestCase
+final class UpdateAddressTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private Language $language;
 
-    /**
-     * @var UpdateAddress
-     */
-    private $updateAddress;
+    private UpdateAddress $updateAddress;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = '9b465926-dbbc-4170-aa9b-0babaa6af5f5';
 
@@ -42,7 +30,7 @@ class UpdateAddressTest extends TestCase
             new Street('Martelarenplein 1'),
             new PostalCode('3000'),
             new Locality('Leuven'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $this->language = new Language('nl');
@@ -57,18 +45,18 @@ class UpdateAddressTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_organizer_id()
+    public function it_stores_an_organizer_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
-            $this->updateAddress->getOrganizerId()
+            $this->updateAddress->getItemId()
         );
     }
 
     /**
      * @test
      */
-    public function it_stores_an_address()
+    public function it_stores_an_address(): void
     {
         $this->assertEquals(
             $this->address,
@@ -79,7 +67,7 @@ class UpdateAddressTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_language()
+    public function it_stores_a_language(): void
     {
         $this->assertEquals(
             $this->language,

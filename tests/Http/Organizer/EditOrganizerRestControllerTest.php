@@ -13,10 +13,7 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Title;
 use InvalidArgumentException;
@@ -142,66 +139,6 @@ class EditOrganizerRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_the_url_of_an_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $url = Url::fromNative('http://www.depot.be');
-
-        $this->editService->expects($this->once())
-            ->method('updateWebsite')
-            ->with(
-                $organizerId,
-                $url
-            );
-
-        $content = '{"url":"' . (string) $url . '"}';
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $response = $this->controller->updateUrl(
-            $organizerId,
-            $request
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_address_of_an_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $address = new Address(
-            new Street('Martelarenplein 12'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
-            Country::fromNative('BE')
-        );
-
-        $this->editService->expects($this->once())
-            ->method('updateAddress')
-            ->with(
-                $organizerId,
-                $address,
-                new Language('nl')
-            );
-
-        $request = $this->createRequest(
-            Request::METHOD_PUT,
-            'organizer_update_address.json'
-        );
-        $response = $this->controller->updateAddress(
-            $organizerId,
-            'nl',
-            $request
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_removes_address_of_an_organizer()
     {
         $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
@@ -212,78 +149,6 @@ class EditOrganizerRestControllerTest extends TestCase
 
         $response = $this->controller->removeAddress(
             $organizerId
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_supports_deprecated_update_address_of_an_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $address = new Address(
-            new Street('Martelarenplein 12'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
-            Country::fromNative('BE')
-        );
-
-        $this->editService->expects($this->once())
-            ->method('updateAddress')
-            ->with(
-                $organizerId,
-                $address,
-                new Language('nl')
-            );
-
-        $request = $this->createRequest(
-            Request::METHOD_PUT,
-            'organizer_update_address.json'
-        );
-        $response = $this->controller->updateAddressDeprecated(
-            $organizerId,
-            $request
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_contact_point_of_an_organizer()
-    {
-        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
-        $contactPoint = new ContactPoint(
-            [
-                '+32 498 71 49 96',
-            ],
-            [
-                'jos@hetdepot.be',
-                'info@hetdepot.be',
-            ],
-            [
-                'https://www.facebook.com/hetdepot',
-                'https://www.depot.be',
-            ]
-        );
-
-        $this->editService->expects($this->once())
-            ->method('updateContactPoint')
-            ->with(
-                $organizerId,
-                $contactPoint
-            );
-
-        $request = $this->createRequest(
-            Request::METHOD_PUT,
-            'organizer_update_contact_point.json'
-        );
-        $response = $this->controller->updateContactPoint(
-            $organizerId,
-            $request
         );
 
         $this->assertEquals(204, $response->getStatusCode());
@@ -303,44 +168,6 @@ class EditOrganizerRestControllerTest extends TestCase
         $response = $this->controller->delete($cdbId);
 
         $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_adds_a_label(): void
-    {
-        $organizerId = 'organizerId';
-        $labelName = 'publiq';
-
-        $this->commandBus->record();
-
-        $response = $this->controller->addLabel($organizerId, $labelName);
-
-        $this->assertEquals(204, $response->getStatusCode());
-        $this->assertEquals(
-            [new AddLabel($organizerId, new Label($labelName))],
-            $this->commandBus->getRecordedCommands()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_removes_a_label(): void
-    {
-        $organizerId = 'organizerId';
-        $labelName = 'publiq';
-
-        $this->commandBus->record();
-
-        $response = $this->controller->removeLabel($organizerId, $labelName);
-
-        $this->assertEquals(204, $response->getStatusCode());
-        $this->assertEquals(
-            [new RemoveLabel($organizerId, new Label($labelName))],
-            $this->commandBus->getRecordedCommands()
-        );
     }
 
     /**

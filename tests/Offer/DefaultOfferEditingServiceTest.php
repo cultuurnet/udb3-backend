@@ -13,8 +13,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateFacilities;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateTheme;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateTitle;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -22,12 +20,10 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Money\Currency;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class DefaultOfferEditingServiceTest extends TestCase
 {
@@ -66,18 +62,12 @@ class DefaultOfferEditingServiceTest extends TestCase
      */
     private $translateTitleCommand;
 
-    /**
-     * @var ThemeResolverInterface|MockObject
-     */
-    private $themeResolver;
-
     public function setUp()
     {
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->offerRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
-        $this->themeResolver = $this->createMock(ThemeResolverInterface::class);
 
         $this->translateTitleCommand = $this->getMockForAbstractClass(
             AbstractUpdateTitle::class,
@@ -88,8 +78,7 @@ class DefaultOfferEditingServiceTest extends TestCase
             $this->commandBus,
             $this->uuidGenerator,
             $this->offerRepository,
-            $this->commandFactory,
-            $this->themeResolver
+            $this->commandFactory
         );
 
         $this->expectedCommandId = '123456';
@@ -209,80 +198,5 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->expectException(EntityNotFoundException::class);
 
         $this->offerEditingService->guardId($unknownId);
-    }
-
-    /**
-     * @param string $offerId
-     */
-    private function expectPlaceholderDocument($offerId)
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('fetch')
-            ->with($offerId)
-            ->willReturn(new JsonDocument($offerId));
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_update_an_offer_theme_and_return_the_resulting_command()
-    {
-        $expectedCommandId = 'f42802e4-c1f1-4aa6-9909-a08cfc66f355';
-        $offerId = '2D015370-7CBA-4CB9-B0E4-07D2DEAAB2FF';
-        $theme = new Theme('0.52.0.0.0', 'Circus');
-        $updateThemeCommand = new UpdateTheme($offerId, $theme);
-        $this->expectPlaceholderDocument($offerId);
-
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdateThemeCommand')
-            ->with($offerId, $theme)
-            ->willReturn($updateThemeCommand);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updateThemeCommand)
-            ->willReturn($expectedCommandId);
-
-        $this->themeResolver
-            ->expects($this->once())
-            ->method('byId')
-            ->with('0.52.0.0.0')
-            ->willReturn($theme);
-
-        $commandId = $this->offerEditingService->updateTheme(
-            '2D015370-7CBA-4CB9-B0E4-07D2DEAAB2FF',
-            new StringLiteral('0.52.0.0.0')
-        );
-
-        $this->assertEquals($expectedCommandId, $commandId);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_facilities_and_return_resulting_command()
-    {
-        $expectedCommandId = 'f42802e4-c1f1-4aa6-9909-a08cfc66f355';
-        $offerId = '2D015370-7CBA-4CB9-B0E4-07D2DEAAB2FF';
-        $facilities = [
-            'facility1',
-            'facility2',
-        ];
-        $updateFacilities = new UpdateFacilities($offerId, $facilities);
-        $this->expectPlaceholderDocument($offerId);
-
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdateFacilitiesCommand')
-            ->with($offerId, $facilities)
-            ->willReturn($updateFacilities);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updateFacilities)
-            ->willReturn($expectedCommandId);
-
-        $commandId = $this->offerEditingService->updateFacilities($offerId, $facilities);
-
-        $this->assertEquals($expectedCommandId, $commandId);
     }
 }

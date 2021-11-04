@@ -5,17 +5,23 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
+use CultuurNet\UDB3\Address\Locality as LegacyLocality;
+use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
+use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -33,7 +39,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title as LegacyTitle;
 use ValueObjects\Geography\Country;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerTest extends AggregateRootScenarioTestCase
 {
@@ -48,7 +54,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     private $mainLanguage;
 
     /**
-     * @var Url
+     * @var LegacyUrl
      */
     private $website;
 
@@ -68,7 +74,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
 
         $this->id = '18eab5bf-09bf-4521-a8b4-c0f4a585c096';
         $this->mainLanguage = new LegacyLanguage('en');
-        $this->website = Url::fromNative('http://www.stuk.be');
+        $this->website = LegacyUrl::fromNative('http://www.stuk.be');
         $this->title = new LegacyTitle('STUK');
 
         $this->organizerCreatedWithUniqueWebsite = new OrganizerCreatedWithUniqueWebsite(
@@ -128,10 +134,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
                         new LegacyTitle('DE Studio'),
                         [
-                            new Address(
-                                new Street('Wetstraat 1'),
-                                new PostalCode('1000'),
-                                new Locality('Brussel'),
+                            new LegacyAddress(
+                                new LegacyStreet('Wetstraat 1'),
+                                new LegacyPostalCode('1000'),
+                                new LegacyLocality('Brussel'),
                                 Country::fromNative('BE')
                             ),
                         ],
@@ -258,17 +264,17 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
             new Locality('Brussel'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $updatedAddress = new Address(
             new Street('Martelarenlaan 1'),
             new PostalCode('3000'),
             new Locality('Leuven'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
-        $language = $this->organizerCreatedWithUniqueWebsite->getMainLanguage();
+        $language = new Language($this->organizerCreatedWithUniqueWebsite->getMainLanguage()->getCode());
 
         $this->scenario
             ->given([$this->organizerCreatedWithUniqueWebsite])
@@ -284,8 +290,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new AddressUpdated($this->id, $initialAddress),
-                    new AddressUpdated($this->id, $updatedAddress),
+                    new AddressUpdated($this->id, LegacyAddress::fromUdb3ModelAddress($initialAddress)),
+                    new AddressUpdated($this->id, LegacyAddress::fromUdb3ModelAddress($updatedAddress)),
                 ]
             );
     }
@@ -295,10 +301,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
      */
     public function it_can_set_an_initial_address_and_remove_it_later()
     {
-        $initialAddress = new Address(
-            new Street('Wetstraat 1'),
-            new PostalCode('1000'),
-            new Locality('Brussel'),
+        $initialAddress = new LegacyAddress(
+            new LegacyStreet('Wetstraat 1'),
+            new LegacyPostalCode('1000'),
+            new LegacyLocality('Brussel'),
             Country::fromNative('BE')
         );
 
@@ -370,8 +376,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->updateWebsite(Url::fromNative('http://www.stuk.be'));
-                    $organizer->updateWebsite(Url::fromNative('http://www.hetdepot.be'));
+                    $organizer->updateWebsite(new Url('http://www.stuk.be'));
+                    $organizer->updateWebsite(new Url('http://www.hetdepot.be'));
                 }
             )
             ->then(
@@ -379,7 +385,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with website 'http://www.stuk.be'.
                     new WebsiteUpdated(
                         $this->id,
-                        Url::fromNative('http://www.hetdepot.be')
+                        LegacyUrl::fromNative('http://www.hetdepot.be')
                     ),
                 ]
             );
@@ -404,7 +410,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->updateWebsite(Url::fromNative('http://www.hetdepot.be'));
+                    $organizer->updateWebsite(new Url('http://www.hetdepot.be'));
                 }
             )
             ->then(
@@ -412,7 +418,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with an empty website.
                     new WebsiteUpdated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        Url::fromNative('http://www.hetdepot.be')
+                        LegacyUrl::fromNative('http://www.hetdepot.be')
                     ),
                 ]
             );
@@ -517,14 +523,14 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             new Street('Rue de la Loi 1'),
             new PostalCode('1000'),
             new Locality('Bruxelles'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $addressEn = new Address(
             new Street('Gesetz Straße 1'),
             new PostalCode('1000'),
             new Locality('Brüssel'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $this->scenario
@@ -533,10 +539,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $this->organizerCreatedWithUniqueWebsite,
                     new AddressUpdated(
                         $this->id,
-                        new Address(
-                            new Street('Wetstraat 1'),
-                            new PostalCode('1000'),
-                            new Locality('Brussel'),
+                        new LegacyAddress(
+                            new LegacyStreet('Wetstraat 1'),
+                            new LegacyPostalCode('1000'),
+                            new LegacyLocality('Brussel'),
                             Country::fromNative('BE')
                         )
                     ),
@@ -546,11 +552,11 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 function (Organizer $organizer) use ($addressFr, $addressEn) {
                     $organizer->updateAddress(
                         $addressFr,
-                        new LegacyLanguage('fr')
+                        new Language('fr')
                     );
                     $organizer->updateAddress(
                         $addressEn,
-                        new LegacyLanguage('de')
+                        new Language('de')
                     );
                 }
             )
@@ -558,12 +564,12 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new AddressTranslated(
                         $this->id,
-                        $addressFr,
+                        LegacyAddress::fromUdb3ModelAddress($addressFr),
                         new LegacyLanguage('fr')
                     ),
                     new AddressTranslated(
                         $this->id,
-                        $addressEn,
+                        LegacyAddress::fromUdb3ModelAddress($addressEn),
                         new LegacyLanguage('de')
                     ),
                 ]

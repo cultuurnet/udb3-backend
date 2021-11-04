@@ -14,27 +14,17 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
-use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
-use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
-use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
-use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Identity\UUID;
-use ValueObjects\Web\Url;
 
 class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -129,105 +119,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_create_organizer()
-    {
-        $id = (new UUID())->toNative();
-
-        $this->scenario
-            ->withAggregateId($id)
-            ->when(
-                new CreateOrganizer(
-                    $id,
-                    new LegacyLanguage('nl'),
-                    Url::fromNative('http://www.depot.be'),
-                    new Title('Het depot')
-                )
-            )
-            ->then(
-                [
-                    new OrganizerCreatedWithUniqueWebsite(
-                        $id,
-                        new LegacyLanguage('nl'),
-                        Url::fromNative('http://www.depot.be'),
-                        new Title('Het depot')
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_website()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateWebsite(
-                    $organizerId,
-                    Url::fromNative('http://www.depot.be')
-                )
-            )
-            ->then(
-                [
-                    new WebsiteUpdated(
-                        $organizerId,
-                        Url::fromNative('http://www.depot.be')
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_address()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $address = new Address(
-            new Street('Martelarenplein 1'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
-            Country::fromNative('BE')
-        );
-
-        $language = new LegacyLanguage('nl');
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateAddress(
-                    $organizerId,
-                    $address,
-                    $language
-                )
-            )
-            ->then(
-                [
-                    new AddressUpdated(
-                        $organizerId,
-                        $address
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_remove_address_commands()
     {
         $organizerId = $this->organizerCreated->getOrganizerId();
@@ -259,45 +150,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new AddressRemoved(
                         $organizerId
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_update_contact_point()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $contactPoint = new ContactPoint(
-            [
-                '0123456789',
-            ],
-            [
-                'info@hetdepot.be',
-            ]
-        );
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new UpdateContactPoint(
-                    $organizerId,
-                    $contactPoint
-                )
-            )
-            ->then(
-                [
-                    new ContactPointUpdated(
-                        $organizerId,
-                        $contactPoint
                     ),
                 ]
             );

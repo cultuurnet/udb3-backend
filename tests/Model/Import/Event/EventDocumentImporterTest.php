@@ -301,7 +301,7 @@ class EventDocumentImporterTest extends TestCase
                     []
                 )
             ),
-            new UpdateTheme($id, new Theme('1.17.0.0.0', 'Antiek en brocante')),
+            new UpdateTheme($id, '1.17.0.0.0'),
             new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),

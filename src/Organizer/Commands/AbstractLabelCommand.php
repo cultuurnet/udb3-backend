@@ -10,18 +10,17 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use ValueObjects\StringLiteral\StringLiteral;
 
-abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements AuthorizableCommand, AuthorizableLabelCommand
+abstract class AbstractLabelCommand implements AuthorizableCommand, AuthorizableLabelCommand
 {
-    /**
-     * @var Label
-     */
-    private $label;
+    private string $organizerId;
+
+    private Label $label;
 
     public function __construct(
         string $organizerId,
         Label $label
     ) {
-        parent::__construct($organizerId);
+        $this->organizerId = $organizerId;
         $this->label = $label;
     }
 
@@ -32,7 +31,7 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
 
     public function getItemId(): string
     {
-        return $this->getOrganizerId();
+        return $this->organizerId;
     }
 
     public function getLabelNames(): array

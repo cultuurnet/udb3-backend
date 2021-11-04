@@ -6,17 +6,11 @@ namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Address\Address;
 
-class UpdateGeoCoordinatesFromAddress
+final class UpdateGeoCoordinatesFromAddress
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
     public function __construct(string $organizerId, Address $address)
     {
@@ -24,12 +18,10 @@ class UpdateGeoCoordinatesFromAddress
         $this->address = $address;
     }
 
-
     public function organizerId(): string
     {
         return $this->organizerId;
     }
-
 
     public function address(): Address
     {

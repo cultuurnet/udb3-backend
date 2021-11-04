@@ -46,7 +46,6 @@ use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
-use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -173,7 +172,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_places_without_theme()
+    public function it_handles_new_places()
     {
         $id = 'foo';
         $created = '2015-01-20T13:25:21+01:00';
@@ -218,76 +217,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->bookingAvailability = (object) [
-            'type' => 'Available',
-        ];
-
-        $body = $this->project(
-            $placeCreated,
-            $id,
-            null,
-            DateTime::fromString($created)
-        );
-
-        $this->assertEquals(
-            $jsonLD,
-            $body
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_new_places_with_theme()
-    {
-        $id = 'bar';
-        $created = '2015-01-20T13:25:21+01:00';
-
-        $placeCreated = new PlaceCreated(
-            $id,
-            new Language('en'),
-            new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'concert'),
-            $this->address,
-            new Calendar(CalendarType::PERMANENT()),
-            new Theme('123', 'theme label')
-        );
-
-        $jsonLD = new stdClass();
-        $jsonLD->{'@id'} = 'http://example.com/entity/' . $id;
-        $jsonLD->{'@context'} = '/contexts/place';
-        $jsonLD->mainLanguage = 'en';
-        $jsonLD->name = (object)[ 'en' => 'some representative title' ];
-        $jsonLD->address = (object) [
-            'en' => (object) [
-                'addressCountry' => 'BE',
-                'addressLocality' => 'Leuven',
-                'postalCode' => '3000',
-                'streetAddress' => 'Kerkstraat 69',
-            ],
-        ];
-        $jsonLD->calendarType = 'permanent';
-        $jsonLD->availableTo = '2100-01-01T00:00:00+00:00';
-        $jsonLD->terms = [
-            (object)[
-                'id' => '0.50.4.0.0',
-                'label' => 'concert',
-                'domain' => 'eventtype',
-            ],
-            (object)[
-                'id' => '123',
-                'label' => 'theme label',
-                'domain' => 'theme',
-            ],
-        ];
-        $jsonLD->created = $created;
-        $jsonLD->modified = $created;
-        $jsonLD->workflowStatus = 'DRAFT';
-        $jsonLD->languages = ['en'];
-        $jsonLD->completedLanguages = ['en'];
-        $jsonLD->status = (object)[
-            'type' => 'Available',
-        ];
-        $jsonLD->bookingAvailability = (object)[
             'type' => 'Available',
         ];
 
@@ -768,8 +697,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-02-26T13:25:21+01:00')
         );
-        $theme = new Theme('123', 'theme label');
-        $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $this->address, $calendar, $theme);
+        $majorInfoUpdated = new MajorInfoUpdated($id, $title, $eventType, $this->address, $calendar);
 
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://io.uitdatabank.be/place/foo';
@@ -817,11 +745,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 'id' => '0.50.4.0.1',
                 'label' => 'concertnew',
                 'domain' => 'eventtype',
-            ],
-            (object)[
-                'id' => '123',
-                'label' => 'theme label',
-                'domain' => 'theme',
             ],
         ];
         $expectedJsonLD->startDate = '2015-01-26T13:25:21+01:00';

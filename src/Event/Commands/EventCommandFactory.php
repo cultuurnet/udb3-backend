@@ -18,9 +18,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTheme;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
@@ -37,22 +35,11 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\Theme;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCommandFactory implements OfferCommandFactoryInterface
 {
-    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme
-    {
-        return new UpdateTheme($id, $theme);
-    }
-
-    public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities
-    {
-        return new UpdateFacilities($id, $facilities);
-    }
-
     public function createAddImageCommand(string $id, UUID $imageId): AbstractAddImage
     {
         return new AddImage($id, $imageId);

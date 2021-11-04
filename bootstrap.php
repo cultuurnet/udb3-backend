@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
@@ -26,13 +27,17 @@ use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
@@ -58,6 +63,7 @@ use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -572,6 +578,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         );
 
         $commandBus->subscribe(new UpdateSubEventsHandler($app['event_repository']));
+        $commandBus->subscribe(new UpdateThemeHandler($app['event_repository']));
 
         $commandBus->subscribe($app['saved_searches_command_handler']);
 
@@ -608,6 +615,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
         $commandBus->subscribe($app[UpdateBookingAvailabilityHandler::class]);
         $commandBus->subscribe($app[UpdateTypeHandler::class]);
+        $commandBus->subscribe($app[UpdateFacilitiesHandler::class]);
         $commandBus->subscribe($app[ChangeOwnerHandler::class]);
         $commandBus->subscribe($app[AddLabelHandler::class]);
         $commandBus->subscribe($app[RemoveLabelHandler::class]);
@@ -622,6 +630,9 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class]);
         $commandBus->subscribe($app[UpdateTitleHandler::class]);
+        $commandBus->subscribe($app[UpdateAddressHandler::class]);
+        $commandBus->subscribe($app[UpdateWebsiteHandler::class]);
+        $commandBus->subscribe($app[UpdateContactPointHandler::class]);
 
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
     };
@@ -732,6 +743,7 @@ $app['organizer_editing_service'] = $app->share(
 
 $app->register(new OrganizerControllerProvider());
 $app->register(new OrganizerJSONLDServiceProvider());
+$app->register(new OrganizerCommandHandlerProvider());
 
 $app['eventstore_payload_serializer'] = $app->share(
     function ($app) {

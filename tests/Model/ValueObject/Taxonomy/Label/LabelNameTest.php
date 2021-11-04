@@ -30,7 +30,7 @@ class LabelNameTest extends \PHPUnit_Framework_TestCase
     public function it_does_not_support_semi_colons()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Label 'foo;bar' should not contain semicolons.");
+        $this->expectExceptionMessage("String 'foo;bar' does not match regex pattern /^[^;]{2,255}$/.");
         new LabelName('foo;bar');
     }
 
@@ -40,7 +40,7 @@ class LabelNameTest extends \PHPUnit_Framework_TestCase
     public function it_requires_labels_of_at_least_2_characters()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Label 'f' should not be shorter than 2 chars.");
+        $this->expectExceptionMessage("String 'f' does not match regex pattern /^[^;]{2,255}$/.");
         new LabelName('f');
     }
 
@@ -60,7 +60,7 @@ class LabelNameTest extends \PHPUnit_Framework_TestCase
             abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz';
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Label '$longLabel' should not be longer than 255 chars.");
+        $this->expectExceptionMessage("String '$longLabel' does not match regex pattern /^[^;]{2,255}$/.");
         new LabelName($longLabel);
     }
 }

@@ -8,15 +8,8 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
-use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Organizer\UrlJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -88,95 +81,12 @@ class EditOrganizerRestController
         );
     }
 
-    public function updateUrl(string $organizerId, Request $request): Response
-    {
-        $websiteJSONDeserializer = new UrlJSONDeserializer();
-        $website = $websiteJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        try {
-            $this->editingService->updateWebsite(
-                $organizerId,
-                $website
-            );
-        } catch (UniqueConstraintException $e) {
-            $e = new DataValidationException();
-            $e->setValidationMessages(
-                [
-                    'url' => 'Should be unique but is already in use.',
-                ]
-            );
-            throw $e;
-        }
-
-        return new NoContent();
-    }
-
-    /**
-     * @deprecated Use updateAddress with language parameter instead.
-     */
-    public function updateAddressDeprecated(
-        string $organizerId,
-        Request $request
-    ): Response {
-        return $this->updateAddress($organizerId, 'nl', $request);
-    }
-
-    public function updateAddress(
-        string $organizerId,
-        string $lang,
-        Request $request
-    ): Response {
-        $addressJSONDeserializer = new AddressJSONDeserializer();
-
-        $address = $addressJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editingService->updateAddress(
-            $organizerId,
-            $address,
-            new Language($lang)
-        );
-
-        return new NoContent();
-    }
-
     public function removeAddress(string $organizerId): Response
     {
         $this->editingService->removeAddress(
             $organizerId
         );
 
-        return new NoContent();
-    }
-
-    public function updateContactPoint(string $organizerId, Request $request): Response
-    {
-        $contactPointJSONDeserializer = new ContactPointJSONDeserializer();
-
-        $contactPoint = $contactPointJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editingService->updateContactPoint(
-            $organizerId,
-            $contactPoint
-        );
-
-        return new NoContent();
-    }
-
-    public function addLabel(string $organizerId, string $labelName): Response
-    {
-        $this->commandBus->dispatch(new AddLabel($organizerId, new Label($labelName)));
-        return new NoContent();
-    }
-
-    public function removeLabel($organizerId, $labelName): Response
-    {
-        $this->commandBus->dispatch(new RemoveLabel($organizerId, new Label($labelName)));
         return new NoContent();
     }
 

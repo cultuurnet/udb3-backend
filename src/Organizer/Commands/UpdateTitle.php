@@ -6,9 +6,13 @@ namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-class UpdateTitle extends AbstractUpdateOrganizerCommand
+final class UpdateTitle implements AuthorizableCommand
 {
+    private string $organizerId;
+
     private Title $title;
 
     private Language $language;
@@ -18,7 +22,7 @@ class UpdateTitle extends AbstractUpdateOrganizerCommand
         Title $title,
         Language $language
     ) {
-        parent::__construct($organizerId);
+        $this->organizerId = $organizerId;
         $this->title = $title;
         $this->language = $language;
     }
@@ -31,5 +35,15 @@ class UpdateTitle extends AbstractUpdateOrganizerCommand
     public function getLanguage(): Language
     {
         return $this->language;
+    }
+
+    public function getItemId(): string
+    {
+        return $this->organizerId;
+    }
+
+    public function getPermission(): Permission
+    {
+        return Permission::ORGANISATIES_BEWERKEN();
     }
 }

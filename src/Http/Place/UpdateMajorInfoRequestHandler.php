@@ -40,8 +40,7 @@ class UpdateMajorInfoRequestHandler implements RequestHandlerInterface
                 $majorInfo->getTitle(),
                 $majorInfo->getType(),
                 $majorInfo->getAddress(),
-                $majorInfo->getCalendar(),
-                $majorInfo->getTheme()
+                $majorInfo->getCalendar()
             )
         );
 
