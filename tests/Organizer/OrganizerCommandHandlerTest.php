@@ -16,9 +16,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
-use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Title;
@@ -114,45 +111,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 $eventBus
             )
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_remove_address_commands()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $address = new Address(
-            new Street('Martelarenplein 1'),
-            new PostalCode('3000'),
-            new Locality('Leuven'),
-            Country::fromNative('BE')
-        );
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                    new AddressUpdated(
-                        $organizerId,
-                        $address
-                    ),
-                ]
-            )
-            ->when(
-                new RemoveAddress(
-                    $organizerId
-                )
-            )
-            ->then(
-                [
-                    new AddressRemoved(
-                        $organizerId
-                    ),
-                ]
-            );
     }
 
     /**

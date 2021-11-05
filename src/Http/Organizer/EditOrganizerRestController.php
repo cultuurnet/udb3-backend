@@ -81,15 +81,6 @@ class EditOrganizerRestController
         );
     }
 
-    public function removeAddress(string $organizerId): Response
-    {
-        $this->editingService->removeAddress(
-            $organizerId
-        );
-
-        return new NoContent();
-    }
-
     public function delete($cdbid): Response
     {
         $cdbid = (string) $cdbid;

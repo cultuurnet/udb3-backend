@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
@@ -40,6 +41,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->put('/{organizerId}/address/', UpdateAddressRequestHandler::class);
         $controllers->put('/{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
+        $controllers->delete('/{organizerId}/address/', DeleteAddressRequestHandler::class);
 
         $controllers->put('/{organizerId}/url/', UpdateUrlRequestHandler::class);
 
@@ -47,11 +49,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
         $controllers->delete('/{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
-
-        $controllers->delete(
-            '/{organizerId}/address/',
-            'organizer_edit_controller:removeAddress'
-        );
 
         $controllers->get('/{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
         $controllers->get('/{offerId}/permissions/{userId}/', 'organizer_permissions_controller:getPermissionsForGivenUser');
@@ -95,6 +92,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[UpdateAddressRequestHandler::class] = $app->share(
             fn (Application $application) => new UpdateAddressRequestHandler($app['event_command_bus'])
+        );
+
+        $app[DeleteAddressRequestHandler::class] = $app->share(
+            fn (Application $application) => new DeleteAddressRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateUrlRequestHandler::class] = $app->share(

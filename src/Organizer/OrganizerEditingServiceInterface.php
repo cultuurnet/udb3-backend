@@ -20,7 +20,5 @@ interface OrganizerEditingServiceInterface
         ?ContactPoint $contactPoint = null
     ): string;
 
-    public function removeAddress(string $organizerId): void;
-
     public function delete(string $id): void;
 }

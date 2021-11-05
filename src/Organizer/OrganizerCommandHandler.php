@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 
 class OrganizerCommandHandler implements CommandHandler
 {
@@ -43,7 +42,6 @@ class OrganizerCommandHandler implements CommandHandler
     protected function getCommandHandlerMethods()
     {
         return [
-            RemoveAddress::class => 'removeAddress',
             DeleteOrganizer::class => 'deleteOrganizer',
         ];
     }
@@ -58,15 +56,6 @@ class OrganizerCommandHandler implements CommandHandler
             $method = $handlers[$class];
             $this->{$method}($command);
         }
-    }
-
-    public function removeAddress(RemoveAddress $removeAddress)
-    {
-        $organizer = $this->loadOrganizer($removeAddress->getItemId());
-
-        $organizer->removeAddress();
-
-        $this->organizerRepository->save($organizer);
     }
 
     public function deleteOrganizer(DeleteOrganizer $deleteOrganizer)
