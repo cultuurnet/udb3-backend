@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Place\CreatePlaceJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
-use InvalidArgumentException;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -132,17 +131,6 @@ class EditPlaceRestController extends OfferRestBaseController
             ],
             201
         );
-    }
-
-    public function deletePlace(string $cdbid): Response
-    {
-        if (empty($cdbid)) {
-            throw new InvalidArgumentException('Required fields are missing');
-        }
-
-        $this->editor->deletePlace($cdbid);
-
-        return new NoContent();
     }
 
     public function updateAddress(Request $request, string $cdbid, string $lang): Response

@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer\Item;
 
 use CultuurNet\UDB3\Offer\Item\Commands\AddImage;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteCurrentOrganizer;
-use CultuurNet\UDB3\Offer\Item\Commands\DeleteItem;
 use CultuurNet\UDB3\Offer\Item\Commands\ImportImages;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteTypicalAgeRange;
@@ -108,11 +107,6 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getUpdatePriceInfoClassName()
     {
         return UpdatePriceInfo::class;
-    }
-
-    protected function getDeleteOfferClassName()
-    {
-        return DeleteItem::class;
     }
 
     protected function getPublishClassName()

@@ -85,7 +85,7 @@ class Item extends Offer
 
     protected function applyItemDeleted(ItemDeleted $event): void
     {
-        $this->isDeleted = true;
+        $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged

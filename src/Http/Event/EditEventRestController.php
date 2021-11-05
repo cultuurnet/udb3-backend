@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Http\Deserializer\Event\CreateEventJSONDeserializer;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
-use InvalidArgumentException;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -135,17 +134,6 @@ class EditEventRestController extends OfferRestBaseController
             ],
             201
         );
-    }
-
-    public function deleteEvent($cdbid): Response
-    {
-        if (empty($cdbid)) {
-            throw new InvalidArgumentException('Required fields are missing');
-        }
-
-        $this->editor->deleteEvent($cdbid);
-
-        return new NoContent();
     }
 
     public function updateAudience(Request $request, string $cdbid): Response

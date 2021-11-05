@@ -87,7 +87,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      */
     protected ?string $organizerId = null;
 
-    protected WorkflowStatus $workflowStatus;
+    protected ?WorkflowStatus $workflowStatus = null;
 
     protected ?StringLiteral $rejectedReason = null;
 
@@ -703,9 +703,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function delete(): void
     {
-        $this->apply(
-            $this->createOfferDeletedEvent()
-        );
+        if (!$this->isDeleted()) {
+            $this->apply(
+                $this->createOfferDeletedEvent()
+            );
+        }
     }
 
     protected function importWorkflowStatus(CultureFeed_Cdb_Item_Base $cdbItem): void
@@ -807,6 +809,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         return !isset($this->descriptions[$languageCode]) ||
             !$description->sameValueAs($this->descriptions[$languageCode]);
+    }
+
+    protected function isDeleted(): bool
+    {
+        return $this->workflowStatus && $this->workflowStatus->sameValueAs(WorkflowStatus::DELETED());
     }
 
     /**

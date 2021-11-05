@@ -169,12 +169,4 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
             new UpdateAudience($eventId, $audience)
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteEvent($eventId)
-    {
-        return $this->delete($eventId);
-    }
 }

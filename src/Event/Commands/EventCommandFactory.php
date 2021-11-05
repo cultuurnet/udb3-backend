@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
@@ -112,11 +111,6 @@ class EventCommandFactory implements OfferCommandFactoryInterface
     public function createUpdatePriceInfoCommand(string $id, PriceInfo $priceInfo): AbstractUpdatePriceInfo
     {
         return new UpdatePriceInfo($id, $priceInfo);
-    }
-
-    public function createDeleteOfferCommand(string $id): AbstractDeleteOffer
-    {
-        return new DeleteEvent($id);
     }
 
     public function createApproveCommand(string $id): AbstractApprove

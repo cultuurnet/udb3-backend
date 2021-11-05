@@ -13,7 +13,6 @@ use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
-use CultuurNet\UDB3\Event\Commands\DeleteEvent;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
@@ -23,7 +22,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
@@ -364,22 +362,5 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
                     new PriceInfoUpdated($id, $priceInfo),
                 ]
             );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_delete_events()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(
-                new DeleteEvent($id)
-            )
-            ->then([new EventDeleted($id)]);
     }
 }

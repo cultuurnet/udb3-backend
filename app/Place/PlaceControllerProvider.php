@@ -19,7 +19,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'place_editing_controller:createPlace');
-        $controllers->delete('/{cdbid}/', 'place_editing_controller:deletePlace');
 
         $controllers->put('/{cdbid}/address/{lang}/', 'place_editing_controller:updateAddress');
         $controllers->put('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');

@@ -51,8 +51,6 @@ interface OfferCommandFactoryInterface
 
     public function createUpdatePriceInfoCommand(string $id, PriceInfo $priceInfo): AbstractUpdatePriceInfo;
 
-    public function createDeleteOfferCommand(string $id): AbstractDeleteOffer;
-
     public function createApproveCommand(string $id): AbstractApprove;
 
     public function createRejectCommand(string $id, StringLiteral $reason): AbstractReject;
