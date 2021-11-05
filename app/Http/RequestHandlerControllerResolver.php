@@ -27,7 +27,8 @@ final class RequestHandlerControllerResolver implements ControllerResolverInterf
     public function getController(Request $request)
     {
         $controller = $request->attributes->get('_controller', null);
-        if (!isset($this->serviceContainer[$controller]) ||
+        if (!is_string($controller) ||
+            !isset($this->serviceContainer[$controller]) ||
             !($this->serviceContainer[$controller] instanceof RequestHandlerInterface)) {
             return $this->fallbackControllerResolver->getController($request);
         }
