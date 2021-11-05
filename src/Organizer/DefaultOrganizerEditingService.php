@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Web\Url;
 
@@ -77,15 +76,5 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
         $this->organizerRepository->save($organizer);
 
         return $id;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function delete(string $id): void
-    {
-        $this->commandBus->dispatch(
-            new DeleteOrganizer($id)
-        );
     }
 }
