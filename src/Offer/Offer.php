@@ -87,7 +87,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
      */
     protected ?string $organizerId = null;
 
-    protected WorkflowStatus $workflowStatus;
+    protected ?WorkflowStatus $workflowStatus = null;
 
     protected ?StringLiteral $rejectedReason = null;
 
