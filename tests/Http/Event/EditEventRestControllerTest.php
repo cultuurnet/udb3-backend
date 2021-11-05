@@ -13,8 +13,6 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
@@ -25,7 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use ValueObjects\Identity\UUID;
 
 class EditEventRestControllerTest extends TestCase
 {
@@ -232,58 +229,6 @@ class EditEventRestControllerTest extends TestCase
         );
 
         $this->assertEquals($expectedResponseContent, $response->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_audience()
-    {
-        $eventId = new UUID('7f71ebbd-b22b-4b94-96df-947ad0c1534f');
-        $content = json_encode(['audienceType' => 'education']);
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $this->eventEditor->expects($this->once())
-            ->method('updateAudience')
-            ->with(
-                $eventId,
-                new Audience(AudienceType::EDUCATION())
-            );
-
-        $response = $this->controller->updateAudience($request, $eventId->toNative());
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_error_when_updating_audience_but_missing_cdbid()
-    {
-        $eventId = '';
-        $content = json_encode(['audienceType' => 'education']);
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $response = $this->controller->updateAudience($request, $eventId);
-
-        $expectedResponse = json_encode(['error' => 'cdbid is required.']);
-        $this->assertEquals($expectedResponse, $response->getContent());
-        $this->assertEquals(400, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_error_when_updating_audience_but_missing_audience_type()
-    {
-        $eventId = new UUID('7f71ebbd-b22b-4b94-96df-947ad0c1534f');
-        $request = new Request();
-
-        $response = $this->controller->updateAudience($request, $eventId->toNative());
-
-        $expectedResponse = json_encode(['error' => 'audience type is required.']);
-        $this->assertEquals($expectedResponse, $response->getContent());
-        $this->assertEquals(400, $response->getStatusCode());
     }
 
     /**

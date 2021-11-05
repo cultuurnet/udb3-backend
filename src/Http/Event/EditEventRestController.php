@@ -8,8 +8,6 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
@@ -17,12 +15,10 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Event\CreateEventJSONDeserializer;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
-use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -134,26 +130,6 @@ class EditEventRestController extends OfferRestBaseController
             ],
             201
         );
-    }
-
-    public function updateAudience(Request $request, string $cdbid): Response
-    {
-        if (empty($cdbid)) {
-            return new JsonResponse(['error' => 'cdbid is required.'], 400);
-        }
-
-        $bodyAsArray = json_decode($request->getContent(), true);
-        if (!isset($bodyAsArray['audienceType'])) {
-            return new JsonResponse(['error' => 'audience type is required.'], 400);
-        }
-
-        $audience = new Audience(
-            AudienceType::fromNative($bodyAsArray['audienceType'])
-        );
-
-        $this->editor->updateAudience($cdbid, $audience);
-
-        return new NoContent();
     }
 
     public function copyEvent(Request $request, string $cdbid): JsonResponse
