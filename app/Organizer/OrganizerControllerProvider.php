@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Organizer;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
@@ -34,7 +35,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             ->get('/{cdbid}/', 'organizer_controller:get')
             ->bind('organizer');
 
-        $controllers->delete('/{cdbid}/', 'organizer_edit_controller:delete');
+        $controllers->delete('/{cdbid}/', DeleteOrganizerRequestHandler::class);
 
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
         $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
@@ -58,6 +59,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
     public function register(Application $app): void
     {
+        $app[DeleteOrganizerRequestHandler::class] = $app->share(
+            fn (Application $application) => new DeleteOrganizerRequestHandler($app['event_command_bus'])
+        );
+
         $app['organizer_controller'] = $app->share(
             function (Application $app) {
                 return new ReadOrganizerRestController(
