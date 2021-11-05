@@ -27,12 +27,19 @@ final class RequestHandlerControllerResolver implements ControllerResolverInterf
     public function getController(Request $request)
     {
         $controller = $request->attributes->get('_controller', null);
-        if (!isset($this->serviceContainer[$controller]) ||
-            !($this->serviceContainer[$controller] instanceof RequestHandlerInterface)) {
-            return $this->fallbackControllerResolver->getController($request);
+
+        // If the controller is a service name and the service is an implementation of RequestHandlerInterface, wrap
+        // the service in a closure and return that as callable for the router.
+        if (is_string($controller) &&
+            isset($this->serviceContainer[$controller]) &&
+            $this->serviceContainer[$controller] instanceof RequestHandlerInterface) {
+            $controller = $this->serviceContainer[$controller];
+            return static fn (ServerRequestInterface $request) => $controller->handle($request);
         }
-        $controller = $this->serviceContainer[$controller];
-        return static fn (ServerRequestInterface $request) => $controller->handle($request);
+
+        // Otherwise defer to the default controller resolver. (For example if it's a closure or a string handled by
+        // Silex\ServiceControllerResolver)
+        return $this->fallbackControllerResolver->getController($request);
     }
 
     public function getArguments(Request $request, $controller): array
