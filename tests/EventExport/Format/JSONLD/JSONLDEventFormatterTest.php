@@ -118,4 +118,24 @@ class JSONLDEventFormatterTest extends TestCase
             $event
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_export_videos(): void
+    {
+        $includedProperties = [
+            'id',
+            'videos',
+        ];
+        $eventWithTerms = $this->getJSONEventFromFile('event_with_multiple_videos.json');
+        $formatter = new JSONLDEventFormatter($includedProperties);
+
+        $event = $formatter->formatEvent($eventWithTerms);
+
+        $this->assertEquals(
+            '{"@id":"https:\/\/udb-silex-acc.uitdatabank.be\/event\/0c70b8f3-66a0-4532-959f-2e13b4624f04","videos":[{"id":"6d787098-3082-4a0f-a510-1df4597ae02f","url":"https:\/\/www.youtube.com\/watch?v=cEItmb_a20D","embedUrl":"https:\/\/www.youtube.com\/embed\/cEItmb_a20D","language":"nl","copyrightHolder":"Copyright afgehandeld door YouTube"},{"id":"192a07d9-049b-4c2a-bc94-e46b7a557529","url":"https:\/\/www.youtube.com\/watch?v=sXYtmb_q19C","embedUrl":"https:\/\/www.youtube.com\/embed\/sXYtmb_q19C","language":"fr","copyrightHolder":"publiq"}]}',
+            $event
+        );
+    }
 }
