@@ -71,29 +71,29 @@ class UpdateAudienceRequestHandlerTest extends TestCase
         return [
             [
                 '',
-                ApiProblem::bodyMissing()
+                ApiProblem::bodyMissing(),
             ],
             [
                 '{{}',
-                ApiProblem::bodyInvalidSyntax('JSON')
+                ApiProblem::bodyInvalidSyntax('JSON'),
             ],
             [
                 '{}',
                 ApiProblem::bodyInvalidData(
                     new SchemaError('/', 'The required properties (audienceType) are missing')
-                )
+                ),
             ],
             [
                 '{"audienceType": 1}',
                 ApiProblem::bodyInvalidData(
                     new SchemaError('/audienceType', 'The data (integer) must match the type: string')
-                )
+                ),
             ],
             [
                 '{"audienceType": "bla"}',
                 ApiProblem::bodyInvalidData(
                     new SchemaError('/audienceType', 'The data should match one item from enum')
-                )
+                ),
             ],
         ];
     }

@@ -18,7 +18,7 @@ final class UpdateAudienceDenormalizer implements DenormalizerInterface
         $this->eventId = $eventId;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         $audienceType = AudienceType::fromNative($data['audienceType']);
         return new UpdateAudience($this->eventId, new Audience($audienceType));
