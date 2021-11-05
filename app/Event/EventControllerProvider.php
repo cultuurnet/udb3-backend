@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
+use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
@@ -25,10 +26,10 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
         $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
+        $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
 
         $controllers->post('/', 'event_editing_controller:createEvent');
 
-        $controllers->put('/{cdbid}/audience/', 'event_editing_controller:updateAudience');
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
         $controllers->put('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:updateOrganizer');
@@ -86,6 +87,10 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[UpdateThemeRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateThemeRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateAudienceRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateAudienceRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateMajorInfoRequestHandler::class] = $app->share(
