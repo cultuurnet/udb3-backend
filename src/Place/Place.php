@@ -330,6 +330,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyPlaceDeleted(PlaceDeleted $event): void
     {
         $this->isDeleted = true;
+        $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
     protected function applyMarkedAsDuplicate(MarkedAsDuplicate $event): void

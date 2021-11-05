@@ -703,9 +703,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function delete(): void
     {
-        $this->apply(
-            $this->createOfferDeletedEvent()
-        );
+        if (!$this->workflowStatus->sameValueAs(WorkflowStatus::DELETED())) {
+            $this->apply(
+                $this->createOfferDeletedEvent()
+            );
+        }
     }
 
     protected function importWorkflowStatus(CultureFeed_Cdb_Item_Base $cdbItem): void

@@ -104,6 +104,27 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
             );
     }
 
+    /**
+     * @test
+     */
+    public function it_does_not_delete_a_deleted_offer_again(): void
+    {
+        $eventId = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given(
+                [
+                    $this->getEventCreated($eventId),
+                    new Published($eventId, new DateTimeImmutable()),
+                    new Approved($eventId),
+                    new EventDeleted($eventId),
+                ]
+            )
+            ->when(new DeleteOffer($eventId))
+            ->then([]);
+    }
+
     private function getEventCreated(string $eventId): EventCreated
     {
         return new EventCreated(
