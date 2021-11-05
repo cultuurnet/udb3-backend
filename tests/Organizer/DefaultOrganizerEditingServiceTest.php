@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -153,20 +152,5 @@ class DefaultOrganizerEditingServiceTest extends TestCase
         );
 
         $this->assertEquals($expectedUuid, $organizerId);
-    }
-
-    /**
-     * @test
-     */
-    public function it_sends_a_delete_command()
-    {
-        $id = '1234';
-
-        $expectedCommand = new DeleteOrganizer($id);
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($expectedCommand);
-
-        $this->service->delete($id);
     }
 }

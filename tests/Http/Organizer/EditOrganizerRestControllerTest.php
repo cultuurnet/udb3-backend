@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Title;
-use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,32 +133,6 @@ class EditOrganizerRestControllerTest extends TestCase
         } catch (DataValidationException $e) {
             $this->assertEquals($expectedMessages, $e->getValidationMessages());
         }
-    }
-
-    /**
-     * @test
-     */
-    public function it_deletes_an_organizer()
-    {
-        $cdbId = '123';
-
-        $this->editService->expects($this->once())
-            ->method('delete')
-            ->with($cdbId);
-
-        $response = $this->controller->delete($cdbId);
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_exception_when_no_cdbid_is_given_to_delete()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Required field cdbid is missing');
-        $this->controller->delete('');
     }
 
     /**

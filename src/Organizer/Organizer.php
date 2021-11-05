@@ -61,6 +61,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private LabelCollection $labels;
 
+    private WorkflowStatus $workflowStatus;
+
     public function getAggregateRootId(): string
     {
         return $this->actorId;
@@ -74,6 +76,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // aggregate state with an empty contact point.
         $this->contactPoint = new ContactPoint();
         $this->labels = new LabelCollection();
+        $this->workflowStatus = WorkflowStatus::ACTIVE();
     }
 
     public static function importFromUDB2(
@@ -283,9 +286,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function delete(): void
     {
-        $this->apply(
-            new OrganizerDeleted($this->getAggregateRootId())
-        );
+        if ($this->workflowStatus->is(WorkflowStatus::ACTIVE)) {
+            $this->apply(
+                new OrganizerDeleted($this->getAggregateRootId())
+            );
+        }
     }
 
     protected function applyOrganizerCreated(OrganizerCreated $organizerCreated): void
@@ -390,6 +395,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
         $this->labels = $this->labels->without($labelRemoved->getLabel());
+    }
+
+    protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): void
+    {
+        $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
     private function getTitle(\CultureFeed_Cdb_Item_Actor $actor): ?LegacyTitle
