@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Organizer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,7 +29,7 @@ final class AddLabelRequestHandler implements RequestHandlerInterface
         $labelName = $routeParameters->getLabelName();
 
         $this->commandBus->dispatch(
-            new AddLabel($organizerId, new Label($labelName->toString()))
+            new AddLabel($organizerId, new Label($labelName))
         );
 
         return new NoContentResponse();

@@ -14,15 +14,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 final class RemoveLabelHandler implements CommandHandler
 {
-    /**
-     * @var OrganizerRepository
-     */
-    private $organizerRepository;
+    private OrganizerRepository $organizerRepository;
 
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $labelRepository;
+    private ReadRepositoryInterface $labelRepository;
 
     public function __construct(OrganizerRepository $organizerRepository, ReadRepositoryInterface $labelRepository)
     {
@@ -36,7 +30,7 @@ final class RemoveLabelHandler implements CommandHandler
             return;
         }
 
-        $labelName = new StringLiteral((string) $command->getLabel());
+        $labelName = new StringLiteral($command->getLabel()->getName()->toString());
         $visible = $command->getLabel()->isVisible();
 
         $readModelLabelEntity = $this->labelRepository->getByName($labelName);

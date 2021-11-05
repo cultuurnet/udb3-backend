@@ -13,15 +13,9 @@ use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
 final class ImportLabelsHandler implements CommandHandler
 {
-    /**
-     * @var OrganizerRepository
-     */
-    private $organizerRepository;
+    private OrganizerRepository $organizerRepository;
 
-    /**
-     * @var LabelServiceInterface
-     */
-    private $labelService;
+    private LabelServiceInterface $labelService;
 
     public function __construct(OrganizerRepository $organizerRepository, LabelServiceInterface $labelService)
     {

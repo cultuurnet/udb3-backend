@@ -13,26 +13,13 @@ use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
 class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
 {
-    /**
-     * @var OrganizerRepository
-     */
-    private $organizerRepository;
+    private OrganizerRepository $organizerRepository;
 
-    /**
-     * @var AddressFormatterInterface
-     */
-    private $defaultAddressFormatter;
+    private AddressFormatterInterface $defaultAddressFormatter;
 
-    /**
-     * @var AddressFormatterInterface
-     */
-    private $fallbackAddressFormatter;
+    private AddressFormatterInterface $fallbackAddressFormatter;
 
-    /**
-     * @var GeocodingService
-     */
-    private $geocodingService;
-
+    private GeocodingService $geocodingService;
 
     public function __construct(
         OrganizerRepository $organizerRepository,
@@ -46,8 +33,7 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
         $this->geocodingService = $geocodingService;
     }
 
-
-    protected function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates)
+    protected function handleUpdateGeoCoordinatesFromAddress(UpdateGeoCoordinatesFromAddress $updateGeoCoordinates): void
     {
         $coordinates = $this->geocodingService->getCoordinates(
             $this->defaultAddressFormatter->format(
@@ -67,13 +53,12 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
             return;
         }
 
-        /** @var Organizer $organizer */
         $organizer = $this->loadOrganizer($updateGeoCoordinates->organizerId());
         $organizer->updateGeoCoordinates($coordinates);
         $this->organizerRepository->save($organizer);
     }
 
-    protected function loadOrganizer(string $id)
+    protected function loadOrganizer(string $id): Organizer
     {
         return $this->organizerRepository->load($id);
     }
