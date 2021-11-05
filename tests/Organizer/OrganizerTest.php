@@ -53,7 +53,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
 
     private OrganizerCreatedWithUniqueWebsite $organizerCreatedWithUniqueWebsite;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -73,7 +73,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_imports_from_udb2_actors_and_takes_labels_into_account()
+    public function it_imports_from_udb2_actors_and_takes_labels_into_account(): void
     {
         $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
 
@@ -107,7 +107,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_updates_from_udb2_actors_and_takes_labels_into_account()
+    public function it_updates_from_udb2_actors_and_takes_labels_into_account(): void
     {
         $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
 
@@ -160,7 +160,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_import_labels()
+    public function it_can_import_labels(): void
     {
         $labels = new Labels(
             new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
@@ -220,7 +220,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_create_new_organizers()
+    public function it_can_create_new_organizers(): void
     {
         $this->scenario
             ->when(
@@ -243,7 +243,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_set_an_initial_address_and_update_it_later_if_changed()
+    public function it_can_set_an_initial_address_and_update_it_later_if_changed(): void
     {
         $initialAddress = new Address(
             new Street('Wetstraat 1'),
@@ -284,7 +284,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_set_an_initial_address_and_remove_it_later()
+    public function it_can_set_an_initial_address_and_remove_it_later(): void
     {
         $initialAddress = new LegacyAddress(
             new LegacyStreet('Wetstraat 1'),
@@ -313,7 +313,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_set_an_initial_contact_point_if_not_empty_and_can_update_it_later_if_changed()
+    public function it_can_set_an_initial_contact_point_if_not_empty_and_can_update_it_later_if_changed(): void
     {
         $emptyContactPoint = new ContactPoint();
 
@@ -351,7 +351,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_the_website_when_different_from_the_current_website()
+    public function it_can_update_the_website_when_different_from_the_current_website(): void
     {
         $this->scenario
             ->given(
@@ -379,7 +379,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_the_website_when_organizer_imported_from_udb2()
+    public function it_can_update_the_website_when_organizer_imported_from_udb2(): void
     {
         $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
 
@@ -412,7 +412,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_the_title_when_different_from_same_language_title()
+    public function it_can_update_the_title_when_different_from_same_language_title(): void
     {
         $this->scenario
             ->given(
@@ -472,7 +472,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_translate_a_title()
+    public function it_can_translate_a_title(): void
     {
         $this->scenario
             ->given(
@@ -502,7 +502,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_translate_an_address()
+    public function it_can_translate_an_address(): void
     {
         $addressFr = new Address(
             new Street('Rue de la Loi 1'),
@@ -564,7 +564,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_sets_the_title_on_organizer_imported_from_udb2()
+    public function it_sets_the_title_on_organizer_imported_from_udb2(): void
     {
         $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
 
@@ -604,7 +604,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_sets_the_title_on_organizer_updated_from_udb2()
+    public function it_sets_the_title_on_organizer_updated_from_udb2(): void
     {
         $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
 
@@ -650,7 +650,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_be_deleted()
+    public function it_can_be_deleted(): void
     {
         $this->scenario
             ->given(
@@ -670,21 +670,12 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             );
     }
 
-    /**
-     * Returns a string representing the aggregate root
-     *
-     * @return string AggregateRoot
-     */
-    protected function getAggregateRootClass()
+    protected function getAggregateRootClass(): string
     {
         return Organizer::class;
     }
 
-    /**
-     * @param string $filename
-     * @return string
-     */
-    private function getCdbXML($filename)
+    private function getCdbXML(string $filename): string
     {
         return file_get_contents(__DIR__ . '/' . $filename);
     }
