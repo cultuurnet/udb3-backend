@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
-use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
@@ -83,17 +82,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
         $event = $this->offerRepository->load($updateLocation->getItemId());
 
         $event->updateLocation($updateLocation->getLocationId());
-
-        $this->offerRepository->save($event);
-    }
-
-
-    public function handleUpdateAudience(UpdateAudience $updateAudience)
-    {
-        /** @var Event $event */
-        $event = $this->offerRepository->load($updateAudience->getItemId());
-
-        $event->updateAudience($updateAudience->getAudience());
 
         $this->offerRepository->save($event);
     }
