@@ -159,14 +159,4 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
 
         return $eventId;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function updateAudience($eventId, Audience $audience)
-    {
-        return $this->commandBus->dispatch(
-            new UpdateAudience($eventId, $audience)
-        );
-    }
 }

@@ -117,10 +117,4 @@ interface EventEditingServiceInterface
      * @throws \InvalidArgumentException
      */
     public function copyEvent($originalEventId, Calendar $calendar);
-
-    /**
-     * @param string $eventId
-     * @return string $commandId
-     */
-    public function updateAudience($eventId, Audience $audience);
 }

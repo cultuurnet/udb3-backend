@@ -448,27 +448,6 @@ class EventEditingServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_can_dispatch_an_update_audience_command()
-    {
-        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-
-        $audience = new Audience(AudienceType::EDUCATION());
-
-        $expectedCommandId = 'commandId';
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with(new UpdateAudience($eventId, $audience))
-            ->willReturn($expectedCommandId);
-
-        $commandId = $this->eventEditingService->updateAudience($eventId, $audience);
-
-        $this->assertEquals($expectedCommandId, $commandId);
-    }
-
     private function setUpEventNotFound($id)
     {
         $this->readRepository->expects($this->once())
