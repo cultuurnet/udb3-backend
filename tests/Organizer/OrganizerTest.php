@@ -670,6 +670,30 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             );
     }
 
+    /**
+     * @test
+     */
+    public function it_can_be_deleted_only_once(): void
+    {
+        $this->scenario
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                ]
+            )
+            ->when(
+                function (Organizer $organizer) {
+                    $organizer->delete();
+                    $organizer->delete();
+                }
+            )
+            ->then(
+                [
+                    new OrganizerDeleted($this->id),
+                ]
+            );
+    }
+
     protected function getAggregateRootClass(): string
     {
         return Organizer::class;
