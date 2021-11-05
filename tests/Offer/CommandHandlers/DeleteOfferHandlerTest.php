@@ -69,7 +69,7 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->getEventCreated($eventId),
-                    new Published($eventId, new DateTimeImmutable())
+                    new Published($eventId, new DateTimeImmutable()),
                 ]
             )
             ->when(new DeleteOffer($eventId))
