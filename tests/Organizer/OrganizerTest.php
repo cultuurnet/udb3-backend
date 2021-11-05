@@ -43,30 +43,15 @@ use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerTest extends AggregateRootScenarioTestCase
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var LegacyLanguage
-     */
-    private $mainLanguage;
+    private LegacyLanguage $mainLanguage;
 
-    /**
-     * @var LegacyUrl
-     */
-    private $website;
+    private LegacyUrl $website;
 
-    /**
-     * @var LegacyTitle
-     */
-    private $title;
+    private LegacyTitle $title;
 
-    /**
-     * @var OrganizerCreatedWithUniqueWebsite
-     */
-    private $organizerCreatedWithUniqueWebsite;
+    private OrganizerCreatedWithUniqueWebsite $organizerCreatedWithUniqueWebsite;
 
     public function setUp()
     {
