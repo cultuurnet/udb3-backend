@@ -690,20 +690,14 @@ class TabularDataEventFormatter
             'videos.url' => [
                 'name' => 'videos URL',
                 'include' => function ($event) {
-                    if (!property_exists($event, 'videos') || !is_array($event->videos)) {
-                        return '';
-                    }
-                    return $this->formatVideo($event->videos, 'url');
+                    return $this->formatVideo($event, 'url');
                 },
                 'property' => 'videos',
             ],
             'videos.copyrightHolder' => [
                 'name' => 'videos copyright',
                 'include' => function ($event) {
-                    if (!property_exists($event, 'videos') || !is_array($event->videos)) {
-                        return '';
-                    }
-                    return $this->formatVideo($event->videos, 'copyrightHolder');
+                    return $this->formatVideo($event, 'copyrightHolder');
                 },
                 'property' => 'videos',
             ],
@@ -869,10 +863,14 @@ class TabularDataEventFormatter
         return $map[$bookingAvailability->type];
     }
 
-    private function formatVideo(array $videos, string $property): string
+    private function formatVideo(stdClass $event, string $property): string
     {
+        if (!property_exists($event, 'videos') || !is_array($event->videos)) {
+            return '';
+        }
+
         $properties = [];
-        foreach ($videos as $video) {
+        foreach ($event->videos as $video) {
             $properties[] = $video->{$property};
         }
         return implode(';', $properties);
