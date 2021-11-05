@@ -811,6 +811,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             !$description->sameValueAs($this->descriptions[$languageCode]);
     }
 
+    protected function isDeleted(): bool
+    {
+        return $this->workflowStatus && $this->workflowStatus->sameValueAs(WorkflowStatus::DELETED());
+    }
+
     /**
      * Overwrites or resets the main image and all media objects
      * by importing a new collection of images from UDB2.

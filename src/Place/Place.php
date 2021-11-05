@@ -194,7 +194,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     public function markAsDuplicateOf(string $placeIdOfCanonical): void
     {
-        if ($this->isDeleted) {
+        if ($this->isDeleted()) {
             throw CannotMarkPlaceAsDuplicate::becauseItIsDeleted($this->placeId);
         }
 
@@ -207,7 +207,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     public function markAsCanonicalFor(string $placeIdOfDuplicate, array $duplicatesOfDuplicate = []): void
     {
-        if ($this->isDeleted) {
+        if ($this->isDeleted()) {
             throw CannotMarkPlaceAsCanonical::becauseItIsDeleted($this->placeId);
         }
 
@@ -329,7 +329,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function applyPlaceDeleted(PlaceDeleted $event): void
     {
-        $this->isDeleted = true;
         $this->workflowStatus = WorkflowStatus::DELETED();
     }
 

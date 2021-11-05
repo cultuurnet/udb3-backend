@@ -226,7 +226,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function applyEventDeleted(EventDeleted $event): void
     {
-        $this->isDeleted = true;
         $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
