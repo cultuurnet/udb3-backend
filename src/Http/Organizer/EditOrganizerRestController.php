@@ -10,11 +10,8 @@ use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
-use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EditOrganizerRestController
@@ -79,18 +76,5 @@ class EditOrganizerRestController
             ],
             201
         );
-    }
-
-    public function delete($cdbid): Response
-    {
-        $cdbid = (string) $cdbid;
-
-        if (empty($cdbid)) {
-            throw new InvalidArgumentException('Required field cdbid is missing');
-        }
-
-        $this->editingService->delete($cdbid);
-
-        return new NoContent();
     }
 }

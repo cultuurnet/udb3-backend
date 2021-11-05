@@ -19,6 +19,4 @@ interface OrganizerEditingServiceInterface
         ?Address $address = null,
         ?ContactPoint $contactPoint = null
     ): string;
-
-    public function delete(string $id): void;
 }

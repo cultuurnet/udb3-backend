@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
@@ -12,6 +14,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
+use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -20,6 +23,14 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app[DeleteOrganizerHandler::class] = $app->share(
+            fn (Application $application) => new DeleteOrganizerHandler(
+                $app['organizer_repository'],
+                $app[EventOrganizerRelationService::class],
+                $app[PlaceOrganizerRelationService::class]
+            )
+        );
+
         $app[AddLabelHandler::class] = $app->share(
             function (Application $app) {
                 return new AddLabelHandler(
