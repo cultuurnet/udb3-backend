@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
