@@ -14,20 +14,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class LocalRoleReadingService extends LocalEntityService implements RoleReadingServiceInterface
 {
-    /**
-     * @var DocumentRepository
-     */
-    private $roleLabelsReadRepository;
+    private DocumentRepository $roleLabelsReadRepository;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $roleUsersReadRepository;
+    private DocumentRepository $roleUsersReadRepository;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $userRolesReadRepository;
+    private DocumentRepository $userRolesReadRepository;
 
     public function __construct(
         DocumentRepository $roleReadRepository,
