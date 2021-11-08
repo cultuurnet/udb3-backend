@@ -19,7 +19,11 @@ class JsonResponse extends Response
     public function __construct($data, int $status = StatusCodeInterface::STATUS_OK, ?HeadersInterface $headers = null)
     {
         try {
-            $body = (new StreamFactory())->createStream(json_encode($data, JSON_THROW_ON_ERROR));
+            if (!is_string($data)) {
+                $data = json_encode($data, JSON_THROW_ON_ERROR);
+            }
+
+            $body = (new StreamFactory())->createStream($data);
         } catch (JsonException $e) {
             throw ApiProblem::internalServerError('Could not encode JSON response.');
         }
