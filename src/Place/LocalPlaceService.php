@@ -12,10 +12,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class LocalPlaceService extends LocalEntityService implements PlaceServiceInterface
 {
-    /**
-     * @var RelationsRepository
-     */
-    private $placeRelationsRepository;
+    private RelationsRepository $placeRelationsRepository;
 
     public function __construct(
         DocumentRepository $documentRepository,

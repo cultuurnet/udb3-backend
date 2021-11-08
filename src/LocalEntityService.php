@@ -12,20 +12,11 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class LocalEntityService implements EntityServiceInterface
 {
-    /**
-     * @var DocumentRepository
-     */
-    protected $documentRepository;
+    protected DocumentRepository $documentRepository;
 
-    /**
-     * @var Repository
-     */
-    protected $entityRepository;
+    protected Repository $entityRepository;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    protected $iriGenerator;
+    protected IriGeneratorInterface $iriGenerator;
 
     public function __construct(
         DocumentRepository $documentRepository,

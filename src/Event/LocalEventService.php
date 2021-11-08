@@ -13,10 +13,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class LocalEventService extends LocalEntityService implements EventServiceInterface
 {
-    /**
-     * @var RelationsRepository
-     */
-    protected $eventRelationsRepository;
+    protected RelationsRepository $eventRelationsRepository;
 
     public function __construct(
         DocumentRepository $documentRepository,

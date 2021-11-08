@@ -12,14 +12,8 @@ use Http\Client\HttpClient;
 
 class ExternalEventService implements EventServiceInterface
 {
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    private HttpClient $httpClient;
 
-    /**
-     * ExternalEventService constructor.
-     */
     public function __construct(HttpClient $httpClient)
     {
         $this->httpClient = $httpClient;
