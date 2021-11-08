@@ -40,19 +40,17 @@ class LocalEventService extends LocalEntityService implements EventServiceInterf
     }
 
     /**
-     * @param string $organizerId
      * @return string[]
      */
-    public function eventsOrganizedByOrganizer($organizerId)
+    public function eventsOrganizedByOrganizer(string $organizerId): array
     {
         return $this->eventRelationsRepository->getEventsOrganizedByOrganizer($organizerId);
     }
 
     /**
-     * @param string $placeId
      * @return string[]
      */
-    public function eventsLocatedAtPlace($placeId)
+    public function eventsLocatedAtPlace(string $placeId): array
     {
         return $this->eventRelationsRepository->getEventsLocatedAtPlace($placeId);
     }

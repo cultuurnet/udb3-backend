@@ -26,14 +26,12 @@ interface EventServiceInterface
     public function getEvent(string $id): string;
 
     /**
-     * @param string $organizerId
      * @return string[]
      */
-    public function eventsOrganizedByOrganizer($organizerId);
+    public function eventsOrganizedByOrganizer(string $organizerId): array;
 
     /**
-     * @param string $placeId
      * @return string[] mixed
      */
-    public function eventsLocatedAtPlace($placeId);
+    public function eventsLocatedAtPlace(string $placeId): array;
 }

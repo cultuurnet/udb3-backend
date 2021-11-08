@@ -37,12 +37,12 @@ class ExternalEventService implements EventServiceInterface
         return (string) $response->getBody();
     }
 
-    public function eventsOrganizedByOrganizer($organizerId)
+    public function eventsOrganizedByOrganizer(string $organizerId): array
     {
         throw new Exception('nope');
     }
 
-    public function eventsLocatedAtPlace($placeId)
+    public function eventsLocatedAtPlace(string $placeId): array
     {
         throw new Exception('nope');
     }
