@@ -35,8 +35,7 @@ class GetOrganizerRequestHandler implements RequestHandlerInterface
                 (new StreamFactory())->createStream($organizer)
             );
         } catch (EntityNotFoundException $exception) {
+            throw ApiProblem::organizerNotFound($organizerId);
         }
-
-        throw ApiProblem::organizerNotFound($organizerId);
     }
 }
