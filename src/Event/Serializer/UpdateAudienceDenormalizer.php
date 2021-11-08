@@ -18,13 +18,13 @@ final class UpdateAudienceDenormalizer implements DenormalizerInterface
         $this->eventId = $eventId;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): UpdateAudience
     {
         $audienceType = AudienceType::fromNative($data['audienceType']);
         return new UpdateAudience($this->eventId, new Audience($audienceType));
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === UpdateAudience::class;
     }
