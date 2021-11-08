@@ -25,10 +25,7 @@ class LocalPlaceService extends LocalEntityService implements PlaceServiceInterf
         $this->placeRelationsRepository = $placeRelationsRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function placesOrganizedByOrganizer($organizerId)
+    public function placesOrganizedByOrganizer(string $organizerId): array
     {
         return $this->placeRelationsRepository->getPlacesOrganizedByOrganizer(
             $organizerId
