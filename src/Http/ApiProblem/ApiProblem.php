@@ -331,6 +331,16 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function inCompatibleAudienceType(string $detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/incompatible-audience-type',
+            'Incompatible audience type',
+            400,
+            $detail
+        );
+    }
+
     public static function resourceIdAlreadyInUse(string $id): self
     {
         return self::create(
