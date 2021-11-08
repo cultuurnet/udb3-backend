@@ -6,7 +6,9 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
+use CultuurNet\UDB3\Event\IncompatibleAudienceType;
 use CultuurNet\UDB3\Event\Serializer\UpdateAudienceDenormalizer;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -39,7 +41,13 @@ class UpdateAudienceRequestHandler implements RequestHandlerInterface
         /** @var UpdateAudience $updateAudience */
         $updateAudience = $parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch($updateAudience);
+        try {
+            $this->commandBus->dispatch($updateAudience);
+        } catch (IncompatibleAudienceType $incompatibleAudienceType) {
+            throw ApiProblem::inCompatibleAudienceType(
+                'The audience type "' . $updateAudience->getAudience()->getAudienceType()->getName() . '" can not be set.'
+            );
+        }
 
         return new NoContentResponse();
     }
