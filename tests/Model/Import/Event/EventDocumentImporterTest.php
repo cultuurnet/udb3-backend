@@ -29,8 +29,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Event\ValueObjects\AudienceType as LegacyAudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
@@ -43,6 +42,7 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
@@ -184,7 +184,7 @@ class EventDocumentImporterTest extends TestCase
         $this->importer->import($document);
 
         $expectedCommands = [
-            new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
+            new UpdateAudience($id, AudienceType::everyone()),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteTypicalAgeRange($id),
@@ -248,7 +248,7 @@ class EventDocumentImporterTest extends TestCase
         $this->importer->import($document, $this->consumer);
 
         $expectedCommands = [
-            new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
+            new UpdateAudience($id, AudienceType::everyone()),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteTypicalAgeRange($id),
@@ -302,7 +302,7 @@ class EventDocumentImporterTest extends TestCase
                 )
             ),
             new UpdateTheme($id, '1.17.0.0.0'),
-            new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
+            new UpdateAudience($id, AudienceType::everyone()),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
             new DeleteTypicalAgeRange($id),
@@ -663,7 +663,7 @@ class EventDocumentImporterTest extends TestCase
         LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
         $document = $this->getEventDocument();
         $body = $document->getBody();
-        $body['audience']['audienceType'] = AudienceType::EVERYONE()->toNative();
+        $body['audience']['audienceType'] = LegacyAudienceType::EVERYONE()->toNative();
         $body['location']['@id'] = 'https://io.uitdatabank.be/places/' . $dummyPlaceId;
         $document = $document->withBody($body);
         $id = $document->getId();
@@ -681,7 +681,7 @@ class EventDocumentImporterTest extends TestCase
         $this->assertContainsObject(
             new UpdateAudience(
                 $id,
-                new Audience(AudienceType::EDUCATION())
+                AudienceType::education()
             ),
             $recordedCommands
         );

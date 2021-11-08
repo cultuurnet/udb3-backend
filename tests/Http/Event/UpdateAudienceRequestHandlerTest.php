@@ -8,12 +8,12 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\IncompatibleAudienceType;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Event\ValueObjects\AudienceType as LegacyAudienceType;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use PHPUnit\Framework\TestCase;
 
 class UpdateAudienceRequestHandlerTest extends TestCase
@@ -42,7 +42,7 @@ class UpdateAudienceRequestHandlerTest extends TestCase
 
         $expectedCommand = new UpdateAudience(
             'c269632a-a887-4f21-8455-1631c31e4df5',
-            new Audience(AudienceType::MEMBERS())
+            AudienceType::members()
         );
 
         $response = $this->updateAudienceRequestHandler->handle($request);
@@ -66,11 +66,11 @@ class UpdateAudienceRequestHandlerTest extends TestCase
         $commandBus = $this->createMock(CommandBus::class);
         $commandBus->expects($this->once())
             ->method('dispatch')
-            ->willThrowException(IncompatibleAudienceType::forEvent($eventId, AudienceType::MEMBERS()));
+            ->willThrowException(IncompatibleAudienceType::forEvent($eventId, LegacyAudienceType::MEMBERS()));
         $updateAudienceRequestHandler = new UpdateAudienceRequestHandler($commandBus);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::inCompatibleAudienceType('The audience type "MEMBERS" can not be set.'),
+            ApiProblem::inCompatibleAudienceType('The audience type "members" can not be set.'),
             fn () => $updateAudienceRequestHandler->handle($request)
         );
     }

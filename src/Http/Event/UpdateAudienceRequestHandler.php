@@ -45,7 +45,7 @@ class UpdateAudienceRequestHandler implements RequestHandlerInterface
             $this->commandBus->dispatch($updateAudience);
         } catch (IncompatibleAudienceType $incompatibleAudienceType) {
             throw ApiProblem::inCompatibleAudienceType(
-                'The audience type "' . $updateAudience->getAudience()->getAudienceType()->getName() . '" can not be set.'
+                'The audience type "' . $updateAudience->getAudienceType()->toString() . '" can not be set.'
             );
         }
 
