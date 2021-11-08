@@ -9,17 +9,10 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 class UpdateAudience extends AbstractCommand
 {
-    /**
-     * @var Audience
-     */
-    private $audience;
+    private Audience $audience;
 
-    /**
-     * UpdateAudience constructor.
-     * @param string $itemId
-     */
     public function __construct(
-        $itemId,
+        string $itemId,
         Audience $audience
     ) {
         parent::__construct($itemId);
@@ -27,10 +20,7 @@ class UpdateAudience extends AbstractCommand
         $this->audience = $audience;
     }
 
-    /**
-     * @return Audience
-     */
-    public function getAudience()
+    public function getAudience(): Audience
     {
         return $this->audience;
     }
