@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Http\Organizer\EditOrganizerRestController;
-use CultuurNet\UDB3\Http\Organizer\ReadOrganizerRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -31,11 +31,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->post('/', 'organizer_edit_controller:create');
 
-        $controllers
-            ->get('/{cdbid}/', 'organizer_controller:get')
-            ->bind('organizer');
-
-        $controllers->delete('/{cdbid}/', DeleteOrganizerRequestHandler::class);
+        $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class)->bind('organizer');
+        $controllers->delete('/{organizerId}/', DeleteOrganizerRequestHandler::class);
 
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
         $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
@@ -59,16 +56,12 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
     public function register(Application $app): void
     {
-        $app[DeleteOrganizerRequestHandler::class] = $app->share(
-            fn (Application $application) => new DeleteOrganizerRequestHandler($app['event_command_bus'])
+        $app[GetOrganizerRequestHandler::class] = $app->share(
+            fn (Application $application) => new GetOrganizerRequestHandler($app['organizer_service'])
         );
 
-        $app['organizer_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadOrganizerRestController(
-                    $app['organizer_service']
-                );
-            }
+        $app[DeleteOrganizerRequestHandler::class] = $app->share(
+            fn (Application $application) => new DeleteOrganizerRequestHandler($app['event_command_bus'])
         );
 
         $app['organizer_edit_controller'] = $app->share(

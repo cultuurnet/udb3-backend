@@ -12,10 +12,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class LocalPlaceService extends LocalEntityService implements PlaceServiceInterface
 {
-    /**
-     * @var RelationsRepository
-     */
-    private $placeRelationsRepository;
+    private RelationsRepository $placeRelationsRepository;
 
     public function __construct(
         DocumentRepository $documentRepository,
@@ -28,10 +25,7 @@ class LocalPlaceService extends LocalEntityService implements PlaceServiceInterf
         $this->placeRelationsRepository = $placeRelationsRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function placesOrganizedByOrganizer($organizerId)
+    public function placesOrganizedByOrganizer(string $organizerId): array
     {
         return $this->placeRelationsRepository->getPlacesOrganizedByOrganizer(
             $organizerId
