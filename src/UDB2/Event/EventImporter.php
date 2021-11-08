@@ -16,11 +16,10 @@ use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Event;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Media\Properties\UnsupportedMIMETypeException;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\UDB2\Event\Events\EventCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Event\Events\EventUpdatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Label\LabelApplierInterface;
@@ -240,7 +239,7 @@ class EventImporter implements EventListener, LoggerAwareInterface
         }
 
         if ($locationId && $locationId->isDummyPlaceForEducation()) {
-            $this->commandBus->dispatch(new UpdateAudience((string) $eventId, new Audience(AudienceType::EDUCATION())));
+            $this->commandBus->dispatch(new UpdateAudience((string) $eventId, AudienceType::education()));
         }
     }
 
@@ -296,7 +295,7 @@ class EventImporter implements EventListener, LoggerAwareInterface
         }
 
         if ($locationId && $locationId->isDummyPlaceForEducation()) {
-            $this->commandBus->dispatch(new UpdateAudience((string) $eventId, new Audience(AudienceType::EDUCATION())));
+            $this->commandBus->dispatch(new UpdateAudience((string) $eventId, AudienceType::education()));
         }
     }
 }

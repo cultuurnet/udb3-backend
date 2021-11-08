@@ -5,9 +5,9 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
-use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
@@ -45,7 +45,6 @@ use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
-use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
@@ -57,6 +56,7 @@ use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -623,6 +623,9 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[ImportVideosHandler::class]);
         $commandBus->subscribe($app[DeleteOfferHandler::class]);
 
+        // Event command handlers
+        $commandBus->subscribe($app[UpdateAudienceHandler::class]);
+
         // Organizer command handlers
         $commandBus->subscribe($app[DeleteOrganizerHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);
@@ -1050,6 +1053,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Proxy\ProxyServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
+$app->register(new EventCommandHandlerProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());

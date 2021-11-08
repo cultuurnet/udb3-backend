@@ -4,34 +4,24 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 class UpdateAudience extends AbstractCommand
 {
-    /**
-     * @var Audience
-     */
-    private $audience;
+    private AudienceType $audienceType;
 
-    /**
-     * UpdateAudience constructor.
-     * @param string $itemId
-     */
     public function __construct(
-        $itemId,
-        Audience $audience
+        string $itemId,
+        AudienceType $audience
     ) {
         parent::__construct($itemId);
 
-        $this->audience = $audience;
+        $this->audienceType = $audience;
     }
 
-    /**
-     * @return Audience
-     */
-    public function getAudience()
+    public function getAudienceType(): AudienceType
     {
-        return $this->audience;
+        return $this->audienceType;
     }
 }

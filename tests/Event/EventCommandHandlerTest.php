@@ -14,7 +14,6 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
-use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
@@ -234,103 +233,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
                     new LocationUpdated($eventId, $locationId),
                 ]
             );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_audience()
-    {
-        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-
-        $this->scenario
-            ->withAggregateId($eventId)
-            ->given(
-                [
-                    $this->factorOfferCreated($eventId),
-                ]
-            )
-            ->when(
-                new UpdateAudience(
-                    $eventId,
-                    new Audience(AudienceType::EDUCATION())
-                )
-            )
-            ->then(
-                [
-                    new AudienceUpdated(
-                        $eventId,
-                        new Audience(AudienceType::EDUCATION())
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_audience_after_switching_from_a_dummy_location_to_another_location_using_major_info()
-    {
-        // Mark the id used by $this->factorOfferCreated() as a dummy location.
-        LocationId::setDummyPlaceForEducationIds(['d0cd4e9d-3cf1-4324-9835-2bfba63ac015']);
-
-        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-
-        $this->scenario
-            ->withAggregateId($eventId)
-            ->given(
-                [
-                    $this->factorOfferCreated($eventId),
-                    new UpdateMajorInfo(
-                        $eventId,
-                        new Title('some representative title'),
-                        new EventType('0.50.4.0.0', 'concert'),
-                        new LocationId('345afdf3-e670-4aa6-a4d2-b95ca081c18d'),
-                        new Calendar(CalendarType::PERMANENT())
-                    ),
-                ]
-            )
-            ->when(
-                new UpdateAudience(
-                    $eventId,
-                    new Audience(AudienceType::EDUCATION())
-                )
-            )
-            ->then(
-                [
-                    new AudienceUpdated(
-                        $eventId,
-                        new Audience(AudienceType::EDUCATION())
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_ignore_updating_the_audience_when_the_same_audience_type_is_already_set()
-    {
-        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-
-        $this->scenario
-            ->withAggregateId($eventId)
-            ->given(
-                [
-                    $this->factorOfferCreated($eventId),
-                    new AudienceUpdated(
-                        $eventId,
-                        new Audience(AudienceType::EDUCATION())
-                    ),
-                ]
-            )
-            ->when(
-                new UpdateAudience(
-                    $eventId,
-                    new Audience(AudienceType::EDUCATION())
-                )
-            )
-            ->then([]);
     }
 
     /**

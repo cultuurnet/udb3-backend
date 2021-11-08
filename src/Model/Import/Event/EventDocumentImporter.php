@@ -23,14 +23,13 @@ use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
@@ -145,11 +144,11 @@ class EventDocumentImporter implements DocumentImporterInterface
         }
 
         if ($location->isDummyPlaceForEducation()) {
-            $audienceType = AudienceType::EDUCATION();
+            $audienceType = AudienceType::education();
         } else {
-            $audienceType = $adapter->getAudienceType();
+            $audienceType = $import->getAudienceType();
         }
-        $commands[] = new UpdateAudience($id, new Audience($audienceType));
+        $commands[] = new UpdateAudience($id, $audienceType);
 
         $bookingInfo = $adapter->getBookingInfo();
         $commands[] = new UpdateBookingInfo($id, $bookingInfo);

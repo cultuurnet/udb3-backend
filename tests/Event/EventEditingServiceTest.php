@@ -15,14 +15,11 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
-use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
@@ -446,27 +443,6 @@ class EventEditingServiceTest extends TestCase
             ],
             $this->eventStore->getEvents()
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_dispatch_an_update_audience_command()
-    {
-        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-
-        $audience = new Audience(AudienceType::EDUCATION());
-
-        $expectedCommandId = 'commandId';
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with(new UpdateAudience($eventId, $audience))
-            ->willReturn($expectedCommandId);
-
-        $commandId = $this->eventEditingService->updateAudience($eventId, $audience);
-
-        $this->assertEquals($expectedCommandId, $commandId);
     }
 
     private function setUpEventNotFound($id)
