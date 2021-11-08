@@ -9,6 +9,9 @@ namespace CultuurNet\UDB3;
  */
 interface EntityServiceInterface
 {
+    /**
+     * @throws EntityNotFoundException
+     */
     public function getEntity(string $id): string;
 
     public function iri($id): string;
