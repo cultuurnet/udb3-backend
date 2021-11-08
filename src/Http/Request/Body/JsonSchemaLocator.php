@@ -34,7 +34,7 @@ final class JsonSchemaLocator
     public const ORGANIZER_NAME_PUT = 'organizer-name-put.json';
     public const ORGANIZER_ADDRESS_PUT = 'organizer-address-put.json';
     public const ORGANIZER_URL_PUT = 'organizer-url-put.json';
-    public const ORGANIZER_CONTACT_POINT_PUT = 'organizer-contact-point-put.json';
+    public const ORGANIZER_CONTACT_POINT_PUT = 'organizer-contactPoint-put.json';
 
     public static function setSchemaDirectory(string $schemaDirectory): void
     {
