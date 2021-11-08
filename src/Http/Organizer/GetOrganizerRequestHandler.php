@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Factory\StreamFactory;
 
 class GetOrganizerRequestHandler implements RequestHandlerInterface
 {
@@ -29,10 +28,8 @@ class GetOrganizerRequestHandler implements RequestHandlerInterface
         $organizerId = $routeParameters->getOrganizerId();
 
         try {
-            $organizer = $this->organizerService->getEntity($organizerId);
-
-            return (new JsonLdResponse())->withBody(
-                (new StreamFactory())->createStream($organizer)
+            return new JsonLdResponse(
+                $this->organizerService->getEntity($organizerId)
             );
         } catch (EntityNotFoundException $exception) {
             throw ApiProblem::organizerNotFound($organizerId);
