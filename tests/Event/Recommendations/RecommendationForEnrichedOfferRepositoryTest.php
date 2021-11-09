@@ -68,7 +68,7 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
                             [
                                 'event' => '2',
                                 'score' => 0.2,
-                            ]
+                            ],
                         ],
                     ],
                 ]

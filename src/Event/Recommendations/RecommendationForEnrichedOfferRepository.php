@@ -52,7 +52,7 @@ final class RecommendationForEnrichedOfferRepository extends DocumentRepositoryD
         return array_map(
             fn (Recommendation $recommendation) => [
                 'event' => $recommendation->getEvent(),
-                'score' => $recommendation->getScore()
+                'score' => $recommendation->getScore(),
             ],
             $recommendations->toArray()
         );
