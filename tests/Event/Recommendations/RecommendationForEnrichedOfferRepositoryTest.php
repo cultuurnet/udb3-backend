@@ -92,10 +92,7 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
             ->method('getByRecommendedEvent')
             ->with($offerId)
             ->willReturn(
-                new Recommendations(
-                    new Recommendation('1', 0.1),
-                    new Recommendation('2', 0.2)
-                )
+                new Recommendations()
             );
 
         $this->recommendationsRepository->expects($this->once())
@@ -120,14 +117,10 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($offerId, Json::encode(['@type' => 'Event']));
         $this->offerRepository->save($jsonLd);
 
-        $this->recommendationsRepository->expects($this->once())
-            ->method('getByRecommendedEvent')
-            ->with($offerId)
-            ->willReturn(
-                new Recommendations()
-            );
+        $this->recommendationsRepository->expects($this->never())
+            ->method('getByRecommendedEvent');
 
-        $fetchJsonLd = $this->recommendationForEnrichedOfferRepository->fetch($offerId, false);
+        $fetchJsonLd = $this->recommendationForEnrichedOfferRepository->fetch($offerId);
 
         $this->assertEquals($jsonLd, $fetchJsonLd);
     }
