@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Recommendations;
 
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -28,6 +29,11 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
 
         $this->recommendationForEnrichedOfferRepository = new RecommendationForEnrichedOfferRepository(
             $this->recommendationsRepository,
+            new CallableIriGenerator(
+                function (string $eventId): string {
+                    return 'https://io.uitdatabank.be/events/' . $eventId;
+                }
+            ),
             $this->offerRepository
         );
     }
@@ -62,11 +68,11 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
                     'metadata' => [
                         'recommendationFor' => [
                             [
-                                'event' => '1',
+                                'event' => 'https://io.uitdatabank.be/events/1',
                                 'score' => 0.1,
                             ],
                             [
-                                'event' => '2',
+                                'event' => 'https://io.uitdatabank.be/events/2',
                                 'score' => 0.2,
                             ],
                         ],
