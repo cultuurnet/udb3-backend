@@ -8,5 +8,5 @@ interface RecommendationsRepository
 {
     public function getByEvent(string $eventId): Recommendations;
 
-    public function getByRecommendedEvent(string $eventId): Recommendations;
+    public function getByRecommendedEvent(string $recommendedEventId): Recommendations;
 }

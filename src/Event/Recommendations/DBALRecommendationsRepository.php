@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\Recommendations;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
-final class DBALRecommendationRepository implements RecommendationsRepository
+final class DBALRecommendationsRepository implements RecommendationsRepository
 {
     private Connection $connection;
 
