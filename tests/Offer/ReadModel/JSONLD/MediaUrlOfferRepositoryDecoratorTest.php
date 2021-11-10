@@ -20,7 +20,7 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
                 'thumbnailUrl' => 'https://io.uitdatabank.be/images/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc2',
-                'inLanguage' => 'nl'
+                'inLanguage' => 'nl',
             ],
             [
                 '@id' => 'https://io.uitdatabank.be/images/21defff6-59e4-49f4-ab84-83302ff20010',
@@ -29,7 +29,7 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
                 'thumbnailUrl' => 'https://io.uitdatabank.be/images/21defff6-59e4-49f4-ab84-83302ff20010.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc2',
-                'inLanguage' => 'nl'
+                'inLanguage' => 'nl',
             ],
             [
                 '@id' => 'https://io.uitdatabank.be/images/73585fe0-577b-488f-95f4-746940d7cce9',
@@ -38,8 +38,8 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
                 'thumbnailUrl' => 'https://io.uitdatabank.be/images/73585fe0-577b-488f-95f4-746940d7cce9.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc3',
-                'inLanguage' => 'nl'
-            ]
+                'inLanguage' => 'nl',
+            ],
         ],
         'image' => 'https://io.uitdatabank.be/images/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
     ];
@@ -53,7 +53,7 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
                 'thumbnailUrl' => 'https://images.uitdatabank.be/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc2',
-                'inLanguage' => 'nl'
+                'inLanguage' => 'nl',
             ],
             [
                 '@id' => 'https://io.uitdatabank.be/images/21defff6-59e4-49f4-ab84-83302ff20010',
@@ -62,7 +62,7 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
                 'thumbnailUrl' => 'https://images.uitdatabank.be/21defff6-59e4-49f4-ab84-83302ff20010.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc2',
-                'inLanguage' => 'nl'
+                'inLanguage' => 'nl',
             ],
             [
                 '@id' => 'https://io.uitdatabank.be/images/73585fe0-577b-488f-95f4-746940d7cce9',
@@ -71,15 +71,14 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
                 'thumbnailUrl' => 'https://images.uitdatabank.be/73585fe0-577b-488f-95f4-746940d7cce9.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc3',
-                'inLanguage' => 'nl'
-            ]
+                'inLanguage' => 'nl',
+            ],
         ],
         'image' => 'https://images.uitdatabank.be/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
     ];
 
     protected function setUp(): void
     {
-
     }
 
     /**
