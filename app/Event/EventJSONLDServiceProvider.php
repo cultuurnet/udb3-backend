@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\RelatedEventLDProjector;
+use CultuurNet\UDB3\Event\Recommendations\DBALRecommendationsRepository;
+use CultuurNet\UDB3\Event\Recommendations\RecommendationForEnrichedOfferRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
@@ -57,6 +59,12 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
 
                 $repository = new PopularityEnrichedOfferRepository(
                     $app[PopularityRepository::class],
+                    $repository
+                );
+
+                $repository = new RecommendationForEnrichedOfferRepository(
+                    new DBALRecommendationsRepository($app['dbal_connection']),
+                    $app['event_iri_generator'],
                     $repository
                 );
 
