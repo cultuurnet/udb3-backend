@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
+use CultuurNet\UDB3\Silex\Console\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateBookingAvailabilityCommand;
@@ -116,6 +117,12 @@ $consoleApp->add(
         $app['dbal_connection'],
         $app['amqp.publisher'],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+    )
+);
+$consoleApp->add(new ReindexEventsWithRecommendations(
+        $app['dbal_connection'],
+        $app['amqp.publisher'],
+        $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::EVENT(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
