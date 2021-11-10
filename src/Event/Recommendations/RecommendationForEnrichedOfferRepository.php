@@ -9,7 +9,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
-final class RecommendationsForEnrichedOfferRepository extends DocumentRepositoryDecorator
+final class RecommendationForEnrichedOfferRepository extends DocumentRepositoryDecorator
 {
     private RecommendationsRepository $recommendationsRepository;
 

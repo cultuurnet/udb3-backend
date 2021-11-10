@@ -19,7 +19,7 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
 
     private InMemoryDocumentRepository $offerRepository;
 
-    private RecommendationsForEnrichedOfferRepository $recommendationsForEnrichedOfferRepository;
+    private RecommendationForEnrichedOfferRepository $recommendationForEnrichedOfferRepository;
 
     protected function setUp(): void
     {
@@ -27,7 +27,7 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
 
         $this->offerRepository = new InMemoryDocumentRepository();
 
-        $this->recommendationsForEnrichedOfferRepository = new RecommendationsForEnrichedOfferRepository(
+        $this->recommendationForEnrichedOfferRepository = new RecommendationForEnrichedOfferRepository(
             $this->recommendationsRepository,
             new CallableIriGenerator(
                 function (string $eventId): string {
@@ -58,7 +58,7 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
                 )
             );
 
-        $fetchJsonLd = $this->recommendationsForEnrichedOfferRepository->fetch($offerId, true);
+        $fetchJsonLd = $this->recommendationForEnrichedOfferRepository->fetch($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
@@ -108,7 +108,7 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
                 new Recommendations()
             );
 
-        $fetchJsonLd = $this->recommendationsForEnrichedOfferRepository->fetch($offerId, true);
+        $fetchJsonLd = $this->recommendationForEnrichedOfferRepository->fetch($offerId, true);
 
         $this->assertEquals($jsonLd, $fetchJsonLd);
     }
@@ -126,7 +126,7 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
         $this->recommendationsRepository->expects($this->never())
             ->method('getByRecommendedEvent');
 
-        $fetchJsonLd = $this->recommendationsForEnrichedOfferRepository->fetch($offerId);
+        $fetchJsonLd = $this->recommendationForEnrichedOfferRepository->fetch($offerId);
 
         $this->assertEquals($jsonLd, $fetchJsonLd);
     }
@@ -140,6 +140,6 @@ final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
 
         $this->expectException(DocumentDoesNotExist::class);
 
-        $this->recommendationsForEnrichedOfferRepository->fetch($offerId, true);
+        $this->recommendationForEnrichedOfferRepository->fetch($offerId, true);
     }
 }
