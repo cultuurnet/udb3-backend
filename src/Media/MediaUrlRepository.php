@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Media;
 
 final class MediaUrlRepository
 {
-    private array $mapping;
+    private array $mediaUrlMappings;
 
-    public function __construct(array $mapping)
+    public function __construct(array $mediaUrlMappings)
     {
-        $this->mapping = $mapping;
+        $this->mediaUrlMappings = $mediaUrlMappings;
     }
 
     public function getUpdatedUrl(string $oldUrl): string
     {
-        foreach ($this->mapping as $udbVariant => $mediaUrlMapping) {
+        foreach ($this->mediaUrlMappings as $udbVariant => $mediaUrlMapping) {
             if ($mediaUrlMapping['enabled']) {
                 return str_replace($mediaUrlMapping['legacy_url'], $mediaUrlMapping['url'], $oldUrl);
             }
