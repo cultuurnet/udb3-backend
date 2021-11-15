@@ -399,15 +399,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $imageId = (string) $imageRemoved->getImage()->getMediaObjectId();
 
         /**
-         * Matches any object that is not the removed image.
-         *
-         * @param Object $mediaObject
-         *  An existing projection of a media object.
-         *
          * @return bool
          *  Returns true when the media object does not match the image to remove.
          */
-        $shouldNotBeRemoved = function ($mediaObject) use ($imageId) {
+        $shouldNotBeRemoved = function (object $mediaObject) use ($imageId) {
             $containsId = !!strpos($mediaObject->{'@id'}, $imageId);
             return !$containsId;
         };
@@ -459,7 +454,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    protected function mediaObjectMatchesId(Object $mediaObject, UUID $mediaObjectId): bool
+    protected function mediaObjectMatchesId(object $mediaObject, UUID $mediaObjectId): bool
     {
         return strpos($mediaObject->{'@id'}, (string) $mediaObjectId) > 0;
     }
