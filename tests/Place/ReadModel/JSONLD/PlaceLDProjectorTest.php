@@ -54,40 +54,11 @@ use ValueObjects\Geography\Country;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 {
-    /**
-     * @var PlaceLDProjector
-     */
-    protected $projector;
+    private MediaObjectSerializer $serializer;
 
-    /**
-     * @var DocumentRepository|MockObject
-     */
-    protected $documentRepository;
+    private Address $address;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
-
-    /**
-     * @var MediaObjectSerializer
-     */
-    private $serializer;
-
-    /**
-     * @var Address
-     */
-    private $address;
-
-    /**
-     * @var CdbXMLImporter
-     */
-    private $cdbXMLImporter;
-
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $mediaIriGenerator;
+    private CdbXMLImporter $cdbXMLImporter;
 
     /**
      * Constructs a test case with the given name.
@@ -107,17 +78,13 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         parent::setUp();
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
             }
         );
 
-        $this->serializer = new MediaObjectSerializer($this->iriGenerator);
-
-        $this->mediaIriGenerator = new CallableIriGenerator(function (CultureFeed_Cdb_Data_File $file) {
-            return 'http://example.com/media/' . $file->getFileName();
-        });
+        $this->serializer = new MediaObjectSerializer($iriGenerator);
 
         $this->cdbXMLImporter = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
@@ -138,7 +105,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->projector = new PlaceLDProjector(
             $this->documentRepository,
-            $this->iriGenerator,
+            $iriGenerator,
             $this->organizerService,
             $this->serializer,
             $this->cdbXMLImporter,
