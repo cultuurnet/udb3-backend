@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
@@ -86,6 +87,12 @@ class OfferServiceProvider implements ServiceProviderInterface
                     $app['event_repository'],
                     $app['place_repository']
                 );
+            }
+        );
+
+        $app[UpdateAvailableFromHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateAvailableFromHandler($app[OfferRepository::class]);
             }
         );
 

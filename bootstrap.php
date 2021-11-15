@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
@@ -608,6 +609,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         // Offer command handlers
         // @todo can we auto-discover these and register them automatically?
         // @see https://jira.uitdatabank.be/browse/III-4176
+        $commandBus->subscribe($app[UpdateAvailableFromHandler::class]);
         $commandBus->subscribe($app[UpdateCalendarHandler::class]);
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
         $commandBus->subscribe($app[UpdateBookingAvailabilityHandler::class]);
