@@ -514,47 +514,32 @@ class EventLDProjector extends OfferLDProjector implements
         return null;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelAddedClassName()
+    protected function getLabelAddedClassName(): string
     {
         return LabelAdded::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelRemovedClassName()
+    protected function getLabelRemovedClassName(): string
     {
         return LabelRemoved::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageAddedClassName()
+    protected function getImageAddedClassName(): string
     {
         return ImageAdded::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageRemovedClassName()
+    protected function getImageRemovedClassName(): string
     {
         return ImageRemoved::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageUpdatedClassName()
+    protected function getImageUpdatedClassName(): string
     {
         return ImageUpdated::class;
     }
 
-    protected function getMainImageSelectedClassName()
+    protected function getMainImageSelectedClassName(): string
     {
         return MainImageSelected::class;
     }
@@ -574,72 +559,57 @@ class EventLDProjector extends OfferLDProjector implements
         return VideoUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getTitleTranslatedClassName()
+    protected function getTitleTranslatedClassName(): string
     {
         return TitleTranslated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getDescriptionTranslatedClassName()
+    protected function getDescriptionTranslatedClassName(): string
     {
         return DescriptionTranslated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getOrganizerUpdatedClassName()
+    protected function getOrganizerUpdatedClassName(): string
     {
         return OrganizerUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getOrganizerDeletedClassName()
+    protected function getOrganizerDeletedClassName(): string
     {
         return OrganizerDeleted::class;
     }
 
-    protected function getBookingInfoUpdatedClassName()
+    protected function getBookingInfoUpdatedClassName(): string
     {
         return BookingInfoUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPriceInfoUpdatedClassName()
+    protected function getPriceInfoUpdatedClassName(): string
     {
         return PriceInfoUpdated::class;
     }
 
-    protected function getContactPointUpdatedClassName()
+    protected function getContactPointUpdatedClassName(): string
     {
         return ContactPointUpdated::class;
     }
 
-    protected function getDescriptionUpdatedClassName()
+    protected function getDescriptionUpdatedClassName(): string
     {
         return DescriptionUpdated::class;
     }
 
-    protected function getCalendarUpdatedClassName()
+    protected function getCalendarUpdatedClassName(): string
     {
         return CalendarUpdated::class;
     }
 
-    protected function getTypicalAgeRangeUpdatedClassName()
+    protected function getTypicalAgeRangeUpdatedClassName(): string
     {
         return TypicalAgeRangeUpdated::class;
     }
 
-    protected function getTypicalAgeRangeDeletedClassName()
+    protected function getTypicalAgeRangeDeletedClassName(): string
     {
         return TypicalAgeRangeDeleted::class;
     }
@@ -649,52 +619,52 @@ class EventLDProjector extends OfferLDProjector implements
         return AvailableFromUpdated::class;
     }
 
-    protected function getPublishedClassName()
+    protected function getPublishedClassName(): string
     {
         return Published::class;
     }
 
-    protected function getApprovedClassName()
+    protected function getApprovedClassName(): string
     {
         return Approved::class;
     }
 
-    protected function getRejectedClassName()
+    protected function getRejectedClassName(): string
     {
         return Rejected::class;
     }
 
-    protected function getFlaggedAsDuplicateClassName()
+    protected function getFlaggedAsDuplicateClassName(): string
     {
         return FlaggedAsDuplicate::class;
     }
 
-    protected function getFlaggedAsInappropriateClassName()
+    protected function getFlaggedAsInappropriateClassName(): string
     {
         return FlaggedAsInappropriate::class;
     }
 
-    protected function getImagesImportedFromUdb2ClassName()
+    protected function getImagesImportedFromUdb2ClassName(): string
     {
         return ImagesImportedFromUDB2::class;
     }
 
-    protected function getImagesUpdatedFromUdb2ClassName()
+    protected function getImagesUpdatedFromUdb2ClassName(): string
     {
         return ImagesUpdatedFromUDB2::class;
     }
 
-    protected function getTitleUpdatedClassName()
+    protected function getTitleUpdatedClassName(): string
     {
         return TitleUpdated::class;
     }
 
-    protected function getTypeUpdatedClassName()
+    protected function getTypeUpdatedClassName(): string
     {
         return TypeUpdated::class;
     }
 
-    protected function getFacilitiesUpdatedClassName()
+    protected function getFacilitiesUpdatedClassName(): string
     {
         return FacilitiesUpdated::class;
     }

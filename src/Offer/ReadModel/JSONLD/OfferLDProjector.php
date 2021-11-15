@@ -166,35 +166,17 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $events;
     }
 
-    /**
-     * @return string
-     */
-    abstract protected function getLabelAddedClassName();
+    abstract protected function getLabelAddedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getLabelRemovedClassName();
+    abstract protected function getLabelRemovedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getImageAddedClassName();
+    abstract protected function getImageAddedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getImageRemovedClassName();
+    abstract protected function getImageRemovedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getImageUpdatedClassName();
+    abstract protected function getImageUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getMainImageSelectedClassName();
+    abstract protected function getMainImageSelectedClassName(): string;
 
     abstract protected function getVideoAddedClassName(): string;
 
@@ -202,112 +184,49 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     abstract protected function getVideoUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getTitleTranslatedClassName();
+    abstract protected function getTitleTranslatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getTitleUpdatedClassName();
+    abstract protected function getTitleUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getDescriptionTranslatedClassName();
+    abstract protected function getDescriptionTranslatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getOrganizerUpdatedClassName();
+    abstract protected function getOrganizerUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getOrganizerDeletedClassName();
+    abstract protected function getOrganizerDeletedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getBookingInfoUpdatedClassName();
+    abstract protected function getBookingInfoUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getPriceInfoUpdatedClassName();
+    abstract protected function getPriceInfoUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getContactPointUpdatedClassName();
+    abstract protected function getContactPointUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getDescriptionUpdatedClassName();
+    abstract protected function getDescriptionUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getCalendarUpdatedClassName();
+    abstract protected function getCalendarUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getTypicalAgeRangeUpdatedClassName();
+    abstract protected function getTypicalAgeRangeUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getTypicalAgeRangeDeletedClassName();
+    abstract protected function getTypicalAgeRangeDeletedClassName(): string;
 
     abstract protected function getAvailableFromUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getPublishedClassName();
+    abstract protected function getPublishedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getApprovedClassName();
+    abstract protected function getApprovedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getRejectedClassName();
+    abstract protected function getRejectedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getFlaggedAsDuplicateClassName();
+    abstract protected function getFlaggedAsDuplicateClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getFlaggedAsInappropriateClassName();
+    abstract protected function getFlaggedAsInappropriateClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getImagesImportedFromUdb2ClassName();
+    abstract protected function getImagesImportedFromUdb2ClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getImagesUpdatedFromUdb2ClassName();
+    abstract protected function getImagesUpdatedFromUdb2ClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getTypeUpdatedClassName();
+    abstract protected function getTypeUpdatedClassName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getFacilitiesUpdatedClassName();
+    abstract protected function getFacilitiesUpdatedClassName(): string;
 
     protected function applyTypeUpdated(AbstractTypeUpdated $typeUpdated): JsonDocument
     {
