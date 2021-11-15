@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
@@ -67,6 +68,7 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
+use DateTimeInterface;
 use Exception;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -1014,6 +1016,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo): AbstractBookingInfoUpdated;
 
     abstract protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo): AbstractPriceInfoUpdated;
+
+    abstract protected function createAvailableFromUpdatedEvent(DateTimeInterface $availableFrom): AbstractAvailableFromUpdated;
 
     abstract protected function createPublishedEvent(\DateTimeInterface $publicationDate): AbstractPublished;
 

@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
@@ -72,6 +73,7 @@ use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use DateTimeInterface;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -495,6 +497,11 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function createOfferDeletedEvent(): PlaceDeleted
     {
         return new PlaceDeleted($this->placeId);
+    }
+
+    protected function createAvailableFromUpdatedEvent(DateTimeInterface $availableFrom): AvailableFromUpdated
+    {
+        return new AvailableFromUpdated($this->placeId, $availableFrom);
     }
 
     protected function createPublishedEvent(\DateTimeInterface $publicationDate): Published
