@@ -862,11 +862,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
     }
 
-    /**
-     * @param string $id
-     * @return JsonDocument
-     */
-    protected function newDocument($id)
+    protected function newDocument(string $id): JsonDocument
     {
         $document = new JsonDocument($id);
 

@@ -165,11 +165,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($actorLd);
     }
 
-    /**
-     * @param string $id
-     * @return JsonDocument
-     */
-    protected function newDocument($id)
+    protected function newDocument(string $id): JsonDocument
     {
         $document = new JsonDocument($id);
 

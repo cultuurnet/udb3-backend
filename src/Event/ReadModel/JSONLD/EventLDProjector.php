@@ -128,11 +128,7 @@ class EventLDProjector extends OfferLDProjector implements
         $this->eventTypeResolver = $eventTypeResolver;
     }
 
-    /**
-     * @param string $id
-     * @return JsonDocument
-     */
-    protected function newDocument($id)
+    protected function newDocument(string $id): JsonDocument
     {
         $document = new JsonDocument($id);
 
