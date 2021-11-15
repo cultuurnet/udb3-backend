@@ -1526,7 +1526,7 @@ class OfferLDProjectorTest extends TestCase
     public function it_should_project_imported_udb2_media_files_as_media_objects(
         ImageCollection $images,
         array $expectedMediaObjects
-    ) {
+    ): void {
         $itemId = LegacyUUID::generateAsString();
         $imagesImportedEvent = new ImagesImportedFromUDB2($itemId, $images);
 
