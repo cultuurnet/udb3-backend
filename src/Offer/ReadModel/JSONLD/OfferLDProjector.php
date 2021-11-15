@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\AvailableTo;
+use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
@@ -833,6 +834,17 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd = $document->getBody();
 
         unset($offerLd->typicalAgeRange);
+
+        return $document->withBody($offerLd);
+    }
+
+    protected function applyAvailableFromUpdated(AbstractAvailableFromUpdated $availableFromUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($availableFromUpdated);
+
+        $offerLd = $document->getBody();
+
+        $offerLd->availableFrom = $availableFromUpdated->getAvailableFrom()->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
     }

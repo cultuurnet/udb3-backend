@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
@@ -24,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
+use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesImportedFromUDB2;
@@ -60,6 +62,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentNullEnricher;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -1376,6 +1379,45 @@ class OfferLDProjectorTest extends TestCase
         $body = $this->project($organizerDeleted, $id, null, $this->recordedOn->toBroadwayDateTime());
 
         $this->assertEquals((object)['modified' => $this->recordedOn->toString()], $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_available_from(): void
+    {
+        $itemId = LegacyUUID::generateAsString();
+
+        $itemDocumentReadyDraft = new JsonDocument(
+            $itemId,
+            Json::encode([
+                '@id' => $itemId,
+                '@type' => 'event',
+                'workflowStatus' => 'DRAFT',
+            ])
+        );
+
+        $expectedItem = (object)[
+            '@id' => $itemId,
+            '@type' => 'event',
+            'availableFrom' => '2030-10-10T11:00:00+00:00',
+            'workflowStatus' => 'DRAFT',
+            'modified' => $this->recordedOn->toString(),
+        ];
+
+        $this->documentRepository->save($itemDocumentReadyDraft);
+
+        $approvedItem = $this->project(
+            new AvailableFromUpdated(
+                $itemId,
+                new DateTimeImmutable('2030-10-10T11:00:00+00:00')
+            ),
+            $itemId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertEquals($expectedItem, $approvedItem);
     }
 
     /**
