@@ -179,7 +179,7 @@ class EventLDProjector extends OfferLDProjector implements
         string $eventId,
         string $cdbXmlNamespaceUri,
         string $cdbXml
-    ): \StdClass {
+    ): \stdClass {
         $udb2Event = EventItemFactory::createEventFromCdbXml(
             $cdbXmlNamespaceUri,
             $cdbXml
