@@ -139,12 +139,9 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->applyEventCdbXmlFromUDB2(
             $eventImportedFromUDB2->getEventId(),
             $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
@@ -152,12 +149,9 @@ class EventLDProjector extends OfferLDProjector implements
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->applyEventCdbXmlFromUDB2(
             $eventUpdatedFromUDB2->getEventId(),
             $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
@@ -165,19 +159,11 @@ class EventLDProjector extends OfferLDProjector implements
         );
     }
 
-    /**
-     * Helper function to save a JSON-LD document from cdbxml coming from UDB2.
-     *
-     * @param string $eventId
-     * @param string $cdbXmlNamespaceUri
-     * @param string $cdbXml
-     * @return JsonDocument
-     */
     protected function applyEventCdbXmlFromUDB2(
-        $eventId,
-        $cdbXmlNamespaceUri,
-        $cdbXml
-    ) {
+        string $eventId,
+        string $cdbXmlNamespaceUri,
+        string $cdbXml
+    ): JsonDocument {
         $document = $this->newDocument($eventId);
         $eventLd = $this->projectEventCdbXmlToObject(
             $document->getBody(),
@@ -188,19 +174,12 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($eventLd);
     }
 
-    /**
-     * @param string $eventId
-     * @param string $cdbXmlNamespaceUri
-     * @param string $cdbXml
-     * @return \stdClass
-     * @throws \CultureFeed_Cdb_ParseException
-     */
     protected function projectEventCdbXmlToObject(
         \stdClass $jsonLd,
-        $eventId,
-        $cdbXmlNamespaceUri,
-        $cdbXml
-    ) {
+        string $eventId,
+        string $cdbXmlNamespaceUri,
+        string $cdbXml
+    ): \StdClass {
         $udb2Event = EventItemFactory::createEventFromCdbXml(
             $cdbXmlNamespaceUri,
             $cdbXml
@@ -223,13 +202,10 @@ class EventLDProjector extends OfferLDProjector implements
         return $jsonLd;
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventCreated(
         EventCreated $eventCreated,
         DomainMessage $domainMessage
-    ) {
+    ): JsonDocument {
         $document = $this->newDocument($eventCreated->getEventId());
         $jsonLD = $document->getBody();
 
@@ -288,13 +264,10 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventCopied(
         EventCopied $eventCopied,
         DomainMessage $domainMessage
-    ) {
+    ): JsonDocument {
         $originalDocument = $this->repository->fetch($eventCopied->getOriginalEventId());
         $eventJsonLD = $originalDocument->getBody();
 
@@ -364,11 +337,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * Apply the major info updated command to the projector.
-     * @return JsonDocument
-     */
-    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
+    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): JsonDocument
     {
         $document = $this
             ->loadDocumentFromRepository($majorInfoUpdated)
@@ -405,11 +374,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     *
-     * @return JsonDocument
-     */
-    public function applyLocationUpdated(LocationUpdated $locationUpdated)
+    public function applyLocationUpdated(LocationUpdated $locationUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($locationUpdated);
 
@@ -422,10 +387,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
+    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepositoryByItemId($geoCoordinatesUpdated->getItemId());
 
@@ -439,10 +401,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($eventLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyAudienceUpdated(AudienceUpdated $audienceUpdated)
+    protected function applyAudienceUpdated(AudienceUpdated $audienceUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($audienceUpdated);
         $jsonLD = $document->getBody();
@@ -494,14 +453,13 @@ class EventLDProjector extends OfferLDProjector implements
         }
     }
 
-    private function generateSameAs($eventId, $name)
+    private function generateSameAs($eventId, $name): array
     {
         $eventSlug = $this->slugger->slug($name);
         return [
             'http://www.uitinvlaanderen.be/agenda/e/' . $eventSlug . '/' . $eventId,
         ];
     }
-
 
     private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral
     {
