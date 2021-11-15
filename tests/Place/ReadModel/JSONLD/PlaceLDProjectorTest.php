@@ -21,6 +21,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -266,7 +267,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode(['creator' => $originalOwner])
+            Json::encode(['creator' => $originalOwner])
         );
         $this->documentRepository->save($initialDocument);
 
@@ -729,7 +730,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode(
+            Json::encode(
                 [
                     '@id' => 'http://uitdatabank/place/' . $id,
                     '@type' => 'Place',
@@ -802,7 +803,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A'],
             ])
         );
@@ -824,7 +825,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A', 'label B', 'label C'],
             ])
         );
@@ -851,7 +852,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'bar' => 'stool',
             ])
         );
@@ -883,7 +884,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $initialDocument = new JsonDocument(
             '3c4850d7-689a-4729-8c5f-5f6c172ba52d',
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -926,7 +927,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $initialDocument = new JsonDocument(
             '318F2ACB-F612-6F75-0037C9C29F44087A',
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -966,7 +967,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $duplicateId,
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -1002,7 +1003,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $canonicalId,
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -1043,7 +1044,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $canonicalId,
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',

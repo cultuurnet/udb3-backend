@@ -172,7 +172,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A'],
             ])
         );
@@ -199,7 +199,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A'],
             ])
         );
@@ -225,7 +225,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A', 'label B', 'label C'],
             ])
         );
@@ -252,7 +252,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A', 'label B'],
                 'hiddenLabels' => ['label C'],
             ])
@@ -283,7 +283,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'bar' => 'stool',
             ])
         );
@@ -320,7 +320,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             '5582FCA5-38FD-40A0-B8FB-9FA70AB7ADA3',
-            json_encode([
+            Json::encode([
                 'mainLanguage' => 'en',
                 'name' => [
                     'nl'=> 'Fietsen langs kapelletjes',
@@ -331,7 +331,7 @@ class OfferLDProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             '5582FCA5-38FD-40A0-B8FB-9FA70AB7ADA3',
-            json_encode([
+            Json::encode([
                 'mainLanguage' => 'en',
                 'name' => [
                     'nl'=> 'Fietsen langs kapelletjes',
@@ -366,7 +366,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl'=> 'Titel',
                 ],
@@ -408,7 +408,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl'=> 'Titel',
                 ],
@@ -529,7 +529,7 @@ class OfferLDProjectorTest extends TestCase
         ];
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
             ])
         );
@@ -634,7 +634,7 @@ class OfferLDProjectorTest extends TestCase
             'document with 2 images, last image gets removed' => [
                 new JsonDocument(
                     $eventId,
-                    json_encode((object) $initialJsonStructureWithMedia)
+                    Json::encode((object) $initialJsonStructureWithMedia)
                 ),
                 $image2,
                 $expectedWithoutLastImage,
@@ -642,7 +642,7 @@ class OfferLDProjectorTest extends TestCase
             'document with 2 images, first image gets removed' => [
                 new JsonDocument(
                     $eventId,
-                    json_encode((object) $initialJsonStructureWithMedia)
+                    Json::encode((object) $initialJsonStructureWithMedia)
                 ),
                 $image1,
                 $expectedWithoutFirstImage,
@@ -650,7 +650,7 @@ class OfferLDProjectorTest extends TestCase
             'document without media' => [
                 new JsonDocument(
                     $eventId,
-                    json_encode((object) $initialJsonStructure)
+                    Json::encode((object) $initialJsonStructure)
                 ),
                 $image1,
                 (object) $initialJsonStructure,
@@ -693,7 +693,7 @@ class OfferLDProjectorTest extends TestCase
         );
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'mediaObject' => [
                     [
                         '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
@@ -731,7 +731,7 @@ class OfferLDProjectorTest extends TestCase
         );
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'mediaObject' => [
                     [
@@ -770,7 +770,7 @@ class OfferLDProjectorTest extends TestCase
         );
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'pro' => 'jection',
             ])
         );
@@ -801,7 +801,7 @@ class OfferLDProjectorTest extends TestCase
         );
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'mediaObject' => [
                     [
@@ -852,7 +852,7 @@ class OfferLDProjectorTest extends TestCase
         );
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'image' => 'http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
                 'mediaObject' => [
                     [
@@ -902,11 +902,11 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Titel',
                 ],
-            ], JSON_THROW_ON_ERROR)
+            ])
         );
 
         $this->documentRepository->save($initialDocument);
@@ -950,7 +950,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Titel',
                 ],
@@ -964,7 +964,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
 
-            ], JSON_THROW_ON_ERROR)
+            ])
         );
 
         $this->documentRepository->save($initialDocument);
@@ -1015,11 +1015,11 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Titel',
                 ],
-            ], JSON_THROW_ON_ERROR)
+            ])
         );
 
         $this->documentRepository->save($initialDocument);
@@ -1057,7 +1057,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Titel',
                 ],
@@ -1081,7 +1081,7 @@ class OfferLDProjectorTest extends TestCase
                         'embedUrl' => 'https://www.youtube.com/embed/4335',
                     ],
                 ],
-            ], JSON_THROW_ON_ERROR)
+            ])
         );
 
         $this->documentRepository->save($initialDocument);
@@ -1124,7 +1124,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Titel',
                 ],
@@ -1136,7 +1136,7 @@ class OfferLDProjectorTest extends TestCase
                         'embedUrl' => 'https://www.youtube.com/embed/123',
                     ],
                 ],
-            ], JSON_THROW_ON_ERROR)
+            ])
         );
 
         $this->documentRepository->save($initialDocument);
@@ -1165,7 +1165,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Titel',
                 ],
@@ -1192,7 +1192,7 @@ class OfferLDProjectorTest extends TestCase
                         'embedUrl' => 'https://www.youtube.com/embed/4335',
                     ],
                 ],
-            ], JSON_THROW_ON_ERROR)
+            ])
         );
 
         $this->documentRepository->save($initialDocument);
@@ -1265,7 +1265,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode([
+            Json::encode([
                 'organizer' => [
                     '@type' => 'Organizer',
                     '@id' => 'http://example.com/entity/ORGANIZER-ABC-123',
@@ -1300,7 +1300,7 @@ class OfferLDProjectorTest extends TestCase
             ->with($organizerId)
             ->willReturnCallback(
                 function ($argument) {
-                    return json_encode(['id' => $argument, 'name' => 'name']);
+                    return Json::encode(['id' => $argument, 'name' => 'name']);
                 }
             );
 
@@ -1335,7 +1335,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode([
+            Json::encode([
                 'organizer' => [
                     '@type' => 'Organizer',
                     '@id' => 'http://example.com/entity/' . $organizerId,
@@ -1400,7 +1400,7 @@ class OfferLDProjectorTest extends TestCase
         $publishedEvent = new Published($itemId, $now);
         $itemDocumentReadyDraft = new JsonDocument(
             $itemId,
-            json_encode([
+            Json::encode([
                 '@id' => $itemId,
                 '@type' => 'event',
                 'workflowStatus' => 'DRAFT',
@@ -1431,7 +1431,7 @@ class OfferLDProjectorTest extends TestCase
         $approvedEvent = new Approved($itemId);
         $itemDocumentReadyForValidation = new JsonDocument(
             $itemId,
-            json_encode([
+            Json::encode([
                 '@id' => $itemId,
                 '@type' => 'event',
                 'workflowStatus' => 'READY_FOR_VALIDATION',
@@ -1462,7 +1462,7 @@ class OfferLDProjectorTest extends TestCase
     ): void {
         $itemDocumentReadyForValidation = new JsonDocument(
             $itemId,
-            json_encode([
+            Json::encode([
                 '@id' => $itemId,
                 '@type' => 'event',
                 'workflowStatus' => 'READY_FOR_VALIDATION',
@@ -1579,7 +1579,7 @@ class OfferLDProjectorTest extends TestCase
         $itemId = LegacyUUID::generateAsString();
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
-            json_encode([
+            Json::encode([
                 '@id' => $itemId,
                 '@type' => 'event',
                 'terms' => [
@@ -1633,7 +1633,7 @@ class OfferLDProjectorTest extends TestCase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode(
+            Json::encode(
                 [
                     'name' => ['nl' => 'Foo'],
                     'terms' => [
@@ -1710,7 +1710,7 @@ class OfferLDProjectorTest extends TestCase
         ];
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode([
+            Json::encode([
                 'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'mediaObject' => [
                     (object) [

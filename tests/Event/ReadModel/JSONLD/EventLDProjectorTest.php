@@ -42,6 +42,7 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -321,7 +322,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode(['creator' => $originalOwner])
+            Json::encode(['creator' => $originalOwner])
         );
         $this->documentRepository->save($initialDocument);
 
@@ -829,7 +830,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A'],
             ])
         );
@@ -851,7 +852,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A', 'label B', 'label C'],
             ])
         );
@@ -878,7 +879,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'bar' => 'stool',
             ])
         );
@@ -1078,7 +1079,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode(
+            Json::encode(
                 [
                     '@id' => 'http://uitdatabank/event/' . $id,
                     '@type' => 'Event',
@@ -1261,7 +1262,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $itemId = LegacyUUID::generateAsString();
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
-            json_encode([
+            Json::encode([
                 '@id' => $itemId,
                 '@type' => 'event',
                 'terms' => [
@@ -1323,7 +1324,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $documentWithUDB3Media = new JsonDocument(
             CdbXMLEventFactory::AN_EVENT_ID,
-            json_encode([
+            Json::encode([
                 'mediaObject' => [
                     [
                         '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
