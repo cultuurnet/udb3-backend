@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
@@ -525,6 +526,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected function getTypicalAgeRangeDeletedClassName()
     {
         return TypicalAgeRangeDeleted::class;
+    }
+
+    protected function getAvailableFromUpdatedClassName(): string
+    {
+        return AvailableFromUpdated::class;
     }
 
     protected function getPublishedClassName()

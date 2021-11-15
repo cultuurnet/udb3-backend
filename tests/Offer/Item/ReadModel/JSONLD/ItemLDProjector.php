@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\CalendarUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
@@ -157,6 +158,11 @@ class ItemLDProjector extends OfferLDProjector
     protected function getTypicalAgeRangeDeletedClassName()
     {
         return TypicalAgeRangeDeleted::class;
+    }
+
+    protected function getAvailableFromUpdatedClassName(): string
+    {
+        return AvailableFromUpdated::class;
     }
 
     protected function getPublishedClassName()

@@ -268,6 +268,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      */
     abstract protected function getTypicalAgeRangeDeletedClassName();
 
+    abstract protected function getAvailableFromUpdatedClassName(): string;
+
     /**
      * @return string
      */

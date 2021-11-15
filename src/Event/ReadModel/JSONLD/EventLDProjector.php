@@ -12,6 +12,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
@@ -645,6 +646,11 @@ class EventLDProjector extends OfferLDProjector implements
     protected function getTypicalAgeRangeDeletedClassName()
     {
         return TypicalAgeRangeDeleted::class;
+    }
+
+    protected function getAvailableFromUpdatedClassName(): string
+    {
+        return AvailableFromUpdated::class;
     }
 
     protected function getPublishedClassName()
