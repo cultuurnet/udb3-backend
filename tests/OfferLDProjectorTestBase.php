@@ -30,25 +30,13 @@ use ValueObjects\Web\Url;
  */
 abstract class OfferLDProjectorTestBase extends TestCase
 {
-    /**
-     * @var InMemoryDocumentRepository
-     */
-    protected $documentRepository;
+    protected InMemoryDocumentRepository $documentRepository;
 
-    /**
-     * @var EventListener
-     */
-    protected $projector;
+    protected EventListener $projector;
 
-    /**
-     * @var string
-     */
-    protected $eventNamespace;
+    protected string $eventNamespace;
 
-    /**
-     * @var RecordedOn
-     */
-    protected $recordedOn;
+    protected RecordedOn $recordedOn;
 
     /**
      * @var OrganizerService|MockObject
