@@ -113,10 +113,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $this->slugger = new CulturefeedSlugger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
 
@@ -148,11 +145,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
     }
 
-    /**
-     * @return string[]
-     *   An associative array of commands and their handler methods.
-     */
-    private function getEventHandlers()
+    private function getEventHandlers(): array
     {
         $events = [];
 
@@ -316,21 +309,14 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      */
     abstract protected function getFacilitiesUpdatedClassName();
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyTypeUpdated(AbstractTypeUpdated $typeUpdated)
+    protected function applyTypeUpdated(AbstractTypeUpdated $typeUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($typeUpdated);
 
         return $this->updateTerm($document, $typeUpdated->getType());
     }
 
-    /**
-     *
-     * @return JsonDocument
-     */
-    protected function updateTerm(JsonDocument $document, Category $category)
+    protected function updateTerm(JsonDocument $document, Category $category): JsonDocument
     {
         $offerLD = $document->getBody();
 
@@ -351,10 +337,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyFacilitiesUpdated(AbstractFacilitiesUpdated $facilitiesUpdated)
+    protected function applyFacilitiesUpdated(AbstractFacilitiesUpdated $facilitiesUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($facilitiesUpdated);
 
@@ -380,10 +363,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyLabelAdded(AbstractLabelAdded $labelAdded)
+    protected function applyLabelAdded(AbstractLabelAdded $labelAdded): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($labelAdded);
 
@@ -401,10 +381,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved)
+    protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($labelRemoved);
 
@@ -437,12 +414,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the imageAdded event to the item repository.
-     *
-     * @return JsonDocument
-     */
-    protected function applyImageAdded(AbstractImageAdded $imageAdded)
+    protected function applyImageAdded(AbstractImageAdded $imageAdded): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($imageAdded);
 
@@ -459,13 +431,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the ImageUpdated event to the item repository.
-     *
-     * @return JsonDocument
-     * @throws \Exception
-     */
-    protected function applyImageUpdated(AbstractImageUpdated $imageUpdated)
+    protected function applyImageUpdated(AbstractImageUpdated $imageUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($imageUpdated);
 
@@ -552,10 +518,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyMainImageSelected(AbstractMainImageSelected $mainImageSelected)
+    protected function applyMainImageSelected(AbstractMainImageSelected $mainImageSelected): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($mainImageSelected);
         $offerLd = $document->getBody();
@@ -577,12 +540,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @param Object $mediaObject
-     *
-     * @return bool
-     */
-    protected function mediaObjectMatchesId($mediaObject, UUID $mediaObjectId)
+    protected function mediaObjectMatchesId(Object $mediaObject, UUID $mediaObjectId): bool
     {
         return strpos($mediaObject->{'@id'}, (string) $mediaObjectId) > 0;
     }
@@ -631,10 +589,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyTitleTranslated(AbstractTitleTranslated $titleTranslated)
+    protected function applyTitleTranslated(AbstractTitleTranslated $titleTranslated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($titleTranslated);
 
@@ -645,10 +600,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyTitleUpdated(AbstractTitleUpdated $titleUpdated)
+    protected function applyTitleUpdated(AbstractTitleUpdated $titleUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($titleUpdated);
         $offerLd = $document->getBody();
@@ -659,12 +611,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyDescriptionTranslated(
         AbstractDescriptionTranslated $descriptionTranslated
-    ) {
+    ): JsonDocument {
         $document = $this->loadDocumentFromRepository($descriptionTranslated);
 
         $offerLd = $document->getBody();
@@ -678,11 +627,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     *
-     * @return JsonDocument
-     */
-    protected function applyCalendarUpdated(AbstractCalendarUpdated $calendarUpdated)
+    protected function applyCalendarUpdated(AbstractCalendarUpdated $calendarUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($calendarUpdated)
             ->apply(OfferUpdate::calendar($calendarUpdated->getCalendar()));
@@ -695,11 +640,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the organizer updated event to the offer repository.
-     * @return JsonDocument
-     */
-    protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated)
+    protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($organizerUpdated);
 
@@ -712,11 +653,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the organizer delete event to the offer repository.
-     * @return JsonDocument
-     */
-    protected function applyOrganizerDeleted(AbstractOrganizerDeleted $organizerDeleted)
+    protected function applyOrganizerDeleted(AbstractOrganizerDeleted $organizerDeleted): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($organizerDeleted);
 
@@ -727,11 +664,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the booking info updated event to the offer repository.
-     * @return JsonDocument
-     */
-    protected function applyBookingInfoUpdated(AbstractBookingInfoUpdated $bookingInfoUpdated)
+    protected function applyBookingInfoUpdated(AbstractBookingInfoUpdated $bookingInfoUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($bookingInfoUpdated);
 
@@ -742,10 +675,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyPriceInfoUpdated(AbstractPriceInfoUpdated $priceInfoUpdated)
+    protected function applyPriceInfoUpdated(AbstractPriceInfoUpdated $priceInfoUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($priceInfoUpdated);
 
@@ -773,11 +703,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the contact point updated event to the offer repository.
-     * @return JsonDocument
-     */
-    protected function applyContactPointUpdated(AbstractContactPointUpdated $contactPointUpdated)
+    protected function applyContactPointUpdated(AbstractContactPointUpdated $contactPointUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($contactPointUpdated);
 
@@ -787,13 +713,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the description updated event to the offer repository.
-     * @return JsonDocument
-     */
     protected function applyDescriptionUpdated(
         AbstractDescriptionUpdated $descriptionUpdated
-    ) {
+    ): JsonDocument {
         $document = $this->loadDocumentFromRepository($descriptionUpdated);
 
         $offerLd = $document->getBody();
@@ -807,13 +729,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the typical age range updated event to the offer repository.
-     * @return JsonDocument
-     */
     protected function applyTypicalAgeRangeUpdated(
         AbstractTypicalAgeRangeUpdated $typicalAgeRangeUpdated
-    ) {
+    ): JsonDocument {
         $document = $this->loadDocumentFromRepository($typicalAgeRangeUpdated);
 
         $offerLd = $document->getBody();
@@ -822,13 +740,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * Apply the typical age range deleted event to the offer repository.
-     * @return JsonDocument
-     */
     protected function applyTypicalAgeRangeDeleted(
         AbstractTypicalAgeRangeDeleted $typicalAgeRangeDeleted
-    ) {
+    ): JsonDocument {
         $document = $this->loadDocumentFromRepository($typicalAgeRangeDeleted);
 
         $offerLd = $document->getBody();
@@ -849,10 +763,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyPublished(AbstractPublished $published)
+    protected function applyPublished(AbstractPublished $published): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($published);
 
@@ -866,10 +777,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyApproved(AbstractApproved $approved)
+    protected function applyApproved(AbstractApproved $approved): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($approved);
         $offerLd = $document->getBody();
@@ -877,10 +785,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyRejected(AbstractRejected $rejected)
+    protected function applyRejected(AbstractRejected $rejected): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($rejected);
         $offerLd = $document->getBody();
@@ -888,34 +793,25 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyFlaggedAsDuplicate(
         AbstractFlaggedAsDuplicate $flaggedAsDuplicate
-    ) {
+    ): JsonDocument {
         $document = $this->loadDocumentFromRepository($flaggedAsDuplicate);
         $offerLd = $document->getBody();
         $offerLd->workflowStatus = WorkflowStatus::REJECTED()->getName();
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyFlaggedAsInappropriate(
         AbstractFlaggedAsInappropriate $flaggedAsInappropriate
-    ) {
+    ): JsonDocument {
         $document = $this->loadDocumentFromRepository($flaggedAsInappropriate);
         $offerLd = $document->getBody();
         $offerLd->workflowStatus = WorkflowStatus::REJECTED()->getName();
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyImagesImportedFromUdb2(AbstractImagesImportedFromUDB2 $imagesImportedFromUDB2)
+    protected function applyImagesImportedFromUdb2(AbstractImagesImportedFromUDB2 $imagesImportedFromUDB2): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($imagesImportedFromUDB2);
         $offerLd = $document->getBody();
@@ -923,10 +819,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyImagesUpdatedFromUdb2(AbstractImagesUpdatedFromUDB2 $imagesUpdatedFromUDB2)
+    protected function applyImagesUpdatedFromUdb2(AbstractImagesUpdatedFromUDB2 $imagesUpdatedFromUDB2): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($imagesUpdatedFromUDB2);
         $offerLd = $document->getBody();
@@ -939,9 +832,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      * Imports from UDB2 only contain the native Dutch content.
      * @see https://github.com/cultuurnet/udb3-udb2-bridge/blob/db0a7ab2444f55bb3faae3d59b82b39aaeba253b/test/Media/ImageCollectionFactoryTest.php#L79-L103
      * Because of this we have to make sure translated images are left in place.
-     *
      */
-    private function applyUdb2ImagesEvent(\stdClass $offerLd, AbstractImagesEvent $imagesEvent)
+    private function applyUdb2ImagesEvent(\stdClass $offerLd, AbstractImagesEvent $imagesEvent): void
     {
         $images = $imagesEvent->getImages();
         $currentMediaObjects = isset($offerLd->mediaObject) ? $offerLd->mediaObject : [];
@@ -984,19 +876,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function loadDocumentFromRepository(AbstractEvent $event)
+    protected function loadDocumentFromRepository(AbstractEvent $event): JsonDocument
     {
         return $this->loadDocumentFromRepositoryByItemId($event->getItemId());
     }
 
-    /**
-     * @param string $itemId
-     * @return JsonDocument
-     */
-    protected function loadDocumentFromRepositoryByItemId($itemId)
+    protected function loadDocumentFromRepositoryByItemId(string $itemId): JsonDocument
     {
         try {
             $document = $this->repository->fetch($itemId);
@@ -1023,10 +908,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function updateModified(JsonDocument $jsonDocument, DomainMessage $domainMessage)
+    private function updateModified(JsonDocument $jsonDocument, DomainMessage $domainMessage): JsonDocument
     {
         $body = $jsonDocument->getBody();
 
