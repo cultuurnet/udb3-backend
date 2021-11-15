@@ -11,7 +11,6 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
@@ -74,56 +73,36 @@ use ValueObjects\Web\Url as LegacyUrl;
 
 class OfferLDProjectorTest extends TestCase
 {
-    /**
-     * @var InMemoryDocumentRepository
-     */
-    protected $documentRepository;
+    protected InMemoryDocumentRepository $documentRepository;
 
-    /**
-     * @var ItemLDProjector
-     */
-    protected $projector;
-
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
+    protected ItemLDProjector $projector;
 
     /**
      * @var OrganizerService|MockObject
      */
     protected $organizerService;
 
-    /**
-     * @var MediaObjectSerializer
-     */
-    protected $serializer;
+    protected MediaObjectSerializer $serializer;
 
-    /**
-     * @var RecordedOn
-     */
-    protected $recordedOn;
+    protected RecordedOn $recordedOn;
 
-    /**
-     * @inheritdoc
-     */
-    public function setUp()
+    public function setUp(): void
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
         $this->organizerService = $this->createMock(OrganizerService::class);
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
             }
         );
 
-        $this->serializer = new MediaObjectSerializer($this->iriGenerator);
+        $this->serializer = new MediaObjectSerializer($iriGenerator);
 
         $this->projector = new ItemLDProjector(
             $this->documentRepository,
-            $this->iriGenerator,
+            $iriGenerator,
             $this->organizerService,
             $this->serializer,
             new JsonDocumentNullEnricher(),
