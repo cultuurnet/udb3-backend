@@ -102,9 +102,9 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['image_url_repository'] = $app->share(
+        $app['media_url_repository'] = $app->share(
             function (Application $app) {
-                return new MediaUrlRepository($app['config']['media']['media_url_polyfill']);
+                return new MediaUrlRepository($app['config']['media']['media_url_mapping']);
             }
         );
     }
