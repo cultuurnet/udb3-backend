@@ -16,6 +16,7 @@ final class JsonSchemaLocator
     private static ?string $schemaDirectory;
 
     public const EVENT_AUDIENCE = 'event-audience.json';
+    public const EVENT_AVAILABLE_FROM_PUT = 'event-availableFrom-put.json';
     public const EVENT_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
     public const EVENT_CALENDAR_PUT = 'event-calendar-put.json';
     public const EVENT_FACILITIES_PUT = 'event-facilities-put.json';
@@ -24,6 +25,7 @@ final class JsonSchemaLocator
     public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
     public const EVENT_VIDEOS_POST = 'event-videos-post.json';
 
+    public const PLACE_AVAILABLE_FROM_PUT = 'place-availableFrom-put.json';
     public const PLACE_BOOKING_AVAILABILITY = 'place-bookingAvailability.json';
     public const PLACE_CALENDAR_PUT = 'place-calendar-put.json';
     public const PLACE_FACILITIES_PUT = 'place-facilities-put.json';
