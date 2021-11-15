@@ -52,32 +52,20 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::now());
     }
 
-    /**
-     * Get the namespaced classname of the event to create.
-     * @param string $className
-     *   Name of the class
-     * @return string
-     */
-    private function getEventClass($className)
+    private function getEventClass(string $className): string
     {
         return $this->eventNamespace . '\\Events\\' . $className;
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
         $this->organizerService = $this->createMock(OrganizerService::class);
     }
 
-    /**
-     * @param object $event
-     */
     protected function project(
-        $event,
+        object $event,
         string $entityId,
         Metadata $metadata = null,
         DateTime $dateTime = null
@@ -103,11 +91,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         return $this->getBody($entityId);
     }
 
-    /**
-     * @param string $id
-     * @return \stdClass
-     */
-    protected function getBody($id)
+    protected function getBody(string $id): stdClass
     {
         $document = $this->documentRepository->fetch($id);
         return $document->getBody();
@@ -116,7 +100,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_booking_info()
+    public function it_projects_the_updating_of_booking_info(): void
     {
         $id = 'foo';
         $url = 'http://www.google.be';
@@ -154,7 +138,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_contact_point()
+    public function it_projects_the_updating_of_contact_point(): void
     {
         $id = 'foo';
         $phones = ['045', '046'];
@@ -187,7 +171,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_description()
+    public function it_projects_the_updating_of_description(): void
     {
         $description = new Description('description');
         $id = 'foo';
@@ -227,7 +211,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     /**
      * @test
      */
-    public function it_projects_the_adding_of_an_image()
+    public function it_projects_the_adding_of_an_image(): void
     {
         $id = 'foo';
         $imageId = UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014');
@@ -268,7 +252,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     /**
      * @test
      */
-    public function it_projects_the_editing_of_an_image()
+    public function it_projects_the_editing_of_an_image(): void
     {
         $id = 'foo';
         $imageId = UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014');
@@ -318,7 +302,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_age_range()
+    public function it_projects_the_updating_of_age_range(): void
     {
         $id = 'foo';
         $eventClass = $this->getEventClass('TypicalAgeRangeUpdated');
@@ -345,7 +329,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     /**
      * @test
      */
-    public function it_projects_the_deleting_of_age_range()
+    public function it_projects_the_deleting_of_age_range(): void
     {
         $id = 'foo';
         $eventClass = $this->getEventClass('TypicalAgeRangeDeleted');
