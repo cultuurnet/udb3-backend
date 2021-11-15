@@ -103,35 +103,25 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $this->cdbXMLImporter = $cdbXMLImporter;
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyPlaceImportedFromUDB2(
         PlaceImportedFromUDB2 $placeImportedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->projectActorImportedFromUDB2(
             $placeImportedFromUDB2
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyPlaceUpdatedFromUDB2(
         PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->projectActorImportedFromUDB2(
             $placeUpdatedFromUDB2
         );
     }
 
-    /**
-     * @return JsonDocument
-     * @throws \CultureFeed_Cdb_ParseException
-     */
     protected function projectActorImportedFromUDB2(
         ActorImportedFromUDB2 $actorImportedFromUDB2
-    ) {
+    ): JsonDocument {
         $actorId = $actorImportedFromUDB2->getActorId();
 
         $udb2Actor = ActorItemFactory::createActorFromCdbXml(
@@ -176,10 +166,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($placeLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage)
+    protected function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage): JsonDocument
     {
         $document = $this->newDocument($placeCreated->getPlaceId());
 
@@ -241,11 +228,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * Apply the major info updated command to the projector.
-     * @return JsonDocument
-     */
-    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
+    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): JsonDocument
     {
         $document = $this
             ->loadPlaceDocumentFromRepositoryById($majorInfoUpdated->getPlaceId())
@@ -285,10 +268,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyAddressUpdated(AddressUpdated $addressUpdated)
+    protected function applyAddressUpdated(AddressUpdated $addressUpdated): JsonDocument
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($addressUpdated->getPlaceId());
         $jsonLD = $document->getBody();
@@ -296,10 +276,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyAddressTranslated(AddressTranslated $addressTranslated)
+    protected function applyAddressTranslated(AddressTranslated $addressTranslated): JsonDocument
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($addressTranslated->getPlaceId());
         $jsonLD = $document->getBody();
@@ -307,8 +284,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-
-    protected function setAddress(\stdClass $jsonLd, Address $address, Language $language)
+    protected function setAddress(\stdClass $jsonLd, Address $address, Language $language): void
     {
         if (!isset($jsonLd->address)) {
             $jsonLd->address = new \stdClass();
@@ -329,10 +305,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $jsonLd->address->{$language->getCode()} = $address->toJsonLd();
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
+    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated): JsonDocument
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($geoCoordinatesUpdated->getItemId());
 
@@ -380,10 +353,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             );
     }
 
-    /**
-     * @param string $itemId
-     */
-    protected function loadPlaceDocumentFromRepositoryById($itemId): JsonDocument
+    protected function loadPlaceDocumentFromRepositoryById(string $itemId): JsonDocument
     {
         try {
             $document = $this->repository->fetch($itemId);
