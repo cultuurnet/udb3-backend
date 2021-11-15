@@ -68,6 +68,7 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
 use ValueObjects\Identity\UUID as LegacyUUID;
@@ -90,6 +91,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected ?string $organizerId = null;
 
     protected ?WorkflowStatus $workflowStatus = null;
+
+    protected ?DateTimeInterface $availableFrom = null;
 
     protected ?StringLiteral $rejectedReason = null;
 
@@ -722,6 +725,20 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->workflowStatus = $workflowStatus;
     }
 
+    public function updateAvailableFrom(DateTimeInterface $availableFrom): void
+    {
+        if ($availableFrom < new DateTimeImmutable()) {
+            $availableFrom = new DateTimeImmutable();
+        }
+
+        // It is required to use `==` instead of `===` to compare DateTime objects in PHP
+        if ($this->availableFrom !== null && $this->availableFrom == $availableFrom) {
+            return;
+        }
+
+        $this->apply($this->createAvailableFromUpdatedEvent($availableFrom));
+    }
+
     /**
      * Publish the offer when it has workflowstatus draft.
      */
@@ -836,8 +853,14 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->apply($this->createImagesUpdatedFromUDB2($images));
     }
 
+    protected function applyAvailableFromUpdated(AbstractAvailableFromUpdated $availableFromUpdated): void
+    {
+        $this->availableFrom = $availableFromUpdated->getAvailableFrom();
+    }
+
     protected function applyPublished(AbstractPublished $published): void
     {
+        $this->availableFrom = $published->getPublicationDate();
         $this->workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
     }
 
