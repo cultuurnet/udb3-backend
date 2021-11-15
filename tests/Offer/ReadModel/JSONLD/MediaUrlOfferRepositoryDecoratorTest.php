@@ -77,10 +77,6 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
         'image' => 'https://images.uitdatabank.be/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
     ];
 
-    protected function setUp(): void
-    {
-    }
-
     /**
      * @test
      */
