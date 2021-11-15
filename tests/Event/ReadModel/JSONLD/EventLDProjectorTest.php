@@ -42,7 +42,6 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -75,25 +74,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     private $placeService;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
+    private CdbXMLEventFactory $cdbXMLEventFactory;
 
-    /**
-     * @var CdbXMLEventFactory
-     */
-    private $cdbXMLEventFactory;
-
-    /**
-     * @var EventLDProjector
-     */
-    protected $projector;
-
-    /**
-     * @var MediaObjectSerializer
-     */
-    protected $serializer;
+    protected MediaObjectSerializer $serializer;
 
     /**
      * @var IriOfferIdentifierFactoryInterface|MockObject
@@ -127,13 +110,13 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->placeService = $this->createMock(LocalPlaceService::class);
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
             }
         );
 
-        $this->serializer = new MediaObjectSerializer($this->iriGenerator);
+        $this->serializer = new MediaObjectSerializer($iriGenerator);
 
         $this->iriOfferIdentifierFactory = $this->createMock(IriOfferIdentifierFactoryInterface::class);
         $this->cdbXMLImporter = new CdbXMLImporter(
@@ -156,7 +139,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->projector = new EventLDProjector(
             $this->documentRepository,
-            $this->iriGenerator,
+            $iriGenerator,
             $this->placeService,
             $this->organizerService,
             $this->serializer,
