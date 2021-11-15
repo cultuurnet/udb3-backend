@@ -87,7 +87,7 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             'udb3' => [
                 'enabled' => true,
                 'legacy_url' => 'https://io.uitdatabank.be/images/',
-                'new_url' => 'https://images.uitdatabank.be/',
+                'url' => 'https://images.uitdatabank.be/',
             ],
         ];
 
@@ -114,18 +114,18 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             'udb3' => [
                 'enabled' => false,
                 'legacy_url' => 'https://io.uitdatabank.be/images/',
-                'new_url' => 'https://images.uitdatabank.be/',
+                'url' => 'https://images.uitdatabank.be/',
             ],
         ];
 
-        $mediaUrlOfferRepositoryDecoratorDecorator = new MediaUrlOfferRepositoryDecorator(
+        $mediaUrlOfferRepositoryDecorator = new MediaUrlOfferRepositoryDecorator(
             new InMemoryDocumentRepository(),
             new MediaUrlRepository($mapping)
         );
         $givenDocument = new JsonDocument($id, json_encode(self::GIVEN_JSON));
 
-        $mediaUrlOfferRepositoryDecoratorDecorator->save($givenDocument);
-        $actualDocument = $mediaUrlOfferRepositoryDecoratorDecorator->fetch($id);
+        $mediaUrlOfferRepositoryDecorator->save($givenDocument);
+        $actualDocument = $mediaUrlOfferRepositoryDecorator->fetch($id);
         $actualJson = $actualDocument->getAssocBody();
 
         $this->assertEquals(self::GIVEN_JSON, $actualJson);

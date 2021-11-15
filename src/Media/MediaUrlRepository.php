@@ -13,11 +13,11 @@ final class MediaUrlRepository
         $this->mapping = $mapping;
     }
 
-    public function updateUrl(string $oldUrl): string
+    public function getUpdatedUrl(string $oldUrl): string
     {
-        foreach ($this->mapping as $udb_variant => $settings) {
-            if ($settings['enabled']) {
-                return str_replace($settings['legacy_url'], $settings['new_url'], $oldUrl);
+        foreach ($this->mapping as $udbVariant => $mediaUrlMapping) {
+            if ($mediaUrlMapping['enabled']) {
+                return str_replace($mediaUrlMapping['legacy_url'], $mediaUrlMapping['url'], $oldUrl);
             }
         }
         return $oldUrl;

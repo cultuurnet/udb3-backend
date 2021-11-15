@@ -25,9 +25,8 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
         $document = $document->applyAssoc(
             function (array $json) {
                 if (
-                    !isset($json['mediaObject'], $json['image']) ||
-                    !is_array($json['mediaObject']) ||
-                    !is_string($json['image'])
+                    !isset($json['mediaObject']) ||
+                    !is_array($json['mediaObject'])
                 ) {
                     return $json;
                 }
@@ -41,15 +40,21 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
                             return $mediaObject;
                         }
 
-                        $mediaObject['contentUrl'] = $this->mediaUrlRepository->updateUrl($mediaObject['contentUrl']);
-                        $mediaObject['thumbnailUrl'] = $this->mediaUrlRepository->updateUrl($mediaObject['thumbnailUrl']);
+                        $mediaObject['contentUrl'] = $this->mediaUrlRepository->getUpdatedUrl($mediaObject['contentUrl']);
+                        $mediaObject['thumbnailUrl'] = $this->mediaUrlRepository->getUpdatedUrl($mediaObject['thumbnailUrl']);
 
                         return $mediaObject;
                     },
                     $json['mediaObject']
                 );
 
-                $json['image'] = $this->mediaUrlRepository->updateUrl($json['image']);
+                if (
+                    !isset($json['image']) ||
+                    !is_string($json['image'])
+                ) {
+                    return $json;
+                }
+                $json['image'] = $this->mediaUrlRepository->getUpdatedUrl($json['image']);
 
                 return $json;
             }
