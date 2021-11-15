@@ -30,7 +30,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
      */
     public function it_converts_contact_info_to_booking_info_json()
     {
-        $jsonLd = new \StdClass();
+        $jsonLd = new \stdClass();
 
         $this->cdbXmlContactInfoImporter->importBookingInfo(
             $jsonLd,
