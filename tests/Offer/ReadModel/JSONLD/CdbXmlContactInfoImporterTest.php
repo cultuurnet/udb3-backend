@@ -64,7 +64,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
             1483464325
         );
 
-        $jsonLd = new \StdClass();
+        $jsonLd = new \stdClass();
 
         $this->cdbXmlContactInfoImporter->importBookingInfo(
             $jsonLd,
@@ -90,7 +90,7 @@ class CdbXmlContactInfoImporterTest extends TestCase
      */
     public function it_converts_contact_info_to_contact_point_json()
     {
-        $jsonLd = new \StdClass();
+        $jsonLd = new \stdClass();
 
         $this->cdbXmlContactInfoImporter->importContactPoint(
             $jsonLd,

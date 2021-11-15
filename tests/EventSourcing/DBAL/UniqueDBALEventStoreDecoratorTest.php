@@ -89,7 +89,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             self::ID,
             0,
             new Metadata(),
-            new \StdClass(),
+            new \stdClass(),
             BroadwayDateTime::now()
         );
 
@@ -114,7 +114,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             self::ID,
             0,
             new Metadata(),
-            new \StdClass(),
+            new \stdClass(),
             BroadwayDateTime::now()
         );
 
@@ -155,7 +155,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             self::ID,
             0,
             new Metadata(),
-            new \StdClass(),
+            new \stdClass(),
             BroadwayDateTime::now()
         );
 
