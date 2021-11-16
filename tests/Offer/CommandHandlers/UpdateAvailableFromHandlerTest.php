@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Broadway\EventStore\TraceableEventStore;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventRepository;
@@ -29,8 +30,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCase
 {
+    private EventStore $traceableEventStore;
+
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
+        $this->traceableEventStore = $eventStore;
+
         return new UpdateAvailableFromHandler(
             new OfferRepository(
                 new EventRepository($eventStore, $eventBus),
@@ -102,5 +107,46 @@ final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCas
                 [new AvailableFromUpdated($eventId, new DateTimeImmutable('2035-11-15T11:22:33+00:00'))],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_modifies_available_from_in_the_past_to_now(): void
+    {
+        if (!$this->traceableEventStore instanceof TraceableEventStore) {
+            return;
+        }
+
+        $eventId = '300ed979-03d8-48a0-859a-d03aeab0fa6a';
+
+        $eventCreated = new EventCreated(
+            $eventId,
+            new Language('nl'),
+            new Title('Permanent Event'),
+            new EventType('0.50.4.0.0', 'concert'),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new Calendar(CalendarType::PERMANENT())
+        );
+
+        $updateAvailableFrom = new UpdateAvailableFrom($eventId, new DateTimeImmutable('2010-11-15T11:22:33+00:00'));
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given([$eventCreated])
+            ->when($updateAvailableFrom);
+
+        $events = $this->traceableEventStore->getEvents();
+
+        $this->assertCount(1, $events);
+        $this->assertInstanceOf(AvailableFromUpdated::class, $events[0]);
+
+        /** @var AvailableFromUpdated $availableFromUpdated */
+        $availableFromUpdated = $events[0];
+        $this->assertEquals($eventId, $availableFromUpdated->getItemId());
+
+        $nowTimestamp = (new DateTimeImmutable())->getTimestamp();
+        $availableFromTimeStamp = $availableFromUpdated->getAvailableFrom()->getTimestamp();
+        $this->assertTrue($nowTimestamp - $availableFromTimeStamp < 1);
     }
 }
