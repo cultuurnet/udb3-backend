@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\MediaUrlRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -100,7 +101,7 @@ final class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             new InMemoryDocumentRepository(),
             new MediaUrlRepository($mapping)
         );
-        $givenDocument = new JsonDocument($id, json_encode(self::GIVEN_JSON));
+        $givenDocument = new JsonDocument($id, Json::encode(self::GIVEN_JSON));
 
         $mediaUrlOfferRepositoryDecoratorDecorator->save($givenDocument);
         $actualDocument = $mediaUrlOfferRepositoryDecoratorDecorator->fetch($id);
@@ -132,7 +133,7 @@ final class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             new InMemoryDocumentRepository(),
             new MediaUrlRepository($mapping)
         );
-        $givenDocument = new JsonDocument($id, json_encode(self::GIVEN_JSON));
+        $givenDocument = new JsonDocument($id, Json::encode(self::GIVEN_JSON));
 
         $mediaUrlOfferRepositoryDecorator->save($givenDocument);
         $actualDocument = $mediaUrlOfferRepositoryDecorator->fetch($id);
