@@ -9,7 +9,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
-class MediaUrlOfferRepositoryDecoratorTest extends TestCase
+final class MediaUrlOfferRepositoryDecoratorTest extends TestCase
 {
     private const GIVEN_JSON = [
         'mediaObject' => [
