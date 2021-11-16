@@ -849,7 +849,7 @@ class TabularDataEventFormatter
         return $map[$status->type];
     }
 
-    private function formatBookingAvailability(StdClass $bookingAvailability): string
+    private function formatBookingAvailability(stdClass $bookingAvailability): string
     {
         $map = [
             'Available' => 'Beschikbaar',

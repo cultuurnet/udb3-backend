@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
@@ -32,6 +33,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->get('/{offerType}/{offerId}/', GetDetailRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/', DeleteRequestHandler::class);
+
+        $controllers->put('/{offerType}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 
         $controllers->get('/{offerType}/{offerId}/history/', GetHistoryRequestHandler::class);
 
@@ -59,6 +62,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[DeleteRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateAvailableFromRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateAvailableFromRequestHandler($app['event_command_bus'])
         );
 
         $app[GetHistoryRequestHandler::class] = $app->share(

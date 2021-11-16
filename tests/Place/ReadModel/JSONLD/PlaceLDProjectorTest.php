@@ -8,7 +8,6 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
-use CultureFeed_Cdb_Data_File;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -22,7 +21,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -43,81 +42,37 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use ValueObjects\Geography\Country;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 {
-    /**
-     * @var PlaceLDProjector
-     */
-    protected $projector;
+    private MediaObjectSerializer $serializer;
 
-    /**
-     * @var DocumentRepository|MockObject
-     */
-    protected $documentRepository;
+    private Address $address;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
+    private CdbXMLImporter $cdbXMLImporter;
 
-    /**
-     * @var MediaObjectSerializer
-     */
-    private $serializer;
-
-    /**
-     * @var Address
-     */
-    private $address;
-
-    /**
-     * @var CdbXMLImporter
-     */
-    private $cdbXMLImporter;
-
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $mediaIriGenerator;
-
-    /**
-     * Constructs a test case with the given name.
-     *
-     * @param string $name
-     * @param string $dataName
-     */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct(string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName, 'CultuurNet\\UDB3\\Place');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
             }
         );
 
-        $this->serializer = new MediaObjectSerializer($this->iriGenerator);
-
-        $this->mediaIriGenerator = new CallableIriGenerator(function (CultureFeed_Cdb_Data_File $file) {
-            return 'http://example.com/media/' . $file->getFileName();
-        });
+        $this->serializer = new MediaObjectSerializer($iriGenerator);
 
         $this->cdbXMLImporter = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
@@ -138,7 +93,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->projector = new PlaceLDProjector(
             $this->documentRepository,
-            $this->iriGenerator,
+            $iriGenerator,
             $this->organizerService,
             $this->serializer,
             $this->cdbXMLImporter,
@@ -172,7 +127,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_places()
+    public function it_handles_new_places(): void
     {
         $id = 'foo';
         $created = '2015-01-20T13:25:21+01:00';
@@ -236,7 +191,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_places_with_creator()
+    public function it_handles_new_places_with_creator(): void
     {
         $id = 'foo';
         $created = '2015-01-20T13:25:21+01:00';
@@ -312,7 +267,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode(['creator' => $originalOwner])
+            Json::encode(['creator' => $originalOwner])
         );
         $this->documentRepository->save($initialDocument);
 
@@ -329,7 +284,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_should_project_an_updated_address()
+    public function it_should_project_an_updated_address(): void
     {
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
@@ -406,7 +361,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_should_project_a_translated_address()
+    public function it_should_project_a_translated_address(): void
     {
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
@@ -490,7 +445,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_should_set_a_main_language_when_importing_from_udb2()
+    public function it_should_set_a_main_language_when_importing_from_udb2(): void
     {
         $event = $this->placeImportedFromUDB2('place_with_short_and_long_description.cdbxml.xml');
 
@@ -502,7 +457,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_should_not_update_the_main_language_when_updating_from_udb2()
+    public function it_should_not_update_the_main_language_when_updating_from_udb2(): void
     {
         // First make sure there is a new place created.
         $placeId = 'foo';
@@ -533,7 +488,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_does_not_add_an_empty_image_property()
+    public function it_does_not_add_an_empty_image_property(): void
     {
         $event = $this->placeImportedFromUDB2('place_without_image.cdbxml.xml');
 
@@ -542,10 +497,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertObjectNotHasAttribute('image', $body);
     }
 
-    /**
-     * @return array
-     */
-    public function descriptionSamplesProvider()
+
+    public function descriptionSamplesProvider(): array
     {
         $samples = [
             ['place_with_short_description.cdbxml.xml', 'Korte beschrijving.'],
@@ -559,7 +512,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_updates_a_place_from_udb2()
+    public function it_updates_a_place_from_udb2(): void
     {
         $placeImportedFromUdb2 = $this->placeImportedFromUDB2('place_with_short_description.cdbxml.xml');
         $actorId = $placeImportedFromUdb2->getActorId();
@@ -579,7 +532,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_updates_a_place_from_udb2_when_it_has_been_deleted_in_udb3()
+    public function it_updates_a_place_from_udb2_when_it_has_been_deleted_in_udb3(): void
     {
         $placeImportedFromUdb2 = $this->placeImportedFromUDB2('place_with_short_description.cdbxml.xml');
         $actorId = $placeImportedFromUdb2->getActorId();
@@ -602,13 +555,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      * @dataProvider descriptionSamplesProvider
-     * @param string $fileName
-     * @param string $expectedDescription
      */
     public function it_adds_a_description_property_when_cdbxml_has_long_or_short_description(
-        $fileName,
-        $expectedDescription
-    ) {
+        string $fileName,
+        string $expectedDescription
+    ): void {
         $event = $this->placeImportedFromUDB2($fileName);
 
         $body = $this->project($event, $event->getActorId());
@@ -622,7 +573,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_should_keep_address_translations_when_updating_from_cdbxml()
+    public function it_should_keep_address_translations_when_updating_from_cdbxml(): void
     {
         $initialJsonLd = new stdClass();
         $initialJsonLd->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
@@ -687,7 +638,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_major_info()
+    public function it_projects_the_updating_of_major_info(): void
     {
         $id = 'foo';
         $title = new Title('new title');
@@ -773,13 +724,13 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_geo_coordinates()
+    public function it_projects_the_updating_of_geo_coordinates(): void
     {
         $id = 'ea328f14-a3c8-4f71-abd9-00cd0a2cf217';
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode(
+            Json::encode(
                 [
                     '@id' => 'http://uitdatabank/place/' . $id,
                     '@type' => 'Place',
@@ -822,7 +773,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_updates_workflow_status_on_delete()
+    public function it_updates_workflow_status_on_delete(): void
     {
         $placeId = 'ea328f14-a3c8-4f71-abd9-00cd0a2cf217';
 
@@ -843,7 +794,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_addition_of_a_label()
+    public function it_projects_the_addition_of_a_label(): void
     {
         $labelAdded = new LabelAdded(
             'foo',
@@ -852,7 +803,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A'],
             ])
         );
@@ -870,11 +821,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_removal_of_a_label()
+    public function it_projects_the_removal_of_a_label(): void
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A', 'label B', 'label C'],
             ])
         );
@@ -897,11 +848,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_addition_of_a_label_to_a_place_without_existing_labels()
+    public function it_projects_the_addition_of_a_label_to_a_place_without_existing_labels(): void
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'bar' => 'stool',
             ])
         );
@@ -929,11 +880,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_removes_geocoordinates_after_major_info_updated()
+    public function it_removes_geocoordinates_after_major_info_updated(): void
     {
         $initialDocument = new JsonDocument(
             '3c4850d7-689a-4729-8c5f-5f6c172ba52d',
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -972,11 +923,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_removes_geocoordinates_after_place_updated_from_udb2()
+    public function it_removes_geocoordinates_after_place_updated_from_udb2(): void
     {
         $initialDocument = new JsonDocument(
             '318F2ACB-F612-6F75-0037C9C29F44087A',
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -1009,14 +960,14 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_adds_the_canonical_id_to_a_place_that_is_marked_as_a_duplicate()
+    public function it_adds_the_canonical_id_to_a_place_that_is_marked_as_a_duplicate(): void
     {
         $duplicateId = 'cb0f0523-ccd9-4a8e-b985-820e40ca5d40';
         $canonicalId = '6caefd7d-9e2f-4b61-a7fa-54d8b25fb8d9';
 
         $initialDocument = new JsonDocument(
             $duplicateId,
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -1045,14 +996,14 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_adds_the_duplicate_id_to_a_place_that_is_marked_as_canonical()
+    public function it_adds_the_duplicate_id_to_a_place_that_is_marked_as_canonical(): void
     {
         $duplicateId = 'cb0f0523-ccd9-4a8e-b985-820e40ca5d40';
         $canonicalId = '6caefd7d-9e2f-4b61-a7fa-54d8b25fb8d9';
 
         $initialDocument = new JsonDocument(
             $canonicalId,
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -1086,14 +1037,14 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_adds_the_duplicate_id_to_a_place_that_is_marked_as_canonical_and_already_had_duplicates()
+    public function it_adds_the_duplicate_id_to_a_place_that_is_marked_as_canonical_and_already_had_duplicates(): void
     {
         $duplicateId = 'cb0f0523-ccd9-4a8e-b985-820e40ca5d40';
         $canonicalId = '6caefd7d-9e2f-4b61-a7fa-54d8b25fb8d9';
 
         $initialDocument = new JsonDocument(
             $canonicalId,
-            json_encode(
+            Json::encode(
                 [
                     'name' => [
                         'nl' => 'Old title',
@@ -1130,11 +1081,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         );
     }
 
-    /**
-     * @param string $fileName
-     * @return PlaceImportedFromUDB2
-     */
-    private function placeImportedFromUDB2($fileName)
+    private function placeImportedFromUDB2(string $fileName): PlaceImportedFromUDB2
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/' . $fileName
@@ -1148,11 +1095,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         return $event;
     }
 
-    /**
-     * @param string $fileName
-     * @return PlaceUpdatedFromUDB2
-     */
-    private function placeUpdatedFromUDB2($fileName)
+    private function placeUpdatedFromUDB2(string $fileName): PlaceUpdatedFromUDB2
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/' . $fileName

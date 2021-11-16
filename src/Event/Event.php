@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
@@ -82,6 +83,7 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use DateTimeInterface;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -548,6 +550,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function createOfferDeletedEvent(): EventDeleted
     {
         return new EventDeleted($this->eventId);
+    }
+
+    protected function createAvailableFromUpdatedEvent(DateTimeInterface $availableFrom): AvailableFromUpdated
+    {
+        return new AvailableFromUpdated($this->eventId, $availableFrom);
     }
 
     protected function createPublishedEvent(\DateTimeInterface $publicationDate): Published

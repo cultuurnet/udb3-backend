@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
@@ -102,35 +103,25 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $this->cdbXMLImporter = $cdbXMLImporter;
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyPlaceImportedFromUDB2(
         PlaceImportedFromUDB2 $placeImportedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->projectActorImportedFromUDB2(
             $placeImportedFromUDB2
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyPlaceUpdatedFromUDB2(
         PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->projectActorImportedFromUDB2(
             $placeUpdatedFromUDB2
         );
     }
 
-    /**
-     * @return JsonDocument
-     * @throws \CultureFeed_Cdb_ParseException
-     */
     protected function projectActorImportedFromUDB2(
         ActorImportedFromUDB2 $actorImportedFromUDB2
-    ) {
+    ): JsonDocument {
         $actorId = $actorImportedFromUDB2->getActorId();
 
         $udb2Actor = ActorItemFactory::createActorFromCdbXml(
@@ -164,11 +155,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($actorLd);
     }
 
-    /**
-     * @param string $id
-     * @return JsonDocument
-     */
-    protected function newDocument($id)
+    protected function newDocument(string $id): JsonDocument
     {
         $document = new JsonDocument($id);
 
@@ -179,10 +166,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($placeLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage)
+    protected function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage): JsonDocument
     {
         $document = $this->newDocument($placeCreated->getPlaceId());
 
@@ -244,11 +228,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * Apply the major info updated command to the projector.
-     * @return JsonDocument
-     */
-    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
+    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): JsonDocument
     {
         $document = $this
             ->loadPlaceDocumentFromRepositoryById($majorInfoUpdated->getPlaceId())
@@ -288,10 +268,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyAddressUpdated(AddressUpdated $addressUpdated)
+    protected function applyAddressUpdated(AddressUpdated $addressUpdated): JsonDocument
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($addressUpdated->getPlaceId());
         $jsonLD = $document->getBody();
@@ -299,10 +276,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyAddressTranslated(AddressTranslated $addressTranslated)
+    protected function applyAddressTranslated(AddressTranslated $addressTranslated): JsonDocument
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($addressTranslated->getPlaceId());
         $jsonLD = $document->getBody();
@@ -310,8 +284,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-
-    protected function setAddress(\stdClass $jsonLd, Address $address, Language $language)
+    protected function setAddress(\stdClass $jsonLd, Address $address, Language $language): void
     {
         if (!isset($jsonLd->address)) {
             $jsonLd->address = new \stdClass();
@@ -332,10 +305,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $jsonLd->address->{$language->getCode()} = $address->toJsonLd();
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
+    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated): JsonDocument
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($geoCoordinatesUpdated->getItemId());
 
@@ -383,10 +353,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             );
     }
 
-    /**
-     * @param string $itemId
-     */
-    protected function loadPlaceDocumentFromRepositoryById($itemId): JsonDocument
+    protected function loadPlaceDocumentFromRepositoryById(string $itemId): JsonDocument
     {
         try {
             $document = $this->repository->fetch($itemId);
@@ -397,47 +364,32 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelAddedClassName()
+    protected function getLabelAddedClassName(): string
     {
         return LabelAdded::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelRemovedClassName()
+    protected function getLabelRemovedClassName(): string
     {
         return LabelRemoved::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageAddedClassName()
+    protected function getImageAddedClassName(): string
     {
         return ImageAdded::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageRemovedClassName()
+    protected function getImageRemovedClassName(): string
     {
         return ImageRemoved::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageUpdatedClassName()
+    protected function getImageUpdatedClassName(): string
     {
         return ImageUpdated::class;
     }
 
-    protected function getMainImageSelectedClassName()
+    protected function getMainImageSelectedClassName(): string
     {
         return MainImageSelected::class;
     }
@@ -457,122 +409,112 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return VideoUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getTitleTranslatedClassName()
+    protected function getTitleTranslatedClassName(): string
     {
         return TitleTranslated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getDescriptionTranslatedClassName()
+    protected function getDescriptionTranslatedClassName(): string
     {
         return DescriptionTranslated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getOrganizerUpdatedClassName()
+    protected function getOrganizerUpdatedClassName(): string
     {
         return OrganizerUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getOrganizerDeletedClassName()
+    protected function getOrganizerDeletedClassName(): string
     {
         return OrganizerDeleted::class;
     }
 
-    protected function getBookingInfoUpdatedClassName()
+    protected function getBookingInfoUpdatedClassName(): string
     {
         return BookingInfoUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPriceInfoUpdatedClassName()
+    protected function getPriceInfoUpdatedClassName(): string
     {
         return PriceInfoUpdated::class;
     }
 
-    protected function getContactPointUpdatedClassName()
+    protected function getContactPointUpdatedClassName(): string
     {
         return ContactPointUpdated::class;
     }
 
-    protected function getDescriptionUpdatedClassName()
+    protected function getDescriptionUpdatedClassName(): string
     {
         return DescriptionUpdated::class;
     }
 
-    protected function getCalendarUpdatedClassName()
+    protected function getCalendarUpdatedClassName(): string
     {
         return CalendarUpdated::class;
     }
 
-    protected function getTypicalAgeRangeUpdatedClassName()
+    protected function getTypicalAgeRangeUpdatedClassName(): string
     {
         return TypicalAgeRangeUpdated::class;
     }
 
-    protected function getTypicalAgeRangeDeletedClassName()
+    protected function getTypicalAgeRangeDeletedClassName(): string
     {
         return TypicalAgeRangeDeleted::class;
     }
 
-    protected function getPublishedClassName()
+    protected function getAvailableFromUpdatedClassName(): string
+    {
+        return AvailableFromUpdated::class;
+    }
+
+    protected function getPublishedClassName(): string
     {
         return Published::class;
     }
 
-    protected function getApprovedClassName()
+    protected function getApprovedClassName(): string
     {
         return Approved::class;
     }
 
-    protected function getRejectedClassName()
+    protected function getRejectedClassName(): string
     {
         return Rejected::class;
     }
 
-    protected function getFlaggedAsDuplicateClassName()
+    protected function getFlaggedAsDuplicateClassName(): string
     {
         return FlaggedAsDuplicate::class;
     }
 
-    protected function getFlaggedAsInappropriateClassName()
+    protected function getFlaggedAsInappropriateClassName(): string
     {
         return FlaggedAsInappropriate::class;
     }
 
-    protected function getImagesImportedFromUdb2ClassName()
+    protected function getImagesImportedFromUdb2ClassName(): string
     {
         return ImagesImportedFromUDB2::class;
     }
 
-    protected function getImagesUpdatedFromUdb2ClassName()
+    protected function getImagesUpdatedFromUdb2ClassName(): string
     {
         return ImagesUpdatedFromUDB2::class;
     }
 
-    protected function getTitleUpdatedClassName()
+    protected function getTitleUpdatedClassName(): string
     {
         return TitleUpdated::class;
     }
 
-    protected function getTypeUpdatedClassName()
+    protected function getTypeUpdatedClassName(): string
     {
         return TypeUpdated::class;
     }
 
-    protected function getFacilitiesUpdatedClassName()
+    protected function getFacilitiesUpdatedClassName(): string
     {
         return FacilitiesUpdated::class;
     }

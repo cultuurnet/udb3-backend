@@ -42,7 +42,7 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -75,25 +75,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     private $placeService;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
+    private CdbXMLEventFactory $cdbXMLEventFactory;
 
-    /**
-     * @var CdbXMLEventFactory
-     */
-    private $cdbXMLEventFactory;
-
-    /**
-     * @var EventLDProjector
-     */
-    protected $projector;
-
-    /**
-     * @var MediaObjectSerializer
-     */
-    protected $serializer;
+    protected MediaObjectSerializer $serializer;
 
     /**
      * @var IriOfferIdentifierFactoryInterface|MockObject
@@ -105,21 +89,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     protected $cdbXMLImporter;
 
-    /**
-     * Constructs a test case with the given name.
-     *
-     * @param string $name
-     * @param string $dataName
-     */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct(string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName, 'CultuurNet\\UDB3\\Event');
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -127,13 +102,13 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->placeService = $this->createMock(LocalPlaceService::class);
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
             }
         );
 
-        $this->serializer = new MediaObjectSerializer($this->iriGenerator);
+        $this->serializer = new MediaObjectSerializer($iriGenerator);
 
         $this->iriOfferIdentifierFactory = $this->createMock(IriOfferIdentifierFactoryInterface::class);
         $this->cdbXMLImporter = new CdbXMLImporter(
@@ -156,7 +131,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->projector = new EventLDProjector(
             $this->documentRepository,
-            $this->iriGenerator,
+            $iriGenerator,
             $this->placeService,
             $this->organizerService,
             $this->serializer,
@@ -186,7 +161,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_events_without_theme()
+    public function it_handles_new_events_without_theme(): void
     {
         $eventId = '1';
 
@@ -222,7 +197,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_events_with_theme()
+    public function it_handles_new_events_with_theme(): void
     {
         $eventId = '1';
         $calendar = new Calendar(
@@ -266,10 +241,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      * @dataProvider eventCreatorDataProvider
-     *
-     * @param string $expectedCreator
      */
-    public function it_handles_new_events_with_creator(Metadata $metadata, $expectedCreator)
+    public function it_handles_new_events_with_creator(Metadata $metadata, string $expectedCreator): void
     {
         $eventId = '1';
         $calendar = new Calendar(
@@ -308,10 +281,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals($jsonLD, $body);
     }
 
-    /**
-     * @return array
-     */
-    public function eventCreatorDataProvider()
+    public function eventCreatorDataProvider(): array
     {
         return [
             [
@@ -352,7 +322,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             $eventId,
-            json_encode(['creator' => $originalOwner])
+            Json::encode(['creator' => $originalOwner])
         );
         $this->documentRepository->save($initialDocument);
 
@@ -369,7 +339,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_copy_event()
+    public function it_handles_copy_event(): void
     {
         $originalEventId = '1';
         $originalCalendar = new Calendar(
@@ -434,7 +404,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_copied_event_with_work_hours_removed()
+    public function it_projects_copied_event_with_work_hours_removed(): void
     {
         $eventCreated = $this->createEventCreated('1', $this->aPeriodicCalendarWithWorkScheme(), null);
 
@@ -544,7 +514,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_events_with_multiple_timestamps()
+    public function it_handles_new_events_with_multiple_timestamps(): void
     {
         $eventId = '926fca95-010e-46b1-8b8e-abe757dd32d5';
 
@@ -624,7 +594,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_should_set_a_main_language_when_importing_cdbxml()
+    public function it_should_set_a_main_language_when_importing_cdbxml(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_with_calendar_periods.cdbxml.xml'
@@ -638,7 +608,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_should_not_change_main_language_when_updating()
+    public function it_should_not_change_main_language_when_updating(): void
     {
         // First make sure there is already an event, so it is a real update.
         $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
@@ -669,7 +639,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_strips_empty_keywords_when_importing_from_udb2()
+    public function it_strips_empty_keywords_when_importing_from_udb2(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_with_empty_keyword.cdbxml.xml'
@@ -688,7 +658,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_does_remove_existing_location_when_updating_from_udb2_without_location_id()
+    public function it_does_remove_existing_location_when_updating_from_udb2_without_location_id(): void
     {
         $event = $this->cdbXMLEventFactory->eventUpdatedFromUDB2(
             'samples/event_with_udb3_place.cdbxml.xml'
@@ -722,7 +692,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_can_update_an_event_from_udb2_even_if_it_has_been_deleted()
+    public function it_can_update_an_event_from_udb2_even_if_it_has_been_deleted(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_with_empty_keyword.cdbxml.xml'
@@ -746,7 +716,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_does_not_add_an_empty_labels_property()
+    public function it_does_not_add_an_empty_labels_property(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_without_keywords.cdbxml.xml'
@@ -760,7 +730,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_does_not_add_an_empty_image_property()
+    public function it_does_not_add_an_empty_image_property(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_without_image.cdbxml.xml'
@@ -774,7 +744,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_adds_a_bookingInfo_property_when_cdbxml_has_pricevalue()
+    public function it_adds_a_bookingInfo_property_when_cdbxml_has_pricevalue(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_with_price_value.cdbxml.xml'
@@ -795,7 +765,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_adds_the_pricedescription_from_cdbxml_to_bookingInfo()
+    public function it_adds_the_pricedescription_from_cdbxml_to_bookingInfo(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_with_price_value_and_description.cdbxml.xml'
@@ -817,7 +787,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_does_not_add_a_missing_price_from_cdbxml_to_bookingInfo()
+    public function it_does_not_add_a_missing_price_from_cdbxml_to_bookingInfo(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_with_only_price_description.cdbxml.xml'
@@ -837,7 +807,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_does_not_add_booking_info_when_price_and_reservation_contact_channels_are_missing()
+    public function it_does_not_add_booking_info_when_price_and_reservation_contact_channels_are_missing(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_without_price.cdbxml.xml'
@@ -851,7 +821,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_addition_of_a_label()
+    public function it_projects_the_addition_of_a_label(): void
     {
         $labelAdded = new LabelAdded(
             'foo',
@@ -860,7 +830,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A'],
             ])
         );
@@ -878,11 +848,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_removal_of_a_label()
+    public function it_projects_the_removal_of_a_label(): void
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'labels' => ['label A', 'label B', 'label C'],
             ])
         );
@@ -905,11 +875,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_addition_of_a_label_to_an_event_without_existing_labels()
+    public function it_projects_the_addition_of_a_label_to_an_event_without_existing_labels(): void
     {
         $initialDocument = new JsonDocument(
             'foo',
-            json_encode([
+            Json::encode([
                 'bar' => 'stool',
             ])
         );
@@ -937,7 +907,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_major_info()
+    public function it_projects_the_updating_of_major_info(): void
     {
         $this->mockPlaceService();
 
@@ -1021,7 +991,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_calendar_updated()
+    public function it_projects_calendar_updated(): void
     {
         $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
@@ -1064,7 +1034,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_location()
+    public function it_projects_the_updating_of_location(): void
     {
         $this->mockPlaceService();
 
@@ -1103,13 +1073,13 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_the_updating_of_geo_coordinates()
+    public function it_projects_the_updating_of_geo_coordinates(): void
     {
         $id = 'ea328f14-a3c8-4f71-abd9-00cd0a2cf217';
 
         $initialDocument = new JsonDocument(
             $id,
-            json_encode(
+            Json::encode(
                 [
                     '@id' => 'http://uitdatabank/event/' . $id,
                     '@type' => 'Event',
@@ -1161,7 +1131,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @group issue-III-1730
      * @test
      */
-    public function it_keeps_alien_terms_imported_from_udb2_when_updating_major_info()
+    public function it_keeps_alien_terms_imported_from_udb2_when_updating_major_info(): void
     {
         $importedFromUDB2 = $this->cdbXMLEventFactory->eventImportedFromUDB2(
             'samples/event_with_empty_keyword.cdbxml.xml'
@@ -1220,7 +1190,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_updating_audience()
+    public function it_projects_updating_audience(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
@@ -1244,7 +1214,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_updates_workflow_status_on_delete()
+    public function it_updates_workflow_status_on_delete(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
@@ -1292,7 +1262,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $itemId = LegacyUUID::generateAsString();
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
-            json_encode([
+            Json::encode([
                 '@id' => $itemId,
                 '@type' => 'event',
                 'terms' => [
@@ -1339,7 +1309,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         JsonDocument $documentWithUDB3Media,
         DomainMessage $domainMessage,
         array $expectedMediaObjects
-    ) {
+    ): void {
         $this->documentRepository->save($documentWithUDB3Media);
 
         $this->projector->handle($domainMessage);
@@ -1354,7 +1324,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $documentWithUDB3Media = new JsonDocument(
             CdbXMLEventFactory::AN_EVENT_ID,
-            json_encode([
+            Json::encode([
                 'mediaObject' => [
                     [
                         '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
@@ -1423,11 +1393,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
     }
 
-    /**
-     * @param string $eventId
-     * @return stdClass
-     */
-    private function createJsonLD($eventId, Language $mainLanguage)
+    private function createJsonLD(string $eventId, Language $mainLanguage): stdClass
     {
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://example.com/entity/' . $eventId;
@@ -1463,7 +1429,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         return $jsonLD;
     }
 
-    private function mockPlaceService()
+    private function mockPlaceService(): void
     {
         // Set up the placeService so that it does not know about the JSON-LD
         // representation of the Place yet and only returns the URI of the
