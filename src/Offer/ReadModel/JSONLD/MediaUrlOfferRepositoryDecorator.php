@@ -24,19 +24,14 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
         $document = parent::fetch($id, $includeMetadata);
         $document = $document->applyAssoc(
             function (array $json) {
-                if (
-                    !isset($json['mediaObject']) ||
-                    !is_array($json['mediaObject'])
-                ) {
+                if (!isset($json['mediaObject']) || !is_array($json['mediaObject'])) {
                     return $json;
                 }
 
                 $json['mediaObject'] = array_map(
                     function ($mediaObject) {
-                        if (
-                            !is_array($mediaObject) ||
-                            !isset($mediaObject['contentUrl'], $mediaObject['thumbnailUrl'])
-                        ) {
+                        if (!is_array($mediaObject) ||
+                            !isset($mediaObject['contentUrl'], $mediaObject['thumbnailUrl'])) {
                             return $mediaObject;
                         }
 
@@ -48,10 +43,7 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
                     $json['mediaObject']
                 );
 
-                if (
-                    !isset($json['image']) ||
-                    !is_string($json['image'])
-                ) {
+                if (!isset($json['image']) || !is_string($json['image'])) {
                     return $json;
                 }
                 $json['image'] = $this->mediaUrlRepository->getUpdatedUrl($json['image']);
