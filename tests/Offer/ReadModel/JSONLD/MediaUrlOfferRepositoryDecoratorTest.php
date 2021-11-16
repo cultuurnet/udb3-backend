@@ -16,8 +16,8 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             [
                 '@id' => 'https://io.uitdatabank.be/images/da02d848-eb11-4bfa-a566-d8bd3b856990',
                 '@type' => 'schema:ImageObject',
-                'contentUrl' => 'https://io.uitdatabank.be/images/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
-                'thumbnailUrl' => 'https://io.uitdatabank.be/images/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
+                'contentUrl' => 'https://media.uitdatabank.be/20190131/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
+                'thumbnailUrl' => 'https://media.uitdatabank.be/20190131/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc2',
                 'inLanguage' => 'nl',
@@ -49,8 +49,8 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             [
                 '@id' => 'https://io.uitdatabank.be/images/da02d848-eb11-4bfa-a566-d8bd3b856990',
                 '@type' => 'schema:ImageObject',
-                'contentUrl' => 'https://images.uitdatabank.be/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
-                'thumbnailUrl' => 'https://images.uitdatabank.be/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
+                'contentUrl' => 'https://images.uitdatabank.be/20190131/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
+                'thumbnailUrl' => 'https://images.uitdatabank.be/20190131/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
                 'description' => 'test',
                 'copyrightHolder' => 'cc2',
                 'inLanguage' => 'nl',
@@ -80,10 +80,15 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_replace_legacy_urls_when_enabled()
+    public function it_should_replace_legacy_urls_when_enabled(): void
     {
         $id = '5624b810-c340-40a4-8f38-0393eca59bfe';
         $mapping = [
+            'udb2' => [
+                'enabled' => true,
+                'legacy_url' => 'https://media.uitdatabank.be/',
+                'url' => 'https://images.uitdatabank.be/',
+            ],
             'udb3' => [
                 'enabled' => true,
                 'legacy_url' => 'https://io.uitdatabank.be/images/',
@@ -107,10 +112,15 @@ class MediaUrlOfferRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_replace_legacy_urls_when_not_enabled()
+    public function it_should_not_replace_legacy_urls_when_not_enabled(): void
     {
         $id = '5624b810-c340-40a4-8f38-0393eca59bfe';
         $mapping = [
+            'udb2' => [
+                'enabled' => false,
+                'legacy_url' => 'https://media.uitdatabank.be/',
+                'url' => 'https://images.uitdatabank.be/',
+            ],
             'udb3' => [
                 'enabled' => false,
                 'legacy_url' => 'https://io.uitdatabank.be/images/',
