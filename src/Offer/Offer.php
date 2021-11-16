@@ -732,7 +732,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         // It is required to use `==` instead of `===` to compare DateTime objects in PHP
-        if ($this->availableFrom !== null && $this->availableFrom == $availableFrom) {
+        if ($this->availableFrom == $availableFrom) {
             return;
         }
 
