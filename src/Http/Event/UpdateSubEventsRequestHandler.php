@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -15,6 +16,7 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventUpdatesDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdates;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -44,7 +46,11 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
         /** @var SubEventUpdates $updates */
         $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
+        try {
+            $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
+        } catch (InvalidArgumentException $exception) {
+            throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
+        }
 
         return new NoContentResponse();
     }
