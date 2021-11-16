@@ -22,7 +22,8 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
         $document = parent::fetch($id, $includeMetadata);
-        $document = $document->applyAssoc(
+
+        return $document->applyAssoc(
             function (array $json) {
                 if (!isset($json['mediaObject']) || !is_array($json['mediaObject'])) {
                     return $json;
@@ -51,6 +52,5 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
                 return $json;
             }
         );
-        return $document;
     }
 }
