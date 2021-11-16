@@ -128,11 +128,7 @@ class EventLDProjector extends OfferLDProjector implements
         $this->eventTypeResolver = $eventTypeResolver;
     }
 
-    /**
-     * @param string $id
-     * @return JsonDocument
-     */
-    protected function newDocument($id)
+    protected function newDocument(string $id): JsonDocument
     {
         $document = new JsonDocument($id);
 
@@ -143,12 +139,9 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->applyEventCdbXmlFromUDB2(
             $eventImportedFromUDB2->getEventId(),
             $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
@@ -156,12 +149,9 @@ class EventLDProjector extends OfferLDProjector implements
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-    ) {
+    ): JsonDocument {
         return $this->applyEventCdbXmlFromUDB2(
             $eventUpdatedFromUDB2->getEventId(),
             $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
@@ -169,19 +159,11 @@ class EventLDProjector extends OfferLDProjector implements
         );
     }
 
-    /**
-     * Helper function to save a JSON-LD document from cdbxml coming from UDB2.
-     *
-     * @param string $eventId
-     * @param string $cdbXmlNamespaceUri
-     * @param string $cdbXml
-     * @return JsonDocument
-     */
     protected function applyEventCdbXmlFromUDB2(
-        $eventId,
-        $cdbXmlNamespaceUri,
-        $cdbXml
-    ) {
+        string $eventId,
+        string $cdbXmlNamespaceUri,
+        string $cdbXml
+    ): JsonDocument {
         $document = $this->newDocument($eventId);
         $eventLd = $this->projectEventCdbXmlToObject(
             $document->getBody(),
@@ -192,19 +174,12 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($eventLd);
     }
 
-    /**
-     * @param string $eventId
-     * @param string $cdbXmlNamespaceUri
-     * @param string $cdbXml
-     * @return \stdClass
-     * @throws \CultureFeed_Cdb_ParseException
-     */
     protected function projectEventCdbXmlToObject(
         \stdClass $jsonLd,
-        $eventId,
-        $cdbXmlNamespaceUri,
-        $cdbXml
-    ) {
+        string $eventId,
+        string $cdbXmlNamespaceUri,
+        string $cdbXml
+    ): \stdClass {
         $udb2Event = EventItemFactory::createEventFromCdbXml(
             $cdbXmlNamespaceUri,
             $cdbXml
@@ -227,13 +202,10 @@ class EventLDProjector extends OfferLDProjector implements
         return $jsonLd;
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventCreated(
         EventCreated $eventCreated,
         DomainMessage $domainMessage
-    ) {
+    ): JsonDocument {
         $document = $this->newDocument($eventCreated->getEventId());
         $jsonLD = $document->getBody();
 
@@ -292,13 +264,10 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
     protected function applyEventCopied(
         EventCopied $eventCopied,
         DomainMessage $domainMessage
-    ) {
+    ): JsonDocument {
         $originalDocument = $this->repository->fetch($eventCopied->getOriginalEventId());
         $eventJsonLD = $originalDocument->getBody();
 
@@ -368,11 +337,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * Apply the major info updated command to the projector.
-     * @return JsonDocument
-     */
-    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
+    protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): JsonDocument
     {
         $document = $this
             ->loadDocumentFromRepository($majorInfoUpdated)
@@ -409,11 +374,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     *
-     * @return JsonDocument
-     */
-    public function applyLocationUpdated(LocationUpdated $locationUpdated)
+    public function applyLocationUpdated(LocationUpdated $locationUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($locationUpdated);
 
@@ -426,10 +387,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
+    protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepositoryByItemId($geoCoordinatesUpdated->getItemId());
 
@@ -443,10 +401,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($eventLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    protected function applyAudienceUpdated(AudienceUpdated $audienceUpdated)
+    protected function applyAudienceUpdated(AudienceUpdated $audienceUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($audienceUpdated);
         $jsonLD = $document->getBody();
@@ -498,14 +453,13 @@ class EventLDProjector extends OfferLDProjector implements
         }
     }
 
-    private function generateSameAs($eventId, $name)
+    private function generateSameAs($eventId, $name): array
     {
         $eventSlug = $this->slugger->slug($name);
         return [
             'http://www.uitinvlaanderen.be/agenda/e/' . $eventSlug . '/' . $eventId,
         ];
     }
-
 
     private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral
     {
@@ -518,47 +472,32 @@ class EventLDProjector extends OfferLDProjector implements
         return null;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelAddedClassName()
+    protected function getLabelAddedClassName(): string
     {
         return LabelAdded::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelRemovedClassName()
+    protected function getLabelRemovedClassName(): string
     {
         return LabelRemoved::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageAddedClassName()
+    protected function getImageAddedClassName(): string
     {
         return ImageAdded::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageRemovedClassName()
+    protected function getImageRemovedClassName(): string
     {
         return ImageRemoved::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getImageUpdatedClassName()
+    protected function getImageUpdatedClassName(): string
     {
         return ImageUpdated::class;
     }
 
-    protected function getMainImageSelectedClassName()
+    protected function getMainImageSelectedClassName(): string
     {
         return MainImageSelected::class;
     }
@@ -578,72 +517,57 @@ class EventLDProjector extends OfferLDProjector implements
         return VideoUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getTitleTranslatedClassName()
+    protected function getTitleTranslatedClassName(): string
     {
         return TitleTranslated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getDescriptionTranslatedClassName()
+    protected function getDescriptionTranslatedClassName(): string
     {
         return DescriptionTranslated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getOrganizerUpdatedClassName()
+    protected function getOrganizerUpdatedClassName(): string
     {
         return OrganizerUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getOrganizerDeletedClassName()
+    protected function getOrganizerDeletedClassName(): string
     {
         return OrganizerDeleted::class;
     }
 
-    protected function getBookingInfoUpdatedClassName()
+    protected function getBookingInfoUpdatedClassName(): string
     {
         return BookingInfoUpdated::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPriceInfoUpdatedClassName()
+    protected function getPriceInfoUpdatedClassName(): string
     {
         return PriceInfoUpdated::class;
     }
 
-    protected function getContactPointUpdatedClassName()
+    protected function getContactPointUpdatedClassName(): string
     {
         return ContactPointUpdated::class;
     }
 
-    protected function getDescriptionUpdatedClassName()
+    protected function getDescriptionUpdatedClassName(): string
     {
         return DescriptionUpdated::class;
     }
 
-    protected function getCalendarUpdatedClassName()
+    protected function getCalendarUpdatedClassName(): string
     {
         return CalendarUpdated::class;
     }
 
-    protected function getTypicalAgeRangeUpdatedClassName()
+    protected function getTypicalAgeRangeUpdatedClassName(): string
     {
         return TypicalAgeRangeUpdated::class;
     }
 
-    protected function getTypicalAgeRangeDeletedClassName()
+    protected function getTypicalAgeRangeDeletedClassName(): string
     {
         return TypicalAgeRangeDeleted::class;
     }
@@ -653,52 +577,52 @@ class EventLDProjector extends OfferLDProjector implements
         return AvailableFromUpdated::class;
     }
 
-    protected function getPublishedClassName()
+    protected function getPublishedClassName(): string
     {
         return Published::class;
     }
 
-    protected function getApprovedClassName()
+    protected function getApprovedClassName(): string
     {
         return Approved::class;
     }
 
-    protected function getRejectedClassName()
+    protected function getRejectedClassName(): string
     {
         return Rejected::class;
     }
 
-    protected function getFlaggedAsDuplicateClassName()
+    protected function getFlaggedAsDuplicateClassName(): string
     {
         return FlaggedAsDuplicate::class;
     }
 
-    protected function getFlaggedAsInappropriateClassName()
+    protected function getFlaggedAsInappropriateClassName(): string
     {
         return FlaggedAsInappropriate::class;
     }
 
-    protected function getImagesImportedFromUdb2ClassName()
+    protected function getImagesImportedFromUdb2ClassName(): string
     {
         return ImagesImportedFromUDB2::class;
     }
 
-    protected function getImagesUpdatedFromUdb2ClassName()
+    protected function getImagesUpdatedFromUdb2ClassName(): string
     {
         return ImagesUpdatedFromUDB2::class;
     }
 
-    protected function getTitleUpdatedClassName()
+    protected function getTitleUpdatedClassName(): string
     {
         return TitleUpdated::class;
     }
 
-    protected function getTypeUpdatedClassName()
+    protected function getTypeUpdatedClassName(): string
     {
         return TypeUpdated::class;
     }
 
-    protected function getFacilitiesUpdatedClassName()
+    protected function getFacilitiesUpdatedClassName(): string
     {
         return FacilitiesUpdated::class;
     }

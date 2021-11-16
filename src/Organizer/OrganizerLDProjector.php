@@ -462,7 +462,7 @@ class OrganizerLDProjector implements EventListener
         // @see https://jira.uitdatabank.be/browse/III-2201
         if (isset($jsonLD->name) && is_string($jsonLD->name)) {
             $previousTitle = $jsonLD->name;
-            $jsonLD->name = new \StdClass();
+            $jsonLD->name = new \stdClass();
             $jsonLD->name->{$mainLanguage->getCode()} = $previousTitle;
         }
 
