@@ -145,6 +145,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
     }
 
+    /**
+     * @return array<string,string>
+     */
     private function getEventHandlers(): array
     {
         $events = [];
