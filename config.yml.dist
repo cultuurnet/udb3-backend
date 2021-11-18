@@ -98,7 +98,16 @@ media:
     fr: Droits d'auteur gérés par %s
     de: Urheberrecht gehandhabt von %s
     en: Copyright handled by %s
-
+  media_url_mapping:
+    udb2:
+      enabled: true
+      legacy_url: https://media.uitdatabank.be/
+      url: https://images-dev.uitdatabank.be/
+    udb3:
+      enabled: true
+      legacy_url: https://io.uitdatabank.dev/images/
+      url: https://images-dev.uitdatabank.be/
+      
 cdbxml_proxy:
   enabled: "true"
   accept: "application/xml"
