@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -58,12 +59,15 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -78,7 +82,7 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class HistoryProjectorTest extends TestCase
 {
@@ -270,7 +274,7 @@ class HistoryProjectorTest extends TestCase
 
         $eventCreated = new EventCreated(
             $eventId,
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('Faith no More'),
             new EventType('0.50.4.0.0', 'Concert'),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
@@ -349,7 +353,7 @@ class HistoryProjectorTest extends TestCase
     {
         $titleTranslated = new TitleTranslated(
             self::EVENT_ID_1,
-            new Language('fr'),
+            new LegacyLanguage('fr'),
             new Title('Titre en français')
         );
 
@@ -384,7 +388,7 @@ class HistoryProjectorTest extends TestCase
     {
         $descriptionTranslated = new DescriptionTranslated(
             self::EVENT_ID_1,
-            new Language('fr'),
+            new LegacyLanguage('fr'),
             new Description('Signalement en français')
         );
 
@@ -815,8 +819,8 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            Url::fromNative('https://io.uitdatabank.be/media/test.jpg'),
-            new Language('en')
+            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new LegacyLanguage('en')
         );
 
         $event = new ImageAdded(self::EVENT_ID_1, $image);
@@ -853,8 +857,8 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            Url::fromNative('https://io.uitdatabank.be/media/test.jpg'),
-            new Language('en')
+            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new LegacyLanguage('en')
         );
 
         $event = new ImageRemoved(self::EVENT_ID_1, $image);
@@ -925,8 +929,8 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            Url::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
-            new Language('en')
+            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new LegacyLanguage('en')
         );
 
         $image2 = new Image(
@@ -934,8 +938,8 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            Url::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
-            new Language('en')
+            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new LegacyLanguage('en')
         );
 
         $event = new ImagesImportedFromUDB2(
@@ -982,8 +986,8 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            Url::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
-            new Language('en')
+            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new LegacyLanguage('en')
         );
 
         $image2 = new Image(
@@ -991,8 +995,8 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            Url::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
-            new Language('en')
+            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new LegacyLanguage('en')
         );
 
         $event = new ImagesUpdatedFromUDB2(
@@ -1024,6 +1028,42 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_video_added(): void
+    {
+        $event = new VideoAdded(
+            self::EVENT_ID_1,
+            new Video(
+                '91c75325-3830-4000-b580-5778b2de4548',
+                new Url('https://www.youtube.com/watch?v=123'),
+                new Language('nl')
+            )
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                    'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' toegevoegd',
                 ],
             ]
         );
@@ -1097,8 +1137,8 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            Url::fromNative('https://io.uitdatabank.be/media/test.jpg'),
-            new Language('en')
+            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new LegacyLanguage('en')
         );
 
         $event = new MainImageSelected(self::EVENT_ID_1, $image);

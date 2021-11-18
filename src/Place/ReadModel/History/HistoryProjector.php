@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\Place\Events\TypeUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Place\Events\VideoAdded;
 use DateTime;
 use DateTimeZone;
 
@@ -108,6 +109,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof ImagesUpdatedFromUDB2:
                 $this->projectImagesUpdatedFromUDB2($domainMessage);
+                break;
+            case $event instanceof VideoAdded:
+                $this->projectVideoAdded($domainMessage);
                 break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($domainMessage);
