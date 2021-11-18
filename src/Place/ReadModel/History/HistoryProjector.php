@@ -11,6 +11,7 @@ use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
@@ -168,6 +169,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof Rejected:
                 $this->projectRejected($domainMessage);
+                break;
+            case $event instanceof AvailableFromUpdated:
+                $this->projectAvailableFromUpdated($domainMessage);
                 break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);

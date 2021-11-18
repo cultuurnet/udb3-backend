@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\History;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
@@ -313,6 +314,17 @@ trait OfferHistoryProjectorTrait
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, "Afgekeurd, reden: '{$reason}'")
+        );
+    }
+
+    private function projectAvailableFromUpdated(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractAvailableFromUpdated $event */
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $event->getItemId(),
+            Log::createFromDomainMessage($domainMessage, 'Publicatiedatum aangepast')
         );
     }
 

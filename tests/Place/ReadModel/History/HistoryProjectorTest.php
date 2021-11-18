@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
@@ -916,6 +917,38 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             "Afgekeurd, reden: 'not good enough'"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_available_from_updated(): void
+    {
+        $event = new AvailableFromUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new DateTimeImmutable('2023-10-10T11:22:00+00:00')
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                    'description' => 'Publicatiedatum aangepast',
+                ],
+            ]
         );
     }
 

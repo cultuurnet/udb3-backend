@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
@@ -166,6 +167,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof Rejected:
                 $this->projectRejected($domainMessage);
+                break;
+            case $event instanceof AvailableFromUpdated:
+                $this->projectAvailableFromUpdated($domainMessage);
                 break;
             case $event instanceof ThemeUpdated:
                 $this->projectThemeUpdated($domainMessage);
