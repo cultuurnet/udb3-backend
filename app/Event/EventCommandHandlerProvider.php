@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -12,6 +15,14 @@ final class EventCommandHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app[UpdateSubEventsHandler::class] = $app->share(
+            fn (Application $application) => new UpdateSubEventsHandler($app['event_repository'])
+        );
+
+        $app[UpdateThemeHandler::class] = $app->share(
+            fn (Application $application) => new UpdateThemeHandler($app['event_repository'])
+        );
+
         $app[RemoveThemeHandler::class] = $app->share(
             fn (Application $application) => new RemoveThemeHandler($app['event_repository'])
         );

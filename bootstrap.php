@@ -582,9 +582,6 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
             )
         );
 
-        $commandBus->subscribe(new UpdateSubEventsHandler($app['event_repository']));
-        $commandBus->subscribe(new UpdateThemeHandler($app['event_repository']));
-
         $commandBus->subscribe($app['saved_searches_command_handler']);
 
         $commandBus->subscribe(
@@ -627,6 +624,8 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[DeleteOfferHandler::class]);
 
         // Event command handlers
+        $commandBus->subscribe($app[UpdateSubEventsHandler::class]);
+        $commandBus->subscribe($app[UpdateThemeHandler::class]);
         $commandBus->subscribe($app[RemoveThemeHandler::class]);
         $commandBus->subscribe($app[UpdateAudienceHandler::class]);
 
