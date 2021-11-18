@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
@@ -1299,6 +1300,47 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $updatedItem = $this->project($themeUpdatedEvent, $itemId);
         $this->assertEquals($expectedTerms, $updatedItem->terms);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_theme_removed(): void
+    {
+        $itemId = LegacyUUID::generateAsString();
+
+        $documentWithExistingTerms = new JsonDocument(
+            $itemId,
+            Json::encode([
+                '@id' => $itemId,
+                '@type' => 'event',
+                'terms' => [
+                    (object) [
+                        'id' => '1.8.3.3.0',
+                        'label' => 'Dance',
+                        'domain' => 'theme',
+                    ],
+                    (object) [
+                        'id' => '3CuHvenJ+EGkcvhXLg9Ykg',
+                        'label' => 'Archeologische Site',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+        );
+        $this->documentRepository->save($documentWithExistingTerms);
+
+        $updatedItem = $this->project(new ThemeRemoved($itemId), $itemId);
+        $this->assertEquals(
+            [
+                (object) [
+                    'id' => '3CuHvenJ+EGkcvhXLg9Ykg',
+                    'label' => 'Archeologische Site',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            $updatedItem->terms
+        );
     }
 
     /**
