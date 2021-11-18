@@ -201,6 +201,17 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectVideoUpdated(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractVideoEvent $event */
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $event->getItemId(),
+            Log::createFromDomainMessage($domainMessage, 'Video \'' . $event->getVideo()->getId() . '\' aangepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
