@@ -70,6 +70,7 @@ use CultuurNet\UDB3\Place\Events\TypeUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Place\Events\VideoAdded;
+use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -635,6 +636,38 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' toegevoegd',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_video_deleted(): void
+    {
+        $event = new VideoDeleted(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            '91c75325-3830-4000-b580-5778b2de4548'
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                    'description' => 'Video \'91c75325-3830-4000-b580-5778b2de4548\' verwijderd',
                 ],
             ]
         );
