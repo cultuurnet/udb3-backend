@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
@@ -71,6 +72,8 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                 $repository = new NewPropertyPolyfillOfferRepository($repository);
 
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
+
+                $repository = new MediaUrlOfferRepositoryDecorator($repository, $app['media_url_repository']);
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
