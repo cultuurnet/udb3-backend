@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
@@ -415,6 +416,25 @@ class EventLDProjector extends OfferLDProjector implements
     {
         $document = $this->loadDocumentFromRepository($themeUpdated);
         return $this->updateTerm($document, $themeUpdated->getTheme());
+    }
+
+    protected function applyThemeRemoved(ThemeRemoved $themeRemoved): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($themeRemoved);
+        $offerLD = $document->getBody();
+
+        $existingTerms = property_exists($offerLD, 'terms') ? $offerLD->terms : [];
+
+        $termsWithoutTheme = array_filter(
+            $existingTerms,
+            function ($term) {
+                return !property_exists($term, 'domain') || $term->domain !== 'theme';
+            }
+        );
+
+        $offerLD->terms = array_values($termsWithoutTheme);
+
+        return $document->withBody($offerLD);
     }
 
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): JsonDocument
