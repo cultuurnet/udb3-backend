@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
+use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
@@ -396,6 +397,19 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyThemeUpdated(ThemeUpdated $themeUpdated): void
     {
         $this->themeId = $themeUpdated->getTheme()->getId();
+    }
+
+    public function removeTheme(): void
+    {
+        if ($this->themeId === null) {
+            return;
+        }
+        $this->apply(new ThemeRemoved($this->eventId));
+    }
+
+    protected function applyThemeRemoved(ThemeRemoved $themeRemoved): void
+    {
+        $this->themeId = null;
     }
 
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
