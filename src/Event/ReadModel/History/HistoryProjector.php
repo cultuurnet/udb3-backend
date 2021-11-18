@@ -39,6 +39,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
@@ -173,6 +174,12 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof ThemeUpdated:
                 $this->projectThemeUpdated($domainMessage);
+                break;
+            case $event instanceof ThemeRemoved:
+                $this->writeHistory(
+                    $event->getItemId(),
+                    Log::createFromDomainMessage($domainMessage, 'Thema verwijderd')
+                );
                 break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);
