@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\Offer\ReadModel\History;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
+use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageUpdated;
@@ -177,6 +180,39 @@ trait OfferHistoryProjectorTrait
         }
     }
 
+    private function projectVideoAdded(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractVideoEvent $event */
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $event->getItemId(),
+            Log::createFromDomainMessage($domainMessage, 'Video \'' . $event->getVideo()->getId() . '\' toegevoegd')
+        );
+    }
+
+    private function projectVideoDeleted(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractVideoDeleted $event */
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $event->getItemId(),
+            Log::createFromDomainMessage($domainMessage, 'Video \'' . $event->getVideoId() . '\' verwijderd')
+        );
+    }
+
+    private function projectVideoUpdated(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractVideoEvent $event */
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $event->getItemId(),
+            Log::createFromDomainMessage($domainMessage, 'Video \'' . $event->getVideo()->getId() . '\' aangepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
@@ -278,6 +314,17 @@ trait OfferHistoryProjectorTrait
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, "Afgekeurd, reden: '{$reason}'")
+        );
+    }
+
+    private function projectAvailableFromUpdated(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractAvailableFromUpdated $event */
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $event->getItemId(),
+            Log::createFromDomainMessage($domainMessage, 'Publicatiedatum aangepast')
         );
     }
 

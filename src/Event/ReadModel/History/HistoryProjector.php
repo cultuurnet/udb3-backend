@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
@@ -38,12 +39,16 @@ use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Event\Events\VideoAdded;
+use CultuurNet\UDB3\Event\Events\VideoDeleted;
+use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
@@ -122,6 +127,15 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof ImagesUpdatedFromUDB2:
                 $this->projectImagesUpdatedFromUDB2($domainMessage);
                 break;
+            case $event instanceof VideoAdded:
+                $this->projectVideoAdded($domainMessage);
+                break;
+            case $event instanceof VideoDeleted:
+                $this->projectVideoDeleted($domainMessage);
+                break;
+            case $event instanceof VideoUpdated:
+                $this->projectVideoUpdated($domainMessage);
+                break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($domainMessage);
                 break;
@@ -155,8 +169,17 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof Rejected:
                 $this->projectRejected($domainMessage);
                 break;
+            case $event instanceof AvailableFromUpdated:
+                $this->projectAvailableFromUpdated($domainMessage);
+                break;
             case $event instanceof ThemeUpdated:
                 $this->projectThemeUpdated($domainMessage);
+                break;
+            case $event instanceof ThemeRemoved:
+                $this->writeHistory(
+                    $event->getItemId(),
+                    Log::createFromDomainMessage($domainMessage, 'Thema verwijderd')
+                );
                 break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);

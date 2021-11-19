@@ -11,6 +11,7 @@ use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
+use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
@@ -47,6 +48,9 @@ use CultuurNet\UDB3\Place\Events\TitleUpdated;
 use CultuurNet\UDB3\Place\Events\TypeUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Place\Events\VideoAdded;
+use CultuurNet\UDB3\Place\Events\VideoDeleted;
+use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use DateTime;
 use DateTimeZone;
 
@@ -109,6 +113,15 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof ImagesUpdatedFromUDB2:
                 $this->projectImagesUpdatedFromUDB2($domainMessage);
                 break;
+            case $event instanceof VideoAdded:
+                $this->projectVideoAdded($domainMessage);
+                break;
+            case $event instanceof VideoDeleted:
+                $this->projectVideoDeleted($domainMessage);
+                break;
+            case $event instanceof VideoUpdated:
+                $this->projectVideoUpdated($domainMessage);
+                break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($domainMessage);
                 break;
@@ -156,6 +169,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof Rejected:
                 $this->projectRejected($domainMessage);
+                break;
+            case $event instanceof AvailableFromUpdated:
+                $this->projectAvailableFromUpdated($domainMessage);
                 break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);
