@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\Media\MediaUrlRepository;
+use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
 {
-    private MediaUrlRepository $mediaUrlRepository;
+    private MediaUrlMapping $mediaUrlRepository;
 
-    public function __construct(DocumentRepository $repository, MediaUrlRepository $mediaUrlRepository)
+    public function __construct(DocumentRepository $repository, MediaUrlMapping $mediaUrlRepository)
     {
         parent::__construct($repository);
         $this->mediaUrlRepository = $mediaUrlRepository;

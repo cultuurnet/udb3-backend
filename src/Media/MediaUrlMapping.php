@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Media;
 
-final class MediaUrlRepository
+final class MediaUrlMapping
 {
     private array $mediaUrlMappings;
 
