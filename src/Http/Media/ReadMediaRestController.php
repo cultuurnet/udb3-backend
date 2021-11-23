@@ -7,31 +7,30 @@ namespace CultuurNet\UDB3\Http\Media;
 use Broadway\Repository\AggregateNotFoundException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\Identity\UUID;
 
-class ReadMediaRestController
+final class ReadMediaRestController
 {
-    /**
-     * @var MediaManager;
-     */
-    protected $mediaManager;
+    private MediaManager $mediaManager;
 
-    /**
-     * @var MediaObjectSerializer
-     */
-    protected $serializer;
+    private MediaObjectSerializer $serializer;
+
+    private MediaUrlMapping $mediaUrlMapping;
 
     public function __construct(
         MediaManager $mediaManager,
-        MediaObjectSerializer $serializer
+        MediaObjectSerializer $serializer,
+        MediaUrlMapping $mediaUrlMapping
     ) {
         $this->mediaManager = $mediaManager;
         $this->serializer = $serializer;
+        $this->mediaUrlMapping = $mediaUrlMapping;
     }
 
-    public function get($id)
+    public function get($id): JsonResponse
     {
         try {
             $mediaObject = $this->mediaManager->get(new UUID($id));
@@ -42,6 +41,9 @@ class ReadMediaRestController
         }
 
         $serializedMediaObject = $this->serializer->serialize($mediaObject);
+
+        $serializedMediaObject['contentUrl'] = $this->mediaUrlMapping->getUpdatedUrl($serializedMediaObject['contentUrl']);
+        $serializedMediaObject['thumbnailUrl'] = $this->mediaUrlMapping->getUpdatedUrl($serializedMediaObject['thumbnailUrl']);
 
         return JsonResponse::create($serializedMediaObject);
     }
