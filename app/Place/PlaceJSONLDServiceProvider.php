@@ -105,7 +105,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
 
-                $repository = new MediaUrlOfferRepositoryDecorator($repository, $app['media_url_repository']);
+                $repository = new MediaUrlOfferRepositoryDecorator($repository, $app['media_url_mapping']);
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
