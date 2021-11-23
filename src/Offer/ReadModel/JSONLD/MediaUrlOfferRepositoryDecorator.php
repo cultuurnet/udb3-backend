@@ -11,12 +11,12 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
 {
-    private MediaUrlMapping $mediaUrlRepository;
+    private MediaUrlMapping $mediaUrlMapping;
 
-    public function __construct(DocumentRepository $repository, MediaUrlMapping $mediaUrlRepository)
+    public function __construct(DocumentRepository $repository, MediaUrlMapping $mediaUrlMapping)
     {
         parent::__construct($repository);
-        $this->mediaUrlRepository = $mediaUrlRepository;
+        $this->mediaUrlMapping = $mediaUrlMapping;
     }
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
@@ -36,8 +36,8 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
                             return $mediaObject;
                         }
 
-                        $mediaObject['contentUrl'] = $this->mediaUrlRepository->getUpdatedUrl($mediaObject['contentUrl']);
-                        $mediaObject['thumbnailUrl'] = $this->mediaUrlRepository->getUpdatedUrl($mediaObject['thumbnailUrl']);
+                        $mediaObject['contentUrl'] = $this->mediaUrlMapping->getUpdatedUrl($mediaObject['contentUrl']);
+                        $mediaObject['thumbnailUrl'] = $this->mediaUrlMapping->getUpdatedUrl($mediaObject['thumbnailUrl']);
 
                         return $mediaObject;
                     },
@@ -47,7 +47,7 @@ final class MediaUrlOfferRepositoryDecorator extends DocumentRepositoryDecorator
                 if (!isset($json['image']) || !is_string($json['image'])) {
                     return $json;
                 }
-                $json['image'] = $this->mediaUrlRepository->getUpdatedUrl($json['image']);
+                $json['image'] = $this->mediaUrlMapping->getUpdatedUrl($json['image']);
 
                 return $json;
             }
