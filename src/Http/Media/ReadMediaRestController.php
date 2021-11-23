@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\Identity\UUID;
 
-class ReadMediaRestController
+final class ReadMediaRestController
 {
     private MediaManager $mediaManager;
 
