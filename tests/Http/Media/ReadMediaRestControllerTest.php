@@ -76,7 +76,7 @@ class ReadMediaRestControllerTest extends TestCase
                 'thumbnailUrl' => 'https://images.uitdatabank.be/123/5624b810-c340-40a4-8f38-0393eca59bfe.jpg',
                 'description' => 'UDB2 image',
                 'copyrightHolder' => 'publiq',
-                'inLanguage' => 'nl'
+                'inLanguage' => 'nl',
             ]),
             $response->getContent()
         );
