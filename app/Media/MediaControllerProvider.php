@@ -21,7 +21,8 @@ class MediaControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadMediaRestController(
                     $app['media_manager'],
-                    $app['media_object_serializer']
+                    $app['media_object_serializer'],
+                    $app['media_mapping_url']
                 );
             }
         );
