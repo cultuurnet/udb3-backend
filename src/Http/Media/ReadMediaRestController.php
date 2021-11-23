@@ -13,9 +13,9 @@ use ValueObjects\Identity\UUID;
 
 class ReadMediaRestController
 {
-    protected MediaManager $mediaManager;
+    private MediaManager $mediaManager;
 
-    protected MediaObjectSerializer $serializer;
+    private MediaObjectSerializer $serializer;
 
     public function __construct(
         MediaManager $mediaManager,
