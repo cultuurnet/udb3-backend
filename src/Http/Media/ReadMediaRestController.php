@@ -13,15 +13,9 @@ use ValueObjects\Identity\UUID;
 
 class ReadMediaRestController
 {
-    /**
-     * @var MediaManager;
-     */
-    protected $mediaManager;
+    protected MediaManager $mediaManager;
 
-    /**
-     * @var MediaObjectSerializer
-     */
-    protected $serializer;
+    protected MediaObjectSerializer $serializer;
 
     public function __construct(
         MediaManager $mediaManager,
@@ -31,7 +25,7 @@ class ReadMediaRestController
         $this->serializer = $serializer;
     }
 
-    public function get($id)
+    public function get($id): JsonResponse
     {
         try {
             $mediaObject = $this->mediaManager->get(new UUID($id));
