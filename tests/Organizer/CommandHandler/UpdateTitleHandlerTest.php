@@ -55,7 +55,7 @@ final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
             ->when(new UpdateTitle($id, new Title('New Title'), new Language('fr')))
-            ->then([new TitleTranslated($id, new LegacyTitle('New Title'), new LegacyLanguage('fr'))]);
+            ->then([new TitleTranslated($id, 'New Title', 'fr')]);
     }
 
     private function organizerCreated(string $id): OrganizerCreated

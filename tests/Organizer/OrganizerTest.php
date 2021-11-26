@@ -457,13 +457,13 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                     new TitleTranslated(
                         $this->id,
-                        new LegacyTitle('Le Depot'),
-                        new LegacyLanguage('fr')
+                        'Le Depot',
+                        'fr'
                     ),
                     new TitleTranslated(
                         $this->id,
-                        new LegacyTitle('STUK'),
-                        new LegacyLanguage('fr')
+                        'STUK',
+                        'fr'
                     ),
                 ]
             );
@@ -492,8 +492,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new TitleTranslated(
                         $this->id,
-                        new LegacyTitle('Pièce'),
-                        new LegacyLanguage('fr')
+                        'Pièce',
+                        'fr'
                     ),
                 ]
             );

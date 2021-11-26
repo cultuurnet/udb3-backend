@@ -15,15 +15,9 @@ class TitleTranslatedTest extends TestCase
      */
     private $organizerId;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private string $title;
 
-    /**
-     * @var Language
-     */
-    private $language;
+    private string $language;
 
     /**
      * @var TitleTranslated
@@ -39,9 +33,9 @@ class TitleTranslatedTest extends TestCase
     {
         $this->organizerId = '3ad6c135-9b2d-4360-8886-3a58aaf66039';
 
-        $this->title = new Title('Het Depot');
+        $this->title = 'Het Depot';
 
-        $this->language = new Language('nl');
+        $this->language = 'nl';
 
         $this->titleTranslated = new TitleTranslated(
             $this->organizerId,
@@ -51,8 +45,8 @@ class TitleTranslatedTest extends TestCase
 
         $this->titleTranslatedAsArray = [
             'organizer_id' =>  $this->organizerId,
-            'title' => $this->title->toNative(),
-            'language' => $this->language->getCode(),
+            'title' => $this->title,
+            'language' => $this->language,
         ];
     }
 
