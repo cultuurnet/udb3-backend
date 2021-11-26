@@ -14,13 +14,13 @@ final class TitleTranslated extends OrganizerEvent
 
     public function __construct(
         string $organizerId,
-        Title $title,
-        Language $language
+        string $title,
+        string $language
     ) {
         parent::__construct($organizerId);
 
-        $this->title = $title->toNative();
-        $this->language = $language->getCode();
+        $this->title = $title;
+        $this->language = $language;
     }
 
     public function getTitle(): Title
