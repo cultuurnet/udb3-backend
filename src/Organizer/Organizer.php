@@ -144,8 +144,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
                 $event = new TitleTranslated(
                     $this->actorId,
-                    LegacyTitle::fromUdb3ModelTitle($title),
-                    LegacyLanguage::fromUdb3ModelLanguage($language)
+                    $title->toString(),
+                    $language->toString()
                 );
             } else {
                 $event = new TitleUpdated(
