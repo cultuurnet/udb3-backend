@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 class TitleTranslatedTest extends TestCase
