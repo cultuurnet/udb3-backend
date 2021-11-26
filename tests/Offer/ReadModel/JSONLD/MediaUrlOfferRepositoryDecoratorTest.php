@@ -43,6 +43,20 @@ final class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             ],
         ],
         'image' => 'https://io.uitdatabank.be/images/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
+        'location' => [
+            'mediaObject' => [
+                [
+                    '@id' => 'https://io.uitdatabank.be/images/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'https://io.uitdatabank.be/images/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+                    'thumbnailUrl' => 'https://io.uitdatabank.be/images/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+                    'description' => 'test',
+                    'copyrightHolder' => 'cc4',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+            'image' => 'https://io.uitdatabank.be/images/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+        ],
     ];
 
     private const POLYFILLED_JSON = [
@@ -76,6 +90,20 @@ final class MediaUrlOfferRepositoryDecoratorTest extends TestCase
             ],
         ],
         'image' => 'https://images.uitdatabank.be/da02d848-eb11-4bfa-a566-d8bd3b856990.jpeg',
+        'location' => [
+            'mediaObject' => [
+                [
+                    '@id' => 'https://io.uitdatabank.be/images/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'https://images.uitdatabank.be/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+                    'thumbnailUrl' => 'https://images.uitdatabank.be/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+                    'description' => 'test',
+                    'copyrightHolder' => 'cc4',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+            'image' => 'https://images.uitdatabank.be/34a6f347-a378-4a7a-a017-56ecdf0a099b',
+        ],
     ];
 
     /**
