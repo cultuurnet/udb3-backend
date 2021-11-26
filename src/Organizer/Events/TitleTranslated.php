@@ -45,8 +45,8 @@ final class TitleTranslated extends OrganizerEvent
     {
         return new static(
             $data['organizer_id'],
-            new Title($data['title']),
-            new Language($data['language'])
+            $data['title'],
+            $data['language']
         );
     }
 }
