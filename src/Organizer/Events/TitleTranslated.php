@@ -9,15 +9,8 @@ use CultuurNet\UDB3\Title;
 
 final class TitleTranslated extends OrganizerEvent
 {
-    /**
-     * @var Title
-     */
-    private $title;
-
-    /**
-     * @var Language
-     */
-    private $language;
+    private string $title;
+    private string $language;
 
     public function __construct(
         string $organizerId,
@@ -26,25 +19,25 @@ final class TitleTranslated extends OrganizerEvent
     ) {
         parent::__construct($organizerId);
 
-        $this->title = $title;
-        $this->language = $language;
+        $this->title = $title->toNative();
+        $this->language = $language->getCode();
     }
 
     public function getTitle(): Title
     {
-        return $this->title;
+        return new Title($this->title);
     }
 
     public function getLanguage(): Language
     {
-        return $this->language;
+        return new Language($this->language);
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => $this->getTitle()->toNative(),
-            'language' => $this->getLanguage()->getCode(),
+            'title' => $this->title,
+            'language' => $this->language,
         ];
     }
 
