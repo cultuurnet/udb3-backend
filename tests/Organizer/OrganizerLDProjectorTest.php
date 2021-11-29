@@ -283,7 +283,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_title_update()
+    public function it_handles_title_update(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
         $title = 'Het Depot';
