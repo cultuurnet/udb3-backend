@@ -27,9 +27,9 @@ final class OrganizerCreatedWithUniqueWebsite extends OrganizerEvent
 
     public function __construct(
         string $id,
-        Language $mainLanguage,
-        Url $website,
-        Title $title
+        string $mainLanguage,
+        string $website,
+        string $title
     ) {
         parent::__construct($id);
 
@@ -40,25 +40,25 @@ final class OrganizerCreatedWithUniqueWebsite extends OrganizerEvent
 
     public function getMainLanguage(): Language
     {
-        return $this->mainLanguage;
+        return new Language($this->mainLanguage);
     }
 
     public function getWebsite(): Url
     {
-        return $this->website;
+        return Url::fromNative($this->website);
     }
 
     public function getTitle(): Title
     {
-        return $this->title;
+        return new Title($this->title);
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'main_language' => $this->getMainLanguage()->getCode(),
-            'website' => (string) $this->getWebsite(),
-            'title' => (string) $this->getTitle(),
+            'main_language' => $this->mainLanguage,
+            'website' => $this->website,
+            'title' => $this->title,
         ];
     }
 
@@ -66,9 +66,9 @@ final class OrganizerCreatedWithUniqueWebsite extends OrganizerEvent
     {
         return new static(
             $data['organizer_id'],
-            new Language($data['main_language']),
-            Url::fromNative($data['website']),
-            new Title($data['title'])
+            $data['main_language'],
+            $data['website'],
+            $data['title']
         );
     }
 }

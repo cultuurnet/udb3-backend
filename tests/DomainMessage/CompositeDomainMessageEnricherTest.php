@@ -207,9 +207,9 @@ class CompositeDomainMessageEnricherTest extends TestCase
             new Metadata(),
             new OrganizerCreatedWithUniqueWebsite(
                 'fd9e986d-6a23-470c-bf0c-4ad40aa4515e',
-                new Language('nl'),
-                Url::fromNative('https://www.publiq.be'),
-                new Title('test title')
+                'nl',
+                'https://www.publiq.be',
+                'test title'
             ),
             DateTime::now()
         );

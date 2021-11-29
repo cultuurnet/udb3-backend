@@ -52,9 +52,9 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new OrganizerCreatedWithUniqueWebsite(
                 $this->organizerId,
-                new Language('en'),
-                Url::fromNative('http://cultuurnet.be'),
-                new Title('CultuurNet')
+                'en',
+                'http://cultuurnet.be',
+                'CultuurNet'
             )
         );
 
@@ -138,9 +138,9 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new OrganizerCreatedWithUniqueWebsite(
                 $this->organizerId,
-                new Language('en'),
-                Url::fromNative('http://decorridor.be'),
-                new Title('CultuurNet')
+                'en',
+                'http://decorridor.be',
+                'CultuurNet'
             )
         );
 

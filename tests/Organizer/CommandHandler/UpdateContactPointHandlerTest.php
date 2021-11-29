@@ -40,9 +40,9 @@ class UpdateContactPointHandlerTest extends CommandHandlerScenarioTestCase
 
         $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
             $id,
-            new Language('nl'),
-            LegacyUrl::fromNative('https://www.madewithlove.be'),
-            new Title('Organizer Title')
+            'nl',
+            'https://www.madewithlove.be',
+            'Organizer Title'
         );
 
         $contactPoint = new ContactPoint(

@@ -191,9 +191,9 @@ class OrganizerLDProjectorTest extends TestCase
 
         $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
             $id,
-            new Language('en'),
-            Url::fromNative('http://www.stuk.be'),
-            new Title('some representative title')
+            'en',
+            'http://www.stuk.be',
+            'some representative title'
         );
 
         $jsonLD = new \stdClass();

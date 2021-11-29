@@ -53,9 +53,9 @@ class OrganizerCreatedWithUniqueWebsiteTest extends TestCase
                 ],
                 new OrganizerCreatedWithUniqueWebsite(
                     'organizer_id',
-                    new Language('en'),
-                    Url::fromNative('http://www.stuk.be'),
-                    new Title('title')
+                    'en',
+                    'http://www.stuk.be',
+                    'title'
                 ),
             ],
         ];
