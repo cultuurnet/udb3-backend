@@ -105,7 +105,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $organizer = new self();
 
         $organizer->apply(
-            new OrganizerCreatedWithUniqueWebsite($id, $mainLanguage, $website, $title)
+            new OrganizerCreatedWithUniqueWebsite($id, (string) $mainLanguage, (string) $website, (string) $title)
         );
 
         return $organizer;

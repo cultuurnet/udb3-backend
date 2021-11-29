@@ -4,22 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class OrganizerCreatedWithUniqueWebsiteTest extends TestCase
 {
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         OrganizerCreatedWithUniqueWebsite $organizerCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $organizerCreated->serialize()
@@ -29,19 +25,18 @@ class OrganizerCreatedWithUniqueWebsiteTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         OrganizerCreatedWithUniqueWebsite $expectedOrganizerCreated
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedOrganizerCreated,
             OrganizerCreatedWithUniqueWebsite::deserialize($serializedValue)
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'organizerCreatedWithUniqueWebsite' => [
@@ -53,9 +48,9 @@ class OrganizerCreatedWithUniqueWebsiteTest extends TestCase
                 ],
                 new OrganizerCreatedWithUniqueWebsite(
                     'organizer_id',
-                    new Language('en'),
-                    Url::fromNative('http://www.stuk.be'),
-                    new Title('title')
+                    'en',
+                    'http://www.stuk.be',
+                    'title'
                 ),
             ],
         ];

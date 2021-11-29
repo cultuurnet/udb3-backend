@@ -8,16 +8,13 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\Web\Url;
 
 class DeleteOrganizerHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -46,9 +43,9 @@ class DeleteOrganizerHandlerTest extends CommandHandlerScenarioTestCase
 
         $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
             $id,
-            new Language('nl'),
-            Url::fromNative('https://www.madewithlove.be'),
-            new Title('Organizer Title')
+            'nl',
+            'https://www.madewithlove.be',
+            'Organizer Title'
         );
 
         $this->scenario
