@@ -29,7 +29,7 @@ class TitleUpdatedTest extends TestCase
      */
     private $titleUpdatedAsArray;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = '3ad6c135-9b2d-4360-8886-3a58aaf66039';
 
@@ -49,7 +49,7 @@ class TitleUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_to_an_array()
+    public function it_can_serialize_to_an_array(): void
     {
         $this->assertEquals(
             $this->titleUpdatedAsArray,
@@ -60,7 +60,7 @@ class TitleUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_from_an_array()
+    public function it_can_deserialize_from_an_array(): void
     {
         $this->assertEquals(
             TitleUpdated::deserialize($this->titleUpdatedAsArray),
