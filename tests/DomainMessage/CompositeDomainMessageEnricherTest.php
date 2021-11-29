@@ -39,10 +39,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
      */
     private $placeCreatedEnricher;
 
-    /**
-     * @var CompositeDomainMessageEnricher
-     */
-    private $compositeEnricher;
+    private CompositeDomainMessageEnricher $compositeEnricher;
 
     public function setUp(): void
     {

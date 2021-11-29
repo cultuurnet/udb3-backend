@@ -37,22 +37,13 @@ class DefaultOrganizerEditingServiceTest extends TestCase
      */
     private $uuidGenerator;
 
-    /**
-     * @var TraceableEventStore
-     */
-    protected $eventStore;
+    protected TraceableEventStore $eventStore;
 
-    /**
-     * @var Repository
-     */
-    private $organizerRepository;
+    private Repository $organizerRepository;
 
-    /**
-     * @var DefaultOrganizerEditingService
-     */
-    private $service;
+    private DefaultOrganizerEditingService $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
 
@@ -77,7 +68,7 @@ class DefaultOrganizerEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_an_organizer_with_a_unique_website()
+    public function it_can_create_an_organizer_with_a_unique_website(): void
     {
         $this->eventStore->trace();
 
@@ -107,7 +98,7 @@ class DefaultOrganizerEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_an_organizer_with_a_unique_website_plus_contact_point_and_address()
+    public function it_can_create_an_organizer_with_a_unique_website_plus_contact_point_and_address(): void
     {
         $this->eventStore->trace();
 
