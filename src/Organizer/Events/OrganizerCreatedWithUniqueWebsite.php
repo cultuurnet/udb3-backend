@@ -10,20 +10,11 @@ use ValueObjects\Web\Url;
 
 final class OrganizerCreatedWithUniqueWebsite extends OrganizerEvent
 {
-    /**
-     * @var Language
-     */
-    private $mainLanguage;
+    private string $mainLanguage;
 
-    /**
-     * @var Url
-     */
-    private $website;
+    private string $website;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private string $title;
 
     public function __construct(
         string $id,
