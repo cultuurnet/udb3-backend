@@ -42,6 +42,6 @@ class UpdateWebsiteHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$organizerCreated])
             ->when(new UpdateWebsite($id, new Url('https://www.publiq.be')))
-            ->then([new WebsiteUpdated($id, LegacyUrl::fromNative('https://www.publiq.be'))]);
+            ->then([new WebsiteUpdated($id, 'https://www.publiq.be')]);
     }
 }

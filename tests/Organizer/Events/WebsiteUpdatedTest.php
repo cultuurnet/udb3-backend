@@ -5,44 +5,27 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class WebsiteUpdatedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private WebsiteUpdated $websiteUpdated;
 
-    /**
-     * @var Url
-     */
-    private $website;
+    private array $websiteUpdatedAsArray;
 
-    /**
-     * @var WebsiteUpdated
-     */
-    private $websiteUpdated;
-
-    /**
-     * @var array
-     */
-    private $websiteUpdatedAsArray;
-
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->organizerId = '11cab069-7355-4fbc-bb82-eef9edfd7788';
+        $organizerId = '11cab069-7355-4fbc-bb82-eef9edfd7788';
 
-        $this->website = Url::fromNative('http://www.depot.be');
+        $website = 'http://www.depot.be';
 
         $this->websiteUpdated = new WebsiteUpdated(
-            $this->organizerId,
-            $this->website
+            $organizerId,
+            $website
         );
 
         $this->websiteUpdatedAsArray = [
-            'organizer_id' =>  $this->organizerId,
-            'website' => (string) $this->website,
+            'organizer_id' =>  $organizerId,
+            'website' => $website,
         ];
     }
 

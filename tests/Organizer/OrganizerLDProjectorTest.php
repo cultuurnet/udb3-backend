@@ -237,7 +237,7 @@ class OrganizerLDProjectorTest extends TestCase
     public function it_handles_website_update(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $website = Url::fromNative('http://www.depot.be');
+        $website = 'http://www.depot.be';
 
         $this->mockGet($organizerId, 'organizer.json');
 
