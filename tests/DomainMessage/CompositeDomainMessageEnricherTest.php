@@ -25,7 +25,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use ValueObjects\Geography\Country;
-use ValueObjects\Web\Url;
 
 class CompositeDomainMessageEnricherTest extends TestCase
 {
