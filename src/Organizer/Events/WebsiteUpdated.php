@@ -8,14 +8,11 @@ use ValueObjects\Web\Url;
 
 final class WebsiteUpdated extends OrganizerEvent
 {
-    /**
-     * @var Url
-     */
-    private $website;
+    private string $website;
 
     public function __construct(
         string $organizerId,
-        Url $website
+        string $website
     ) {
         parent::__construct($organizerId);
         $this->website = $website;
@@ -23,13 +20,13 @@ final class WebsiteUpdated extends OrganizerEvent
 
     public function getWebsite(): Url
     {
-        return $this->website;
+        return Url::fromNative($this->website);
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'website' => (string) $this->getWebsite(),
+            'website' => $this->website,
         ];
     }
 
@@ -37,7 +34,7 @@ final class WebsiteUpdated extends OrganizerEvent
     {
         return new static(
             $data['organizer_id'],
-            Url::fromNative($data['website'])
+            $data['website']
         );
     }
 }
