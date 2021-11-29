@@ -370,7 +370,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with website 'http://www.stuk.be'.
                     new WebsiteUpdated(
                         $this->id,
-                        LegacyUrl::fromNative('http://www.hetdepot.be')
+                        'http://www.hetdepot.be'
                     ),
                 ]
             );
@@ -403,7 +403,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with an empty website.
                     new WebsiteUpdated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        LegacyUrl::fromNative('http://www.hetdepot.be')
+                        'http://www.hetdepot.be'
                     ),
                 ]
             );

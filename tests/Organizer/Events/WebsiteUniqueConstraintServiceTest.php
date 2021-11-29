@@ -64,7 +64,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new WebsiteUpdated(
                 $this->organizerId,
-                Url::fromNative('http://cultuurnet.be')
+                'http://cultuurnet.be'
             )
         );
 
@@ -150,7 +150,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new WebsiteUpdated(
                 $this->organizerId,
-                Url::fromNative('http://decorridor.be')
+                'http://decorridor.be'
             )
         );
 

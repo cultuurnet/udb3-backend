@@ -130,7 +130,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             $this->apply(
                 new WebsiteUpdated(
                     $this->actorId,
-                    $newWebsite
+                    (string) $newWebsite
                 )
             );
         }
