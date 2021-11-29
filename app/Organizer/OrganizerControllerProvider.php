@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
-use CultuurNet\UDB3\Http\Organizer\EditOrganizerRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -71,16 +70,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[DeleteOrganizerRequestHandler::class] = $app->share(
             fn (Application $application) => new DeleteOrganizerRequestHandler($app['event_command_bus'])
-        );
-
-        $app['organizer_edit_controller'] = $app->share(
-            function (Application $app) {
-                return new EditOrganizerRestController(
-                    $app['event_command_bus'],
-                    $app['organizer_editing_service'],
-                    $app['organizer_iri_generator']
-                );
-            }
         );
 
         $app['organizer_permissions_controller'] = $app->share(
