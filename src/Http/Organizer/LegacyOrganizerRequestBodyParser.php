@@ -38,12 +38,12 @@ final class LegacyOrganizerRequestBodyParser implements RequestBodyParser
         $data->url = $data->website;
 
         $data->name = [
-            $data->mainLanguage => $data->name
+            $data->mainLanguage => $data->name,
         ];
 
         if (isset($data->address)) {
             $data->address = [
-                $data->mainLanguage => $data->address
+                $data->mainLanguage => $data->address,
             ];
         }
 
