@@ -453,7 +453,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was created with 'nl' title STUK.
                     new TitleUpdated(
                         $this->id,
-                        new LegacyTitle('Het Depot')
+                        'Het Depot'
                     ),
                     new TitleTranslated(
                         $this->id,
@@ -595,7 +595,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     // Organizer was imported with title 'DE Studio'.
                     new TitleUpdated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        new LegacyTitle('STUK')
+                        'STUK'
                     ),
                 ]
             );
@@ -641,7 +641,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                     new TitleUpdated(
                         $this->id,
-                        new LegacyTitle('Het Depot')
+                        'Het Depot'
                     ),
                 ]
             );

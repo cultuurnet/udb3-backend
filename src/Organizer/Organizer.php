@@ -150,7 +150,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             } else {
                 $event = new TitleUpdated(
                     $this->actorId,
-                    LegacyTitle::fromUdb3ModelTitle($title)
+                    $title->toString()
                 );
             }
 

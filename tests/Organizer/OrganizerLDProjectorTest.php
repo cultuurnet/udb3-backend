@@ -286,7 +286,7 @@ class OrganizerLDProjectorTest extends TestCase
     public function it_handles_title_update()
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $title = new Title('Het Depot');
+        $title = 'Het Depot';
 
         $this->mockGet($organizerId, 'organizer.json');
 
