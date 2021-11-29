@@ -40,7 +40,7 @@ final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
             ->when(new UpdateTitle($id, new Title('Nieuwe Titel'), new Language('nl')))
-            ->then([new TitleUpdated($id, new LegacyTitle('Nieuwe Titel'))]);
+            ->then([new TitleUpdated($id, 'Nieuwe Titel')]);
     }
 
     /**

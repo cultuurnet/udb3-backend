@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
@@ -50,38 +49,22 @@ use ValueObjects\Web\Url;
 
 class OrganizerLDProjectorTest extends TestCase
 {
-    /**
-     * @var OrganizerLDProjector
-     */
-    protected $projector;
+    protected OrganizerLDProjector $projector;
 
     /**
      * @var DocumentRepository|MockObject
      */
     protected $documentRepository;
 
-    /**
-     * @var EventBus|MockObject
-     */
-    private $eventBus;
+    private RecordedOn $recordedOn;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
-
-    /**
-     * @var RecordedOn
-     */
-    private $recordedOn;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
 
-        $this->eventBus = $this->createMock(EventBus::class);
+        $eventBus = $this->createMock(EventBus::class);
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
             }
@@ -89,8 +72,8 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->projector = new OrganizerLDProjector(
             $this->documentRepository,
-            $this->iriGenerator,
-            $this->eventBus,
+            $iriGenerator,
+            $eventBus,
             new JsonDocumentLanguageEnricher(
                 new OrganizerJsonDocumentLanguageAnalyzer()
             )
@@ -101,11 +84,7 @@ class OrganizerLDProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param string $fileName
-     * @return OrganizerImportedFromUDB2
-     */
-    private function organizerImportedFromUDB2($fileName)
+    private function organizerImportedFromUDB2(string $fileName): OrganizerImportedFromUDB2
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/Samples/' . $fileName
@@ -120,29 +99,23 @@ class OrganizerLDProjectorTest extends TestCase
         return $event;
     }
 
-    /**
-     * @param string $fileName
-     * @return OrganizerUpdatedFromUDB2
-     */
-    private function organizerUpdatedFromUDB2($fileName)
+    private function organizerUpdatedFromUDB2(string $fileName): OrganizerUpdatedFromUDB2
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/Samples/' . $fileName
         );
 
-        $event = new OrganizerUpdatedFromUDB2(
+        return new OrganizerUpdatedFromUDB2(
             'someId',
             $cdbXml,
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
-
-        return $event;
     }
 
     /**
      * @test
      */
-    public function it_handles_new_organizers()
+    public function it_handles_new_organizers(): void
     {
         $uuidGenerator = new Version4Generator();
         $id = $uuidGenerator->generate();
@@ -211,7 +184,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_new_organizers_with_unique_website()
+    public function it_handles_new_organizers_with_unique_website(): void
     {
         $uuidGenerator = new Version4Generator();
         $id = $uuidGenerator->generate();
@@ -261,7 +234,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_website_update()
+    public function it_handles_website_update(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
         $website = Url::fromNative('http://www.depot.be');
@@ -283,10 +256,10 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_title_update()
+    public function it_handles_title_update(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $title = new Title('Het Depot');
+        $title = 'Het Depot';
 
         $this->mockGet($organizerId, 'organizer.json');
 
@@ -302,10 +275,7 @@ class OrganizerLDProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * Data provider for it_handles_address_updated()
-     */
-    public function addressUpdatesDataProvider()
+    public function addressUpdatesDataProvider(): array
     {
         return [
             'organizer with former address' => [
@@ -323,7 +293,7 @@ class OrganizerLDProjectorTest extends TestCase
      * @test
      * @dataProvider addressUpdatesDataProvider
      */
-    public function it_handles_address_updated($currentJson, $expectedJson)
+    public function it_handles_address_updated($currentJson, $expectedJson): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -349,7 +319,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_address_removed()
+    public function it_handles_address_removed(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -369,7 +339,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_set_name_when_importing_from_udb2()
+    public function it_should_set_name_when_importing_from_udb2(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_email.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -391,7 +361,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_name_when_updating_from_udb2_and_keep_missing_translations()
+    public function it_should_update_name_when_updating_from_udb2_and_keep_missing_translations(): void
     {
         // First make sure there is an already created organizer.
         $organizerId = 'someId';
@@ -431,7 +401,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_set_main_language_when_importing_from_udb2()
+    public function it_should_set_main_language_when_importing_from_udb2(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_email.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -449,7 +419,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_set_main_language_when_updating_from_udb2()
+    public function it_should_set_main_language_when_updating_from_udb2(): void
     {
         // First make sure there is an already created organizer.
         $organizerId = 'someId';
@@ -471,7 +441,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_title_translated()
+    public function it_handles_title_translated(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -493,7 +463,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_address_translated()
+    public function it_handles_address_translated(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -520,7 +490,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_translation_of_organizer_with_untranslated_name()
+    public function it_handles_translation_of_organizer_with_untranslated_name(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -542,7 +512,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_an_email_property_when_cdbxml_has_an_email()
+    public function it_adds_an_email_property_when_cdbxml_has_an_email(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_email.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -567,7 +537,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_add_an_email_property_when_cdbxml_has_no_email()
+    public function it_does_not_add_an_email_property_when_cdbxml_has_no_email(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_without_email.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -586,7 +556,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_an_email_property_when_cdbxml_has_multiple_emails()
+    public function it_adds_an_email_property_when_cdbxml_has_multiple_emails(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_emails.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -612,7 +582,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_phone_property_when_cdbxml_has_a_phone_number()
+    public function it_adds_a_phone_property_when_cdbxml_has_a_phone_number(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_phone_number.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -636,7 +606,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_phone_property_when_cdbxml_has_multiple_phone_numbers()
+    public function it_adds_a_phone_property_when_cdbxml_has_multiple_phone_numbers(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_phone_numbers.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -661,7 +631,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_add_a_phone_property_when_cdbxml_has_no_phone()
+    public function it_does_not_add_a_phone_property_when_cdbxml_has_no_phone(): void
     {
         $event = $this->organizerImportedFromUDB2('organizer_without_phone_number.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -680,7 +650,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_workflow_status_on_delete()
+    public function it_updates_workflow_status_on_delete(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -698,7 +668,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_an_organizer_from_udb2_even_if_it_has_been_deleted()
+    public function it_can_update_an_organizer_from_udb2_even_if_it_has_been_deleted(): void
     {
         $organizerUpdatedFromUdb2 = $this->organizerUpdatedFromUDB2('organizer_with_email.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($organizerUpdatedFromUdb2);
@@ -725,7 +695,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_label_added()
+    public function it_handles_label_added(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
         $label = new Label('labelName', true);
@@ -743,7 +713,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_invisible_label_added()
+    public function it_handles_invisible_label_added(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
         $label = new Label('labelName', false);
@@ -761,14 +731,12 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider labelRemovedDataProvider
-     * @param string $originalFile
-     * @param string $finalFile
      */
     public function it_handles_label_removed(
         Label $label,
-        $originalFile,
-        $finalFile
-    ) {
+        string $originalFile,
+        string $finalFile
+    ): void {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
         $this->mockGet($organizerId, $originalFile);
@@ -781,10 +749,7 @@ class OrganizerLDProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function labelRemovedDataProvider()
+    public function labelRemovedDataProvider(): array
     {
         return [
             [
@@ -808,7 +773,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_invisible_label_removed()
+    public function it_handles_invisible_label_removed(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
         $label = new Label('labelName', false);
@@ -826,7 +791,7 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_geo_coordinates_updated()
+    public function it_handles_geo_coordinates_updated(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
@@ -847,11 +812,7 @@ class OrganizerLDProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @param string $organizerId
-     * @param string $fileName
-     */
-    private function mockGet($organizerId, $fileName)
+    private function mockGet(string $organizerId, string $fileName): void
     {
         $organizerJson = file_get_contents(__DIR__ . '/Samples/' . $fileName);
         $this->documentRepository->method('fetch')
@@ -859,11 +820,7 @@ class OrganizerLDProjectorTest extends TestCase
             ->willReturn(new JsonDocument($organizerId, $organizerJson));
     }
 
-    /**
-     * @param string $organizerId
-     * @param string $fileName
-     */
-    private function expectSave($organizerId, $fileName)
+    private function expectSave(string $organizerId, string $fileName): void
     {
         $expectedOrganizerJson = file_get_contents(__DIR__ . '/Samples/' . $fileName);
         // The expected organizer json still has newline formatting.
@@ -879,9 +836,8 @@ class OrganizerLDProjectorTest extends TestCase
 
     /**
      * @param ActorEvent|OrganizerEvent $organizerEvent
-     * @return DomainMessage
      */
-    private function createDomainMessage($organizerEvent)
+    private function createDomainMessage($organizerEvent): DomainMessage
     {
         if ($organizerEvent instanceof ActorEvent) {
             $id = $organizerEvent->getActorId();
