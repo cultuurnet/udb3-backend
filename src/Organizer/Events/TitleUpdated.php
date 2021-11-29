@@ -8,14 +8,11 @@ use CultuurNet\UDB3\Title;
 
 final class TitleUpdated extends OrganizerEvent
 {
-    /**
-     * @var Title
-     */
-    private $title;
+    private string $title;
 
     public function __construct(
         string $organizerId,
-        Title $title
+        string $title
     ) {
         parent::__construct($organizerId);
         $this->title = $title;
@@ -23,13 +20,13 @@ final class TitleUpdated extends OrganizerEvent
 
     public function getTitle(): Title
     {
-        return $this->title;
+        return new Title($this->title);
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'title' => $this->getTitle()->toNative(),
+            'title' => $this->title,
         ];
     }
 
@@ -37,7 +34,7 @@ final class TitleUpdated extends OrganizerEvent
     {
         return new static(
             $data['organizer_id'],
-            new Title($data['title'])
+            $data['title']
         );
     }
 }
