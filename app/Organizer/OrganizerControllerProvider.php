@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\CreateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
@@ -29,8 +30,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/', 'organizer_edit_controller:create');
-
+        $controllers->post('/', CreateOrganizerRequestHandler::class);
         $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class)->bind('organizer');
         $controllers->delete('/{organizerId}/', DeleteOrganizerRequestHandler::class);
 
@@ -56,6 +56,15 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
     public function register(Application $app): void
     {
+        $app[CreateOrganizerRequestHandler::class] = $app->share(
+            fn (Application $application) => new CreateOrganizerRequestHandler(
+                $app['organizer_repository'],
+                $app['event_command_bus'],
+                $app['uuid_generator'],
+                $app['organizer_iri_generator']
+            )
+        );
+
         $app[GetOrganizerRequestHandler::class] = $app->share(
             fn (Application $application) => new GetOrganizerRequestHandler($app['organizer_service'])
         );
