@@ -32,7 +32,7 @@ class WebsiteUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_to_an_array()
+    public function it_can_serialize_to_an_array(): void
     {
         $this->assertEquals(
             $this->websiteUpdatedAsArray,
@@ -43,7 +43,7 @@ class WebsiteUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_from_an_array()
+    public function it_can_deserialize_from_an_array(): void
     {
         $this->assertEquals(
             WebsiteUpdated::deserialize($this->websiteUpdatedAsArray),
