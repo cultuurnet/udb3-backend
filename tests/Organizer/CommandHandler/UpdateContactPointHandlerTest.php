@@ -9,7 +9,6 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\ContactPoint as LegacyContactPoint;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -21,8 +20,6 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class UpdateContactPointHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -40,9 +37,9 @@ class UpdateContactPointHandlerTest extends CommandHandlerScenarioTestCase
 
         $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
             $id,
-            new Language('nl'),
-            LegacyUrl::fromNative('https://www.madewithlove.be'),
-            new Title('Organizer Title')
+            'nl',
+            'https://www.madewithlove.be',
+            'Organizer Title'
         );
 
         $contactPoint = new ContactPoint(

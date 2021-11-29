@@ -6,41 +6,24 @@ namespace CultuurNet\UDB3\Organizer\Events;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class WebsiteUniqueConstraintServiceTest extends TestCase
 {
-    /**
-     * @var WebsiteUniqueConstraintService
-     */
-    private $service;
+    private WebsiteUniqueConstraintService $service;
 
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var DomainMessage
-     */
-    private $websiteCreatedEvent;
+    private DomainMessage $websiteCreatedEvent;
 
-    /**
-     * @var DomainMessage
-     */
-    private $websiteUpdatedEvent;
+    private DomainMessage $websiteUpdatedEvent;
 
-    /**
-     * @var DomainMessage
-     */
-    private $unsupportedEvent;
+    private DomainMessage $unsupportedEvent;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->service = new WebsiteUniqueConstraintService(new WebsiteNormalizer());
 
@@ -52,9 +35,9 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new OrganizerCreatedWithUniqueWebsite(
                 $this->organizerId,
-                new Language('en'),
-                Url::fromNative('http://cultuurnet.be'),
-                new Title('CultuurNet')
+                'en',
+                'http://cultuurnet.be',
+                'CultuurNet'
             )
         );
 
@@ -86,7 +69,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_supports_organizer_created_with_unique_website_events()
+    public function it_supports_organizer_created_with_unique_website_events(): void
     {
         $this->assertTrue($this->service->hasUniqueConstraint($this->websiteCreatedEvent));
     }
@@ -102,7 +85,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_support_organizer_created_events()
+    public function it_does_not_support_organizer_created_events(): void
     {
         $this->assertFalse($this->service->hasUniqueConstraint($this->unsupportedEvent));
     }
@@ -110,7 +93,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_update_of_unique_constraint_for_website_updated()
+    public function it_allows_update_of_unique_constraint_for_website_updated(): void
     {
         $this->assertTrue(
             $this->service->needsUpdateUniqueConstraint($this->websiteUpdatedEvent)
@@ -120,7 +103,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_allow_update_of_unique_constraint_for_website_updated()
+    public function it_does_not_allow_update_of_unique_constraint_for_website_updated(): void
     {
         $this->assertFalse(
             $this->service->needsUpdateUniqueConstraint($this->websiteCreatedEvent)
@@ -138,9 +121,9 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new OrganizerCreatedWithUniqueWebsite(
                 $this->organizerId,
-                new Language('en'),
-                Url::fromNative('http://decorridor.be'),
-                new Title('CultuurNet')
+                'en',
+                'http://decorridor.be',
+                'CultuurNet'
             )
         );
 
@@ -168,7 +151,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_trying_to_get_a_unique_constraint_value_from_unsupported_events()
+    public function it_throws_an_exception_when_trying_to_get_a_unique_constraint_value_from_unsupported_events(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->service->getUniqueConstraintValue($this->unsupportedEvent);

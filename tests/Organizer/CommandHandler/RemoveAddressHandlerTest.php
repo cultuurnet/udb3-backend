@@ -12,16 +12,13 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
-use ValueObjects\Web\Url;
 
 class RemoveAddressHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -73,9 +70,9 @@ class RemoveAddressHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new OrganizerCreatedWithUniqueWebsite(
             $id,
-            new Language('nl'),
-            Url::fromNative('https://www.madewithlove.be'),
-            new Title('Organizer Title')
+            'nl',
+            'https://www.madewithlove.be',
+            'Organizer Title'
         );
     }
 }

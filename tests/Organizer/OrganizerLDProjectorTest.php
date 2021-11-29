@@ -45,7 +45,6 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
-use ValueObjects\Web\Url;
 
 class OrganizerLDProjectorTest extends TestCase
 {
@@ -191,9 +190,9 @@ class OrganizerLDProjectorTest extends TestCase
 
         $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
             $id,
-            new Language('en'),
-            Url::fromNative('http://www.stuk.be'),
-            new Title('some representative title')
+            'en',
+            'http://www.stuk.be',
+            'some representative title'
         );
 
         $jsonLD = new \stdClass();

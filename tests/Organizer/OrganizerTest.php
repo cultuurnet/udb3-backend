@@ -64,9 +64,9 @@ class OrganizerTest extends AggregateRootScenarioTestCase
 
         $this->organizerCreatedWithUniqueWebsite = new OrganizerCreatedWithUniqueWebsite(
             $this->id,
-            new LegacyLanguage('en'),
-            $this->website,
-            $this->title
+            'en',
+            (string) $this->website,
+            (string) $this->title
         );
     }
 
