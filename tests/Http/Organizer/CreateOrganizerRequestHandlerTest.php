@@ -283,4 +283,18 @@ class CreateOrganizerRequestHandlerTest extends TestCase
 
         ];
     }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_body(): void
+    {
+        $createOrganizerRequest = $this->psr7RequestBuilder
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyMissing(),
+            fn () => $this->createOrganizerRequestHandler->handle($createOrganizerRequest)
+        );
+    }
 }
