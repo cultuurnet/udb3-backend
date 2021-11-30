@@ -13,6 +13,13 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -105,6 +112,39 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                     ),
                 ],
                 [],
+            ],
+            'organizer with optional address' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'address' => [
+                        'streetAddress'=> 'Henegouwenkaai 41-43',
+                        'postalCode'=> '1080',
+                        'addressLocality'=> 'Brussel',
+                        'addressCountry'=> 'BE',
+                    ],
+                ],
+                [
+                    new OrganizerCreatedWithUniqueWebsite(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        'nl',
+                        'https://www.publiq.be',
+                        'publiq'
+                    ),
+                ],
+                [
+                    new UpdateAddress(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        new Address(
+                            new Street('Henegouwenkaai 41-43'),
+                            new PostalCode('1080'),
+                            new Locality('Brussel'),
+                            new CountryCode('BE')
+                        ),
+                        new Language('nl')
+                    ),
+                ],
             ],
         ];
     }
