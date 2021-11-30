@@ -364,6 +364,14 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                     'The required properties (website) are missing'
                 ),
             ],
+            'missing mainLanguage, name and website' => [
+                [
+                ],
+                new SchemaError(
+                    '/',
+                    'The required properties (mainLanguage, website, name) are missing'
+                ),
+            ],
         ];
     }
 }
