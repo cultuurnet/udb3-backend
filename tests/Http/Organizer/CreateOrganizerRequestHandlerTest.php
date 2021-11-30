@@ -13,13 +13,21 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
+use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -143,6 +151,61 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                             new CountryCode('BE')
                         ),
                         new Language('nl')
+                    ),
+                ],
+            ],
+            'organizer with optional contact point' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'contact' => [
+                        [
+                            'type'=> 'url',
+                            'value'=> 'https://www.publiq.be',
+                        ],
+                        [
+                            'type'=> 'url',
+                            'value'=> 'https://www.publiq.com',
+                        ],
+                        [
+                            'type'=> 'phone',
+                            'value'=> '016 10 20 30',
+                        ],
+                        [
+                            'type'=> 'email',
+                            'value'=> 'info@publiq.be',
+                        ],
+                        [
+                            'type'=> 'email',
+                            'value'=> 'info@publiq.com',
+                        ],
+                    ],
+                ],
+                [
+                    new OrganizerCreatedWithUniqueWebsite(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        'nl',
+                        'https://www.publiq.be',
+                        'publiq'
+                    ),
+                ],
+                [
+                    new UpdateContactPoint(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        new ContactPoint(
+                            new TelephoneNumbers(
+                                new TelephoneNumber('016 10 20 30')
+                            ),
+                            new EmailAddresses(
+                                new EmailAddress('info@publiq.be'),
+                                new EmailAddress('info@publiq.com')
+                            ),
+                            new Urls(
+                                new Url('https://www.publiq.be'),
+                                new Url('https://www.publiq.com')
+                            )
+                        )
                     ),
                 ],
             ],
