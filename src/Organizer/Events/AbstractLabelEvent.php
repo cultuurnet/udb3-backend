@@ -16,7 +16,7 @@ abstract class AbstractLabelEvent extends OrganizerEvent implements LabelEventIn
     final public function __construct(
         string $organizerId,
         string $labelName,
-        bool   $isVisible = true
+        bool $isVisible = true
     ) {
         parent::__construct($organizerId);
         $this->labelName = $labelName;
