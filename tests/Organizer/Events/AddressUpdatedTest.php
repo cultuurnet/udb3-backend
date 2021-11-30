@@ -16,7 +16,7 @@ class AddressUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_and_deserialized()
+    public function it_can_be_serialized_and_deserialized(): void
     {
         $addressUpdated = new AddressUpdated(
             '0460ffbd-1c85-4bad-9a8f-be1f981648e7',

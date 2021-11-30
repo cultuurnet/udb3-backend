@@ -306,7 +306,18 @@ class OrganizerTest extends AggregateRootScenarioTestCase
         );
 
         $this->scenario
-            ->given([$this->organizerCreatedWithUniqueWebsite, new AddressUpdated($this->id, $initialAddress)])
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                    new AddressUpdated(
+                        $this->id,
+                        $initialAddress->getStreetAddress()->toNative(),
+                        $initialAddress->getPostalCode()->toNative(),
+                        $initialAddress->getLocality()->toNative(),
+                        $initialAddress->getCountry()->getCode()->toNative()
+                    ),
+                ]
+            )
             ->when(
                 function (Organizer $organizer) {
                     // Remove the address twice with the same value so we can
