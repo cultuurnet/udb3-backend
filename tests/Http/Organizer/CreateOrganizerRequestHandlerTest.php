@@ -209,6 +209,78 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                     ),
                 ],
             ],
+            'organizer with optional address and contact point' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'address' => [
+                        'streetAddress'=> 'Henegouwenkaai 41-43',
+                        'postalCode'=> '1080',
+                        'addressLocality'=> 'Brussel',
+                        'addressCountry'=> 'BE',
+                    ],
+                    'contact' => [
+                        [
+                            'type'=> 'url',
+                            'value'=> 'https://www.publiq.be',
+                        ],
+                        [
+                            'type'=> 'url',
+                            'value'=> 'https://www.publiq.com',
+                        ],
+                        [
+                            'type'=> 'phone',
+                            'value'=> '016 10 20 30',
+                        ],
+                        [
+                            'type'=> 'email',
+                            'value'=> 'info@publiq.be',
+                        ],
+                        [
+                            'type'=> 'email',
+                            'value'=> 'info@publiq.com',
+                        ],
+                    ],
+                ],
+                [
+                    new OrganizerCreatedWithUniqueWebsite(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        'nl',
+                        'https://www.publiq.be',
+                        'publiq'
+                    ),
+                ],
+                [
+                    new UpdateContactPoint(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        new ContactPoint(
+                            new TelephoneNumbers(
+                                new TelephoneNumber('016 10 20 30')
+                            ),
+                            new EmailAddresses(
+                                new EmailAddress('info@publiq.be'),
+                                new EmailAddress('info@publiq.com')
+                            ),
+                            new Urls(
+                                new Url('https://www.publiq.be'),
+                                new Url('https://www.publiq.com')
+                            )
+                        )
+                    ),
+                    new UpdateAddress(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        new Address(
+                            new Street('Henegouwenkaai 41-43'),
+                            new PostalCode('1080'),
+                            new Locality('Brussel'),
+                            new CountryCode('BE')
+                        ),
+                        new Language('nl')
+                    ),
+                ],
+            ],
+
         ];
     }
 }
