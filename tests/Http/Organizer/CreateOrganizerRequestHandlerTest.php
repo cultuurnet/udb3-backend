@@ -9,7 +9,9 @@ use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -311,5 +313,37 @@ class CreateOrganizerRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidSyntax('JSON'),
             fn () => $this->createOrganizerRequestHandler->handle($createOrganizerRequest)
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidOrganizerProvider
+     */
+    public function it_fails_on_invalid_data(array $body, SchemaError $schemaError): void
+    {
+        $createOrganizerRequest = $this->psr7RequestBuilder
+            ->withBodyFromArray($body)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData($schemaError),
+            fn () => $this->createOrganizerRequestHandler->handle($createOrganizerRequest)
+        );
+    }
+
+    public function invalidOrganizerProvider(): array
+    {
+        return [
+            'missing mainLanguage' => [
+                [
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                ],
+                new SchemaError(
+                    '/',
+                    'The required properties (mainLanguage) are missing'
+                ),
+            ]
+        ];
     }
 }
