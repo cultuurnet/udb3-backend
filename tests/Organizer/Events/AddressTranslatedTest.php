@@ -8,16 +8,12 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Language;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 
 class AddressTranslatedTest extends TestCase
 {
-    /**
-     * @var AddressTranslated
-     */
-    private $addressTranslated;
+    private AddressTranslated $addressTranslated;
 
     protected function setUp(): void
     {
@@ -29,7 +25,7 @@ class AddressTranslatedTest extends TestCase
                 new Locality('Leuven'),
                 Country::fromNative('BE')
             ),
-            new Language('nl')
+            'nl'
         );
     }
 
@@ -39,7 +35,7 @@ class AddressTranslatedTest extends TestCase
     public function it_stores_a_language(): void
     {
         $this->assertEquals(
-            new Language('nl'),
+            'nl',
             $this->addressTranslated->getLanguage()
         );
     }

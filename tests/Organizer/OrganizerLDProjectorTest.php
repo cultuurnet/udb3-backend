@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -477,7 +476,7 @@ class OrganizerLDProjectorTest extends TestCase
                     new Locality('Kessel-Lo (Louvain)'),
                     Country::fromNative('BE')
                 ),
-                new Language('fr')
+                'fr'
             )
         );
 
