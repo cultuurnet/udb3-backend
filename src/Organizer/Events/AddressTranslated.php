@@ -34,10 +34,7 @@ final class AddressTranslated extends AddressUpdated
         ];
     }
 
-    /**
-     * @return AddressTranslated
-     */
-    public static function deserialize(array $data): AddressUpdated
+    public static function deserialize(array $data): self
     {
         return new self(
             $data['organizer_id'],
