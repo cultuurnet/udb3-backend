@@ -99,7 +99,7 @@ class ProjectorTest extends TestCase
         $relationId,
         $labelAdded,
         RelationType $relationType
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $relationId,
             $labelAdded
@@ -155,7 +155,7 @@ class ProjectorTest extends TestCase
     public function it_handles_label_deleted_events(
         string $relationId,
         $labelRemoved
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $relationId,
             $labelRemoved
@@ -205,7 +205,7 @@ class ProjectorTest extends TestCase
         string $relationId,
         RelationType $relationType,
         $labelsImported
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $relationId,
             $labelsImported
