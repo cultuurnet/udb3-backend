@@ -69,34 +69,43 @@ class CreateOrganizerRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider legacyOrganizerProvider
      */
-    public function it_handles_creating_an_organizer_from_legacy_format(): void
-    {
+    public function it_handles_creating_an_organizer_from_legacy_format(
+        array $body,
+        array $expectedEvents,
+        array $expectedCommands
+    ): void {
         $createOrganizerRequest = $this->psr7RequestBuilder
-            ->withBodyFromArray([
-                'mainLanguage' => 'nl',
-                'name' => 'publiq',
-                'website' => 'https://www.publiq.be',
-            ])
+            ->withBodyFromArray($body)
             ->build('POST');
 
         $this->createOrganizerRequestHandler->handle($createOrganizerRequest);
 
-        $this->assertEquals(
-            [
-                new OrganizerCreatedWithUniqueWebsite(
-                    '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
-                    'nl',
-                    'https://www.publiq.be',
-                    'publiq'
-                ),
-            ],
-            $this->eventStore->getEvents()
-        );
+        $this->assertEquals($expectedEvents, $this->eventStore->getEvents());
 
-        $this->assertEquals(
-            [],
-            $this->commandBus->getRecordedCommands()
-        );
+        $this->assertEquals($expectedCommands, $this->commandBus->getRecordedCommands());
+    }
+
+    public function legacyOrganizerProvider(): array
+    {
+        return [
+            'organizer with only required properties' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                ],
+                [
+                    new OrganizerCreatedWithUniqueWebsite(
+                        '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                        'nl',
+                        'https://www.publiq.be',
+                        'publiq'
+                    ),
+                ],
+                [],
+            ],
+        ];
     }
 }
