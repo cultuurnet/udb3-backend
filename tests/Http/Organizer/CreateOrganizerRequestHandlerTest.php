@@ -343,7 +343,17 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                     '/',
                     'The required properties (mainLanguage) are missing'
                 ),
-            ]
+            ],
+            'missing name' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'website' => 'https://www.publiq.be',
+                ],
+                new SchemaError(
+                    '/',
+                    'The required properties (name) are missing'
+                ),
+            ],
         ];
     }
 }
