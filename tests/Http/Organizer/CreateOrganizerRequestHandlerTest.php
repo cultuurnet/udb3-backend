@@ -297,4 +297,19 @@ class CreateOrganizerRequestHandlerTest extends TestCase
             fn () => $this->createOrganizerRequestHandler->handle($createOrganizerRequest)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_valid_json_syntax_body(): void
+    {
+        $createOrganizerRequest = $this->psr7RequestBuilder
+            ->withBodyFromString('invalid')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidSyntax('JSON'),
+            fn () => $this->createOrganizerRequestHandler->handle($createOrganizerRequest)
+        );
+    }
 }
