@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -24,15 +23,9 @@ use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var Entity[]
-     */
-    private $mockedLabelReadModels;
-
     /**
      * @var LabelServiceInterface|MockObject
      */
@@ -40,15 +33,6 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): AddLabelHandler
     {
-        $labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $labelRepository
-            ->method('getByName')
-            ->willReturnCallback(
-                function (StringLiteral $name) {
-                    return $this->mockedLabelReadModels[$name->toNative()] ?? null;
-                }
-            );
-
         $this->labelService = $this->createMock(LabelServiceInterface::class);
 
         return new AddLabelHandler(
@@ -56,7 +40,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
                 $eventStore,
                 $eventBus
             ),
-            $labelRepository,
+            $this->createMock(ReadRepositoryInterface::class),
             $this->labelService
         );
     }
