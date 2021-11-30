@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Event\Events\LabelsImported as EventLabelsImported;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as RelationsReadRepositoryInterface;
@@ -39,13 +38,10 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    private UUID $uuid;
-
     private LabelName $labelName;
 
     private string $relationId;
@@ -60,24 +56,17 @@ class ProjectorTest extends TestCase
      */
     private $relationsReadRepository;
 
-    /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    private $readRepository;
-
     private LabelEventRelationTypeResolver $offerTypeResolver;
 
     private Projector $projector;
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('A0ED6941-180A-40E3-BD1B-E875FC6D1F25');
         $this->labelName = new LabelName('labelName');
 
         $this->relationId = $this->getRelationId();
 
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
-        $this->readRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->relationsReadRepository = $this->createMock(RelationsReadRepositoryInterface::class);
         $this->offerTypeResolver = new LabelEventRelationTypeResolver();
 
