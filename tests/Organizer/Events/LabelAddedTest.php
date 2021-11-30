@@ -28,7 +28,7 @@ class LabelAddedTest extends TestCase
      */
     public function it_can_deserialize(): void
     {
-        $labelAddesAsArray = [
+        $labelAddedAsArray = [
             'organizer_id' => 'organizerId',
             'label' => 'foo',
             'visibility' => false,
@@ -36,7 +36,7 @@ class LabelAddedTest extends TestCase
 
         $this->assertEquals(
             $this->labelAdded,
-            LabelAdded::deserialize($labelAddesAsArray)
+            LabelAdded::deserialize($labelAddedAsArray)
         );
     }
 }
