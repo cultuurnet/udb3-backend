@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Event\Events\LabelsImported as EventLabelsImported;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as RelationsReadRepositoryInterface;
@@ -39,25 +38,13 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private LabelName $labelName;
 
-    /**
-     * @var LabelName
-     */
-    private $labelName;
-
-    /**
-     * @var string
-     */
-    private $relationId;
+    private string $relationId;
 
     /**
      * @var WriteRepositoryInterface|MockObject
@@ -69,30 +56,17 @@ class ProjectorTest extends TestCase
      */
     private $relationsReadRepository;
 
-    /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    private $readRepository;
+    private LabelEventRelationTypeResolver $offerTypeResolver;
 
-    /**
-     * @var LabelEventRelationTypeResolver
-     */
-    private $offerTypeResolver;
+    private Projector $projector;
 
-    /**
-     * @var Projector
-     */
-    private $projector;
-
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->uuid = new UUID('A0ED6941-180A-40E3-BD1B-E875FC6D1F25');
         $this->labelName = new LabelName('labelName');
 
         $this->relationId = $this->getRelationId();
 
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
-        $this->readRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->relationsReadRepository = $this->createMock(RelationsReadRepositoryInterface::class);
         $this->offerTypeResolver = new LabelEventRelationTypeResolver();
 
@@ -107,14 +81,13 @@ class ProjectorTest extends TestCase
      * @test
      * @dataProvider labelAddedEventDataProvider
      *
-     * @param string $relationId
      * @param AbstractLabelAdded|LabelAdded $labelAdded
      */
     public function it_handles_label_added_events(
-        $relationId,
+        string $relationId,
         $labelAdded,
         RelationType $relationType
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $relationId,
             $labelAdded
@@ -131,10 +104,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function labelAddedEventDataProvider()
+    public function labelAddedEventDataProvider(): array
     {
         return [
             [
@@ -157,7 +127,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToOrganizer(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
                 RelationType::ORGANIZER(),
             ],
@@ -168,13 +138,12 @@ class ProjectorTest extends TestCase
      * @test
      * @dataProvider labelRemovedEventDataProvider
      *
-     * @param string $relationId
      * @param AbstractLabelRemoved|LabelRemovedFromOrganizer $labelRemoved
      */
     public function it_handles_label_deleted_events(
-        $relationId,
+        string $relationId,
         $labelRemoved
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $relationId,
             $labelRemoved
@@ -187,10 +156,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function labelRemovedEventDataProvider()
+    public function labelRemovedEventDataProvider(): array
     {
         return [
             [
@@ -211,7 +177,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelRemovedFromOrganizer(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
             ],
         ];
@@ -221,14 +187,13 @@ class ProjectorTest extends TestCase
      * @test
      * @dataProvider labelsImportedDataProvider
      *
-     * @param string $relationId
      * @param AbstractLabelsImported|ImportLabels $labelsImported
      */
     public function it_handles_import_labels_events(
-        $relationId,
+        string $relationId,
         RelationType $relationType,
         $labelsImported
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $relationId,
             $labelsImported
@@ -254,10 +219,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function labelsImportedDataProvider()
+    public function labelsImportedDataProvider(): array
     {
         $labels = new Labels(
             new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
@@ -306,7 +268,7 @@ class ProjectorTest extends TestCase
         StringLiteral $itemId,
         Serializable $payload,
         RelationType $relationType
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $itemId->toNative(),
             $payload
@@ -345,7 +307,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_add_labels_from_udb2_when_updating_with_labels_already_present_in_udb3()
+    public function it_should_only_add_labels_from_udb2_when_updating_with_labels_already_present_in_udb3(): void
     {
         $itemId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
@@ -384,10 +346,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function fromUdb2DataProvider()
+    public function fromUdb2DataProvider(): array
     {
         $itemId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
@@ -468,10 +427,7 @@ class ProjectorTest extends TestCase
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function getRelationId()
+    private function getRelationId(): string
     {
         return 'E4CA9DB5-DEE3-42F0-B04A-547DFC3CB2EE';
     }

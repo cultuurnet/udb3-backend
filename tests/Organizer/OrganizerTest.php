@@ -189,9 +189,9 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     $this->organizerCreatedWithUniqueWebsite,
-                    new LabelAdded($this->id, new Label('existing_label_1')),
-                    new LabelAdded($this->id, new Label('existing_label_2')),
-                    new LabelAdded($this->id, new Label('existing_label_3')),
+                    new LabelAdded($this->id, 'existing_label_1'),
+                    new LabelAdded($this->id, 'existing_label_2'),
+                    new LabelAdded($this->id, 'existing_label_3'),
                 ]
             )
             ->when(
@@ -211,8 +211,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                             )
                         )
                     ),
-                    new LabelAdded($this->id, new Label('new_label_1')),
-                    new LabelRemoved($this->id, new Label('existing_label_2')),
+                    new LabelAdded($this->id, 'new_label_1'),
+                    new LabelRemoved($this->id, 'existing_label_2'),
                 ]
             );
     }

@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as Udb3ModelLabel;
@@ -99,8 +98,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                             )
                         )
                     ),
-                    new LabelAdded($id, new Label('foo')),
-                    new LabelAdded($id, new Label('bar')),
+                    new LabelAdded($id, 'foo'),
+                    new LabelAdded($id, 'bar'),
                 ]
             );
     }
@@ -121,8 +120,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->organizerCreated($id),
-                    new LabelAdded($id, new Label('existing_to_be_removed')),
-                    new LabelAdded($id, new Label('existing_private')),
+                    new LabelAdded($id, 'existing_to_be_removed'),
+                    new LabelAdded($id, 'existing_private'),
                 ]
             )
             ->when(
@@ -137,7 +136,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->then(
                 [
-                    new LabelRemoved($id, new Label('existing_to_be_removed')),
+                    new LabelRemoved($id, 'existing_to_be_removed'),
                 ]
             );
     }

@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class LabelEventIsOfOrganizerTypeTest extends TestCase
 {
-    /**
-     * @var LabelEventIsOfOrganizerType
-     */
-    private $labelEventIsOfOrganizerType;
+    private LabelEventIsOfOrganizerType $labelEventIsOfOrganizerType;
 
     protected function setUp(): void
     {
@@ -28,7 +25,7 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
      */
     public function it_is_satisfied_by_label_added_on_event(): void
     {
-        $labelAdded = new OrganizerLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelAdded = new OrganizerLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', 'foo');
 
         $this->assertTrue($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelAdded
@@ -40,7 +37,7 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
      */
     public function it_is_satisfied_by_label_removed_from_event(): void
     {
-        $labelRemoved = new OrganizerLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelRemoved = new OrganizerLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', 'foo');
 
         $this->assertTrue($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelRemoved
