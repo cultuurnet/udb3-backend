@@ -89,7 +89,7 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                     'nl',
                     'https://www.publiq.be',
                     'publiq'
-                )
+                ),
             ],
             $this->eventStore->getEvents()
         );
