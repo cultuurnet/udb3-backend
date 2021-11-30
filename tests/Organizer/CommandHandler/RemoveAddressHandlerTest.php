@@ -40,12 +40,10 @@ class RemoveAddressHandlerTest extends CommandHandlerScenarioTestCase
                 $this->organizerCreated($id),
                 new AddressUpdated(
                     $id,
-                    new Address(
-                        new Street('Kerkstraat 10'),
-                        new PostalCode('1000'),
-                        new Locality('Brussel'),
-                        Country::fromNative('BE')
-                    )
+                    'Kerkstraat 10',
+                    '1000',
+                    'Brussel',
+                    'BE'
                 ),
             ])
             ->when(new RemoveAddress($id))

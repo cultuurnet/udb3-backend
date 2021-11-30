@@ -166,13 +166,19 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             if ($language->getCode() !== $this->mainLanguage->getCode()) {
                 $event = new AddressTranslated(
                     $this->actorId,
-                    LegacyAddress::fromUdb3ModelAddress($address),
+                    $address->getStreet()->toString(),
+                    $address->getPostalCode()->toString(),
+                    $address->getLocality()->toString(),
+                    $address->getCountryCode()->toString(),
                     $language->getCode()
                 );
             } else {
                 $event = new AddressUpdated(
                     $this->actorId,
-                    LegacyAddress::fromUdb3ModelAddress($address)
+                    $address->getStreet()->toString(),
+                    $address->getPostalCode()->toString(),
+                    $address->getLocality()->toString(),
+                    $address->getCountryCode()->toString()
                 );
             }
 

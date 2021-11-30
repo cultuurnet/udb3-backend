@@ -13,10 +13,13 @@ final class AddressTranslated extends AddressUpdated
 
     public function __construct(
         string $organizerId,
-        Address $address,
+        string $streetAddress,
+        string $postalCode,
+        string $locality,
+        string $countryCode,
         string $languageCode
     ) {
-        parent::__construct($organizerId, $address);
+        parent::__construct($organizerId, $streetAddress, $postalCode, $locality, $countryCode);
         $this->languageCode = $languageCode;
     }
 
@@ -39,7 +42,10 @@ final class AddressTranslated extends AddressUpdated
     {
         return new self(
             $data['organizer_id'],
-            Address::deserialize($data['address']),
+            $data['streetAddress'],
+            $data['postalCode'],
+            $data['addressLocality'],
+            $data['addressCountry'],
             $data['language']
         );
     }

@@ -127,12 +127,10 @@ class DefaultOrganizerEditingServiceTest extends TestCase
                 ),
                 new AddressUpdated(
                     '9196cb78-4381-11e6-beb8-9e71128cae77',
-                    new Address(
-                        new Street('Wetstraat 1'),
-                        new PostalCode('1000'),
-                        new Locality('Brussel'),
-                        Country::fromNative('BE')
-                    )
+                    'Wetstraat 1',
+                    '1000',
+                    'Brussel',
+                    'BE'
                 ),
                 new ContactPointUpdated(
                     '9196cb78-4381-11e6-beb8-9e71128cae77',

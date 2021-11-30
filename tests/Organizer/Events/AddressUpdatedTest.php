@@ -20,12 +20,10 @@ class AddressUpdatedTest extends TestCase
     {
         $addressUpdated = new AddressUpdated(
             '0460ffbd-1c85-4bad-9a8f-be1f981648e7',
-            new Address(
-                new Street('Martelarenplein 12'),
-                new PostalCode('3000'),
-                new Locality('Leuven'),
-                Country::fromNative('BE')
-            )
+            'Martelarenplein 12',
+            '3000',
+            'Leuven',
+            'BE'
         );
 
         $data = $addressUpdated->serialize();

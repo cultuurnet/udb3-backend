@@ -8,28 +8,47 @@ use CultuurNet\UDB3\Address\Address;
 
 class AddressUpdated extends OrganizerEvent
 {
-    /**
-     * @var Address
-     */
-    private $address;
+    private string $countryCode;
+
+    private string $locality;
+
+    private string $postalCode;
+
+    private string $streetAddress;
 
     public function __construct(
         string $organizerId,
-        Address $address
+        string $streetAddress,
+        string $postalCode,
+        string $locality,
+        string $countryCode
     ) {
         parent::__construct($organizerId);
-        $this->address = $address;
+        $this->streetAddress = $streetAddress;
+        $this->postalCode = $postalCode;
+        $this->locality = $locality;
+        $this->countryCode = $countryCode;
     }
 
     public function getAddress(): Address
     {
-        return $this->address;
+        return new Address(
+            new Street($this->streetAddress),
+            new PostalCode($this->postalCode),
+            new Locality($this->locality),
+            new Country(
+                CountryCode::fromNative($this->countryCode)
+            )
+        );
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'address' => $this->address->serialize(),
+            'streetAddress' => $this->streetAddress,
+            'postalCode' => $this->postalCode,
+            'addressLocality' => $this->locality,
+            'addressCountry' => $this->countryCode,
         ];
     }
 
@@ -37,7 +56,10 @@ class AddressUpdated extends OrganizerEvent
     {
         return new self(
             $data['organizer_id'],
-            Address::deserialize($data['address'])
+            $data['streetAddress'],
+            $data['postalCode'],
+            $data['addressLocality'],
+            $data['addressCountry']
         );
     }
 }
