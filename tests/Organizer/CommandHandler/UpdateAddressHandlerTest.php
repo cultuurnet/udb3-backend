@@ -57,7 +57,15 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
                     new Language('nl')
                 )
             )
-            ->then([new AddressUpdated($id, LegacyAddress::fromUdb3ModelAddress($updatedAddress))]);
+            ->then([
+                new AddressUpdated(
+                    $id,
+                    $updatedAddress->getStreet()->toString(),
+                    $updatedAddress->getPostalCode()->toString(),
+                    $updatedAddress->getLocality()->toString(),
+                    $updatedAddress->getCountryCode()->toString()
+                ),
+            ]);
     }
 
     /**
@@ -87,7 +95,10 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
             ->then([
                 new AddressTranslated(
                     $id,
-                    LegacyAddress::fromUdb3ModelAddress($updatedAddress),
+                    $updatedAddress->getStreet()->toString(),
+                    $updatedAddress->getPostalCode()->toString(),
+                    $updatedAddress->getLocality()->toString(),
+                    $updatedAddress->getCountryCode()->toString(),
                     'fr'
                 ),
             ]);
