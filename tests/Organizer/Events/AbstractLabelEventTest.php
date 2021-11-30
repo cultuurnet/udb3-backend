@@ -10,22 +10,16 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractLabelEventTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var Label
-     */
-    private $label;
+    private Label $label;
 
     /**
      * @var AbstractLabelEvent|MockObject
      */
     private $abstractLabelEvent;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = 'organizerId';
 
@@ -33,14 +27,14 @@ class AbstractLabelEventTest extends TestCase
 
         $this->abstractLabelEvent = $this->getMockForAbstractClass(
             AbstractLabelEvent::class,
-            [$this->organizerId, $this->label]
+            [$this->organizerId, 'foo', false]
         );
     }
 
     /**
      * @test
      */
-    public function it_stores_an_organizer_id()
+    public function it_stores_an_organizer_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
@@ -51,7 +45,7 @@ class AbstractLabelEventTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_label()
+    public function it_stores_a_label(): void
     {
         $this->assertEquals(
             $this->label,
@@ -62,7 +56,7 @@ class AbstractLabelEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $expectedArray = [
             'organizer_id' => $this->organizerId,

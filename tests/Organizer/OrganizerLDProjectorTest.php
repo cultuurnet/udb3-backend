@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -477,7 +476,7 @@ class OrganizerLDProjectorTest extends TestCase
                     new Locality('Kessel-Lo (Louvain)'),
                     Country::fromNative('BE')
                 ),
-                new Language('fr')
+                'fr'
             )
         );
 
@@ -697,11 +696,10 @@ class OrganizerLDProjectorTest extends TestCase
     public function it_handles_label_added(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $label = new Label('labelName', true);
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $labelAdded = new LabelAdded($organizerId, $label);
+        $labelAdded = new LabelAdded($organizerId, 'labelName', true);
         $domainMessage = $this->createDomainMessage($labelAdded);
 
         $this->expectSave($organizerId, 'organizer_with_one_label.json');
@@ -715,11 +713,10 @@ class OrganizerLDProjectorTest extends TestCase
     public function it_handles_invisible_label_added(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $label = new Label('labelName', false);
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $labelAdded = new LabelAdded($organizerId, $label);
+        $labelAdded = new LabelAdded($organizerId, 'labelName', false);
         $domainMessage = $this->createDomainMessage($labelAdded);
 
         $this->expectSave($organizerId, 'organizer_with_one_label_invisible.json');
@@ -740,7 +737,7 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, $originalFile);
 
-        $labelRemoved = new LabelRemoved($organizerId, $label);
+        $labelRemoved = new LabelRemoved($organizerId, (string) $label->getName(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, $finalFile);
@@ -779,7 +776,7 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, 'organizer_with_one_label_invisible.json');
 
-        $labelRemoved = new LabelRemoved($organizerId, $label);
+        $labelRemoved = new LabelRemoved($organizerId, (string) $label->getName(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, 'organizer_with_modified.json');

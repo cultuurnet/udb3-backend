@@ -167,7 +167,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
                 $event = new AddressTranslated(
                     $this->actorId,
                     LegacyAddress::fromUdb3ModelAddress($address),
-                    LegacyLanguage::fromUdb3ModelLanguage($language)
+                    $language->getCode()
                 );
             } else {
                 $event = new AddressUpdated(
@@ -213,14 +213,14 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     public function addLabel(Label $label): void
     {
         if (!$this->labels->contains($label)) {
-            $this->apply(new LabelAdded($this->actorId, $label));
+            $this->apply(new LabelAdded($this->actorId, (string) $label->getName(), $label->isVisible()));
         }
     }
 
     public function removeLabel(Label $label): void
     {
         if ($this->labels->contains($label)) {
-            $this->apply(new LabelRemoved($this->actorId, $label));
+            $this->apply(new LabelRemoved($this->actorId, (string) $label->getName(), $label->isVisible()));
         }
     }
 
@@ -271,7 +271,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         // For each added label fire a LabelAdded event.
         foreach ($addedLabels->asArray() as $label) {
-            $this->apply(new LabelAdded($this->actorId, $label));
+            $this->apply(new LabelAdded($this->actorId, (string) $label->getName(), $label->isVisible()));
         }
 
         // What are the deleted labels?
@@ -279,7 +279,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // For each deleted label fire a LabelDeleted event.
         foreach ($this->labels->asArray() as $label) {
             if (!$importLabelsCollection->contains($label) && !$keepLabelsCollection->contains($label)) {
-                $this->apply(new LabelRemoved($this->actorId, $label));
+                $this->apply(new LabelRemoved($this->actorId, (string) $label->getName(), $label->isVisible()));
             }
         }
     }

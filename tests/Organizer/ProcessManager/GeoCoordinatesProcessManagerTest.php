@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -33,29 +32,20 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     private $commandBus;
 
     /**
-     * @var CultureFeedAddressFactoryInterface
-     */
-    private $addressFactory;
-
-    /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
-    /**
-     * @var GeoCoordinatesProcessManager
-     */
-    private $processManager;
+    private GeoCoordinatesProcessManager $processManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->addressFactory = new CultureFeedAddressFactory();
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->processManager = new GeoCoordinatesProcessManager(
             $this->commandBus,
-            $this->addressFactory,
+            new CultureFeedAddressFactory(),
             $this->logger
         );
     }
@@ -63,7 +53,6 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      * @dataProvider addressEventDataProvider
-     *
      */
     public function it_dispatches_a_geocoding_command_when_an_address_change_is_suspected(
         DomainMessage $event,
@@ -79,7 +68,6 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      * @dataProvider missingAddressEventDataProvider
-     *
      */
     public function it_does_not_dispatch_a_geocoding_command_when_a_cdbxml_import_or_update_is_missing_an_address(
         DomainMessage $event
@@ -107,7 +95,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Locality('Bxl'),
                     Country::fromNative('BE')
                 ),
-                new Language('fr')
+                'fr'
             )
         );
 
@@ -120,7 +108,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_an_error_and_dispatches_no_command_when_a_cdbxml_import_or_update_has_an_invalid_address()
+    public function it_logs_an_error_and_dispatches_no_command_when_a_cdbxml_import_or_update_has_an_invalid_address(): void
     {
         $domainMessage = DomainMessage::recordNow(
             '318F2ACB-F612-6F75-0037C9C29F44087A',
@@ -162,10 +150,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         $processManager->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function addressEventDataProvider()
+    public function addressEventDataProvider(): array
     {
         return [
             'organizer_address_updated' => [
@@ -238,10 +223,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function missingAddressEventDataProvider()
+    public function missingAddressEventDataProvider(): array
     {
         return [
             'organizer_imported_from_udb2_without_address' => [
