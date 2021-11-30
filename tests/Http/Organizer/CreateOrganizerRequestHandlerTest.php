@@ -372,6 +372,32 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                     'The required properties (mainLanguage, website, name) are missing'
                 ),
             ],
+            'invalid address format' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'address' => 'invalid',
+                ],
+                new SchemaError(
+                    '/address',
+                    'The data (string) must match the type: object'
+                ),
+            ],
+            'address with missing fields' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'address' => [
+                        'missing' => 'all fields',
+                    ],
+                ],
+                new SchemaError(
+                    '/address',
+                    'The required properties (streetAddress, postalCode, addressLocality, addressCountry) are missing'
+                ),
+            ],
         ];
     }
 }
