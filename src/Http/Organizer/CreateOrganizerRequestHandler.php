@@ -70,10 +70,12 @@ final class CreateOrganizerRequestHandler implements RequestHandlerInterface
 
         $commands = [];
 
-        $commands[] = new UpdateContactPoint(
-            $organizer->getId()->toString(),
-            $organizer->getContactPoint()
-        );
+        if (!$organizer->getContactPoint()->isEmpty()) {
+            $commands[] = new UpdateContactPoint(
+                $organizer->getId()->toString(),
+                $organizer->getContactPoint()
+            );
+        }
 
         if ($organizer->getAddress()) {
             $commands[] = new UpdateAddress(
