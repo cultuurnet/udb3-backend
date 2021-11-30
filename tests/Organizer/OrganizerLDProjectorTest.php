@@ -697,11 +697,10 @@ class OrganizerLDProjectorTest extends TestCase
     public function it_handles_label_added(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $label = new Label('labelName', true);
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $labelAdded = new LabelAdded($organizerId, (string) $label->getName(), $label->isVisible());
+        $labelAdded = new LabelAdded($organizerId, 'labelName', true);
         $domainMessage = $this->createDomainMessage($labelAdded);
 
         $this->expectSave($organizerId, 'organizer_with_one_label.json');
@@ -715,11 +714,10 @@ class OrganizerLDProjectorTest extends TestCase
     public function it_handles_invisible_label_added(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $label = new Label('labelName', false);
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $labelAdded = new LabelAdded($organizerId, (string) $label->getName(), $label->isVisible());
+        $labelAdded = new LabelAdded($organizerId, 'labelName', false);
         $domainMessage = $this->createDomainMessage($labelAdded);
 
         $this->expectSave($organizerId, 'organizer_with_one_label_invisible.json');
