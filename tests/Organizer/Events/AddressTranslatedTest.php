@@ -14,10 +14,7 @@ use ValueObjects\Geography\Country;
 
 class AddressTranslatedTest extends TestCase
 {
-    /**
-     * @var AddressTranslated
-     */
-    private $addressTranslated;
+    private AddressTranslated $addressTranslated;
 
     protected function setUp(): void
     {

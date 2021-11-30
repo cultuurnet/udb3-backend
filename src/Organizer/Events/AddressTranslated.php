@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Language;
 
 final class AddressTranslated extends AddressUpdated
 {
-    /**
-     * @var Language
-     */
-    private $language;
+    private string $languageCode;
 
     public function __construct(
         string $organizerId,
