@@ -5226,12 +5226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "51750dd763dc3f99944dcdb61722d18d449a88a6"
+                "reference": "bb9cec299fda82a74765dea96d8635aca1c99ead"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/51750dd763dc3f99944dcdb61722d18d449a88a6",
-                "reference": "51750dd763dc3f99944dcdb61722d18d449a88a6",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/bb9cec299fda82a74765dea96d8635aca1c99ead",
+                "reference": "bb9cec299fda82a74765dea96d8635aca1c99ead",
                 "shasum": ""
             },
             "type": "library",
@@ -5250,7 +5250,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4283-document-post-organizer"
             },
-            "time": "2021-11-29T11:28:12+00:00"
+            "time": "2021-11-30T14:25:03+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
