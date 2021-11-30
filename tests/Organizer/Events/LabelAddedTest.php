@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Label;
 use PHPUnit\Framework\TestCase;
 
 class LabelAddedTest extends TestCase
