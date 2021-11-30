@@ -81,11 +81,10 @@ class ProjectorTest extends TestCase
      * @test
      * @dataProvider labelAddedEventDataProvider
      *
-     * @param string $relationId
      * @param AbstractLabelAdded|LabelAdded $labelAdded
      */
     public function it_handles_label_added_events(
-        $relationId,
+        string $relationId,
         $labelAdded,
         RelationType $relationType
     ): void {
