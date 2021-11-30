@@ -44,20 +44,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var LabelName
-     */
-    private $labelName;
+    private LabelName $labelName;
 
-    /**
-     * @var string
-     */
-    private $relationId;
+    private string $relationId;
 
     /**
      * @var WriteRepositoryInterface|MockObject
@@ -74,17 +65,11 @@ class ProjectorTest extends TestCase
      */
     private $readRepository;
 
-    /**
-     * @var LabelEventRelationTypeResolver
-     */
-    private $offerTypeResolver;
+    private LabelEventRelationTypeResolver $offerTypeResolver;
 
-    /**
-     * @var Projector
-     */
-    private $projector;
+    private Projector $projector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('A0ED6941-180A-40E3-BD1B-E875FC6D1F25');
         $this->labelName = new LabelName('labelName');
@@ -131,10 +116,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function labelAddedEventDataProvider()
+    public function labelAddedEventDataProvider(): array
     {
         return [
             [
@@ -168,11 +150,10 @@ class ProjectorTest extends TestCase
      * @test
      * @dataProvider labelRemovedEventDataProvider
      *
-     * @param string $relationId
      * @param AbstractLabelRemoved|LabelRemovedFromOrganizer $labelRemoved
      */
     public function it_handles_label_deleted_events(
-        $relationId,
+        string $relationId,
         $labelRemoved
     ) {
         $domainMessage = $this->createDomainMessage(
@@ -187,10 +168,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function labelRemovedEventDataProvider()
+    public function labelRemovedEventDataProvider(): array
     {
         return [
             [
@@ -221,11 +199,10 @@ class ProjectorTest extends TestCase
      * @test
      * @dataProvider labelsImportedDataProvider
      *
-     * @param string $relationId
      * @param AbstractLabelsImported|ImportLabels $labelsImported
      */
     public function it_handles_import_labels_events(
-        $relationId,
+        string $relationId,
         RelationType $relationType,
         $labelsImported
     ) {
@@ -254,10 +231,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function labelsImportedDataProvider()
+    public function labelsImportedDataProvider(): array
     {
         $labels = new Labels(
             new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
@@ -306,7 +280,7 @@ class ProjectorTest extends TestCase
         StringLiteral $itemId,
         Serializable $payload,
         RelationType $relationType
-    ) {
+    ): void {
         $domainMessage = $this->createDomainMessage(
             $itemId->toNative(),
             $payload
@@ -345,7 +319,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_add_labels_from_udb2_when_updating_with_labels_already_present_in_udb3()
+    public function it_should_only_add_labels_from_udb2_when_updating_with_labels_already_present_in_udb3(): void
     {
         $itemId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
@@ -384,10 +358,7 @@ class ProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    /**
-     * @return array
-     */
-    public function fromUdb2DataProvider()
+    public function fromUdb2DataProvider(): array
     {
         $itemId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
@@ -468,10 +439,7 @@ class ProjectorTest extends TestCase
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function getRelationId()
+    private function getRelationId(): string
     {
         return 'E4CA9DB5-DEE3-42F0-B04A-547DFC3CB2EE';
     }

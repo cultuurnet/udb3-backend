@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class LabelEventIsOfOrganizerTypeTest extends TestCase
 {
-    /**
-     * @var LabelEventIsOfOrganizerType
-     */
-    private $labelEventIsOfOrganizerType;
+    private LabelEventIsOfOrganizerType $labelEventIsOfOrganizerType;
 
     protected function setUp(): void
     {

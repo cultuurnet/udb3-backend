@@ -9,12 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class LabelAddedTest extends TestCase
 {
-    /**
-     * @var LabelAdded
-     */
-    private $labelAdded;
+    private LabelAdded $labelAdded;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelAdded = new LabelAdded('organizerId', 'foo', false);
     }
@@ -22,7 +19,7 @@ class LabelAddedTest extends TestCase
     /**
      * @test
      */
-    public function it_derives_from_abstract_label_event()
+    public function it_derives_from_abstract_label_event(): void
     {
         $this->assertInstanceOf(AbstractLabelEvent::class, $this->labelAdded);
     }
@@ -30,7 +27,7 @@ class LabelAddedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $labelAddesAsArray = [
             'organizer_id' => 'organizerId',

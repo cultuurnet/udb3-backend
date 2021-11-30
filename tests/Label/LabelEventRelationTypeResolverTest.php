@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class LabelEventRelationTypeResolverTest extends TestCase
 {
-    /**
-     * @var LabelEventRelationTypeResolver
-     */
-    private $labelEventRelationTypeResolver;
+    private LabelEventRelationTypeResolver $labelEventRelationTypeResolver;
 
     protected function setUp(): void
     {
