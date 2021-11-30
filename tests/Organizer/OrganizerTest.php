@@ -550,12 +550,12 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new AddressTranslated(
                         $this->id,
                         LegacyAddress::fromUdb3ModelAddress($addressFr),
-                        new LegacyLanguage('fr')
+                        'fr'
                     ),
                     new AddressTranslated(
                         $this->id,
                         LegacyAddress::fromUdb3ModelAddress($addressEn),
-                        new LegacyLanguage('de')
+                        'de'
                     ),
                 ]
             );

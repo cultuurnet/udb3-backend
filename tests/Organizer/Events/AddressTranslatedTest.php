@@ -29,7 +29,7 @@ class AddressTranslatedTest extends TestCase
                 new Locality('Leuven'),
                 Country::fromNative('BE')
             ),
-            new Language('nl')
+            'nl'
         );
     }
 
@@ -39,7 +39,7 @@ class AddressTranslatedTest extends TestCase
     public function it_stores_a_language(): void
     {
         $this->assertEquals(
-            new Language('nl'),
+            'nl',
             $this->addressTranslated->getLanguage()
         );
     }

@@ -89,7 +89,7 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
                 new AddressTranslated(
                     $id,
                     LegacyAddress::fromUdb3ModelAddress($updatedAddress),
-                    new LegacyLanguage('fr')
+                    'fr'
                 ),
             ]);
     }

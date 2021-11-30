@@ -107,7 +107,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Locality('Bxl'),
                     Country::fromNative('BE')
                 ),
-                new Language('fr')
+                'fr'
             )
         );
 

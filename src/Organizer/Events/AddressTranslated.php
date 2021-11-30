@@ -17,21 +17,21 @@ final class AddressTranslated extends AddressUpdated
     public function __construct(
         string $organizerId,
         Address $address,
-        Language $language
+        string $languageCode
     ) {
         parent::__construct($organizerId, $address);
-        $this->language = $language;
+        $this->languageCode = $languageCode;
     }
 
     public function getLanguage(): Language
     {
-        return $this->language;
+        return new Language($this->languageCode);
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'language' => $this->getLanguage()->getCode(),
+            'language' => $this->languageCode,
         ];
     }
 
@@ -43,7 +43,7 @@ final class AddressTranslated extends AddressUpdated
         return new self(
             $data['organizer_id'],
             Address::deserialize($data['address']),
-            new Language($data['language'])
+            $data['language']
         );
     }
 }

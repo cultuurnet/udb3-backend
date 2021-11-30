@@ -477,7 +477,7 @@ class OrganizerLDProjectorTest extends TestCase
                     new Locality('Kessel-Lo (Louvain)'),
                     Country::fromNative('BE')
                 ),
-                new Language('fr')
+                'fr'
             )
         );
 
