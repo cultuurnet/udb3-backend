@@ -398,6 +398,48 @@ class CreateOrganizerRequestHandlerTest extends TestCase
                     'The required properties (streetAddress, postalCode, addressLocality, addressCountry) are missing'
                 ),
             ],
+            'invalid contact' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'contact' => 'invalid',
+                ],
+                new SchemaError(
+                    '/contact',
+                    'The data (string) must match the type: array'
+                ),
+            ],
+            'invalid contact detail' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'contact' => [
+                        [],
+                    ],
+                ],
+                new SchemaError(
+                    '/contact/0',
+                    'The data (array) must match the type: object'
+                ),
+            ],
+            'missing contact detail' => [
+                [
+                    'mainLanguage' => 'nl',
+                    'name' => 'publiq',
+                    'website' => 'https://www.publiq.be',
+                    'contact' => [
+                        [
+                            'missing' => 'all fields',
+                        ],
+                    ],
+                ],
+                new SchemaError(
+                    '/contact/0',
+                    'The required properties (type, value) are missing'
+                ),
+            ],
         ];
     }
 }
