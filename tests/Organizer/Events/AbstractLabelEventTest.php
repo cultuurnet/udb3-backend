@@ -33,7 +33,7 @@ class AbstractLabelEventTest extends TestCase
 
         $this->abstractLabelEvent = $this->getMockForAbstractClass(
             AbstractLabelEvent::class,
-            [$this->organizerId, $this->label]
+            [$this->organizerId, 'foo', false]
         );
     }
 

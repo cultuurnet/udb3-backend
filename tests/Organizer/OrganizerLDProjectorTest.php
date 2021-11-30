@@ -701,7 +701,7 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $labelAdded = new LabelAdded($organizerId, $label);
+        $labelAdded = new LabelAdded($organizerId, (string) $label->getName(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelAdded);
 
         $this->expectSave($organizerId, 'organizer_with_one_label.json');
@@ -719,7 +719,7 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $labelAdded = new LabelAdded($organizerId, $label);
+        $labelAdded = new LabelAdded($organizerId, (string) $label->getName(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelAdded);
 
         $this->expectSave($organizerId, 'organizer_with_one_label_invisible.json');
@@ -740,7 +740,7 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, $originalFile);
 
-        $labelRemoved = new LabelRemoved($organizerId, $label);
+        $labelRemoved = new LabelRemoved($organizerId, (string) $label->getName(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, $finalFile);
@@ -779,7 +779,7 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, 'organizer_with_one_label_invisible.json');
 
-        $labelRemoved = new LabelRemoved($organizerId, $label);
+        $labelRemoved = new LabelRemoved($organizerId, (string) $label->getName(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, 'organizer_with_modified.json');

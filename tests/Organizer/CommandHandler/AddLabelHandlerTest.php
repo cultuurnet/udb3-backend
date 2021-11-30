@@ -78,7 +78,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
             ->when(new AddLabel($id, $label))
-            ->then([new LabelAdded($id, new LegacyLabel('foo'))]);
+            ->then([new LabelAdded($id, 'foo')]);
     }
 
     /**
@@ -97,7 +97,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
             ->when(new AddLabel($id, $label))
-            ->then([new LabelAdded($id, new LegacyLabel('bar', false))]);
+            ->then([new LabelAdded($id, 'bar', false)]);
     }
 
     /**
@@ -116,7 +116,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([
                 $this->organizerCreated($id),
-                new LabelAdded($id, new LegacyLabel('foo')),
+                new LabelAdded($id, 'foo'),
             ])
             ->when(new AddLabel($id, $label))
             ->then([]);

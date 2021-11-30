@@ -48,10 +48,10 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([
                 $this->organizerCreated($id),
-                new LabelAdded($id, new LegacyLabel('foo')),
+                new LabelAdded($id, 'foo'),
             ])
             ->when(new RemoveLabel($id, $label))
-            ->then([new LabelRemoved($id, new LegacyLabel('foo'))]);
+            ->then([new LabelRemoved($id, 'foo')]);
     }
 
     /**
@@ -66,10 +66,10 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([
                 $this->organizerCreated($id),
-                new LabelAdded($id, new LegacyLabel('bar', false)),
+                new LabelAdded($id, 'bar', false),
             ])
             ->when(new RemoveLabel($id, $label))
-            ->then([new LabelRemoved($id, new LegacyLabel('bar', false))]);
+            ->then([new LabelRemoved($id, 'bar', false)]);
     }
 
     /**

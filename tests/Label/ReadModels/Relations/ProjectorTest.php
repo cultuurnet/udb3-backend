@@ -157,7 +157,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToOrganizer(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
                 RelationType::ORGANIZER(),
             ],
@@ -211,7 +211,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelRemovedFromOrganizer(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
             ],
         ];

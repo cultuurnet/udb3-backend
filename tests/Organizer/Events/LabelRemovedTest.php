@@ -14,7 +14,7 @@ class LabelRemovedTest extends TestCase
      */
     public function it_derives_from_abstract_label_event()
     {
-        $labelRemoved = new LabelRemoved('organizerId', new Label('foo'));
+        $labelRemoved = new LabelRemoved('organizerId', 'foo');
 
         $this->assertInstanceOf(AbstractLabelEvent::class, $labelRemoved);
     }

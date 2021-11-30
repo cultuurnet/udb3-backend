@@ -16,7 +16,7 @@ class LabelAddedTest extends TestCase
 
     protected function setUp()
     {
-        $this->labelAdded = new LabelAdded('organizerId', new Label('foo', false));
+        $this->labelAdded = new LabelAdded('organizerId', 'foo', false);
     }
 
     /**

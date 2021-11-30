@@ -9,17 +9,18 @@ use CultuurNet\UDB3\LabelEventInterface;
 
 abstract class AbstractLabelEvent extends OrganizerEvent implements LabelEventInterface
 {
-    /**
-     * @var Label
-     */
-    private $label;
+    private string $labelName;
+
+    private bool $isVisible;
 
     final public function __construct(
         string $organizerId,
-        Label $label
+        string $labelName,
+        bool   $isVisible = true
     ) {
         parent::__construct($organizerId);
-        $this->label = $label;
+        $this->labelName = $labelName;
+        $this->isVisible = $isVisible;
     }
 
     public function getItemId(): string
@@ -29,25 +30,23 @@ abstract class AbstractLabelEvent extends OrganizerEvent implements LabelEventIn
 
     public function getLabel(): Label
     {
-        return $this->label;
+        return new Label($this->labelName, $this->isVisible);
     }
 
     public static function deserialize(array $data): AbstractLabelEvent
     {
         return new static(
             $data['organizer_id'],
-            new Label(
-                $data['label'],
-                isset($data['visibility']) ? $data['visibility'] : true
-            )
+            $data['label'],
+            $data['visibility'] ?? true,
         );
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'label' => (string) $this->label,
-            'visibility' => $this->label->isVisible(),
-        ];
+                'label' => $this->labelName,
+                'visibility' => $this->isVisible,
+            ];
     }
 }
