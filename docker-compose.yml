@@ -1,0 +1,54 @@
+version: "3.5"
+
+services:
+
+  php:
+    build: docker/php
+    container_name: php.uitdatabank
+    volumes:
+      - .:/var/www/html:cached
+    working_dir: /var/www/html/web
+    command: php -S 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    networks:
+      uitdatabank:
+        aliases:
+          - php.uitdatabank.dev
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql.uitdatabank
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      uitdatabank:
+        aliases:
+          - mysql.uitdatabank.dev
+    ports:
+      - "3306:3306"
+
+  rabbitmq:
+    image: bitnami/rabbitmq:3.9
+    container_name: rabbitmq.uitdatabank
+    environment:
+      - RABBITMQ_VHOST=${RABBITMQ_VHOST}
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+    networks:
+      uitdatabank:
+        aliases:
+          - rabbitmq.uitdatabank.dev
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+networks:
+  uitdatabank:
+    driver: bridge
+
+volumes:
+  udb3-data:
