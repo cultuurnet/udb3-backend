@@ -737,16 +737,6 @@ $app['organizer_iri_generator'] = $app->share(
     }
 );
 
-$app['organizer_editing_service'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService(
-            $app['event_command_bus'],
-            $app['uuid_generator'],
-            $app['organizer_repository']
-        );
-    }
-);
-
 $app->register(new OrganizerControllerProvider());
 $app->register(new OrganizerJSONLDServiceProvider());
 $app->register(new OrganizerCommandHandlerProvider());
