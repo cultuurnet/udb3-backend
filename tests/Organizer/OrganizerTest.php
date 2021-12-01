@@ -275,8 +275,20 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new AddressUpdated($this->id, LegacyAddress::fromUdb3ModelAddress($initialAddress)),
-                    new AddressUpdated($this->id, LegacyAddress::fromUdb3ModelAddress($updatedAddress)),
+                    new AddressUpdated(
+                        $this->id,
+                        $initialAddress->getStreet()->toString(),
+                        $initialAddress->getPostalCode()->toString(),
+                        $initialAddress->getLocality()->toString(),
+                        $initialAddress->getCountryCode()->toString()
+                    ),
+                    new AddressUpdated(
+                        $this->id,
+                        $updatedAddress->getStreet()->toString(),
+                        $updatedAddress->getPostalCode()->toString(),
+                        $updatedAddress->getLocality()->toString(),
+                        $updatedAddress->getCountryCode()->toString()
+                    ),
                 ]
             );
     }
@@ -294,7 +306,18 @@ class OrganizerTest extends AggregateRootScenarioTestCase
         );
 
         $this->scenario
-            ->given([$this->organizerCreatedWithUniqueWebsite, new AddressUpdated($this->id, $initialAddress)])
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                    new AddressUpdated(
+                        $this->id,
+                        $initialAddress->getStreetAddress()->toNative(),
+                        $initialAddress->getPostalCode()->toNative(),
+                        $initialAddress->getLocality()->toNative(),
+                        $initialAddress->getCountry()->getCode()->toNative()
+                    ),
+                ]
+            )
             ->when(
                 function (Organizer $organizer) {
                     // Remove the address twice with the same value so we can
@@ -524,12 +547,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $this->organizerCreatedWithUniqueWebsite,
                     new AddressUpdated(
                         $this->id,
-                        new LegacyAddress(
-                            new LegacyStreet('Wetstraat 1'),
-                            new LegacyPostalCode('1000'),
-                            new LegacyLocality('Brussel'),
-                            Country::fromNative('BE')
-                        )
+                        'Wetstraat 1',
+                        '1000',
+                        'Brussel',
+                        'BE'
                     ),
                 ]
             )
@@ -549,12 +570,18 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new AddressTranslated(
                         $this->id,
-                        LegacyAddress::fromUdb3ModelAddress($addressFr),
+                        $addressFr->getStreet()->toString(),
+                        $addressFr->getPostalCode()->toString(),
+                        $addressFr->getLocality()->toString(),
+                        $addressFr->getCountryCode()->toString(),
                         'fr'
                     ),
                     new AddressTranslated(
                         $this->id,
-                        LegacyAddress::fromUdb3ModelAddress($addressEn),
+                        $addressEn->getStreet()->toString(),
+                        $addressEn->getPostalCode()->toString(),
+                        $addressEn->getLocality()->toString(),
+                        $addressEn->getCountryCode()->toString(),
                         'de'
                     ),
                 ]

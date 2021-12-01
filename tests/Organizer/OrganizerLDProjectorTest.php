@@ -300,12 +300,10 @@ class OrganizerLDProjectorTest extends TestCase
         $domainMessage = $this->createDomainMessage(
             new AddressUpdated(
                 $organizerId,
-                new Address(
-                    new Street('Martelarenplein'),
-                    new PostalCode('3000'),
-                    new Locality('Leuven'),
-                    Country::fromNative('BE')
-                )
+                'Martelarenplein',
+                '3000',
+                'Leuven',
+                'BE'
             )
         );
 
@@ -470,12 +468,10 @@ class OrganizerLDProjectorTest extends TestCase
         $domainMessage = $this->createDomainMessage(
             new AddressTranslated(
                 $organizerId,
-                new Address(
-                    new Street('Rue'),
-                    new PostalCode('3010'),
-                    new Locality('Kessel-Lo (Louvain)'),
-                    Country::fromNative('BE')
-                ),
+                'Rue',
+                '3010',
+                'Kessel-Lo (Louvain)',
+                'BE',
                 'fr'
             )
         );

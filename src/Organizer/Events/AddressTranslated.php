@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Language;
 
 final class AddressTranslated extends AddressUpdated
@@ -13,10 +12,13 @@ final class AddressTranslated extends AddressUpdated
 
     public function __construct(
         string $organizerId,
-        Address $address,
+        string $streetAddress,
+        string $postalCode,
+        string $locality,
+        string $countryCode,
         string $languageCode
     ) {
-        parent::__construct($organizerId, $address);
+        parent::__construct($organizerId, $streetAddress, $postalCode, $locality, $countryCode);
         $this->languageCode = $languageCode;
     }
 
@@ -32,14 +34,14 @@ final class AddressTranslated extends AddressUpdated
         ];
     }
 
-    /**
-     * @return AddressTranslated
-     */
-    public static function deserialize(array $data): AddressUpdated
+    public static function deserialize(array $data): self
     {
         return new self(
             $data['organizer_id'],
-            Address::deserialize($data['address']),
+            $data['streetAddress'],
+            $data['postalCode'],
+            $data['addressLocality'],
+            $data['addressCountry'],
             $data['language']
         );
     }
