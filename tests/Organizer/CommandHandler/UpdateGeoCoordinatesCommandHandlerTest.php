@@ -27,15 +27,9 @@ use ValueObjects\Geography\Country;
 
 class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var DefaultAddressFormatter
-     */
-    private $defaultAddressFormatter;
+    private DefaultAddressFormatter $defaultAddressFormatter;
 
-    /**
-     * @var LocalityAddressFormatter
-     */
-    private $localityAddressFormatter;
+    private LocalityAddressFormatter $localityAddressFormatter;
 
     /**
      * @var GeocodingService|MockObject
@@ -65,7 +59,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
     /**
      * @test
      */
-    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place()
+    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place(): void
     {
         $organizerId = $this->aUuid();
         $address = $this->anAddress();
@@ -104,7 +98,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
     /**
      * @test
      */
-    public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates()
+    public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates(): void
     {
         $organizerId = $this->aUuid();
         $address = $this->anAddress();
@@ -147,11 +141,10 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             ->then([$expectedEvent]);
     }
 
-
     /**
      * @test
      */
-    public function it_skips_update_if_the_geo_coordinates_can_not_be_resolved()
+    public function it_skips_update_if_the_geo_coordinates_can_not_be_resolved(): void
     {
         $organizerId = $this->aUuid();
         $address = $this->anAddress();
@@ -178,12 +171,10 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             ->then([]);
     }
 
-
     public function aUuid(): string
     {
         return 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
     }
-
 
     public function anAddress(): Address
     {
@@ -194,7 +185,6 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             Country::fromNative('BE')
         );
     }
-
 
     public function someCoordinates(): Coordinates
     {
