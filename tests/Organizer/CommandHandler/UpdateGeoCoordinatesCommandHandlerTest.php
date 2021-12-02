@@ -27,10 +27,6 @@ use ValueObjects\Geography\Country;
 
 class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    private DefaultAddressFormatter $defaultAddressFormatter;
-
-    private LocalityAddressFormatter $localityAddressFormatter;
-
     /**
      * @var GeocodingService|MockObject
      */
@@ -38,20 +34,12 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateGeoCoordinatesFromAddressCommandHandler
     {
-        $organizerRepository = new OrganizerRepository(
-            $eventStore,
-            $eventBus
-        );
-
-        $this->defaultAddressFormatter = new DefaultAddressFormatter();
-        $this->localityAddressFormatter = new LocalityAddressFormatter();
-
         $this->geocodingService = $this->createMock(GeocodingService::class);
 
         return new UpdateGeoCoordinatesFromAddressCommandHandler(
-            $organizerRepository,
-            $this->defaultAddressFormatter,
-            $this->localityAddressFormatter,
+            new OrganizerRepository($eventStore, $eventBus),
+            new DefaultAddressFormatter(),
+            new LocalityAddressFormatter(),
             $this->geocodingService
         );
     }
