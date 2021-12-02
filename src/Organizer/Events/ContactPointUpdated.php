@@ -8,10 +8,19 @@ use CultuurNet\UDB3\ContactPoint;
 
 final class ContactPointUpdated extends OrganizerEvent
 {
+    /**
+     * @var string[]
+     */
     private array $phones;
 
+    /**
+     * @var string[]
+     */
     private array $emails;
 
+    /**
+     * @var string[]
+     */
     private array $urls;
 
     public function __construct(
