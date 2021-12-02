@@ -9,9 +9,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
-use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
@@ -789,13 +786,10 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $coordinates = new Coordinates(
-            new Latitude(50.8795943),
-            new Longitude(4.7150515)
-        );
         $geoCoordinatesUpdated = new GeoCoordinatesUpdated(
             $organizerId,
-            $coordinates
+            50.8795943,
+            4.7150515
         );
         $domainMessage = $this->createDomainMessage($geoCoordinatesUpdated);
 

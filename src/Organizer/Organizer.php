@@ -216,7 +216,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->apply(
             new GeoCoordinatesUpdated(
                 $this->actorId,
-                $coordinate
+                $coordinate->getLatitude()->toDouble(),
+                $coordinate->getLongitude()->toDouble()
             )
         );
     }

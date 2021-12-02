@@ -28,36 +28,18 @@ use ValueObjects\Geography\Country;
 class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var DefaultAddressFormatter
-     */
-    private $defaultAddressFormatter;
-
-    /**
-     * @var LocalityAddressFormatter
-     */
-    private $localityAddressFormatter;
-
-    /**
      * @var GeocodingService|MockObject
      */
     private $geocodingService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateGeoCoordinatesFromAddressCommandHandler
     {
-        $organizerRepository = new OrganizerRepository(
-            $eventStore,
-            $eventBus
-        );
-
-        $this->defaultAddressFormatter = new DefaultAddressFormatter();
-        $this->localityAddressFormatter = new LocalityAddressFormatter();
-
         $this->geocodingService = $this->createMock(GeocodingService::class);
 
         return new UpdateGeoCoordinatesFromAddressCommandHandler(
-            $organizerRepository,
-            $this->defaultAddressFormatter,
-            $this->localityAddressFormatter,
+            new OrganizerRepository($eventStore, $eventBus),
+            new DefaultAddressFormatter(),
+            new LocalityAddressFormatter(),
             $this->geocodingService
         );
     }
@@ -65,7 +47,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
     /**
      * @test
      */
-    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place()
+    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place(): void
     {
         $organizerId = $this->aUuid();
         $address = $this->anAddress();
@@ -88,7 +70,11 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             ->with('Wetstraat 1, 1000 Bxl, BE')
             ->willReturn($coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($organizerId, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(
+            $organizerId,
+            $coordinates->getLatitude()->toDouble(),
+            $coordinates->getLongitude()->toDouble()
+        );
 
         $this->scenario
             ->withAggregateId($organizerId)
@@ -100,7 +86,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
     /**
      * @test
      */
-    public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates()
+    public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates(): void
     {
         $organizerId = $this->aUuid();
         $address = $this->anAddress();
@@ -130,7 +116,11 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             )
             ->willReturnOnConsecutiveCalls(null, $coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($organizerId, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(
+            $organizerId,
+            $coordinates->getLatitude()->toDouble(),
+            $coordinates->getLongitude()->toDouble()
+        );
 
         $this->scenario
             ->withAggregateId($organizerId)
@@ -139,11 +129,10 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             ->then([$expectedEvent]);
     }
 
-
     /**
      * @test
      */
-    public function it_skips_update_if_the_geo_coordinates_can_not_be_resolved()
+    public function it_skips_update_if_the_geo_coordinates_can_not_be_resolved(): void
     {
         $organizerId = $this->aUuid();
         $address = $this->anAddress();
@@ -170,12 +159,10 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             ->then([]);
     }
 
-
     public function aUuid(): string
     {
         return 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
     }
-
 
     public function anAddress(): Address
     {
@@ -186,7 +173,6 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             Country::fromNative('BE')
         );
     }
-
 
     public function someCoordinates(): Coordinates
     {
