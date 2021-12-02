@@ -43,10 +43,8 @@ final class GeoCoordinatesUpdated extends OrganizerEvent
     {
         return new static(
             $data['organizer_id'],
-            new Coordinates(
-                new Latitude($data['coordinates']['lat']),
-                new Longitude($data['coordinates']['long'])
-            )
+            $data['coordinates']['lat'],
+            $data['coordinates']['long']
         );
     }
 }
