@@ -55,7 +55,9 @@ class UpdateContactPointHandlerTest extends CommandHandlerScenarioTestCase
             ->then([
                 new ContactPointUpdated(
                     $id,
-                    LegacyContactPoint::fromUdb3ModelContactPoint($contactPoint)
+                    ['016 10 20 30'],
+                    ['info@publiq.be'],
+                    ['https://www.publiq.be']
                 ),
             ]);
     }

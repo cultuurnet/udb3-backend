@@ -364,9 +364,9 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new ContactPointUpdated($this->id, $initialContactPoint),
-                    new ContactPointUpdated($this->id, $updatedContactPoint),
-                    new ContactPointUpdated($this->id, $emptyContactPoint),
+                    new ContactPointUpdated($this->id, ['0444/444444']),
+                    new ContactPointUpdated($this->id, ['0455/454545'], ['foo@bar.com']),
+                    new ContactPointUpdated($this->id),
                 ]
             );
     }

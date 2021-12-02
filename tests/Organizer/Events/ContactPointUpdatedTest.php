@@ -16,11 +16,9 @@ class ContactPointUpdatedTest extends TestCase
     {
         $contactPointUpdated = new ContactPointUpdated(
             '0460ffbd-1c85-4bad-9a8f-be1f981648e7',
-            new ContactPoint(
-                ['+32 444 56 56 56'],
-                ['foo@bar.com'],
-                ['http://bar.com']
-            )
+            ['+32 444 56 56 56'],
+            ['foo@bar.com'],
+            ['http://bar.com']
         );
 
         $data = $contactPointUpdated->serialize();
