@@ -80,7 +80,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
      */
     public function it_throws_when_news_article_not_found(): void
     {
-        $this->expectException(NewsArticleNotFoundException::class);
+        $this->expectException(NewsArticleNotFound::class);
         $this->expectExceptionMessage('News article with id "6a883273-4995-4455-9156-eb1f920253be" was not found.');
 
         $this->dbalNewsArticleRepository->getById(new UUID('6a883273-4995-4455-9156-eb1f920253be'));
@@ -175,7 +175,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
         $this->dbalNewsArticleRepository->delete(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
 
-        $this->expectException(NewsArticleNotFoundException::class);
+        $this->expectException(NewsArticleNotFound::class);
 
         $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
     }

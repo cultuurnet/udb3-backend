@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Curators;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Exception;
 
-final class NewsArticleNotFoundException extends Exception
+final class NewsArticleNotFound extends Exception
 {
     public function __construct(UUID $id)
     {

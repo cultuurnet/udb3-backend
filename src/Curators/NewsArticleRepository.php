@@ -8,6 +8,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 interface NewsArticleRepository
 {
+    /**
+     * @throws NewsArticleNotFound
+     */
     public function getById(UUID $id): NewsArticle;
 
     public function getAll(): NewsArticles;

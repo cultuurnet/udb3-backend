@@ -32,7 +32,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
             ->fetchAll(FetchMode::ASSOCIATIVE);
 
         if (count($newsArticleRows) !== 1) {
-            throw new NewsArticleNotFoundException($id);
+            throw new NewsArticleNotFound($id);
         }
 
         return $this->createNewsArticle($newsArticleRows[0]);
