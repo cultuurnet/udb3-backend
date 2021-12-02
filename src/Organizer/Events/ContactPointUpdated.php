@@ -9,27 +9,43 @@ use CultuurNet\UDB3\ContactPoint;
 final class ContactPointUpdated extends OrganizerEvent
 {
     /**
-     * @var ContactPoint
+     * @var string[]
      */
-    private $contactPoint;
+    private array $phones;
+
+    /**
+     * @var string[]
+     */
+    private array $emails;
+
+    /**
+     * @var string[]
+     */
+    private array $urls;
 
     public function __construct(
         string $organizerId,
-        ContactPoint $contactPoint
+        array $phones = [],
+        array $emails = [],
+        array $urls = []
     ) {
         parent::__construct($organizerId);
-        $this->contactPoint = $contactPoint;
+        $this->phones = $phones;
+        $this->emails = $emails;
+        $this->urls = $urls;
     }
 
     public function getContactPoint(): ContactPoint
     {
-        return $this->contactPoint;
+        return new ContactPoint($this->phones, $this->emails, $this->urls);
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'contactPoint' => $this->contactPoint->serialize(),
+            'phones' => $this->phones,
+            'emails' => $this->emails,
+            'urls' => $this->urls,
         ];
     }
 
@@ -37,7 +53,9 @@ final class ContactPointUpdated extends OrganizerEvent
     {
         return new static(
             $data['organizer_id'],
-            ContactPoint::deserialize($data['contactPoint'])
+            $data['phones'],
+            $data['emails'],
+            $data['urls']
         );
     }
 }

@@ -201,7 +201,12 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         if (!$this->contactPoint->sameAs($contactPoint)) {
             $this->apply(
-                new ContactPointUpdated($this->actorId, $contactPoint)
+                new ContactPointUpdated(
+                    $this->actorId,
+                    $contactPoint->getPhones(),
+                    $contactPoint->getEmails(),
+                    $contactPoint->getUrls()
+                )
             );
         }
     }
