@@ -148,7 +148,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     public function it_can_delete_a_news_article(): void
     {
         $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
-        
+
         $this->dbalNewsArticleRepository->delete(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
 
         $this->expectException(NewsArticleNotFoundException::class);
