@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
@@ -88,6 +89,7 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
             ->with(new RequestMatcher('^/uitpas/.*', null, 'GET'))
+            ->with(new RequestMatcher('^/news_articles/', null, 'GET'))
     ],
     'cors-preflight' => array(
         'pattern' => $app['cors_preflight_request_matcher'],
@@ -236,6 +238,7 @@ $app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControlle
 $app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
 $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
+$app->mount('/news_articles', new CuratorsControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
