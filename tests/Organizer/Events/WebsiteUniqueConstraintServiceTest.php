@@ -57,7 +57,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new OrganizerCreated(
                 $this->organizerId,
-                new Title('CultuurNet'),
+                'CultuurNet',
                 [],
                 [],
                 [],

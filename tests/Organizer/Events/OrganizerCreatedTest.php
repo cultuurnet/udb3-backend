@@ -71,7 +71,7 @@ class OrganizerCreatedTest extends TestCase
                 ],
                 new OrganizerCreated(
                     'organizer_id',
-                    new Title('title'),
+                    'title',
                     [
                         new Address(
                             new Street('Kerkstraat 69'),

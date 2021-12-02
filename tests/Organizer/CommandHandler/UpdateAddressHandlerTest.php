@@ -108,7 +108,7 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new OrganizerCreated(
             $id,
-            new Title('Organizer Title'),
+            'Organizer Title',
             [
                 new LegacyAddress(
                     new LegacyStreet('Kerkstraat 69'),

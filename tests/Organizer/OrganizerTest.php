@@ -117,7 +117,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new OrganizerCreated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        new LegacyTitle('DE Studio'),
+                        'DE Studio',
                         [
                             new LegacyAddress(
                                 new LegacyStreet('Wetstraat 1'),

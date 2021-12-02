@@ -66,7 +66,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $organizerCreated = new OrganizerCreated(
             $organizerId,
-            new Title('some representative title'),
+            'some representative title',
             [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
@@ -105,7 +105,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $organizerCreated = new OrganizerCreated(
             $organizerId,
-            new Title('some representative title'),
+            'some representative title',
             [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
@@ -151,7 +151,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $organizerCreated = new OrganizerCreated(
             $organizerId,
-            new Title('some representative title'),
+            'some representative title',
             [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],

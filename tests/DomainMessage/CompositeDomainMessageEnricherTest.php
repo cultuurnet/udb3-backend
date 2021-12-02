@@ -185,7 +185,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
             new Metadata(),
             new OrganizerCreated(
                 'fd9e986d-6a23-470c-bf0c-4ad40aa4515e',
-                new Title('test title'),
+                'test title',
                 [],
                 [],
                 [],

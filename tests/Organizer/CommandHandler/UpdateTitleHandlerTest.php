@@ -61,7 +61,7 @@ final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new OrganizerCreated(
             $id,
-            new LegacyTitle('Organizer Title'),
+            'Organizer Title',
             [
                 new Address(
                     new Street('Kerkstraat 69'),

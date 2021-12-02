@@ -90,7 +90,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new OrganizerCreated(
             $id,
-            new Title('Organizer Title'),
+            'Organizer Title',
             [
                 new Address(
                     new Street('Kerkstraat 69'),
