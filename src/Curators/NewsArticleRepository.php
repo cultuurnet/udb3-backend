@@ -13,4 +13,6 @@ interface NewsArticleRepository
     public function getAll(): NewsArticles;
 
     public function create(NewsArticle $newsArticle): void;
+
+    public function delete(UUID $id): void;
 }

@@ -84,6 +84,17 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
             ->execute();
     }
 
+    public function delete(UUID $id): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $queryBuilder
+            ->delete('news_article')
+            ->where('id = :id')
+            ->setParameter(':id', $id->toString())
+            ->execute();
+    }
+
     private function createNewsArticle(array $newsArticleRow): NewsArticle
     {
         return new NewsArticle(
