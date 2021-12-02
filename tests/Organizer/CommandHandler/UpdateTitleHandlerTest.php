@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use ValueObjects\Geography\Country;
 
 final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase

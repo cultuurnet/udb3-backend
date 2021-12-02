@@ -8,7 +8,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 
 class WebsiteUniqueConstraintServiceTest extends TestCase
