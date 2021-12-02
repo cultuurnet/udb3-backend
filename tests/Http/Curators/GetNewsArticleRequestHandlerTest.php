@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Curators;
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleNotFound;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
+use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -21,7 +22,7 @@ class GetNewsArticleRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var NewsArticleRepository|MockObject $newsArticleRepository  */
+    /** @var NewsArticleRepository|MockObject  */
     private $newsArticleRepository;
 
     private GetNewsArticleRequestHandler $getNewsArticleRequestHandler;
@@ -31,7 +32,10 @@ class GetNewsArticleRequestHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->newsArticleRepository = $this->createMock(NewsArticleRepository::class);
-        $this->getNewsArticleRequestHandler = new GetNewsArticleRequestHandler($this->newsArticleRepository);
+        $this->getNewsArticleRequestHandler = new GetNewsArticleRequestHandler(
+            $this->newsArticleRepository,
+            new NewsArticleNormalizer()
+        );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
     }

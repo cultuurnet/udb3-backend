@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Curators;
 
 use CultuurNet\UDB3\Curators\NewsArticleNotFound;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
+use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
@@ -18,9 +19,14 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
 {
     private NewsArticleRepository $newsArticleRepository;
 
-    public function __construct(NewsArticleRepository $newsArticleRepository)
-    {
+    private NewsArticleNormalizer $newsArticleNormalizer;
+
+    public function __construct(
+        NewsArticleRepository $newsArticleRepository,
+        NewsArticleNormalizer $newsArticleNormalizer
+    ) {
         $this->newsArticleRepository = $newsArticleRepository;
+        $this->newsArticleNormalizer = $newsArticleNormalizer;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -34,15 +40,6 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
             throw ApiProblem::newsArticleNotFound($articleId);
         }
 
-        return new JsonLdResponse([
-            'id' => $newsArticle->getId()->toString(),
-            'heading' => $newsArticle->getHeadline(),
-            'inLanguage' => $newsArticle->getLanguage()->toString(),
-            'text' => $newsArticle->getText(),
-            'about' => $newsArticle->getAbout(),
-            'publisher' => $newsArticle->getPublisher(),
-            'url' => $newsArticle->getUrl()->toString(),
-            'publisherLogo' => $newsArticle->getPublisherLogo()->toString(),
-        ]);
+        return new JsonLdResponse($this->newsArticleNormalizer->normalize($newsArticle));
     }
 }
