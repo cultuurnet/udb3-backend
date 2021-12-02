@@ -24,17 +24,17 @@ final class OrganizerCreated extends OrganizerEvent
     /**
      * @var string[]
      */
-    public $phones;
+    public array $phones;
 
     /**
      * @var string[]
      */
-    public $emails;
+    public array $emails;
 
     /**
      * @var string[]
      */
-    public $urls;
+    public array $urls;
 
     /**
      * @param Address[] $addresses
