@@ -44,8 +44,8 @@ final class ContactPointUpdated extends OrganizerEvent
     {
         return parent::serialize() + [
             'phones' => $this->phones,
-                'emails' => $this->emails,
-                'urls' => $this->urls,
+            'emails' => $this->emails,
+            'urls' => $this->urls,
         ];
     }
 
