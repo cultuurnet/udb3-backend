@@ -14,10 +14,7 @@ use CultuurNet\UDB3\Title;
 
 final class OrganizerCreated extends OrganizerEvent
 {
-    /**
-     * @var Title
-     */
-    public $title;
+    public string $title;
 
     /**
      * @var Address[]
@@ -27,17 +24,17 @@ final class OrganizerCreated extends OrganizerEvent
     /**
      * @var string[]
      */
-    public $phones;
+    public array $phones;
 
     /**
      * @var string[]
      */
-    public $emails;
+    public array $emails;
 
     /**
      * @var string[]
      */
-    public $urls;
+    public array $urls;
 
     /**
      * @param Address[] $addresses
@@ -45,7 +42,7 @@ final class OrganizerCreated extends OrganizerEvent
      * @param string[] $emails
      * @param string[] $urls
      */
-    public function __construct(string $id, Title $title, array $addresses, array $phones, array $emails, array $urls)
+    public function __construct(string $id, string $title, array $addresses, array $phones, array $emails, array $urls)
     {
         parent::__construct($id);
 
@@ -64,7 +61,7 @@ final class OrganizerCreated extends OrganizerEvent
 
     public function getTitle(): Title
     {
-        return $this->title;
+        return new Title($this->title);
     }
 
     /**
@@ -107,7 +104,7 @@ final class OrganizerCreated extends OrganizerEvent
         }
 
         return parent::serialize() + [
-          'title' => (string) $this->getTitle(),
+          'title' => $this->title,
           'addresses' => $addresses,
           'phones' => $this->getPhones(),
           'emails' => $this->getEmails(),
@@ -124,7 +121,7 @@ final class OrganizerCreated extends OrganizerEvent
 
         return new static(
             $data['organizer_id'],
-            new Title($data['title']),
+            $data['title'],
             $addresses,
             $data['phones'],
             $data['emails'],

@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
 
 final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
@@ -90,7 +89,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new OrganizerCreated(
             $id,
-            new Title('Organizer Title'),
+            'Organizer Title',
             [
                 new Address(
                     new Street('Kerkstraat 69'),

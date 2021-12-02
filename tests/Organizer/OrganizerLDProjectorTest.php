@@ -37,7 +37,6 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
@@ -122,7 +121,7 @@ class OrganizerLDProjectorTest extends TestCase
 
         $organizerCreated = new OrganizerCreated(
             $id,
-            new Title('some representative title'),
+            'some representative title',
             [new Address($street, $postalCode, $locality, $country)],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],

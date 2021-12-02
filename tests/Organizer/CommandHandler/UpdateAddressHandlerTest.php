@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
 
 class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
@@ -108,7 +107,7 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
     {
         return new OrganizerCreated(
             $id,
-            new Title('Organizer Title'),
+            'Organizer Title',
             [
                 new LegacyAddress(
                     new LegacyStreet('Kerkstraat 69'),

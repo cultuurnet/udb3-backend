@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 
@@ -71,7 +70,7 @@ class OrganizerCreatedTest extends TestCase
                 ],
                 new OrganizerCreated(
                     'organizer_id',
-                    new Title('title'),
+                    'title',
                     [
                         new Address(
                             new Street('Kerkstraat 69'),

@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 
@@ -54,7 +53,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $organizerCreated = new OrganizerCreated(
             $organizerId,
-            new Title('some representative title'),
+            'some representative title',
             [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
@@ -93,7 +92,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $organizerCreated = new OrganizerCreated(
             $organizerId,
-            new Title('some representative title'),
+            'some representative title',
             [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
@@ -139,7 +138,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $organizerCreated = new OrganizerCreated(
             $organizerId,
-            new Title('some representative title'),
+            'some representative title',
             [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
