@@ -789,13 +789,10 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, 'organizer.json');
 
-        $coordinates = new Coordinates(
-            new Latitude(50.8795943),
-            new Longitude(4.7150515)
-        );
         $geoCoordinatesUpdated = new GeoCoordinatesUpdated(
             $organizerId,
-            $coordinates
+            50.8795943,
+            4.7150515
         );
         $domainMessage = $this->createDomainMessage($geoCoordinatesUpdated);
 

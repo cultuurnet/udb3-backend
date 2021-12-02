@@ -10,28 +10,31 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 
 final class GeoCoordinatesUpdated extends OrganizerEvent
 {
-    /**
-     * @var Coordinates
-     */
-    private $coordinates;
+    private float $latitude;
 
-    public function __construct(string $organizerId, Coordinates $coordinates)
+    private float $longitude;
+
+    public function __construct(string $organizerId, float $latitude, float $longitude)
     {
         parent::__construct($organizerId);
-        $this->coordinates = $coordinates;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
     }
 
     public function coordinates(): Coordinates
     {
-        return $this->coordinates;
+        return new Coordinates(
+            new Latitude($this->latitude),
+            new Longitude($this->longitude)
+        );
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
             'coordinates' => [
-                'lat' => $this->coordinates->getLatitude()->toDouble(),
-                'long' => $this->coordinates->getLongitude()->toDouble(),
+                'lat' => $this->latitude,
+                'long' => $this->longitude,
             ],
         ];
     }

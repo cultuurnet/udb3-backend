@@ -88,7 +88,11 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             ->with('Wetstraat 1, 1000 Bxl, BE')
             ->willReturn($coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($organizerId, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(
+            $organizerId,
+            $coordinates->getLatitude()->toDouble(),
+            $coordinates->getLongitude()->toDouble()
+        );
 
         $this->scenario
             ->withAggregateId($organizerId)
@@ -130,7 +134,11 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             )
             ->willReturnOnConsecutiveCalls(null, $coordinates);
 
-        $expectedEvent = new GeoCoordinatesUpdated($organizerId, $coordinates);
+        $expectedEvent = new GeoCoordinatesUpdated(
+            $organizerId,
+            $coordinates->getLatitude()->toDouble(),
+            $coordinates->getLongitude()->toDouble()
+        );
 
         $this->scenario
             ->withAggregateId($organizerId)
