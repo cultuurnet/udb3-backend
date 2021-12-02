@@ -84,6 +84,35 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
             ->execute();
     }
 
+    public function update(NewsArticle $newsArticle): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $queryBuilder
+            ->update('news_article')
+            ->where('id = :id')
+            ->set('headline', ':headline')
+            ->set('in_language', ':in_language')
+            ->set('text', ':text')
+            ->set('about', ':about')
+            ->set('publisher', ':publisher')
+            ->set('url', ':url')
+            ->set('publisher_logo', ':publisher_logo')
+            ->setParameters(
+                [
+                    ':id' => $newsArticle->getId()->toString(),
+                    'headline' => $newsArticle->getHeadline(),
+                    'in_language' => $newsArticle->getLanguage()->toString(),
+                    'text' => $newsArticle->getText(),
+                    'about' => $newsArticle->getAbout(),
+                    'publisher' => $newsArticle->getPublisher(),
+                    'url' => $newsArticle->getUrl()->toString(),
+                    'publisher_logo' => $newsArticle->getPublisherLogo()->toString(),
+                ]
+            )
+            ->execute();
+    }
+
     public function delete(UUID $id): void
     {
         $queryBuilder = $this->connection->createQueryBuilder();

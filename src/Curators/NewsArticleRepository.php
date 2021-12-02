@@ -14,5 +14,7 @@ interface NewsArticleRepository
 
     public function create(NewsArticle $newsArticle): void;
 
+    public function update(NewsArticle $newsArticle): void;
+
     public function delete(UUID $id): void;
 }

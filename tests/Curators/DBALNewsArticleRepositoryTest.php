@@ -145,6 +145,30 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_can_update_a_news_article(): void
+    {
+        $newsArticle = new NewsArticle(
+            new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
+            'Updating news articles works',
+            new Language('nl'),
+            'This test covers the update of news articles',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'UPDATE',
+            new Url('https://www.update.com/blog/create'),
+            new Url('https://www.update.com/img/favicon.png')
+        );
+
+        $this->dbalNewsArticleRepository->update($newsArticle);
+
+        $this->assertEquals(
+            $newsArticle,
+            $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_delete_a_news_article(): void
     {
         $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
