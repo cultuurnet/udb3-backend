@@ -121,6 +121,20 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_empty_news_articles_collection_when_no_articles_present(): void
+    {
+        $this->dbalNewsArticleRepository->delete(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
+        $this->dbalNewsArticleRepository->delete(new UUID('9a94f933-0ccd-477b-8a74-87d086b04d3b'));
+
+        $this->assertEquals(
+            new NewsArticles(),
+            $this->dbalNewsArticleRepository->getAll()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_create_a_news_article(): void
     {
         $newsArticle = new NewsArticle(
