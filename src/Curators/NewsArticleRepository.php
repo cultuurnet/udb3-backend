@@ -11,4 +11,6 @@ interface NewsArticleRepository
     public function getById(UUID $id): NewsArticle;
 
     public function getAll(): NewsArticles;
+
+    public function create(NewsArticle $newsArticle): void;
 }

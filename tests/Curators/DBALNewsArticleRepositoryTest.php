@@ -117,4 +117,28 @@ final class DBALNewsArticleRepositoryTest extends TestCase
             $this->dbalNewsArticleRepository->getAll()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_create_a_news_article(): void
+    {
+        $newsArticle = new NewsArticle(
+            new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'),
+            'Creating news articles works',
+            new Language('en'),
+            'This test covers the creation of news articles',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'TECH',
+            new Url('https://www.tech.com/blog/create'),
+            new Url('https://www.tech.com/img/favicon.png')
+        );
+
+        $this->dbalNewsArticleRepository->create($newsArticle);
+
+        $this->assertEquals(
+            $newsArticle,
+            $this->dbalNewsArticleRepository->getById(new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'))
+        );
+    }
 }
