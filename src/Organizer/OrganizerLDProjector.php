@@ -250,7 +250,7 @@ class OrganizerLDProjector implements EventListener
         $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
-        $jsonLD->url = (string) $websiteUpdated->getWebsite();
+        $jsonLD->url = $websiteUpdated->getWebsite();
 
         return $document->withBody($jsonLD);
     }
