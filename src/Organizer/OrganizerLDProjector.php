@@ -86,10 +86,7 @@ class OrganizerLDProjector implements EventListener
         $this->cdbXMLImporter = new CdbXMLImporter();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
 
@@ -110,12 +107,11 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @return JsonDocument
      * @throws \CultureFeed_Cdb_ParseException
      */
     private function applyOrganizerImportedFromUDB2(
         OrganizerImportedFromUDB2 $organizerImportedFromUDB2
-    ) {
+    ): JsonDocument {
         $udb2Actor = ActorItemFactory::createActorFromCdbXml(
             $organizerImportedFromUDB2->getCdbXmlNamespaceUri(),
             $organizerImportedFromUDB2->getCdbXml()
@@ -134,11 +130,10 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyOrganizerCreated(OrganizerCreated $organizerCreated, DomainMessage $domainMessage)
-    {
+    private function applyOrganizerCreated(
+        OrganizerCreated $organizerCreated,
+        DomainMessage $domainMessage
+    ): JsonDocument {
         $document = $this->newDocument($organizerCreated->getOrganizerId());
 
         $jsonLD = $document->getBody();
@@ -189,13 +184,10 @@ class OrganizerLDProjector implements EventListener
         return $newJsonLD;
     }
 
-    /**
-     * @return JsonDocument
-     */
     private function applyOrganizerCreatedWithUniqueWebsite(
         OrganizerCreatedWithUniqueWebsite $organizerCreated,
         DomainMessage $domainMessage
-    ) {
+    ): JsonDocument {
         $document = $this->newDocument($organizerCreated->getOrganizerId());
 
         $jsonLD = $document->getBody();
@@ -225,10 +217,7 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated)
+    private function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated): JsonDocument
     {
         $organizerId = $websiteUpdated->getOrganizerId();
 
@@ -240,18 +229,12 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyTitleUpdated(TitleUpdated $titleUpdated)
+    private function applyTitleUpdated(TitleUpdated $titleUpdated): JsonDocument
     {
         return $this->applyTitle($titleUpdated, $titleUpdated->getTitle());
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyTitleTranslated(TitleTranslated $titleTranslated)
+    private function applyTitleTranslated(TitleTranslated $titleTranslated): JsonDocument
     {
         return $this->applyTitle(
             $titleTranslated,
@@ -260,23 +243,17 @@ class OrganizerLDProjector implements EventListener
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyAddressUpdated(AddressUpdated $addressUpdated)
+    private function applyAddressUpdated(AddressUpdated $addressUpdated): JsonDocument
     {
         return $this->applyAddress($addressUpdated);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyAddressTranslated(AddressTranslated $addressTranslated)
+    private function applyAddressTranslated(AddressTranslated $addressTranslated): JsonDocument
     {
         return $this->applyAddress($addressTranslated, $addressTranslated->getLanguage());
     }
 
-    public function applyAddressRemoved(AddressRemoved $addressRemoved)
+    public function applyAddressRemoved(AddressRemoved $addressRemoved): JsonDocument
     {
         $organizerId = $addressRemoved->getOrganizerId();
         $document = $this->repository->fetch($organizerId);
@@ -287,10 +264,7 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated)
+    private function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): JsonDocument
     {
         $organizerId = $contactPointUpdated->getOrganizerId();
         $contactPoint = $contactPointUpdated->getContactPoint();
@@ -304,12 +278,11 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @return JsonDocument
      * @throws \CultureFeed_Cdb_ParseException
      */
     private function applyOrganizerUpdatedFromUDB2(
         OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
-    ) {
+    ): JsonDocument {
         // It's possible that an organizer has been deleted in udb3, but never
         // in udb2. If an update comes for that organizer from udb2, it should
         // be imported again. This is intended by design.
@@ -335,10 +308,7 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($actorLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyLabelAdded(LabelAdded $labelAdded)
+    private function applyLabelAdded(LabelAdded $labelAdded): JsonDocument
     {
         $document = $this->repository->fetch($labelAdded->getOrganizerId());
 
@@ -356,10 +326,7 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function applyLabelRemoved(LabelRemoved $labelRemoved)
+    private function applyLabelRemoved(LabelRemoved $labelRemoved): JsonDocument
     {
         $document = $this->repository->fetch($labelRemoved->getOrganizerId());
         $jsonLD = $document->getBody();
@@ -403,11 +370,7 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @param string $id
-     * @return JsonDocument
-     */
-    private function newDocument($id)
+    private function newDocument(string $id): JsonDocument
     {
         $document = new JsonDocument($id);
 
@@ -422,14 +385,11 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($organizerLd);
     }
 
-    /**
-     * @return JsonDocument
-     */
     private function applyTitle(
         OrganizerEvent $organizerEvent,
         Title $title,
         Language $language = null
-    ) {
+    ): JsonDocument {
         $organizerId = $organizerEvent->getOrganizerId();
 
         $document = $this->repository->fetch($organizerId);
@@ -478,7 +438,7 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    public function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
+    public function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated): JsonDocument
     {
         $document = $this->repository->fetch($geoCoordinatesUpdated->getOrganizerId());
 
@@ -492,10 +452,7 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function loadDocumentFromRepository(ActorEvent $actor)
+    private function loadDocumentFromRepository(ActorEvent $actor): JsonDocument
     {
         try {
             $document = $this->repository->fetch($actor->getActorId());
@@ -506,10 +463,7 @@ class OrganizerLDProjector implements EventListener
         return $document;
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function updateModified(JsonDocument $jsonDocument, DomainMessage $domainMessage)
+    private function updateModified(JsonDocument $jsonDocument, DomainMessage $domainMessage): JsonDocument
     {
         $body = $jsonDocument->getBody();
 
