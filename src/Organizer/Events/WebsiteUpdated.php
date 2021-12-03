@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use ValueObjects\Web\Url;
-
 final class WebsiteUpdated extends OrganizerEvent
 {
     private string $website;
@@ -18,9 +16,9 @@ final class WebsiteUpdated extends OrganizerEvent
         $this->website = $website;
     }
 
-    public function getWebsite(): Url
+    public function getWebsite(): string
     {
-        return Url::fromNative($this->website);
+        return $this->website;
     }
 
     public function serialize(): array

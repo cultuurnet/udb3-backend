@@ -45,8 +45,8 @@ abstract class AbstractLabelEvent extends OrganizerEvent implements LabelEventIn
     public function serialize(): array
     {
         return parent::serialize() + [
-                'label' => $this->labelName,
-                'visibility' => $this->isVisible,
-            ];
+            'label' => $this->labelName,
+            'visibility' => $this->isVisible,
+        ];
     }
 }
