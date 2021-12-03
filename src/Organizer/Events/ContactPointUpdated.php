@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\ContactPoint;
-
 final class ContactPointUpdated extends OrganizerEvent
 {
     /**
@@ -47,7 +45,7 @@ final class ContactPointUpdated extends OrganizerEvent
 
     public function getUrls(): array
     {
-        return new ContactPoint($this->phones, $this->emails, $this->urls);
+        return $this->urls;
     }
 
     public function serialize(): array
