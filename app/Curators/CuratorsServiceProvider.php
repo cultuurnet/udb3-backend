@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Curators;
 
+use CultuurNet\UDB3\Curators\DBALNewsArticleRepository;
+use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumer;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
@@ -56,6 +58,10 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                     $app['event_command_bus']
                 );
             }
+        );
+
+        $app[NewsArticleRepository::class] = $app->share(
+            fn (Application $app) => new DBALNewsArticleRepository($app['dbal_connection'])
         );
     }
 
