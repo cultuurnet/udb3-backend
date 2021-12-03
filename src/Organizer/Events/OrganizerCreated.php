@@ -23,11 +23,20 @@ final class OrganizerCreated extends OrganizerEvent
 
     public array $phones;
 
+    /**
+     * @var string[]
+     */
+    public array $phones;
+
+    /**
+     * @var string[]
+     */
     public array $emails;
 
+    /**
+     * @var string[]
+     */
     public array $urls;
-
-    private ?string $streetAddress;
 
     private ?string $postalCode;
 
