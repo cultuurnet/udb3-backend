@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Address\Locality;
+use CultuurNet\UDB3\Address\PostalCode;
+use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
@@ -37,6 +40,8 @@ use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Title as LegacyTitle;
+use ValueObjects\Geography\Country;
+use ValueObjects\Geography\CountryCode;
 use ValueObjects\Web\Url as LegacyUrl;
 
 class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
@@ -379,7 +384,12 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void
     {
-        $this->setAddress($addressUpdated->getAddress(), $this->mainLanguage);
+        $this->setAddress(new LegacyAddress(
+            new Street($addressUpdated->getStreetAddress()),
+            new PostalCode($addressUpdated->getPostalCode()),
+            new Locality($addressUpdated->getLocality()),
+            new Country(CountryCode::fromNative($addressUpdated->getCountryCode()))
+        ), $this->mainLanguage);
     }
 
     protected function applyAddressRemoved(AddressRemoved $addressRemoved): void
@@ -389,7 +399,15 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyAddressTranslated(AddressTranslated $addressTranslated): void
     {
-        $this->setAddress($addressTranslated->getAddress(), new LegacyLanguage($addressTranslated->getLanguage()));
+        $this->setAddress(
+            new LegacyAddress(
+                new Street($addressTranslated->getStreetAddress()),
+                new PostalCode($addressTranslated->getPostalCode()),
+                new Locality($addressTranslated->getLocality()),
+                new Country(CountryCode::fromNative($addressTranslated->getCountryCode()))
+            ),
+            new LegacyLanguage($addressTranslated->getLanguage())
+        );
     }
 
     protected function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): void

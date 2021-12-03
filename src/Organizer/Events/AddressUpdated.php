@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
-
 class AddressUpdated extends OrganizerEvent
 {
     private string $countryCode;
@@ -35,16 +28,24 @@ class AddressUpdated extends OrganizerEvent
         $this->countryCode = $countryCode;
     }
 
-    public function getAddress(): Address
+    public function getStreetAddress(): string
     {
-        return new Address(
-            new Street($this->streetAddress),
-            new PostalCode($this->postalCode),
-            new Locality($this->locality),
-            new Country(
-                CountryCode::fromNative($this->countryCode)
-            )
-        );
+        return $this->streetAddress;
+    }
+
+    public function getPostalCode(): string
+    {
+        return $this->postalCode;
+    }
+
+    public function getLocality(): string
+    {
+        return $this->locality;
+    }
+
+    public function getCountryCode(): string
+    {
+        return $this->countryCode;
     }
 
     public function serialize(): array

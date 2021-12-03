@@ -8,6 +8,10 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
+use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Locality;
+use CultuurNet\UDB3\Address\PostalCode;
+use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -38,6 +42,8 @@ use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\Title;
 use stdClass;
+use ValueObjects\Geography\Country;
+use ValueObjects\Geography\CountryCode;
 
 class OrganizerLDProjector implements EventListener
 {
@@ -428,7 +434,12 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->address = new \stdClass();
         }
 
-        $jsonLD->address->{$language->getCode()} = $addressUpdated->getAddress()->toJsonLd();
+        $jsonLD->address->{$language->getCode()} = (new Address(
+            new Street($addressUpdated->getStreetAddress()),
+            new PostalCode($addressUpdated->getPostalCode()),
+            new Locality($addressUpdated->getLocality()),
+            new Country(CountryCode::fromNative($addressUpdated->getCountryCode()))
+        ))->toJsonLd();
 
         return $document->withBody($jsonLD);
     }
