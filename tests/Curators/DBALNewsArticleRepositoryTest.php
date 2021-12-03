@@ -193,4 +193,13 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
         $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
     }
+
+    /**
+     * @test
+     */
+    public function it_can_handle_an_already_deleted_news_article(): void
+    {
+        $this->dbalNewsArticleRepository->delete(new UUID('3a9f6da3-938c-4074-a5c9-73f254899d09'));
+        $this->addToAssertionCount(1);
+    }
 }
