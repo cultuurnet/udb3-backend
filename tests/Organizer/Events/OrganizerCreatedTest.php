@@ -16,10 +16,9 @@ class OrganizerCreatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array            $expectedSerializedValue,
         OrganizerCreated $organizerCreated
     ): void {
         $this->assertEquals(
@@ -31,10 +30,9 @@ class OrganizerCreatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array            $serializedValue,
         OrganizerCreated $expectedOrganizerCreated
     ): void {
         $this->assertEquals(

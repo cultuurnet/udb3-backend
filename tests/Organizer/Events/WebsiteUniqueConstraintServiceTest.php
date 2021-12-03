@@ -75,7 +75,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_supports_website_updated_events()
+    public function it_supports_website_updated_events(): void
     {
         $this->assertTrue($this->service->hasUniqueConstraint($this->websiteUpdatedEvent));
     }
