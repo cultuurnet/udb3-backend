@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-
 final class GeoCoordinatesUpdated extends OrganizerEvent
 {
     private float $latitude;
@@ -28,10 +24,7 @@ final class GeoCoordinatesUpdated extends OrganizerEvent
 
     public function getLongitude(): float
     {
-        return new Coordinates(
-            new Latitude($this->latitude),
-            new Longitude($this->longitude)
-        );
+        return $this->longitude;
     }
 
     public function serialize(): array
