@@ -18,7 +18,7 @@ final class TitleUpdated extends OrganizerEvent
         $this->title = $title;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
         return new Title($this->title);
     }
