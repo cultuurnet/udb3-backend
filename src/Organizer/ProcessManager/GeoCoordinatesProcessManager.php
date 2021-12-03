@@ -27,20 +27,11 @@ use ValueObjects\Geography\CountryCode;
 
 class GeoCoordinatesProcessManager implements EventListener
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var CultureFeedAddressFactoryInterface
-     */
-    private $addressFactory;
+    private CultureFeedAddressFactoryInterface $addressFactory;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,
