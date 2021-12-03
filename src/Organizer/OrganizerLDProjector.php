@@ -63,30 +63,15 @@ class OrganizerLDProjector implements EventListener
         DelegateEventHandlingToSpecificMethodTrait::handle as handleMethodSpecificEvents;
     }
 
-    /**
-     * @var DocumentRepository
-     */
-    private $repository;
+    private DocumentRepository $repository;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
+    private IriGeneratorInterface $iriGenerator;
 
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var JsonDocumentMetaDataEnricherInterface
-     */
-    private $jsonDocumentMetaDataEnricher;
+    private JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher;
 
-    /**
-     * @var CdbXMLImporter
-     */
-    private $cdbXMLImporter;
+    private CdbXMLImporter $cdbXMLImporter;
 
     public function __construct(
         DocumentRepository $repository,
