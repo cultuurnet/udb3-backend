@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Language;
-
 final class AddressTranslated extends AddressUpdated
 {
     private string $languageCode;
@@ -22,9 +20,9 @@ final class AddressTranslated extends AddressUpdated
         $this->languageCode = $languageCode;
     }
 
-    public function getLanguage(): Language
+    public function getLanguage(): string
     {
-        return new Language($this->languageCode);
+        return $this->languageCode;
     }
 
     public function serialize(): array

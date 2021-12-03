@@ -389,7 +389,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyAddressTranslated(AddressTranslated $addressTranslated): void
     {
-        $this->setAddress($addressTranslated->getAddress(), $addressTranslated->getLanguage());
+        $this->setAddress($addressTranslated->getAddress(), new LegacyLanguage($addressTranslated->getLanguage()));
     }
 
     protected function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): void
