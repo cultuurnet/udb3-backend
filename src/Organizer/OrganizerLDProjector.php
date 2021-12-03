@@ -268,7 +268,11 @@ class OrganizerLDProjector implements EventListener
     private function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): JsonDocument
     {
         $organizerId = $contactPointUpdated->getOrganizerId();
-        $contactPoint = $contactPointUpdated->getContactPoint();
+        $contactPoint = new ContactPoint(
+            $contactPointUpdated->getPhones(),
+            $contactPointUpdated->getEmails(),
+            $contactPointUpdated->getUrls()
+        );
 
         $document = $this->repository->fetch($organizerId);
 

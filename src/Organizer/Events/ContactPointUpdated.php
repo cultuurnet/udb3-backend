@@ -35,7 +35,17 @@ final class ContactPointUpdated extends OrganizerEvent
         $this->urls = $urls;
     }
 
-    public function getContactPoint(): ContactPoint
+    public function getPhones(): array
+    {
+        return $this->phones;
+    }
+
+    public function getEmails(): array
+    {
+        return $this->emails;
+    }
+
+    public function getUrls(): array
     {
         return new ContactPoint($this->phones, $this->emails, $this->urls);
     }

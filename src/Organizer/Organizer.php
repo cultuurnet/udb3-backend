@@ -412,7 +412,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): void
     {
-        $this->contactPoint = $contactPointUpdated->getContactPoint();
+        $this->contactPoint = new ContactPoint(
+            $contactPointUpdated->getPhones(),
+            $contactPointUpdated->getEmails(),
+            $contactPointUpdated->getUrls()
+        );
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void
