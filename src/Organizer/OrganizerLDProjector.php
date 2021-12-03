@@ -240,8 +240,8 @@ class OrganizerLDProjector implements EventListener
     {
         return $this->applyTitle(
             $titleTranslated,
-            $titleTranslated->getTitle(),
-            $titleTranslated->getLanguage()
+            new Title($titleTranslated->getTitle()),
+            new Language($titleTranslated->getLanguage())
         );
     }
 

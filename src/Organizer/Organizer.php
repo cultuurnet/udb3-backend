@@ -379,7 +379,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyTitleTranslated(TitleTranslated $titleTranslated): void
     {
-        $this->setTitle($titleTranslated->getTitle(), $titleTranslated->getLanguage());
+        $this->setTitle(
+            new LegacyTitle($titleTranslated->getTitle()),
+            new LegacyLanguage($titleTranslated->getLanguage())
+        )
+        ;
     }
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void

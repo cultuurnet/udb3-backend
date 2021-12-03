@@ -23,14 +23,14 @@ final class TitleTranslated extends OrganizerEvent
         $this->language = $language;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
-        return new Title($this->title);
+        return $this->title;
     }
 
-    public function getLanguage(): Language
+    public function getLanguage(): string
     {
-        return new Language($this->language);
+        return $this->language;
     }
 
     public function serialize(): array
