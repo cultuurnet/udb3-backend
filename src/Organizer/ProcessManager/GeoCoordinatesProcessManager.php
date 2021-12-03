@@ -9,7 +9,11 @@ use Broadway\EventHandling\EventListener;
 use Broadway\CommandHandling\CommandBus;
 use CultureFeed_Cdb_Data_Address;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
+use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
+use CultuurNet\UDB3\Address\Locality;
+use CultuurNet\UDB3\Address\PostalCode;
+use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
@@ -18,6 +22,8 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use ValueObjects\Geography\Country;
+use ValueObjects\Geography\CountryCode;
 
 class GeoCoordinatesProcessManager implements EventListener
 {
