@@ -43,8 +43,6 @@ final class OrganizerCreated extends OrganizerEvent
     ) {
         parent::__construct($id);
 
-        $this->guardAddressTypes(...$addresses);
-
         $this->title = $title;
         $this->streetAddress = $streetAddress;
         $this->postalCode = $postalCode;
@@ -53,10 +51,6 @@ final class OrganizerCreated extends OrganizerEvent
         $this->phones = $phones;
         $this->emails = $emails;
         $this->urls = $urls;
-    }
-
-    private function guardAddressTypes(Address ...$addresses): void
-    {
     }
 
     public function getTitle(): Title
