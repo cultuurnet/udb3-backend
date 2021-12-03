@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Title;
-
 final class TitleTranslated extends OrganizerEvent
 {
     private string $title;
@@ -23,14 +20,14 @@ final class TitleTranslated extends OrganizerEvent
         $this->language = $language;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
-        return new Title($this->title);
+        return $this->title;
     }
 
-    public function getLanguage(): Language
+    public function getLanguage(): string
     {
-        return new Language($this->language);
+        return $this->language;
     }
 
     public function serialize(): array
