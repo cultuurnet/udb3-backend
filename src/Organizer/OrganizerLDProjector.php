@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
@@ -67,8 +66,6 @@ class OrganizerLDProjector implements EventListener
 
     private IriGeneratorInterface $iriGenerator;
 
-    private EventBus $eventBus;
-
     private JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher;
 
     private CdbXMLImporter $cdbXMLImporter;
@@ -76,12 +73,10 @@ class OrganizerLDProjector implements EventListener
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
-        EventBus $eventBus,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
-        $this->eventBus = $eventBus;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->cdbXMLImporter = new CdbXMLImporter();
     }

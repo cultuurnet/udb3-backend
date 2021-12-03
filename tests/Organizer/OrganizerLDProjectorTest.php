@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\Locality;
@@ -55,8 +54,6 @@ class OrganizerLDProjectorTest extends TestCase
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
 
-        $eventBus = $this->createMock(EventBus::class);
-
         $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
@@ -66,7 +63,6 @@ class OrganizerLDProjectorTest extends TestCase
         $this->projector = new OrganizerLDProjector(
             $this->documentRepository,
             $iriGenerator,
-            $eventBus,
             new JsonDocumentLanguageEnricher(
                 new OrganizerJsonDocumentLanguageAnalyzer()
             )
