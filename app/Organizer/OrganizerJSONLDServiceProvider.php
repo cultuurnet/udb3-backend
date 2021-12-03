@@ -24,7 +24,6 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
                 return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
                     $app['organizer_jsonld_repository'],
                     $app['organizer_iri_generator'],
-                    $app['event_bus'],
                     new JsonDocumentLanguageEnricher(
                         new OrganizerJsonDocumentLanguageAnalyzer()
                     )

@@ -54,7 +54,10 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            [$address],
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative(),
+            $address->getLocality()->toNative(),
+            $address->getCountry()->getCode()->toNative(),
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
             ['http://www.google.be']
@@ -93,7 +96,10 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            [$address],
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative(),
+            $address->getLocality()->toNative(),
+            $address->getCountry()->getCode()->toNative(),
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
             ['http://www.google.be']
@@ -139,10 +145,13 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            [$address],
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative(),
+            $address->getLocality()->toNative(),
+            $address->getCountry()->getCode()->toNative(),
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
-            ['http://www.google.be']
+            ['http://www.google.be'],
         );
 
         $command = new UpdateGeoCoordinatesFromAddress($organizerId, $address);

@@ -118,14 +118,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new OrganizerCreated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
                         'DE Studio',
-                        [
-                            new LegacyAddress(
-                                new LegacyStreet('Wetstraat 1'),
-                                new LegacyPostalCode('1000'),
-                                new LegacyLocality('Brussel'),
-                                Country::fromNative('BE')
-                            ),
-                        ],
+                        'Wetstraat 1',
+                        '1000',
+                        'Brussel',
+                        'BE',
                         [],
                         [],
                         []

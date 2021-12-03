@@ -7,10 +7,6 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -19,7 +15,6 @@ use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use ValueObjects\Geography\Country;
 
 final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -90,17 +85,13 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
         return new OrganizerCreated(
             $id,
             'Organizer Title',
-            [
-                new Address(
-                    new Street('Kerkstraat 69'),
-                    new PostalCode('9630'),
-                    new Locality('Zottegem'),
-                    Country::fromNative('BE')
-                ),
-            ],
+            'Kerkstraat 69',
+            '9630',
+            'Zottegem',
+            'BE',
             ['phone'],
             ['email'],
-            ['url']
+            ['url'],
         );
     }
 }

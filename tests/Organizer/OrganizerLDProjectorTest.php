@@ -7,10 +7,8 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
@@ -56,8 +54,6 @@ class OrganizerLDProjectorTest extends TestCase
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
 
-        $eventBus = $this->createMock(EventBus::class);
-
         $iriGenerator = new CallableIriGenerator(
             function ($id) {
                 return 'http://example.com/entity/' . $id;
@@ -67,7 +63,6 @@ class OrganizerLDProjectorTest extends TestCase
         $this->projector = new OrganizerLDProjector(
             $this->documentRepository,
             $iriGenerator,
-            $eventBus,
             new JsonDocumentLanguageEnricher(
                 new OrganizerJsonDocumentLanguageAnalyzer()
             )
@@ -122,10 +117,13 @@ class OrganizerLDProjectorTest extends TestCase
         $organizerCreated = new OrganizerCreated(
             $id,
             'some representative title',
-            [new Address($street, $postalCode, $locality, $country)],
+            'Kerkstraat 69',
+            '3000',
+            'Leuven',
+            'BE',
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
-            ['http://www.google.be']
+            ['http://www.google.be'],
         );
 
         $jsonLD = new \stdClass();
