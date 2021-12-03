@@ -22,9 +22,9 @@ final class AddressTranslated extends AddressUpdated
         $this->languageCode = $languageCode;
     }
 
-    public function getLanguage(): Language
+    public function getLanguage(): string
     {
-        return new Language($this->languageCode);
+        return $this->languageCode;
     }
 
     public function serialize(): array

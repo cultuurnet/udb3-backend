@@ -245,7 +245,7 @@ class OrganizerLDProjector implements EventListener
 
     private function applyAddressTranslated(AddressTranslated $addressTranslated): JsonDocument
     {
-        return $this->applyAddress($addressTranslated, $addressTranslated->getLanguage());
+        return $this->applyAddress($addressTranslated, new Language($addressTranslated->getLanguage()));
     }
 
     public function applyAddressRemoved(AddressRemoved $addressRemoved): JsonDocument
