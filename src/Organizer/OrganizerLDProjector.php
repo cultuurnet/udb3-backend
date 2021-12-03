@@ -456,8 +456,8 @@ class OrganizerLDProjector implements EventListener
         $jsonLD = $document->getBody();
 
         $jsonLD->geo = [
-            'latitude' => $geoCoordinatesUpdated->coordinates()->getLatitude()->toDouble(),
-            'longitude' => $geoCoordinatesUpdated->coordinates()->getLongitude()->toDouble(),
+            'latitude' => $geoCoordinatesUpdated->getLatitude(),
+            'longitude' => $geoCoordinatesUpdated->getLongitude(),
         ];
 
         return $document->withBody($jsonLD);
