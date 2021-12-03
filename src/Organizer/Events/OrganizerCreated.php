@@ -2,24 +2,27 @@
 
 declare(strict_types=1);
 
-/**
- * @file
- * Contains \namespace CultuurNet\UDB3\Organizer\Events\OrganizerCreated.
- */
-
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\Locality;
+use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Title;
+use ValueObjects\Geography\Country;
+use ValueObjects\Geography\CountryCode;
 
 final class OrganizerCreated extends OrganizerEvent
 {
     public string $title;
 
-    /**
-     * @var Address[]
-     */
-    public $addresses;
+    private ?string $streetAddress;
+
+    private ?string $postalCode;
+
+    private ?string $locality;
+
+    private ?string $countryCode;
 
     /**
      * @var string[]
@@ -36,27 +39,27 @@ final class OrganizerCreated extends OrganizerEvent
      */
     public array $urls;
 
-    /**
-     * @param Address[] $addresses
-     * @param string[] $phones
-     * @param string[] $emails
-     * @param string[] $urls
-     */
-    public function __construct(string $id, string $title, array $addresses, array $phones, array $emails, array $urls)
-    {
+    public function __construct(
+        string $id,
+        string $title,
+        ?string $streetAddress,
+        ?string $postalCode,
+        ?string $locality,
+        ?string $countryCode,
+        array $phones,
+        array $emails,
+        array $urls
+    ) {
         parent::__construct($id);
 
-        $this->guardAddressTypes(...$addresses);
-
         $this->title = $title;
-        $this->addresses = $addresses;
+        $this->streetAddress = $streetAddress;
+        $this->postalCode = $postalCode;
+        $this->locality = $locality;
+        $this->countryCode = $countryCode;
         $this->phones = $phones;
         $this->emails = $emails;
         $this->urls = $urls;
-    }
-
-    private function guardAddressTypes(Address ...$addresses): void
-    {
     }
 
     public function getTitle(): Title
@@ -64,12 +67,26 @@ final class OrganizerCreated extends OrganizerEvent
         return new Title($this->title);
     }
 
+    public function hasAddress(): bool
+    {
+        return isset($this->streetAddress, $this->locality, $this->postalCode, $this->countryCode);
+    }
+
     /**
      * @return Address[]
      */
     public function getAddresses(): array
     {
-        return $this->addresses;
+        $addresses = [];
+        if ($this->hasAddress()) {
+            $addresses[] = new Address(
+                new Street($this->streetAddress),
+                new PostalCode($this->postalCode),
+                new Locality($this->locality),
+                new Country(CountryCode::fromNative($this->countryCode))
+            );
+        }
+        return $addresses;
     }
 
     /**
@@ -99,33 +116,36 @@ final class OrganizerCreated extends OrganizerEvent
     public function serialize(): array
     {
         $addresses = [];
-        foreach ($this->getAddresses() as $address) {
-            $addresses[] = $address->serialize();
+        if ($this->hasAddress()) {
+            $addresses[] = [
+                'streetAddress' => $this->streetAddress,
+                'postalCode' => $this->postalCode,
+                'addressLocality' => $this->locality,
+                'addressCountry' => $this->countryCode,
+            ];
         }
 
         return parent::serialize() + [
-          'title' => $this->title,
-          'addresses' => $addresses,
-          'phones' => $this->getPhones(),
-          'emails' => $this->getEmails(),
-          'urls' => $this->getUrls(),
+            'title' => $this->title,
+            'addresses' => $addresses,
+            'phones' => $this->getPhones(),
+            'emails' => $this->getEmails(),
+            'urls' => $this->getUrls(),
         ];
     }
 
     public static function deserialize(array $data): OrganizerCreated
     {
-        $addresses = [];
-        foreach ($data['addresses'] as $address) {
-            $addresses[] = Address::deserialize($address);
-        }
-
         return new static(
             $data['organizer_id'],
             $data['title'],
-            $addresses,
+            $data['addresses'][0]['streetAddress'] ?? null,
+            $data['addresses'][0]['postalCode'] ?? null,
+            $data['addresses'][0]['addressLocality'] ?? null,
+            $data['addresses'][0]['addressCountry'] ?? null,
             $data['phones'],
             $data['emails'],
-            $data['urls']
+            $data['urls'],
         );
     }
 }

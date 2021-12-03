@@ -8,10 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -19,7 +15,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use ValueObjects\Geography\Country;
 
 final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -61,17 +56,13 @@ final class UpdateTitleHandlerTest extends CommandHandlerScenarioTestCase
         return new OrganizerCreated(
             $id,
             'Organizer Title',
-            [
-                new Address(
-                    new Street('Kerkstraat 69'),
-                    new PostalCode('9630'),
-                    new Locality('Zottegem'),
-                    Country::fromNative('BE')
-                ),
-            ],
+            'Kerkstraat 69',
+            '9630',
+            'Zottegem',
+            'BE',
             ['phone'],
             ['email'],
-            ['url']
+            ['url'],
         );
     }
 }

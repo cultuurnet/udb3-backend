@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class OrganizerCreatedTest extends TestCase
 {
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         OrganizerCreated $organizerCreated
     ): void {
         $this->assertEquals(
@@ -31,10 +25,9 @@ class OrganizerCreatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         OrganizerCreated $expectedOrganizerCreated
     ): void {
         $this->assertEquals(
@@ -71,17 +64,13 @@ class OrganizerCreatedTest extends TestCase
                 new OrganizerCreated(
                     'organizer_id',
                     'title',
-                    [
-                        new Address(
-                            new Street('Kerkstraat 69'),
-                            new PostalCode('3000'),
-                            new Locality('Leuven'),
-                            Country::fromNative('BE')
-                        ),
-                    ],
+                    'Kerkstraat 69',
+                    '3000',
+                    'Leuven',
+                    'BE',
                     ['0123456789'],
                     ['foo@bar.com'],
-                    ['http://foo.bar']
+                    ['http://foo.bar'],
                 ),
             ],
         ];
