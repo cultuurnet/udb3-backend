@@ -122,7 +122,6 @@ class OrganizerLDProjectorTest extends TestCase
         $organizerCreated = new OrganizerCreated(
             $id,
             'some representative title',
-            //[new Address($street, $postalCode, $locality, $country)],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
             ['http://www.google.be'],
