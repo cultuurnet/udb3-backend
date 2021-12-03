@@ -13,7 +13,7 @@ class OrganizerCreatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_can_be_serialized_into_an_array(
-        array            $expectedSerializedValue,
+        array $expectedSerializedValue,
         OrganizerCreated $organizerCreated
     ): void {
         $this->assertEquals(
@@ -27,7 +27,7 @@ class OrganizerCreatedTest extends TestCase
      * @dataProvider serializationDataProvider
      */
     public function it_can_be_deserialized_from_an_array(
-        array            $serializedValue,
+        array $serializedValue,
         OrganizerCreated $expectedOrganizerCreated
     ): void {
         $this->assertEquals(
@@ -64,13 +64,13 @@ class OrganizerCreatedTest extends TestCase
                 new OrganizerCreated(
                     'organizer_id',
                     'title',
-                    ['0123456789'],
-                    ['foo@bar.com'],
-                    ['http://foo.bar'],
                     'Kerkstraat 69',
                     '3000',
                     'Leuven',
-                    'BE'
+                    'BE',
+                    ['0123456789'],
+                    ['foo@bar.com'],
+                    ['http://foo.bar'],
                 ),
             ],
         ];

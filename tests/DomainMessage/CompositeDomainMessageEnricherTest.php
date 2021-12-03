@@ -186,6 +186,10 @@ class CompositeDomainMessageEnricherTest extends TestCase
             new OrganizerCreated(
                 'fd9e986d-6a23-470c-bf0c-4ad40aa4515e',
                 'test title',
+                null,
+                null,
+                null,
+                null,
                 [],
                 [],
                 []

@@ -103,13 +103,13 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
         return new OrganizerCreated(
             $id,
             'Organizer Title',
-            ['phone'],
-            ['email'],
-            ['url'],
             'Kerkstraat 69',
             '9630',
             'Zottegem',
-            'BE'
+            'BE',
+            ['phone'],
+            ['email'],
+            ['url'],
         );
     }
 }

@@ -121,13 +121,13 @@ class OrganizerLDProjectorTest extends TestCase
         $organizerCreated = new OrganizerCreated(
             $id,
             'some representative title',
-            ['050/123'],
-            ['test@test.be', 'test2@test.be'],
-            ['http://www.google.be'],
             'Kerkstraat 69',
             '3000',
             'Leuven',
-            'BE'
+            'BE',
+            ['050/123'],
+            ['test@test.be', 'test2@test.be'],
+            ['http://www.google.be'],
         );
 
         $jsonLD = new \stdClass();
