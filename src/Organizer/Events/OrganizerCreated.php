@@ -10,7 +10,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Address\Locality;
+use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Title;
+use ValueObjects\Geography\Country;
+use ValueObjects\Geography\CountryCode;
 
 final class OrganizerCreated extends OrganizerEvent
 {
