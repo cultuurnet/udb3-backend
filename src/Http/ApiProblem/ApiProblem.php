@@ -231,6 +231,11 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('Organizer', $organizerId);
     }
 
+    public static function newsArticleNotFound(string $articleId): self
+    {
+        return self::resourceNotFound('News Article', $articleId);
+    }
+
     public static function tokenNotSupported(string $detail): self
     {
         return self::create(
