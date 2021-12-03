@@ -71,17 +71,13 @@ class OrganizerCreatedTest extends TestCase
                 new OrganizerCreated(
                     'organizer_id',
                     'title',
-                    [
-                        new Address(
-                            new Street('Kerkstraat 69'),
-                            new PostalCode('3000'),
-                            new Locality('Leuven'),
-                            Country::fromNative('BE')
-                        ),
-                    ],
                     ['0123456789'],
                     ['foo@bar.com'],
-                    ['http://foo.bar']
+                    ['http://foo.bar'],
+                    'Kerkstraat 69',
+                    '3000',
+                    'Leuven',
+                    'BE'
                 ),
             ],
         ];

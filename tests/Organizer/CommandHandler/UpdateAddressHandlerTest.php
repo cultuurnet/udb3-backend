@@ -108,17 +108,13 @@ class UpdateAddressHandlerTest extends CommandHandlerScenarioTestCase
         return new OrganizerCreated(
             $id,
             'Organizer Title',
-            [
-                new LegacyAddress(
-                    new LegacyStreet('Kerkstraat 69'),
-                    new LegacyPostalCode('9630'),
-                    new LegacyLocality('Zottegem'),
-                    Country::fromNative('BE')
-                ),
-            ],
             ['phone'],
             ['email'],
-            ['url']
+            ['url'],
+            'Kerkstraat 69',
+            '9630',
+            'Zottegem',
+            'BE'
         );
     }
 }

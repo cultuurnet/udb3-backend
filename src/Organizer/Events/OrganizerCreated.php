@@ -16,40 +16,40 @@ final class OrganizerCreated extends OrganizerEvent
 {
     public string $title;
 
-    /**
-     * @var Address[]
-     */
-    public $addresses;
+    public array $phones;
 
-    /**
-     * @var string[]
-     */
-    public $phones;
+    public array $emails;
 
-    /**
-     * @var string[]
-     */
-    public $emails;
+    public array $urls;
 
-    /**
-     * @var string[]
-     */
-    public $urls;
+    private ?string $streetAddress;
 
-    /**
-     * @param Address[] $addresses
-     * @param string[] $phones
-     * @param string[] $emails
-     * @param string[] $urls
-     */
-    public function __construct(string $id, string $title, array $addresses, array $phones, array $emails, array $urls)
-    {
+    private ?string $postalCode;
+
+    private ?string $locality;
+
+    private ?string $countryCode;
+
+    public function __construct(
+        string $id,
+        string $title,
+        array  $phones,
+        array  $emails,
+        array  $urls,
+        string $streetAddress = null,
+        string $postalCode = null,
+        string $locality = null,
+        string $countryCode = null
+    ) {
         parent::__construct($id);
 
         $this->guardAddressTypes(...$addresses);
 
         $this->title = $title;
-        $this->addresses = $addresses;
+        $this->streetAddress = $streetAddress;
+        $this->postalCode = $postalCode;
+        $this->locality = $locality;
+        $this->countryCode = $countryCode;
         $this->phones = $phones;
         $this->emails = $emails;
         $this->urls = $urls;
@@ -69,7 +69,16 @@ final class OrganizerCreated extends OrganizerEvent
      */
     public function getAddresses(): array
     {
-        return $this->addresses;
+        $addresses = [];
+        if (isset($this->streetAddress, $this->locality, $this->postalCode, $this->countryCode)) {
+            $addresses[] = new Address(
+                new Street($this->streetAddress),
+                new PostalCode($this->postalCode),
+                new Locality($this->locality),
+                new Country(CountryCode::fromNative($this->countryCode))
+            );
+        }
+        return $addresses;
     }
 
     /**
@@ -99,33 +108,36 @@ final class OrganizerCreated extends OrganizerEvent
     public function serialize(): array
     {
         $addresses = [];
-        foreach ($this->getAddresses() as $address) {
-            $addresses[] = $address->serialize();
+        if (isset($this->streetAddress, $this->locality, $this->postalCode, $this->countryCode)) {
+            $addresses[] = [
+                'streetAddress' => $this->streetAddress,
+                'postalCode' => $this->postalCode,
+                'addressLocality' => $this->locality,
+                'addressCountry' => $this->countryCode,
+            ];
         }
 
         return parent::serialize() + [
-          'title' => $this->title,
-          'addresses' => $addresses,
-          'phones' => $this->getPhones(),
-          'emails' => $this->getEmails(),
-          'urls' => $this->getUrls(),
-        ];
+                'title' => $this->title,
+                'addresses' => $addresses,
+                'phones' => $this->getPhones(),
+                'emails' => $this->getEmails(),
+                'urls' => $this->getUrls(),
+            ];
     }
 
     public static function deserialize(array $data): OrganizerCreated
     {
-        $addresses = [];
-        foreach ($data['addresses'] as $address) {
-            $addresses[] = Address::deserialize($address);
-        }
-
         return new static(
             $data['organizer_id'],
             $data['title'],
-            $addresses,
             $data['phones'],
             $data['emails'],
-            $data['urls']
+            $data['urls'],
+            $data['addresses'][0]['streetAddress'] ?? null,
+            $data['addresses'][0]['postalCode'] ?? null,
+            $data['addresses'][0]['addressLocality'] ?? null,
+            $data['addresses'][0]['addressCountry'] ?? null
         );
     }
 }

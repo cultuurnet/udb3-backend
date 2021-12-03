@@ -188,7 +188,6 @@ class CompositeDomainMessageEnricherTest extends TestCase
                 'test title',
                 [],
                 [],
-                [],
                 []
             ),
             DateTime::now()

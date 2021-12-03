@@ -109,17 +109,13 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
         return new OrganizerCreated(
             $id,
             'Organizer Title',
-            [
-                new Address(
-                    new Street('Kerkstraat 69'),
-                    new PostalCode('9630'),
-                    new Locality('Zottegem'),
-                    Country::fromNative('BE')
-                ),
-            ],
             ['phone'],
             ['email'],
-            ['url']
+            ['url'],
+            'Kerkstraat 69',
+            '9630',
+            'Zottegem',
+            'BE'
         );
     }
 }

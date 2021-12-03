@@ -66,10 +66,13 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
-            ['http://www.google.be']
+            ['http://www.google.be'],
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative(),
+            $address->getLocality()->toNative(),
+            $address->getCountry()->getCode()->toNative()
         );
 
         $command = new UpdateGeoCoordinatesFromAddress($organizerId, $address);
@@ -105,10 +108,13 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
-            ['http://www.google.be']
+            ['http://www.google.be'],
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative(),
+            $address->getLocality()->toNative(),
+            $address->getCountry()->getCode()->toNative()
         );
 
         $command = new UpdateGeoCoordinatesFromAddress($organizerId, $address);
@@ -151,10 +157,13 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $organizerCreated = new OrganizerCreated(
             $organizerId,
             'some representative title',
-            [$address],
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
-            ['http://www.google.be']
+            ['http://www.google.be'],
+            $address->getStreetAddress()->toNative(),
+            $address->getPostalCode()->toNative(),
+            $address->getLocality()->toNative(),
+            $address->getCountry()->getCode()->toNative()
         );
 
         $command = new UpdateGeoCoordinatesFromAddress($organizerId, $address);

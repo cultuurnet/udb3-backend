@@ -128,7 +128,6 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         ],
                         [],
                         [],
-                        []
                     ),
                 ]
             )
