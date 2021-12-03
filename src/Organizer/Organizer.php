@@ -50,7 +50,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private LegacyLanguage $mainLanguage;
 
-    private ?string $website = null;
+    private ?LegacyUrl $website = null;
 
     /**
      * @var LegacyTitle[]
@@ -129,7 +129,9 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateWebsite(Url $website): void
     {
-        if ($this->website === null || $this->website !== $website->toString()) {
+        $newWebsite = LegacyUrl::fromNative($website->toString());
+
+        if (is_null($this->website) || !$this->website->sameValueAs($newWebsite)) {
             $this->apply(
                 new WebsiteUpdated(
                     $this->actorId,
@@ -323,7 +325,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         $this->mainLanguage = $organizerCreated->getMainLanguage();
 
-        $this->website = (string) $organizerCreated->getWebsite();
+        $this->website = $organizerCreated->getWebsite();
 
         $this->setTitle($organizerCreated->getTitle(), $this->mainLanguage);
     }
@@ -369,7 +371,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated): void
     {
-        $this->website = $websiteUpdated->getWebsite();
+        $this->website = LegacyUrl::fromNative($websiteUpdated->getWebsite());
     }
 
     protected function applyTitleUpdated(TitleUpdated $titleUpdated): void
