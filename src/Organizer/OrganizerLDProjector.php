@@ -233,7 +233,10 @@ class OrganizerLDProjector implements EventListener
 
     private function applyTitleUpdated(TitleUpdated $titleUpdated): JsonDocument
     {
-        return $this->applyTitle($titleUpdated, $titleUpdated->getTitle());
+        return $this->applyTitle(
+            $titleUpdated,
+            new Title($titleUpdated->getTitle())
+        );
     }
 
     private function applyTitleTranslated(TitleTranslated $titleTranslated): JsonDocument

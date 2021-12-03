@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Title;
-
 final class TitleUpdated extends OrganizerEvent
 {
     private string $title;
@@ -18,9 +16,9 @@ final class TitleUpdated extends OrganizerEvent
         $this->title = $title;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
-        return new Title($this->title);
+        return $this->title;
     }
 
     public function serialize(): array
