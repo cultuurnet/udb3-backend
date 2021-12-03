@@ -35,16 +35,24 @@ class AddressUpdated extends OrganizerEvent
         $this->countryCode = $countryCode;
     }
 
-    public function getAddress(): Address
+    public function getStreetAddress(): string
     {
-        return new Address(
-            new Street($this->streetAddress),
-            new PostalCode($this->postalCode),
-            new Locality($this->locality),
-            new Country(
-                CountryCode::fromNative($this->countryCode)
-            )
-        );
+        return $this->streetAddress;
+    }
+
+    public function getPostalCode(): string
+    {
+        return $this->postalCode;
+    }
+
+    public function getLocality(): string
+    {
+        return $this->locality;
+    }
+
+    public function getCountryCode(): string
+    {
+        return $this->countryCode;
     }
 
     public function serialize(): array

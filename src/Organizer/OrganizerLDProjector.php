@@ -428,7 +428,12 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->address = new \stdClass();
         }
 
-        $jsonLD->address->{$language->getCode()} = $addressUpdated->getAddress()->toJsonLd();
+        $jsonLD->address->{$language->getCode()} = (new Address(
+            new Street($addressUpdated->getStreetAddress()),
+            new PostalCode($addressUpdated->getPostalCode()),
+            new Locality($addressUpdated->getLocality()),
+            new Country(CountryCode::fromNative($addressUpdated->getCountryCode()))
+        ))->toJsonLd();
 
         return $document->withBody($jsonLD);
     }

@@ -64,7 +64,12 @@ class GeoCoordinatesProcessManager implements EventListener
         $this->commandBus->dispatch(
             new UpdateGeoCoordinatesFromAddress(
                 $event->getOrganizerId(),
-                $event->getAddress()
+                new LegacyAddress(
+                    new Street($event->getStreetAddress()),
+                    new PostalCode($event->getPostalCode()),
+                    new Locality($event->getLocality()),
+                    new Country(CountryCode::fromNative($event->getCountryCode()))
+                )
             )
         );
     }
