@@ -21,7 +21,12 @@ final class GeoCoordinatesUpdated extends OrganizerEvent
         $this->longitude = $longitude;
     }
 
-    public function coordinates(): Coordinates
+    public function getLatitude(): float
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): float
     {
         return new Coordinates(
             new Latitude($this->latitude),
