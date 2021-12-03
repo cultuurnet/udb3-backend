@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Curators;
 
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
+use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
 use Silex\Application;
@@ -23,6 +24,8 @@ class CuratorsControllerProvider implements ControllerProviderInterface, Service
         $controllers->get('/', GetNewsArticlesRequestHandler::class);
         $controllers->get('/{articleId}/', GetNewsArticleRequestHandler::class);
 
+        $controllers->delete('/{articleId}/', DeleteNewsArticleRequestHandler::class);
+
         return $controllers;
     }
 
@@ -39,6 +42,12 @@ class CuratorsControllerProvider implements ControllerProviderInterface, Service
             fn (Application $application) => new GetNewsArticlesRequestHandler(
                 $app[NewsArticleRepository::class],
                 new NewsArticleNormalizer()
+            )
+        );
+
+        $app[DeleteNewsArticleRequestHandler::class] = $app->share(
+            fn (Application $application) => new DeleteNewsArticleRequestHandler(
+                $app[NewsArticleRepository::class],
             )
         );
     }
