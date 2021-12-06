@@ -222,7 +222,7 @@ class Projector extends AbstractProjector
     {
         $labelRelation = null;
 
-        $labelName = new LabelName((string) $labelEvent->getLabel());
+        $labelName = new LabelName($labelEvent->getLabelName());
         $relationType = $this->offerTypeResolver->getRelationType($labelEvent);
         $relationId = new StringLiteral($labelEvent->getItemId());
 

@@ -160,7 +160,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
             $labelAddedEvent->getItemId(),
-            "Label '{$labelAddedEvent->getLabel()}' toegepast"
+            "Label '{$labelAddedEvent->getLabelName()}' toegepast"
         );
     }
 
@@ -175,7 +175,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
             $labelRemovedEvent->getItemId(),
-            "Label '{$labelRemovedEvent->getLabel()}' verwijderd"
+            "Label '{$labelRemovedEvent->getLabelName()}' verwijderd"
         );
     }
 

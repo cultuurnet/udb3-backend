@@ -700,9 +700,9 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         /** @var AbstractLabelEvent $abstractLabelEvent */
         $abstractLabelEvent = $this->serializer->deserialize($decoded);
-        $label = $abstractLabelEvent->getLabel();
+        $labelName = $abstractLabelEvent->getLabelName();
 
-        $this->assertEquals($keyword, $label);
+        $this->assertEquals($keyword, $labelName);
     }
 
     private function assertClass(string $sampleFile, string $expectedClass)
@@ -734,7 +734,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var LabelEventInterface $labelEvent */
         $labelEvent = $this->serializer->deserialize($decoded);
 
-        $this->assertEquals('2dotstwice', (string) $labelEvent->getLabel());
-        $this->assertFalse($labelEvent->getLabel()->isVisible());
+        $this->assertEquals('2dotstwice', $labelEvent->getLabelName());
+        $this->assertFalse($labelEvent->isLabelVisible());
     }
 }

@@ -292,10 +292,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd = $document->getBody();
 
         // Check the visibility of the label to update the right property.
-        $labelsProperty = $labelAdded->getLabel()->isVisible() ? 'labels' : 'hiddenLabels';
+        $labelsProperty = $labelAdded->isLabelVisible() ? 'labels' : 'hiddenLabels';
 
         $labels = isset($offerLd->{$labelsProperty}) ? $offerLd->{$labelsProperty} : [];
-        $label = (string) $labelAdded->getLabel();
+        $label = $labelAdded->getLabelName();
 
         $labels[] = $label;
         $offerLd->{$labelsProperty} = array_unique($labels);
@@ -318,9 +318,11 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 $offerLd->{$labelsProperty} = array_filter(
                     $offerLd->{$labelsProperty},
                     function ($label) use ($labelRemoved) {
-                        return !$labelRemoved->getLabel()->equals(
-                            new Label($label)
+                        $removedLabel = new Label(
+                            $labelRemoved->getLabelName(),
+                            $labelRemoved->isLabelVisible()
                         );
+                        return !$removedLabel->equals(new Label($label));
                     }
                 );
                 // Ensure array keys start with 0 so json_encode() does encode it

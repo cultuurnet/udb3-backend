@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
 use ValueObjects\Identity\UUID;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class Projector extends AbstractProjector
 {
@@ -140,8 +141,9 @@ class Projector extends AbstractProjector
     {
         $uuid = null;
 
-        $name = $labelEvent->getLabel()->getName();
-        $entity = $this->readRepository->getByName($name);
+        $entity = $this->readRepository->getByName(
+            new StringLiteral($labelEvent->getLabelName())
+        );
 
         if ($entity !== null) {
             $uuid = $entity->getUuid();
