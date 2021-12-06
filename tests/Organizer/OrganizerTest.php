@@ -255,7 +255,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             new CountryCode('BE')
         );
 
-        $language = new Language($this->organizerCreatedWithUniqueWebsite->getMainLanguage()->getCode());
+        $language = new Language($this->organizerCreatedWithUniqueWebsite->getMainLanguage());
 
         $this->scenario
             ->given([$this->organizerCreatedWithUniqueWebsite])
