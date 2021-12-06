@@ -29,24 +29,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Projector extends AbstractProjector
 {
-    /**
-     * @var WriteRepositoryInterface
-     */
-    private $writeRepository;
+    private WriteRepositoryInterface $writeRepository;
 
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $readRepository;
+    private ReadRepositoryInterface $readRepository;
 
-    /**
-     * @var LabelEventRelationTypeResolverInterface
-     */
-    private $offerTypeResolver;
+    private LabelEventRelationTypeResolverInterface $offerTypeResolver;
 
-    /**
-     * Projector constructor.
-     */
     public function __construct(
         WriteRepositoryInterface $writeRepository,
         ReadRepositoryInterface $readRepository,
@@ -57,10 +45,7 @@ class Projector extends AbstractProjector
         $this->offerTypeResolver = $labelEventOfferTypeResolver;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata)
+    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata): void
     {
         $LabelRelation = $this->createLabelRelation($labelAdded);
 
@@ -76,10 +61,7 @@ class Projector extends AbstractProjector
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata)
+    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void
     {
         $labelRelation = $this->createLabelRelation($labelRemoved);
 
@@ -89,10 +71,7 @@ class Projector extends AbstractProjector
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata)
+    public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void
     {
         foreach ($labelsImported->getLabels()->toArray() as $label) {
             try {
@@ -109,10 +88,9 @@ class Projector extends AbstractProjector
         }
     }
 
-
     public function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
-    ) {
+    ): void {
         $event = EventItemFactory::createEventFromCdbXml(
             $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
             $eventImportedFromUDB2->getCdbXml()
@@ -121,10 +99,9 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($event, RelationType::EVENT());
     }
 
-
     public function applyPlaceImportedFromUDB2(
         PlaceImportedFromUDB2 $placeImportedFromUDB2
-    ) {
+    ): void {
         $place = ActorItemFactory::createActorFromCdbXml(
             $placeImportedFromUDB2->getCdbXmlNamespaceUri(),
             $placeImportedFromUDB2->getCdbXml()
@@ -133,10 +110,9 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($place, RelationType::PLACE());
     }
 
-
     public function applyOrganizerImportedFromUDB2(
         OrganizerImportedFromUDB2 $organizerImportedFromUDB2
-    ) {
+    ): void {
         $organizer = ActorItemFactory::createActorFromCdbXml(
             $organizerImportedFromUDB2->getCdbXmlNamespaceUri(),
             $organizerImportedFromUDB2->getCdbXml()
@@ -145,10 +121,9 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($organizer, RelationType::ORGANIZER());
     }
 
-
     public function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-    ) {
+    ): void {
         $event = EventItemFactory::createEventFromCdbXml(
             $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
             $eventUpdatedFromUDB2->getCdbXml()
@@ -157,10 +132,9 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($event, RelationType::EVENT());
     }
 
-
     public function applyPlaceUpdatedFromUDB2(
         PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
-    ) {
+    ): void {
         $place = ActorItemFactory::createActorFromCdbXml(
             $placeUpdatedFromUDB2->getCdbXmlNamespaceUri(),
             $placeUpdatedFromUDB2->getCdbXml()
@@ -169,10 +143,9 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($place, RelationType::PLACE());
     }
 
-
     public function applyOrganizerUpdatedFromUDB2(
         OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
-    ) {
+    ): void {
         $organizer = ActorItemFactory::createActorFromCdbXml(
             $organizerUpdatedFromUDB2->getCdbXmlNamespaceUri(),
             $organizerUpdatedFromUDB2->getCdbXml()
@@ -181,11 +154,10 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($organizer, RelationType::ORGANIZER());
     }
 
-
     private function updateLabelRelationFromCdbItem(
         \CultureFeed_Cdb_Item_Base $cdbItem,
         RelationType $relationType
-    ) {
+    ): void {
         $relationId = new StringLiteral($cdbItem->getCdbId());
 
         // Never delete the UDB3 labels on an update.
@@ -220,8 +192,6 @@ class Projector extends AbstractProjector
 
     private function createLabelRelation(LabelEventInterface $labelEvent): LabelRelation
     {
-        $labelRelation = null;
-
         $labelName = new LabelName($labelEvent->getLabelName());
         $relationType = $this->offerTypeResolver->getRelationType($labelEvent);
         $relationId = new StringLiteral($labelEvent->getItemId());
