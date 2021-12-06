@@ -306,7 +306,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function delete(): void
     {
-        if ($this->workflowStatus->is(WorkflowStatus::ACTIVE)) {
+        if ($this->workflowStatus->sameAs(WorkflowStatus::ACTIVE())) {
             $this->apply(
                 new OrganizerDeleted($this->getAggregateRootId())
             );
