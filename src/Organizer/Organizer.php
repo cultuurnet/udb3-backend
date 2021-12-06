@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultureFeed_Cdb_Data_Keyword;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
-use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -64,7 +65,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private ContactPoint $contactPoint;
 
-    private LabelCollection $labels;
+    private Labels $labels;
 
     private WorkflowStatus $workflowStatus;
 
@@ -80,7 +81,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // with a non-empty contact point. To enforce this we initialize the
         // aggregate state with an empty contact point.
         $this->contactPoint = new ContactPoint();
-        $this->labels = new LabelCollection();
+        $this->labels = new Labels();
         $this->workflowStatus = WorkflowStatus::ACTIVE();
     }
 
@@ -230,43 +231,48 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    public function addLabel(Label $label): void
+    public function addLabel(LegacyLabel $label): void
     {
-        if (!$this->labels->contains($label)) {
-            $this->apply(new LabelAdded($this->actorId, (string) $label->getName(), $label->isVisible()));
+        $labelName = new LabelName($label->getName()->toNative());
+
+        if (!$this->hasLabelWithName($labelName)) {
+            $this->apply(
+                new LabelAdded(
+                    $this->actorId,
+                    $label->getName()->toNative(),
+                    $label->isVisible()
+                )
+            );
         }
     }
 
-    public function removeLabel(Label $label): void
+    public function removeLabel(LegacyLabel $label): void
     {
-        if ($this->labels->contains($label)) {
-            $this->apply(new LabelRemoved($this->actorId, (string) $label->getName(), $label->isVisible()));
+        $labelName = new LabelName($label->getName()->toNative());
+
+        if ($this->hasLabelWithName($labelName)) {
+            $this->apply(
+                new LabelRemoved(
+                    $this->actorId,
+                    $label->getName()->toNative(),
+                    $label->isVisible()
+                )
+            );
         }
     }
 
     public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOrganizer): void
     {
-        $convertLabelClass = function (\CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $label) {
-            return new Label(
-                $label->getName()->toString(),
-                $label->isVisible()
-            );
-        };
-
         // Convert the imported labels to label collection.
-        $importLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labels->toArray())
-        );
+        $importLabelsCollection = $labels;
 
         // Convert the labels to keep if already applied.
-        $keepLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labelsToKeepIfAlreadyOnOrganizer->toArray())
-        );
+        $keepLabelsCollection = $labelsToKeepIfAlreadyOnOrganizer;
 
         // What are the added labels?
         // Labels which are not inside the internal state but inside the imported labels
-        $addedLabels = new LabelCollection();
-        foreach ($importLabelsCollection->asArray() as $label) {
+        $addedLabels = new Labels();
+        foreach ($importLabelsCollection->toArray() as $label) {
             if (!$this->labels->contains($label)) {
                 $addedLabels = $addedLabels->with($label);
             }
@@ -274,13 +280,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         // Fire a LabelsImported for all new labels.
         $importLabels = new Labels();
-        foreach ($addedLabels->asArray() as $addedLabel) {
-            $importLabels = $importLabels->with(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                    new LabelName((string) $addedLabel),
-                    $addedLabel->isVisible()
-                )
-            );
+        foreach ($addedLabels->toArray() as $addedLabel) {
+            $importLabels = $importLabels->with($addedLabel);
         }
         if ($importLabels->count() > 0) {
             $this->apply(new LabelsImported(
@@ -290,16 +291,17 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
 
         // For each added label fire a LabelAdded event.
-        foreach ($addedLabels->asArray() as $label) {
-            $this->apply(new LabelAdded($this->actorId, (string) $label->getName(), $label->isVisible()));
+        foreach ($addedLabels->toArray() as $label) {
+            /** @var Label $label */
+            $this->apply(new LabelAdded($this->actorId, $label->getName()->toString(), $label->isVisible()));
         }
 
         // What are the deleted labels?
         // Labels which are inside the internal state but not inside imported labels.
         // For each deleted label fire a LabelDeleted event.
-        foreach ($this->labels->asArray() as $label) {
+        foreach ($this->labels->toArray() as $label) {
             if (!$importLabelsCollection->contains($label) && !$keepLabelsCollection->contains($label)) {
-                $this->apply(new LabelRemoved($this->actorId, (string) $label->getName(), $label->isVisible()));
+                $this->apply(new LabelRemoved($this->actorId, $label->getName()->toString(), $label->isVisible()));
             }
         }
     }
@@ -354,7 +356,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         $this->setTitle($this->getTitle($actor), $this->mainLanguage);
 
-        $this->labels = LabelCollection::fromKeywords($actor->getKeywords(true));
+        $this->labels = $this->keywordsToLabels($actor->getKeywords(true));
     }
 
     /**
@@ -372,7 +374,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         $this->setTitle($this->getTitle($actor), $this->mainLanguage);
 
-        $this->labels = LabelCollection::fromKeywords($actor->getKeywords(true));
+        $this->labels = $this->keywordsToLabels($actor->getKeywords(true));
     }
 
     protected function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated): void
@@ -452,7 +454,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         $this->labels = $this->labels->with(
             new Label(
-                $labelAdded->getLabelName(),
+                new LabelName($labelAdded->getLabelName()),
                 $labelAdded->isLabelVisible()
             )
         );
@@ -460,11 +462,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
-        $this->labels = $this->labels->without(
-            new Label(
-                $labelRemoved->getLabelName(),
-                $labelRemoved->isLabelVisible()
-            )
+        $this->labels = $this->labels->filter(
+            fn (Label $label) => $label->getName()->toString() !== $labelRemoved->getLabelName()
         );
     }
 
@@ -513,5 +512,30 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private function hasAddress(): bool
     {
         return $this->addresses !== null;
+    }
+
+    private function hasLabelWithName(LabelName $labelName): bool
+    {
+        $foundLabels = $this->labels->filter(
+            fn (Label $currentLabel) => $currentLabel->getName()->sameAs($labelName)
+        );
+
+        return !$foundLabels->isEmpty();
+    }
+
+    /**
+     * @param CultureFeed_Cdb_Data_Keyword[] $keywords
+     */
+    private function keywordsToLabels(array $keywords): Labels
+    {
+        return new Labels(
+            ...array_map(
+                fn (CultureFeed_Cdb_Data_Keyword $keyword) => new Label(
+                    new LabelName($keyword->getValue()),
+                    $keyword->isVisible()
+                ),
+                array_values($keywords)
+            )
+        );
     }
 }
