@@ -66,4 +66,11 @@ class ContactPoint
         return $this->telephoneNumbers->getLength() === 0 && $this->emailAddresses->getLength() === 0 &&
             $this->urls->getLength() === 0;
     }
+
+    public function sameAs(ContactPoint $other): bool
+    {
+        return $this->telephoneNumbers->sameAs($other->getTelephoneNumbers()) &&
+            $this->emailAddresses->sameAs($other->getEmailAddresses()) &&
+            $this->urls->sameAs($other->getUrls());
+    }
 }
