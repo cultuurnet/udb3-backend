@@ -16,7 +16,7 @@ class GetOrganizerRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var EntityServiceInterface|MockObject EntityServiceInterface  */
+    /** @var EntityServiceInterface|MockObject */
     private $organizerService;
 
     private GetOrganizerRequestHandler $getOrganizerRequestHandler;
