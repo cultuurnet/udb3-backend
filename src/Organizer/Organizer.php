@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
@@ -17,6 +13,10 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -38,8 +38,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
 
 class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
 {
@@ -55,7 +53,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private array $titles;
 
     /**
-     * @var LegacyAddress[]|null
+     * @var Address[]|null
      */
     private ?array $addresses = null;
 
@@ -167,7 +165,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         Address $address,
         Language $language
     ): void {
-        if ($this->isAddressChanged(LegacyAddress::fromUdb3ModelAddress($address), $language)) {
+        if ($this->isAddressChanged($address, $language)) {
             if (!$language->sameAs($this->mainLanguage)) {
                 $event = new AddressTranslated(
                     $this->actorId,
@@ -395,11 +393,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void
     {
-        $this->setAddress(new LegacyAddress(
+        $this->setAddress(new Address(
             new Street($addressUpdated->getStreetAddress()),
             new PostalCode($addressUpdated->getPostalCode()),
             new Locality($addressUpdated->getLocality()),
-            new Country(CountryCode::fromNative($addressUpdated->getCountryCode()))
+            new CountryCode($addressUpdated->getCountryCode())
         ), $this->mainLanguage);
     }
 
@@ -411,11 +409,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyAddressTranslated(AddressTranslated $addressTranslated): void
     {
         $this->setAddress(
-            new LegacyAddress(
+            new Address(
                 new Street($addressTranslated->getStreetAddress()),
                 new PostalCode($addressTranslated->getPostalCode()),
                 new Locality($addressTranslated->getLocality()),
-                new Country(CountryCode::fromNative($addressTranslated->getCountryCode()))
+                new CountryCode($addressTranslated->getCountryCode())
             ),
             new Language($addressTranslated->getLanguage())
         );
@@ -481,12 +479,12 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             $title->toString() !== $this->titles[$language->getCode()]->toString();
     }
 
-    private function setAddress(LegacyAddress $address, Language $language): void
+    private function setAddress(Address $address, Language $language): void
     {
         $this->addresses[$language->toString()] = $address;
     }
 
-    private function isAddressChanged(LegacyAddress $address, Language $language): bool
+    private function isAddressChanged(Address $address, Language $language): bool
     {
         return !isset($this->addresses[$language->getCode()]) ||
             !$address->sameAs($this->addresses[$language->getCode()]);
