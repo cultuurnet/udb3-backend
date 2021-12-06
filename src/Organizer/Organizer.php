@@ -316,7 +316,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         $this->mainLanguage = new LegacyLanguage('nl');
 
-        $this->setTitle($organizerCreated->getTitle(), $this->mainLanguage);
+        $this->setTitle(new LegacyTitle($organizerCreated->getTitle()), $this->mainLanguage);
     }
 
     protected function applyOrganizerCreatedWithUniqueWebsite(OrganizerCreatedWithUniqueWebsite $organizerCreated): void

@@ -62,9 +62,9 @@ final class OrganizerCreated extends OrganizerEvent
         $this->urls = $urls;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
-        return new Title($this->title);
+        return $this->title;
     }
 
     public function hasAddress(): bool
