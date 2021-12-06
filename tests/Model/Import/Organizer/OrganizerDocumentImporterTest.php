@@ -40,52 +40,35 @@ class OrganizerDocumentImporterTest extends TestCase
      */
     private $repository;
 
-    /**
-     * @var OrganizerDenormalizer
-     */
-    private $denormalizer;
-
-    /**
-     * @var TraceableCommandBus
-     */
-    private $commandBus;
+    private TraceableCommandBus $commandBus;
 
     /**
      * @var LockedLabelRepository|MockObject
      */
     private $lockedLabelRepository;
 
-    /**
-     * @var OrganizerDocumentImporter
-     */
-    private $organizerDocumentImporter;
+    private DocumentImporterInterface $importer;
 
-    /**
-     * @var DocumentImporterInterface
-     */
-    private $importer;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->createMock(Repository::class);
-        $this->denormalizer = new OrganizerDenormalizer();
         $this->commandBus = new TraceableCommandBus();
         $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
 
-        $this->organizerDocumentImporter = new OrganizerDocumentImporter(
+        $organizerDocumentImporter = new OrganizerDocumentImporter(
             $this->repository,
-            $this->denormalizer,
+            new OrganizerDenormalizer(),
             $this->commandBus,
             $this->lockedLabelRepository
         );
 
-        $this->importer = $this->organizerDocumentImporter;
+        $this->importer = $organizerDocumentImporter;
     }
 
     /**
      * @test
      */
-    public function it_should_create_a_new_organizer_and_publish_it_if_no_aggregate_exists_for_the_given_id()
+    public function it_should_create_a_new_organizer_and_publish_it_if_no_aggregate_exists_for_the_given_id(): void
     {
         $document = $this->getOrganizerDocument();
         $id = $document->getId();
@@ -121,7 +104,7 @@ class OrganizerDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_an_existing_organizer_if_an_aggregate_exists_for_the_given_id()
+    public function it_should_update_an_existing_organizer_if_an_aggregate_exists_for_the_given_id(): void
     {
         $document = $this->getOrganizerDocument();
         $id = $document->getId();
@@ -150,7 +133,7 @@ class OrganizerDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_an_existing_organizer_with_labels()
+    public function it_should_update_an_existing_organizer_with_labels(): void
     {
         $document = $this->getOrganizerDocumentWithLabels();
         $id = $document->getId();
@@ -191,7 +174,7 @@ class OrganizerDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_the_address()
+    public function it_should_update_the_address(): void
     {
         $document = $this->getOrganizerDocument();
         $body = $document->getBody();
@@ -252,7 +235,7 @@ class OrganizerDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_remove_address()
+    public function it_should_remove_address(): void
     {
         $document = $this->getOrganizerDocument();
         $body = $document->getBody();
@@ -277,18 +260,12 @@ class OrganizerDocumentImporterTest extends TestCase
         );
     }
 
-    /**
-     * @return string
-     */
-    private function getOrganizerId()
+    private function getOrganizerId(): string
     {
         return 'f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0';
     }
 
-    /**
-     * @return array
-     */
-    private function getOrganizerData()
+    private function getOrganizerData(): array
     {
         return [
             '@id' => 'https://io.uitdatabank.be/organizers/f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0',
@@ -302,10 +279,7 @@ class OrganizerDocumentImporterTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function getOrganizerDataWithLabels()
+    private function getOrganizerDataWithLabels(): array
     {
         return $this->getOrganizerData() +
             [
@@ -323,26 +297,17 @@ class OrganizerDocumentImporterTest extends TestCase
             ];
     }
 
-    /**
-     * @return DecodedDocument
-     */
-    private function getOrganizerDocument()
+    private function getOrganizerDocument(): DecodedDocument
     {
         return new DecodedDocument($this->getOrganizerId(), $this->getOrganizerData());
     }
 
-    /**
-     * @return DecodedDocument
-     */
-    private function getOrganizerDocumentWithLabels()
+    private function getOrganizerDocumentWithLabels(): DecodedDocument
     {
         return new DecodedDocument($this->getOrganizerId(), $this->getOrganizerDataWithLabels());
     }
 
-    /**
-     * @param string $organizerId
-     */
-    private function expectOrganizerExists($organizerId)
+    private function expectOrganizerExists(string $organizerId): void
     {
         $this->repository->expects($this->once())
             ->method('load')
@@ -350,7 +315,7 @@ class OrganizerDocumentImporterTest extends TestCase
             ->willReturn($this->createMock(Organizer::class));
     }
 
-    private function expectOrganizerDoesNotExist($organizerId)
+    private function expectOrganizerDoesNotExist($organizerId): void
     {
         $this->repository->expects($this->once())
             ->method('load')
@@ -358,7 +323,7 @@ class OrganizerDocumentImporterTest extends TestCase
             ->willThrowException(new AggregateNotFoundException());
     }
 
-    private function expectCreateOrganizer(Organizer $expectedOrganizer)
+    private function expectCreateOrganizer(Organizer $expectedOrganizer): void
     {
         $this->repository->expects($this->once())
             ->method('save')
@@ -367,14 +332,14 @@ class OrganizerDocumentImporterTest extends TestCase
             }));
     }
 
-    private function expectNoLockedLabels()
+    private function expectNoLockedLabels(): void
     {
         $this->lockedLabelRepository->expects($this->any())
             ->method('getLockedLabelsForItem')
             ->willReturn(new Labels());
     }
 
-    private function assertContainsObject($needle, array $haystack)
+    private function assertContainsObject($needle, array $haystack): void
     {
         $this->assertContains(
             $needle,
