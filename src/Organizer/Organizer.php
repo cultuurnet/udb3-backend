@@ -323,11 +323,14 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         $this->actorId = $organizerCreated->getOrganizerId();
 
-        $this->mainLanguage = $organizerCreated->getMainLanguage();
+        $this->mainLanguage = new LegacyLanguage($organizerCreated->getMainLanguage());
 
-        $this->website = $organizerCreated->getWebsite();
+        $this->website =  LegacyUrl::fromNative($organizerCreated->getWebsite());
 
-        $this->setTitle($organizerCreated->getTitle(), $this->mainLanguage);
+        $this->setTitle(
+            new LegacyTitle($organizerCreated->getTitle()),
+            $this->mainLanguage
+        );
     }
 
     /**

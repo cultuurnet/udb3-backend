@@ -29,19 +29,19 @@ final class OrganizerCreatedWithUniqueWebsite extends OrganizerEvent
         $this->title = $title;
     }
 
-    public function getMainLanguage(): Language
+    public function getMainLanguage(): string
     {
-        return new Language($this->mainLanguage);
+        return $this->mainLanguage;
     }
 
-    public function getWebsite(): Url
+    public function getWebsite(): string
     {
-        return Url::fromNative($this->website);
+        return $this->website;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
-        return new Title($this->title);
+        return $this->title;
     }
 
     public function serialize(): array
