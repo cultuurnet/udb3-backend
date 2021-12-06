@@ -77,7 +77,6 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -97,18 +96,11 @@ class HistoryProjectorTest extends TestCase
     private const OCCURRED_ON = '2015-03-27T10:17:19.176169+02:00';
     private const OCCURRED_ON_FORMATTED = '2015-03-27T10:17:19+02:00';
 
-    /**
-     * @var InMemoryDocumentRepository
-     */
-    private $documentRepository;
+    private InMemoryDocumentRepository $documentRepository;
 
-    /**
-     * @var HistoryProjector
-     */
-    private $historyProjector;
+    private HistoryProjector $historyProjector;
 
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
@@ -120,7 +112,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_PlaceCreated_event()
+    public function it_projects_PlaceCreated_event(): void
     {
         $placeCreatedEvent = $this->aPlaceCreatedEvent();
         $domainMessage = $this->aDomainMessageForEvent($placeCreatedEvent->getPlaceId(), $placeCreatedEvent);
@@ -136,7 +128,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_PlaceDeleted_event()
+    public function it_projects_PlaceDeleted_event(): void
     {
         $placeDeletedEvent = $this->aPlaceDeletedEvent();
         $domainMessage = $this->aDomainMessageForEvent($placeDeletedEvent->getItemId(), $placeDeletedEvent);
@@ -152,7 +144,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_LabelAdded_event()
+    public function it_projects_LabelAdded_event(): void
     {
         $labelAddedEvent = $this->aLabelAddedEvent();
         $domainMessage = $this->aDomainMessageForEvent($labelAddedEvent->getItemId(), $labelAddedEvent);
@@ -167,7 +159,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_LabelRemoved_event()
+    public function it_projects_LabelRemoved_event(): void
     {
         $labelRemovedEvent = $this->aLabelRemovedEvent();
         $domainMessage = $this->aDomainMessageForEvent($labelRemovedEvent->getItemId(), $labelRemovedEvent);
@@ -182,7 +174,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_DescriptionTranslated_event()
+    public function it_projects_DescriptionTranslated_event(): void
     {
         $descriptionTranslatedEvent = $this->aDescriptionTranslatedEvent();
         $domainMessage = $this->aDomainMessageForEvent(
@@ -200,7 +192,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_TitleTranslated_event()
+    public function it_projects_TitleTranslated_event(): void
     {
         $titleTranslatedEvent = $this->aTitleTranslatedEvent();
         $domainMessage = $this->aDomainMessageForEvent($titleTranslatedEvent->getItemId(), $titleTranslatedEvent);
@@ -215,7 +207,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_PlaceImportedFromUDB2_event()
+    public function it_projects_PlaceImportedFromUDB2_event(): void
     {
         $placeImportedFromUDB2Event = $this->aPlaceImportedFromUDB2Event();
         $domainMessage = $this->aDomainMessageForEvent(
@@ -250,7 +242,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_projects_PlaceUpdatedFromUDB2_event()
+    public function it_projects_PlaceUpdatedFromUDB2_event(): void
     {
         $placeImportedFromUDB2Event = $this->aPlaceUpdatedFromUDB2Event();
         $domainMessage = $this->aDomainMessageForEvent(
@@ -508,11 +500,11 @@ class HistoryProjectorTest extends TestCase
             new CopyrightHolder('copyright holder')
         );
 
-        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
-            (string) $event->getItemId(),
+            $event->getItemId(),
             'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast'
         );
     }
@@ -547,17 +539,17 @@ class HistoryProjectorTest extends TestCase
                 ->with($image2)
         );
 
-        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
         $this->historyProjector->handle($domainMessage);
 
         $this->assertHistoryContainsLogWithDescription(
-            (string) $event->getItemId(),
+            $event->getItemId(),
             'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' geïmporteerd uit UDB2'
         );
 
         $this->assertHistoryContainsLogWithDescription(
-            (string) $event->getItemId(),
+            $event->getItemId(),
             'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' geïmporteerd uit UDB2'
         );
     }
@@ -592,17 +584,17 @@ class HistoryProjectorTest extends TestCase
                 ->with($image2)
         );
 
-        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
         $this->historyProjector->handle($domainMessage);
 
         $this->assertHistoryContainsLogWithDescription(
-            (string) $event->getItemId(),
+            $event->getItemId(),
             'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast via UDB2'
         );
 
         $this->assertHistoryContainsLogWithDescription(
-            (string) $event->getItemId(),
+            $event->getItemId(),
             'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2'
         );
     }
@@ -718,11 +710,11 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new LabelsImported('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Labels());
 
-        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
-            (string) $event->getItemId(),
+            $event->getItemId(),
             'Labels geïmporteerd uit JSON-LD'
         );
     }
@@ -1024,7 +1016,6 @@ class HistoryProjectorTest extends TestCase
 
     protected function assertHistoryContainsLogs(string $eventId, array $history): void
     {
-        /** @var JsonDocument $document */
         $document = $this->documentRepository->fetch($eventId);
         $body = array_values((array) $document->getBody());
 
