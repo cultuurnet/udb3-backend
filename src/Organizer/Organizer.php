@@ -16,7 +16,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\LabelCollection;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -48,7 +47,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 {
     protected string $actorId;
 
-    private LegacyLanguage $mainLanguage;
+    private Language $mainLanguage;
 
     private ?LegacyUrl $website = null;
 
@@ -151,7 +150,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         Language $language
     ): void {
         if ($this->isTitleChanged($title, $language)) {
-            if ($language->getCode() !== $this->mainLanguage->getCode()) {
+            if (!$language->sameAs($this->mainLanguage)) {
                 $event = new TitleTranslated(
                     $this->actorId,
                     $title->toString(),
@@ -173,7 +172,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         Language $language
     ): void {
         if ($this->isAddressChanged(LegacyAddress::fromUdb3ModelAddress($address), $language)) {
-            if ($language->getCode() !== $this->mainLanguage->getCode()) {
+            if (!$language->sameAs($this->mainLanguage)) {
                 $event = new AddressTranslated(
                     $this->actorId,
                     $address->getStreet()->toString(),
@@ -319,7 +318,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         $this->actorId = $organizerCreated->getOrganizerId();
 
-        $this->mainLanguage = new LegacyLanguage('nl');
+        $this->mainLanguage = new Language('nl');
 
         $this->setTitle(new LegacyTitle($organizerCreated->getTitle()), $this->mainLanguage);
     }
@@ -328,7 +327,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         $this->actorId = $organizerCreated->getOrganizerId();
 
-        $this->mainLanguage = new LegacyLanguage($organizerCreated->getMainLanguage());
+        $this->mainLanguage = new Language($organizerCreated->getMainLanguage());
 
         $this->website =  LegacyUrl::fromNative($organizerCreated->getWebsite());
 
@@ -347,7 +346,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->actorId = (string) $organizerImported->getActorId();
 
         // On import from UDB2 the default main language is 'nl'.
-        $this->mainLanguage = new LegacyLanguage('nl');
+        $this->mainLanguage = new Language('nl');
 
         $actor = ActorItemFactory::createActorFromCdbXml(
             $organizerImported->getCdbXmlNamespaceUri(),
@@ -394,7 +393,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         $this->setTitle(
             new LegacyTitle($titleTranslated->getTitle()),
-            new LegacyLanguage($titleTranslated->getLanguage())
+            new Language($titleTranslated->getLanguage())
         );
     }
 
@@ -422,7 +421,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
                 new Locality($addressTranslated->getLocality()),
                 new Country(CountryCode::fromNative($addressTranslated->getCountryCode()))
             ),
-            new LegacyLanguage($addressTranslated->getLanguage())
+            new Language($addressTranslated->getLanguage())
         );
     }
 
@@ -475,9 +474,9 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         return null;
     }
 
-    private function setTitle(LegacyTitle $title, LegacyLanguage $language): void
+    private function setTitle(LegacyTitle $title, Language $language): void
     {
-        $this->titles[$language->getCode()] = $title;
+        $this->titles[$language->toString()] = $title;
     }
 
     private function isTitleChanged(Title $title, Language $language): bool
@@ -486,9 +485,9 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             $title->toString() !== $this->titles[$language->getCode()]->toNative();
     }
 
-    private function setAddress(LegacyAddress $address, LegacyLanguage $language): void
+    private function setAddress(LegacyAddress $address, Language $language): void
     {
-        $this->addresses[$language->getCode()] = $address;
+        $this->addresses[$language->toString()] = $address;
     }
 
     private function isAddressChanged(LegacyAddress $address, Language $language): bool
