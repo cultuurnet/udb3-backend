@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Title;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
-
 final class OrganizerCreated extends OrganizerEvent
 {
     public string $title;
@@ -62,31 +54,34 @@ final class OrganizerCreated extends OrganizerEvent
         $this->urls = $urls;
     }
 
-    public function getTitle(): Title
+    public function getTitle(): string
     {
-        return new Title($this->title);
+        return $this->title;
+    }
+
+    public function getStreetAddress(): ?string
+    {
+        return $this->streetAddress;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function getLocality(): ?string
+    {
+        return $this->locality;
+    }
+
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
     }
 
     public function hasAddress(): bool
     {
         return isset($this->streetAddress, $this->locality, $this->postalCode, $this->countryCode);
-    }
-
-    /**
-     * @return Address[]
-     */
-    public function getAddresses(): array
-    {
-        $addresses = [];
-        if ($this->hasAddress()) {
-            $addresses[] = new Address(
-                new Street($this->streetAddress),
-                new PostalCode($this->postalCode),
-                new Locality($this->locality),
-                new Country(CountryCode::fromNative($this->countryCode))
-            );
-        }
-        return $addresses;
     }
 
     /**
