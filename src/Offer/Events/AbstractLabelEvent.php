@@ -9,10 +9,7 @@ use CultuurNet\UDB3\LabelEventInterface;
 
 abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInterface
 {
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
     final public function __construct(string $itemId, Label $label)
     {
