@@ -11,9 +11,4 @@ interface LabelEventInterface
     public function getLabelName(): string;
 
     public function isLabelVisible(): bool;
-
-    /**
-     * @return Label
-     */
-    public function getLabel();
 }
