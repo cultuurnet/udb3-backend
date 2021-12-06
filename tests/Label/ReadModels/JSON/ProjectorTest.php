@@ -35,47 +35,24 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var UUID
-     */
-    private $unknownId;
+    private UUID $unknownId;
 
-    /**
-     * @var LabelName
-     */
-    private $labelName;
+    private LabelName $labelName;
 
-    /**
-     * @var LabelName
-     */
-    private $unknownLabelName;
+    private LabelName $unknownLabelName;
 
     /**
      * @var WriteRepositoryInterface|MockObject
      */
     private $writeRepository;
 
-    /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    private $readRepository;
+    private Entity $entity;
 
-    /**
-     * @var Entity
-     */
-    private $entity;
+    private Projector $projector;
 
-    /**
-     * @var Projector
-     */
-    private $projector;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('EC1697B7-7E2B-4462-A901-EC20E2A0AAFC');
         $this->unknownId = new UUID('ACFCFE56-3D16-48FB-A053-FAA9950720DC');
@@ -84,8 +61,6 @@ class ProjectorTest extends TestCase
         $this->unknownLabelName = new LabelName('unknownLabelName');
 
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
-
-        $this->readRepository = $this->createMock(ReadRepositoryInterface::class);
 
         $this->entity = new Entity(
             $this->uuid,
@@ -100,10 +75,12 @@ class ProjectorTest extends TestCase
             [$this->unknownId, null],
         ];
 
-        $this->readRepository->method('getByUuid')
+        $readRepository = $this->createMock(ReadRepositoryInterface::class);
+
+        $readRepository->method('getByUuid')
             ->will($this->returnValueMap($uuidMap));
 
-        $this->readRepository->method('getByName')
+        $readRepository->method('getByName')
             ->willReturnCallback(function (StringLiteral $value) {
                 if ($value->toNative() === $this->labelName->toNative()) {
                     return $this->entity;
@@ -113,14 +90,14 @@ class ProjectorTest extends TestCase
 
         $this->projector = new Projector(
             $this->writeRepository,
-            $this->readRepository
+            $readRepository
         );
     }
 
     /**
      * @test
      */
-    public function it_handles_created_when_uuid_and_name_unique()
+    public function it_handles_created_when_uuid_and_name_unique(): void
     {
         $created = new Created(
             $this->unknownId,
@@ -146,7 +123,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_created_when_uuid_not_unique()
+    public function it_does_not_handle_created_when_uuid_not_unique(): void
     {
         $created = new Created(
             $this->uuid,
@@ -166,7 +143,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_created_when_name_not_unique()
+    public function it_does_not_handle_created_when_name_not_unique(): void
     {
         $created = new Created(
             $this->unknownId,
@@ -186,7 +163,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_copy_created_when_uuid_and_name_are_unique()
+    public function it_handles_copy_created_when_uuid_and_name_are_unique(): void
     {
         $copyCreated = new CopyCreated(
             $this->unknownId,
@@ -217,7 +194,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_copy_created_when_uuid_not_unique()
+    public function it_does_not_handle_copy_created_when_uuid_not_unique(): void
     {
         $copyCreated = new CopyCreated(
             $this->uuid,
@@ -241,7 +218,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_copy_created_when_name_not_unique()
+    public function it_does_not_handle_copy_created_when_name_not_unique(): void
     {
         $copyCreated = new CopyCreated(
             $this->unknownId,
@@ -265,7 +242,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_made_visible()
+    public function it_handles_made_visible(): void
     {
         $domainMessage = $this->createDomainMessage(
             $this->uuid,
@@ -282,7 +259,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_made_invisible()
+    public function it_handles_made_invisible(): void
     {
         $domainMessage = $this->createDomainMessage(
             $this->uuid,
@@ -299,7 +276,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_made_public()
+    public function it_handles_made_public(): void
     {
         $domainMessage = $this->createDomainMessage(
             $this->uuid,
@@ -316,7 +293,7 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_made_private()
+    public function it_handles_made_private(): void
     {
         $domainMessage = $this->createDomainMessage(
             $this->uuid,
@@ -333,10 +310,10 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_label_added_to_event()
+    public function it_handles_label_added_to_event(): void
     {
         $labelAdded = new LabelAddedToEvent(
-            'itemId',
+            '350bd67a-814a-4be0-acc8-f92395830e94',
             new Label($this->labelName->toNative())
         );
 
@@ -346,10 +323,10 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_label_removed_from_event()
+    public function it_handles_label_removed_from_event(): void
     {
         $labelRemoved = new LabelRemovedFromEvent(
-            'itemId',
+            '350bd67a-814a-4be0-acc8-f92395830e94',
             new Label($this->labelName->toNative())
         );
 
@@ -359,10 +336,10 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_label_added_to_place()
+    public function it_handles_label_added_to_place(): void
     {
         $labelAdded = new LabelAddedToPlace(
-            'itemId',
+            '350bd67a-814a-4be0-acc8-f92395830e94',
             new Label($this->labelName->toNative())
         );
 
@@ -372,10 +349,10 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_label_removed_from_place()
+    public function it_handles_label_removed_from_place(): void
     {
         $labelRemoved = new LabelRemovedFromPlace(
-            'itemId',
+            '350bd67a-814a-4be0-acc8-f92395830e94',
             new Label($this->labelName->toNative())
         );
 
@@ -383,14 +360,12 @@ class ProjectorTest extends TestCase
     }
 
     /**
-     * @param string $id
      * @param AbstractEvent|AbstractLabelEvent $payload
-     * @return DomainMessage
      */
-    private function createDomainMessage($id, $payload)
+    private function createDomainMessage(UUID $id, $payload): DomainMessage
     {
         return new DomainMessage(
-            $id,
+            $id->toNative(),
             0,
             new Metadata(),
             $payload,
@@ -399,26 +374,23 @@ class ProjectorTest extends TestCase
     }
 
 
-    private function handleAdding(AbstractLabelAdded $labelAdded)
+    private function handleAdding(AbstractLabelAdded $labelAdded): void
     {
         $this->handleLabelMovement($labelAdded, 'updateCountIncrement');
     }
 
 
-    private function handleDeleting(AbstractLabelRemoved $labelRemoved)
+    private function handleDeleting(AbstractLabelRemoved $labelRemoved): void
     {
         $this->handleLabelMovement($labelRemoved, 'updateCountDecrement');
     }
 
-    /**
-     * @param string $expectedMethod
-     */
     private function handleLabelMovement(
         AbstractLabelEvent $labelEvent,
-        $expectedMethod
-    ) {
+        string $expectedMethod
+    ): void {
         $domainMessage = $this->createDomainMessage(
-            $labelEvent->getItemId(),
+            new UUID($labelEvent->getItemId()),
             $labelEvent
         );
 
