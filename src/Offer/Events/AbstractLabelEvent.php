@@ -20,6 +20,16 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
         $this->label = $label;
     }
 
+    public function getLabelName(): string
+    {
+        return $this->label->getName()->toNative();
+    }
+
+    public function isLabelVisible(): bool
+    {
+        return $this->label->isVisible();
+    }
+
     public function getLabel(): Label
     {
         return $this->label;

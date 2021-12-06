@@ -8,6 +8,10 @@ interface LabelEventInterface
 {
     public function getItemId(): string;
 
+    public function getLabelName(): string;
+
+    public function isLabelVisible(): bool;
+
     /**
      * @return Label
      */

@@ -28,6 +28,16 @@ abstract class AbstractLabelEvent extends OrganizerEvent implements LabelEventIn
         return $this->getOrganizerId();
     }
 
+    public function getLabelName(): string
+    {
+        return $this->labelName;
+    }
+
+    public function isLabelVisible(): bool
+    {
+        return $this->isVisible;
+    }
+
     public function getLabel(): Label
     {
         return new Label($this->labelName, $this->isVisible);
