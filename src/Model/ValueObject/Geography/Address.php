@@ -73,4 +73,16 @@ class Address
         $c->countryCode = $countryCode;
         return $c;
     }
+
+    /**
+     * @param Address|mixed $other
+     */
+    public function sameAs($other): bool
+    {
+        return get_class($this) === get_class($other) &&
+            $this->street->sameAs($other->street) &&
+            $this->postalCode->sameAs($other->postalCode) &&
+            $this->locality->sameAs($other->locality) &&
+            $this->countryCode->sameAs($other->countryCode);
+    }
 }

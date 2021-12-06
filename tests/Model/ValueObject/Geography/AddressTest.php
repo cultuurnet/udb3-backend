@@ -103,4 +103,26 @@ class AddressTest extends TestCase
         $this->assertEquals('BE', $this->address->getCountryCode()->getCode());
         $this->assertEquals('NL', $updatedAddress->getCountryCode()->getCode());
     }
+
+    /**
+     * @test
+     */
+    public function it_compares_equality(): void
+    {
+        $this->assertTrue($this->address->sameAs(new Address(
+            new Street('Henegouwenkaai 41-43'),
+            new PostalCode('1080'),
+            new Locality('Brussel'),
+            new CountryCode('BE')
+        )));
+
+        $this->assertFalse($this->address->sameAs(
+            new Address(
+                new Street('Henegouwenkaai 41-43'),
+                new PostalCode('9000'),
+                new Locality('Gent'),
+                new CountryCode('BE')
+            )
+        ));
+    }
 }
