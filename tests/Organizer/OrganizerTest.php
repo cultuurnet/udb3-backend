@@ -9,8 +9,10 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -20,6 +22,8 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
@@ -333,8 +337,13 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     {
         $emptyContactPoint = new ContactPoint();
 
-        $initialContactPoint = new ContactPoint(['0444/444444']);
-        $updatedContactPoint = new ContactPoint(['0455/454545'], ['foo@bar.com']);
+        $initialContactPoint = new ContactPoint(
+            new TelephoneNumbers(new TelephoneNumber('0444/444444'))
+        );
+        $updatedContactPoint = new ContactPoint(
+            new TelephoneNumbers(new TelephoneNumber('0455/454545')),
+            new EmailAddresses(new EmailAddress('foo@bar.com'))
+        );
 
         $this->scenario
             ->given([$this->organizerCreatedWithUniqueWebsite])

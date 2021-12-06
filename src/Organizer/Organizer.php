@@ -8,10 +8,12 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\LabelCollection;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -21,7 +23,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -206,9 +211,9 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             $this->apply(
                 new ContactPointUpdated(
                     $this->actorId,
-                    $contactPoint->getPhones(),
-                    $contactPoint->getEmails(),
-                    $contactPoint->getUrls()
+                    $contactPoint->getTelephoneNumbers()->toStringArray(),
+                    $contactPoint->getEmailAddresses()->toStringArray(),
+                    $contactPoint->getUrls()->toStringArray()
                 )
             );
         }
@@ -422,9 +427,24 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): void
     {
         $this->contactPoint = new ContactPoint(
-            $contactPointUpdated->getPhones(),
-            $contactPointUpdated->getEmails(),
-            $contactPointUpdated->getUrls()
+            new TelephoneNumbers(
+                ...array_map(
+                    fn (string $phone) => new TelephoneNumber($phone),
+                    $contactPointUpdated->getPhones()
+                )
+            ),
+            new EmailAddresses(
+                ...array_map(
+                    fn (string $email) => new EmailAddress($email),
+                    $contactPointUpdated->getEmails()
+                )
+            ),
+            new Urls(
+                ...array_map(
+                    fn (string $url) => new Url($url),
+                    $contactPointUpdated->getUrls()
+                )
+            )
         );
     }
 
