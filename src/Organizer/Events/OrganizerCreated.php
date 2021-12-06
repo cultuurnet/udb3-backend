@@ -66,26 +66,29 @@ final class OrganizerCreated extends OrganizerEvent
         return $this->title;
     }
 
+    public function getStreetAddress(): ?string
+    {
+        return $this->streetAddress;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function getLocality(): ?string
+    {
+        return $this->locality;
+    }
+
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
     public function hasAddress(): bool
     {
         return isset($this->streetAddress, $this->locality, $this->postalCode, $this->countryCode);
-    }
-
-    /**
-     * @return Address[]
-     */
-    public function getAddresses(): array
-    {
-        $addresses = [];
-        if ($this->hasAddress()) {
-            $addresses[] = new Address(
-                new Street($this->streetAddress),
-                new PostalCode($this->postalCode),
-                new Locality($this->locality),
-                new Country(CountryCode::fromNative($this->countryCode))
-            );
-        }
-        return $addresses;
     }
 
     /**

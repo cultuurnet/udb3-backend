@@ -148,10 +148,13 @@ class OrganizerLDProjector implements EventListener
             $this->getMainLanguage($jsonLD)->getCode() => $organizerCreated->getTitle(),
         ];
 
-        // Only take the first address into account.
-        $addresses = $organizerCreated->getAddresses();
-        if (!empty($addresses)) {
-            $address = $addresses[0];
+        if ($organizerCreated->hasAddress()) {
+            $address = new Address(
+                new Street($organizerCreated->getStreetAddress()),
+                new PostalCode($organizerCreated->getPostalCode()),
+                new Locality($organizerCreated->getLocality()),
+                new Country(CountryCode::fromNative($organizerCreated->getCountryCode()))
+            );
             $jsonLD->address = [
                 $this->getMainLanguage($jsonLD)->getCode() => $address->toJsonLd(),
             ];
