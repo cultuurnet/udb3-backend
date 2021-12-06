@@ -40,7 +40,6 @@ use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
 {
@@ -48,7 +47,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private Language $mainLanguage;
 
-    private ?LegacyUrl $website = null;
+    private ?Url $website = null;
 
     /**
      * @var Title[]
@@ -132,9 +131,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateWebsite(Url $website): void
     {
-        $newWebsite = LegacyUrl::fromNative($website->toString());
-
-        if (is_null($this->website) || !$this->website->sameValueAs($newWebsite)) {
+        if ($this->website === null || $this->website->sameAs($website->toString())) {
             $this->apply(
                 new WebsiteUpdated(
                     $this->actorId,
@@ -328,7 +325,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         $this->mainLanguage = new Language($organizerCreated->getMainLanguage());
 
-        $this->website =  LegacyUrl::fromNative($organizerCreated->getWebsite());
+        $this->website = new Url($organizerCreated->getWebsite());
 
         $this->setTitle(
             new Title($organizerCreated->getTitle()),
@@ -377,7 +374,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated): void
     {
-        $this->website = LegacyUrl::fromNative($websiteUpdated->getWebsite());
+        $this->website = new Url($websiteUpdated->getWebsite());
     }
 
     protected function applyTitleUpdated(TitleUpdated $titleUpdated): void
