@@ -219,7 +219,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Label '{$event->getLabel()}' toegepast")
+            Log::createFromDomainMessage($domainMessage, "Label '{$event->getLabelName()}' toegepast")
         );
     }
 
@@ -229,7 +229,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Label '{$event->getLabel()}' verwijderd")
+            Log::createFromDomainMessage($domainMessage, "Label '{$event->getLabelName()}' verwijderd")
         );
     }
 

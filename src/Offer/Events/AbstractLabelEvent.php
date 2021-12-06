@@ -9,27 +9,32 @@ use CultuurNet\UDB3\LabelEventInterface;
 
 abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInterface
 {
-    /**
-     * @var Label
-     */
-    protected $label;
+    private string $labelName;
+
+    private bool $isLabelVisible;
 
     final public function __construct(string $itemId, Label $label)
     {
         parent::__construct($itemId);
-        $this->label = $label;
+        $this->labelName = $label->getName()->toNative();
+        $this->isLabelVisible = $label->isVisible();
     }
 
-    public function getLabel(): Label
+    public function getLabelName(): string
     {
-        return $this->label;
+        return $this->labelName;
+    }
+
+    public function isLabelVisible(): bool
+    {
+        return $this->isLabelVisible;
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'label' => (string) $this->label,
-            'visibility' => $this->label->isVisible(),
+            'label' => $this->labelName,
+            'visibility' => $this->isLabelVisible,
         ];
     }
 

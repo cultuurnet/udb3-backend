@@ -17,22 +17,14 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
 use ValueObjects\Identity\UUID;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class Projector extends AbstractProjector
 {
-    /**
-     * @var WriteRepositoryInterface
-     */
-    private $writeRepository;
+    private WriteRepositoryInterface $writeRepository;
 
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $readRepository;
+    private ReadRepositoryInterface $readRepository;
 
-    /**
-     * Projector constructor.
-     */
     public function __construct(
         WriteRepositoryInterface $writeRepository,
         ReadRepositoryInterface $readRepository
@@ -41,8 +33,7 @@ class Projector extends AbstractProjector
         $this->readRepository = $readRepository;
     }
 
-
-    public function applyCreated(Created $created)
+    public function applyCreated(Created $created): void
     {
         $labelWithSameUuid = $this->readRepository->getByUuid($created->getUuid());
         $labelWithSameName = $this->readRepository->getByName($created->getName());
@@ -58,8 +49,7 @@ class Projector extends AbstractProjector
         );
     }
 
-
-    public function applyCopyCreated(CopyCreated $copyCreated)
+    public function applyCopyCreated(CopyCreated $copyCreated): void
     {
         $labelWithSameUuid = $this->readRepository->getByUuid($copyCreated->getUuid());
         $labelWithSameName = $this->readRepository->getByName($copyCreated->getName());
@@ -77,34 +67,27 @@ class Projector extends AbstractProjector
         );
     }
 
-
-    public function applyMadeVisible(MadeVisible $madeVisible)
+    public function applyMadeVisible(MadeVisible $madeVisible): void
     {
         $this->writeRepository->updateVisible($madeVisible->getUuid());
     }
 
-
-    public function applyMadeInvisible(MadeInvisible $madeInvisible)
+    public function applyMadeInvisible(MadeInvisible $madeInvisible): void
     {
         $this->writeRepository->updateInvisible($madeInvisible->getUuid());
     }
 
-
-    public function applyMadePublic(MadePublic $madePublic)
+    public function applyMadePublic(MadePublic $madePublic): void
     {
         $this->writeRepository->updatePublic($madePublic->getUuid());
     }
 
-
-    public function applyMadePrivate(MadePrivate $madePrivate)
+    public function applyMadePrivate(MadePrivate $madePrivate): void
     {
         $this->writeRepository->updatePrivate($madePrivate->getUuid());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata)
+    public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata): void
     {
         $uuid = $this->getUuid($labelAdded);
 
@@ -113,10 +96,7 @@ class Projector extends AbstractProjector
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata)
+    public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void
     {
         $uuid = $this->getUuid($labelRemoved);
 
@@ -125,23 +105,18 @@ class Projector extends AbstractProjector
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata)
+    public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void
     {
         // This projector does not handle this event, but it is part of abstract projector.
     }
 
-    /**
-     * @return UUID|null
-     */
-    private function getUuid(LabelEventInterface $labelEvent)
+    private function getUuid(LabelEventInterface $labelEvent): ?UUID
     {
         $uuid = null;
 
-        $name = $labelEvent->getLabel()->getName();
-        $entity = $this->readRepository->getByName($name);
+        $entity = $this->readRepository->getByName(
+            new StringLiteral($labelEvent->getLabelName())
+        );
 
         if ($entity !== null) {
             $uuid = $entity->getUuid();

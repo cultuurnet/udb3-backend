@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelEventInterface;
 
 abstract class AbstractLabelEvent extends OrganizerEvent implements LabelEventInterface
@@ -28,9 +27,14 @@ abstract class AbstractLabelEvent extends OrganizerEvent implements LabelEventIn
         return $this->getOrganizerId();
     }
 
-    public function getLabel(): Label
+    public function getLabelName(): string
     {
-        return new Label($this->labelName, $this->isVisible);
+        return $this->labelName;
+    }
+
+    public function isLabelVisible(): bool
+    {
+        return $this->isVisible;
     }
 
     public static function deserialize(array $data): AbstractLabelEvent

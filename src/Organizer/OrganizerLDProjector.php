@@ -330,10 +330,10 @@ class OrganizerLDProjector implements EventListener
         $jsonLD = $document->getBody();
 
         // Check the visibility of the label to update the right property.
-        $labelsProperty = $labelAdded->getLabel()->isVisible() ? 'labels' : 'hiddenLabels';
+        $labelsProperty = $labelAdded->isLabelVisible() ? 'labels' : 'hiddenLabels';
 
         $labels = isset($jsonLD->{$labelsProperty}) ? $jsonLD->{$labelsProperty} : [];
-        $label = (string) $labelAdded->getLabel();
+        $label = $labelAdded->getLabelName();
 
         $labels[] = $label;
         $jsonLD->{$labelsProperty} = array_unique($labels);
@@ -355,7 +355,11 @@ class OrganizerLDProjector implements EventListener
                 $jsonLD->{$labelsProperty} = array_filter(
                     $jsonLD->{$labelsProperty},
                     function ($label) use ($labelRemoved) {
-                        return !$labelRemoved->getLabel()->equals(
+                        $removedLabel = new Label(
+                            $labelRemoved->getLabelName(),
+                            $labelRemoved->isLabelVisible()
+                        );
+                        return !$removedLabel->equals(
                             new Label($label)
                         );
                     }

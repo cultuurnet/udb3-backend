@@ -38,22 +38,16 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 {
-    /**
-     * @var Serializer
-     */
-    protected $serializer;
+    protected Serializer $serializer;
 
     /**
      * @var ReadRepositoryInterface|MockObject
      */
     private $labelRepository;
 
-    /**
-     * @var string
-     */
-    private $sampleDir;
+    private string $sampleDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -79,12 +73,11 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider mainLanguageDataProvider
-     * @param string $sampleFile
      */
     public function it_handles_main_language(
-        $sampleFile,
+        string $sampleFile,
         Language $expectedMainLanguage
-    ) {
+    ): void {
         $serialized = file_get_contents($sampleFile);
         $decoded = json_decode($serialized, true);
 
@@ -94,10 +87,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $this->assertEquals($expectedMainLanguage, $created->getMainLanguage());
     }
 
-    /**
-     * @return array
-     */
-    public function mainLanguageDataProvider()
+    public function mainLanguageDataProvider(): array
     {
         return [
             'EventCreated no main language' => [
@@ -130,10 +120,10 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_transforms_a_serialized_event_created_location_to_an_id()
+    public function it_transforms_a_serialized_event_created_location_to_an_id(): void
     {
         $serialized = file_get_contents(__DIR__ . '/samples/serialized_event_event_created_class.json');
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /** @var EventCreated $created */
         $created = $this->serializer->deserialize($decoded);
@@ -144,10 +134,10 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_transforms_a_serialized_major_info_updated_location_to_an_id()
+    public function it_transforms_a_serialized_major_info_updated_location_to_an_id(): void
     {
         $serialized = file_get_contents(__DIR__ . '/samples/serialized_event_major_info_updated_class.json');
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /** @var MajorInfoUpdated $majorInfoUpdated */
         $majorInfoUpdated = $this->serializer->deserialize($decoded);
@@ -158,7 +148,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_knows_the_new_namespace_of_event_title_translated()
+    public function it_knows_the_new_namespace_of_event_title_translated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_title_translated_class.json';
         $this->assertClass($sampleFile, TitleTranslated::class);
@@ -167,7 +157,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_title_translated()
+    public function it_replaces_event_id_with_item_id_on_event_title_translated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_title_translated_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -176,7 +166,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_knows_the_new_namespace_of_event_description_translated()
+    public function it_knows_the_new_namespace_of_event_description_translated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_description_translated_class.json';
         $this->assertClass($sampleFile, DescriptionTranslated::class);
@@ -185,7 +175,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_description_translated()
+    public function it_replaces_event_id_with_item_id_on_event_description_translated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_description_translated_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -194,7 +184,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_label_name_on_made_invisible_event()
+    public function it_adds_label_name_on_made_invisible_event(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_made_invisible.json';
         $this->assertLabelNameAdded($sampleFile);
@@ -203,7 +193,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_label_name_on_made_visible_event()
+    public function it_adds_label_name_on_made_visible_event(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_made_visible.json';
         $this->assertLabelNameAdded($sampleFile);
@@ -212,7 +202,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_label_name_on_made_private_event()
+    public function it_adds_label_name_on_made_private_event(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_made_private.json';
         $this->assertLabelNameAdded($sampleFile);
@@ -221,7 +211,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_label_name_on_made_public_event()
+    public function it_adds_label_name_on_made_public_event(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_made_public.json';
         $this->assertLabelNameAdded($sampleFile);
@@ -230,7 +220,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_label_name_and_visibility_on_label_added_to_organizer_event()
+    public function it_adds_label_name_and_visibility_on_label_added_to_organizer_event(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_added_to_organizer.json';
         $this->assertOrganizerLabelEventFixed($sampleFile);
@@ -239,7 +229,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_label_visibility_on_label_added_to_organizer_event_with_label()
+    public function it_adds_label_visibility_on_label_added_to_organizer_event_with_label(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_added_to_organizer_with_label.json';
         $this->assertOrganizerLabelEventFixed($sampleFile);
@@ -248,7 +238,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_label_name_on_label_added_to_organizer_event_with_visibility()
+    public function it_adds_label_name_on_label_added_to_organizer_event_with_visibility(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_added_to_organizer_with_visibility.json';
         $this->assertOrganizerLabelEventFixed($sampleFile);
@@ -257,7 +247,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_modify_label_added_to_organizer_event_with_label_and_visibility()
+    public function it_does_not_modify_label_added_to_organizer_event_with_label_and_visibility(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_added_to_organizer_with_label_and_visibility.json';
 
@@ -265,14 +255,14 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
             ->method('getByUuid');
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
         $this->serializer->deserialize($decoded);
     }
 
     /**
      * @test
      */
-    public function it_adds_label_name_and_visibility_on_label_removed_from_organizer_event()
+    public function it_adds_label_name_and_visibility_on_label_removed_from_organizer_event(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_label_was_removed_from_organizer.json';
         $this->assertOrganizerLabelEventFixed($sampleFile);
@@ -281,13 +271,13 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_knows_the_new_namespace_of_event_was_labelled()
+    public function it_knows_the_new_namespace_of_event_was_labelled(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_was_labelled_class.json';
         $this->assertClass($sampleFile, LabelAdded::class);
     }
 
-    public function it_replaces_event_id_with_item_id_on_event_was_labelled()
+    public function it_replaces_event_id_with_item_id_on_event_was_labelled(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_was_labelled_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -296,7 +286,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_knows_the_new_namespace_of_event_was_tagged()
+    public function it_knows_the_new_namespace_of_event_was_tagged(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_was_tagged_class.json';
         $this->assertClass($sampleFile, LabelAdded::class);
@@ -305,7 +295,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_was_tagged()
+    public function it_replaces_event_id_with_item_id_on_event_was_tagged(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_was_tagged_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -314,7 +304,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_keyword_with_label_on_event_was_tagged()
+    public function it_replaces_keyword_with_label_on_event_was_tagged(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_was_tagged_class.json';
         $this->assertKeywordReplacedWithLabel($sampleFile);
@@ -323,7 +313,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_knows_the_new_namespace_of_event_tag_erased()
+    public function it_knows_the_new_namespace_of_event_tag_erased(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_tag_erased_class.json';
         $this->assertClass($sampleFile, LabelRemoved::class);
@@ -332,7 +322,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_tag_erased()
+    public function it_replaces_event_id_with_item_id_on_event_tag_erased(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_tag_erased_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -341,7 +331,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_keyword_with_label_on_event_tag_erased()
+    public function it_replaces_keyword_with_label_on_event_tag_erased(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_tag_erased_class.json';
         $this->assertKeywordReplacedWithLabel($sampleFile);
@@ -350,7 +340,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_knows_the_new_namespace_of_event_unlabelled()
+    public function it_knows_the_new_namespace_of_event_unlabelled(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_unlabelled_class.json';
         $this->assertClass($sampleFile, LabelRemoved::class);
@@ -359,7 +349,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_unlabelled()
+    public function it_replaces_event_id_with_item_id_on_event_unlabelled(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_unlabelled_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -368,10 +358,10 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_knows_the_new_namespace_of_event_imported_from_udb2_class()
+    public function it_knows_the_new_namespace_of_event_imported_from_udb2_class(): void
     {
         $serialized = file_get_contents($this->sampleDir . 'serialized_event_imported_from_udb2_class.json');
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         $importedFromUDB2 = $this->serializer->deserialize($decoded);
 
@@ -381,12 +371,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_booking_info_updated()
+    public function it_replaces_event_id_with_item_id_on_event_booking_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_booking_info_updated_class.json';
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
@@ -400,12 +390,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_deprecated_availability_date_formats_on_booking_info_updated()
+    public function it_replaces_deprecated_availability_date_formats_on_booking_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_booking_info_updated_with_deprecated_availability.json';
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
@@ -424,12 +414,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_invalid_availability_date_formats_on_booking_info_updated()
+    public function it_replaces_invalid_availability_date_formats_on_booking_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_booking_info_updated_with_invalid_availability.json';
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
@@ -441,12 +431,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_deprecated_url_label_on_booking_info_updated()
+    public function it_replaces_deprecated_url_label_on_booking_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_booking_info_updated_with_deprecated_url_label.json';
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
@@ -460,12 +450,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_keeps_valid_availability_date_formats_on_booking_info_updated()
+    public function it_keeps_valid_availability_date_formats_on_booking_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_booking_info_updated_with_valid_availability.json';
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
@@ -484,7 +474,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_missing_availability_dates_with_null_on_booking_info_updated()
+    public function it_replaces_missing_availability_dates_with_null_on_booking_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_booking_info_updated_without_availability.json';
 
@@ -501,16 +491,15 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider typedIdPlaceEventClassProvider
-     * @param string $eventClassFile
      */
     public function it_should_replace_place_id_on_older_events_with_item_id(
-        $eventClassFile
-    ) {
+        string $eventClassFile
+    ): void {
         $sampleFile = $this->sampleDir . '/place/' . $eventClassFile;
         $this->assertPlaceIdReplacedWithItemId($sampleFile);
     }
 
-    public function typedIdPlaceEventClassProvider()
+    public function typedIdPlaceEventClassProvider(): array
     {
         return [
             ['booking_info_updated.class.json'],
@@ -526,7 +515,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_typical_age_range_deleted()
+    public function it_replaces_event_id_with_item_id_on_event_typical_age_range_deleted(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_typical_age_range_deleted_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -535,7 +524,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_typical_age_range_updated()
+    public function it_replaces_event_id_with_item_id_on_event_typical_age_range_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_typical_age_range_updated_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -544,7 +533,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_contact_point_updated()
+    public function it_replaces_event_id_with_item_id_on_event_contact_point_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_contact_point_updated_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -553,7 +542,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_major_info_updated()
+    public function it_replaces_event_id_with_item_id_on_event_major_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_major_info_updated_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -562,7 +551,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_organizer_updated()
+    public function it_replaces_event_id_with_item_id_on_event_organizer_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_organizer_updated_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -571,7 +560,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on__event_organizer_deleted()
+    public function it_replaces_event_id_with_item_id_on__event_organizer_deleted(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_organizer_deleted_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -580,7 +569,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_event_id_with_item_id_on_event_description_updated()
+    public function it_replaces_event_id_with_item_id_on_event_description_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_description_updated_class.json';
         $this->assertEventIdReplacedWithItemId($sampleFile);
@@ -589,7 +578,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_place_id_with_item_id_on_event_facilities_updated()
+    public function it_replaces_place_id_with_item_id_on_event_facilities_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_facilities_updated_class.json';
         $this->assertPlaceIdReplacedWithItemId($sampleFile);
@@ -598,7 +587,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_place_id_with_item_id_on_geo_coordinates_updated()
+    public function it_replaces_place_id_with_item_id_on_geo_coordinates_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_geo_coordinates_updated_class.json';
         $this->assertPlaceIdReplacedWithItemId($sampleFile);
@@ -607,11 +596,11 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_replace_string_names_with_translatable_objects_in_price_info_updated()
+    public function it_should_replace_string_names_with_translatable_objects_in_price_info_updated(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_price_info_updated_class.json';
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         $expectedPriceInfo = new PriceInfo(
             new BasePrice(
@@ -654,33 +643,33 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_changes_class_for_constraint_created()
+    public function it_changes_class_for_constraint_created(): void
     {
         $sampleFile = $this->sampleDir . 'serialized_event_constraint_created.json';
 
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /* @var ConstraintAdded $constraintAdded */
         $constraintAdded = $this->serializer->deserialize($decoded);
 
-        $this->assertTrue($constraintAdded instanceof ConstraintAdded);
+        $this->assertInstanceOf(ConstraintAdded::class, $constraintAdded);
     }
 
-    private function assertEventIdReplacedWithItemId(string $sampleFile)
+    private function assertEventIdReplacedWithItemId(string $sampleFile): void
     {
         $this->assertTypedIdReplacedWithItemId('event', $sampleFile);
     }
 
-    private function assertPlaceIdReplacedWithItemId(string $sampleFile)
+    private function assertPlaceIdReplacedWithItemId(string $sampleFile): void
     {
         $this->assertTypedIdReplacedWithItemId('place', $sampleFile);
     }
 
-    private function assertTypedIdReplacedWithItemId(string $type, string $sampleFile)
+    private function assertTypedIdReplacedWithItemId(string $type, string $sampleFile): void
     {
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
         $typedId = $decoded['payload'][$type . '_id'];
 
         /**
@@ -692,7 +681,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $this->assertEquals($typedId, $itemId);
     }
 
-    private function assertKeywordReplacedWithLabel(string $sampleFile)
+    private function assertKeywordReplacedWithLabel(string $sampleFile): void
     {
         $serialized = file_get_contents($sampleFile);
         $decoded = json_decode($serialized, true);
@@ -700,25 +689,25 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         /** @var AbstractLabelEvent $abstractLabelEvent */
         $abstractLabelEvent = $this->serializer->deserialize($decoded);
-        $label = $abstractLabelEvent->getLabel();
+        $labelName = $abstractLabelEvent->getLabelName();
 
-        $this->assertEquals($keyword, $label);
+        $this->assertEquals($keyword, $labelName);
     }
 
-    private function assertClass(string $sampleFile, string $expectedClass)
+    private function assertClass(string $sampleFile, string $expectedClass): void
     {
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         $newEvent = $this->serializer->deserialize($decoded);
 
         $this->assertInstanceOf($expectedClass, $newEvent);
     }
 
-    private function assertLabelNameAdded(string $sampleFile)
+    private function assertLabelNameAdded(string $sampleFile): void
     {
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /** @var AbstractEvent $labelEvent */
         $labelEvent = $this->serializer->deserialize($decoded);
@@ -726,15 +715,15 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $this->assertEquals('2dotstwice', $labelEvent->getName()->toNative());
     }
 
-    private function assertOrganizerLabelEventFixed(string $sampleFile)
+    private function assertOrganizerLabelEventFixed(string $sampleFile): void
     {
         $serialized = file_get_contents($sampleFile);
-        $decoded = json_decode($serialized, true);
+        $decoded = Json::decodeAssociatively($serialized);
 
         /** @var LabelEventInterface $labelEvent */
         $labelEvent = $this->serializer->deserialize($decoded);
 
-        $this->assertEquals('2dotstwice', (string) $labelEvent->getLabel());
-        $this->assertFalse($labelEvent->getLabel()->isVisible());
+        $this->assertEquals('2dotstwice', $labelEvent->getLabelName());
+        $this->assertFalse($labelEvent->isLabelVisible());
     }
 }

@@ -48,8 +48,13 @@ class AbstractLabelEventTest extends TestCase
     public function it_stores_a_label(): void
     {
         $this->assertEquals(
-            $this->label,
-            $this->abstractLabelEvent->getLabel()
+            $this->label->getName(),
+            $this->abstractLabelEvent->getLabelName()
+        );
+
+        $this->assertEquals(
+            $this->label->isVisible(),
+            $this->abstractLabelEvent->isLabelVisible()
         );
     }
 

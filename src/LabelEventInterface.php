@@ -6,13 +6,9 @@ namespace CultuurNet\UDB3;
 
 interface LabelEventInterface
 {
-    /**
-     * @return string
-     */
-    public function getItemId();
+    public function getItemId(): string;
 
-    /**
-     * @return Label
-     */
-    public function getLabel();
+    public function getLabelName(): string;
+
+    public function isLabelVisible(): bool;
 }

@@ -432,12 +432,22 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void
     {
-        $this->labels = $this->labels->with($labelAdded->getLabel());
+        $this->labels = $this->labels->with(
+            new Label(
+                $labelAdded->getLabelName(),
+                $labelAdded->isLabelVisible()
+            )
+        );
     }
 
     protected function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
-        $this->labels = $this->labels->without($labelRemoved->getLabel());
+        $this->labels = $this->labels->without(
+            new Label(
+                $labelRemoved->getLabelName(),
+                $labelRemoved->isLabelVisible()
+            )
+        );
     }
 
     protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): void
