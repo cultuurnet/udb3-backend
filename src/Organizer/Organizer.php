@@ -131,7 +131,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateWebsite(Url $website): void
     {
-        if ($this->website === null || $this->website->sameAs($website->toString())) {
+        if ($this->website === null || $this->website->sameAs($website)) {
             $this->apply(
                 new WebsiteUpdated(
                     $this->actorId,
