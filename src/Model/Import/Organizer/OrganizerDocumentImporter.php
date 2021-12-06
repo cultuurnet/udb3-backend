@@ -62,9 +62,9 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
 
         $adapter = new Udb3ModelToLegacyOrganizerAdapter($import);
 
-        $mainLanguage = $adapter->getMainLanguage();
-        $title = $adapter->getTitle();
-        $url = $adapter->getWebsite();
+        $mainLanguage = $import->getMainLanguage();
+        $title = $import->getName()->getTranslation($import->getMainLanguage());
+        $url = $import->getUrl();
 
         $commands = [];
         if (!$exists) {
@@ -78,8 +78,8 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         } else {
             $commands[] = new UpdateTitle(
                 $id,
-                new Title($title->toNative()),
-                new Language($mainLanguage->getCode())
+                $title,
+                $mainLanguage
             );
 
             $commands[] = new UpdateWebsite($id, $import->getUrl());

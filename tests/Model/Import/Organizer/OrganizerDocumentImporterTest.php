@@ -27,14 +27,11 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerDocumentImporterTest extends TestCase
 {
@@ -97,9 +94,9 @@ class OrganizerDocumentImporterTest extends TestCase
         $this->expectCreateOrganizer(
             Organizer::create(
                 $id,
-                new LegacyLanguage('nl'),
-                LegacyUrl::fromNative('https://www.publiq.be'),
-                new LegacyTitle('Voorbeeld naam')
+                new Language('nl'),
+                new Url('https://www.publiq.be'),
+                new Title('Voorbeeld naam')
             )
         );
         $this->expectNoLockedLabels();

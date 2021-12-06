@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -37,19 +36,17 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
-use CultuurNet\UDB3\Title as LegacyTitle;
 use ValueObjects\Geography\Country;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerTest extends AggregateRootScenarioTestCase
 {
     private string $id;
 
-    private LegacyLanguage $mainLanguage;
+    private Language $mainLanguage;
 
-    private LegacyUrl $website;
+    private Url $website;
 
-    private LegacyTitle $title;
+    private Title $title;
 
     private OrganizerCreatedWithUniqueWebsite $organizerCreatedWithUniqueWebsite;
 
@@ -58,15 +55,15 @@ class OrganizerTest extends AggregateRootScenarioTestCase
         parent::setUp();
 
         $this->id = '18eab5bf-09bf-4521-a8b4-c0f4a585c096';
-        $this->mainLanguage = new LegacyLanguage('en');
-        $this->website = LegacyUrl::fromNative('http://www.stuk.be');
-        $this->title = new LegacyTitle('STUK');
+        $this->mainLanguage = new Language('en');
+        $this->website = new Url('http://www.stuk.be');
+        $this->title = new Title('STUK');
 
         $this->organizerCreatedWithUniqueWebsite = new OrganizerCreatedWithUniqueWebsite(
             $this->id,
             'en',
-            (string) $this->website,
-            (string) $this->title
+            $this->website->toString(),
+            $this->title->toString()
         );
     }
 

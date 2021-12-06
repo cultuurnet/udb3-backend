@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Model\Import\Organizer\Udb3ModelToLegacyOrganizerAdapter;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
@@ -57,14 +56,12 @@ final class CreateOrganizerRequestHandler implements RequestHandlerInterface
         /** @var Organizer $organizer */
         $organizer = $requestBodyParser->parse($request)->getParsedBody();
 
-        $legacyOrganizer = new Udb3ModelToLegacyOrganizerAdapter($organizer);
-
         $this->organizerRepository->save(
             OrganizerAggregate::create(
-                $legacyOrganizer->getId(),
-                $legacyOrganizer->getMainLanguage(),
-                $legacyOrganizer->getWebsite(),
-                $legacyOrganizer->getTitle()
+                $organizer->getId()->toString(),
+                $organizer->getMainLanguage(),
+                $organizer->getUrl(),
+                $organizer->getName()->getTranslation($organizer->getMainLanguage())
             )
         );
 
@@ -90,8 +87,8 @@ final class CreateOrganizerRequestHandler implements RequestHandlerInterface
         }
 
         return new JsonResponse([
-            'organizerId' => $legacyOrganizer->getId(),
-            'url' => $this->iriGenerator->iri($legacyOrganizer->getId()),
+            'organizerId' => $organizer->getId()->toString(),
+            'url' => $this->iriGenerator->iri($organizer->getId()->toString()),
         ]);
     }
 }
