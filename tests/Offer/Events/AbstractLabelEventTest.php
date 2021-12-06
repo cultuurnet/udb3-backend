@@ -16,17 +16,11 @@ class AbstractLabelEventTest extends TestCase
      */
     protected $labelEvent;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->label = new Label('LabelTest');
@@ -36,7 +30,7 @@ class AbstractLabelEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_instantiated_With_properties()
+    public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedLabel = new Label('LabelTest');
@@ -48,7 +42,7 @@ class AbstractLabelEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
         $expectedLabel = new Label('LabelTest');
@@ -64,7 +58,7 @@ class AbstractLabelEventTest extends TestCase
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
         LabelAdded $abstractLabelEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $abstractLabelEvent->serialize()
@@ -78,17 +72,14 @@ class AbstractLabelEventTest extends TestCase
     public function it_can_deserialize_an_array(
         array $serializedValue,
         LabelAdded $expectedAbstractLabelEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedAbstractLabelEvent,
             LabelAdded::deserialize($serializedValue)
         );
     }
 
-    /**
-     * @return array
-     */
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'abstractLabelEvent' => [
