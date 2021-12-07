@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Curators;
 
 use CultuurNet\UDB3\Curators\NewsArticle;
+use CultuurNet\UDB3\Curators\NewsArticleNotFound;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -16,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateNewsArticleRequestHandlerTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
     /** @var NewsArticleRepository|MockObject */
     private $newsArticleRepository;
 
@@ -50,7 +55,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
                 'url' => 'https://www.publiq.be/blog/api-reward',
                 'publisherLogo' => 'https://www.bill.be/img/favicon.png',
             ])
-            ->build('POST');
+            ->build('PUT');
 
         $this->newsArticleRepository->expects($this->once())
             ->method('update')
@@ -79,6 +84,25 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
                 'publisherLogo' => 'https://www.bill.be/img/favicon.png',
             ]),
             $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_news_article_not_found(): void
+    {
+        $updateOrganizerRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
+            ->build('UPDATE');
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('getById')
+            ->willThrowException(new NewsArticleNotFound(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1')));
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::newsArticleNotFound('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            fn () => $this->updateNewsArticleRequestHandler->handle($updateOrganizerRequest)
         );
     }
 }
