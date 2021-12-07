@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
+use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -26,6 +27,7 @@ class CuratorsControllerProvider implements ControllerProviderInterface, Service
         $controllers->get('/{articleId}/', GetNewsArticleRequestHandler::class);
 
         $controllers->post('/', CreateNewsArticleRequestHandler::class);
+        $controllers->put('/{articleId}', UpdateNewsArticleRequestHandler::class);
 
         $controllers->delete('/{articleId}/', DeleteNewsArticleRequestHandler::class);
 
@@ -52,6 +54,12 @@ class CuratorsControllerProvider implements ControllerProviderInterface, Service
             fn (Application $application) => new CreateNewsArticleRequestHandler(
                 $app[NewsArticleRepository::class],
                 $app['uuid_generator'],
+            )
+        );
+
+        $app[UpdateNewsArticleRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateNewsArticleRequestHandler(
+                $app[NewsArticleRepository::class],
             )
         );
 
