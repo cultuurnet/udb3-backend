@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -41,7 +42,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\Title;
 use stdClass;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
@@ -430,7 +430,7 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->name->{$mainLanguage->getCode()} = $previousTitle;
         }
 
-        $jsonLD->name->{$language->getCode()} = $title->toNative();
+        $jsonLD->name->{$language->getCode()} = $title->toString();
 
         return $document->withBody($jsonLD);
     }
