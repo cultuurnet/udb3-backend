@@ -76,7 +76,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
             Json::encode([
                 [
                     'id' => 'ec00bcd0-41e9-47a0-8364-71aad7e537c5',
-                    'heading' => 'publiq wint API award',
+                    'headline' => 'publiq wint API award',
                     'inLanguage' => 'nl',
                     'text' => 'Op 10 januari 2020 wint publiq de API award',
                     'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
@@ -86,7 +86,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
                 ],
                 [
                     'id' => '9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
-                    'heading' => 'madewithlove creates API',
+                    'headline' => 'madewithlove creates API',
                     'inLanguage' => 'en',
                     'text' => 'Together with publiq madewithlove creates an API',
                     'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',

@@ -72,7 +72,7 @@ class GetNewsArticleRequestHandlerTest extends TestCase
         $this->assertEquals(
             Json::encode([
                 'id' => $articleId->toString(),
-                'heading' => 'publiq wint API award',
+                'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',
                 'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
