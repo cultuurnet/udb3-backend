@@ -60,19 +60,6 @@ class ContactPointTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_parameters_are_string_arrays(): void
-    {
-        $this->expectException(\TypeError::class);
-        new ContactPoint(
-            ['02/551 18 70'],
-            ['info@publiq.be', 'vragen@publiq.be'],
-            ['https://www.publiq.be']
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_the_injected_contact_methods(): void
     {
         $this->assertEquals($this->telephoneNumbers, $this->contactPoint->getTelephoneNumbers());
