@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Curators;
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\NewsArticles;
+use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
@@ -67,7 +68,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
             ->build('GET');
 
         $this->newsArticleRepository->expects($this->once())
-            ->method('getAll')
+            ->method('search')
             ->willReturn(new NewsArticles($newsArticle1, $newsArticle2));
 
         $response = $this->getNewsArticlesRequestHandler->handle($getNewsArticlesRequest);
@@ -102,13 +103,36 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_return_empty_list_when_no_articles_present(): void
+    public function it_handles_search_parameters(): void
+    {
+        $getNewsArticlesRequest = $this->psr7RequestBuilder
+            ->withUriFromString(
+                '?publisher=BILL&about=17284745-7bcf-461a-aad0-d3ad54880e75&url=https://www.buzz.be/blog/api'
+            )
+            ->build('GET');
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('search')
+            ->with(new NewsArticleSearch(
+                'BILL',
+                '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'https://www.buzz.be/blog/api'
+            ))
+            ->willReturn(new NewsArticles());
+
+        $this->getNewsArticlesRequestHandler->handle($getNewsArticlesRequest);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_empty_list_when_no_articles_present(): void
     {
         $getNewsArticlesRequest = $this->psr7RequestBuilder
             ->build('GET');
 
         $this->newsArticleRepository->expects($this->once())
-            ->method('getAll')
+            ->method('search')
             ->willReturn(new NewsArticles());
 
         $response = $this->getNewsArticlesRequestHandler->handle($getNewsArticlesRequest);
