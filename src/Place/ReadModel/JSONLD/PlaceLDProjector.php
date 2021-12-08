@@ -14,9 +14,9 @@ use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
@@ -176,7 +176,10 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $placeCreated->getPlaceId()
         );
 
-        $this->setMainLanguage($jsonLD, $placeCreated->getMainLanguage());
+        $this->setMainLanguage(
+            $jsonLD,
+            new Language($placeCreated->getMainLanguage()->getCode())
+        );
 
         $jsonLD->name[$placeCreated->getMainLanguage()->getCode()] = $placeCreated->getTitle();
 
@@ -272,7 +275,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($addressUpdated->getPlaceId());
         $jsonLD = $document->getBody();
-        $this->setAddress($jsonLD, $addressUpdated->getAddress(), $this->getMainLanguage($jsonLD));
+        $this->setAddress(
+            $jsonLD,
+            $addressUpdated->getAddress(),
+            $this->getMainLanguage($jsonLD)
+        );
         return $document->withBody($jsonLD);
     }
 
@@ -280,7 +287,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($addressTranslated->getPlaceId());
         $jsonLD = $document->getBody();
-        $this->setAddress($jsonLD, $addressTranslated->getAddress(), $addressTranslated->getLanguage());
+        $this->setAddress(
+            $jsonLD,
+            $addressTranslated->getAddress(),
+            new Language($addressTranslated->getLanguage()->getCode())
+        );
         return $document->withBody($jsonLD);
     }
 
@@ -302,7 +313,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             ];
         }
 
-        $jsonLd->address->{$language->getCode()} = $address->toJsonLd();
+        $jsonLd->address->{$language->toString()} = $address->toJsonLd();
     }
 
     protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated): JsonDocument

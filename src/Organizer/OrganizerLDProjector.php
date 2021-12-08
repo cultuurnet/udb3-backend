@@ -8,16 +8,26 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -41,10 +51,8 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\Title;
 use stdClass;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OrganizerLDProjector implements EventListener
 {
@@ -77,6 +85,10 @@ class OrganizerLDProjector implements EventListener
 
     private CdbXMLImporter $cdbXMLImporter;
 
+    private NormalizerInterface $addressNormalizer;
+
+    private NormalizerInterface $contactPointNormalizer;
+
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
@@ -86,6 +98,8 @@ class OrganizerLDProjector implements EventListener
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->cdbXMLImporter = new CdbXMLImporter();
+        $this->addressNormalizer = new AddressNormalizer();
+        $this->contactPointNormalizer = new ContactPointNormalizer();
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -153,10 +167,12 @@ class OrganizerLDProjector implements EventListener
                 new Street($organizerCreated->getStreetAddress()),
                 new PostalCode($organizerCreated->getPostalCode()),
                 new Locality($organizerCreated->getLocality()),
-                new Country(CountryCode::fromNative($organizerCreated->getCountryCode()))
+                new CountryCode(
+                    $organizerCreated->getCountryCode()
+                )
             );
             $jsonLD->address = [
-                $this->getMainLanguage($jsonLD)->getCode() => $address->toJsonLd(),
+                $this->getMainLanguage($jsonLD)->getCode() => $this->addressNormalizer->normalize($address),
             ];
         }
 
@@ -279,15 +295,30 @@ class OrganizerLDProjector implements EventListener
     {
         $organizerId = $contactPointUpdated->getOrganizerId();
         $contactPoint = new ContactPoint(
-            $contactPointUpdated->getPhones(),
-            $contactPointUpdated->getEmails(),
-            $contactPointUpdated->getUrls()
+            new TelephoneNumbers(
+                ...array_map(
+                    fn (string $phone) => new TelephoneNumber($phone),
+                    $contactPointUpdated->getPhones()
+                )
+            ),
+            new EmailAddresses(
+                ...array_map(
+                    fn (string $email) => new EmailAddress($email),
+                    $contactPointUpdated->getEmails()
+                )
+            ),
+            new Urls(
+                ...array_map(
+                    fn (string $url) => new Url($url),
+                    $contactPointUpdated->getUrls()
+                )
+            )
         );
 
         $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
-        $jsonLD->contactPoint = $contactPoint->toJsonLd();
+        $jsonLD->contactPoint = $this->contactPointNormalizer->normalize($contactPoint);
 
         return $document->withBody($jsonLD);
     }
@@ -430,7 +461,7 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->name->{$mainLanguage->getCode()} = $previousTitle;
         }
 
-        $jsonLD->name->{$language->getCode()} = $title->toNative();
+        $jsonLD->name->{$language->getCode()} = $title->toString();
 
         return $document->withBody($jsonLD);
     }
@@ -452,12 +483,14 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->address = new \stdClass();
         }
 
-        $jsonLD->address->{$language->getCode()} = (new Address(
-            new Street($addressUpdated->getStreetAddress()),
-            new PostalCode($addressUpdated->getPostalCode()),
-            new Locality($addressUpdated->getLocality()),
-            new Country(CountryCode::fromNative($addressUpdated->getCountryCode()))
-        ))->toJsonLd();
+        $jsonLD->address->{$language->getCode()} = $this->addressNormalizer->normalize(
+            new Address(
+                new Street($addressUpdated->getStreetAddress()),
+                new PostalCode($addressUpdated->getPostalCode()),
+                new Locality($addressUpdated->getLocality()),
+                new CountryCode($addressUpdated->getCountryCode())
+            )
+        );
 
         return $document->withBody($jsonLD);
     }
