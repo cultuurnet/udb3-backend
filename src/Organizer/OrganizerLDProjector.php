@@ -11,10 +11,11 @@ use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -80,6 +81,8 @@ class OrganizerLDProjector implements EventListener
 
     private NormalizerInterface $addressNormalizer;
 
+    private NormalizerInterface $contactPointNormalizer;
+
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
@@ -90,6 +93,7 @@ class OrganizerLDProjector implements EventListener
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->cdbXMLImporter = new CdbXMLImporter();
         $this->addressNormalizer = new AddressNormalizer();
+        $this->contactPointNormalizer = new ContactPointNormalizer();
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -294,7 +298,7 @@ class OrganizerLDProjector implements EventListener
         $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
-        $jsonLD->contactPoint = $contactPoint->toJsonLd();
+        $jsonLD->contactPoint = $this->contactPointNormalizer->normalize($contactPoint);
 
         return $document->withBody($jsonLD);
     }
@@ -507,5 +511,10 @@ class OrganizerLDProjector implements EventListener
     private function normalizeAddress(Address $address): array
     {
         return $this->addressNormalizer->normalize($address);
+    }
+
+    private function normalizeContactpoint(ContactPoint $contactPoint): array
+    {
+        return $this->contactPointNormalizer->normalize($contactPoint);
     }
 }
