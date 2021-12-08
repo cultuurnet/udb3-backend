@@ -307,25 +307,14 @@ class OrganizerLDProjectorTest extends TestCase
         $this->projector->handle($domainMessage);
     }
 
-    public function contactPointUpdatesDataProvider(): array
-    {
-        return [
-            'organizer without contact point' => [
-                'currentJson' => 'organizer.json',
-                'expectedJson' => 'organizer_with_updated_contactpoint.json',
-            ],
-        ];
-    }
-
     /**
      * @test
-     * @dataProvider contactPointUpdatesDataProvider
      */
-    public function it_handles_contactpoint_updated($currentJson, $expectedJson): void
+    public function it_handles_contactpoint_updated(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
-        $this->mockGet($organizerId, $currentJson);
+        $this->mockGet($organizerId, 'organizer.json');
 
         $domainMessage = $this->createDomainMessage(
             new ContactPointUpdated(
@@ -336,7 +325,7 @@ class OrganizerLDProjectorTest extends TestCase
             )
         );
 
-        $this->expectSave($organizerId, $expectedJson);
+        $this->expectSave($organizerId, 'organizer_with_updated_contactpoint.json');
 
         $this->projector->handle($domainMessage);
     }
