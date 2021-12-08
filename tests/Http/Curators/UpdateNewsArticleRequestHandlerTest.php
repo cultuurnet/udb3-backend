@@ -42,7 +42,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_news_article(): void
+    public function it_updates_a_news_article(): void
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
@@ -57,18 +57,25 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
             ])
             ->build('PUT');
 
+        $newsArticle = new NewsArticle(
+            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            'publiq wint API award',
+            new Language('nl'),
+            'Op 10 januari 2020 wint publiq de API award',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'BILL',
+            new Url('https://www.publiq.be/blog/api-reward'),
+            new Url('https://www.bill.be/img/favicon.png')
+        );
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('getById')
+            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->willReturn($newsArticle);
+
         $this->newsArticleRepository->expects($this->once())
             ->method('update')
-            ->with(new NewsArticle(
-                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
-                'publiq wint API award',
-                new Language('nl'),
-                'Op 10 januari 2020 wint publiq de API award',
-                '17284745-7bcf-461a-aad0-d3ad54880e75',
-                'BILL',
-                new Url('https://www.publiq.be/blog/api-reward'),
-                new Url('https://www.bill.be/img/favicon.png')
-            ));
+            ->with($newsArticle);
 
         $response = $this->updateNewsArticleRequestHandler->handle($createOrganizerRequest);
 
