@@ -16,7 +16,7 @@ final class NewsArticleNormalizer implements NormalizerInterface
     {
         return [
             'id' => $newsArticle->getId()->toString(),
-            'heading' => $newsArticle->getHeadline(),
+            'headline' => $newsArticle->getHeadline(),
             'inLanguage' => $newsArticle->getLanguage()->toString(),
             'text' => $newsArticle->getText(),
             'about' => $newsArticle->getAbout(),
