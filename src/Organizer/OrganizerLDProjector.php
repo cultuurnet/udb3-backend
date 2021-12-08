@@ -15,6 +15,8 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -22,6 +24,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -289,9 +295,24 @@ class OrganizerLDProjector implements EventListener
     {
         $organizerId = $contactPointUpdated->getOrganizerId();
         $contactPoint = new ContactPoint(
-            $contactPointUpdated->getPhones(),
-            $contactPointUpdated->getEmails(),
-            $contactPointUpdated->getUrls()
+            new TelephoneNumbers(
+                ...array_map(
+                    fn (string $phone) => new TelephoneNumber($phone),
+                    $contactPointUpdated->getPhones()
+                )
+            ),
+            new EmailAddresses(
+                ...array_map(
+                    fn (string $email) => new EmailAddress($email),
+                    $contactPointUpdated->getEmails()
+                )
+            ),
+            new Urls(
+                ...array_map(
+                    fn (string $url) => new Url($url),
+                    $contactPointUpdated->getUrls()
+                )
+            )
         );
 
         $document = $this->repository->fetch($organizerId);
