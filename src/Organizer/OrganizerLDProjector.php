@@ -157,17 +157,16 @@ class OrganizerLDProjector implements EventListener
         ];
 
         if ($organizerCreated->hasAddress()) {
-            $address =
-                new Address(
-                    new Street($organizerCreated->getStreetAddress()),
-                    new PostalCode($organizerCreated->getPostalCode()),
-                    new Locality($organizerCreated->getLocality()),
-                    new CountryCode(
-                        $organizerCreated->getCountryCode()
-                    )
-                );
+            $address = new Address(
+                new Street($organizerCreated->getStreetAddress()),
+                new PostalCode($organizerCreated->getPostalCode()),
+                new Locality($organizerCreated->getLocality()),
+                new CountryCode(
+                    $organizerCreated->getCountryCode()
+                )
+            );
             $jsonLD->address = [
-                $this->getMainLanguage($jsonLD)->getCode() => $this->normalizeAddress($address),
+                $this->getMainLanguage($jsonLD)->getCode() => $this->addressNormalizer->normalize($address),
             ];
         }
 
@@ -463,12 +462,14 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->address = new \stdClass();
         }
 
-        $jsonLD->address->{$language->getCode()} = $this->normalizeAddress(new Address(
-            new Street($addressUpdated->getStreetAddress()),
-            new PostalCode($addressUpdated->getPostalCode()),
-            new Locality($addressUpdated->getLocality()),
-            new CountryCode($addressUpdated->getCountryCode())
-        ));
+        $jsonLD->address->{$language->getCode()} = $this->addressNormalizer->normalize(
+            new Address(
+                new Street($addressUpdated->getStreetAddress()),
+                new PostalCode($addressUpdated->getPostalCode()),
+                new Locality($addressUpdated->getLocality()),
+                new CountryCode($addressUpdated->getCountryCode())
+            )
+        );
 
         return $document->withBody($jsonLD);
     }
@@ -506,15 +507,5 @@ class OrganizerLDProjector implements EventListener
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
-    }
-
-    private function normalizeAddress(Address $address): array
-    {
-        return $this->addressNormalizer->normalize($address);
-    }
-
-    private function normalizeContactpoint(ContactPoint $contactPoint): array
-    {
-        return $this->contactPointNormalizer->normalize($contactPoint);
     }
 }
