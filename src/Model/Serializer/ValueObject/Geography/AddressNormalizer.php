@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Geography;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AddressNormalizer implements NormalizerInterface
+final class AddressNormalizer implements NormalizerInterface
 {
     /**
      * @param Address $address
