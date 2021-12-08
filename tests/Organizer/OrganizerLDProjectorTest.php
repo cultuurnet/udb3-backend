@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
+use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
@@ -298,6 +299,40 @@ class OrganizerLDProjectorTest extends TestCase
                 '3000',
                 'Leuven',
                 'BE'
+            )
+        );
+
+        $this->expectSave($organizerId, $expectedJson);
+
+        $this->projector->handle($domainMessage);
+    }
+
+    public function contactPointUpdatesDataProvider(): array
+    {
+        return [
+            'organizer without contact point' => [
+                'currentJson' => 'organizer.json',
+                'expectedJson' => 'organizer_with_updated_contactpoint.json',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider contactPointUpdatesDataProvider
+     */
+    public function it_handles_contactpoint_updated($currentJson, $expectedJson): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, $currentJson);
+
+        $domainMessage = $this->createDomainMessage(
+            new ContactPointUpdated(
+                $organizerId,
+                ['02/551 18 70'],
+                ['info@publiq.be'],
+                ['https://www.publiq.be']
             )
         );
 
