@@ -10,7 +10,6 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
@@ -187,7 +186,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $this->setAddress(
             $jsonLD,
             $placeCreated->getAddress(),
-            new LegacyLanguage($this->getMainLanguage($jsonLD)->getCode())
+            $this->getMainLanguage($jsonLD)
         );
 
         /** @var Calendar $calendar */
@@ -245,7 +244,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $this->setAddress(
             $jsonLD,
             $majorInfoUpdated->getAddress(),
-            new LegacyLanguage($this->getMainLanguage($jsonLD)->getCode())
+            $this->getMainLanguage($jsonLD)
         );
 
         $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar());
@@ -279,7 +278,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         $this->setAddress(
             $jsonLD,
             $addressUpdated->getAddress(),
-            new LegacyLanguage($this->getMainLanguage($jsonLD)->getCode())
+            $this->getMainLanguage($jsonLD)
         );
         return $document->withBody($jsonLD);
     }
@@ -288,11 +287,15 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     {
         $document = $this->loadPlaceDocumentFromRepositoryById($addressTranslated->getPlaceId());
         $jsonLD = $document->getBody();
-        $this->setAddress($jsonLD, $addressTranslated->getAddress(), $addressTranslated->getLanguage());
+        $this->setAddress(
+            $jsonLD,
+            $addressTranslated->getAddress(),
+            new Language($addressTranslated->getLanguage()->getCode())
+        );
         return $document->withBody($jsonLD);
     }
 
-    protected function setAddress(\stdClass $jsonLd, Address $address, LegacyLanguage $language): void
+    protected function setAddress(\stdClass $jsonLd, Address $address, Language $language): void
     {
         if (!isset($jsonLd->address)) {
             $jsonLd->address = new \stdClass();
@@ -310,7 +313,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             ];
         }
 
-        $jsonLd->address->{$language->getCode()} = $address->toJsonLd();
+        $jsonLd->address->{$language->toString()} = $address->toJsonLd();
     }
 
     protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated): JsonDocument
