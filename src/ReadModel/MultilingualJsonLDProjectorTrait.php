@@ -19,8 +19,8 @@ trait MultilingualJsonLDProjectorTrait
     {
         if (isset($jsonLd->mainLanguage)) {
             return new Language($jsonLd->mainLanguage);
-        } else {
-            return new Language('nl');
         }
+
+        return new Language('nl');
     }
 }
