@@ -22,22 +22,15 @@ final class ContactPointNormalizerTest extends TestCase
     {
         $contactPoint = new ContactPoint(
             new TelephoneNumbers(
-                ...array_map(
-                    fn (string $phone) => new TelephoneNumber($phone),
-                    ['02/551 18 70', '02/551 18 71']
-                )
+                new TelephoneNumber('02/551 18 70'),
+                new TelephoneNumber('02/551 18 71')
             ),
             new EmailAddresses(
-                ...array_map(
-                    fn (string $email) => new EmailAddress($email),
-                    ['info@publiq.be', 'vragen@publiq.be']
-                )
+                new EmailAddress('info@publiq.be'),
+                new EmailAddress('vragen@publiq.be')
             ),
             new Urls(
-                ...array_map(
-                    fn (string $url) => new Url($url),
-                    ['https://www.publiq.be']
-                )
+                new Url('https://www.publiq.be')
             )
         );
 
