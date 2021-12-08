@@ -127,7 +127,7 @@ class OrganizerLDProjector implements EventListener
             $udb2Actor
         );
 
-        $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->toString();
 
         return $document->withBody($jsonLD);
     }
@@ -172,7 +172,7 @@ class OrganizerLDProjector implements EventListener
 
         $jsonLD = $this->appendCreator($jsonLD, $domainMessage);
 
-        $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->toString();
 
         return $document->withBody($jsonLD);
     }
@@ -220,7 +220,7 @@ class OrganizerLDProjector implements EventListener
 
         $jsonLD = $this->appendCreator($jsonLD, $domainMessage);
 
-        $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->toString();
 
         return $document->withBody($jsonLD);
     }
@@ -384,7 +384,7 @@ class OrganizerLDProjector implements EventListener
 
         $jsonLD = $document->getBody();
 
-        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->toString();
 
         return $document->withBody($jsonLD);
     }

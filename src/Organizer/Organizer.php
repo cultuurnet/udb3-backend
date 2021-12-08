@@ -5,24 +5,29 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
+use CultureFeed_Cdb_Data_Keyword;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
-use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
-use CultuurNet\UDB3\LabelCollection;
-use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -39,32 +44,28 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
-use CultuurNet\UDB3\Title as LegacyTitle;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
 {
     protected string $actorId;
 
-    private LegacyLanguage $mainLanguage;
+    private Language $mainLanguage;
 
-    private ?LegacyUrl $website = null;
+    private ?Url $website = null;
 
     /**
-     * @var LegacyTitle[]
+     * @var Title[]
      */
     private array $titles;
 
     /**
-     * @var LegacyAddress[]|null
+     * @var Address[]|null
      */
     private ?array $addresses = null;
 
     private ContactPoint $contactPoint;
 
-    private LabelCollection $labels;
+    private Labels $labels;
 
     private WorkflowStatus $workflowStatus;
 
@@ -80,7 +81,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // with a non-empty contact point. To enforce this we initialize the
         // aggregate state with an empty contact point.
         $this->contactPoint = new ContactPoint();
-        $this->labels = new LabelCollection();
+        $this->labels = new Labels();
         $this->workflowStatus = WorkflowStatus::ACTIVE();
     }
 
@@ -103,14 +104,19 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public static function create(
         string $id,
-        LegacyLanguage $mainLanguage,
-        LegacyUrl $website,
-        LegacyTitle $title
+        Language $mainLanguage,
+        Url $website,
+        Title $title
     ): Organizer {
         $organizer = new self();
 
         $organizer->apply(
-            new OrganizerCreatedWithUniqueWebsite($id, (string) $mainLanguage, (string) $website, (string) $title)
+            new OrganizerCreatedWithUniqueWebsite(
+                $id,
+                $mainLanguage->toString(),
+                $website->toString(),
+                $title->toString()
+            )
         );
 
         return $organizer;
@@ -129,9 +135,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateWebsite(Url $website): void
     {
-        $newWebsite = LegacyUrl::fromNative($website->toString());
-
-        if (is_null($this->website) || !$this->website->sameValueAs($newWebsite)) {
+        if ($this->website === null || !$this->website->sameAs($website)) {
             $this->apply(
                 new WebsiteUpdated(
                     $this->actorId,
@@ -146,7 +150,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         Language $language
     ): void {
         if ($this->isTitleChanged($title, $language)) {
-            if ($language->getCode() !== $this->mainLanguage->getCode()) {
+            if (!$language->sameAs($this->mainLanguage)) {
                 $event = new TitleTranslated(
                     $this->actorId,
                     $title->toString(),
@@ -167,8 +171,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         Address $address,
         Language $language
     ): void {
-        if ($this->isAddressChanged(LegacyAddress::fromUdb3ModelAddress($address), $language)) {
-            if ($language->getCode() !== $this->mainLanguage->getCode()) {
+        if ($this->isAddressChanged($address, $language)) {
+            if (!$language->sameAs($this->mainLanguage)) {
                 $event = new AddressTranslated(
                     $this->actorId,
                     $address->getStreet()->toString(),
@@ -208,9 +212,9 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             $this->apply(
                 new ContactPointUpdated(
                     $this->actorId,
-                    $contactPoint->getPhones(),
-                    $contactPoint->getEmails(),
-                    $contactPoint->getUrls()
+                    $contactPoint->getTelephoneNumbers()->toStringArray(),
+                    $contactPoint->getEmailAddresses()->toStringArray(),
+                    $contactPoint->getUrls()->toStringArray()
                 )
             );
         }
@@ -227,43 +231,48 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    public function addLabel(Label $label): void
+    public function addLabel(LegacyLabel $label): void
     {
-        if (!$this->labels->contains($label)) {
-            $this->apply(new LabelAdded($this->actorId, (string) $label->getName(), $label->isVisible()));
+        $labelName = new LabelName($label->getName()->toNative());
+
+        if (!$this->hasLabelWithName($labelName)) {
+            $this->apply(
+                new LabelAdded(
+                    $this->actorId,
+                    $label->getName()->toNative(),
+                    $label->isVisible()
+                )
+            );
         }
     }
 
-    public function removeLabel(Label $label): void
+    public function removeLabel(LegacyLabel $label): void
     {
-        if ($this->labels->contains($label)) {
-            $this->apply(new LabelRemoved($this->actorId, (string) $label->getName(), $label->isVisible()));
+        $labelName = new LabelName($label->getName()->toNative());
+
+        if ($this->hasLabelWithName($labelName)) {
+            $this->apply(
+                new LabelRemoved(
+                    $this->actorId,
+                    $label->getName()->toNative(),
+                    $label->isVisible()
+                )
+            );
         }
     }
 
     public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOrganizer): void
     {
-        $convertLabelClass = function (\CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $label) {
-            return new Label(
-                $label->getName()->toString(),
-                $label->isVisible()
-            );
-        };
-
         // Convert the imported labels to label collection.
-        $importLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labels->toArray())
-        );
+        $importLabelsCollection = $labels;
 
         // Convert the labels to keep if already applied.
-        $keepLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labelsToKeepIfAlreadyOnOrganizer->toArray())
-        );
+        $keepLabelsCollection = $labelsToKeepIfAlreadyOnOrganizer;
 
         // What are the added labels?
         // Labels which are not inside the internal state but inside the imported labels
-        $addedLabels = new LabelCollection();
-        foreach ($importLabelsCollection->asArray() as $label) {
+        $addedLabels = new Labels();
+        foreach ($importLabelsCollection->toArray() as $label) {
             if (!$this->labels->contains($label)) {
                 $addedLabels = $addedLabels->with($label);
             }
@@ -271,13 +280,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         // Fire a LabelsImported for all new labels.
         $importLabels = new Labels();
-        foreach ($addedLabels->asArray() as $addedLabel) {
-            $importLabels = $importLabels->with(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                    new LabelName((string) $addedLabel),
-                    $addedLabel->isVisible()
-                )
-            );
+        foreach ($addedLabels->toArray() as $addedLabel) {
+            $importLabels = $importLabels->with($addedLabel);
         }
         if ($importLabels->count() > 0) {
             $this->apply(new LabelsImported(
@@ -287,23 +291,24 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
 
         // For each added label fire a LabelAdded event.
-        foreach ($addedLabels->asArray() as $label) {
-            $this->apply(new LabelAdded($this->actorId, (string) $label->getName(), $label->isVisible()));
+        foreach ($addedLabels->toArray() as $label) {
+            /** @var Label $label */
+            $this->apply(new LabelAdded($this->actorId, $label->getName()->toString(), $label->isVisible()));
         }
 
         // What are the deleted labels?
         // Labels which are inside the internal state but not inside imported labels.
         // For each deleted label fire a LabelDeleted event.
-        foreach ($this->labels->asArray() as $label) {
+        foreach ($this->labels->toArray() as $label) {
             if (!$importLabelsCollection->contains($label) && !$keepLabelsCollection->contains($label)) {
-                $this->apply(new LabelRemoved($this->actorId, (string) $label->getName(), $label->isVisible()));
+                $this->apply(new LabelRemoved($this->actorId, $label->getName()->toString(), $label->isVisible()));
             }
         }
     }
 
     public function delete(): void
     {
-        if ($this->workflowStatus->is(WorkflowStatus::ACTIVE)) {
+        if ($this->workflowStatus->sameAs(WorkflowStatus::ACTIVE())) {
             $this->apply(
                 new OrganizerDeleted($this->getAggregateRootId())
             );
@@ -314,21 +319,21 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         $this->actorId = $organizerCreated->getOrganizerId();
 
-        $this->mainLanguage = new LegacyLanguage('nl');
+        $this->mainLanguage = new Language('nl');
 
-        $this->setTitle(new LegacyTitle($organizerCreated->getTitle()), $this->mainLanguage);
+        $this->setTitle(new Title($organizerCreated->getTitle()), $this->mainLanguage);
     }
 
     protected function applyOrganizerCreatedWithUniqueWebsite(OrganizerCreatedWithUniqueWebsite $organizerCreated): void
     {
         $this->actorId = $organizerCreated->getOrganizerId();
 
-        $this->mainLanguage = new LegacyLanguage($organizerCreated->getMainLanguage());
+        $this->mainLanguage = new Language($organizerCreated->getMainLanguage());
 
-        $this->website =  LegacyUrl::fromNative($organizerCreated->getWebsite());
+        $this->website = new Url($organizerCreated->getWebsite());
 
         $this->setTitle(
-            new LegacyTitle($organizerCreated->getTitle()),
+            new Title($organizerCreated->getTitle()),
             $this->mainLanguage
         );
     }
@@ -342,7 +347,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->actorId = (string) $organizerImported->getActorId();
 
         // On import from UDB2 the default main language is 'nl'.
-        $this->mainLanguage = new LegacyLanguage('nl');
+        $this->mainLanguage = new Language('nl');
 
         $actor = ActorItemFactory::createActorFromCdbXml(
             $organizerImported->getCdbXmlNamespaceUri(),
@@ -351,7 +356,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         $this->setTitle($this->getTitle($actor), $this->mainLanguage);
 
-        $this->labels = LabelCollection::fromKeywords($actor->getKeywords(true));
+        $this->labels = $this->keywordsToLabels($actor->getKeywords(true));
     }
 
     /**
@@ -369,18 +374,18 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
         $this->setTitle($this->getTitle($actor), $this->mainLanguage);
 
-        $this->labels = LabelCollection::fromKeywords($actor->getKeywords(true));
+        $this->labels = $this->keywordsToLabels($actor->getKeywords(true));
     }
 
     protected function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated): void
     {
-        $this->website = LegacyUrl::fromNative($websiteUpdated->getWebsite());
+        $this->website = new Url($websiteUpdated->getWebsite());
     }
 
     protected function applyTitleUpdated(TitleUpdated $titleUpdated): void
     {
         $this->setTitle(
-            new LegacyTitle($titleUpdated->getTitle()),
+            new Title($titleUpdated->getTitle()),
             $this->mainLanguage
         );
     }
@@ -388,18 +393,18 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyTitleTranslated(TitleTranslated $titleTranslated): void
     {
         $this->setTitle(
-            new LegacyTitle($titleTranslated->getTitle()),
-            new LegacyLanguage($titleTranslated->getLanguage())
+            new Title($titleTranslated->getTitle()),
+            new Language($titleTranslated->getLanguage())
         );
     }
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void
     {
-        $this->setAddress(new LegacyAddress(
+        $this->setAddress(new Address(
             new Street($addressUpdated->getStreetAddress()),
             new PostalCode($addressUpdated->getPostalCode()),
             new Locality($addressUpdated->getLocality()),
-            new Country(CountryCode::fromNative($addressUpdated->getCountryCode()))
+            new CountryCode($addressUpdated->getCountryCode())
         ), $this->mainLanguage);
     }
 
@@ -411,22 +416,37 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyAddressTranslated(AddressTranslated $addressTranslated): void
     {
         $this->setAddress(
-            new LegacyAddress(
+            new Address(
                 new Street($addressTranslated->getStreetAddress()),
                 new PostalCode($addressTranslated->getPostalCode()),
                 new Locality($addressTranslated->getLocality()),
-                new Country(CountryCode::fromNative($addressTranslated->getCountryCode()))
+                new CountryCode($addressTranslated->getCountryCode())
             ),
-            new LegacyLanguage($addressTranslated->getLanguage())
+            new Language($addressTranslated->getLanguage())
         );
     }
 
     protected function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): void
     {
         $this->contactPoint = new ContactPoint(
-            $contactPointUpdated->getPhones(),
-            $contactPointUpdated->getEmails(),
-            $contactPointUpdated->getUrls()
+            new TelephoneNumbers(
+                ...array_map(
+                    fn (string $phone) => new TelephoneNumber($phone),
+                    $contactPointUpdated->getPhones()
+                )
+            ),
+            new EmailAddresses(
+                ...array_map(
+                    fn (string $email) => new EmailAddress($email),
+                    $contactPointUpdated->getEmails()
+                )
+            ),
+            new Urls(
+                ...array_map(
+                    fn (string $url) => new Url($url),
+                    $contactPointUpdated->getUrls()
+                )
+            )
         );
     }
 
@@ -434,7 +454,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         $this->labels = $this->labels->with(
             new Label(
-                $labelAdded->getLabelName(),
+                new LabelName($labelAdded->getLabelName()),
                 $labelAdded->isLabelVisible()
             )
         );
@@ -442,11 +462,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
-        $this->labels = $this->labels->without(
-            new Label(
-                $labelRemoved->getLabelName(),
-                $labelRemoved->isLabelVisible()
-            )
+        $this->labels = $this->labels->filter(
+            fn (Label $label) => $label->getName()->toString() !== $labelRemoved->getLabelName()
         );
     }
 
@@ -455,7 +472,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
-    private function getTitle(\CultureFeed_Cdb_Item_Actor $actor): ?LegacyTitle
+    private function getTitle(\CultureFeed_Cdb_Item_Actor $actor): ?Title
     {
         $details = $actor->getDetails();
         $details->rewind();
@@ -464,29 +481,29 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // properties from which in UDB3 are not any longer considered
         // to be language specific.
         if ($details->valid()) {
-            return new LegacyTitle($details->current()->getTitle());
+            return new Title($details->current()->getTitle());
         }
 
         return null;
     }
 
-    private function setTitle(LegacyTitle $title, LegacyLanguage $language): void
+    private function setTitle(Title $title, Language $language): void
     {
-        $this->titles[$language->getCode()] = $title;
+        $this->titles[$language->toString()] = $title;
     }
 
     private function isTitleChanged(Title $title, Language $language): bool
     {
         return !isset($this->titles[$language->getCode()]) ||
-            $title->toString() !== $this->titles[$language->getCode()]->toNative();
+            $title->toString() !== $this->titles[$language->getCode()]->toString();
     }
 
-    private function setAddress(LegacyAddress $address, LegacyLanguage $language): void
+    private function setAddress(Address $address, Language $language): void
     {
-        $this->addresses[$language->getCode()] = $address;
+        $this->addresses[$language->toString()] = $address;
     }
 
-    private function isAddressChanged(LegacyAddress $address, Language $language): bool
+    private function isAddressChanged(Address $address, Language $language): bool
     {
         return !isset($this->addresses[$language->getCode()]) ||
             !$address->sameAs($this->addresses[$language->getCode()]);
@@ -495,5 +512,30 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private function hasAddress(): bool
     {
         return $this->addresses !== null;
+    }
+
+    private function hasLabelWithName(LabelName $labelName): bool
+    {
+        $foundLabels = $this->labels->filter(
+            fn (Label $currentLabel) => $currentLabel->getName()->sameAs($labelName)
+        );
+
+        return !$foundLabels->isEmpty();
+    }
+
+    /**
+     * @param CultureFeed_Cdb_Data_Keyword[] $keywords
+     */
+    private function keywordsToLabels(array $keywords): Labels
+    {
+        return new Labels(
+            ...array_map(
+                fn (CultureFeed_Cdb_Data_Keyword $keyword) => new Label(
+                    new LabelName($keyword->getValue()),
+                    $keyword->isVisible()
+                ),
+                array_values($keywords)
+            )
+        );
     }
 }

@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
-use MabeEnum\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
- * @deprecated
- *   Add a class like CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus but for Organizers to use instead.
- *
  * @method static WorkflowStatus ACTIVE()
  * @method static WorkflowStatus DELETED()
  */
 final class WorkflowStatus extends Enum
 {
-    public const ACTIVE = 'active';
-    public const DELETED = 'deleted';
+    public static function getAllowedValues(): array
+    {
+        return [
+            'ACTIVE',
+            'DELETED',
+        ];
+    }
 }

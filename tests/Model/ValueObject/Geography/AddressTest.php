@@ -8,32 +8,17 @@ use PHPUnit\Framework\TestCase;
 
 class AddressTest extends TestCase
 {
-    /**
-     * @var Street
-     */
-    private $street;
+    private Street $street;
 
-    /**
-     * @var PostalCode
-     */
-    private $postalCode;
+    private PostalCode $postalCode;
 
-    /**
-     * @var Locality
-     */
-    private $locality;
+    private Locality $locality;
 
-    /**
-     * @var CountryCode
-     */
-    private $countryCode;
+    private CountryCode $countryCode;
 
-    /**
-     * @var Address
-     */
-    private $address;
+    private Address $address;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->street = new Street('Henegouwenkaai 41-43');
         $this->postalCode = new PostalCode('1080');
@@ -51,7 +36,7 @@ class AddressTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_street()
+    public function it_should_return_a_copy_with_an_updated_street(): void
     {
         $updatedStreet = new Street('Henegouwenkaai 41-43 UPDATED');
         $updatedAddress = $this->address->withStreet($updatedStreet);
@@ -64,7 +49,7 @@ class AddressTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_postal_code()
+    public function it_should_return_a_copy_with_an_updated_postal_code(): void
     {
         $updatedPostalCode = new PostalCode('1080 UPDATED');
         $updatedAddress = $this->address->withPostalCode($updatedPostalCode);
@@ -77,7 +62,7 @@ class AddressTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_locality()
+    public function it_should_return_a_copy_with_an_updated_locality(): void
     {
         $updatedLocality = new Locality('Brussel UPDATED');
         $updatedAddress = $this->address->withLocality($updatedLocality);
@@ -90,7 +75,7 @@ class AddressTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_country_code()
+    public function it_should_return_a_copy_with_an_updated_country_code(): void
     {
         $updatedCountry = new CountryCode('NL');
         $updatedAddress = $this->address->withCountryCode($updatedCountry);
@@ -102,5 +87,29 @@ class AddressTest extends TestCase
 
         $this->assertEquals('BE', $this->address->getCountryCode()->getCode());
         $this->assertEquals('NL', $updatedAddress->getCountryCode()->getCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_compares_equality(): void
+    {
+        $this->assertTrue($this->address->sameAs(
+            new Address(
+                new Street('Henegouwenkaai 41-43'),
+                new PostalCode('1080'),
+                new Locality('Brussel'),
+                new CountryCode('BE')
+            )
+        ));
+
+        $this->assertFalse($this->address->sameAs(
+            new Address(
+                new Street('Henegouwenkaai 41-43'),
+                new PostalCode('9000'),
+                new Locality('Gent'),
+                new CountryCode('BE')
+            )
+        ));
     }
 }
