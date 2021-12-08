@@ -177,7 +177,10 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $placeCreated->getPlaceId()
         );
 
-        $this->setMainLanguage($jsonLD, $placeCreated->getMainLanguage());
+        $this->setMainLanguage(
+            $jsonLD,
+            new Language($placeCreated->getMainLanguage()->getCode())
+        );
 
         $jsonLD->name[$placeCreated->getMainLanguage()->getCode()] = $placeCreated->getTitle();
 
