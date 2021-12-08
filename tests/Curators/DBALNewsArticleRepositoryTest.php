@@ -120,6 +120,88 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
     /**
      * @test
+     * @dataProvider newsArticleSearchProvider
+     */
+    public function it_can_search_news_articles(NewsArticleSearch $newsArticleSearch, int $count, array $ids): void
+    {
+        $this->getConnection()->insert(
+            'news_article',
+            [
+                'id' => '05d5f569-4942-486d-b49e-07a089f070a2',
+                'headline' => 'madewithlove helpt met migratie',
+                'in_language' => 'nl',
+                'text' => 'In 2021 madewithlove helpt publiq met de migratie van de curator API',
+                'about' => 'c737abbb-d436-497d-a179-4c5d5581365e',
+                'publisher' => 'BUZZ',
+                'url' => 'https://www.madewithlove.be/blog/nl/curator-migratie',
+                'publisher_logo' => 'https://www.buzz.be/img/favicon.png',
+            ]
+        );
+
+        $newsArticles = $this->dbalNewsArticleRepository->search($newsArticleSearch);
+
+        $foundsIds = array_map(
+            fn (NewsArticle $newsArticle) => $newsArticle->getId()->toString(),
+            $newsArticles->toArray()
+        );
+
+        $this->assertEquals($count, $newsArticles->count());
+        $this->assertEquals($ids, $foundsIds);
+    }
+
+    public function newsArticleSearchProvider(): array
+    {
+        return [
+            'Search on publisher' => [
+                new NewsArticleSearch(
+                    'BILL',
+                    null,
+                    null
+                ),
+                1,
+                [
+                    '4bd47771-4c83-4023-be0d-e4e93681c2ba',
+                ],
+            ],
+            'Search on about' => [
+                new NewsArticleSearch(
+                    null,
+                    'c737abbb-d436-497d-a179-4c5d5581365e',
+                    null
+                ),
+                2,
+                [
+                    '9a94f933-0ccd-477b-8a74-87d086b04d3b',
+                    '05d5f569-4942-486d-b49e-07a089f070a2',
+                ],
+            ],
+            'Search on url' => [
+                new NewsArticleSearch(
+                    null,
+                    null,
+                    'https://www.madewithlove.be/blog/curator-migratie'
+                ),
+                1,
+                [
+                    '9a94f933-0ccd-477b-8a74-87d086b04d3b',
+                ],
+            ],
+            'Search on combination' => [
+                new NewsArticleSearch(
+                    'BUZZ',
+                    'c737abbb-d436-497d-a179-4c5d5581365e',
+                    'https://www.madewithlove.be/blog/curator-migratie'
+                ),
+                1,
+                [
+                    '9a94f933-0ccd-477b-8a74-87d086b04d3b',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_returns_empty_news_articles_collection_when_no_articles_present(): void
     {

@@ -15,6 +15,8 @@ interface NewsArticleRepository
 
     public function getAll(): NewsArticles;
 
+    public function search(NewsArticleSearch $newsArticleSearch): NewsArticles;
+
     public function create(NewsArticle $newsArticle): void;
 
     public function update(NewsArticle $newsArticle): void;
