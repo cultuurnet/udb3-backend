@@ -8,16 +8,19 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -41,10 +44,8 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\Title;
 use stdClass;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OrganizerLDProjector implements EventListener
 {
@@ -77,6 +78,8 @@ class OrganizerLDProjector implements EventListener
 
     private CdbXMLImporter $cdbXMLImporter;
 
+    private NormalizerInterface $addressNormalizer;
+
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
@@ -86,6 +89,7 @@ class OrganizerLDProjector implements EventListener
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->cdbXMLImporter = new CdbXMLImporter();
+        $this->addressNormalizer = new AddressNormalizer();
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -149,14 +153,17 @@ class OrganizerLDProjector implements EventListener
         ];
 
         if ($organizerCreated->hasAddress()) {
-            $address = new Address(
-                new Street($organizerCreated->getStreetAddress()),
-                new PostalCode($organizerCreated->getPostalCode()),
-                new Locality($organizerCreated->getLocality()),
-                new Country(CountryCode::fromNative($organizerCreated->getCountryCode()))
-            );
+            $address =
+                new Address(
+                    new Street($organizerCreated->getStreetAddress()),
+                    new PostalCode($organizerCreated->getPostalCode()),
+                    new Locality($organizerCreated->getLocality()),
+                    new CountryCode(
+                        $organizerCreated->getCountryCode()
+                    )
+                );
             $jsonLD->address = [
-                $this->getMainLanguage($jsonLD)->getCode() => $address->toJsonLd(),
+                $this->getMainLanguage($jsonLD)->getCode() => $this->normalizeAddress($address),
             ];
         }
 
@@ -430,7 +437,7 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->name->{$mainLanguage->getCode()} = $previousTitle;
         }
 
-        $jsonLD->name->{$language->getCode()} = $title->toNative();
+        $jsonLD->name->{$language->getCode()} = $title->toString();
 
         return $document->withBody($jsonLD);
     }
@@ -452,12 +459,12 @@ class OrganizerLDProjector implements EventListener
             $jsonLD->address = new \stdClass();
         }
 
-        $jsonLD->address->{$language->getCode()} = (new Address(
+        $jsonLD->address->{$language->getCode()} = $this->normalizeAddress(new Address(
             new Street($addressUpdated->getStreetAddress()),
             new PostalCode($addressUpdated->getPostalCode()),
             new Locality($addressUpdated->getLocality()),
-            new Country(CountryCode::fromNative($addressUpdated->getCountryCode()))
-        ))->toJsonLd();
+            new CountryCode($addressUpdated->getCountryCode())
+        ));
 
         return $document->withBody($jsonLD);
     }
@@ -495,5 +502,10 @@ class OrganizerLDProjector implements EventListener
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
+    }
+
+    private function normalizeAddress(Address $address): array
+    {
+        return $this->addressNormalizer->normalize($address);
     }
 }
