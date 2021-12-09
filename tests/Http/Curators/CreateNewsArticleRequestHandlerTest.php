@@ -111,4 +111,74 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
             fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
         );
     }
+
+    /**
+     * @test
+     * @dataProvider invalidNewsArticleProviders
+     */
+    public function it_throws_on_missing_properties(array $body, ApiProblem $apiProblem): void
+    {
+        $createOrganizerRequest = $this->psr7RequestBuilder
+            ->withBodyFromArray($body)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            $apiProblem,
+            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
+        );
+    }
+
+    public function invalidNewsArticleProviders(): array
+    {
+        return [
+            'missing headline' => [
+                [
+                    'inLanguage' => 'nl',
+                    'text' => 'Op 10 januari 2020 wint publiq de API award',
+                    'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'publisher' => 'BILL',
+                    'url' => 'https://www.publiq.be/blog/api-reward',
+                    'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                ],
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (headline) are missing')
+                ),
+            ],
+            'missing inLanguage' => [
+                [
+                    'headline' => 'publiq wint API award',
+                    'text' => 'Op 10 januari 2020 wint publiq de API award',
+                    'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'publisher' => 'BILL',
+                    'url' => 'https://www.publiq.be/blog/api-reward',
+                    'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                ],
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (inLanguage) are missing')
+                ),
+            ],
+            'various properties missing' => [
+                [
+                    'headline' => 'publiq wint API award',
+                    'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'publisher' => 'BILL',
+                    'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                ],
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (inLanguage, text, url) are missing')
+                ),
+            ],
+            'all properties missing' => [
+                [
+                    'missing' => 'all properties',
+                ],
+                ApiProblem::bodyInvalidData(
+                    new SchemaError(
+                        '/',
+                        'The required properties (headline, inLanguage, text, about, publisher, publisherLogo, url) are missing'
+                    )
+                ),
+            ],
+        ];
+    }
 }
