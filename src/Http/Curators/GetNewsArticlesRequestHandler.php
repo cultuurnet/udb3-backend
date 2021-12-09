@@ -6,7 +6,9 @@ namespace CultuurNet\UDB3\Http\Curators;
 
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
+use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
+use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,7 +30,15 @@ final class GetNewsArticlesRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $newsArticles = $this->newsArticleRepository->getAll();
+        $queryParameters = new QueryParameters($request);
+
+        $newsArticleSearch = new NewsArticleSearch(
+            $queryParameters->get('publisher'),
+            $queryParameters->get('about'),
+            $queryParameters->get('url'),
+        );
+
+        $newsArticles = $this->newsArticleRepository->search($newsArticleSearch);
 
         return new JsonLdResponse(
             array_map(
