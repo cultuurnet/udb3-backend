@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\Http\Curators;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -16,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 
 class CreateNewsArticleRequestHandlerTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
     /** @var NewsArticleRepository|MockObject */
     private $newsArticleRepository;
 
@@ -75,6 +80,35 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
         $this->assertEquals(
             '{"id":"6c583739-a848-41ab-b8a3-8f7dab6f8ee1"}',
             $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_empty_body(): void
+    {
+        $createOrganizerRequest = $this->psr7RequestBuilder
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyMissing(),
+            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_invalid_body_syntax(): void
+    {
+        $createOrganizerRequest = $this->psr7RequestBuilder
+            ->withBodyFromString('{invalid}')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidSyntax('JSON'),
+            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
         );
     }
 }
