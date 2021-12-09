@@ -76,6 +76,9 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
         $this->assertEquals(
             Json::encode([
                 [
+                    '@context' => '/contexts/NewsArticle',
+                    '@id' => '/news_articles/ec00bcd0-41e9-47a0-8364-71aad7e537c5',
+                    '@type' => 'https://schema.org/NewsArticle',
                     'id' => 'ec00bcd0-41e9-47a0-8364-71aad7e537c5',
                     'headline' => 'publiq wint API award',
                     'inLanguage' => 'nl',
@@ -86,6 +89,9 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
                     'publisherLogo' => 'https://www.bill.be/img/favicon.png',
                 ],
                 [
+                    '@context' => '/contexts/NewsArticle',
+                    '@id' => '/news_articles/9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
+                    '@type' => 'https://schema.org/NewsArticle',
                     'id' => '9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
                     'headline' => 'madewithlove creates API',
                     'inLanguage' => 'en',
