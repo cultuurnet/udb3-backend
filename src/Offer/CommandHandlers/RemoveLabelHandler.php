@@ -12,10 +12,7 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 
 final class RemoveLabelHandler implements CommandHandler
 {
-    /**
-     * @var OfferRepository
-     */
-    private $offerRepository;
+    private OfferRepository $offerRepository;
 
     public function __construct(OfferRepository $offerRepository)
     {
