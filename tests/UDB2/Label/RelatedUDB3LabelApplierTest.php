@@ -6,15 +6,16 @@ namespace CultuurNet\UDB3\UDB2\Label;
 
 use Broadway\Domain\AggregateRoot;
 use CultuurNet\UDB3\Event\Event;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelsRelationsRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Organizer;
 use CultuurNet\UDB3\Place\Place;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -96,13 +97,13 @@ class RelatedUDB3LabelApplierTest extends TestCase
             ->willReturn(
                 [
                     new LabelRelation(
-                        new LabelName('2dotstwice'),
+                        new LegacyLabelName('2dotstwice'),
                         $relationType,
                         $relationId,
                         false
                     ),
                     new LabelRelation(
-                        new LabelName('Cultuurnet'),
+                        new LegacyLabelName('Cultuurnet'),
                         $relationType,
                         $relationId,
                         true
@@ -113,7 +114,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
         $this->labelsRepository->expects($this->once())
             ->method('getByName')
             ->with(
-                new LabelName('2dotstwice')
+                new LegacyLabelName('2dotstwice')
             )
             ->willReturn(
                 new Entity(
@@ -163,7 +164,9 @@ class RelatedUDB3LabelApplierTest extends TestCase
             ->method('addLabel')
             ->with($this->callback(
                 function (Label $label) {
-                    return $label->equals(new Label('2dotstwice', false));
+                    return $label->getName()->sameAs(
+                        (new Label(new LabelName('2dotstwice'), false))->getName()
+                    );
                 }
             ));
 
