@@ -22,8 +22,9 @@ use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
@@ -68,7 +69,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_facilities_after_udb2_update()
+    public function it_handles_update_facilities_after_udb2_update(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -104,7 +105,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_contact_point_after_udb2_import()
+    public function it_handles_update_contact_point_after_udb2_import(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -141,7 +142,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_calendar_after_udb2_import()
+    public function it_handles_update_calendar_after_udb2_import(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -178,7 +179,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_price_info_after_udb2_import()
+    public function it_handles_update_price_info_after_udb2_import(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -221,7 +222,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     public function it_should_update_the_address_in_the_main_language(
         Address $originalAddress,
         Address $updatedAddress
-    ) {
+    ): void {
         $language = new Language('nl');
 
         $this->scenario
@@ -253,7 +254,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_should_not_update_the_address_when_address_is_not_changed()
+    public function it_should_not_update_the_address_when_address_is_not_changed(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -288,7 +289,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_should_update_the_address_after_udb2_updates()
+    public function it_should_update_the_address_after_udb2_updates(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -333,7 +334,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_typical_age_range_after_udb2_update()
+    public function it_handles_update_typical_age_range_after_udb2_update(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -368,7 +369,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_delete_typical_age_range_after_udb2_update()
+    public function it_handles_delete_typical_age_range_after_udb2_update(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -401,7 +402,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_booking_info_after_udb2_import()
+    public function it_handles_update_booking_info_after_udb2_import(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -444,7 +445,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     public function it_should_translate_the_address_in_any_other_language_than_the_main_language(
         Address $originalAddress,
         Address $updatedAddress
-    ) {
+    ): void {
         $language = new Language('fr');
 
         $this->scenario
@@ -473,10 +474,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             );
     }
 
-    /**
-     * @return array
-     */
-    public function updateAddressDataProvider()
+    public function updateAddressDataProvider(): array
     {
         return [
             [
@@ -499,7 +497,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_imports_from_udb2_actors_and_takes_keywords_into_account()
+    public function it_imports_from_udb2_actors_and_takes_keywords_into_account(): void
     {
         $cdbXml = $this->getCdbXML(
             '/ReadModel/JSONLD/place_with_long_description.cdbxml.xml'
@@ -526,7 +524,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Place $place) {
-                    $place->addLabel(new Label('Toevlalocatie'));
+                    $place->addLabel(new Label(new LabelName('Toevlalocatie')));
                 }
             )
             ->then([]);
@@ -535,7 +533,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_applies_placeUpdatedFromUdb2_when_updating_actor_cdbxml_and_takes_keywords_into_account()
+    public function it_applies_placeUpdatedFromUdb2_when_updating_actor_cdbxml_and_takes_keywords_into_account(): void
     {
         $cdbXml = $this->getCdbXML(
             '/ReadModel/JSONLD/place_with_long_description.cdbxml.xml'
@@ -568,7 +566,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Place $place) {
-                    $place->addLabel(new Label('Toevlalocatie'));
+                    $place->addLabel(new Label(new LabelName('Toevlalocatie')));
                 }
             )
             ->then([]);
@@ -577,19 +575,13 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider newPlaceProvider
-     *
-     * @param string                    $expectedId The unique id of the place element
-     * @param EventSourcedAggregateRoot $place
      */
-    public function it_has_an_id($expectedId, $place)
+    public function it_has_an_id(string $expectedId, EventSourcedAggregateRoot $place): void
     {
         $this->assertEquals($expectedId, $place->getAggregateRootId());
     }
 
-    /**
-     * @return array
-     */
-    public function newPlaceProvider()
+    public function newPlaceProvider(): array
     {
         return [
             'actor' => [
@@ -608,7 +600,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_title_after_place_created()
+    public function it_does_not_update_the_same_title_after_place_created(): void
     {
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -629,7 +621,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_calendar_after_place_created()
+    public function it_does_not_update_the_same_calendar_after_place_created(): void
     {
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -649,7 +641,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_contact_point_after_place_created()
+    public function it_does_not_update_the_same_contact_point_after_place_created(): void
     {
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -669,7 +661,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_booking_info_after_place_created()
+    public function it_does_not_update_the_same_booking_info_after_place_created(): void
     {
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
@@ -689,7 +681,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_be_marked_as_duplicate()
+    public function it_can_be_marked_as_duplicate(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -708,7 +700,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_will_not_be_marked_as_duplicate_when_it_is_deleted()
+    public function it_will_not_be_marked_as_duplicate_when_it_is_deleted(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -732,7 +724,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_will_not_be_marked_as_duplicate_when_it_is_already_marked_as_duplicate()
+    public function it_will_not_be_marked_as_duplicate_when_it_is_already_marked_as_duplicate(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -757,7 +749,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_be_marked_as_canonical()
+    public function it_can_be_marked_as_canonical(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -806,7 +798,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_will_not_be_marked_as_canonical_when_it_is_already_a_duplicate()
+    public function it_will_not_be_marked_as_canonical_when_it_is_already_a_duplicate(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
@@ -827,10 +819,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             );
     }
 
-    /**
-     * @return PlaceCreated
-     */
-    private function createPlaceCreatedEvent()
+    private function createPlaceCreatedEvent(): PlaceCreated
     {
         $placeId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 

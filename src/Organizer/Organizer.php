@@ -9,7 +9,6 @@ use CultureFeed_Cdb_Data_Keyword;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -231,30 +230,30 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    public function addLabel(LegacyLabel $label): void
+    public function addLabel(Label $label): void
     {
-        $labelName = new LabelName($label->getName()->toNative());
+        $labelName = new LabelName($label->getName()->toString());
 
         if (!$this->hasLabelWithName($labelName)) {
             $this->apply(
                 new LabelAdded(
                     $this->actorId,
-                    $label->getName()->toNative(),
+                    $label->getName()->toString(),
                     $label->isVisible()
                 )
             );
         }
     }
 
-    public function removeLabel(LegacyLabel $label): void
+    public function removeLabel(Label $label): void
     {
-        $labelName = new LabelName($label->getName()->toNative());
+        $labelName = new LabelName($label->getName()->toString());
 
         if ($this->hasLabelWithName($labelName)) {
             $this->apply(
                 new LabelRemoved(
                     $this->actorId,
-                    $label->getName()->toNative(),
+                    $label->getName()->toString(),
                     $label->isVisible()
                 )
             );

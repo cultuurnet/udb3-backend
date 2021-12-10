@@ -8,7 +8,7 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -77,9 +78,9 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->offer->apply(new ItemCreated('foo'));
 
         $this->labels = (new LabelCollection())
-            ->with(new Label('test'))
-            ->with(new Label('label'))
-            ->with(new Label('cultuurnet'));
+            ->with(new LegacyLabel('test'))
+            ->with(new LegacyLabel('label'))
+            ->with(new LegacyLabel('cultuurnet'));
         $this->image = new Image(
             new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/gif'),
@@ -283,19 +284,19 @@ class OfferTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 function (Item $item) {
-                    $item->addLabel(new Label('purple'));
-                    $item->addLabel(new Label('orange'));
-                    $item->addLabel(new Label('green'));
+                    $item->addLabel(new Label(new LabelName('purple')));
+                    $item->addLabel(new Label(new LabelName('orange')));
+                    $item->addLabel(new Label(new LabelName('green')));
 
-                    $item->addLabel(new Label('purple'));
-                    $item->addLabel(new Label('orange'));
-                    $item->addLabel(new Label('green'));
+                    $item->addLabel(new Label(new LabelName('purple')));
+                    $item->addLabel(new Label(new LabelName('orange')));
+                    $item->addLabel(new Label(new LabelName('green')));
                 }
             )
             ->then([
-                new LabelAdded($itemId, new Label('purple')),
-                new LabelAdded($itemId, new Label('orange')),
-                new LabelAdded($itemId, new Label('green')),
+                new LabelAdded($itemId, new LegacyLabel('purple')),
+                new LabelAdded($itemId, new LegacyLabel('orange')),
+                new LabelAdded($itemId, new LegacyLabel('green')),
             ]);
     }
 
@@ -312,20 +313,20 @@ class OfferTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 function (Item $item) {
-                    $item->addLabel(new Label('purple'));
-                    $item->addLabel(new Label('orange'));
-                    $item->addLabel(new Label('green'));
+                    $item->addLabel(new Label(new LabelName('purple')));
+                    $item->addLabel(new Label(new LabelName('orange')));
+                    $item->addLabel(new Label(new LabelName('green')));
 
-                    $item->removeLabel(new Label('purple'));
-                    $item->addLabel(new Label('purple'));
+                    $item->removeLabel(new Label(new LabelName('purple')));
+                    $item->addLabel(new Label(new LabelName('purple')));
                 }
             )
             ->then([
-                new LabelAdded($itemId, new Label('purple')),
-                new LabelAdded($itemId, new Label('orange')),
-                new LabelAdded($itemId, new Label('green')),
-                new LabelRemoved($itemId, new Label('purple')),
-                new LabelAdded($itemId, new Label('purple')),
+                new LabelAdded($itemId, new LegacyLabel('purple')),
+                new LabelAdded($itemId, new LegacyLabel('orange')),
+                new LabelAdded($itemId, new LegacyLabel('green')),
+                new LabelRemoved($itemId, new LegacyLabel('purple')),
+                new LabelAdded($itemId, new LegacyLabel('purple')),
             ]);
     }
 
@@ -364,9 +365,9 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
-                new LabelAdded($itemId, new Label('existing_label_1')),
-                new LabelAdded($itemId, new Label('existing_label_2')),
-                new LabelAdded($itemId, new Label('existing_label_3')),
+                new LabelAdded($itemId, new LegacyLabel('existing_label_1')),
+                new LabelAdded($itemId, new LegacyLabel('existing_label_2')),
+                new LabelAdded($itemId, new LegacyLabel('existing_label_3')),
             ])
             ->when(
                 function (Item $item) use ($labels, $labelsToKeepIfApplied, $labelsToRemoveWhenOnOffer) {
@@ -384,8 +385,8 @@ class OfferTest extends AggregateRootScenarioTestCase
                         )
                     )
                 ),
-                new LabelAdded($itemId, new Label('new_label_1')),
-                new LabelRemoved($itemId, new Label('existing_label_2')),
+                new LabelAdded($itemId, new LegacyLabel('new_label_1')),
+                new LabelRemoved($itemId, new LegacyLabel('existing_label_2')),
             ]);
     }
 

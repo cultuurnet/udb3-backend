@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -95,12 +95,12 @@ class Item extends Offer
         return new OwnerChanged($this->id, $newOwnerId);
     }
 
-    protected function createLabelAddedEvent(Label $label): LabelAdded
+    protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
     {
         return new LabelAdded($this->id, $label);
     }
 
-    protected function createLabelRemovedEvent(Label $label): LabelRemoved
+    protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
     {
         return new LabelRemoved($this->id, $label);
     }

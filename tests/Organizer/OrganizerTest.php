@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -14,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -94,7 +94,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->addLabel(new Label('foo'));
+                    $organizer->addLabel(new Label(new LabelName('foo')));
                 }
             )
             ->then([]);
@@ -143,7 +143,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->addLabel(new Label('foo'));
+                    $organizer->addLabel(new Label(new LabelName('foo')));
                 }
             )
             ->then([]);
@@ -155,22 +155,22 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     public function it_can_import_labels(): void
     {
         $labels = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('new_label_1'),
                 true
             ),
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('existing_label_1'),
                 true
             )
         );
 
         $keepIfApplied = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('existing_label_3'),
                 true
             ),
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('non_existing_label_1'),
                 true
             )
@@ -197,7 +197,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new LabelsImported(
                         $this->id,
                         new Labels(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+                            new Label(
                                 new LabelName('new_label_1'),
                                 true
                             )

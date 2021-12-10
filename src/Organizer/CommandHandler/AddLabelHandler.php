@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
@@ -48,7 +48,7 @@ final class AddLabelHandler implements CommandHandler
             $visible = $readModelLabelEntity->getVisibility() === Visibility::VISIBLE();
         }
 
-        $labelWithCorrectVisibility = new Label($name->toString(), $visible);
+        $labelWithCorrectVisibility = new Label($name, $visible);
 
         $organizer = $this->organizerRepository->load($command->getItemId());
         $organizer->addLabel($labelWithCorrectVisibility);
