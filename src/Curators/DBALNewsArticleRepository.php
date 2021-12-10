@@ -77,7 +77,14 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
                 ->setParameter(':url', $newsArticleSearch->getUrl());
         }
 
+        if ($newsArticleSearch->getStartPage() > 1) {
+            $query = $query->setFirstResult(
+                ($newsArticleSearch->getStartPage() - 1) * $newsArticleSearch->getItemsPerPage()
+            );
+        }
+
         $newsArticleRows = $query
+            ->setMaxResults($newsArticleSearch->getItemsPerPage())
             ->execute()
             ->fetchAll(FetchMode::ASSOCIATIVE);
 
