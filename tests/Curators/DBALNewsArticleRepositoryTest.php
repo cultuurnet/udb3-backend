@@ -176,6 +176,15 @@ final class DBALNewsArticleRepositoryTest extends TestCase
                     '05d5f569-4942-486d-b49e-07a089f070a2',
                 ],
             ],
+            'Search with pagination past last result' => [
+                (new NewsArticleSearch(
+                    null,
+                    'c737abbb-d436-497d-a179-4c5d5581365e',
+                    null
+                ))->withItemsPerPage(10)->withStartPage(2),
+                0,
+                [],
+            ],
         ];
     }
 
