@@ -88,38 +88,6 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
     /**
      * @test
-     */
-    public function it_can_get_all_news_articles(): void
-    {
-        $this->assertEquals(
-            new NewsArticles(
-                new NewsArticle(
-                    new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
-                    'publiq wint API award',
-                    new Language('nl'),
-                    'Op 10 januari 2020 wint publiq de API award',
-                    '17284745-7bcf-461a-aad0-d3ad54880e75',
-                    'BILL',
-                    new Url('https://www.publiq.be/blog/api-reward'),
-                    new Url('https://www.bill.be/img/favicon.png')
-                ),
-                new NewsArticle(
-                    new UUID('9a94f933-0ccd-477b-8a74-87d086b04d3b'),
-                    'madewithlove helps porting migrator API',
-                    new Language('en'),
-                    'In 2021 madewithlove helps publiq with migrating the curator API',
-                    'c737abbb-d436-497d-a179-4c5d5581365e',
-                    'BUZZ',
-                    new Url('https://www.madewithlove.be/blog/curator-migratie'),
-                    new Url('https://www.buzz.be/img/favicon.png')
-                )
-            ),
-            $this->dbalNewsArticleRepository->getAll()
-        );
-    }
-
-    /**
-     * @test
      * @dataProvider newsArticleSearchProvider
      */
     public function it_can_search_news_articles(NewsArticleSearch $newsArticleSearch, int $count, array $ids): void
@@ -197,21 +165,27 @@ final class DBALNewsArticleRepositoryTest extends TestCase
                     '9a94f933-0ccd-477b-8a74-87d086b04d3b',
                 ],
             ],
+            'Search with pagination' => [
+                (new NewsArticleSearch(
+                    null,
+                    'c737abbb-d436-497d-a179-4c5d5581365e',
+                    null
+                ))->withItemsPerPage(1)->withStartPage(2),
+                1,
+                [
+                    '05d5f569-4942-486d-b49e-07a089f070a2',
+                ],
+            ],
+            'Search with pagination past last result' => [
+                (new NewsArticleSearch(
+                    null,
+                    'c737abbb-d436-497d-a179-4c5d5581365e',
+                    null
+                ))->withItemsPerPage(10)->withStartPage(2),
+                0,
+                [],
+            ],
         ];
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_empty_news_articles_collection_when_no_articles_present(): void
-    {
-        $this->dbalNewsArticleRepository->delete(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
-        $this->dbalNewsArticleRepository->delete(new UUID('9a94f933-0ccd-477b-8a74-87d086b04d3b'));
-
-        $this->assertEquals(
-            new NewsArticles(),
-            $this->dbalNewsArticleRepository->getAll()
-        );
     }
 
     /**
