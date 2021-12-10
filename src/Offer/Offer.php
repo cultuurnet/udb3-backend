@@ -245,7 +245,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer, Labels $labelsToRemoveWhenOnOffer): void
     {
-        $convertLabelClass = function (\CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $label) {
+        $convertLabelClass = function (Label $label) {
             return new LegacyLabel(
                 $label->getName()->toString(),
                 $label->isVisible()
@@ -280,7 +280,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $importLabels = new Labels();
         foreach ($addedLabels->asArray() as $addedLabel) {
             $importLabels = $importLabels->with(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+                new Label(
                     new LabelName((string) $addedLabel),
                     $addedLabel->isVisible()
                 )
