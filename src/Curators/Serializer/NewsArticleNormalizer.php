@@ -15,6 +15,9 @@ final class NewsArticleNormalizer implements NormalizerInterface
     public function normalize($newsArticle, $format = null, array $context = []): array
     {
         return [
+            '@context' => '/contexts/NewsArticle',
+            '@id' => '/news_articles/' . $newsArticle->getId()->toString(),
+            '@type' => 'https://schema.org/NewsArticle',
             'id' => $newsArticle->getId()->toString(),
             'headline' => $newsArticle->getHeadline(),
             'inLanguage' => $newsArticle->getLanguage()->toString(),
