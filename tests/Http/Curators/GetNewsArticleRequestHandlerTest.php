@@ -71,6 +71,9 @@ class GetNewsArticleRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             Json::encode([
+                '@context' => '/contexts/NewsArticle',
+                '@id' => '/news_articles/' . $articleId->toString(),
+                '@type' => 'https://schema.org/NewsArticle',
                 'id' => $articleId->toString(),
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',

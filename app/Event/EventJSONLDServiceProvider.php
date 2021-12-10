@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
+use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\Productions\ProductionEnrichedEventRepository;
@@ -22,6 +23,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CuratorEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
@@ -74,6 +76,12 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
 
                 $repository = new MediaUrlOfferRepositoryDecorator($repository, $app['media_url_mapping']);
+
+                $repository = new CuratorEnrichedOfferRepository(
+                    $repository,
+                    $app[NewsArticleRepository::class],
+                    $app['config']['curator_labels']
+                );
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
