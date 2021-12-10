@@ -295,11 +295,11 @@ class OrganizerTest extends AggregateRootScenarioTestCase
      */
     public function it_can_set_an_initial_address_and_remove_it_later(): void
     {
-        $initialAddress = new LegacyAddress(
-            new LegacyStreet('Wetstraat 1'),
-            new LegacyPostalCode('1000'),
-            new LegacyLocality('Brussel'),
-            Country::fromNative('BE')
+        $initialAddress = new Address(
+            new Street('Wetstraat 1'),
+            new PostalCode('1000'),
+            new Locality('Brussel'),
+            new CountryCode('BE')
         );
 
         $this->scenario
@@ -308,10 +308,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $this->organizerCreatedWithUniqueWebsite,
                     new AddressUpdated(
                         $this->id,
-                        $initialAddress->getStreetAddress()->toNative(),
-                        $initialAddress->getPostalCode()->toNative(),
-                        $initialAddress->getLocality()->toNative(),
-                        $initialAddress->getCountry()->getCode()->toNative()
+                        $initialAddress->getStreet()->toString(),
+                        $initialAddress->getPostalCode()->toString(),
+                        $initialAddress->getLocality()->toString(),
+                        $initialAddress->getCountryCode()->toString()
                     ),
                 ]
             )
