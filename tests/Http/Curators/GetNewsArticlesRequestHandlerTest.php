@@ -113,17 +113,17 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
     {
         $getNewsArticlesRequest = $this->psr7RequestBuilder
             ->withUriFromString(
-                '?publisher=BILL&about=17284745-7bcf-461a-aad0-d3ad54880e75&url=https://www.buzz.be/blog/api'
+                '?publisher=BILL&about=17284745-7bcf-461a-aad0-d3ad54880e75&url=https://www.buzz.be/blog/api&page=3'
             )
             ->build('GET');
 
         $this->newsArticleRepository->expects($this->once())
             ->method('search')
-            ->with(new NewsArticleSearch(
+            ->with((new NewsArticleSearch(
                 'BILL',
                 '17284745-7bcf-461a-aad0-d3ad54880e75',
                 'https://www.buzz.be/blog/api'
-            ))
+            ))->withStartPage(3))
             ->willReturn(new NewsArticles());
 
         $this->getNewsArticlesRequestHandler->handle($getNewsArticlesRequest);

@@ -38,6 +38,11 @@ final class GetNewsArticlesRequestHandler implements RequestHandlerInterface
             $queryParameters->get('url'),
         );
 
+        $startPage = $queryParameters->get('page');
+        if ($startPage) {
+            $newsArticleSearch = $newsArticleSearch->withStartPage((int) $startPage);
+        }
+
         $newsArticles = $this->newsArticleRepository->search($newsArticleSearch);
 
         return new JsonLdResponse(
