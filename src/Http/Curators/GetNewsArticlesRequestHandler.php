@@ -45,11 +45,11 @@ final class GetNewsArticlesRequestHandler implements RequestHandlerInterface
 
         $newsArticles = $this->newsArticleRepository->search($newsArticleSearch);
 
-        return new JsonLdResponse(
-            array_map(
+        return new JsonLdResponse([
+            'hydra:member' => array_map(
                 fn (NewsArticle $newsArticle) => $this->newsArticleNormalizer->normalize($newsArticle),
                 $newsArticles->toArray()
-            )
-        );
+            ),
+        ]);
     }
 }

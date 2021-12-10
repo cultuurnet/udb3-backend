@@ -75,31 +75,33 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             Json::encode([
-                [
-                    '@context' => '/contexts/NewsArticle',
-                    '@id' => '/news_articles/ec00bcd0-41e9-47a0-8364-71aad7e537c5',
-                    '@type' => 'https://schema.org/NewsArticle',
-                    'id' => 'ec00bcd0-41e9-47a0-8364-71aad7e537c5',
-                    'headline' => 'publiq wint API award',
-                    'inLanguage' => 'nl',
-                    'text' => 'Op 10 januari 2020 wint publiq de API award',
-                    'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
-                    'publisher' => 'BILL',
-                    'url' => 'https://www.publiq.be/blog/api-reward',
-                    'publisherLogo' => 'https://www.bill.be/img/favicon.png',
-                ],
-                [
-                    '@context' => '/contexts/NewsArticle',
-                    '@id' => '/news_articles/9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
-                    '@type' => 'https://schema.org/NewsArticle',
-                    'id' => '9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
-                    'headline' => 'madewithlove creates API',
-                    'inLanguage' => 'en',
-                    'text' => 'Together with publiq madewithlove creates an API',
-                    'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
-                    'publisher' => 'BUZZ',
-                    'url' => 'https://www.buzz.be/blog/api',
-                    'publisherLogo' => 'https://www.buzz.be/img/favicon.png',
+                'hydra:member' => [
+                    [
+                        '@context' => '/contexts/NewsArticle',
+                        '@id' => '/news_articles/ec00bcd0-41e9-47a0-8364-71aad7e537c5',
+                        '@type' => 'https://schema.org/NewsArticle',
+                        'id' => 'ec00bcd0-41e9-47a0-8364-71aad7e537c5',
+                        'headline' => 'publiq wint API award',
+                        'inLanguage' => 'nl',
+                        'text' => 'Op 10 januari 2020 wint publiq de API award',
+                        'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                        'publisher' => 'BILL',
+                        'url' => 'https://www.publiq.be/blog/api-reward',
+                        'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+                    ],
+                    [
+                        '@context' => '/contexts/NewsArticle',
+                        '@id' => '/news_articles/9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
+                        '@type' => 'https://schema.org/NewsArticle',
+                        'id' => '9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
+                        'headline' => 'madewithlove creates API',
+                        'inLanguage' => 'en',
+                        'text' => 'Together with publiq madewithlove creates an API',
+                        'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                        'publisher' => 'BUZZ',
+                        'url' => 'https://www.buzz.be/blog/api',
+                        'publisherLogo' => 'https://www.buzz.be/img/favicon.png',
+                    ],
                 ],
             ]),
             $response->getBody()->getContents()
@@ -144,7 +146,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
         $response = $this->getNewsArticlesRequestHandler->handle($getNewsArticlesRequest);
 
         $this->assertEquals(
-            Json::encode([]),
+            Json::encode(['hydra:member' => []]),
             $response->getBody()->getContents()
         );
     }
