@@ -26,8 +26,12 @@ final class RemoveLabelHandler implements CommandHandler
         }
 
         $offer = $this->offerRepository->load($command->getItemId());
-        $label = new Label(new LabelName($command->getLabel()->getName()->toNative()), $command->getLabel()->isVisible());
-        $offer->removeLabel($label);
+        $offer->removeLabel(
+            new Label(
+                new LabelName($command->getLabel()->getName()->toNative()),
+                $command->getLabel()->isVisible()
+            )
+        );
         $this->offerRepository->save($offer);
     }
 }
