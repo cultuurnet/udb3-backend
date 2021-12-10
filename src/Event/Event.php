@@ -61,7 +61,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -438,12 +438,12 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         );
     }
 
-    protected function createLabelAddedEvent(Label $label): LabelAdded
+    protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
     {
         return new LabelAdded($this->eventId, $label);
     }
 
-    protected function createLabelRemovedEvent(Label $label): LabelRemoved
+    protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
     {
         return new LabelRemoved($this->eventId, $label);
     }

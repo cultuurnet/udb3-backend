@@ -31,13 +31,15 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -433,13 +435,13 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 function (Event $event) {
-                    $event->addLabel(new Label('foo'));
-                    $event->addLabel(new Label('bar'));
+                    $event->addLabel(new Label(new LabelName('foo')));
+                    $event->addLabel(new Label(new LabelName('bar')));
                 }
             )
             ->then([
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label('foo')),
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label('bar')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('foo')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('bar')),
             ]);
     }
 
@@ -454,12 +456,12 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 function (Event $event) {
-                    $event->addLabel(new Label('foo'));
-                    $event->addLabel(new Label('foo'));
+                    $event->addLabel(new Label(new LabelName('foo')));
+                    $event->addLabel(new Label(new LabelName('foo')));
                 }
             )
             ->then([
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label('foo')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('foo')),
             ]);
     }
 
@@ -474,15 +476,15 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 function (Event $event) {
-                    $event->addLabel(new Label('Foo'));
-                    $event->addLabel(new Label('foo'));
-                    $event->addLabel(new Label('België'));
-                    $event->addLabel(new Label('BelgiË'));
+                    $event->addLabel(new Label(new LabelName('Foo')));
+                    $event->addLabel(new Label(new LabelName('foo')));
+                    $event->addLabel(new Label(new LabelName('België')));
+                    $event->addLabel(new Label(new LabelName('BelgiË')));
                 }
             )
             ->then([
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label('Foo')),
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label('België')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('Foo')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('België')),
             ]);
     }
 
@@ -501,14 +503,14 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 function (Event $event) {
-                    $event->addLabel(new Label('kunst'));
-                    $event->addLabel(new Label('tentoonstelling'));
-                    $event->addLabel(new Label('brugge'));
-                    $event->addLabel(new Label('grafiek'));
-                    $event->addLabel(new Label('oud sint jan'));
-                    $event->addLabel(new Label('TRAEGHE GENUINE ARTS'));
-                    $event->addLabel(new Label('janine de conink'));
-                    $event->addLabel(new Label('brugge oktober'));
+                    $event->addLabel(new Label(new LabelName('kunst')));
+                    $event->addLabel(new Label(new LabelName('tentoonstelling')));
+                    $event->addLabel(new Label(new LabelName('brugge')));
+                    $event->addLabel(new Label(new LabelName('grafiek')));
+                    $event->addLabel(new Label(new LabelName('oud sint jan')));
+                    $event->addLabel(new Label(new LabelName('TRAEGHE GENUINE ARTS')));
+                    $event->addLabel(new Label(new LabelName('janine de conink')));
+                    $event->addLabel(new Label(new LabelName('brugge oktober')));
                 }
             )
             ->then([]);
@@ -519,7 +521,7 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function unlabelDataProvider()
     {
-        $label = new Label('foo');
+        $label = new Label(new LabelName('foo'));
 
         $id = '004aea08-e13d-48c9-b9eb-a18f20e6d44e';
         $ns = self::NS_CDBXML_3_3;
@@ -540,7 +542,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        $label
+                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
                     ),
                 ],
             ],
@@ -563,7 +565,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        new Label('fOO')
+                        new LegacyLabel('fOO')
                     ),
                 ],
             ],
@@ -589,7 +591,7 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new LabelRemoved($id, $label),
+                    new LabelRemoved($id, new LegacyLabel($label->getName()->toString(), $label->isVisible())),
                 ]
             );
     }
@@ -599,7 +601,7 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function unlabelIgnoredDataProvider()
     {
-        $label = new Label('foo');
+        $label = new Label(new LabelName('foo'));
 
         $id = '004aea08-e13d-48c9-b9eb-a18f20e6d44e';
         $ns = self::NS_CDBXML_3_3;
@@ -640,11 +642,11 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        $label
+                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
                     ),
                     new LabelRemoved(
                         $id,
-                        $label
+                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
                     ),
                 ],
             ],
@@ -657,7 +659,7 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_silently_ignores_unlabel_request_if_label_is_not_present(
         Label $label,
-        array $givens
+        array       $givens
     ) {
         $this->scenario
             ->given($givens)
@@ -1022,7 +1024,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $calendar = new Calendar(
             CalendarType::PERMANENT()
         );
-        $label = new Label('ABC');
+        $label = new Label(new LabelName('ABC'));
 
         $event = $this->event;
         $event->addLabel($label);
@@ -1049,7 +1051,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     ),
                     new LabelAdded(
                         $newEventId,
-                        $label
+                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
                     ),
                 ]
             );
