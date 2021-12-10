@@ -38,19 +38,6 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
         return $this->createNewsArticle($newsArticleRows[0]);
     }
 
-    public function getAll(): NewsArticles
-    {
-        $queryBuilder = $this->connection->createQueryBuilder();
-
-        $newsArticleRows = $queryBuilder
-            ->select('*')
-            ->from('news_article')
-            ->execute()
-            ->fetchAll(FetchMode::ASSOCIATIVE);
-
-        return $this->createNewsArticles($newsArticleRows);
-    }
-
     public function search(NewsArticleSearch $newsArticleSearch): NewsArticles
     {
         $queryBuilder = $this->connection->createQueryBuilder();

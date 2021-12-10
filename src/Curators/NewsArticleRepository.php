@@ -13,8 +13,6 @@ interface NewsArticleRepository
      */
     public function getById(UUID $id): NewsArticle;
 
-    public function getAll(): NewsArticles;
-
     public function search(NewsArticleSearch $newsArticleSearch): NewsArticles;
 
     public function create(NewsArticle $newsArticle): void;
