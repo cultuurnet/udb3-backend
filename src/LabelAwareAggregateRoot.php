@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 
 interface LabelAwareAggregateRoot extends AggregateRoot
 {
-    public function addLabel(Label $label);
+    public function addLabel(Label $label): void;
 
-    public function removeLabel(Label $label);
+    public function removeLabel(Label $label): void;
 }
