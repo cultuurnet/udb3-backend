@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -50,7 +50,7 @@ final class AddLabelHandler implements CommandHandler
 
         // Load the label read model so we can determine the correct visibility.
         $labelEntity = $this->labelRepository->getByName(new StringLiteral($labelName));
-        if ($labelEntity instanceof LegacyLabel\ReadModels\JSON\Repository\Entity) {
+        if ($labelEntity instanceof Entity) {
             $labelVisibility = $labelEntity->getVisibility() === Visibility::VISIBLE();
         }
 
