@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -48,7 +50,7 @@ final class AddLabelHandler implements CommandHandler
         }
 
         $this->labelService->createLabelAggregateIfNew(
-            new LabelName((string) $command->getLabel()),
+            new LegacyLabelName((string) $command->getLabel()),
             $command->getLabel()->isVisible()
         );
 
@@ -57,13 +59,16 @@ final class AddLabelHandler implements CommandHandler
 
         // Load the label read model so we can determine the correct visibility.
         $labelEntity = $this->labelRepository->getByName(new StringLiteral($labelName));
-        if ($labelEntity instanceof Label\ReadModels\JSON\Repository\Entity) {
+        if ($labelEntity instanceof LegacyLabel\ReadModels\JSON\Repository\Entity) {
             $labelVisibility = $labelEntity->getVisibility() === Visibility::VISIBLE();
         }
 
         $offer = $this->offerRepository->load($command->getItemId());
         $offer->addLabel(
-            new Label($labelName, $labelVisibility)
+            new Label(
+                new LabelName($labelName),
+                $labelVisibility
+            )
         );
         $this->offerRepository->save($offer);
     }
