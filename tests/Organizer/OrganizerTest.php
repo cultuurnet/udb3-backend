@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
 use CultuurNet\UDB3\Address\Street as LegacyStreet;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -18,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -99,7 +99,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->addLabel(new Label('foo'));
+                    $organizer->addLabel(new Label(new LabelName('foo')));
                 }
             )
             ->then([]);
@@ -148,7 +148,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->addLabel(new Label('foo'));
+                    $organizer->addLabel(new Label(new LabelName('foo')));
                 }
             )
             ->then([]);
