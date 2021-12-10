@@ -5,11 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\Locality as LegacyLocality;
-use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
-use CultuurNet\UDB3\Address\Street as LegacyStreet;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -18,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -40,7 +36,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
-use ValueObjects\Geography\Country;
 
 class OrganizerTest extends AggregateRootScenarioTestCase
 {
@@ -99,7 +94,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->addLabel(new Label('foo'));
+                    $organizer->addLabel(new Label(new LabelName('foo')));
                 }
             )
             ->then([]);
@@ -148,7 +143,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Organizer $organizer) {
-                    $organizer->addLabel(new Label('foo'));
+                    $organizer->addLabel(new Label(new LabelName('foo')));
                 }
             )
             ->then([]);
@@ -160,22 +155,22 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     public function it_can_import_labels(): void
     {
         $labels = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('new_label_1'),
                 true
             ),
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('existing_label_1'),
                 true
             )
         );
 
         $keepIfApplied = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('existing_label_3'),
                 true
             ),
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('non_existing_label_1'),
                 true
             )
@@ -202,7 +197,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new LabelsImported(
                         $this->id,
                         new Labels(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+                            new Label(
                                 new LabelName('new_label_1'),
                                 true
                             )
@@ -295,11 +290,11 @@ class OrganizerTest extends AggregateRootScenarioTestCase
      */
     public function it_can_set_an_initial_address_and_remove_it_later(): void
     {
-        $initialAddress = new LegacyAddress(
-            new LegacyStreet('Wetstraat 1'),
-            new LegacyPostalCode('1000'),
-            new LegacyLocality('Brussel'),
-            Country::fromNative('BE')
+        $initialAddress = new Address(
+            new Street('Wetstraat 1'),
+            new PostalCode('1000'),
+            new Locality('Brussel'),
+            new CountryCode('BE')
         );
 
         $this->scenario
@@ -308,10 +303,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $this->organizerCreatedWithUniqueWebsite,
                     new AddressUpdated(
                         $this->id,
-                        $initialAddress->getStreetAddress()->toNative(),
-                        $initialAddress->getPostalCode()->toNative(),
-                        $initialAddress->getLocality()->toNative(),
-                        $initialAddress->getCountry()->getCode()->toNative()
+                        $initialAddress->getStreet()->toString(),
+                        $initialAddress->getPostalCode()->toString(),
+                        $initialAddress->getLocality()->toString(),
+                        $initialAddress->getCountryCode()->toString()
                     ),
                 ]
             )

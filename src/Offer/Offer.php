@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language as LegacyLanguage;
@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -224,26 +225,28 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function addLabel(Label $label): void
     {
-        if (!$this->labels->contains($label)) {
+        $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
+        if (!$this->labels->contains($legacyLabel)) {
             $this->apply(
-                $this->createLabelAddedEvent($label)
+                $this->createLabelAddedEvent($legacyLabel)
             );
         }
     }
 
     public function removeLabel(Label $label): void
     {
-        if ($this->labels->contains($label)) {
+        $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
+        if ($this->labels->contains($legacyLabel)) {
             $this->apply(
-                $this->createLabelRemovedEvent($label)
+                $this->createLabelRemovedEvent($legacyLabel)
             );
         }
     }
 
     public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer, Labels $labelsToRemoveWhenOnOffer): void
     {
-        $convertLabelClass = function (\CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $label) {
-            return new Label(
+        $convertLabelClass = function (Label $label) {
+            return new LegacyLabel(
                 $label->getName()->toString(),
                 $label->isVisible()
             );
@@ -277,7 +280,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $importLabels = new Labels();
         foreach ($addedLabels->asArray() as $addedLabel) {
             $importLabels = $importLabels->with(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+                new Label(
                     new LabelName((string) $addedLabel),
                     $addedLabel->isVisible()
                 )
@@ -466,7 +469,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyLabelAdded(AbstractLabelAdded $labelAdded): void
     {
         $this->labels = $this->labels->with(
-            new Label(
+            new LegacyLabel(
                 $labelAdded->getLabelName(),
                 $labelAdded->isLabelVisible()
             )
@@ -476,7 +479,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved): void
     {
         $this->labels = $this->labels->without(
-            new Label(
+            new LegacyLabel(
                 $labelRemoved->getLabelName(),
                 $labelRemoved->isLabelVisible()
             )
@@ -998,9 +1001,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = isset($newMainImage) ? $images->withMain($newMainImage) : $images;
     }
 
-    abstract protected function createLabelAddedEvent(Label $label): AbstractLabelAdded;
+    abstract protected function createLabelAddedEvent(LegacyLabel $label): AbstractLabelAdded;
 
-    abstract protected function createLabelRemovedEvent(Label $label): AbstractLabelRemoved;
+    abstract protected function createLabelRemovedEvent(LegacyLabel $label): AbstractLabelRemoved;
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 

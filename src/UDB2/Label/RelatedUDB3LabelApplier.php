@@ -4,31 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UDB2\Label;
 
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelsRelationsRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class RelatedUDB3LabelApplier implements LabelApplierInterface
 {
-    /**
-     * @var LabelsRelationsRepositoryInterface
-     */
-    private $labelsRelationsRepository;
+    private LabelsRelationsRepositoryInterface $labelsRelationsRepository;
 
-    /**
-     * @var LabelsRepositoryInterface
-     */
-    private $labelsRepository;
+    private LabelsRepositoryInterface $labelsRepository;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
+    private LoggerInterface $logger;
 
     public function __construct(
         LabelsRelationsRepositoryInterface $labelsRelationsRepository,
@@ -40,10 +31,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function apply(LabelAwareAggregateRoot $aggregateRoot)
+    public function apply(LabelAwareAggregateRoot $aggregateRoot): void
     {
         $labelRelations = $this->labelsRelationsRepository->getLabelRelationsForItem(
             new StringLiteral($aggregateRoot->getAggregateRootId())
@@ -64,7 +52,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
                     );
 
                     $udb3Labels[] = new Label(
-                        $labelRelation->getLabelName()->toNative(),
+                        new LabelName($labelRelation->getLabelName()->toNative()),
                         $label->getVisibility() === Visibility::VISIBLE()
                     );
                 }
@@ -74,7 +62,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
         foreach ($udb3Labels as $udb3Label) {
             $aggregateRoot->addLabel($udb3Label);
             $this->logger->info(
-                'Added udb3 label ' . $udb3Label
+                'Added udb3 label ' . $udb3Label->getName()->toString()
                 . ' for aggregate ' . $aggregateRoot->getAggregateRootId()
             );
         }
