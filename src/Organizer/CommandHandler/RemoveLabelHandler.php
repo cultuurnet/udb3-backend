@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -38,7 +39,7 @@ final class RemoveLabelHandler implements CommandHandler
             $visible = $readModelLabelEntity->getVisibility() === Visibility::VISIBLE();
         }
 
-        $label = new Label($labelName->toNative(), $visible);
+        $label = new Label(new LabelName($labelName->toNative()), $visible);
 
         $organizer = $this->organizerRepository->load($command->getItemId());
         $organizer->removeLabel($label);
