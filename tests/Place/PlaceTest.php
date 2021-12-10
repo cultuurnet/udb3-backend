@@ -22,8 +22,9 @@ use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
@@ -526,7 +527,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Place $place) {
-                    $place->addLabel(new Label('Toevlalocatie'));
+                    $place->addLabel(new Label(new LabelName('Toevlalocatie')));
                 }
             )
             ->then([]);
@@ -568,7 +569,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             )
             ->when(
                 function (Place $place) {
-                    $place->addLabel(new Label('Toevlalocatie'));
+                    $place->addLabel(new Label(new LabelName('Toevlalocatie')));
                 }
             )
             ->then([]);
