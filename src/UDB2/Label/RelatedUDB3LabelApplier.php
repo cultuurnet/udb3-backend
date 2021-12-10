@@ -21,7 +21,6 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
 
     private LoggerInterface $logger;
 
-
     public function __construct(
         LabelsRelationsRepositoryInterface $labelsRelationsRepository,
         LabelsRepositoryInterface $labelsRepository,
@@ -32,10 +31,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function apply(LabelAwareAggregateRoot $aggregateRoot)
+    public function apply(LabelAwareAggregateRoot $aggregateRoot): void
     {
         $labelRelations = $this->labelsRelationsRepository->getLabelRelationsForItem(
             new StringLiteral($aggregateRoot->getAggregateRootId())
