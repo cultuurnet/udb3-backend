@@ -18,20 +18,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 final class AddLabelHandler implements CommandHandler
 {
-    /**
-     * @var OfferRepository
-     */
-    private $offerRepository;
+    private OfferRepository $offerRepository;
 
-    /**
-     * @var LabelServiceInterface
-     */
-    private $labelService;
+    private LabelServiceInterface $labelService;
 
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $labelRepository;
+    private ReadRepositoryInterface $labelRepository;
 
     public function __construct(
         OfferRepository $offerRepository,

@@ -68,12 +68,9 @@ class EventTest extends AggregateRootScenarioTestCase
         return Event::class;
     }
 
-    /**
-     * @var Event
-     */
-    protected $event;
+    protected Event $event;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -87,7 +84,7 @@ class EventTest extends AggregateRootScenarioTestCase
         );
     }
 
-    private function getCreationEvent()
+    private function getCreationEvent(): EventCreated
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
@@ -99,7 +96,7 @@ class EventTest extends AggregateRootScenarioTestCase
         );
     }
 
-    private function getCreationEventWithTheme()
+    private function getCreationEventWithTheme(): EventCreated
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
@@ -115,7 +112,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_sets_the_audience_type_to_education_when_creating_an_event_with_a_dummy_education_location()
+    public function it_sets_the_audience_type_to_education_when_creating_an_event_with_a_dummy_education_location(): void
     {
         $eventUuid = UUID::generateAsString();
         $locationUuid = UUID::generateAsString();
@@ -146,7 +143,7 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @group issue-III-1380
      */
-    public function it_handles_copy_event()
+    public function it_handles_copy_event(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
@@ -178,7 +175,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_facilities_after_udb2_update()
+    public function it_handles_update_facilities_after_udb2_update(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -214,7 +211,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_contact_point_after_udb2_import()
+    public function it_handles_update_contact_point_after_udb2_import(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -251,7 +248,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_calendar_after_udb2_import()
+    public function it_handles_update_calendar_after_udb2_import(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -288,7 +285,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_typical_age_range_after_udb2_update()
+    public function it_handles_update_typical_age_range_after_udb2_update(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -322,7 +319,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_delete_typical_age_range_after_udb2_update()
+    public function it_handles_delete_typical_age_range_after_udb2_update(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -352,7 +349,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_booking_info_after_udb2_update()
+    public function it_handles_update_booking_info_after_udb2_update(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -389,7 +386,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_price_info_after_udb2_import()
+    public function it_handles_update_price_info_after_udb2_import(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -427,7 +424,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_be_tagged_with_multiple_labels()
+    public function it_can_be_tagged_with_multiple_labels(): void
     {
         $this->scenario
             ->given([
@@ -448,7 +445,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_only_applies_the_same_tag_once()
+    public function it_only_applies_the_same_tag_once(): void
     {
         $this->scenario
             ->given([
@@ -468,7 +465,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_add_similar_labels_with_different_letter_casing()
+    public function it_does_not_add_similar_labels_with_different_letter_casing(): void
     {
         $this->scenario
             ->given([
@@ -491,7 +488,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_be_imported_from_udb2_cdbxml_without_any_labels()
+    public function it_can_be_imported_from_udb2_cdbxml_without_any_labels(): void
     {
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
         $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
@@ -516,10 +513,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
-    /**
-     * @return array
-     */
-    public function unlabelDataProvider()
+    public function unlabelDataProvider(): array
     {
         $label = new Label(new LabelName('foo'));
 
@@ -575,13 +569,12 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider unlabelDataProvider
-     * @param string $id
      */
     public function it_can_be_unlabelled(
-        $id,
+        string $id,
         Label $label,
         array $givens
-    ) {
+    ): void {
         $this->scenario
             ->given($givens)
             ->when(
@@ -596,10 +589,7 @@ class EventTest extends AggregateRootScenarioTestCase
             );
     }
 
-    /**
-     * @return array
-     */
-    public function unlabelIgnoredDataProvider()
+    public function unlabelIgnoredDataProvider(): array
     {
         $label = new Label(new LabelName('foo'));
 
@@ -660,7 +650,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_silently_ignores_unlabel_request_if_label_is_not_present(
         Label $label,
         array       $givens
-    ) {
+    ): void {
         $this->scenario
             ->given($givens)
             ->when(
@@ -674,7 +664,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_should_not_add_duplicate_images()
+    public function it_should_not_add_duplicate_images(): void
     {
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
@@ -717,7 +707,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_removes_images()
+    public function it_removes_images(): void
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
@@ -767,7 +757,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_silently_ignores_an_image_removal_request_when_image_is_not_present()
+    public function it_silently_ignores_an_image_removal_request_when_image_is_not_present(): void
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/samples/event_entryapi_valid_with_keywords.xml'
@@ -806,7 +796,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_location()
+    public function it_handles_update_location(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -836,7 +826,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_location_after_udb2_import()
+    public function it_handles_update_location_after_udb2_import(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
@@ -868,7 +858,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_sets_the_audience_type_to_education_when_setting_a_dummy_education_location()
+    public function it_sets_the_audience_type_to_education_when_setting_a_dummy_education_location(): void
     {
         $createEvent = $this->getCreationEvent();
         $eventId = $createEvent->getEventId();
@@ -901,9 +891,9 @@ class EventTest extends AggregateRootScenarioTestCase
      * @param AudienceUpdated[] $audienceUpdatedEvents
      */
     public function it_applies_the_audience_type(
-        $audiences,
-        $audienceUpdatedEvents
-    ) {
+        array $audiences,
+        array $audienceUpdatedEvents
+    ): void {
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
@@ -920,10 +910,7 @@ class EventTest extends AggregateRootScenarioTestCase
             );
     }
 
-    /**
-     * @return array
-     */
-    public function audienceDataProvider()
+    public function audienceDataProvider(): array
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
@@ -1000,7 +987,7 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @group issue-III-1380
      */
-    public function it_refuses_to_copy_when_there_are_uncommitted_events()
+    public function it_refuses_to_copy_when_there_are_uncommitted_events(): void
     {
         $event = $this->event;
 
@@ -1018,7 +1005,7 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @group issue-III-1380
      */
-    public function it_resets_labels_on_copy()
+    public function it_resets_labels_on_copy(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
@@ -1061,7 +1048,7 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @group issue-III-1380
      */
-    public function it_keeps_audience_on_copy()
+    public function it_keeps_audience_on_copy(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
@@ -1100,7 +1087,7 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @group issue-III-1380
      */
-    public function it_resets_workflow_status_on_copy()
+    public function it_resets_workflow_status_on_copy(): void
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
@@ -1145,7 +1132,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_title_after_event_created()
+    public function it_does_not_update_the_same_title_after_event_created(): void
     {
         $this->scenario
             ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
@@ -1166,7 +1153,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_calendar_after_event_created()
+    public function it_does_not_update_the_same_calendar_after_event_created(): void
     {
         $this->scenario
             ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
@@ -1186,7 +1173,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_audience_type_after_event_created()
+    public function it_does_not_update_the_same_audience_type_after_event_created(): void
     {
         $this->scenario
             ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
@@ -1206,7 +1193,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_contact_point_after_event_created()
+    public function it_does_not_update_the_same_contact_point_after_event_created(): void
     {
         $this->scenario
             ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
@@ -1226,7 +1213,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_same_booking_info_after_event_created()
+    public function it_does_not_update_the_same_booking_info_after_event_created(): void
     {
         $this->scenario
             ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
@@ -1243,11 +1230,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
-    /**
-     * @param string $file
-     * @return string
-     */
-    protected function getSample($file)
+    protected function getSample(string $file): string
     {
         return file_get_contents(
             __DIR__ . '/samples/' . $file

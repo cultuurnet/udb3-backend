@@ -41,12 +41,9 @@ class RelatedUDB3LabelApplierTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var RelatedUDB3LabelApplier
-     */
-    private $nativeLabelApplier;
+    private RelatedUDB3LabelApplier $nativeLabelApplier;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelsRelationsRepository = $this->createMock(
             LabelsRelationsRepositoryInterface::class
@@ -75,7 +72,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
     public function it_can_apply_labels(
         AggregateRoot $aggregateRoot,
         RelationType $relationType
-    ) {
+    ): void {
         $relationId = new StringLiteral($aggregateRoot->getAggregateRootId());
 
         $this->logger->expects($this->exactly(2))
@@ -128,10 +125,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
         $this->nativeLabelApplier->apply($aggregateRoot);
     }
 
-    /**
-     * @return array
-     */
-    public function aggregateDataProvider()
+    public function aggregateDataProvider(): array
     {
         return [
             'Apply label on event' => [
@@ -149,11 +143,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $aggregateType
-     * @return MockObject
-     */
-    private function createAggregate($aggregateType)
+    private function createAggregate(string $aggregateType): MockObject
     {
         $aggregate = $this->createMock($aggregateType);
 

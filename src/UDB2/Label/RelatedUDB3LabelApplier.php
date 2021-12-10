@@ -15,20 +15,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class RelatedUDB3LabelApplier implements LabelApplierInterface
 {
-    /**
-     * @var LabelsRelationsRepositoryInterface
-     */
-    private $labelsRelationsRepository;
+    private LabelsRelationsRepositoryInterface $labelsRelationsRepository;
 
-    /**
-     * @var LabelsRepositoryInterface
-     */
-    private $labelsRepository;
+    private LabelsRepositoryInterface $labelsRepository;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
 
     public function __construct(
