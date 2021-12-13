@@ -36,10 +36,10 @@ final class AddressTranslated extends AddressUpdated
     {
         return new self(
             $data['organizer_id'],
-            $data['streetAddress'],
-            $data['postalCode'],
-            $data['addressLocality'],
-            $data['addressCountry'],
+            $data['address']['streetAddress'],
+            $data['address']['postalCode'],
+            $data['address']['addressLocality'],
+            $data['address']['addressCountry'],
             $data['language']
         );
     }
