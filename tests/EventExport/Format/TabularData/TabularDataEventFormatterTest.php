@@ -26,7 +26,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_excludes_all_terms_when_none_are_included()
+    public function it_excludes_all_terms_when_none_are_included(): void
     {
         $includedProperties = [
             'id',
@@ -43,7 +43,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_excludes_other_terms_when_some_are_included()
+    public function it_excludes_other_terms_when_some_are_included(): void
     {
         $includedProperties = [
             'id',
@@ -61,7 +61,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_included_terms()
+    public function it_formats_included_terms(): void
     {
         $includedProperties = [
             'id',
@@ -84,9 +84,8 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      * @dataProvider organizerDataProvider
-     * @param string $sampleFile
      */
-    public function it_handles_organizer($sampleFile)
+    public function it_handles_organizer(string $sampleFile): void
     {
         $includedProperties = [
             'organizer',
@@ -103,10 +102,7 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertEquals($expectedFormatting, $formattedEvent);
     }
 
-    /**
-     * @return array
-     */
-    public function organizerDataProvider()
+    public function organizerDataProvider(): array
     {
         return [
             [
@@ -124,9 +120,8 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      * @dataProvider addressDataProvider
-     * @param string $sampleFile
      */
-    public function it_handles_address($sampleFile)
+    public function it_handles_address(string $sampleFile): void
     {
         $includedProperties = [
             'id',
@@ -147,10 +142,7 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertEquals($expectedFormatting, $formattedEvent);
     }
 
-    /**
-     * @return array
-     */
-    public function addressDataProvider()
+    public function addressDataProvider(): array
     {
         return [
             [
@@ -169,7 +161,7 @@ class TabularDataEventFormatterTest extends TestCase
      * @test
      * @dataProvider eventDateProvider
      */
-    public function it_formats_dates(string $eventFile, array $expectedFormattedEvent)
+    public function it_formats_dates(string $eventFile, array $expectedFormattedEvent): void
     {
         $event = $this->getJSONEventFromFile($eventFile);
 
@@ -188,10 +180,9 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * Test data provider for it_formats_dates().
      *
-     * @return array
      *   Array of individual arrays, each containing the arguments for the test method.
      */
-    public function eventDateProvider()
+    public function eventDateProvider(): array
     {
         return [
             [
@@ -245,7 +236,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_can_format_an_empty_image()
+    public function it_can_format_an_empty_image(): void
     {
         $event = $this->getJSONEventFromFile('event_without_image.json');
         $formatter = new TabularDataEventFormatter(['image']);
@@ -259,7 +250,7 @@ class TabularDataEventFormatterTest extends TestCase
      * @test
      * @group issue-III-1506
      */
-    public function it_can_format_event_with_a_contact_point()
+    public function it_can_format_event_with_a_contact_point(): void
     {
         $includedProperties = [
             'id',
@@ -285,7 +276,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_available_date()
+    public function it_formats_available_date(): void
     {
         $includedProperties = [
             'id',
@@ -306,7 +297,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_strip_line_breaking_white_spaces_that_are_not_set_by_markup()
+    public function it_should_strip_line_breaking_white_spaces_that_are_not_set_by_markup(): void
     {
         $includedProperties = [
             'id',
@@ -342,7 +333,7 @@ class TabularDataEventFormatterTest extends TestCase
     public function it_should_add_a_kansentarief_column_when_kansentarief_is_included(
         EventInfo $eventInfo,
         array $expectedFormatting
-    ) {
+    ): void {
         $eventInfoService = $this->createMock(EventInfoServiceInterface::class);
         $eventInfoService
             ->method('getEventInfo')
@@ -366,7 +357,7 @@ class TabularDataEventFormatterTest extends TestCase
      * @group issue-III-1533
      * @group issue-III-1790
      */
-    public function it_adds_base_price_and_all_other_pricing_in_when_formatting_priceInfo()
+    public function it_adds_base_price_and_all_other_pricing_in_when_formatting_priceInfo(): void
     {
         $includedProperties = [
             'id',
@@ -391,7 +382,7 @@ class TabularDataEventFormatterTest extends TestCase
      *
      * @group issue-III-1790
      */
-    public function it_ignores_price_info_when_no_priceInfo_is_set()
+    public function it_ignores_price_info_when_no_priceInfo_is_set(): void
     {
         $includedProperties = [
             'id',
@@ -414,7 +405,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_include_booking_url_tel_and_email_when_booking_info_is_included()
+    public function it_should_include_booking_url_tel_and_email_when_booking_info_is_included(): void
     {
         $includedProperties = [
             'id',
@@ -435,7 +426,7 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
     }
 
-    public function kansentariefEventInfoProvider()
+    public function kansentariefEventInfoProvider(): array
     {
         return [
             'one card system , single tariff' => [
@@ -516,7 +507,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_include_both_a_long_and_short_summary_when_exporting_calendar_info()
+    public function it_should_include_both_a_long_and_short_summary_when_exporting_calendar_info(): void
     {
         $includedProperties = [
             'id',
@@ -540,7 +531,7 @@ class TabularDataEventFormatterTest extends TestCase
      * @test
      * @dataProvider audienceTypesAndToegang
      */
-    public function it_should_export_audience_type_as_toegang($event, $toegang)
+    public function it_should_export_audience_type_as_toegang($event, $toegang): void
     {
         $includedProperties = ['id', 'audience'];
 
@@ -550,7 +541,7 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertEquals($toegang, $formattedEvent['audience']);
     }
 
-    public function audienceTypesAndToegang()
+    public function audienceTypesAndToegang(): array
     {
         return [
             'voor iedereen' => [
@@ -613,7 +604,7 @@ class TabularDataEventFormatterTest extends TestCase
      *
      * @group issue-III-1791
      */
-    public function it_formats_labels_separately_based_on_visibility()
+    public function it_formats_labels_separately_based_on_visibility(): void
     {
         $includedProperties = [
             'id',
@@ -638,7 +629,7 @@ class TabularDataEventFormatterTest extends TestCase
      *
      * @group issue-III-1793
      */
-    public function it_should_format_image_url_description_and_copyright_when_image_is_included()
+    public function it_should_format_image_url_description_and_copyright_when_image_is_included(): void
     {
         $includedProperties = ['id', 'image'];
 
@@ -659,7 +650,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_include_a_long_summary_when_exporting_with_a_calendar_repository()
+    public function it_should_include_a_long_summary_when_exporting_with_a_calendar_repository(): void
     {
         $includedProperties = [
             'id',
@@ -700,7 +691,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_status()
+    public function it_formats_status(): void
     {
         $includedProperties = [
             'id',
@@ -722,7 +713,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_booking_availability()
+    public function it_formats_booking_availability(): void
     {
         $includedProperties = [
             'id',
@@ -744,7 +735,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_formats_videos()
+    public function it_formats_videos(): void
     {
         $includedProperties = [
             'id',

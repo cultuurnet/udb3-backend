@@ -21,7 +21,7 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_fetch_calendar_summaries_by_id_at_a_configured_location()
+    public function it_should_fetch_calendar_summaries_by_id_at_a_configured_location(): void
     {
         $offerId = 'D352C4E6-90C6-4120-8DBB-A09B486170CD';
         $expectedRequest = new Request(
@@ -50,7 +50,7 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_unavailable_exception_when_processing_the_summary_request_fails()
+    public function it_should_throw_an_unavailable_exception_when_processing_the_summary_request_fails(): void
     {
         $offerId = 'D352C4E6-90C6-4120-8DBB-A09B486170CD';
         /** @var HttpException|MockObject $httpException */
