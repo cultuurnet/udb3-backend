@@ -74,7 +74,7 @@ class ReplayCommand extends AbstractCommand
     {
         $aggregateTypeEnumeration = implode(
             ', ',
-            AggregateType::getConstants()
+            AggregateType::getAllowedValues()
         );
 
         $this
