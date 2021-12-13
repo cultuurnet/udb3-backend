@@ -52,9 +52,9 @@ final class ContactPointUpdated extends OrganizerEvent
     {
         return parent::serialize() + [
             'contactPoint' => [
-                'phones' => $this->phones,
-                'emails' => $this->emails,
-                'urls' => $this->urls,
+                'phone' => $this->phones,
+                'email' => $this->emails,
+                'url' => $this->urls,
             ],
         ];
     }
@@ -63,9 +63,9 @@ final class ContactPointUpdated extends OrganizerEvent
     {
         return new static(
             $data['organizer_id'],
-            $data['contactPoint']['phones'],
-            $data['contactPoint']['emails'],
-            $data['contactPoint']['urls']
+            $data['contactPoint']['phone'],
+            $data['contactPoint']['email'],
+            $data['contactPoint']['url']
         );
     }
 }
