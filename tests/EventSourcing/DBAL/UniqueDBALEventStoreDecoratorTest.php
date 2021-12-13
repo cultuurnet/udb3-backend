@@ -23,29 +23,23 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     public const OTHER_ID = 'otherId';
     public const OTHER_UNIQUE_VALUE = 'otherUnique';
 
-    /**
-     * @var UniqueDBALEventStoreDecorator
-     */
-    private $uniqueDBALEventStoreDecorator;
+    private UniqueDBALEventStoreDecorator $uniqueDBALEventStoreDecorator;
 
     /**
      * @var UniqueConstraintService|MockObject
      */
     private $uniqueConstraintService;
 
-    /**
-     * @var string
-     */
-    private $uniqueTableName;
+    private string $uniqueTableName;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $serializer = $this->createMock(Serializer::class);
 
         /** @var AggregateAwareDBALEventStore|MockObject $dbalEventStore */
         $dbalEventStore = $this
             ->getMockBuilder(AggregateAwareDBALEventStore::class)
-            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore', AggregateType::EVENT()])
+            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore', AggregateType::event()])
             ->enableProxyingToOriginalMethods()
             ->getMock();
 

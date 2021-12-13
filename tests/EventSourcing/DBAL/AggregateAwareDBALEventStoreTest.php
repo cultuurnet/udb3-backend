@@ -12,6 +12,7 @@ use Broadway\EventStore\EventStreamNotFoundException;
 use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
@@ -20,32 +21,17 @@ class AggregateAwareDBALEventStoreTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var AggregateAwareDBALEventStore
-     */
-    private $aggregateAwareDBALEventStore;
+    private AggregateAwareDBALEventStore $aggregateAwareDBALEventStore;
 
-    /**
-     * @var Serializer
-     */
-    private $payloadSerializer;
+    private Serializer $payloadSerializer;
 
-    /**
-     * @var Serializer
-     */
-    private $metadataSerializer;
+    private Serializer $metadataSerializer;
 
-    /**
-     * @var string
-     */
-    private $tableName;
+    private string $tableName;
 
-    /**
-     * @var AggregateType
-     */
-    private $aggregateType;
+    private AggregateType $aggregateType;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->payloadSerializer = new SimpleInterfaceSerializer();
 
@@ -53,7 +39,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
 
         $this->tableName = 'event_store';
 
-        $this->aggregateType = AggregateType::PLACE();
+        $this->aggregateType = AggregateType::place();
 
         $this->aggregateAwareDBALEventStore = new AggregateAwareDBALEventStore(
             $this->getConnection(),
@@ -69,7 +55,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_can_load_an_aggregate_by_its_id()
+    public function it_can_load_an_aggregate_by_its_id(): void
     {
         $uuid = new UUID();
         $domainMessage = $this->createDomainMessage($uuid);
@@ -89,7 +75,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_can_load_an_aggregate_by_its_id_and_from_a_playhead()
+    public function it_can_load_an_aggregate_by_its_id_and_from_a_playhead(): void
     {
         $uuid = new UUID();
         $domainMessages = $this->createDomainMessages($uuid);
@@ -112,7 +98,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_loading_a_non_existing_aggregate()
+    public function it_throws_an_exception_when_loading_a_non_existing_aggregate(): void
     {
         $uuid = new UUID();
 
@@ -128,7 +114,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     /**
      * @test
      */
-    public function it_can_append_to_an_aggregate()
+    public function it_can_append_to_an_aggregate(): void
     {
         $uuid = new UUID();
         $domainMessage = $this->createDomainMessage($uuid);
@@ -147,7 +133,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         );
     }
 
-    private function createTable()
+    private function createTable(): void
     {
         $schemaManager = $this->getConnection()->getSchemaManager();
         $schema = $schemaManager->createSchema();
@@ -159,10 +145,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         $schemaManager->createTable($table);
     }
 
-    /**
-     * @return DomainMessage
-     */
-    private function createDomainMessage(UUID $uuid)
+    private function createDomainMessage(UUID $uuid): DomainMessage
     {
         return new DomainMessage(
             $uuid->toNative(),
@@ -181,7 +164,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     /**
      * @return DomainMessage[]
      */
-    private function createDomainMessages(UUID $uuid)
+    private function createDomainMessages(UUID $uuid): array
     {
         return [
             new DomainMessage(
@@ -223,24 +206,20 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function domainMessageToRow(DomainMessage $domainMessage)
+    private function domainMessageToRow(DomainMessage $domainMessage): array
     {
         return [
            'uuid' => $domainMessage->getId(),
            'playhead' => $domainMessage->getPlayhead(),
-           'metadata' => json_encode($this->metadataSerializer->serialize($domainMessage->getMetadata())),
-           'payload' => json_encode($this->payloadSerializer->serialize($domainMessage->getPayload())),
+           'metadata' => Json::encode($this->metadataSerializer->serialize($domainMessage->getMetadata())),
+           'payload' => Json::encode($this->payloadSerializer->serialize($domainMessage->getPayload())),
            'recorded_on' => $domainMessage->getRecordedOn()->toString(),
            'type' => $domainMessage->getType(),
-           'aggregate_type' => $this->aggregateType,
+           'aggregate_type' => $this->aggregateType->toString(),
         ];
     }
 
-
-    private function insertDomainMessage(DomainMessage $domainMessage)
+    private function insertDomainMessage(DomainMessage $domainMessage): void
     {
         $this->connection->insert(
             $this->tableName,
@@ -248,10 +227,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    private function selectDomainMessage(UUID $uuid)
+    private function selectDomainMessage(UUID $uuid): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -270,8 +246,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
             ->where('uuid = :uuid')
             ->setParameter(':uuid', $uuid->toNative());
 
-        $statement = $queryBuilder->execute();
-
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

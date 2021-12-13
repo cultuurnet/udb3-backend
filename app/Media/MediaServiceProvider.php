@@ -20,10 +20,7 @@ use Silex\ServiceProviderInterface;
 
 class MediaServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['image_uploader'] = $app->share(
             function (Application $app) {
@@ -40,22 +37,20 @@ class MediaServiceProvider implements ServiceProviderInterface
         $app['media_object_store'] = $app->share(
             function ($app) {
                 return $app['event_store_factory'](
-                    AggregateType::MEDIA_OBJECT()
+                    AggregateType::media_object()
                 );
             }
         );
 
         $app['media_object_repository'] = $app->share(
             function ($app) {
-                $repository = new MediaObjectRepository(
+                return new MediaObjectRepository(
                     $app['media_object_store'],
                     $app['event_bus'],
                     [
                         $app['event_stream_metadata_enricher'],
                     ]
                 );
-
-                return $repository;
             }
         );
 
@@ -109,10 +104,7 @@ class MediaServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

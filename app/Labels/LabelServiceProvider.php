@@ -66,10 +66,7 @@ class LabelServiceProvider implements ServiceProviderInterface
 
     public const LOGGER = 'labels.logger';
 
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $this->setUpLogger($app);
 
@@ -96,15 +93,11 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 
-
-    private function setUpReadModels(Application $app)
+    private function setUpReadModels(Application $app): void
     {
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
@@ -168,8 +161,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-
-    private function setUpServices(Application $app)
+    private function setUpServices(Application $app): void
     {
         $app['labels.constraint_aware_service'] = $app->share(
             function (Application $app) {
@@ -198,13 +190,12 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-
-    private function setUpEventStore(Application $app)
+    private function setUpEventStore(Application $app): void
     {
         $app[self::UNIQUE_EVENT_STORE] = $app->share(
             function (Application $app) {
                 $eventStore = $app['event_store_factory'](
-                    AggregateType::LABEL()
+                    AggregateType::label()
                 );
 
                 return new UniqueDBALEventStoreDecorator(
@@ -217,8 +208,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-
-    private function setUpCommandHandler(Application $app)
+    private function setUpCommandHandler(Application $app): void
     {
         $app[self::REPOSITORY] = $app->share(
             function (Application $app) {
@@ -239,8 +229,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-
-    private function setUpProjectors(Application $app)
+    private function setUpProjectors(Application $app): void
     {
         $app[self::JSON_PROJECTOR] = $app->share(
             function (Application $app) {
@@ -309,7 +298,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    private function setUpQueryFactory(Application $app)
+    private function setUpQueryFactory(Application $app): void
     {
         $app[self::QUERY_FACTORY] = $app->share(
             function (Application $app) {
@@ -318,8 +307,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-
-    private function setUpLogger(Application $app)
+    private function setUpLogger(Application $app): void
     {
         $app[self::LOGGER] = $app->share(
             function (Application $app) {

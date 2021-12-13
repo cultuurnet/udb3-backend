@@ -10,6 +10,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventStore\EventStore;
 use Broadway\EventStore\EventStreamNotFoundException;
 use Broadway\Serializer\Serializer;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Silex\AggregateType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -17,42 +18,19 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
-/**
- * Event store making use of Doctrine DBAL and aware of the aggregate type.
- *
- * Based on Broadways DBALEventStore.
- */
 class AggregateAwareDBALEventStore implements EventStore
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var Serializer
-     */
-    private $payloadSerializer;
+    private Serializer $payloadSerializer;
 
-    /**
-     * @var Serializer
-     */
-    private $metadataSerializer;
+    private Serializer $metadataSerializer;
 
-    /**
-     * @var Statement|null
-     */
-    private $loadStatement = null;
+    private ?Statement $loadStatement = null;
 
-    /**
-     * @var string
-     */
-    private $tableName;
+    private string $tableName;
 
-    /**
-     * @var string
-     */
-    private $aggregateType;
+    private string $aggregateType;
 
     public function __construct(
         Connection $connection,
@@ -65,26 +43,20 @@ class AggregateAwareDBALEventStore implements EventStore
         $this->payloadSerializer  = $payloadSerializer;
         $this->metadataSerializer = $metadataSerializer;
         $this->tableName          = $tableName;
-        $this->aggregateType      = (string) $aggregateType;
+        $this->aggregateType      = $aggregateType->toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function load($id)
+    public function load($id): DomainEventStream
     {
         return $this->loadDomainEventStream($id, 0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function loadFromPlayhead($id, $playhead)
+    public function loadFromPlayhead($id, $playhead): DomainEventStream
     {
         return $this->loadDomainEventStream($id, $playhead);
     }
 
-    private function loadDomainEventStream($id, $playhead)
+    private function loadDomainEventStream($id, $playhead): DomainEventStream
     {
         $statement = $this->prepareLoadStatement();
         $statement->bindValue('uuid', $id);
@@ -107,10 +79,7 @@ class AggregateAwareDBALEventStore implements EventStore
         return new DomainEventStream($events);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function append($id, DomainEventStream $eventStream)
+    public function append($id, DomainEventStream $eventStream): void
     {
         // The original Broadway DBALEventStore implementation did only check
         // the type of $id. It is better to test all UUIDs inside the event
@@ -129,14 +98,13 @@ class AggregateAwareDBALEventStore implements EventStore
         });
     }
 
-
-    private function insertMessage(Connection $connection, DomainMessage $domainMessage)
+    private function insertMessage(Connection $connection, DomainMessage $domainMessage): void
     {
         $data = [
             'uuid'           => (string) $domainMessage->getId(),
             'playhead'       => $domainMessage->getPlayhead(),
-            'metadata'       => json_encode($this->metadataSerializer->serialize($domainMessage->getMetadata())),
-            'payload'        => json_encode($this->payloadSerializer->serialize($domainMessage->getPayload())),
+            'metadata'       => Json::encode($this->metadataSerializer->serialize($domainMessage->getMetadata())),
+            'payload'        => Json::encode($this->payloadSerializer->serialize($domainMessage->getPayload())),
             'recorded_on'    => $domainMessage->getRecordedOn()->toString(),
             'type'           => $domainMessage->getType(),
             'aggregate_type' => $this->aggregateType,
@@ -145,10 +113,7 @@ class AggregateAwareDBALEventStore implements EventStore
         $connection->insert($this->tableName, $data);
     }
 
-    /**
-     * @return Table|null
-     */
-    public function configureSchema(Schema $schema)
+    public function configureSchema(Schema $schema): ?Table
     {
         if ($schema->hasTable($this->tableName)) {
             return null;
@@ -157,8 +122,7 @@ class AggregateAwareDBALEventStore implements EventStore
         return $this->configureTable();
     }
 
-
-    public function configureTable()
+    public function configureTable(): Table
     {
         $schema = new Schema();
 
