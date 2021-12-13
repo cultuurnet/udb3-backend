@@ -51,10 +51,12 @@ class AddressUpdated extends OrganizerEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'streetAddress' => $this->streetAddress,
-            'postalCode' => $this->postalCode,
-            'addressLocality' => $this->locality,
-            'addressCountry' => $this->countryCode,
+            'address' => [
+                'streetAddress' => $this->streetAddress,
+                'postalCode' => $this->postalCode,
+                'addressLocality' => $this->locality,
+                'addressCountry' => $this->countryCode,
+            ],
         ];
     }
 
@@ -62,10 +64,10 @@ class AddressUpdated extends OrganizerEvent
     {
         return new self(
             $data['organizer_id'],
-            $data['streetAddress'],
-            $data['postalCode'],
-            $data['addressLocality'],
-            $data['addressCountry']
+            $data['address']['streetAddress'],
+            $data['address']['postalCode'],
+            $data['address']['addressLocality'],
+            $data['address']['addressCountry']
         );
     }
 }
