@@ -14,8 +14,13 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  */
 class Format extends Enum
 {
-    public const LARGE = 'lg';
-    public const MEDIUM = 'md';
-    public const SMALL = 'sm';
-    public const EXTRA_SMALL = 'xs';
+    public static function getAllowedValues(): array
+    {
+        return [
+            'lg',
+            'md',
+            'sm',
+            'xs',
+        ];
+    }
 }
