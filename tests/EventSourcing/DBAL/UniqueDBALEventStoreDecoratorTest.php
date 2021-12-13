@@ -45,7 +45,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
         /** @var AggregateAwareDBALEventStore|MockObject $dbalEventStore */
         $dbalEventStore = $this
             ->getMockBuilder(AggregateAwareDBALEventStore::class)
-            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore', AggregateType::EVENT()])
+            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore', AggregateType::event()])
             ->enableProxyingToOriginalMethods()
             ->getMock();
 

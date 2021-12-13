@@ -53,7 +53,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
 
         $this->tableName = 'event_store';
 
-        $this->aggregateType = AggregateType::PLACE();
+        $this->aggregateType = AggregateType::place();
 
         $this->aggregateAwareDBALEventStore = new AggregateAwareDBALEventStore(
             $this->getConnection(),

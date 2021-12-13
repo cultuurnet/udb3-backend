@@ -40,7 +40,7 @@ class MediaServiceProvider implements ServiceProviderInterface
         $app['media_object_store'] = $app->share(
             function ($app) {
                 return $app['event_store_factory'](
-                    AggregateType::MEDIA_OBJECT()
+                    AggregateType::media_object()
                 );
             }
         );

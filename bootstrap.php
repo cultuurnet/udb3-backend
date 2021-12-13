@@ -357,7 +357,7 @@ $app['dbal_connection:keepalive'] = $app->protect(
 
 $app['dbal_event_store'] = $app->share(
     function ($app) {
-        return $app['event_store_factory'](AggregateType::EVENT());
+        return $app['event_store_factory'](AggregateType::event());
     }
 );
 
@@ -690,7 +690,7 @@ $app['place_relations_repository'] = $app->share(
 
 $app['place_store'] = $app->share(
     function ($app) {
-        return $app['event_store_factory'](AggregateType::PLACE());
+        return $app['event_store_factory'](AggregateType::place());
     }
 );
 
@@ -752,7 +752,7 @@ $app['eventstore_payload_serializer'] = $app->share(
 
 $app['organizer_store'] = $app->share(
     function ($app) {
-        $eventStore = $app['event_store_factory'](AggregateType::ORGANIZER());
+        $eventStore = $app['event_store_factory'](AggregateType::organizer());
 
         return new UniqueDBALEventStoreDecorator(
             $eventStore,
@@ -810,7 +810,7 @@ $app['role_iri_generator'] = $app->share(
 
 $app['role_store'] = $app->share(
     function ($app) {
-        return $app['event_store_factory'](AggregateType::ROLE());
+        return $app['event_store_factory'](AggregateType::role());
     }
 );
 

@@ -40,7 +40,7 @@ class EventStreamTest extends TestCase
             $payloadSerializer,
             $metadataSerializer,
             $table,
-            AggregateType::EVENT()
+            AggregateType::event()
         );
 
         $schemaManager = $this->getConnection()->getSchemaManager();
@@ -432,9 +432,9 @@ class EventStreamTest extends TestCase
     {
         /** @var AggregateType[] $aggregateTypes */
         $aggregateTypes = [
-            AggregateType::EVENT(),
-            AggregateType::PLACE(),
-            AggregateType::ORGANIZER(),
+            AggregateType::event(),
+            AggregateType::place(),
+            AggregateType::organizer(),
         ];
 
         $stores = [];
