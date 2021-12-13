@@ -674,8 +674,8 @@ class TabularDataEventFormatterTest extends TestCase
             ->expects($this->exactly(2))
             ->method('get')
             ->withConsecutive(
-                ['d1f0e71d-a9a8-4069-81fb-530134502c58', ContentType::PLAIN(), Format::MEDIUM()],
-                ['d1f0e71d-a9a8-4069-81fb-530134502c58', ContentType::PLAIN(), Format::LARGE()]
+                ['d1f0e71d-a9a8-4069-81fb-530134502c58', ContentType::PLAIN(), Format::md()],
+                ['d1f0e71d-a9a8-4069-81fb-530134502c58', ContentType::PLAIN(), Format::lg()]
             )
             ->will(
                 $this->onConsecutiveCalls(

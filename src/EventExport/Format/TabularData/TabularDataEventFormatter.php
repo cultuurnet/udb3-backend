@@ -391,12 +391,12 @@ class TabularDataEventFormatter
             ],
             'calendarSummary.short' => [
                 'name' => 'korte kalendersamenvatting',
-                'include' => $this->calendarSummaryFormatter(Format::MEDIUM(), $this->calendarSummaryRepository),
+                'include' => $this->calendarSummaryFormatter(Format::md(), $this->calendarSummaryRepository),
                 'property' => 'calendarSummary',
             ],
             'calendarSummary.long' => [
                 'name' => 'lange kalendersamenvatting',
-                'include' => $this->calendarSummaryFormatter(Format::LARGE(), $this->calendarSummaryRepository),
+                'include' => $this->calendarSummaryFormatter(Format::lg(), $this->calendarSummaryRepository),
                 'property' => 'calendarSummary',
             ],
             'labels.visible' => [

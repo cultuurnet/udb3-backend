@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
- * @method static Format LARGE()
- * @method static Format MEDIUM()
- * @method static Format SMALL()
- * @method static Format EXTRA_SMALL()
+ * @method static Format lg()
+ * @method static Format md()
+ * @method static Format sm()
+ * @method static Format xs()
  */
 class Format extends Enum
 {
