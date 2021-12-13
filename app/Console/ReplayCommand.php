@@ -296,7 +296,7 @@ class ReplayCommand extends AbstractCommand
         $aggregateType = null;
 
         if (!empty($aggregateTypeInput)) {
-            $aggregateType = AggregateType::get($aggregateTypeInput);
+            $aggregateType = new AggregateType($aggregateTypeInput);
         }
 
         return $aggregateType;
