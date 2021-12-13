@@ -274,7 +274,7 @@ class ReplayCommand extends AbstractCommand
         }
 
         if ($aggregateType) {
-            $eventStream = $eventStream->withAggregateType($aggregateType);
+            $eventStream = $eventStream->withAggregateType($aggregateType->toString());
         }
 
         if ($cdbids) {

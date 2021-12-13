@@ -439,7 +439,7 @@ class EventStreamTest extends TestCase
 
         $stores = [];
         foreach ($aggregateTypes as $aggregateType) {
-            $stores[$aggregateType->toNative()] = $this->createAggregateAwareDBALEventStore($aggregateType);
+            $stores[$aggregateType->toString()] = $this->createAggregateAwareDBALEventStore($aggregateType);
         }
 
         $schemaManager = $this->getConnection()->getSchemaManager();
@@ -606,7 +606,7 @@ class EventStreamTest extends TestCase
         array $domainMessages,
         AggregateType $aggregateType
     ) {
-        $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
+        $eventStream = $eventStream->withAggregateType($aggregateType->toString());
 
         $domainEventStreams = $eventStream();
         $domainEventStreams = iterator_to_array($domainEventStreams);
@@ -614,7 +614,7 @@ class EventStreamTest extends TestCase
         $expectedDomainEventStreams = [];
         foreach ($domainMessages as $key => $domainMessage) {
             $metadataAsArray = $domainMessage->getMetadata()->serialize();
-            if ($metadataAsArray['aggregate_type'] === $aggregateType->toNative()) {
+            if ($metadataAsArray['aggregate_type'] === $aggregateType->toString()) {
                 $expectedDomainEventStreams[] = new DomainEventStream([$domainMessage]);
             }
         }

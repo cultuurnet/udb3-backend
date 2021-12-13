@@ -65,7 +65,7 @@ class AggregateAwareDBALEventStore implements EventStore
         $this->payloadSerializer  = $payloadSerializer;
         $this->metadataSerializer = $metadataSerializer;
         $this->tableName          = $tableName;
-        $this->aggregateType      = (string) $aggregateType;
+        $this->aggregateType      = $aggregateType->toString();
     }
 
     /**

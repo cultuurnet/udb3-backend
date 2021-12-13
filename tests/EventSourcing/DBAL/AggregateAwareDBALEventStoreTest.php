@@ -235,7 +235,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
            'payload' => json_encode($this->payloadSerializer->serialize($domainMessage->getPayload())),
            'recorded_on' => $domainMessage->getRecordedOn()->toString(),
            'type' => $domainMessage->getType(),
-           'aggregate_type' => $this->aggregateType,
+           'aggregate_type' => $this->aggregateType->toString(),
         ];
     }
 
