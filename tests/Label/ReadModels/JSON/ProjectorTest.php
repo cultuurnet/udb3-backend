@@ -66,7 +66,7 @@ class ProjectorTest extends TestCase
             $this->uuid,
             $this->labelName,
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE(),
+            Privacy::private(),
             new UUID()
         );
 

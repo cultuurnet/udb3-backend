@@ -74,7 +74,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
             new UUID(),
             new StringLiteral('foo'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->labelService

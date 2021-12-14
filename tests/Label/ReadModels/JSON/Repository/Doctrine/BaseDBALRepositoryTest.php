@@ -61,7 +61,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
             $entity->getName()->toNative(),
             $entity->getVisibility() === Visibility::VISIBLE()
                 ? true : false,
-            $entity->getPrivacy() === Privacy::PRIVACY_PRIVATE()
+            $entity->getPrivacy() === Privacy::private()
                 ? true : false,
             $entity->getParentUuid()->toNative(),
             $entity->getCount()->toNative(),
@@ -92,7 +92,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
             $row[SchemaConfigurator::VISIBLE_COLUMN]
                 ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
             $row[SchemaConfigurator::PRIVATE_COLUMN]
-                ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC(),
+                ? Privacy::private() : Privacy::public(),
             new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]),
             new Natural($row[SchemaConfigurator::COUNT_COLUMN])
         );

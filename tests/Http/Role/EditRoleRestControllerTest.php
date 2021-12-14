@@ -258,7 +258,7 @@ class EditRoleRestControllerTest extends TestCase
             new UUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->labelService->expects($this->once())
@@ -323,7 +323,7 @@ class EditRoleRestControllerTest extends TestCase
             new UUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->labelService->expects($this->once())

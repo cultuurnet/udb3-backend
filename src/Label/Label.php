@@ -109,14 +109,14 @@ class Label extends EventSourcedAggregateRoot
 
     public function makePublic()
     {
-        if ($this->privacy !== Privacy::PRIVACY_PUBLIC()) {
+        if ($this->privacy !== Privacy::public()) {
             $this->apply(new MadePublic($this->uuid, $this->name));
         }
     }
 
     public function makePrivate()
     {
-        if ($this->privacy !== Privacy::PRIVACY_PRIVATE()) {
+        if ($this->privacy !== Privacy::private()) {
             $this->apply(new MadePrivate($this->uuid, $this->name));
         }
     }
@@ -153,12 +153,12 @@ class Label extends EventSourcedAggregateRoot
 
     public function applyMadePublic(MadePublic $madePublic)
     {
-        $this->privacy = Privacy::PRIVACY_PUBLIC();
+        $this->privacy = Privacy::private();
     }
 
 
     public function applyMadePrivate(MadePrivate $madePrivate)
     {
-        $this->privacy = Privacy::PRIVACY_PRIVATE();
+        $this->privacy = Privacy::private();
     }
 }

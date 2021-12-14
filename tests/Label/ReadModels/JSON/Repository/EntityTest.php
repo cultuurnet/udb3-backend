@@ -61,7 +61,7 @@ class EntityTest extends TestCase
 
         $this->visibilty = Visibility::INVISIBLE();
 
-        $this->privacy = Privacy::PRIVACY_PRIVATE();
+        $this->privacy = Privacy::private();
 
         $this->parentUuid = new UUID();
 

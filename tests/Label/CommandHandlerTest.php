@@ -72,7 +72,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->extraUuid = new UUID();
         $this->name = new LabelName('labelName');
         $this->visibility = Visibility::INVISIBLE();
-        $this->privacy = Privacy::PRIVACY_PRIVATE();
+        $this->privacy = Privacy::private();
         $this->parentUuid = new UUID();
 
         $this->created = new Created(

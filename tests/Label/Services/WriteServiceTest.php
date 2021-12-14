@@ -53,7 +53,7 @@ class WriteServiceTest extends TestCase
             $this->uuid,
             new LabelName('labelName'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         );
 
         $this->commandBus = $this->createMock(CommandBus::class);

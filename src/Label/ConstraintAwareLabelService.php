@@ -42,7 +42,7 @@ class ConstraintAwareLabelService implements LabelServiceInterface
                 new UUID($this->uuidGenerator->generate()),
                 $labelName,
                 $visible ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-                Privacy::PRIVACY_PUBLIC()
+                Privacy::public()
             );
 
             $this->labelRepository->save($labelAggregate);

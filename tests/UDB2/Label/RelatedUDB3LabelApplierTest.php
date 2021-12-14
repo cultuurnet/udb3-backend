@@ -118,7 +118,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
                     new UUID(),
                     new StringLiteral('2dotstwice'),
                     Visibility::INVISIBLE(),
-                    Privacy::PRIVACY_PUBLIC()
+                    Privacy::public()
                 )
             );
 

@@ -134,7 +134,7 @@ class LabelPreProcessingDocumentImporterTest extends TestCase
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_visible_label'),
                         Visibility::VISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        Privacy::public()
                     );
                 }
 
@@ -143,7 +143,7 @@ class LabelPreProcessingDocumentImporterTest extends TestCase
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_must_be_hidden'),
                         Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        Privacy::public()
                     );
                 }
 
@@ -152,7 +152,7 @@ class LabelPreProcessingDocumentImporterTest extends TestCase
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_hidden_label'),
                         Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        Privacy::public()
                     );
                 }
 
@@ -161,7 +161,7 @@ class LabelPreProcessingDocumentImporterTest extends TestCase
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_must_be_visible'),
                         Visibility::VISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        Privacy::public()
                     );
                 }
 
@@ -170,7 +170,7 @@ class LabelPreProcessingDocumentImporterTest extends TestCase
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_missing_visible_label'),
                         Visibility::VISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        Privacy::public()
                     );
                 }
 
@@ -179,7 +179,7 @@ class LabelPreProcessingDocumentImporterTest extends TestCase
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_missing_hidden_label'),
                         Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        Privacy::public()
                     );
                 }
 

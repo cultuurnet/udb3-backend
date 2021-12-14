@@ -57,7 +57,7 @@ class ReadRestControllerTest extends TestCase
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         );
 
         $this->request = new Request([

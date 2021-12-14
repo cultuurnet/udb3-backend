@@ -43,14 +43,14 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
             new UUID(),
             $this->name,
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         ));
 
         $this->copyCreated = $this->createDomainMessage(new CopyCreated(
             new UUID(),
             $this->name,
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE(),
+            Privacy::private(),
             new UUID()
         ));
 

@@ -83,7 +83,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('bibliotheekweek'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
         $this->saveEntity($this->entityByUuid);
@@ -92,7 +92,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('boswandeling'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
         $this->saveEntity($this->entityByName);
@@ -101,7 +101,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('wandeltocht'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE(),
+            Privacy::private(),
             new UUID()
         );
         $this->saveEntity($this->entityPrivateAccess);
@@ -110,7 +110,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('stadswandeling'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE(),
+            Privacy::private(),
             new UUID()
         );
         $this->saveEntity($this->entityPrivateNoAccess);
@@ -120,7 +120,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
                 new UUID(),
                 new StringLiteral('label' . $i),
                 Visibility::VISIBLE(),
-                Privacy::PRIVACY_PUBLIC(),
+                Privacy::private(),
                 new UUID()
             );
             $this->saveEntity($entity);

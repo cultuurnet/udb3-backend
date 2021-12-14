@@ -96,7 +96,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         }
 
         // A public label is always allowed.
-        if ($label->getPrivacy() === Privacy::PRIVACY_PUBLIC()) {
+        if ($label->getPrivacy() === Privacy::public()) {
             return true;
         }
 
@@ -295,7 +295,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ? Visibility::VISIBLE() : Visibility::INVISIBLE();
 
         $privacy = $row[SchemaConfigurator::PRIVATE_COLUMN]
-            ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC();
+            ? Privacy::private() : Privacy::public();
 
         $parentUuid = new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]);
 

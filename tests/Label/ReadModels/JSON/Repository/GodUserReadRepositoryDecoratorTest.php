@@ -61,13 +61,13 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
                 new UUID('c7a73397-a210-4126-8fa0-a9f822c2a356'),
                 new StringLiteral('foo'),
                 Visibility::VISIBLE(),
-                Privacy::PRIVACY_PRIVATE()
+                Privacy::private()
             ),
             'fa285cf6-314c-42cc-99ee-94030127954d' => new Entity(
                 new UUID('fa285cf6-314c-42cc-99ee-94030127954d'),
                 new StringLiteral('bar'),
                 Visibility::VISIBLE(),
-                Privacy::PRIVACY_PUBLIC()
+                Privacy::public()
             ),
         ];
 

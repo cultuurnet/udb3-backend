@@ -43,7 +43,7 @@ class ReadServiceTest extends TestCase
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         );
 
         $this->query = new Query(new StringLiteral('something'));

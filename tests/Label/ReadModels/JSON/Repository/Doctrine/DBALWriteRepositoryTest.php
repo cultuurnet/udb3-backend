@@ -38,7 +38,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -64,7 +64,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName1'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -74,7 +74,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             $entity1->getUuid(),
             new StringLiteral('labelName2'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -98,7 +98,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -108,7 +108,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -132,7 +132,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -157,7 +157,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -182,7 +182,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE(),
+            Privacy::private(),
             new UUID()
         );
 
@@ -193,7 +193,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertEquals(
-            Privacy::PRIVACY_PRIVATE(),
+            Privacy::private(),
             $actualEntity->getPrivacy()
         );
     }
@@ -207,7 +207,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID()
         );
 
@@ -218,7 +218,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertEquals(
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             $actualEntity->getPrivacy()
         );
     }
@@ -232,7 +232,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID(),
             new Natural(666)
         );
@@ -260,7 +260,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID(),
             new Natural(666)
         );
@@ -288,7 +288,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new UUID(),
             new StringLiteral('labelName'),
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             new UUID(),
             new Natural(0)
         );

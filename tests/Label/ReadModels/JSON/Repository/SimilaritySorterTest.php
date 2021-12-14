@@ -84,7 +84,7 @@ class SimilaritySorterTest extends TestCase
             new UUID('b537eab6-3149-11e6-ac61-9e71128cae77'),
             $name,
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
     }
 }
