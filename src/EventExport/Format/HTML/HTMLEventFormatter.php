@@ -73,10 +73,10 @@ class HTMLEventFormatter
         $this->filters->addFilter($truncateFilter);
 
         $this->taalicoonSpecs = [
-            'EEN_TAALICOON' => new Has1Taalicoon(),
-            'TWEE_TAALICONEN' => new Has2Taaliconen(),
-            'DRIE_TAALICONEN' => new Has3Taaliconen(),
-            'VIER_TAALICONEN' => new Has4Taaliconen(),
+            TaalicoonDescription::eenTaalicoon()->toString() => new Has1Taalicoon(),
+            TaalicoonDescription::tweeTaaliconen()->toString() => new Has2Taaliconen(),
+            TaalicoonDescription::drieTaaliconen()->toString() => new Has3Taaliconen(),
+            TaalicoonDescription::vierTaaliconen()->toString() => new Has4Taaliconen(),
         ];
 
         $this->brandSpecs = [
@@ -203,7 +203,7 @@ class HTMLEventFormatter
             if ($spec->isSatisfiedBy($event)) {
                 $satisfiedCount++;
                 $taalicoonCount = $i;
-                $description = TaalicoonDescription::getByName($name)->getValue();
+                $description = $name;
             }
         }
 
