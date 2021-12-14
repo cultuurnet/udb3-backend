@@ -11,6 +11,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\TaalicoonDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -31,14 +32,13 @@ class HTMLEventFormatterTest extends TestCase
 
     protected function getJSONEventFromFile(string $fileName): string
     {
-        $jsonEvent = file_get_contents(__DIR__ . '/../../samples/' . $fileName);
-        return $jsonEvent;
+        return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
     }
 
     protected function getFormattedEventFromJSONFile(string $fileName): array
     {
         $event = $this->getJSONEventFromFile($fileName);
-        $decodedEvent = json_decode($event);
+        $decodedEvent = Json::decode($event);
         $urlParts = explode('/', $decodedEvent->{'@id'});
         $eventId = end($urlParts);
         return $this->eventFormatter->formatEvent($eventId, $event);
@@ -433,7 +433,7 @@ class HTMLEventFormatterTest extends TestCase
     public function uitpasInfoProvider(): array
     {
         // Prices and their expected formatting, and advantages and their expected formatting.
-        $data = [
+        return [
             [
                 [
                     'original' => [
@@ -565,8 +565,6 @@ class HTMLEventFormatterTest extends TestCase
                 ],
             ],
         ];
-
-        return $data;
     }
 
     /**
