@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Label;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -16,10 +17,7 @@ use ValueObjects\Identity\UUID;
 
 class EditRestController
 {
-    /**
-     * @var WriteServiceInterface
-     */
-    private $writeService;
+    private WriteServiceInterface $writeService;
 
     /**
      * EditRestController constructor.
@@ -29,12 +27,9 @@ class EditRestController
         $this->writeService = $writeService;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
-        $bodyAsArray = json_decode($request->getContent(), true);
+        $bodyAsArray = Json::decodeAssociatively($request->getContent());
 
         $uuid = $this->writeService->create(
             new LabelName($bodyAsArray['name']),
@@ -47,23 +42,23 @@ class EditRestController
 
     public function patch(Request $request, string $id): Response
     {
-        $bodyAsArray = json_decode($request->getContent(), true);
+        $bodyAsArray = Json::decodeAssociatively($request->getContent());
         $commandType = new CommandType($bodyAsArray['command']);
 
-        $id = new UUID($id);
+        $uuid = new UUID($id);
 
         switch ($commandType) {
             case CommandType::makeVisible():
-                $this->writeService->makeVisible($id);
+                $this->writeService->makeVisible($uuid);
                 break;
             case CommandType::makeInvisible():
-                $this->writeService->makeInvisible($id);
+                $this->writeService->makeInvisible($uuid);
                 break;
             case CommandType::makePublic():
-                $this->writeService->makePublic($id);
+                $this->writeService->makePublic($uuid);
                 break;
             case CommandType::makePrivate():
-                $this->writeService->makePrivate($id);
+                $this->writeService->makePrivate($uuid);
                 break;
         }
 
