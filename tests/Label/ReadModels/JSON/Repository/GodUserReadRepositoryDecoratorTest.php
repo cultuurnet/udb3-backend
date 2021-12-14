@@ -113,7 +113,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
                         return true;
                     }
 
-                    return $label->getPrivacy()->sameValueAs(Privacy::PRIVACY_PUBLIC());
+                    return $label->getPrivacy()->sameAs(Privacy::public());
                 }
             );
 
