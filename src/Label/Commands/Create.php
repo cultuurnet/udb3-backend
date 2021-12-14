@@ -42,7 +42,7 @@ class Create extends AbstractCommand
         // The built-in serialize call does not work on Enum.
         // Just store them internally as string but expose as Enum.
         $this->visibility = $visibility->toNative();
-        $this->privacy = $privacy->toNative();
+        $this->privacy = $privacy->toString();
     }
 
     /**
