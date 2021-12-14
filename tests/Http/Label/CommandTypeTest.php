@@ -15,7 +15,7 @@ class CommandTypeTest extends TestCase
     {
         $commandType = CommandType::makeVisible();
 
-        $this->assertEquals($commandType, CommandType::MAKE_VISIBLE);
+        $this->assertEquals($commandType->toString(), 'MakeVisible');
     }
 
     /**
@@ -25,7 +25,7 @@ class CommandTypeTest extends TestCase
     {
         $commandType = CommandType::makeInvisible();
 
-        $this->assertEquals($commandType, CommandType::MAKE_INVISIBLE);
+        $this->assertEquals($commandType->toString(), 'MakeInvisible');
     }
 
     /**
@@ -35,7 +35,7 @@ class CommandTypeTest extends TestCase
     {
         $commandType = CommandType::makePublic();
 
-        $this->assertEquals($commandType, CommandType::MAKE_PUBLIC);
+        $this->assertEquals($commandType->toString(), 'MakePublic');
     }
 
     /**
@@ -45,7 +45,7 @@ class CommandTypeTest extends TestCase
     {
         $commandType = CommandType::makePrivate();
 
-        $this->assertEquals($commandType, CommandType::MAKE_PRIVATE);
+        $this->assertEquals($commandType->toString(), 'MakePrivate');
     }
 
     /**
@@ -53,14 +53,14 @@ class CommandTypeTest extends TestCase
      */
     public function it_has_only_four_specified_options()
     {
-        $options = CommandType::getConstants();
+        $options = CommandType::getAllowedValues();
 
         $this->assertEquals(
             [
-                CommandType::makeVisible()->getName() => CommandType::MAKE_VISIBLE,
-                CommandType::makeInvisible()->getName() => CommandType::MAKE_INVISIBLE,
-                CommandType::makePublic()->getName() => CommandType::MAKE_PUBLIC,
-                CommandType::makePrivate()->getName() => CommandType::MAKE_PRIVATE,
+                CommandType::makeVisible()->toString(),
+                CommandType::makeInvisible()->toString(),
+                CommandType::makePublic()->toString(),
+                CommandType::makePrivate()->toString(),
             ],
             $options
         );

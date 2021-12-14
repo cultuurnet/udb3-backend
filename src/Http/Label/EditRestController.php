@@ -48,7 +48,7 @@ class EditRestController
     public function patch(Request $request, string $id): Response
     {
         $bodyAsArray = json_decode($request->getContent(), true);
-        $commandType = CommandType::fromNative($bodyAsArray['command']);
+        $commandType = new CommandType($bodyAsArray['command']);
 
         $id = new UUID($id);
 
