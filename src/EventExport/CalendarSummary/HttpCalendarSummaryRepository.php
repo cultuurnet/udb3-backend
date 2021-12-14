@@ -37,7 +37,7 @@ class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterfac
             'GET',
             (string) $summaryLocation,
             [
-                'Accept' => $type->getValue(),
+                'Accept' => $type->toString(),
             ]
         );
 
