@@ -10,17 +10,14 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
 class TabularDataEventFormatterTest extends TestCase
 {
     private function getJSONEventFromFile($fileName)
     {
-        $jsonEvent = file_get_contents(
-            __DIR__ . '/../../samples/' . $fileName
-        );
-
-        return $jsonEvent;
+        return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
     }
 
     /**
@@ -545,7 +542,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         return [
             'voor iedereen' => [
-                'offerJson' => json_encode(
+                'offerJson' => Json::encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
@@ -556,7 +553,7 @@ class TabularDataEventFormatterTest extends TestCase
                 'toegang' => 'Voor iedereen',
             ],
             'enkel voor leden' => [
-                'offerJson' => json_encode(
+                'offerJson' => Json::encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
@@ -567,7 +564,7 @@ class TabularDataEventFormatterTest extends TestCase
                 'toegang' => 'Enkel voor leden',
             ],
             'specifiek voor scholen' => [
-                'offerJson' => json_encode(
+                'offerJson' => Json::encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
@@ -578,7 +575,7 @@ class TabularDataEventFormatterTest extends TestCase
                 'toegang' => 'Specifiek voor scholen',
             ],
             'unknown audience type' => [
-                'offerJson' => json_encode(
+                'offerJson' => Json::encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
@@ -589,7 +586,7 @@ class TabularDataEventFormatterTest extends TestCase
                 'toegang' => 'Voor iedereen',
             ],
             'no audience type' => [
-                'offerJson' => json_encode(
+                'offerJson' => Json::encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     ]
