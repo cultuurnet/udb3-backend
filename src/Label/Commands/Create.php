@@ -66,6 +66,6 @@ class Create extends AbstractCommand
      */
     public function getPrivacy()
     {
-        return Privacy::fromNative($this->privacy);
+        return new Privacy($this->privacy);
     }
 }

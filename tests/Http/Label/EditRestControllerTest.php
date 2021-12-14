@@ -57,7 +57,7 @@ class EditRestControllerTest extends TestCase
             ->with(
                 new LabelName($contentAsArray['name']),
                 Visibility::fromNative($contentAsArray['visibility']),
-                Privacy::fromNative($contentAsArray['privacy'])
+                new Privacy($contentAsArray['privacy'])
             )
             ->willReturn($this->uuid);
 
