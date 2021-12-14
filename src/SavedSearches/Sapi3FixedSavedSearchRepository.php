@@ -14,20 +14,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
 {
-    /**
-     * @var JsonWebToken
-     */
-    private $token;
+    private JsonWebToken $token;
 
-    /**
-     * @var UserIdentityResolver
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver $userIdentityResolver;
 
-    /**
-     * @var CreatedByQueryMode
-     */
-    protected $createdByQueryMode;
+    protected CreatedByQueryMode $createdByQueryMode;
 
     public function __construct(
         JsonWebToken $token,
