@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CalendarSummary;
+namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
-use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
-use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
-use CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository;
-use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\Exception\HttpException;
