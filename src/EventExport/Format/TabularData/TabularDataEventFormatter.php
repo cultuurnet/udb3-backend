@@ -19,6 +19,7 @@ use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
 use stdClass;
@@ -34,18 +35,11 @@ class TabularDataEventFormatter
      */
     protected array $includedProperties;
 
-
     protected UitpasInfoFormatter $uitpasInfoFormatter;
 
-    /**
-     * @var EventInfoServiceInterface|null
-     */
-    protected $uitpas;
+    protected ?EventInfoServiceInterface $uitpas = null;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface|null
-     */
-    protected $calendarSummaryRepository;
+    protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null;
 
     protected NumberFormatterInterface $currencyFormatter;
 
@@ -54,7 +48,7 @@ class TabularDataEventFormatter
     protected CurrencyRepositoryInterface $currencyRepository;
 
     /**
-     * @param string[] $include                   A list of properties to include
+     * @param string[] $include
      */
     public function __construct(
         array $include,
@@ -85,7 +79,7 @@ class TabularDataEventFormatter
 
     public function formatEvent($event): array
     {
-        $event = json_decode($event);
+        $event = Json::decode($event);
         $includedProperties = $this->includedProperties;
         $row = $this->emptyRow();
 
@@ -120,9 +114,9 @@ class TabularDataEventFormatter
         if ($datetime instanceof \DateTime) {
             $datetime->setTimezone($timezoneBrussels);
             return $datetime->format('Y-m-d H:i');
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     protected function formatDateWithoutTime(string $date): string
@@ -249,7 +243,7 @@ class TabularDataEventFormatter
 
                     if (property_exists($event, 'priceInfo') && is_array($event->priceInfo)) {
                         foreach ($event->priceInfo as $price) {
-                            if ($price->category == 'base') {
+                            if ($price->category === 'base') {
                                 $basePrice = $price;
                                 break;
                             }
@@ -285,9 +279,7 @@ class TabularDataEventFormatter
                     $cardSystems = array_reduce(
                         $uitpasInfo['prices'],
                         function ($cardSystems, $tariff) {
-                            $cardSystem = isset($cardSystems[$tariff['cardSystem']])
-                                ? $cardSystems[$tariff['cardSystem']]
-                                : '';
+                            $cardSystem = $cardSystems[$tariff['cardSystem']] ?? '';
                             $cardSystem = empty($cardSystem)
                                 ? $tariff['cardSystem'] . ': € ' . $tariff['price']
                                 : $cardSystem . ' / € ' . $tariff['price'];
@@ -358,9 +350,9 @@ class TabularDataEventFormatter
                         if (!is_string($event->organizer->name)) {
                             $mainLanguage = isset($event->mainLanguage) ? $event->mainLanguage : 'nl';
                             return $event->organizer->name->{$mainLanguage};
-                        } else {
-                            return $event->organizer->name;
                         }
+
+                        return $event->organizer->name;
                     }
                 },
                 'property' => 'organizer',
@@ -428,7 +420,7 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     if (property_exists($event, 'terms')) {
                         foreach ($event->terms as $term) {
-                            if ($term->domain && $term->label && $term->domain == 'theme') {
+                            if ($term->domain && $term->label && $term->domain === 'theme') {
                                 return $term->label;
                             }
                         }
@@ -441,7 +433,7 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     if (property_exists($event, 'terms')) {
                         foreach ($event->terms as $term) {
-                            if ($term->domain && $term->label && $term->domain == 'eventtype') {
+                            if ($term->label && $term->domain === 'eventtype') {
                                 return $term->label;
                             }
                         }
@@ -454,9 +446,9 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     if (!empty($event->created)) {
                         return $this->formatDate($event->created);
-                    } else {
-                        return '';
                     }
+
+                    return '';
                 },
                 'property' => 'created',
             ],
@@ -465,9 +457,9 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     if (!empty($event->modified)) {
                         return $this->formatDate($event->modified);
-                    } else {
-                        return '';
                     }
+
+                    return '';
                 },
                 'property' => 'modified',
             ],
@@ -476,9 +468,9 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     if (!empty($event->availableFrom)) {
                         return $this->formatDateWithoutTime($event->availableFrom);
-                    } else {
-                        return '';
                     }
+
+                    return '';
                 },
                 'property' => 'available',
             ],
@@ -487,9 +479,9 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     if (!empty($event->startDate)) {
                         return $this->formatDate($event->startDate);
-                    } else {
-                        return '';
                     }
+
+                    return '';
                 },
                 'property' => 'startDate',
             ],
@@ -498,9 +490,9 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     if (!empty($event->endDate)) {
                         return $this->formatDate($event->endDate);
-                    } else {
-                        return '';
                     }
+
+                    return '';
                 },
                 'property' => 'endDate',
             ],
@@ -684,9 +676,9 @@ class TabularDataEventFormatter
     {
         if (property_exists($jsonldData, $propertyName)) {
             return implode(';', $jsonldData->{$propertyName});
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     private function contactPoint(object $event): object
@@ -746,9 +738,7 @@ class TabularDataEventFormatter
     {
         $eventUri = $event->{'@id'};
         $uriParts = explode('/', $eventUri);
-        $eventId = array_pop($uriParts);
-
-        return $eventId;
+        return array_pop($uriParts);
     }
 
     /**
