@@ -38,7 +38,7 @@ class HTMLEventFormatterTest extends TestCase
     protected function getFormattedEventFromJSONFile(string $fileName): array
     {
         $event = $this->getJSONEventFromFile($fileName);
-        $decodedEvent = json::decode($event);
+        $decodedEvent = Json::decode($event);
         $urlParts = explode('/', $decodedEvent->{'@id'});
         $eventId = end($urlParts);
         return $this->eventFormatter->formatEvent($eventId, $event);

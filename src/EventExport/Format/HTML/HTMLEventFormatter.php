@@ -93,7 +93,7 @@ class HTMLEventFormatter
 
     public function formatEvent(string $eventId, string $eventString): array
     {
-        $event = json::decode($eventString);
+        $event = Json::decode($eventString);
 
         $formattedEvent = [];
 
