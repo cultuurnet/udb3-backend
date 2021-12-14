@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CalendarSummary;
+namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
-use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
-use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
-use CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository;
-use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\Exception\HttpException;
@@ -21,7 +17,7 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_fetch_calendar_summaries_by_id_at_a_configured_location()
+    public function it_should_fetch_calendar_summaries_by_id_at_a_configured_location(): void
     {
         $offerId = 'D352C4E6-90C6-4120-8DBB-A09B486170CD';
         $expectedRequest = new Request(
@@ -44,13 +40,13 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
             ->with($expectedRequest)
             ->willReturn(new Response());
 
-        $repository->get($offerId, ContentType::PLAIN(), Format::LARGE());
+        $repository->get($offerId, ContentType::PLAIN(), Format::lg());
     }
 
     /**
      * @test
      */
-    public function it_should_throw_an_unavailable_exception_when_processing_the_summary_request_fails()
+    public function it_should_throw_an_unavailable_exception_when_processing_the_summary_request_fails(): void
     {
         $offerId = 'D352C4E6-90C6-4120-8DBB-A09B486170CD';
         /** @var HttpException|MockObject $httpException */
@@ -70,6 +66,6 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
 
         $this->expectException(SummaryUnavailableException::class);
 
-        $repository->get($offerId, ContentType::PLAIN(), Format::LARGE());
+        $repository->get($offerId, ContentType::PLAIN(), Format::lg());
     }
 }

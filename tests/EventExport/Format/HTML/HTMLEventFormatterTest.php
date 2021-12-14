@@ -11,17 +11,15 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\TaalicoonDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HTMLEventFormatterTest extends TestCase
 {
-    /**
-     * @var HTMLEventFormatter
-     */
-    protected $eventFormatter;
+    protected HTMLEventFormatter $eventFormatter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->eventFormatter = new HTMLEventFormatter();
 
@@ -32,34 +30,21 @@ class HTMLEventFormatterTest extends TestCase
         }
     }
 
-    /**
-     * @param string $fileName
-     * @return string
-     */
-    protected function getJSONEventFromFile($fileName)
+    protected function getJSONEventFromFile(string $fileName): string
     {
-        $jsonEvent = file_get_contents(__DIR__ . '/../../samples/' . $fileName);
-        return $jsonEvent;
+        return file_get_contents(__DIR__ . '/../../samples/' . $fileName);
     }
 
-    /**
-     * @param string $fileName
-     * @return array
-     */
-    protected function getFormattedEventFromJSONFile($fileName)
+    protected function getFormattedEventFromJSONFile(string $fileName): array
     {
         $event = $this->getJSONEventFromFile($fileName);
-        $decodedEvent = json_decode($event);
+        $decodedEvent = Json::decode($event);
         $urlParts = explode('/', $decodedEvent->{'@id'});
         $eventId = end($urlParts);
         return $this->eventFormatter->formatEvent($eventId, $event);
     }
 
-    /**
-     * @param array $expected
-     * @param array $actual
-     */
-    protected function assertEventFormatting($expected, $actual)
+    protected function assertEventFormatting(array $expected, array $actual): void
     {
         if (isset($actual['description'])) {
             $this->assertLessThanOrEqual(
@@ -74,7 +59,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_distills_event_info_to_what_is_needed_for_html_export()
+    public function it_distills_event_info_to_what_is_needed_for_html_export(): void
     {
         $freeEvent = $this->getFormattedEventFromJSONFile('event_with_terms.json');
         $expectedFormattedFreeEvent = [
@@ -106,7 +91,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_marks_the_address_as_dummy_if_the_location_is_a_dummy_for_bookable_education_events()
+    public function it_marks_the_address_as_dummy_if_the_location_is_a_dummy_for_bookable_education_events(): void
     {
         $freeEvent = $this->getFormattedEventFromJSONFile('event_with_dummy_location.json');
         $expectedFormattedFreeEvent = [
@@ -133,7 +118,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_indicates_if_price_is_unknown()
+    public function it_indicates_if_price_is_unknown(): void
     {
         $eventWithoutBookingInfo = $this->getFormattedEventFromJSONFile('event_without_priceinfo.json');
         $expectedFormattedEvent = [
@@ -160,7 +145,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_gracefully_handles_events_without_description()
+    public function it_gracefully_handles_events_without_description(): void
     {
         $eventWithoutDescription = $this->getFormattedEventFromJSONFile('event_without_description.json');
         $expectedFormattedEvent = [
@@ -185,7 +170,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_gracefully_handles_events_without_image()
+    public function it_gracefully_handles_events_without_image(): void
     {
         $eventWithoutImage = $this->getFormattedEventFromJSONFile('event_without_image.json');
         $expectedFormattedEvent = [
@@ -208,7 +193,7 @@ class HTMLEventFormatterTest extends TestCase
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutImage);
     }
 
-    public function locationVariationsDataProvider()
+    public function locationVariationsDataProvider(): array
     {
         $expectedFormattedEvent = [
             'type' => 'Cursus of workshop',
@@ -262,12 +247,11 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      * @dataProvider locationVariationsDataProvider
-     * @param string $sample
      */
     public function it_gracefully_handles_events_without_or_with_partial_location(
-        $sample,
-        array $expectedFormattedEvent
-    ) {
+        string $sample,
+        array  $expectedFormattedEvent
+    ): void {
         $eventWithoutImage = $this->getFormattedEventFromJSONFile($sample);
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutImage);
     }
@@ -275,7 +259,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_gracefully_handles_events_without_eventtype()
+    public function it_gracefully_handles_events_without_eventtype(): void
     {
         $eventWithoutEventType = $this->getFormattedEventFromJSONFile('event_without_eventtype.json');
         $expectedFormattedEvent = [
@@ -300,7 +284,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_strips_html_and_truncates_the_description()
+    public function it_strips_html_and_truncates_the_description(): void
     {
         $eventWithHTMLDescription = $this->getFormattedEventFromJSONFile('event_with_html_description.json');
         $this->assertEquals(
@@ -312,7 +296,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_optionally_enriches_events_with_calendar_period_info()
+    public function it_optionally_enriches_events_with_calendar_period_info(): void
     {
         $id = 'd1f0e71d-a9a8-4069-81fb-530134502c58';
         $expectedSummary = $this->getExpectedCalendarSummary('calendar_summary_periods.html');
@@ -327,7 +311,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_optionally_enriches_events_with_calendar_timestamps_info()
+    public function it_optionally_enriches_events_with_calendar_timestamps_info(): void
     {
         $id = 'd1f0e71d-a9a8-4069-81fb-530134502c58';
         $expectedSummary = $this->getExpectedCalendarSummary('calendar_summary_timestamps.html');
@@ -342,7 +326,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_optionally_enriches_events_with_calendar_permanent_info()
+    public function it_optionally_enriches_events_with_calendar_permanent_info(): void
     {
         $id = 'd1f0e71d-a9a8-4069-81fb-530134502c58';
         $expectedSummary = $this->getExpectedCalendarSummary('calendar_summary_permanent.html');
@@ -355,17 +339,15 @@ class HTMLEventFormatterTest extends TestCase
     }
 
     /**
-     * @param string $id
-     * @param string $calendarSummary
      * @return CalendarSummaryRepositoryInterface|MockObject
      */
-    private function getCalendarSummaryRepositoryWhichReturns($id, $calendarSummary)
+    private function getCalendarSummaryRepositoryWhichReturns(string $id, string $calendarSummary)
     {
         /* @var CalendarSummaryRepositoryInterface|MockObject $repository */
         $repository = $this->createMock(CalendarSummaryRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('get')
-            ->with($id, ContentType::HTML(), Format::SMALL())
+            ->with($id, ContentType::HTML(), Format::sm())
             ->willReturn($calendarSummary);
         return $repository;
     }
@@ -376,11 +358,7 @@ class HTMLEventFormatterTest extends TestCase
         return trim($expected);
     }
 
-    /**
-     * @param array  $event
-     * @param string $expected
-     */
-    private function assertFormattedEventDates($event, $expected)
+    private function assertFormattedEventDates(array $event, string $expected): void
     {
         $this->assertArrayHasKey('dates', $event);
         $this->assertEquals($expected, $event['dates']);
@@ -389,11 +367,12 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      * @dataProvider uitpasInfoProvider
-     * @param array $priceData
-     * @param array $advantagesData
      */
-    public function it_optionally_enriches_events_with_uitpas_info($priceData, $advantagesData, $promotionsData)
-    {
+    public function it_optionally_enriches_events_with_uitpas_info(
+        array $priceData,
+        array $advantagesData,
+        $promotionsData
+    ): void {
         $eventWithoutImage = $this->getJSONEventFromFile('event_without_image.json');
 
         /* @var EventInfoServiceInterface|MockObject $uitpas */
@@ -451,10 +430,10 @@ class HTMLEventFormatterTest extends TestCase
         );
     }
 
-    public function uitpasInfoProvider()
+    public function uitpasInfoProvider(): array
     {
         // Prices and their expected formatting, and advantages and their expected formatting.
-        $data = [
+        return [
             [
                 [
                     'original' => [
@@ -586,14 +565,12 @@ class HTMLEventFormatterTest extends TestCase
                 ],
             ],
         ];
-
-        return $data;
     }
 
     /**
      * @test
      */
-    public function it_correctly_sets_the_taalicoon_count_and_description()
+    public function it_correctly_sets_the_taalicoon_count_and_description(): void
     {
         $eventWithFourTaaliconen = $this->getJSONEventFromFile('event_with_icon_label.json');
         $formattedEvent = $this->eventFormatter->formatEvent(
@@ -615,7 +592,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_activity_branding()
+    public function it_shows_activity_branding(): void
     {
         $event = $this->getJSONEventFromFile(
             'event_with_all_icon_labels.json'
@@ -632,7 +609,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_the_starting_age_when_event_has_age_range()
+    public function it_adds_the_starting_age_when_event_has_age_range(): void
     {
         $event = $this->getJSONEventFromFile(
             'event_with_all_icon_labels.json'
@@ -648,7 +625,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_include_the_media_object_of_the_main_image_when_set()
+    public function it_should_include_the_media_object_of_the_main_image_when_set(): void
     {
         $event = $this->getJSONEventFromFile('event_with_main_image.json');
 
