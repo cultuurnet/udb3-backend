@@ -203,7 +203,7 @@ class HTMLEventFormatter
             if ($spec->isSatisfiedBy($event)) {
                 $satisfiedCount++;
                 $taalicoonCount = $i;
-                $description = (new TaalicoonDescription($name))->toString();
+                $description = $name;
             }
         }
 
