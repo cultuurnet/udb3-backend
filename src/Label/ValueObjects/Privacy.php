@@ -15,6 +15,11 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  */
 class Privacy extends Enum
 {
-    public const PRIVACY_PUBLIC = 'public';
-    public const PRIVACY_PRIVATE = 'private';
+    public static function getAllowedValues(): array
+    {
+        return [
+            'public',
+            'private',
+        ];
+    }
 }
