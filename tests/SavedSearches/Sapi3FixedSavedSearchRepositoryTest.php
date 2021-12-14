@@ -34,7 +34,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
             $token,
             $userIdentityResolver,
-            CreatedByQueryMode::UUID()
+            CreatedByQueryMode::uuid()
         );
 
         $savedSearches = $sapi3FixedSavedSearchRepository->ownedByCurrentUser();
@@ -71,7 +71,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
             $token,
             $userIdentityResolver,
-            CreatedByQueryMode::MIXED()
+            CreatedByQueryMode::mixed()
         );
 
         $savedSearches = $sapi3FixedSavedSearchRepository->ownedByCurrentUser();
@@ -107,7 +107,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
             $token,
             $userIdentityResolver,
-            CreatedByQueryMode::MIXED()
+            CreatedByQueryMode::mixed()
         );
 
         $savedSearches = $sapi3FixedSavedSearchRepository->ownedByCurrentUser();
@@ -143,7 +143,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
             $token,
             $userIdentityResolver,
-            CreatedByQueryMode::EMAIL()
+            CreatedByQueryMode::email()
         );
 
         $savedSearches = $sapi3FixedSavedSearchRepository->ownedByCurrentUser();

@@ -64,9 +64,9 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
     private function getCreatedByQueryMode(Application $app): CreatedByQueryMode
     {
-        $createdByQueryMode = CreatedByQueryMode::UUID();
+        $createdByQueryMode = CreatedByQueryMode::uuid();
         if (!empty($app['config']['created_by_query_mode'])) {
-            $createdByQueryMode = CreatedByQueryMode::fromNative(
+            $createdByQueryMode = new CreatedByQueryMode(
                 $app['config']['created_by_query_mode']
             );
         }
