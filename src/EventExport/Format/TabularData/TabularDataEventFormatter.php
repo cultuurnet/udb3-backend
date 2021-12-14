@@ -754,7 +754,7 @@ class TabularDataEventFormatter
 
             if ($calendarSummaryRepository) {
                 try {
-                    $calendarSummary = $calendarSummaryRepository->get($eventId, ContentType::PLAIN(), $format);
+                    $calendarSummary = $calendarSummaryRepository->get($eventId, ContentType::plain(), $format);
                 } catch (SummaryUnavailableException $exception) {
                     //TODO: Log the missing summaries.
                 };
