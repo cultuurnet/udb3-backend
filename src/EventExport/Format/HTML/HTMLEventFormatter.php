@@ -23,6 +23,7 @@ use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\CombinedStringFilter;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
@@ -30,44 +31,32 @@ use stdClass;
 
 class HTMLEventFormatter
 {
-    /**
-     * @var CombinedStringFilter
-     */
-    protected $filters;
+    protected CombinedStringFilter $filters;
 
     /**
      * @var EventSpecificationInterface[]
      */
-    protected $taalicoonSpecs;
+    protected array $taalicoonSpecs;
 
     /**
      * @var EventSpecificationInterface[]
      */
-    protected $brandSpecs;
+    protected array $brandSpecs;
 
     /**
      * @var EventInfoServiceInterface|null
      */
     protected $uitpas;
 
-    /**
-     * @var PriceFormatter
-     */
-    protected $priceFormatter;
+    protected PriceFormatter $priceFormatter;
 
-    /**
-     * @var UitpasInfoFormatter
-     */
-    protected $uitpasInfoFormatter;
+    protected UitpasInfoFormatter $uitpasInfoFormatter;
 
     /**
      * @var CalendarSummaryRepositoryInterface|null
      */
     protected $calendarSummaryRepository;
 
-    /**
-     * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
-     */
     public function __construct(
         EventInfoServiceInterface $uitpas = null,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
@@ -102,18 +91,9 @@ class HTMLEventFormatter
         ];
     }
 
-    /**
-     * @param string $eventId
-     *   The event's CDB ID.
-     * @param string $eventString
-     *   The cultural event encoded as JSON-LD
-     *
-     * @return array
-     *   The event as an array suitable for rendering with HTMLFileWriter
-     */
-    public function formatEvent($eventId, $eventString)
+    public function formatEvent(string $eventId, string $eventString): array
     {
-        $event = json_decode($eventString);
+        $event = json::decode($eventString);
 
         $formattedEvent = [];
 
@@ -193,9 +173,8 @@ class HTMLEventFormatter
      * Adds the calendar info by trying to fetch the large summary.
      * If the large formatted summary is missing, the summary that is available on the event will be used as fallback.
      *
-     * @param string   $eventId
      */
-    private function addCalendarInfo($eventId, stdClass $event, array &$formattedEvent)
+    private function addCalendarInfo(string $eventId, stdClass $event, array &$formattedEvent): void
     {
         if ($this->calendarSummaryRepository) {
             try {
@@ -209,11 +188,7 @@ class HTMLEventFormatter
 
         $formattedEvent['dates'] = isset($calendarSummary) ? $calendarSummary : $event->calendarSummary;
     }
-
-    /**
-     * @param string $eventId
-     */
-    private function addUitpasInfo($eventId, array &$formattedEvent)
+    private function addUitpasInfo(string $eventId, array &$formattedEvent): void
     {
         if ($this->uitpas) {
             $uitpasInfo = $this->uitpas->getEventInfo($eventId);
@@ -221,7 +196,7 @@ class HTMLEventFormatter
         }
     }
 
-    private function formatTaaliconen($event, &$formattedEvent)
+    private function formatTaaliconen($event, &$formattedEvent): void
     {
         $taalicoonCount = 0;
         $description = '';
@@ -261,11 +236,7 @@ class HTMLEventFormatter
         );
     }
 
-    /**
-     * @param stdClass $event
-     * @param array    $formattedEvent
-     */
-    private function addPriceInfo($event, &$formattedEvent)
+    private function addPriceInfo(stdClass $event, array &$formattedEvent): void
     {
         $basePrice = null;
 
@@ -282,11 +253,7 @@ class HTMLEventFormatter
             $basePrice ? $this->priceFormatter->format((float) $basePrice->price) : 'Niet ingevoerd';
     }
 
-    /**
-     * @param stdClass $event
-     * @param array    $formattedEvent
-     */
-    private function addMediaObject($event, &$formattedEvent)
+    private function addMediaObject(stdClass $event, array &$formattedEvent): void
     {
         if (!property_exists($event, 'image') || !property_exists($event, 'mediaObject')) {
             return;
