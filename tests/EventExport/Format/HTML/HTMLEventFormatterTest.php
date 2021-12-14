@@ -580,7 +580,7 @@ class HTMLEventFormatterTest extends TestCase
             $eventWithFourTaaliconen
         );
         $this->assertEquals(4, $formattedEvent['taalicoonCount']);
-        $this->assertEquals(TaalicoonDescription::VIER_TAALICONEN(), $formattedEvent['taalicoonDescription']);
+        $this->assertEquals(TaalicoonDescription::vierTaaliconen()->toString(), $formattedEvent['taalicoonDescription']);
 
         $eventWithAllTaaliconen = $this->getJSONEventFromFile('event_with_all_icon_labels.json');
         $formattedEvent = $this->eventFormatter->formatEvent(
