@@ -40,7 +40,7 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
             ->with($expectedRequest)
             ->willReturn(new Response());
 
-        $repository->get($offerId, ContentType::PLAIN(), Format::lg());
+        $repository->get($offerId, ContentType::plain(), Format::lg());
     }
 
     /**
@@ -66,6 +66,6 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
 
         $this->expectException(SummaryUnavailableException::class);
 
-        $repository->get($offerId, ContentType::PLAIN(), Format::lg());
+        $repository->get($offerId, ContentType::plain(), Format::lg());
     }
 }

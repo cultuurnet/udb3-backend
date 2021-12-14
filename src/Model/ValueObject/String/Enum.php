@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\String;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+use InvalidArgumentException;
 
 abstract class Enum
 {
     use IsString;
 
-    /**
-     * @param string $value
-     */
-    final public function __construct($value)
+    final public function __construct(string $value)
     {
         $this->guardString($value);
         $this->guardAllowedValue($value);
@@ -21,14 +19,13 @@ abstract class Enum
     }
 
     /**
-     * @param string $value
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    private function guardAllowedValue($value)
+    private function guardAllowedValue(string $value): void
     {
         $allowed = static::getAllowedValues();
         if (!in_array($value, $allowed)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 "Encountered unknown value '{$value}'. Allowed values: " . implode(', ', $allowed)
             );
         }
@@ -42,12 +39,7 @@ abstract class Enum
         return [];
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return static
-     */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments): Enum
     {
         return new static($name);
     }

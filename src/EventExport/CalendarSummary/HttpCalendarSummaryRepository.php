@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
+use Exception;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
 use League\Uri\Http;
 
 class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterface
 {
-    /**
-     * @var Http
-     */
-    protected $calendarSummariesLocation;
+    protected Http $calendarSummariesLocation;
 
-    /**
-     * @var HttpClient
-     */
-    protected $httpClient;
-
+    protected HttpClient $httpClient;
 
     public function __construct(HttpClient $httpClient, Http $calendarSummariesLocation)
     {
@@ -37,7 +31,7 @@ class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterfac
             'GET',
             (string) $summaryLocation,
             [
-                'Accept' => $type->getValue(),
+                'Accept' => $type->toString(),
             ]
         );
 
@@ -46,7 +40,7 @@ class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterfac
                 ->sendRequest($summaryRequest)
                 ->getBody()
                 ->getContents();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new SummaryUnavailableException('No summary available for offer with id: ' . $offerId);
         }
     }
