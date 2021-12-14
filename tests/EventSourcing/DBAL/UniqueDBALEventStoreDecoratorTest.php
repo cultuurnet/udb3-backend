@@ -23,22 +23,16 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     public const OTHER_ID = 'otherId';
     public const OTHER_UNIQUE_VALUE = 'otherUnique';
 
-    /**
-     * @var UniqueDBALEventStoreDecorator
-     */
-    private $uniqueDBALEventStoreDecorator;
+    private UniqueDBALEventStoreDecorator $uniqueDBALEventStoreDecorator;
 
     /**
      * @var UniqueConstraintService|MockObject
      */
     private $uniqueConstraintService;
 
-    /**
-     * @var string
-     */
-    private $uniqueTableName;
+    private string $uniqueTableName;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $serializer = $this->createMock(Serializer::class);
 

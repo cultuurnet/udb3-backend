@@ -43,19 +43,13 @@ class HTMLEventFormatter
      */
     protected array $brandSpecs;
 
-    /**
-     * @var EventInfoServiceInterface|null
-     */
-    protected $uitpas;
+    protected ?EventInfoServiceInterface $uitpas = null;
 
     protected PriceFormatter $priceFormatter;
 
     protected UitpasInfoFormatter $uitpasInfoFormatter;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface|null
-     */
-    protected $calendarSummaryRepository;
+    protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null;
 
     public function __construct(
         EventInfoServiceInterface $uitpas = null,
@@ -172,7 +166,6 @@ class HTMLEventFormatter
     /**
      * Adds the calendar info by trying to fetch the large summary.
      * If the large formatted summary is missing, the summary that is available on the event will be used as fallback.
-     *
      */
     private function addCalendarInfo(string $eventId, stdClass $event, array &$formattedEvent): void
     {
@@ -180,14 +173,15 @@ class HTMLEventFormatter
             try {
                 $calendarType = CalendarType::fromNative($event->calendarType);
                 $calendarSummaryFormat = $calendarType->sameValueAs(CalendarType::MULTIPLE()) ? Format::sm() : Format::lg();
-                $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::HTML(), $calendarSummaryFormat);
+                $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::html(), $calendarSummaryFormat);
             } catch (SummaryUnavailableException $exception) {
                 //TODO: Log the missing summaries.
             };
         }
 
-        $formattedEvent['dates'] = isset($calendarSummary) ? $calendarSummary : $event->calendarSummary;
+        $formattedEvent['dates'] = $calendarSummary ?? $event->calendarSummary;
     }
+
     private function addUitpasInfo(string $eventId, array &$formattedEvent): void
     {
         if ($this->uitpas) {
@@ -196,7 +190,7 @@ class HTMLEventFormatter
         }
     }
 
-    private function formatTaaliconen($event, &$formattedEvent): void
+    private function formatTaaliconen(stdClass $event, array &$formattedEvent): void
     {
         $taalicoonCount = 0;
         $description = '';
@@ -224,7 +218,7 @@ class HTMLEventFormatter
     /**
      * @return string[]
      */
-    private function getBrands($event): array
+    private function getBrands(stdClass $event): array
     {
         return array_keys(
             array_filter(
@@ -242,7 +236,7 @@ class HTMLEventFormatter
 
         if (property_exists($event, 'priceInfo') && is_array($event->priceInfo)) {
             foreach ($event->priceInfo as $price) {
-                if ($price->category == 'base') {
+                if ($price->category === 'base') {
                     $basePrice = $price;
                     break;
                 }

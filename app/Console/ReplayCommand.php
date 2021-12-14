@@ -21,11 +21,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-/**
- * Class ReplayCommand
- *
- * @package CultuurNet\UDB3\Silex\Console
- */
 class ReplayCommand extends AbstractCommand
 {
     public const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
@@ -34,31 +29,25 @@ class ReplayCommand extends AbstractCommand
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
+
+    private Serializer $payloadSerializer;
+
+    private EventBus $eventBus;
+
+    private ConfigWriter $configWriter;
 
     /**
-     * @var Serializer
+     * Note that we pass $config by reference here.
+     * We need this because the replay command overrides configuration properties for active subscribers.
      */
-    private $payloadSerializer;
-
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
-
-    /**
-     * @var ConfigWriter
-     */
-    private $configWriter;
-
-    /**
-     * Note that we pass $config by reference here. We need this because the replay command overrides configuration properties for active subscribers.
-     */
-    public function __construct(CommandBus $commandBus, Connection $connection, Serializer $payloadSerializer, EventBus $eventBus, ConfigWriter $configWriter)
-    {
+    public function __construct(
+        CommandBus $commandBus,
+        Connection $connection,
+        Serializer $payloadSerializer,
+        EventBus $eventBus,
+        ConfigWriter $configWriter
+    ) {
         parent::__construct($commandBus);
         $this->connection = $connection;
         $this->payloadSerializer = $payloadSerializer;
@@ -66,11 +55,7 @@ class ReplayCommand extends AbstractCommand
         $this->configWriter = $configWriter;
     }
 
-
-    /**
-     * @inheritdoc
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $aggregateTypeEnumeration = implode(
             ', ',
@@ -123,13 +108,9 @@ class ReplayCommand extends AbstractCommand
                 InputOption::VALUE_NONE,
                 'Disables the event bus subscribers that react on relations between organizers, places and events'
             );
-        ;
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $delay = (int) $input->getOption(self::OPTION_DELAY);
 
@@ -138,7 +119,7 @@ class ReplayCommand extends AbstractCommand
             $this->setSubscribers($subscribers, $output);
         }
 
-        $aggregateType = $this->getAggregateType($input, $output);
+        $aggregateType = $this->getAggregateType($input);
 
         $disableRelatedOfferSubscribers = $input->getOption(self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS);
         if ($disableRelatedOfferSubscribers) {
@@ -165,7 +146,6 @@ class ReplayCommand extends AbstractCommand
             }
         }
 
-        /** @var DomainEventStream $eventStream */
         foreach ($stream() as $eventStream) {
             if ($delay > 0) {
                 // Delay has to be multiplied by the number of messages in this
@@ -191,30 +171,24 @@ class ReplayCommand extends AbstractCommand
         return 0;
     }
 
-    /**
-     * @param string $marker
-     */
     private function logStream(
         DomainEventStream $eventStream,
         OutputInterface $output,
         EventStream $stream,
-        $marker
-    ) {
+        string $marker
+    ): void {
         /** @var DomainMessage $message */
         foreach ($eventStream->getIterator() as $message) {
             $this->logMessage($output, $stream, $message, $marker);
         }
     }
 
-    /**
-     * @param string $marker
-     */
     private function logMessage(
         OutputInterface $output,
         EventStream $stream,
         DomainMessage $message,
-        $marker
-    ) {
+        string $marker
+    ): void {
         $output->writeln(
             $stream->getLastProcessedId() . '. ' .
             $message->getRecordedOn()->toString() . ' ' .
@@ -223,7 +197,7 @@ class ReplayCommand extends AbstractCommand
         );
     }
 
-    private function setSubscribers(array $subscribers, OutputInterface $output)
+    private function setSubscribers(array $subscribers, OutputInterface $output): void
     {
         $subscribersString = implode(', ', $subscribers);
         $msg = 'Registering the following subscribers with the event bus: %s';
@@ -238,7 +212,7 @@ class ReplayCommand extends AbstractCommand
         );
     }
 
-    private function disableRelatedOfferSubscribers()
+    private function disableRelatedOfferSubscribers(): void
     {
         $this->configWriter->merge(
             [
@@ -250,16 +224,13 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param int $startId
-     * @param AggregateType $aggregateType
      * @param string[] $cdbids
-     * @return EventStream
      */
     private function getEventStream(
-        $startId = null,
+        ?int $startId = null,
         AggregateType $aggregateType = null,
-        $cdbids = null
-    ) {
+        array $cdbids = null
+    ): EventStream {
         $startId = $startId !== null ? (int) $startId : 0;
 
         $eventStream = new EventStream(
@@ -284,13 +255,8 @@ class ReplayCommand extends AbstractCommand
         return $eventStream;
     }
 
-    /**
-     * @return AggregateType|null
-     */
-    private function getAggregateType(
-        InputInterface $input,
-        OutputInterface $output
-    ) {
+    private function getAggregateType(InputInterface $input): ?AggregateType
+    {
         $aggregateTypeInput = $input->getArgument('aggregate');
 
         $aggregateType = null;
@@ -302,10 +268,7 @@ class ReplayCommand extends AbstractCommand
         return $aggregateType;
     }
 
-    /**
-     * @return bool
-     */
-    private function isPublishDisabled(InputInterface $input)
+    private function isPublishDisabled(InputInterface $input): bool
     {
         return $input->getOption(self::OPTION_DISABLE_PUBLISHING);
     }

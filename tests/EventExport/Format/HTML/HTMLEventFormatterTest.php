@@ -347,7 +347,7 @@ class HTMLEventFormatterTest extends TestCase
         $repository = $this->createMock(CalendarSummaryRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('get')
-            ->with($id, ContentType::HTML(), Format::sm())
+            ->with($id, ContentType::html(), Format::sm())
             ->willReturn($calendarSummary);
         return $repository;
     }
@@ -433,7 +433,7 @@ class HTMLEventFormatterTest extends TestCase
     public function uitpasInfoProvider(): array
     {
         // Prices and their expected formatting, and advantages and their expected formatting.
-        $data = [
+        return [
             [
                 [
                     'original' => [
@@ -565,8 +565,6 @@ class HTMLEventFormatterTest extends TestCase
                 ],
             ],
         ];
-
-        return $data;
     }
 
     /**

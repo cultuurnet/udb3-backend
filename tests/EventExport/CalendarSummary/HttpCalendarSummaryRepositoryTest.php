@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CalendarSummary;
+namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
-use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
-use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
-use CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository;
-use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\Exception\HttpException;
@@ -44,7 +40,7 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
             ->with($expectedRequest)
             ->willReturn(new Response());
 
-        $repository->get($offerId, ContentType::PLAIN(), Format::lg());
+        $repository->get($offerId, ContentType::plain(), Format::lg());
     }
 
     /**
@@ -70,6 +66,6 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
 
         $this->expectException(SummaryUnavailableException::class);
 
-        $repository->get($offerId, ContentType::PLAIN(), Format::lg());
+        $repository->get($offerId, ContentType::plain(), Format::lg());
     }
 }

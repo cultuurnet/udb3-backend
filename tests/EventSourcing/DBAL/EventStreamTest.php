@@ -19,17 +19,11 @@ class EventStreamTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var AggregateAwareDBALEventStore
-     */
-    private $eventStore;
+    private AggregateAwareDBALEventStore $eventStore;
 
-    /**
-     * @var EventStream
-     */
-    private $eventStream;
+    private EventStream $eventStream;
 
-    public function setUp()
+    public function setUp(): void
     {
         $table = 'events';
         $payloadSerializer = new SimpleInterfaceSerializer();
@@ -61,7 +55,7 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_int_type_for_optional_start_id()
+    public function it_requires_int_type_for_optional_start_id(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('StartId should have type int.');
@@ -72,10 +66,8 @@ class EventStreamTest extends TestCase
     /**
      * @test
      * @dataProvider invalidStartIdDataProvider
-     *
-     * @param int $invalidStartId
      */
-    public function it_requires_a_value_higher_than_zero_for_optional_start_id($invalidStartId)
+    public function it_requires_a_value_higher_than_zero_for_optional_start_id(int $invalidStartId): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('StartId should be higher than 0.');
@@ -83,10 +75,7 @@ class EventStreamTest extends TestCase
         $this->eventStream->withStartId($invalidStartId);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidStartIdDataProvider()
+    public function invalidStartIdDataProvider(): array
     {
         return [
             [0],
@@ -98,7 +87,7 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_string_type_for_optional_cdbid()
+    public function it_requires_string_type_for_optional_cdbid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cdbids should have type array.');
@@ -109,7 +98,7 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_non_empty_value_for_optional_cdbid()
+    public function it_requires_non_empty_value_for_optional_cdbid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cdbids can\'t be empty.');
@@ -124,7 +113,7 @@ class EventStreamTest extends TestCase
     public function it_retrieves_all_events_from_the_event_store(
         EventStreamDecorator $eventStreamDecorator = null,
         array $expectedDecoratedMetadata = []
-    ) {
+    ): void {
         $history = $this->fillHistory();
 
         if (!is_null($eventStreamDecorator)) {
@@ -151,10 +140,7 @@ class EventStreamTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function eventStreamDecoratorDataProvider()
+    public function eventStreamDecoratorDataProvider(): array
     {
         return [
             // No event stream decorator should result in no extra metadata.
@@ -209,7 +195,10 @@ class EventStreamTest extends TestCase
         ];
     }
 
-    public function it_handles_a_specific_cdbid()
+    /**
+     * @test
+     */
+    public function it_handles_a_specific_cdbid(): void
     {
         $cdbid = '9B994B6A-FE49-42B0-B67D-F681BE533A7A';
         $cdbids = [$cdbid];
@@ -239,7 +228,7 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_a_start_id()
+    public function it_handles_a_start_id(): void
     {
         $history = $this->fillHistory();
         $eventStream = $this->eventStream->withStartId(4);
@@ -267,7 +256,7 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_last_processed_id()
+    public function it_returns_the_last_processed_id(): void
     {
         $this->fillHistory();
 
@@ -287,13 +276,12 @@ class EventStreamTest extends TestCase
     /**
      * @return DomainMessage[]
      */
-    private function fillHistory()
+    private function fillHistory(): array
     {
         $idOfEntityA = 'F68E71A1-DBB0-4542-AEE5-BD937E095F74';
         $idOfEntityB = '011A02C5-D395-47C1-BEBE-184840A2C961';
         $idOfEntityC = '9B994B6A-FE49-42B0-B67D-F681BE533A7A';
 
-        /** @var DomainMessage[] $history */
         $history = [
             0 => new DomainMessage(
                 'F68E71A1-DBB0-4542-AEE5-BD937E095F74',
@@ -400,7 +388,7 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_a_start_id()
+    public function it_can_handle_a_start_id(): void
     {
         $domainMessages = $this->createDomainMessages();
         $this->appendDomainMessages($this->eventStore, $domainMessages);
@@ -428,7 +416,7 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_an_aggregate_type()
+    public function it_can_handle_an_aggregate_type(): void
     {
         /** @var AggregateType[] $aggregateTypes */
         $aggregateTypes = [
@@ -475,13 +463,13 @@ class EventStreamTest extends TestCase
     /**
      * @return DomainMessage[]
      */
-    private function createDomainMessages()
+    private function createDomainMessages(): array
     {
         $idOfEntityA = 'F68E71A1-DBB0-4542-AEE5-BD937E095F74';
         $idOfEntityB = '011A02C5-D395-47C1-BEBE-184840A2C961';
         $idOfEntityC = '9B994B6A-FE49-42B0-B67D-F681BE533A7A';
 
-        $domainMessages = [
+        return [
             0 => new DomainMessage(
                 $idOfEntityA,
                 1,
@@ -573,8 +561,6 @@ class EventStreamTest extends TestCase
                 DateTime::fromString('2015-01-03T19:45:00+0100')
             ),
         ];
-
-        return $domainMessages;
     }
 
     private function appendDomainMessages(EventStore $eventStore, array $domainMessages): void
@@ -605,7 +591,7 @@ class EventStreamTest extends TestCase
         EventStream $eventStream,
         array $domainMessages,
         AggregateType $aggregateType
-    ) {
+    ): void {
         $eventStream = $eventStream->withAggregateType($aggregateType->toString());
 
         $domainEventStreams = $eventStream();
