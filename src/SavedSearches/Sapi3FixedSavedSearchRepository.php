@@ -14,20 +14,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
 {
-    /**
-     * @var JsonWebToken
-     */
-    private $token;
+    private JsonWebToken $token;
 
-    /**
-     * @var UserIdentityResolver
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver $userIdentityResolver;
 
-    /**
-     * @var CreatedByQueryMode
-     */
-    protected $createdByQueryMode;
+    protected CreatedByQueryMode $createdByQueryMode;
 
     public function __construct(
         JsonWebToken $token,
@@ -55,7 +46,7 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
     {
         // If the creator query mode is set to uuid only, return early to avoid fetching user info from auth0 because
         // it's not needed.
-        if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::UUID) {
+        if ($this->createdByQueryMode->sameAs(CreatedByQueryMode::uuid())) {
             return new CreatorQueryString($this->token->getUserId());
         }
 
@@ -68,7 +59,7 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
 
         // If the user is found and the mode is set to mixed, return a query that filters the creator on either email
         // or user id.
-        if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::MIXED) {
+        if ($this->createdByQueryMode->sameAs(CreatedByQueryMode::mixed())) {
             return new CreatorQueryString(
                 $user->getEmailAddress(),
                 $this->token->getUserId()

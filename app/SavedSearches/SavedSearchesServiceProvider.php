@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
+use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -16,10 +17,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SavedSearchesServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['udb3_saved_searches_repo_sapi3'] = $app->share(
             function (Application $app) {
@@ -47,26 +45,22 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
         $app['saved_searches_command_handler'] = $app->share(
             function (Application $app) {
-                return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
+                return new UDB3SavedSearchesCommandHandler(
                     $app['udb3_saved_searches_repo_sapi3']
                 );
             }
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 
-
     private function getCreatedByQueryMode(Application $app): CreatedByQueryMode
     {
-        $createdByQueryMode = CreatedByQueryMode::UUID();
+        $createdByQueryMode = CreatedByQueryMode::uuid();
         if (!empty($app['config']['created_by_query_mode'])) {
-            $createdByQueryMode = CreatedByQueryMode::fromNative(
+            $createdByQueryMode = new CreatedByQueryMode(
                 $app['config']['created_by_query_mode']
             );
         }
