@@ -84,7 +84,7 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
                 ],
             ],
             'description' => [
-                'fr' => 'Description FR'
+                'fr' => 'Description FR',
             ],
         ];
 
