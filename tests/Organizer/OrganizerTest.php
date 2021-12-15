@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -25,6 +26,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -517,6 +519,117 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ]
             );
+    }
+
+    /**
+     * @test
+     * @dataProvider updateDescriptionDataProvider
+     */
+    public function it_can_update_a_description(array $given, callable $update, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $update($organizer))
+            ->then($then);
+    }
+
+    public function updateDescriptionDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Set initial description' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateDescription(
+                        new Description('Description of the organizer'),
+                        new Language('en')
+                    );
+                },
+                [
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                ],
+            ],
+            'Try update with same description' => [
+                [
+                    $organizerCreated,
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateDescription(
+                        new Description('Description of the organizer'),
+                        new Language('en')
+                    );
+                },
+                [
+                ],
+            ],
+            'Translate description' => [
+                [
+                    $organizerCreated,
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateDescription(
+                        new Description('Beschrijving van de organisatie'),
+                        new Language('nl')
+                    );
+                },
+                [
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Beschrijving van de organisatie',
+                        'nl'
+                    ),
+                ],
+            ],
+            'Various description updates' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateDescription(
+                        new Description('Description of the organizer'),
+                        new Language('en')
+                    );
+                    $organizer->updateDescription(
+                        new Description('Beschrijving van de organisatie'),
+                        new Language('nl')
+                    );
+                },
+                [
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Beschrijving van de organisatie',
+                        'nl'
+                    ),
+                ],
+            ],
+        ];
     }
 
     /**

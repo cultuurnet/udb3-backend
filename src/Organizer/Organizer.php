@@ -21,7 +21,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -31,6 +33,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
@@ -43,6 +46,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
+use OutOfBoundsException;
 
 class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
 {
@@ -56,6 +60,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
      * @var Title[]
      */
     private array $titles;
+
+    private ?TranslatedDescription $translatedDescription = null;
 
     /**
      * @var Address[]|null
@@ -163,6 +169,32 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             }
 
             $this->apply($event);
+        }
+    }
+
+    public function updateDescription(Description $description, Language $language): void
+    {
+        if ($this->needsDescriptionUpdate($description, $language)) {
+            $this->apply(
+                new DescriptionUpdated(
+                    $this->actorId,
+                    $description->toString(),
+                    $language->toString()
+                )
+            );
+        }
+    }
+
+    public function needsDescriptionUpdate(Description $description, Language $language): bool
+    {
+        if ($this->translatedDescription === null) {
+            return true;
+        }
+
+        try {
+            return !$this->translatedDescription->getTranslation($language)->sameAs($description);
+        } catch (OutOfBoundsException $outOfBoundsException) {
+            return true;
         }
     }
 
@@ -395,6 +427,19 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             new Title($titleTranslated->getTitle()),
             new Language($titleTranslated->getLanguage())
         );
+    }
+
+    protected function applyDescriptionUpdated(DescriptionUpdated $descriptionUpdated): void
+    {
+        $language = new Language($descriptionUpdated->getLanguage());
+        $description = new Description($descriptionUpdated->getDescription());
+
+        if ($this->translatedDescription === null) {
+            $this->translatedDescription = new TranslatedDescription($language, $description);
+            return;
+        }
+
+        $this->translatedDescription->withTranslation($language, $description);
     }
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void
