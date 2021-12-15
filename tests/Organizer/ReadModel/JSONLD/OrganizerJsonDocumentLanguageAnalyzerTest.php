@@ -29,7 +29,6 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/organizers/919c7904-ecfa-440c-92d0-ae912213c615',
             'name' => [
                 'nl' => 'Naam NL',
-                'de' => 'Name DE',
             ],
             'address' => [
                 'fr' => [
@@ -39,14 +38,17 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
+            'description' => [
+                'de' => 'Description DE',
+            ],
         ];
 
         $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', json_encode($data));
 
         $expected = [
             new Language('nl'),
-            new Language('de'),
             new Language('fr'),
+            new Language('de'),
         ];
 
         $actual = $this->analyzer->determineAvailableLanguages($document);
@@ -81,12 +83,14 @@ class OrganizerJsonDocumentLanguageAnalyzerTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
+            'description' => [
+                'fr' => 'Description FR'
+            ],
         ];
 
         $document = new JsonDocument('919c7904-ecfa-440c-92d0-ae912213c615', json_encode($data));
 
         $expected = [
-            new Language('nl'),
             new Language('fr'),
         ];
 
