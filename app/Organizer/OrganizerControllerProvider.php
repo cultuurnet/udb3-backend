@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -35,6 +36,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
         $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
+
+        $controllers->put('/{organizerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
 
         $controllers->put('/{organizerId}/address/', UpdateAddressRequestHandler::class);
         $controllers->put('/{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
@@ -84,6 +87,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[UpdateTitleRequestHandler::class] = $app->share(
             fn (Application $application) => new UpdateTitleRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateDescriptionRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateDescriptionRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateAddressRequestHandler::class] = $app->share(
