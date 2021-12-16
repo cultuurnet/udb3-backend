@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
@@ -57,6 +58,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class OrganizerLDProjector implements EventListener
 {
     use MultilingualJsonLDProjectorTrait;
+
     /**
      * @uses applyOrganizerImportedFromUDB2
      * @uses applyOrganizerCreated
@@ -64,6 +66,7 @@ class OrganizerLDProjector implements EventListener
      * @uses applyWebsiteUpdated
      * @uses applyTitleUpdated
      * @uses applyTitleTranslated
+     * @uses applyDescriptionUpdated
      * @uses applyAddressUpdated
      * @uses applyAddressRemoved
      * @uses applyAddressTranslated
@@ -268,6 +271,20 @@ class OrganizerLDProjector implements EventListener
             new Title($titleTranslated->getTitle()),
             new Language($titleTranslated->getLanguage())
         );
+    }
+
+    private function applyDescriptionUpdated(DescriptionUpdated $descriptionUpdated): JsonDocument
+    {
+        $document = $this->repository->fetch($descriptionUpdated->getOrganizerId());
+        $jsonLD = $document->getBody();
+
+        if (!isset($jsonLD->description)) {
+            $jsonLD->description = new stdClass();
+        }
+
+        $jsonLD->description->{$descriptionUpdated->getLanguage()} = $descriptionUpdated->getDescription();
+
+        return $document->withBody($jsonLD);
     }
 
     private function applyAddressUpdated(AddressUpdated $addressUpdated): JsonDocument
