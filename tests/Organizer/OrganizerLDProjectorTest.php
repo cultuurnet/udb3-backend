@@ -7,19 +7,27 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
@@ -40,15 +48,23 @@ use CultuurNet\UDB3\RecordedOn;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
+use ValueObjects\Identity\UUID;
+use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Web\Url;
 
-class OrganizerLDProjectorTest extends TestCase
+final class OrganizerLDProjectorTest extends TestCase
 {
-    protected OrganizerLDProjector $projector;
+    private OrganizerLDProjector $projector;
 
     /**
      * @var DocumentRepository|MockObject
      */
-    protected $documentRepository;
+    private $documentRepository;
+
+    /**
+     * @var Repository|MockObject
+     */
+    private $imageRepository;
 
     private RecordedOn $recordedOn;
 
@@ -62,11 +78,17 @@ class OrganizerLDProjectorTest extends TestCase
             }
         );
 
+        $this->imageRepository = $this->createMock(Repository::class);
+
         $this->projector = new OrganizerLDProjector(
             $this->documentRepository,
             $iriGenerator,
             new JsonDocumentLanguageEnricher(
                 new OrganizerJsonDocumentLanguageAnalyzer()
+            ),
+            new ImageNormalizer(
+                $this->imageRepository,
+                $iriGenerator
             )
         );
 
@@ -371,6 +393,78 @@ class OrganizerLDProjectorTest extends TestCase
         );
 
         $this->expectSave($organizerId, 'organizer_with_updated_contactpoint.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_adding_an_initial_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $this->imageRepository->method('load')
+            ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            ->willReturn(
+                MediaObject::create(
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    MIMEType::fromSubtype('jpeg'),
+                    new StringLiteral('Uploaded image'),
+                    new CopyrightHolder('publiq'),
+                    Url::fromNative('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Language('nl')
+                )
+            );
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageAdded(
+                $organizerId,
+                '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                'nl',
+                'Beschrijving van de afbeelding',
+                'publiq'
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_image.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_adding_an_extra_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_image.json');
+
+        $this->imageRepository->method('load')
+            ->with('dd45e5a1-f70c-48d7-83e5-dde9226c1dd6')
+            ->willReturn(
+                MediaObject::create(
+                    new UUID('dd45e5a1-f70c-48d7-83e5-dde9226c1dd6'),
+                    MIMEType::fromSubtype('png'),
+                    new StringLiteral('Extra image'),
+                    new CopyrightHolder('madewithlove'),
+                    Url::fromNative('https://images.uitdatabank.be/dd45e5a1-f70c-48d7-83e5-dde9226c1dd6.png'),
+                    new Language('en')
+                )
+            );
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageAdded(
+                $organizerId,
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
+                'en',
+                'Extra image',
+                'madewithlove'
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_two_images.json');
 
         $this->projector->handle($domainMessage);
     }
@@ -880,14 +974,14 @@ class OrganizerLDProjectorTest extends TestCase
         // because it was created by using the withBody method on JsonDocument.
         // By calling json_encode(json_decode(...)) the newlines are also removed
         // from the expected document.
-        $expectedOrganizerJson = json_encode(json_decode($expectedOrganizerJson));
+        $expectedOrganizerJson = Json::encode(Json::decode($expectedOrganizerJson));
         $this->documentRepository->expects($this->once())
             ->method('save')
             ->with(new JsonDocument($organizerId, $expectedOrganizerJson));
     }
 
     /**
-     * @param ActorEvent|OrganizerEvent $organizerEvent
+     * @param ActorEvent|OrganizerEvent|ImageAdded $organizerEvent
      */
     private function createDomainMessage($organizerEvent): DomainMessage
     {

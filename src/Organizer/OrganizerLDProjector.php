@@ -34,6 +34,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
@@ -71,6 +72,7 @@ class OrganizerLDProjector implements EventListener
      * @uses applyAddressRemoved
      * @uses applyAddressTranslated
      * @uses applyContactPointUpdated
+     * @uses applyImageAdded
      * @uses applyOrganizerUpdatedFRomUDB2
      * @uses applyLabelAdded
      * @uses applyLabelRemoved
@@ -92,14 +94,18 @@ class OrganizerLDProjector implements EventListener
 
     private NormalizerInterface $contactPointNormalizer;
 
+    private NormalizerInterface $imageNormalizer;
+
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
-        JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
+        JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
+        NormalizerInterface $imageNormalizer
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
+        $this->imageNormalizer = $imageNormalizer;
         $this->cdbXMLImporter = new CdbXMLImporter();
         $this->addressNormalizer = new AddressNormalizer();
         $this->contactPointNormalizer = new ContactPointNormalizer();
@@ -336,6 +342,18 @@ class OrganizerLDProjector implements EventListener
 
         $jsonLD = $document->getBody();
         $jsonLD->contactPoint = $this->contactPointNormalizer->normalize($contactPoint);
+
+        return $document->withBody($jsonLD);
+    }
+
+    private function applyImageAdded(ImageAdded $imageAdded): JsonDocument
+    {
+        $document = $this->repository->fetch($imageAdded->getOrganizerId());
+
+        $jsonLD = $document->getBody();
+
+        $jsonLD->images = $jsonLD->images ?? [];
+        $jsonLD->images[] = $this->imageNormalizer->normalize($imageAdded->getImage());
 
         return $document->withBody($jsonLD);
     }
