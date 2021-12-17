@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
+use CultuurNet\UDB3\Organizer\OrganizerLDProjector;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
@@ -17,15 +20,19 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
 
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'organizer_jsonld_projected_event_factory';
 
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[self::PROJECTOR] = $app->share(
             function ($app) {
-                return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
+                return new OrganizerLDProjector(
                     $app['organizer_jsonld_repository'],
                     $app['organizer_iri_generator'],
                     new JsonDocumentLanguageEnricher(
                         new OrganizerJsonDocumentLanguageAnalyzer()
+                    ),
+                    new ImageNormalizer(
+                        $app['media_object_repository'],
+                        $app['media_object_iri_generator']
                     )
                 );
             }
@@ -33,7 +40,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
 
         $app['real_organizer_jsonld_repository'] = $app->share(
             function ($app) {
-                return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
+                return new CacheDocumentRepository(
                     $app['organizer_jsonld_cache']
                 );
             }
@@ -64,7 +71,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

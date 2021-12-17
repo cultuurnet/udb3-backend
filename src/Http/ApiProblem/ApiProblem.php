@@ -236,6 +236,11 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('News Article', $articleId);
     }
 
+    public static function imageNotFound(string $imageId): self
+    {
+        return self::resourceNotFound('Image', $imageId);
+    }
+
     public static function tokenNotSupported(string $detail): self
     {
         return self::create(

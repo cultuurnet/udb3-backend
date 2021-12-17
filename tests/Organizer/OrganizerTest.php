@@ -13,6 +13,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -27,6 +30,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
+use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -626,6 +630,111 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'ae3aab28-6351-489e-a61c-c48aec0a77df',
                         'Beschrijving van de organisatie',
                         'nl'
+                    ),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider addImageDataProvider
+     */
+    public function it_can_add_an_image(array $given, callable $addImage, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $addImage($organizer))
+            ->then($then);
+    }
+
+    public function addImageDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Set initial image' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->addImage(
+                        new Image(
+                            new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+                            new Language('nl'),
+                            new Description('Beschrijving van de afbeelding'),
+                            new CopyrightHolder('publiq')
+                        )
+                    );
+                },
+                [
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving van de afbeelding',
+                        'publiq'
+                    ),
+                ],
+            ],
+            'Prevent setting same image' => [
+                [
+                    $organizerCreated,
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving van de afbeelding',
+                        'publiq'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->addImage(
+                        new Image(
+                            new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+                            new Language('nl'),
+                            new Description('Beschrijving van de afbeelding'),
+                            new CopyrightHolder('publiq')
+                        )
+                    );
+                },
+                [
+                ],
+            ],
+
+            'Allow setting extra image' => [
+                [
+                    $organizerCreated,
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving van de afbeelding',
+                        'publiq'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->addImage(
+                        new Image(
+                            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                            new Language('en'),
+                            new Description('Description of the image'),
+                            new CopyrightHolder('publiq')
+                        )
+                    );
+                },
+                [
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                        'en',
+                        'Description of the image',
+                        'publiq'
                     ),
                 ],
             ],

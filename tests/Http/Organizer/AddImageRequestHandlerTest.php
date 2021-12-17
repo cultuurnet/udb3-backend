@@ -1,0 +1,204 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Http\Organizer;
+
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use Broadway\Repository\AggregateNotFoundException;
+use Broadway\Repository\Repository;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Organizer\Commands\AddImage;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ValueObjects\Identity\UUID as LegacyUUID;
+use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Web\Url;
+
+final class AddImageRequestHandlerTest extends TestCase
+{
+    use AssertApiProblemTrait;
+
+    private TraceableCommandBus $commandBus;
+
+    private AddImageRequestHandler $addImageRequestHandler;
+
+    private Psr7RequestBuilder $psr7RequestBuilder;
+
+    /** @var Repository|MockObject */
+    private $imageRepository;
+
+    protected function setUp(): void
+    {
+        $this->commandBus = new TraceableCommandBus();
+
+        $this->imageRepository = $this->createMock(Repository::class);
+
+        $this->addImageRequestHandler = new AddImageRequestHandler($this->commandBus, $this->imageRepository);
+
+        $this->psr7RequestBuilder = new Psr7RequestBuilder();
+
+        $this->commandBus->record();
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_adding_an_image(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withBodyFromArray([
+                'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                'language' => 'en',
+                'description' => 'A nice image',
+                'copyrightHolder' => 'publiq',
+            ])
+            ->build('POST');
+
+        $this->imageRepository->method('load')
+            ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            ->willReturn(
+                MediaObject::create(
+                    new LegacyUUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    MIMEType::fromSubtype('jpeg'),
+                    new StringLiteral('Uploaded image'),
+                    new CopyrightHolder('publiq'),
+                    Url::fromNative('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new LegacyLanguage('nl')
+                )
+            );
+
+        $expectedCommand = new AddImage(
+            'c269632a-a887-4f21-8455-1631c31e4df5',
+            new Image(
+                new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                new Language('en'),
+                new Description('A nice image'),
+                new CopyrightHolder('publiq')
+            )
+        );
+
+        $response = $this->addImageRequestHandler->handle($request);
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_api_problem_when_image_not_found(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withBodyFromArray([
+                'id' => '08805a3c-ffe0-4c94-a1bc-453a6dd9d01f',
+                'language' => 'en',
+                'description' => 'A nice image',
+                'copyrightHolder' => 'publiq',
+            ])
+            ->build('POST');
+
+        $this->imageRepository->method('load')
+            ->with('08805a3c-ffe0-4c94-a1bc-453a6dd9d01f')
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::imageNotFound('08805a3c-ffe0-4c94-a1bc-453a6dd9d01f'),
+            fn () => $this->addImageRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidBodyDataProvider
+     */
+    public function it_throws_an_api_problem_for_an_invalid_body(string $body, ApiProblem $expectedApiProblem): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withBodyFromString($body)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            $expectedApiProblem,
+            fn () => $this->addImageRequestHandler->handle($request)
+        );
+    }
+
+    public function invalidBodyDataProvider(): array
+    {
+        return [
+            [
+                '',
+                ApiProblem::bodyMissing(),
+            ],
+            [
+                '{{}',
+                ApiProblem::bodyInvalidSyntax('JSON'),
+            ],
+            [
+                '{}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (id, language, copyrightHolder, description) are missing')
+                ),
+            ],
+            [
+                '{
+                    "id":"not a uuid",
+                    "language":"en",
+                    "description":"A nice image",
+                    "copyrightHolder":"publiq"
+                }',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/id', 'The data must match the \'uuid\' format')
+                ),
+            ],
+            [
+                '{
+                    "id":"08805a3c-ffe0-4c94-a1bc-453a6dd9d01f",
+                    "language":"sw",
+                    "description":"A nice image",
+                    "copyrightHolder":"publiq"
+                }',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/language', 'The data should match one item from enum')
+                ),
+            ],
+            [
+                '{
+                    "id":"08805a3c-ffe0-4c94-a1bc-453a6dd9d01f",
+                    "language":"en",
+                    "description":"",
+                    "copyrightHolder":"publiq"
+                }',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/description', 'Minimum string length is 1, found 0')
+                ),
+            ],
+            [
+                '{
+                    "id":"08805a3c-ffe0-4c94-a1bc-453a6dd9d01f",
+                    "language":"en",
+                    "description":"A nice image",
+                    "copyrightHolder":""
+                }',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/copyrightHolder', 'Minimum string length is 3, found 0')
+                ),
+            ],
+        ];
+    }
+}

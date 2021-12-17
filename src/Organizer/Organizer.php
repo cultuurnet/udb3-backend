@@ -18,6 +18,8 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -35,6 +37,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -70,6 +73,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private ContactPoint $contactPoint;
 
+    private Images $images;
+
     private Labels $labels;
 
     private WorkflowStatus $workflowStatus;
@@ -86,6 +91,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // with a non-empty contact point. To enforce this we initialize the
         // aggregate state with an empty contact point.
         $this->contactPoint = new ContactPoint();
+        $this->images = new Images();
         $this->labels = new Labels();
         $this->workflowStatus = WorkflowStatus::ACTIVE();
     }
@@ -249,6 +255,34 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
                 )
             );
         }
+    }
+
+    public function addImage(Image $image): void
+    {
+        if ($this->hasImage($image)) {
+            return;
+        }
+
+        $this->apply(
+            new ImageAdded(
+                $this->actorId,
+                $image->getId()->toString(),
+                $image->getLanguage()->toString(),
+                $image->getDescription()->toString(),
+                $image->getCopyrightHolder()->toString()
+            )
+        );
+    }
+
+    public function hasImage(Image $image): bool
+    {
+        if ($this->images->isEmpty()) {
+            return false;
+        }
+
+        return !$this->images->filter(
+            fn (Image $currentImage) => $currentImage->getId()->sameAs($image->getId())
+        )->isEmpty();
     }
 
     public function updateGeoCoordinates(Coordinates $coordinate): void
@@ -492,6 +526,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
                 )
             )
         );
+    }
+
+    protected function applyImageAdded(ImageAdded $imageAdded): void
+    {
+        $this->images = $this->images->with($imageAdded->getImage());
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void
