@@ -120,7 +120,7 @@ final class AddImageRequestHandlerTest extends TestCase
             fn () => $this->addImageRequestHandler->handle($request)
         );
     }
-    
+
     /**
      * @test
      * @dataProvider invalidBodyDataProvider
