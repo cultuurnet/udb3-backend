@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
+use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
@@ -642,6 +643,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[RemoveAddressHandler::class]);
         $commandBus->subscribe($app[UpdateWebsiteHandler::class]);
         $commandBus->subscribe($app[UpdateContactPointHandler::class]);
+        $commandBus->subscribe($app[AddImageHandler::class]);
 
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
     };

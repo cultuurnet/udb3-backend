@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
+use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
@@ -82,6 +83,10 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 
         $app[UpdateContactPointHandler::class] = $app->share(
             fn (Application $application) => new UpdateContactPointHandler($app['organizer_repository'])
+        );
+
+        $app[AddImageHandler::class] = $app->share(
+            fn (Application $application) => new AddImageHandler($app['organizer_repository'])
         );
     }
 
