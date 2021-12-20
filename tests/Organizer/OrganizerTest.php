@@ -706,7 +706,6 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                 ],
             ],
-
             'Allow setting extra image' => [
                 [
                     $organizerCreated,
