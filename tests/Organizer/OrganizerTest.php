@@ -31,6 +31,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
+use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -735,6 +736,71 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'Description of the image',
                         'publiq'
                     ),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider addImageDataProvider
+     */
+    public function it_can_remove_an_image(array $given, callable $removeImage, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $removeImage($organizer))
+            ->then($then);
+    }
+
+    public function removeImageDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Remove existing image' => [
+                [
+                    $organizerCreated,
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving van de afbeelding',
+                        'publiq'
+                    ),
+                ],
+                fn (Organizer $organizer) =>
+                    $organizer->removeImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                [
+                    new ImageRemoved(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37'
+                    ),
+                ],
+            ],
+            'Remove image only once' => [
+                [
+                    $organizerCreated,
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving van de afbeelding',
+                        'publiq'
+                    ),
+                    new ImageRemoved(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37'
+                    ),
+                ],
+                fn (Organizer $organizer) =>
+                    $organizer->removeImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                [
                 ],
             ],
         ];

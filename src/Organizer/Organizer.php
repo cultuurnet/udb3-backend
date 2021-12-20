@@ -39,6 +39,7 @@ use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
+use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -284,6 +285,15 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         return !$this->images->filter(
             fn (Image $currentImage) => $currentImage->getId()->sameAs($imageId)
         )->isEmpty();
+    }
+
+    public function removeImage(UUID $imageId): void
+    {
+        if (!$this->hasImage($imageId)) {
+            return;
+        }
+
+        $this->apply(new ImageRemoved($this->actorId, $imageId->toString()));
     }
 
     public function updateGeoCoordinates(Coordinates $coordinate): void
@@ -532,6 +542,13 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyImageAdded(ImageAdded $imageAdded): void
     {
         $this->images = $this->images->with($imageAdded->getImage());
+    }
+
+    protected function applyImageRemoved(ImageRemoved $imageRemoved): void
+    {
+        $this->images = $this->images->filter(
+            fn (Image $image) => $image->getId()->toString() !== $imageRemoved->getImageId()
+        );
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void
