@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -259,7 +260,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function addImage(Image $image): void
     {
-        if ($this->hasImage($image)) {
+        if ($this->hasImage($image->getId())) {
             return;
         }
 
@@ -274,14 +275,14 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    public function hasImage(Image $image): bool
+    public function hasImage(UUID $imageId): bool
     {
         if ($this->images->isEmpty()) {
             return false;
         }
 
         return !$this->images->filter(
-            fn (Image $currentImage) => $currentImage->getId()->sameAs($image->getId())
+            fn (Image $currentImage) => $currentImage->getId()->sameAs($imageId)
         )->isEmpty();
     }
 
