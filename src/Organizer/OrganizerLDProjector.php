@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
+use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
@@ -73,6 +74,7 @@ class OrganizerLDProjector implements EventListener
      * @uses applyAddressTranslated
      * @uses applyContactPointUpdated
      * @uses applyImageAdded
+     * @uses applyImageRemoved
      * @uses applyOrganizerUpdatedFRomUDB2
      * @uses applyLabelAdded
      * @uses applyLabelRemoved
@@ -354,6 +356,24 @@ class OrganizerLDProjector implements EventListener
 
         $jsonLD->images = $jsonLD->images ?? [];
         $jsonLD->images[] = $this->imageNormalizer->normalize($imageAdded->getImage());
+
+        return $document->withBody($jsonLD);
+    }
+
+    private function applyImageRemoved(ImageRemoved $imageRemoved): JsonDocument
+    {
+        $document = $this->repository->fetch($imageRemoved->getOrganizerId());
+
+        $jsonLD = $document->getBody();
+
+        $jsonLD->images = array_values(array_filter(
+            $jsonLD->images,
+            static fn ($image) => !(strpos($image->{'@id'}, $imageRemoved->getImageId()) !== false)
+        ));
+
+        if (count($jsonLD->images) === 0) {
+            unset($jsonLD->images);
+        }
 
         return $document->withBody($jsonLD);
     }

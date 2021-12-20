@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -38,6 +39,7 @@ use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
+use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -259,7 +261,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function addImage(Image $image): void
     {
-        if ($this->hasImage($image)) {
+        if ($this->hasImage($image->getId())) {
             return;
         }
 
@@ -274,15 +276,24 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    public function hasImage(Image $image): bool
+    public function hasImage(UUID $imageId): bool
     {
         if ($this->images->isEmpty()) {
             return false;
         }
 
         return !$this->images->filter(
-            fn (Image $currentImage) => $currentImage->getId()->sameAs($image->getId())
+            fn (Image $currentImage) => $currentImage->getId()->sameAs($imageId)
         )->isEmpty();
+    }
+
+    public function removeImage(UUID $imageId): void
+    {
+        if (!$this->hasImage($imageId)) {
+            return;
+        }
+
+        $this->apply(new ImageRemoved($this->actorId, $imageId->toString()));
     }
 
     public function updateGeoCoordinates(Coordinates $coordinate): void
@@ -531,6 +542,13 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyImageAdded(ImageAdded $imageAdded): void
     {
         $this->images = $this->images->with($imageAdded->getImage());
+    }
+
+    protected function applyImageRemoved(ImageRemoved $imageRemoved): void
+    {
+        $this->images = $this->images->filter(
+            fn (Image $image) => $image->getId()->toString() !== $imageRemoved->getImageId()
+        );
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void

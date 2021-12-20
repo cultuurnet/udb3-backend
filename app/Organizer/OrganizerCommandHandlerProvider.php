@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
@@ -87,6 +88,10 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 
         $app[AddImageHandler::class] = $app->share(
             fn (Application $application) => new AddImageHandler($app['organizer_repository'])
+        );
+
+        $app[RemoveImageHandler::class] = $app->share(
+            fn (Application $application) => new RemoveImageHandler($app['organizer_repository'])
         );
     }
 
