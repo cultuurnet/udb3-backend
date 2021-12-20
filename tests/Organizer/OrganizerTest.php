@@ -743,7 +743,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
-     * @dataProvider addImageDataProvider
+     * @dataProvider removeImageDataProvider
      */
     public function it_can_remove_an_image(array $given, callable $removeImage, array $then): void
     {
