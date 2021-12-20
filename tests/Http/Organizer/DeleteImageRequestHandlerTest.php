@@ -32,6 +32,9 @@ final class DeleteImageRequestHandlerTest extends TestCase
         $this->commandBus->record();
     }
 
+    /**
+     * @test
+     */
     public function it_handles_removing_an_image(): void
     {
         $request = (new Psr7RequestBuilder())
