@@ -28,12 +28,12 @@ use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
+use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
-use CultuurNet\UDB3\Organizer\Events\OrganizerEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
@@ -465,6 +465,46 @@ final class OrganizerLDProjectorTest extends TestCase
         );
 
         $this->expectSave($organizerId, 'organizer_with_two_images.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_removing_an_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_two_images.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageRemoved(
+                $organizerId,
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_image.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_removing_last_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_image.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageRemoved(
+                $organizerId,
+                '03789a2f-5063-4062-b7cb-95a0a2280d92',
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_all_images_removed.json');
 
         $this->projector->handle($domainMessage);
     }
@@ -980,9 +1020,7 @@ final class OrganizerLDProjectorTest extends TestCase
             ->with(new JsonDocument($organizerId, $expectedOrganizerJson));
     }
 
-    /**
-     * @param ActorEvent|OrganizerEvent|ImageAdded $organizerEvent
-     */
+
     private function createDomainMessage($organizerEvent): DomainMessage
     {
         if ($organizerEvent instanceof ActorEvent) {
