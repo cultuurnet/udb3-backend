@@ -15,6 +15,7 @@ final class ImageUpdatedTest extends TestCase
         $this->imageUpdated = new ImageUpdated(
             'a98df644-da7e-407e-9cd9-3217ddc61f27',
             '6da7230e-ce93-44d5-b76b-48a76140d8f7',
+            'en',
             'Updated description',
             'Updated copyright holder'
         );
@@ -34,6 +35,14 @@ final class ImageUpdatedTest extends TestCase
     public function it_has_an_image_id(): void
     {
         $this->assertEquals('6da7230e-ce93-44d5-b76b-48a76140d8f7', $this->imageUpdated->getImageId());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_a_language(): void
+    {
+        $this->assertEquals('en', $this->imageUpdated->getLanguage());
     }
 
     /**
@@ -61,6 +70,7 @@ final class ImageUpdatedTest extends TestCase
             [
                 'organizerId' => 'a98df644-da7e-407e-9cd9-3217ddc61f27',
                 'imageId' => '6da7230e-ce93-44d5-b76b-48a76140d8f7',
+                'language' => 'en',
                 'description' => 'Updated description',
                 'copyrightHolder' => 'Updated copyright holder',
             ],
@@ -79,6 +89,7 @@ final class ImageUpdatedTest extends TestCase
                 [
                     'organizerId' => 'a98df644-da7e-407e-9cd9-3217ddc61f27',
                     'imageId' => '6da7230e-ce93-44d5-b76b-48a76140d8f7',
+                    'language' => 'en',
                     'description' => 'Updated description',
                     'copyrightHolder' => 'Updated copyright holder',
                 ]
