@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
+use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
@@ -465,6 +466,42 @@ final class OrganizerLDProjectorTest extends TestCase
         );
 
         $this->expectSave($organizerId, 'organizer_with_two_images.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_updating_an_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_image.json');
+
+        $this->imageRepository->method('load')
+            ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            ->willReturn(
+                MediaObject::create(
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    MIMEType::fromSubtype('jpeg'),
+                    new StringLiteral('Image Description'),
+                    new CopyrightHolder('madewithlove'),
+                    Url::fromNative('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Language('en')
+                )
+            );
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageUpdated(
+                $organizerId,
+                '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                'en',
+                'Updated description',
+                'Updated copyright holder'
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_updated_image.json');
 
         $this->projector->handle($domainMessage);
     }
