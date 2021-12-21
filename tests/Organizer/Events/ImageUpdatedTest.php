@@ -15,7 +15,7 @@ final class ImageUpdatedTest extends TestCase
         $this->imageUpdated = new ImageUpdated(
             'a98df644-da7e-407e-9cd9-3217ddc61f27',
             '6da7230e-ce93-44d5-b76b-48a76140d8f7',
-            'Updated copyright holder of the image',
+            'Updated description',
             'Updated copyright holder'
         );
     }
@@ -41,7 +41,7 @@ final class ImageUpdatedTest extends TestCase
      */
     public function it_has_a_description(): void
     {
-        $this->assertEquals('Updated copyright holder of the image', $this->imageUpdated->getDescription());
+        $this->assertEquals('Updated description', $this->imageUpdated->getDescription());
     }
 
     /**
@@ -61,7 +61,7 @@ final class ImageUpdatedTest extends TestCase
             [
                 'organizerId' => 'a98df644-da7e-407e-9cd9-3217ddc61f27',
                 'imageId' => '6da7230e-ce93-44d5-b76b-48a76140d8f7',
-                'description' => 'Updated copyright holder of the image',
+                'description' => 'Updated description',
                 'copyrightHolder' => 'Updated copyright holder',
             ],
             $this->imageUpdated->serialize()
@@ -79,8 +79,8 @@ final class ImageUpdatedTest extends TestCase
                 [
                     'organizerId' => 'a98df644-da7e-407e-9cd9-3217ddc61f27',
                     'imageId' => '6da7230e-ce93-44d5-b76b-48a76140d8f7',
-                    'description' => 'Description of the image',
-                    'copyrightHolder' => 'Copyright holder of the image',
+                    'description' => 'Updated description',
+                    'copyrightHolder' => 'Updated copyright holder',
                 ]
             )
         );
