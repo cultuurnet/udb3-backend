@@ -5226,12 +5226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "16820679affd70617e7f9b5d593f7080987e76ac"
+                "reference": "6a1385e1920e4b8642ad0980b911aebe95f7247e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/16820679affd70617e7f9b5d593f7080987e76ac",
-                "reference": "16820679affd70617e7f9b5d593f7080987e76ac",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/6a1385e1920e4b8642ad0980b911aebe95f7247e",
+                "reference": "6a1385e1920e4b8642ad0980b911aebe95f7247e",
                 "shasum": ""
             },
             "type": "library",
@@ -5250,7 +5250,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4427-update-organizer-image"
             },
-            "time": "2021-12-21T07:46:49+00:00"
+            "time": "2021-12-21T08:28:56+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
