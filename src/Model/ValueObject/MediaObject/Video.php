@@ -76,11 +76,11 @@ final class Video
             return false;
         }
 
-        if (!$this->url->sameAs($video->url)) {
+        if (!$this->url->sameAs($video->getUrl())) {
             return false;
         }
 
-        if (!$this->language->sameAs($video->language)) {
+        if (!$this->language->sameAs($video->getLanguage())) {
             return false;
         }
 
