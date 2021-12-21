@@ -77,7 +77,7 @@ final class ImageTest extends TestCase
             'Equal images' => [
                 $image,
                 $image,
-                true
+                true,
             ],
             'Different id' => [
                 $image,
@@ -87,7 +87,7 @@ final class ImageTest extends TestCase
                     new Description('Image description'),
                     new CopyrightHolder('Image copyright holder')
                 ),
-                false
+                false,
             ],
             'Different language' => [
                 $image,
@@ -97,7 +97,7 @@ final class ImageTest extends TestCase
                     new Description('Image description'),
                     new CopyrightHolder('Image copyright holder')
                 ),
-                false
+                false,
             ],
             'Different description' => [
                 $image,
@@ -107,7 +107,7 @@ final class ImageTest extends TestCase
                     new Description('Different image description'),
                     new CopyrightHolder('Image copyright holder')
                 ),
-                false
+                false,
             ],
             'Different copyright holder' => [
                 $image,
@@ -117,7 +117,7 @@ final class ImageTest extends TestCase
                     new Description('Image description'),
                     new CopyrightHolder('Different image copyright holder')
                 ),
-                false
+                false,
             ],
             'Everything different' => [
                 $image,
@@ -127,7 +127,7 @@ final class ImageTest extends TestCase
                     new Description('Different image description'),
                     new CopyrightHolder('Different image copyright holder')
                 ),
-                false
+                false,
             ],
         ];
     }
