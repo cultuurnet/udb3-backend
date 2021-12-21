@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -40,6 +41,7 @@ use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
+use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -272,6 +274,49 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
                 $image->getLanguage()->toString(),
                 $image->getDescription()->toString(),
                 $image->getCopyrightHolder()->toString()
+            )
+        );
+    }
+
+    public function updateImage(
+        UUID $imageId,
+        ?Language $language,
+        ?Description $description,
+        ?CopyrightHolder $copyrightHolder
+    ): void {
+        if (!$this->hasImage($imageId)) {
+            return;
+        }
+
+        $images = $this->images->filter(
+            fn (Image $currentImage) => $currentImage->getId()->sameAs($imageId)
+        );
+
+        if ($images->count() !== 1) {
+            return;
+        }
+
+        /** @var Image $existingImage */
+        $existingImage = $images->getFirst();
+
+        $updatedImage = new Image(
+            $imageId,
+            $language ?: $existingImage->getLanguage(),
+            $description ?: $existingImage->getDescription(),
+            $copyrightHolder ?: $existingImage->getCopyrightHolder()
+        );
+
+        if ($updatedImage->sameAs($existingImage)) {
+            return;
+        }
+
+        $this->apply(
+            new ImageUpdated(
+                $this->actorId,
+                $imageId->toString(),
+                $updatedImage->getLanguage()->toString(),
+                $updatedImage->getDescription()->toString(),
+                $updatedImage->getCopyrightHolder()->toString(),
             )
         );
     }
@@ -542,6 +587,17 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyImageAdded(ImageAdded $imageAdded): void
     {
         $this->images = $this->images->with($imageAdded->getImage());
+    }
+
+    protected function applyImageUpdated(ImageUpdated $imageUpdated): void
+    {
+        $images = array_map(
+            fn (Image $image) =>
+                $image->getId()->toString() === $imageUpdated->getImageId() ? $imageUpdated->getImage() : $image,
+            $this->images->toArray()
+        );
+
+        $this->images = new Images(...$images);
     }
 
     protected function applyImageRemoved(ImageRemoved $imageRemoved): void

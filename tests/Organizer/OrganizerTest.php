@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
+use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
@@ -736,6 +737,163 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'Description of the image',
                         'publiq'
                     ),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider updateImageDataProvider
+     */
+    public function it_can_update_an_image(array $given, callable $updateImage, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $updateImage($organizer))
+            ->then($then);
+    }
+
+    public function updateImageDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        $imageAdded = new ImageAdded(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'cf539408-bba9-4e77-9f85-72019013db37',
+            'nl',
+            'Beschrijving afbeelding',
+            'Rechtenhouder afbeelding'
+        );
+
+        return [
+            'Update language' => [
+                [
+                    $organizerCreated,
+                    $imageAdded,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateImage(
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new Language('en'),
+                        new Description('Beschrijving afbeelding'),
+                        new CopyrightHolder('Rechtenhouder afbeelding')
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'en',
+                        'Beschrijving afbeelding',
+                        'Rechtenhouder afbeelding'
+                    ),
+                ],
+            ],
+            'Update description' => [
+                [
+                    $organizerCreated,
+                    $imageAdded,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateImage(
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new Language('nl'),
+                        new Description('Aangepaste beschrijving afbeelding'),
+                        new CopyrightHolder('Rechtenhouder afbeelding')
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Aangepaste beschrijving afbeelding',
+                        'Rechtenhouder afbeelding'
+                    ),
+                ],
+            ],
+            'Update copyright holder' => [
+                [
+                    $organizerCreated,
+                    $imageAdded,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateImage(
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new Language('nl'),
+                        new Description('Beschrijving afbeelding'),
+                        new CopyrightHolder('Aangepaste rechtenhouder afbeelding')
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving afbeelding',
+                        'Aangepaste rechtenhouder afbeelding'
+                    ),
+                ],
+            ],
+            'Update all properties of an existing image' => [
+                [
+                    $organizerCreated,
+                    $imageAdded,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateImage(
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new Language('en'),
+                        new Description('Aangepaste beschrijving afbeelding'),
+                        new CopyrightHolder('Aangepaste rechtenhouder afbeelding')
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'en',
+                        'Aangepaste beschrijving afbeelding',
+                        'Aangepaste rechtenhouder afbeelding'
+                    ),
+                ],
+            ],
+            'Update non existing image' => [
+                [
+                    $organizerCreated,
+                    $imageAdded,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateImage(
+                        new UUID('f0515293-4e39-4679-9f39-5406dddfb234'),
+                        new Language('en'),
+                        new Description('Aangepaste beschrijving afbeelding'),
+                        new CopyrightHolder('Aangepaste rechterhouder afbeelding')
+                    );
+                },
+                [
+                ],
+            ],
+            'Update with no change in values' => [
+                [
+                    $organizerCreated,
+                    $imageAdded,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->updateImage(
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new Language('nl'),
+                        new Description('Beschrijving afbeelding'),
+                        new CopyrightHolder('Rechtenhouder afbeelding')
+                    );
+                },
+                [
                 ],
             ],
         ];
