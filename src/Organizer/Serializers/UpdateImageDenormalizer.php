@@ -24,7 +24,7 @@ final class UpdateImageDenormalizer implements DenormalizerInterface
     {
         $updateImage = new UpdateImage(
             $this->organizerId,
-                new UUID($data['id'])
+            new UUID($data['id'])
         );
 
         if (isset($data['language'])) {
