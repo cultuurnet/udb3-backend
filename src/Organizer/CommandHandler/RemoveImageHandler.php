@@ -23,7 +23,7 @@ final class RemoveImageHandler implements CommandHandler
             return;
         }
 
-        $organizer = $this->organizerRepository->load($command->getOrganizerId());
+        $organizer = $this->organizerRepository->load($command->getItemId());
 
         $organizer->removeImage($command->getImageId());
 
