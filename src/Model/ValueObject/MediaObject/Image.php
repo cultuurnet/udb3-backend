@@ -49,4 +49,25 @@ final class Image
     {
         return $this->copyrightHolder;
     }
+
+    public function sameAs(Image $image): bool
+    {
+        if (!$this->id->sameAs($image->getId())) {
+            return false;
+        }
+
+        if (!$this->language->sameAs($image->getLanguage())) {
+            return false;
+        }
+
+        if (!$this->description->sameAs($image->getDescription())) {
+            return false;
+        }
+
+        if (!$this->copyrightHolder->sameAs($image->getCopyrightHolder())) {
+            return false;
+        }
+
+        return true;
+    }
 }

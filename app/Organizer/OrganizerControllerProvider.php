@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -50,6 +51,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers->put('/{organizerId}/contact-point/', UpdateContactPointRequestHandler::class);
 
         $controllers->post('/{organizerId}/images/', AddImageRequestHandler::class);
+        $controllers->patch('/{organizerId}/images/', UpdateImagesRequestHandler::class);
         $controllers->delete('/{organizerId}/images/{imageId}', DeleteImageRequestHandler::class);
 
         $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
@@ -119,6 +121,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
                 $app['event_command_bus'],
                 $app['media_object_repository']
             )
+        );
+
+        $app[UpdateImagesRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateImagesRequestHandler($app['event_command_bus'])
         );
 
         $app[DeleteImageRequestHandler::class] = $app->share(

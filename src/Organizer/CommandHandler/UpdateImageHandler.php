@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Organizer\Commands\RemoveImage;
+use CultuurNet\UDB3\Organizer\Commands\UpdateImage;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
-final class RemoveImageHandler implements CommandHandler
+final class UpdateImageHandler implements CommandHandler
 {
     private OrganizerRepository $organizerRepository;
 
@@ -19,13 +19,18 @@ final class RemoveImageHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!$command instanceof RemoveImage) {
+        if (!$command instanceof UpdateImage) {
             return;
         }
 
         $organizer = $this->organizerRepository->load($command->getItemId());
 
-        $organizer->removeImage($command->getImageId());
+        $organizer->updateImage(
+            $command->getImageID(),
+            $command->getLanguage(),
+            $command->getDescription(),
+            $command->getCopyrightHolder()
+        );
 
         $this->organizerRepository->save($organizer);
     }

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class AddImage
+final class AddImage implements AuthorizableCommand
 {
     private string $organizerId;
 
@@ -18,13 +20,18 @@ final class AddImage
         $this->image = $image;
     }
 
-    public function getOrganizerId(): string
+    public function getImage(): Image
+    {
+        return $this->image;
+    }
+
+    public function getItemId(): string
     {
         return $this->organizerId;
     }
 
-    public function getImage(): Image
+    public function getPermission(): Permission
     {
-        return $this->image;
+        return Permission::ORGANISATIES_BEWERKEN();
     }
 }

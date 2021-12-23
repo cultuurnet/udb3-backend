@@ -77,4 +77,23 @@ final class ImageAddedTest extends TestCase
             $this->imageAdded->serialize()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize(): void
+    {
+        $this->assertEquals(
+            $this->imageAdded,
+            ImageAdded::deserialize(
+                [
+                    'organizerId' => '688cc29c-6662-4fc0-b832-71adf5282130',
+                    'imageId' => '78957a0a-74ad-415d-ab6b-f49b865957fd',
+                    'language' => 'en',
+                    'description' => 'Description of the image',
+                    'copyrightHolder' => 'Copyright holder of the image',
+                ]
+            )
+        );
+    }
 }

@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Http\Organizer;
+namespace CultuurNet\UDB3\Http\Organizer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use PHPUnit\Framework\TestCase;

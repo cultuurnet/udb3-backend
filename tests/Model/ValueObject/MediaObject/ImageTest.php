@@ -54,4 +54,81 @@ final class ImageTest extends TestCase
     {
         $this->assertEquals(new CopyrightHolder('publiq'), $this->image->getCopyrightHolder());
     }
+
+    /**
+     * @test
+     * @dataProvider imagesDataProvider
+     */
+    public function it_can_compare_images(Image $image1, Image $image2, bool $equal): void
+    {
+        $this->assertEquals($equal, $image1->sameAs($image2));
+    }
+
+    public function imagesDataProvider(): array
+    {
+        $image = new Image(
+            new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+            new Language('en'),
+            new Description('Image description'),
+            new CopyrightHolder('Image copyright holder')
+        );
+
+        return [
+            'Equal images' => [
+                $image,
+                $image,
+                true,
+            ],
+            'Different id' => [
+                $image,
+                new Image(
+                    new UUID('d7da6e1d-f594-4614-9d77-157913e32d5b'),
+                    new Language('en'),
+                    new Description('Image description'),
+                    new CopyrightHolder('Image copyright holder')
+                ),
+                false,
+            ],
+            'Different language' => [
+                $image,
+                new Image(
+                    new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+                    new Language('nl'),
+                    new Description('Image description'),
+                    new CopyrightHolder('Image copyright holder')
+                ),
+                false,
+            ],
+            'Different description' => [
+                $image,
+                new Image(
+                    new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+                    new Language('en'),
+                    new Description('Different image description'),
+                    new CopyrightHolder('Image copyright holder')
+                ),
+                false,
+            ],
+            'Different copyright holder' => [
+                $image,
+                new Image(
+                    new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+                    new Language('en'),
+                    new Description('Image description'),
+                    new CopyrightHolder('Different image copyright holder')
+                ),
+                false,
+            ],
+            'Everything different' => [
+                $image,
+                new Image(
+                    new UUID('d7da6e1d-f594-4614-9d77-157913e32d5b'),
+                    new Language('nl'),
+                    new Description('Different image description'),
+                    new CopyrightHolder('Different image copyright holder')
+                ),
+                false,
+            ],
+        ];
+    }
 }
