@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
 use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
+use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
@@ -542,6 +543,26 @@ final class OrganizerLDProjectorTest extends TestCase
         );
 
         $this->expectSave($organizerId, 'organizer_with_all_images_removed.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_setting_a_main_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_two_images.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new MainImageUpdated(
+                $organizerId,
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_two_images_and_updated_main_image.json');
 
         $this->projector->handle($domainMessage);
     }

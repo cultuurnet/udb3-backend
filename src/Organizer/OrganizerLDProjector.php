@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
@@ -77,6 +78,7 @@ class OrganizerLDProjector implements EventListener
      * @uses applyImageAdded
      * @uses applyImageUpdated
      * @uses applyImageRemoved
+     * @uses applyMainImageUpdated
      * @uses applyOrganizerUpdatedFRomUDB2
      * @uses applyLabelAdded
      * @uses applyLabelRemoved
@@ -250,6 +252,25 @@ class OrganizerLDProjector implements EventListener
         $jsonLD = $this->appendCreator($jsonLD, $domainMessage);
 
         $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->toString();
+
+        return $document->withBody($jsonLD);
+    }
+
+    private function applyMainImageUpdated(MainImageUpdated $organizerUpdated): JsonDocument
+    {
+        $document = $this->repository->fetch($organizerUpdated->getOrganizerId());
+
+        $jsonLD = $document->getBody();
+
+        $mainImageIndex = 0;
+        foreach ($jsonLD->images as $image) {
+            if (strpos($image->{'@id'}, $organizerUpdated->getMainImageId()) !== false) {
+                break;
+            }
+            $mainImageIndex++;
+        }
+
+        $jsonLD->mainImage = $jsonLD->images[$mainImageIndex]->contentUrl;
 
         return $document->withBody($jsonLD);
     }
