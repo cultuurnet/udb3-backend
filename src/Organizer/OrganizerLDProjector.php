@@ -394,7 +394,7 @@ class OrganizerLDProjector implements EventListener
         ));
 
         if (count($jsonLD->images) === 0) {
-            unset($jsonLD->images);
+            unset($jsonLD->images, $jsonLD->mainImage);
         }
 
         return $document->withBody($jsonLD);
