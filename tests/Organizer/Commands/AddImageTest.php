@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 
 final class AddImageTest extends TestCase
@@ -33,7 +34,7 @@ final class AddImageTest extends TestCase
      */
     public function it_stores_an_organizer_id(): void
     {
-        $this->assertEquals('437604d2-5cb6-44ed-bb10-92ce33b6e7bd', $this->addImage->getOrganizerId());
+        $this->assertEquals('437604d2-5cb6-44ed-bb10-92ce33b6e7bd', $this->addImage->getItemId());
     }
 
     /**
@@ -50,5 +51,13 @@ final class AddImageTest extends TestCase
             ),
             $this->addImage->getImage()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_stores_a_permission(): void
+    {
+        $this->assertEquals(Permission::ORGANISATIES_BEWERKEN(), $this->addImage->getPermission());
     }
 }
