@@ -79,6 +79,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private Images $images;
 
+    private ?UUID $mainImageId = null;
+
     private Labels $labels;
 
     private WorkflowStatus $workflowStatus;
@@ -587,6 +589,10 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyImageAdded(ImageAdded $imageAdded): void
     {
         $this->images = $this->images->with($imageAdded->getImage());
+
+        if ($this->mainImageId === null) {
+            $this->mainImageId = $imageAdded->getImage()->getId();
+        }
     }
 
     protected function applyImageUpdated(ImageUpdated $imageUpdated): void
@@ -605,6 +611,15 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->images = $this->images->filter(
             fn (Image $image) => $image->getId()->toString() !== $imageRemoved->getImageId()
         );
+
+        if ($this->images->isEmpty()) {
+            $this->mainImageId = null;
+            return;
+        }
+
+        if ($imageRemoved->getImageId() === $this->mainImageId->toString()) {
+            $this->mainImageId = $this->images->getFirst()->getImageId();
+        }
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void
