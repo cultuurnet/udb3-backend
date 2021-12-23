@@ -393,6 +393,10 @@ class OrganizerLDProjector implements EventListener
             static fn ($image) => !(strpos($image->{'@id'}, $imageRemoved->getImageId()) !== false)
         ));
 
+        if (count($jsonLD->images) > 0 && strpos($jsonLD->mainImage, $imageRemoved->getImageId()) !== false) {
+            $jsonLD->mainImage = $jsonLD->images[0]['contentUrl'];
+        }
+
         if (count($jsonLD->images) === 0) {
             unset($jsonLD->images, $jsonLD->mainImage);
         }
