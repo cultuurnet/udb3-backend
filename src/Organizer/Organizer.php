@@ -49,7 +49,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
-use CultuurNet\UDB3\Organizer\Events\OrganizerUpdated;
+use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
@@ -142,15 +142,10 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateOrganizer(?UUID $mainImageId): void
     {
-        $organizerUpdated = new OrganizerUpdated($this->actorId);
-
-        $needsUpdateMainImage = $this->needsUpdateMainImage($mainImageId);
-        if ($mainImageId !== null && $needsUpdateMainImage) {
-            $organizerUpdated = $organizerUpdated->withMainImageId($mainImageId->toString());
-        }
-
-        if ($needsUpdateMainImage) {
-            $this->apply($organizerUpdated);
+        if ($mainImageId !== null && $this->needsUpdateMainImage($mainImageId)) {
+            $this->apply(
+                new MainImageUpdated($this->actorId, $mainImageId->toString())
+            );
         }
     }
 
@@ -506,13 +501,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    protected function applyOrganizerUpdated(OrganizerUpdated $organizerUpdated): void
-    {
-        if ($organizerUpdated->getMainImageId()) {
-            $this->mainImageId = new UUID($organizerUpdated->getMainImageId());
-        }
-    }
-
     /**
      * @throws \CultureFeed_Cdb_ParseException
      */
@@ -672,6 +660,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         if ($imageRemoved->getImageId() === $this->mainImageId->toString()) {
             $this->mainImageId = $this->images->getFirst()->getImageId();
         }
+    }
+
+    protected function applyMainImageUpdated(MainImageUpdated $organizerUpdated): void
+    {
+        $this->mainImageId = new UUID($organizerUpdated->getMainImageId());
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void

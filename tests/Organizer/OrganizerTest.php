@@ -40,7 +40,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
-use CultuurNet\UDB3\Organizer\Events\OrganizerUpdated;
+use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
@@ -1046,8 +1046,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 fn (Organizer $organizer) =>
                     $organizer->updateOrganizer(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
                 [
-                    (new OrganizerUpdated('ae3aab28-6351-489e-a61c-c48aec0a77df'))
-                        ->withMainImageId('9692eef5-d844-430b-ac60-413b66227fc4'),
+                    new MainImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        '9692eef5-d844-430b-ac60-413b66227fc4'
+                    ),
                 ],
             ],
         ];
