@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateImageTest extends TestCase
@@ -29,7 +30,7 @@ final class UpdateImageTest extends TestCase
     {
         $this->assertEquals(
             'a98df644-da7e-407e-9cd9-3217ddc61f27',
-            $this->updateImage->getOrganizerId()
+            $this->updateImage->getItemId()
         );
     }
 
@@ -87,5 +88,13 @@ final class UpdateImageTest extends TestCase
             new CopyrightHolder('Copyright holder'),
             $updateImage->getCopyrightHolder()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_stores_a_permission(): void
+    {
+        $this->assertEquals(Permission::ORGANISATIES_BEWERKEN(), $this->updateImage->getPermission());
     }
 }

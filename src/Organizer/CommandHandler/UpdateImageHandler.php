@@ -23,7 +23,7 @@ final class UpdateImageHandler implements CommandHandler
             return;
         }
 
-        $organizer = $this->organizerRepository->load($command->getOrganizerId());
+        $organizer = $this->organizerRepository->load($command->getItemId());
 
         $organizer->updateImage(
             $command->getImageID(),

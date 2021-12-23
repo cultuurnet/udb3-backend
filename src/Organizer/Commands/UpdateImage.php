@@ -8,8 +8,10 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class UpdateImage
+final class UpdateImage implements AuthorizableCommand
 {
     private string $organizerId;
 
@@ -25,11 +27,6 @@ final class UpdateImage
     {
         $this->organizerId = $organizerId;
         $this->imageId = $imageId;
-    }
-
-    public function getOrganizerId(): string
-    {
-        return $this->organizerId;
     }
 
     public function getImageId(): UUID
@@ -71,5 +68,15 @@ final class UpdateImage
         $clone = clone $this;
         $clone->copyrightHolder = $copyrightHolder;
         return $clone;
+    }
+
+    public function getItemId(): string
+    {
+        return $this->organizerId;
+    }
+
+    public function getPermission(): Permission
+    {
+        return Permission::ORGANISATIES_BEWERKEN();
     }
 }
