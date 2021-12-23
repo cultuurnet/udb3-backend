@@ -357,7 +357,12 @@ class OrganizerLDProjector implements EventListener
         $jsonLD = $document->getBody();
 
         $jsonLD->images = $jsonLD->images ?? [];
-        $jsonLD->images[] = $this->imageNormalizer->normalize($imageAdded->getImage());
+        $image = $this->imageNormalizer->normalize($imageAdded->getImage());
+        $jsonLD->images[] = $image;
+
+        if (!isset($jsonLD->mainImage)) {
+            $jsonLD->mainImage = $image['contentUrl'];
+        }
 
         return $document->withBody($jsonLD);
     }
