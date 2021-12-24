@@ -49,6 +49,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
@@ -78,6 +79,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private ContactPoint $contactPoint;
 
     private Images $images;
+
+    private ?UUID $mainImageId = null;
 
     private Labels $labels;
 
@@ -135,6 +138,45 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
 
         return $organizer;
+    }
+
+    public function updateOrganizer(?UUID $mainImageId): void
+    {
+        if ($mainImageId !== null && $this->needsUpdateMainImage($mainImageId)) {
+            $this->apply(
+                new MainImageUpdated($this->actorId, $mainImageId->toString())
+            );
+        }
+    }
+
+    private function needsUpdateMainImage(?UUID $mainImageId): bool
+    {
+        if ($mainImageId === null) {
+            return false;
+        }
+
+        // When the organizer has no images it can't be set has main.
+        if ($this->images->isEmpty()) {
+            return false;
+        }
+
+        // If the organizer does not contain the main image as a normal image it can't be set as main.
+        $mainImage = $this->images->filter(
+            fn (Image $currentImage) => $currentImage->getId()->sameAs($mainImageId)
+        )->getFirst();
+        if ($mainImage === null) {
+            return false;
+        }
+
+        // If the organizer had no main image just set it as main.
+        // Although this should be a race condition.
+        if ($this->mainImageId === null) {
+            return true;
+        }
+
+        // Only set it as main when there is a difference.
+        // This is to prevent having events in the event store with no change.
+        return !$this->mainImageId->sameAs($mainImageId);
     }
 
     public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
@@ -587,6 +629,10 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     protected function applyImageAdded(ImageAdded $imageAdded): void
     {
         $this->images = $this->images->with($imageAdded->getImage());
+
+        if ($this->mainImageId === null) {
+            $this->mainImageId = $imageAdded->getImage()->getId();
+        }
     }
 
     protected function applyImageUpdated(ImageUpdated $imageUpdated): void
@@ -605,6 +651,20 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->images = $this->images->filter(
             fn (Image $image) => $image->getId()->toString() !== $imageRemoved->getImageId()
         );
+
+        if ($this->images->isEmpty()) {
+            $this->mainImageId = null;
+            return;
+        }
+
+        if ($imageRemoved->getImageId() === $this->mainImageId->toString()) {
+            $this->mainImageId = $this->images->getFirst()->getImageId();
+        }
+    }
+
+    protected function applyMainImageUpdated(MainImageUpdated $organizerUpdated): void
+    {
+        $this->mainImageId = new UUID($organizerUpdated->getMainImageId());
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void

@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -34,6 +35,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', CreateOrganizerRequestHandler::class);
+        $controllers->patch('/{organizerId}/', UpdateOrganizerRequestHandler::class);
         $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class)->bind('organizer');
         $controllers->delete('/{organizerId}/', DeleteOrganizerRequestHandler::class);
 
@@ -72,6 +74,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
                 $app['uuid_generator'],
                 $app['organizer_iri_generator']
             )
+        );
+
+        $app[UpdateOrganizerRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateOrganizerRequestHandler($app['event_command_bus'])
         );
 
         $app[GetOrganizerRequestHandler::class] = $app->share(

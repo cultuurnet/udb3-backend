@@ -40,6 +40,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
@@ -959,6 +960,96 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 fn (Organizer $organizer) =>
                     $organizer->removeImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider updateMainImageDataProvider
+     */
+    public function it_can_update_the_main_image(array $given, callable $updateMainImage, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $updateMainImage($organizer))
+            ->then($then);
+    }
+
+    public function updateMainImageDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Image added sets a main image' => [
+                [
+                    $organizerCreated,
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving',
+                        'publiq'
+                    ),
+                ],
+                fn (Organizer $organizer) =>
+                    $organizer->updateOrganizer(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                [],
+            ],
+            'Main image can not be set on organizer with no images' => [
+                [
+                    $organizerCreated,
+                ],
+                fn (Organizer $organizer) =>
+                    $organizer->updateOrganizer(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                [],
+            ],
+            'Main image can not be set when organizer does not contain the image' => [
+                [
+                    $organizerCreated,
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving',
+                        'publiq'
+                    ),
+                ],
+                fn (Organizer $organizer) =>
+                    $organizer->updateOrganizer(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
+                [],
+            ],
+            'Main image finally set' => [
+                [
+                    $organizerCreated,
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving',
+                        'publiq'
+                    ),
+                    new ImageAdded(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        '9692eef5-d844-430b-ac60-413b66227fc4',
+                        'en',
+                        'Description',
+                        'madewithlove'
+                    ),
+                ],
+                fn (Organizer $organizer) =>
+                    $organizer->updateOrganizer(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
+                [
+                    new MainImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        '9692eef5-d844-430b-ac60-413b66227fc4'
+                    ),
                 ],
             ],
         ];
