@@ -10,14 +10,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ReadRestController
 {
-    /**
-     * @var JobsStatusFactoryInterface
-     */
-    private $jobStatusFactory;
+    private JobsStatusFactoryInterface $jobStatusFactory;
 
-    /**
-     * ReadRestController constructor.
-     */
     public function __construct(JobsStatusFactoryInterface $jobStatusFactory)
     {
         $this->jobStatusFactory = $jobStatusFactory;

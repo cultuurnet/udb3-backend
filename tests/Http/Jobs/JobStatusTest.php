@@ -11,7 +11,7 @@ class JobStatusTest extends TestCase
     /**
      * @test
      */
-    public function it_has_exact_four_statuses()
+    public function it_has_exact_four_statuses(): void
     {
         $statuses = JobStatus::getAllowedValues();
 

@@ -16,12 +16,9 @@ class ReadRestControllerTest extends TestCase
      */
     private $jobsStatusFactory;
 
-    /**
-     * @var ReadRestController
-     */
-    private $readRestController;
+    private ReadRestController $readRestController;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->jobsStatusFactory = $this->createMock(
             JobsStatusFactoryInterface::class
@@ -35,7 +32,7 @@ class ReadRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_json_response_for_existing_job()
+    public function it_returns_a_json_response_for_existing_job(): void
     {
         $jobStatus = JobStatus::RUNNING();
         $this->mockCreateFromJobId($jobStatus);
@@ -50,17 +47,14 @@ class ReadRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_exception_for_missing_job()
+    public function it_throws_an_api_problem_exception_for_missing_job(): void
     {
         $this->expectException(ApiProblem::class);
         $this->mockCreateFromJobId(null);
         $response = $this->readRestController->get('jobId');
     }
 
-    /**
-     * @param JobStatus $jobStatus
-     */
-    private function mockCreateFromJobId(JobStatus $jobStatus = null)
+    private function mockCreateFromJobId(JobStatus $jobStatus = null): void
     {
         $this->jobsStatusFactory->method('createFromJobId')
             ->willReturn($jobStatus);
