@@ -42,7 +42,7 @@ class ReadRestControllerTest extends TestCase
 
         $response = $this->readRestController->get('jobId');
 
-        $expectedResponse = new JsonResponse($jobStatus->toNative());
+        $expectedResponse = new JsonResponse($jobStatus->toString());
 
         $this->assertEquals($expectedResponse->getContent(), $response->getContent());
     }

@@ -13,13 +13,13 @@ class JobStatusTest extends TestCase
      */
     public function it_has_exact_four_statuses()
     {
-        $statuses = JobStatus::getConstants();
+        $statuses = JobStatus::getAllowedValues();
 
         $expectedStatuses = [
-            JobStatus::WAITING()->getName() => JobStatus::WAITING()->toNative(),
-            JobStatus::RUNNING()->getName() => JobStatus::RUNNING()->toNative(),
-            JobStatus::FAILED()->getName() => JobStatus::FAILED()->toNative(),
-            JobStatus::COMPLETE()->getName() => JobStatus::COMPLETE()->toNative(),
+            JobStatus::WAITING()->toString(),
+            JobStatus::RUNNING()->toString(),
+            JobStatus::FAILED()->toString(),
+            JobStatus::COMPLETE()->toString(),
         ];
 
         $this->assertEquals($expectedStatuses, $statuses);

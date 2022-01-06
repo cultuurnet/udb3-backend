@@ -18,7 +18,7 @@ class ResqueJobStatusFactory implements JobsStatusFactoryInterface
         $code = $resqueJobStatus->get();
 
         if ($code) {
-            return JobStatus::getByOrdinal($code - 1);
+            return new JobStatus(JobStatus::getAllowedValues()[$code - 1]);
         } else {
             return null;
         }

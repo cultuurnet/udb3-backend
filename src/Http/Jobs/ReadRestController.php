@@ -33,6 +33,6 @@ class ReadRestController
             throw ApiProblem::blank('No status for job with id: ' . $jobId, 400);
         }
 
-        return new JsonResponse($jobStatus->toNative());
+        return new JsonResponse($jobStatus->toString());
     }
 }
