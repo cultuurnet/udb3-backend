@@ -17,24 +17,15 @@ class ContextController
      */
     protected $basePath;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $fileDirectory;
+    protected StringLiteral $fileDirectory;
 
-    /**
-     * ContextController constructor.
-     */
     public function __construct(
         StringLiteral $fileDirectory
     ) {
         $this->fileDirectory = $fileDirectory;
     }
 
-    /**
-     * @return ContextController
-     */
-    public function withCustomBasePath(Url $basePath)
+    public function withCustomBasePath(Url $basePath): ContextController
     {
         $controller = clone $this;
 
@@ -45,26 +36,15 @@ class ContextController
         return $controller;
     }
 
-    /**
-     * @param string $entityName
-     *
-     * @return JsonLdResponse
-     */
-    public function get($entityName)
+    public function get(string $entityName): JsonLdResponse
     {
         $entityType = new EntityType($entityName);
         return $this->getContext($entityType);
     }
 
-    /**
-     * @param EntityType $entityType
-     *  The entity type that you want the context for.
-     *
-     * @return JsonLdResponse
-     */
-    private function getContext(EntityType $entityType)
+    private function getContext(EntityType $entityType): JsonLdResponse
     {
-        $entityFilePath = $this->fileDirectory . $entityType->toNative() . '.jsonld';
+        $entityFilePath = $this->fileDirectory . $entityType->toString() . '.jsonld';
 
         $jsonData = json_decode($this->getEntityFile($entityFilePath));
 
@@ -76,15 +56,7 @@ class ContextController
         return new JsonLdResponse($jsonData);
     }
 
-    /**
-     * @param object $jsonData
-     *  The json object that should have its base path replaced.
-     * @param string $propertyName
-     *  The name of the property where you want to replace the base path.
-     * @param Url $basePath
-     *  The new base path.
-     */
-    private function replaceJsonPropertyBasePath($jsonData, $propertyName, Url $basePath)
+    private function replaceJsonPropertyBasePath(object $jsonData, string $propertyName, Url $basePath): void
     {
         $jsonData
             ->{'@context'}
