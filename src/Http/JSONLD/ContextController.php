@@ -52,7 +52,7 @@ class ContextController
      */
     public function get($entityName)
     {
-        $entityType = EntityType::fromNative($entityName);
+        $entityType = new EntityType($entityName);
         return $this->getContext($entityType);
     }
 
