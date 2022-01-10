@@ -11,32 +11,17 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferLabelRelationTest extends TestCase
 {
-    /**
-     * @var LabelName
-     */
-    private $labelName;
+    private LabelName $labelName;
 
-    /**
-     * @var RelationType
-     */
-    private $relationType;
+    private RelationType $relationType;
 
-    /**
-     * @var StringLiteral
-     */
-    private $offerId;
+    private StringLiteral $offerId;
 
-    /**
-     * @var bool
-     */
-    private $imported;
+    private bool $imported;
 
-    /**
-     * @var LabelRelation
-     */
-    private $offerLabelRelation;
+    private LabelRelation $offerLabelRelation;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelName = new LabelName('2dotstwice');
         $this->relationType = RelationType::PLACE();
@@ -54,7 +39,7 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->labelName, $this->offerLabelRelation->getLabelName());
     }
@@ -62,7 +47,7 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_relation_type()
+    public function it_stores_a_relation_type(): void
     {
         $this->assertEquals(
             $this->relationType,
@@ -73,7 +58,7 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_relation_id()
+    public function it_stores_a_relation_id(): void
     {
         $this->assertEquals($this->offerId, $this->offerLabelRelation->getRelationId());
     }
@@ -81,7 +66,7 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_can_encode_to_json()
+    public function it_can_encode_to_json(): void
     {
         $json = json_encode($this->offerLabelRelation);
 

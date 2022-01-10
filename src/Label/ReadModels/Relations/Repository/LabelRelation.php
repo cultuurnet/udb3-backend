@@ -11,35 +11,19 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelRelation implements \JsonSerializable
 {
-    /**
-     * @var LabelName
-     */
-    private $labelName;
+    private LabelName $labelName;
 
-    /**
-     * @var RelationType
-     */
-    private $relationType;
+    private RelationType $relationType;
 
-    /**
-     * @var StringLiteral
-     */
-    private $relationId;
+    private StringLiteral $relationId;
 
-    /**
-     * @var bool
-     */
-    private $imported;
+    private bool $imported;
 
-    /**
-     * Entity constructor.
-     * @param bool $imported
-     */
     public function __construct(
         LabelName $labelName,
         RelationType $relationType,
         StringLiteral $relationId,
-        $imported
+        bool $imported
     ) {
         $this->labelName = $labelName;
         $this->relationType = $relationType;
@@ -47,34 +31,22 @@ class LabelRelation implements \JsonSerializable
         $this->imported = (bool) $imported;
     }
 
-    /**
-     * @return LabelName
-     */
-    public function getLabelName()
+    public function getLabelName(): LabelName
     {
         return $this->labelName;
     }
 
-    /**
-     * @return RelationType
-     */
-    public function getRelationType()
+    public function getRelationType(): RelationType
     {
         return $this->relationType;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getRelationId()
+    public function getRelationId(): StringLiteral
     {
         return $this->relationId;
     }
 
-    /**
-     * @return bool
-     */
-    public function isImported()
+    public function isImported(): bool
     {
         return $this->imported;
     }
@@ -92,10 +64,7 @@ class LabelRelation implements \JsonSerializable
         ];
     }
 
-    /**
-     * @return LabelRelation
-     */
-    public static function fromRelationalData(array $relation)
+    public static function fromRelationalData(array $relation): LabelRelation
     {
         return new self(
             new LabelName($relation[SchemaConfigurator::LABEL_NAME]),

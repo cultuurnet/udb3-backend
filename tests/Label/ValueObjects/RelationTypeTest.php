@@ -11,7 +11,7 @@ class RelationTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_event_option()
+    public function it_has_an_event_option(): void
     {
         $relationsType = new RelationType('Event');
 
@@ -21,7 +21,7 @@ class RelationTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_place_option()
+    public function it_has_a_place_option(): void
     {
         $relationsType = new RelationType('Place');
 
@@ -31,7 +31,7 @@ class RelationTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_organizer_option()
+    public function it_has_an_organizer_option(): void
     {
         $relationsType = new RelationType('Organizer');
 
@@ -41,7 +41,7 @@ class RelationTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_only_an_event_and_place_and_organizer_option()
+    public function it_has_only_an_event_and_place_and_organizer_option(): void
     {
         $options = RelationType::getAllowedValues();
 
