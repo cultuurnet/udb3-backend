@@ -34,7 +34,7 @@ class ReadRestControllerTest extends TestCase
      */
     public function it_returns_a_json_response_for_existing_job(): void
     {
-        $jobStatus = JobStatus::RUNNING();
+        $jobStatus = JobStatus::running();
         $this->mockCreateFromJobId($jobStatus);
 
         $response = $this->readRestController->get('jobId');
@@ -50,8 +50,8 @@ class ReadRestControllerTest extends TestCase
     public function it_throws_an_api_problem_exception_for_missing_job(): void
     {
         $this->expectException(ApiProblem::class);
-        $this->mockCreateFromJobId(null);
-        $response = $this->readRestController->get('jobId');
+        $this->mockCreateFromJobId();
+        $this->readRestController->get('jobId');
     }
 
     private function mockCreateFromJobId(JobStatus $jobStatus = null): void

@@ -16,10 +16,10 @@ class JobStatusTest extends TestCase
         $statuses = JobStatus::getAllowedValues();
 
         $expectedStatuses = [
-            JobStatus::WAITING()->toString(),
-            JobStatus::RUNNING()->toString(),
-            JobStatus::FAILED()->toString(),
-            JobStatus::COMPLETE()->toString(),
+            JobStatus::waiting()->toString(),
+            JobStatus::running()->toString(),
+            JobStatus::failed()->toString(),
+            JobStatus::complete()->toString(),
         ];
 
         $this->assertEquals($expectedStatuses, $statuses);

@@ -9,18 +9,15 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ResqueJobStatusFactory implements JobsStatusFactoryInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function createFromJobId(StringLiteral $jobId)
+    public function createFromJobId(StringLiteral $jobId): ?JobStatus
     {
         $resqueJobStatus = new Resque_Job_Status($jobId->toNative());
         $code = $resqueJobStatus->get();
 
         if ($code) {
             return new JobStatus(JobStatus::getAllowedValues()[$code - 1]);
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
