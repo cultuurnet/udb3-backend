@@ -89,7 +89,7 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
             ->with(new RequestMatcher('^/uitpas/.*', null, 'GET'))
-            ->with(new RequestMatcher('^/news_articles', null, ['GET', 'DELETE', 'POST', 'PUT']))
+            ->with(new RequestMatcher('^/(news_articles|news-articles)', null, ['GET', 'DELETE', 'POST', 'PUT']))
     ],
     'cors-preflight' => array(
         'pattern' => $app['cors_preflight_request_matcher'],
