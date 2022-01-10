@@ -7,9 +7,10 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use JsonSerializable;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LabelRelation implements \JsonSerializable
+class LabelRelation implements JsonSerializable
 {
     private LabelName $labelName;
 
@@ -28,7 +29,7 @@ class LabelRelation implements \JsonSerializable
         $this->labelName = $labelName;
         $this->relationType = $relationType;
         $this->relationId = $relationId;
-        $this->imported = (bool) $imported;
+        $this->imported = $imported;
     }
 
     public function getLabelName(): LabelName
@@ -51,10 +52,7 @@ class LabelRelation implements \JsonSerializable
         return $this->imported;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             SchemaConfigurator::LABEL_NAME => $this->labelName->toNative(),

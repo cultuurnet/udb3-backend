@@ -12,12 +12,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 {
-    /**
-     * @var DBALWriteRepository
-     */
-    private $dbalWriteRepository;
+    private DBALWriteRepository $dbalWriteRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -30,7 +27,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_save()
+    public function it_can_save(): void
     {
         $expectedOfferLabelRelation = new LabelRelation(
             new LabelName('2dotstwice'),
@@ -54,7 +51,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_save_same_label_name_but_different_relation_type_and_relation_id()
+    public function it_can_save_same_label_name_but_different_relation_type_and_relation_id(): void
     {
         $labelRelation1 = new LabelRelation(
             new LabelName('2dotstwice'),
@@ -93,7 +90,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_save_same_label_name_and_relation_type_but_different_relation_id()
+    public function it_can_save_same_label_name_and_relation_type_but_different_relation_id(): void
     {
         $labelRelation1 = new LabelRelation(
             new LabelName('2dotstwice'),
@@ -132,7 +129,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_not_save_same_offer_label_relation()
+    public function it_can_not_save_same_offer_label_relation(): void
     {
         $offerLabelRelation = new LabelRelation(
             new LabelName('2dotstwice'),
@@ -163,7 +160,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_delete_based_on_label_name_and_relation_id()
+    public function it_can_delete_based_on_label_name_and_relation_id(): void
     {
         $OfferLabelRelation1 = new LabelRelation(
             new LabelName('2dotstwice'),
@@ -200,7 +197,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_delete_based_on_relation_id()
+    public function it_can_delete_based_on_relation_id(): void
     {
         $labelRelations = $this->seedLabelRelations();
 
@@ -222,7 +219,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_delete_imported_labels_on_relation_id()
+    public function it_can_delete_imported_labels_on_relation_id(): void
     {
         $labelRelations = $this->seedLabelRelations();
 
@@ -245,7 +242,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @return LabelRelation[]
      */
-    private function seedLabelRelations()
+    private function seedLabelRelations(): array
     {
         $labelRelations = [
             new LabelRelation(

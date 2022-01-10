@@ -10,29 +10,22 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface WriteRepositoryInterface
 {
-    /**
-     * @param bool $imported
-     * @return void
-     */
     public function save(
         LabelName $labelName,
         RelationType $relationType,
         StringLiteral $relationId,
-        $imported
-    );
-
+        bool $imported
+    ): void;
 
     public function deleteByLabelNameAndRelationId(
         LabelName $labelName,
         StringLiteral $relationId
-    );
+    ): void;
 
-
-    public function deleteByRelationId(StringLiteral $relationId);
+    public function deleteByRelationId(StringLiteral $relationId): void;
 
     /**
      * This method will only delete the imported labels based on relation id.
-     *
      */
-    public function deleteImportedByRelationId(StringLiteral $relationId);
+    public function deleteImportedByRelationId(StringLiteral $relationId): void;
 }

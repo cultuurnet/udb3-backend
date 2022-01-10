@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use PHPUnit\Framework\TestCase;
@@ -68,7 +69,7 @@ class OfferLabelRelationTest extends TestCase
      */
     public function it_can_encode_to_json(): void
     {
-        $json = json_encode($this->offerLabelRelation);
+        $json = Json::encode($this->offerLabelRelation);
 
         $imported = $this->imported ? 'true' : 'false';
         $expectedJson = '{"labelName":"' . $this->labelName->toNative()
