@@ -8,8 +8,5 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface JobsStatusFactoryInterface
 {
-    /**
-     * @return JobStatus|null
-     */
-    public function createFromJobId(StringLiteral $jobId);
+    public function createFromJobId(StringLiteral $jobId): ?JobStatus;
 }
