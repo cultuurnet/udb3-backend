@@ -19,7 +19,7 @@ class IriOfferIdentifierTest extends TestCase
         $this->identifier = new IriOfferIdentifier(
             Url::fromNative('http://du.de/place/1'),
             '1',
-            OfferType::PLACE()
+            OfferType::place()
         );
     }
 
@@ -41,6 +41,6 @@ class IriOfferIdentifierTest extends TestCase
     {
         $this->assertEquals(Url::fromNative('http://du.de/place/1'), $this->identifier->getIri());
         $this->assertEquals('1', $this->identifier->getId());
-        $this->assertEquals(OfferType::PLACE(), $this->identifier->getType());
+        $this->assertEquals(OfferType::place(), $this->identifier->getType());
     }
 }

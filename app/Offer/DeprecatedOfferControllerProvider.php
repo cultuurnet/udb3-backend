@@ -31,7 +31,7 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
 
     public function __construct(OfferType $offerType)
     {
-        $this->offerType = $offerType->toNative();
+        $this->offerType = $offerType->toString();
     }
 
     public function connect(Application $app): ControllerCollection

@@ -67,6 +67,6 @@ final class UpdateFacilitiesHandler implements CommandHandler
         if ($offer instanceof Place) {
             return new PlaceCategoryResolver();
         }
-        throw new RuntimeException('No CategoryResolverInterface found for unknown type ' . $offer::getOfferType()->toNative());
+        throw new RuntimeException('No CategoryResolverInterface found for unknown type ' . $offer::getOfferType()->toString());
     }
 }

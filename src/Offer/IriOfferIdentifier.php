@@ -4,31 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
+use CultuurNet\UDB3\Json;
 use ValueObjects\Web\Url;
 
 class IriOfferIdentifier implements \JsonSerializable, \Serializable
 {
-    /**
-     * @var Url
-     */
-    private $iri;
+    private Url $iri;
 
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var OfferType
-     */
-    private $type;
+    private OfferType $type;
 
-    /**
-     * @param string $id
-     */
     public function __construct(
-        Url $iri,
-        $id,
+        Url       $iri,
+        string    $id,
         OfferType $type
     ) {
         $this->iri = $iri;
@@ -36,51 +25,36 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
         $this->id = $id;
     }
 
-    /**
-     * @return Url
-     */
-    public function getIri()
+    public function getIri(): Url
     {
         return $this->iri;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return OfferType
-     */
-    public function getType()
+    public function getType(): OfferType
     {
         return $this->type;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             '@id' => (string) $this->iri,
-            '@type' => $this->type->toNative(),
+            '@type' => $this->type->toString(),
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function serialize()
+    public function serialize(): string
     {
-        return json_encode(
+        return Json::encode(
             [
                 'iri' => (string) $this->iri,
                 'id' => $this->id,
-                'type' => $this->type->toNative(),
+                'type' => $this->type->toString(),
             ]
         );
     }
@@ -88,11 +62,11 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
     /**
      * @param string $serialized
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
-        $data = json_decode($serialized, true);
+        $data = Json::decodeAssociatively($serialized);
         $this->iri = Url::fromNative($data['iri']);
         $this->id = $data['id'];
-        $this->type = OfferType::fromNative($data['type']);
+        $this->type = new OfferType($data['type']);
     }
 }

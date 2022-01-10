@@ -207,9 +207,9 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeControllerProvider = new PlaceControllerProvider();
-$placeOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::PLACE());
+$placeOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::place());
 $eventControllerProvider = new EventControllerProvider();
-$eventOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::EVENT());
+$eventOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::event());
 $offerControllerProvider = new OfferControllerProvider();
 
 $app->register($placeControllerProvider);

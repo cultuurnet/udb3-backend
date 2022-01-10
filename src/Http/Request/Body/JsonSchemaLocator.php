@@ -80,13 +80,13 @@ final class JsonSchemaLocator
         // Prevent usages of hardcoded strings so we can easily refactor the file locations later if they ever change.
         self::guardFileNameInKnownConstants($eventSchema);
         self::guardFileNameInKnownConstants($placeSchema);
-        if ($offerType->sameValueAs(OfferType::EVENT())) {
+        if ($offerType->sameAs(OfferType::event())) {
             return $eventSchema;
         }
-        if ($offerType->sameValueAs(OfferType::PLACE())) {
+        if ($offerType->sameAs(OfferType::place())) {
             return $placeSchema;
         }
-        throw new RuntimeException('No schema found for unknown offer type ' . $offerType->toNative());
+        throw new RuntimeException('No schema found for unknown offer type ' . $offerType->toString());
     }
 
     private static function getSchemaDirectory(): string

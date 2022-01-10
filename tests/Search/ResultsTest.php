@@ -24,22 +24,22 @@ class ResultsTest extends TestCase
                 new IriOfferIdentifier(
                     Url::fromNative('http://du.de/event/1'),
                     '1',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
                 new IriOfferIdentifier(
                     Url::fromNative('http://du.de/event/2'),
                     '2',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
                 new IriOfferIdentifier(
                     Url::fromNative('http://du.de/event/3'),
                     '3',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
                 new IriOfferIdentifier(
                     Url::fromNative('http://du.de/event/4'),
                     '4',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
             ]
         );
@@ -70,7 +70,7 @@ class ResultsTest extends TestCase
         new Results(
             OfferIdentifierCollection::fromArray(
                 [
-                    new IriOfferIdentifier(Url::fromNative('http://du.de/event/1'), '1', OfferType::EVENT()),
+                    new IriOfferIdentifier(Url::fromNative('http://du.de/event/1'), '1', OfferType::event()),
                 ]
             ),
             'foo'

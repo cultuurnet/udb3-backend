@@ -43,7 +43,7 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
             throw ApiProblem::forbidden(
                 sprintf(
                     'Current user/client does not have enough permissions to access %s history.',
-                    $offerType->sameValueAs(OfferType::EVENT()) ? 'event' : 'place'
+                    $offerType->sameAs(OfferType::event()) ? 'event' : 'place'
                 )
             );
         }
@@ -62,12 +62,12 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
 
     private function getDocumentRepository(OfferType $offerType): DocumentRepository
     {
-        if ($offerType->sameValueAs(OfferType::EVENT())) {
+        if ($offerType->sameAs(OfferType::event())) {
             return $this->eventHistoryDocumentRepository;
         }
-        if ($offerType->sameValueAs(OfferType::PLACE())) {
+        if ($offerType->sameAs(OfferType::place())) {
             return $this->placeHistoryDocumentRepository;
         }
-        throw ApiProblem::internalServerError('Unknown offer type "' . $offerType->toNative() . '"');
+        throw ApiProblem::internalServerError('Unknown offer type "' . $offerType->toString() . '"');
     }
 }

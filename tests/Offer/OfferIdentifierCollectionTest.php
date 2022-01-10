@@ -21,7 +21,7 @@ class OfferIdentifierCollectionTest extends TestCase
             new IriOfferIdentifier(
                 Url::fromNative('http://du.de/event/1'),
                 '1',
-                OfferType::EVENT()
+                OfferType::event()
             )
         );
 

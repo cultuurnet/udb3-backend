@@ -19,20 +19,11 @@ use Psr\Log\NullLogger;
 
 final class LocationMarkedAsDuplicateProcessManager implements EventListener, LoggerAwareInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var ResultsGeneratorInterface
-     */
-    private $searchResultsGenerator;
+    private ResultsGeneratorInterface $searchResultsGenerator;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(
         ResultsGeneratorInterface $searchResultsGenerator,
@@ -72,7 +63,7 @@ final class LocationMarkedAsDuplicateProcessManager implements EventListener, Lo
 
         /* @var IriOfferIdentifier $result */
         foreach ($results as $result) {
-            if (!$result->getType()->sameValueAs(OfferType::EVENT())) {
+            if (!$result->getType()->sameAs(OfferType::event())) {
                 $skipped[] = $result->getId();
                 $this->logger->warning(
                     'Skipped result with id ' . $result->getId() . ' because it\'s not an event according to the @id parser.'

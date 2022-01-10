@@ -23,15 +23,9 @@ use Symfony\Component\Console\Question\Question;
 
 class UpdateOfferStatusCommand extends AbstractCommand
 {
-    /**
-     * @var OfferType
-     */
-    protected $offerType;
+    protected OfferType $offerType;
 
-    /**
-     * @var ResultsGenerator
-     */
-    private $searchResultsGenerator;
+    private ResultsGenerator $searchResultsGenerator;
 
     public function __construct(
         OfferType $offerType,
@@ -164,7 +158,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
 
     private function getSingularOfferType(): string
     {
-        return strtolower($this->offerType->toNative());
+        return strtolower($this->offerType->toString());
     }
 
     private function getPluralOfferType(): string

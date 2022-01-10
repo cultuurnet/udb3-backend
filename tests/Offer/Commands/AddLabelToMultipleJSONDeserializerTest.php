@@ -10,48 +10,39 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class AddLabelToMultipleJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var DeserializerInterface|MockObject
-     */
-    private $offerIdentifierDeserializer;
+    private AddLabelToMultipleJSONDeserializer $deserializer;
 
-    /**
-     * @var AddLabelToMultipleJSONDeserializer
-     */
-    private $deserializer;
-
-    public function setUp()
+    public function setUp(): void
     {
-        $this->offerIdentifierDeserializer = $this->createMock(DeserializerInterface::class);
+        $offerIdentifierDeserializer = $this->createMock(DeserializerInterface::class);
 
-        $this->offerIdentifierDeserializer->expects($this->any())
+        $offerIdentifierDeserializer->expects($this->any())
             ->method('deserialize')
             ->willReturnCallback(
                 function (StringLiteral $id) {
                     return new IriOfferIdentifier(
                         Url::fromNative("http://du.de/event/{$id}"),
-                        $id,
-                        OfferType::EVENT()
+                        $id->toNative(),
+                        OfferType::event()
                     );
                 }
             );
 
         $this->deserializer = new AddLabelToMultipleJSONDeserializer(
-            $this->offerIdentifierDeserializer
+            $offerIdentifierDeserializer
         );
     }
 
     /**
      * @test
      */
-    public function it_can_deserialize_a_valid_add_label_to_multiple_command()
+    public function it_can_deserialize_a_valid_add_label_to_multiple_command(): void
     {
         $json = new StringLiteral('{"label":"foo", "offers": [1, 2, 3]}');
 
@@ -61,21 +52,21 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
                     new IriOfferIdentifier(
                         Url::fromNative('http://du.de/event/1'),
                         '1',
-                        OfferType::EVENT()
+                        OfferType::event()
                     )
                 )
                 ->with(
                     new IriOfferIdentifier(
                         Url::fromNative('http://du.de/event/2'),
                         '2',
-                        OfferType::EVENT()
+                        OfferType::event()
                     )
                 )
                 ->with(
                     new IriOfferIdentifier(
                         Url::fromNative('http://du.de/event/3'),
                         '3',
-                        OfferType::EVENT()
+                        OfferType::event()
                     )
                 ),
             new Label('foo')
@@ -89,7 +80,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_label_is_missing()
+    public function it_throws_an_exception_when_label_is_missing(): void
     {
         $json = new StringLiteral('{"offers":[]}');
 
@@ -102,7 +93,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_offers_are_missing()
+    public function it_throws_an_exception_when_offers_are_missing(): void
     {
         $json = new StringLiteral('{"label":"foo"}');
 

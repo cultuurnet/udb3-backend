@@ -34,7 +34,7 @@ final class UpdateAvailableFromRequestHandler implements RequestHandlerInterface
         $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
-        $jsonSchema = $offerType->sameValueAs(OfferType::EVENT()) ?
+        $jsonSchema = $offerType->sameAs(OfferType::event()) ?
             JsonSchemaLocator::EVENT_AVAILABLE_FROM_PUT : JsonSchemaLocator::PLACE_AVAILABLE_FROM_PUT;
 
         $parser = RequestBodyParserFactory::createBaseParser(

@@ -11,34 +11,34 @@ class OfferTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_event_option()
+    public function it_has_an_event_option(): void
     {
-        $relationsType = OfferType::EVENT();
+        $relationsType = new OfferType('Event');
 
-        $this->assertEquals($relationsType, OfferType::EVENT);
+        $this->assertEquals($relationsType, OfferType::event());
     }
 
     /**
      * @test
      */
-    public function it_has_a_place_option()
+    public function it_has_a_place_option(): void
     {
-        $relationsType = OfferType::PLACE();
+        $relationsType = new OfferType('Place');
 
-        $this->assertEquals($relationsType, OfferType::PLACE);
+        $this->assertEquals($relationsType, OfferType::place());
     }
 
     /**
      * @test
      */
-    public function it_has_only_an_event_and_place_option()
+    public function it_has_only_an_event_and_place_option(): void
     {
-        $options = OfferType::getConstants();
+        $options = OfferType::getAllowedValues();
 
         $this->assertEquals(
             [
-                OfferType::EVENT()->getName() => OfferType::EVENT,
-                OfferType::PLACE()->getName() => OfferType::PLACE,
+                OfferType::event()->toString(),
+                OfferType::place()->toString(),
             ],
             $options
         );
@@ -47,35 +47,33 @@ class OfferTypeTest extends TestCase
     /**
      * @test
      * @dataProvider offerTypeDataProvider
-     *
-     * @param string $enumValue
      */
     public function it_can_be_created_from_a_value_with_incorrect_casing(
-        $enumValue,
+        string $enumValue,
         OfferType $expectedOfferType
-    ) {
+    ): void {
         $actualOfferType = OfferType::fromCaseInsensitiveValue($enumValue);
-        $this->assertTrue($expectedOfferType->sameValueAs($actualOfferType));
+        $this->assertTrue($expectedOfferType->sameAs($actualOfferType));
     }
 
-    public function offerTypeDataProvider()
+    public function offerTypeDataProvider(): array
     {
         return [
             [
                 'place',
-                OfferType::PLACE(),
+                OfferType::place(),
             ],
             [
                 'eVeNt',
-                OfferType::EVENT(),
+                OfferType::event(),
             ],
             [
                 'Place',
-                OfferType::PLACE(),
+                OfferType::place(),
             ],
             [
                 'EVENT',
-                OfferType::EVENT(),
+                OfferType::event(),
             ],
         ];
     }

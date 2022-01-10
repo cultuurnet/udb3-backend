@@ -41,7 +41,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
         $expected = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/1'),
             '1',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         $this->iriOfferIdentifierFactory->expects($this->once())

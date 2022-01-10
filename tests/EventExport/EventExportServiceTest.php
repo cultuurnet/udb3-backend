@@ -112,7 +112,7 @@ class EventExportServiceTest extends TestCase
                 return new IriOfferIdentifier(
                     Url::fromNative('http://example.com/event/' . $i),
                     (string) $i,
-                    OfferType::EVENT()
+                    OfferType::event()
                 );
             },
             $range

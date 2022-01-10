@@ -35,17 +35,17 @@ class AddLabelToMultipleTest extends TestCase
                 new IriOfferIdentifier(
                     Url::fromNative('http://du.de/event/1'),
                     '1',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
                 new IriOfferIdentifier(
                     Url::fromNative('http://du.de/event/2'),
                     '2',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
                 new IriOfferIdentifier(
                     Url::fromNative('http://du.de/event/3'),
                     '3',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
             ]
         );

@@ -16,19 +16,10 @@ class PatchOfferRestController
 {
     public const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var OfferType
-     */
-    private $offerType;
+    private OfferType $offerType;
 
-    /**
-     * PatchOfferRestController constructor.
-     */
     public function __construct(
         OfferType $offerType,
         CommandBus $commandBus
@@ -40,7 +31,7 @@ class PatchOfferRestController
     public function handle(Request $request, string $cdbid): Response
     {
         $domainModel = $this->parseDomainModelNameFromRequest($request);
-        $commandClass = 'CultuurNet\UDB3\\' . $this->offerType->getValue() . '\Commands\Moderation\\' . $domainModel;
+        $commandClass = 'CultuurNet\UDB3\\' . $this->offerType->toString() . '\Commands\Moderation\\' . $domainModel;
 
         if (!class_exists($commandClass)) {
             throw new \InvalidArgumentException('The command in content-type is not supported.');
@@ -65,10 +56,9 @@ class PatchOfferRestController
     }
 
     /**
-     * @return string
      * @throws \Exception
      */
-    private function parseDomainModelNameFromRequest(Request $request)
+    private function parseDomainModelNameFromRequest(Request $request): string
     {
         $contentType = $request->headers->get('Content-Type');
         preg_match(self::DOMAIN_MODEL_REGEX, $contentType, $matches);
