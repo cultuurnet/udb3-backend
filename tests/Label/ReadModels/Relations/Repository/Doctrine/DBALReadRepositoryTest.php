@@ -100,28 +100,28 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->relation1 = new LabelRelation(
             $this->labelName,
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'),
             false
         );
 
         $this->relation2 = new LabelRelation(
             $this->labelName,
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('A9B3FA7B-9AF5-49F4-8BB5-2B169CE83107'),
             false
         );
 
         $relation3 = new LabelRelation(
             new LabelName('cultuurnet'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('298A39A1-8D1E-4F5D-B05E-811B6459EA36'),
             false
         );
 
         $this->relation4 = new LabelRelation(
             new LabelName('cultuurnet'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'),
             false
         );

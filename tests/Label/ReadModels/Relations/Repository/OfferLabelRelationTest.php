@@ -25,7 +25,7 @@ class OfferLabelRelationTest extends TestCase
     protected function setUp(): void
     {
         $this->labelName = new LabelName('2dotstwice');
-        $this->relationType = RelationType::PLACE();
+        $this->relationType = RelationType::place();
         $this->offerId = new StringLiteral('relationId');
         $this->imported = true;
 

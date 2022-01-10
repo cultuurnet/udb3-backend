@@ -15,7 +15,7 @@ class RelationTypeTest extends TestCase
     {
         $relationsType = new RelationType('Event');
 
-        $this->assertEquals($relationsType, RelationType::EVENT());
+        $this->assertEquals($relationsType, RelationType::event());
     }
 
     /**
@@ -25,7 +25,7 @@ class RelationTypeTest extends TestCase
     {
         $relationsType = new RelationType('Place');
 
-        $this->assertEquals($relationsType, RelationType::PLACE());
+        $this->assertEquals($relationsType, RelationType::place());
     }
 
     /**
@@ -35,7 +35,7 @@ class RelationTypeTest extends TestCase
     {
         $relationsType = new RelationType('Organizer');
 
-        $this->assertEquals($relationsType, RelationType::ORGANIZER());
+        $this->assertEquals($relationsType, RelationType::organizer());
     }
 
     /**
@@ -47,9 +47,9 @@ class RelationTypeTest extends TestCase
 
         $this->assertEquals(
             [
-                RelationType::EVENT()->toString(),
-                RelationType::PLACE()->toString(),
-                RelationType::ORGANIZER()->toString(),
+                RelationType::event()->toString(),
+                RelationType::place()->toString(),
+                RelationType::organizer()->toString(),
             ],
             $options
         );

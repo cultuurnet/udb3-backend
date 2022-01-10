@@ -17,17 +17,17 @@ class RelationType extends Enum
         ];
     }
 
-    public static function EVENT(): RelationType
+    public static function event(): RelationType
     {
         return new self('Event');
     }
 
-    public static function PLACE(): RelationType
+    public static function place(): RelationType
     {
         return new self('Place');
     }
 
-    public static function ORGANIZER(): RelationType
+    public static function organizer(): RelationType
     {
         return new self('Organizer');
     }

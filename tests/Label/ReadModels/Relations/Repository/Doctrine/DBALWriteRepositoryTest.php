@@ -31,7 +31,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     {
         $expectedOfferLabelRelation = new LabelRelation(
             new LabelName('2dotstwice'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('relationId'),
             true
         );
@@ -55,7 +55,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     {
         $labelRelation1 = new LabelRelation(
             new LabelName('2dotstwice'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('relationId'),
             false
         );
@@ -64,7 +64,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 
         $labelRelation2 = new LabelRelation(
             $labelRelation1->getLabelName(),
-            RelationType::EVENT(),
+            RelationType::event(),
             new StringLiteral('otherId'),
             true
         );
@@ -94,7 +94,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     {
         $labelRelation1 = new LabelRelation(
             new LabelName('2dotstwice'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('relationId'),
             false
         );
@@ -133,7 +133,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     {
         $offerLabelRelation = new LabelRelation(
             new LabelName('2dotstwice'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('relationId'),
             true
         );
@@ -164,14 +164,14 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     {
         $OfferLabelRelation1 = new LabelRelation(
             new LabelName('2dotstwice'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('relationId'),
             false
         );
 
         $OfferLabelRelation2 = new LabelRelation(
             new LabelName('cultuurnet'),
-            RelationType::PLACE(),
+            RelationType::place(),
             new StringLiteral('otherRelationId'),
             true
         );
@@ -247,25 +247,25 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $labelRelations = [
             new LabelRelation(
                 new LabelName('2dotstwice'),
-                RelationType::PLACE(),
+                RelationType::place(),
                 new StringLiteral('relationId'),
                 true
             ),
             new LabelRelation(
                 new LabelName('cultuurnet'),
-                RelationType::PLACE(),
+                RelationType::place(),
                 new StringLiteral('otherRelationId'),
                 false
             ),
             new LabelRelation(
                 new LabelName('cultuurnet'),
-                RelationType::PLACE(),
+                RelationType::place(),
                 new StringLiteral('relationId'),
                 false
             ),
             new LabelRelation(
                 new LabelName('foo'),
-                RelationType::PLACE(),
+                RelationType::place(),
                 new StringLiteral('fooId'),
                 false
             ),

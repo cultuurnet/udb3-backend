@@ -138,13 +138,13 @@ class ItemVisibilityProjectorTest extends TestCase
     {
         return [
             [
-                RelationType::EVENT(),
+                RelationType::event(),
             ],
             [
-                RelationType::PLACE(),
+                RelationType::place(),
             ],
             [
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
             ],
         ];
     }
@@ -171,7 +171,7 @@ class ItemVisibilityProjectorTest extends TestCase
         $this->mockRelatedDocument(
             $labelName,
             $existingPlaceDocument,
-            RelationType::PLACE()
+            RelationType::place()
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -220,7 +220,7 @@ class ItemVisibilityProjectorTest extends TestCase
         $this->mockRelatedDocument(
             $labelName,
             $existingPlaceDocument,
-            RelationType::PLACE()
+            RelationType::place()
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -268,7 +268,7 @@ class ItemVisibilityProjectorTest extends TestCase
         $this->mockRelatedDocument(
             $labelName,
             $existingPlaceDocument,
-            RelationType::PLACE()
+            RelationType::place()
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -317,7 +317,7 @@ class ItemVisibilityProjectorTest extends TestCase
         $this->mockRelatedDocument(
             $labelName,
             $existingPlaceDocument,
-            RelationType::PLACE()
+            RelationType::place()
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -365,7 +365,7 @@ class ItemVisibilityProjectorTest extends TestCase
         $this->mockRelatedDocument(
             $labelName,
             $existingPlaceDocument,
-            RelationType::PLACE()
+            RelationType::place()
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -418,7 +418,7 @@ class ItemVisibilityProjectorTest extends TestCase
                 [
                     new LabelRelation(
                         $labelName,
-                        RelationType::PLACE(),
+                        RelationType::place(),
                         new StringLiteral((string) $placeId),
                         false
                     ),
