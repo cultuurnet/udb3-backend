@@ -15,7 +15,7 @@ class OfferTypeTest extends TestCase
     {
         $relationsType = new OfferType('Event');
 
-        $this->assertEquals($relationsType, OfferType::EVENT());
+        $this->assertEquals($relationsType, OfferType::event());
     }
 
     /**
@@ -25,7 +25,7 @@ class OfferTypeTest extends TestCase
     {
         $relationsType = new OfferType('Place');
 
-        $this->assertEquals($relationsType, OfferType::PLACE());
+        $this->assertEquals($relationsType, OfferType::place());
     }
 
     /**
@@ -37,8 +37,8 @@ class OfferTypeTest extends TestCase
 
         $this->assertEquals(
             [
-                OfferType::EVENT()->toString(),
-                OfferType::PLACE()->toString(),
+                OfferType::event()->toString(),
+                OfferType::place()->toString(),
             ],
             $options
         );
@@ -61,19 +61,19 @@ class OfferTypeTest extends TestCase
         return [
             [
                 'place',
-                OfferType::PLACE(),
+                OfferType::place(),
             ],
             [
                 'eVeNt',
-                OfferType::EVENT(),
+                OfferType::event(),
             ],
             [
                 'Place',
-                OfferType::PLACE(),
+                OfferType::place(),
             ],
             [
                 'EVENT',
-                OfferType::EVENT(),
+                OfferType::event(),
             ],
         ];
     }

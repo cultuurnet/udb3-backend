@@ -99,7 +99,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
         $expectedIriOfferIdentifier = new IriOfferIdentifier(
             Url::fromNative('https://foo.bar/place/1234'),
             '1234',
-            OfferType::PLACE()
+            OfferType::place()
         );
 
         $this->assertEquals($expectedIriOfferIdentifier, $iriOfferIdentifier);

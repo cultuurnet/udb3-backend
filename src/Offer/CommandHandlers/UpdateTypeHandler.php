@@ -56,10 +56,10 @@ final class UpdateTypeHandler implements CommandHandler
 
     private function getCategoryResolver(OfferType $offerType): CategoryResolverInterface
     {
-        if ($offerType->sameAs(OfferType::EVENT())) {
+        if ($offerType->sameAs(OfferType::event())) {
             return $this->eventCategoryResolver;
         }
-        if ($offerType->sameAs(OfferType::PLACE())) {
+        if ($offerType->sameAs(OfferType::place())) {
             return $this->placeCategoryResolver;
         }
         throw new RuntimeException('No CategoryResolver found for ' . strtolower($offerType->toString()));

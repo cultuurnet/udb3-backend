@@ -65,12 +65,12 @@ class PatchOfferRestControllerTest extends TestCase
     {
         return [
             'Approve event' => [
-                'offerType' => OfferType::EVENT(),
+                'offerType' => OfferType::event(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=Approve'),
                 'expectedCommand' => new Approve($this->itemId),
             ],
             'Reject event' => [
-                'offerType' => OfferType::EVENT(),
+                'offerType' => OfferType::event(),
                 'request' => $this->generatePatchRequest(
                     'application/ld+json;domain-model=Reject',
                     json_encode(['reason' => 'Description missing :('])
@@ -78,22 +78,22 @@ class PatchOfferRestControllerTest extends TestCase
                 'expectedCommand' => new Reject($this->itemId, new StringLiteral('Description missing :(')),
             ],
             'Flag event as duplicate' => [
-                'offerType' => OfferType::EVENT(),
+                'offerType' => OfferType::event(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsDuplicate'),
                 'expectedCommand' => new FlagAsDuplicate($this->itemId),
             ],
             'Flag event as inappropriate' => [
-                'offerType' => OfferType::EVENT(),
+                'offerType' => OfferType::event(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsInappropriate'),
                 'expectedCommand' => new FlagAsInappropriate($this->itemId),
             ],
             'Approve place' => [
-                'offerType' => OfferType::PLACE(),
+                'offerType' => OfferType::place(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=Approve'),
                 'expectedCommand' => new ApprovePlace($this->itemId),
             ],
             'Reject place' => [
-                'offerType' => OfferType::PLACE(),
+                'offerType' => OfferType::place(),
                 'request' => $this->generatePatchRequest(
                     'application/ld+json;domain-model=Reject',
                     json_encode(['reason' => 'Description missing :('])
@@ -101,17 +101,17 @@ class PatchOfferRestControllerTest extends TestCase
                 'expectedCommand' => new RejectPlace($this->itemId, new StringLiteral('Description missing :(')),
             ],
             'Flag place as duplicate' => [
-                'offerType' => OfferType::PLACE(),
+                'offerType' => OfferType::place(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsDuplicate'),
                 'expectedCommand' => new FlagAsDuplicatePlace($this->itemId),
             ],
             'Flag place as inappropriate' => [
-                'offerType' => OfferType::PLACE(),
+                'offerType' => OfferType::place(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsInappropriate'),
                 'expectedCommand' => new FlagAsInappropriatePlace($this->itemId),
             ],
             'Publish event with publication date' => [
-                'offerType' => OfferType::EVENT(),
+                'offerType' => OfferType::event(),
                 'request' => $this->generatePatchRequest(
                     'application/ld+json;domain-model=Publish',
                     json_encode(['publicationDate' => '2030-02-01T12:00:00+00:00'])
@@ -132,7 +132,7 @@ class PatchOfferRestControllerTest extends TestCase
      */
     public function it_throws_exception_for_invalid_publication_date_format()
     {
-        $controller = new PatchOfferRestController(OfferType::EVENT(), $this->commandBus);
+        $controller = new PatchOfferRestController(OfferType::event(), $this->commandBus);
 
         $request = $this->generatePatchRequest(
             'application/ld+json;domain-model=Publish',
@@ -150,7 +150,7 @@ class PatchOfferRestControllerTest extends TestCase
      */
     public function it_has_a_default_publication_date_of_now()
     {
-        $controller = new PatchOfferRestController(OfferType::EVENT(), $this->commandBus);
+        $controller = new PatchOfferRestController(OfferType::event(), $this->commandBus);
 
         $request = $this->generatePatchRequest(
             'application/ld+json;domain-model=Publish'

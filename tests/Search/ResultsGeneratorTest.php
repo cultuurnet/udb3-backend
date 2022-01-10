@@ -83,7 +83,7 @@ class ResultsGeneratorTest extends TestCase
                             new IriOfferIdentifier(
                                 Url::fromNative('http://io.uitdatabank.dev/event/0d325df2-da0a-4d4e-957f-60220c2f9baf'),
                                 '0d325df2-da0a-4d4e-957f-60220c2f9baf',
-                                OfferType::EVENT()
+                                OfferType::event()
                             ),
                         ]
                     ),
@@ -205,43 +205,43 @@ class ResultsGeneratorTest extends TestCase
         $event1 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/1'),
             '1',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         $event2 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/2'),
             '2',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         $event3 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/3'),
             '3',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         $event4 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/4'),
             '4',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         $event5 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/5'),
             '5',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         $event6 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/6'),
             '6',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         $event7 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/7'),
             '7',
-            OfferType::EVENT()
+            OfferType::event()
         );
 
         return [

@@ -96,7 +96,7 @@ class RelatedEventLDProjectorTest extends TestCase
         $placeIdentifier = new IriOfferIdentifier(
             $placeIri,
             $placeID,
-            OfferType::PLACE()
+            OfferType::place()
         );
 
         $this->iriOfferIdentifierFactory->expects($this->once())

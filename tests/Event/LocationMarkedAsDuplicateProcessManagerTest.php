@@ -85,17 +85,17 @@ class LocationMarkedAsDuplicateProcessManagerTest extends TestCase
                         new IriOfferIdentifier(
                             Url::fromNative('http://www.uitdatabank.be/events/c393e98b-b33e-4948-b97a-3c48e3748398'),
                             'c393e98b-b33e-4948-b97a-3c48e3748398',
-                            OfferType::EVENT()
+                            OfferType::event()
                         ),
                         new IriOfferIdentifier(
                             Url::fromNative('http://www.uitdatabank.be/events/d8835de7-c84d-417b-a173-079401f29fde'),
                             'd8835de7-c84d-417b-a173-079401f29fde',
-                            OfferType::EVENT()
+                            OfferType::event()
                         ),
                         new IriOfferIdentifier(
                             Url::fromNative('http://www.uitdatabank.be/events/13ca4b6b-92b0-407d-b472-634dd0e654d0'),
                             '13ca4b6b-92b0-407d-b472-634dd0e654d0',
-                            OfferType::EVENT()
+                            OfferType::event()
                         ),
                     ];
                 }

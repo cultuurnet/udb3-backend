@@ -218,12 +218,12 @@ final class ApiProblem extends Exception
 
     public static function eventNotFound(string $eventId): self
     {
-        return self::offerNotFound(OfferType::EVENT(), $eventId);
+        return self::offerNotFound(OfferType::event(), $eventId);
     }
 
     public static function placeNotFound(string $placeId): self
     {
-        return self::offerNotFound(OfferType::PLACE(), $placeId);
+        return self::offerNotFound(OfferType::place(), $placeId);
     }
 
     public static function organizerNotFound(string $organizerId): self

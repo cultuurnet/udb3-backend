@@ -112,10 +112,10 @@ final class RouteParameters
     {
         $offerType = $this->get('offerType');
         if ($offerType === 'events') {
-            return OfferType::EVENT();
+            return OfferType::event();
         }
         if ($offerType === 'places') {
-            return OfferType::PLACE();
+            return OfferType::place();
         }
         throw new RuntimeException('Unknown offer type ' . $offerType);
     }

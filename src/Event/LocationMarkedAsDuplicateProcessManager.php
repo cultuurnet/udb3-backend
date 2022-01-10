@@ -63,7 +63,7 @@ final class LocationMarkedAsDuplicateProcessManager implements EventListener, Lo
 
         /* @var IriOfferIdentifier $result */
         foreach ($results as $result) {
-            if (!$result->getType()->sameAs(OfferType::EVENT())) {
+            if (!$result->getType()->sameAs(OfferType::event())) {
                 $skipped[] = $result->getId();
                 $this->logger->warning(
                     'Skipped result with id ' . $result->getId() . ' because it\'s not an event according to the @id parser.'

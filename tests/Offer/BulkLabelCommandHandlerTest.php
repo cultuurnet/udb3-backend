@@ -72,12 +72,12 @@ class BulkLabelCommandHandlerTest extends TestCase
             1 => new IriOfferIdentifier(
                 Url::fromNative('http://du.de/event/1'),
                 '1',
-                OfferType::EVENT()
+                OfferType::event()
             ),
             2 => new IriOfferIdentifier(
                 Url::fromNative('http://du.de/place/2'),
                 '2',
-                OfferType::PLACE()
+                OfferType::place()
             ),
         ];
     }

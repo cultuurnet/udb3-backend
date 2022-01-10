@@ -29,7 +29,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
                     return new IriOfferIdentifier(
                         Url::fromNative("http://du.de/event/{$id}"),
                         $id->toNative(),
-                        OfferType::EVENT()
+                        OfferType::event()
                     );
                 }
             );
@@ -52,21 +52,21 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
                     new IriOfferIdentifier(
                         Url::fromNative('http://du.de/event/1'),
                         '1',
-                        OfferType::EVENT()
+                        OfferType::event()
                     )
                 )
                 ->with(
                     new IriOfferIdentifier(
                         Url::fromNative('http://du.de/event/2'),
                         '2',
-                        OfferType::EVENT()
+                        OfferType::event()
                     )
                 )
                 ->with(
                     new IriOfferIdentifier(
                         Url::fromNative('http://du.de/event/3'),
                         '3',
-                        OfferType::EVENT()
+                        OfferType::event()
                     )
                 ),
             new Label('foo')

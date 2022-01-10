@@ -104,7 +104,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     public static function getOfferType(): OfferType
     {
-        return OfferType::PLACE();
+        return OfferType::place();
     }
 
     public function getAggregateRootId(): string

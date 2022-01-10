@@ -105,7 +105,7 @@ $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
 $consoleApp->add(
     new ReindexOffersWithPopularityScore(
-        OfferType::EVENT(),
+        OfferType::event(),
         $app['dbal_connection'],
         $app['amqp.publisher'],
         $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
@@ -113,7 +113,7 @@ $consoleApp->add(
 );
 $consoleApp->add(
     new ReindexOffersWithPopularityScore(
-        OfferType::PLACE(),
+        OfferType::place(),
         $app['dbal_connection'],
         $app['amqp.publisher'],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
@@ -126,8 +126,8 @@ $consoleApp->add(
         $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
-$consoleApp->add(new UpdateOfferStatusCommand(OfferType::EVENT(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
-$consoleApp->add(new UpdateOfferStatusCommand(OfferType::PLACE(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
+$consoleApp->add(new UpdateOfferStatusCommand(OfferType::event(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
+$consoleApp->add(new UpdateOfferStatusCommand(OfferType::place(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
 $consoleApp->add(new UpdateBookingAvailabilityCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
 $consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
 $consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_owner_query']));

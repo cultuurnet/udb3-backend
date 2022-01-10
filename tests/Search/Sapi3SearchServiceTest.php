@@ -74,12 +74,12 @@ class Sapi3SearchServiceTest extends TestCase
                 new IriOfferIdentifier(
                     Url::fromNative('http://udb-silex.dev/place/c90bc8d5-11c5-4ae3-9bf9-cce0969fdc56'),
                     'c90bc8d5-11c5-4ae3-9bf9-cce0969fdc56',
-                    OfferType::PLACE()
+                    OfferType::place()
                 ),
                 new IriOfferIdentifier(
                     Url::fromNative('http://udb-silex.dev/event/c54b1323-0928-402f-9419-16d7acd44d36'),
                     'c54b1323-0928-402f-9419-16d7acd44d36',
-                    OfferType::EVENT()
+                    OfferType::event()
                 ),
             ]),
             Integer::fromNative(2)

@@ -101,7 +101,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     public static function getOfferType(): OfferType
     {
-        return OfferType::EVENT();
+        return OfferType::event();
     }
 
     public static function create(

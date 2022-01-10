@@ -31,10 +31,10 @@ final class OfferJsonDocumentReadRepository
     public function fetch(OfferType $offerType, string $id, bool $includeMetadata = false): JsonDocument
     {
         try {
-            if ($offerType->sameAs(OfferType::EVENT())) {
+            if ($offerType->sameAs(OfferType::event())) {
                 return $this->eventDocumentRepository->fetch($id, $includeMetadata);
             }
-            if ($offerType->sameAs(OfferType::PLACE())) {
+            if ($offerType->sameAs(OfferType::place())) {
                 return $this->placeDocumentRepository->fetch($id, $includeMetadata);
             }
         } catch (DocumentDoesNotExist $e) {

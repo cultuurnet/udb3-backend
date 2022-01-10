@@ -16,12 +16,12 @@ class OfferType extends Enum
         ];
     }
 
-    public static function EVENT(): OfferType
+    public static function event(): OfferType
     {
         return new self('Event');
     }
 
-    public static function PLACE(): OfferType
+    public static function place(): OfferType
     {
         return new self('Place');
     }
