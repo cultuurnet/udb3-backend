@@ -54,7 +54,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         return [
             $offerLabelRelation->getLabelName()->toNative(),
-            $offerLabelRelation->getRelationType()->toNative(),
+            $offerLabelRelation->getRelationType()->toString(),
             $offerLabelRelation->getRelationId(),
             $offerLabelRelation->isImported(),
         ];

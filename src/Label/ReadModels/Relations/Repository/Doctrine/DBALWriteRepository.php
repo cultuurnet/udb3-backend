@@ -32,7 +32,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             ])
             ->setParameters([
                 $labelName->toNative(),
-                $relationType->toNative(),
+                $relationType->toString(),
                 $relationId->toNative(),
                 $imported ? 1 : 0,
             ]);

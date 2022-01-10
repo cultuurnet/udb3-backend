@@ -87,7 +87,7 @@ class OfferLabelRelationTest extends TestCase
 
         $imported = $this->imported ? 'true' : 'false';
         $expectedJson = '{"labelName":"' . $this->labelName->toNative()
-            . '","relationType":"' . $this->relationType->toNative()
+            . '","relationType":"' . $this->relationType->toString()
             . '","relationId":"' . $this->offerId->toNative()
             . '","imported":' . $imported . '}';
 

@@ -86,7 +86,7 @@ class LabelRelation implements \JsonSerializable
     {
         return [
             SchemaConfigurator::LABEL_NAME => $this->labelName->toNative(),
-            SchemaConfigurator::RELATION_TYPE => $this->relationType->toNative(),
+            SchemaConfigurator::RELATION_TYPE => $this->relationType->toString(),
             SchemaConfigurator::RELATION_ID => $this->relationId->toNative(),
             SchemaConfigurator::IMPORTED => $this->imported,
         ];
@@ -99,7 +99,7 @@ class LabelRelation implements \JsonSerializable
     {
         return new self(
             new LabelName($relation[SchemaConfigurator::LABEL_NAME]),
-            RelationType::fromNative($relation[SchemaConfigurator::RELATION_TYPE]),
+            new RelationType($relation[SchemaConfigurator::RELATION_TYPE]),
             new StringLiteral($relation[SchemaConfigurator::RELATION_ID]),
             (bool) $relation[SchemaConfigurator::IMPORTED]
         );
