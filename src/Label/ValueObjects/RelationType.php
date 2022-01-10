@@ -4,18 +4,31 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ValueObjects;
 
-use ValueObjects\Enum\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
-/**
- * Class RelationType
- * @package CultuurNet\UDB3\Label\ValueObjects
- * @method static RelationType EVENT()
- * @method static RelationType PLACE()
- * @method static RelationType ORGANIZER()
- */
 class RelationType extends Enum
 {
-    public const EVENT = 'Event';
-    public const PLACE = 'Place';
-    public const ORGANIZER = 'Organizer';
+    public static function getAllowedValues(): array
+    {
+        return [
+            'Event',
+            'Place',
+            'Organizer',
+        ];
+    }
+
+    public static function event(): RelationType
+    {
+        return new self('Event');
+    }
+
+    public static function place(): RelationType
+    {
+        return new self('Place');
+    }
+
+    public static function organizer(): RelationType
+    {
+        return new self('Organizer');
+    }
 }

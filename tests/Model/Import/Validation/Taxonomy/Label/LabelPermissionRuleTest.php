@@ -70,13 +70,13 @@ class LabelPermissionRuleTest extends TestCase
             ->willReturn([
                 new LabelRelation(
                     new \CultuurNet\UDB3\Label\ValueObjects\LabelName('foo'),
-                    RelationType::EVENT(),
+                    RelationType::event(),
                     new StringLiteral($this->documentId->toString()),
                     false
                 ),
                 new LabelRelation(
                     new \CultuurNet\UDB3\Label\ValueObjects\LabelName('bar'),
-                    RelationType::EVENT(),
+                    RelationType::event(),
                     new StringLiteral($this->documentId->toString()),
                     false
                 ),
@@ -101,7 +101,7 @@ class LabelPermissionRuleTest extends TestCase
             ->willReturn([
                 new LabelRelation(
                     new \CultuurNet\UDB3\Label\ValueObjects\LabelName('bar'),
-                    RelationType::EVENT(),
+                    RelationType::event(),
                     new StringLiteral($this->documentId->toString()),
                     false
                 ),
@@ -128,7 +128,7 @@ class LabelPermissionRuleTest extends TestCase
             ->willReturn([
                 new LabelRelation(
                     new \CultuurNet\UDB3\Label\ValueObjects\LabelName('bar'),
-                    RelationType::EVENT(),
+                    RelationType::event(),
                     new StringLiteral($this->documentId->toString()),
                     false
                 ),

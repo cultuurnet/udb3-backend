@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use PHPUnit\Framework\TestCase;
@@ -11,35 +12,20 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferLabelRelationTest extends TestCase
 {
-    /**
-     * @var LabelName
-     */
-    private $labelName;
+    private LabelName $labelName;
 
-    /**
-     * @var RelationType
-     */
-    private $relationType;
+    private RelationType $relationType;
 
-    /**
-     * @var StringLiteral
-     */
-    private $offerId;
+    private StringLiteral $offerId;
 
-    /**
-     * @var bool
-     */
-    private $imported;
+    private bool $imported;
 
-    /**
-     * @var LabelRelation
-     */
-    private $offerLabelRelation;
+    private LabelRelation $offerLabelRelation;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelName = new LabelName('2dotstwice');
-        $this->relationType = RelationType::PLACE();
+        $this->relationType = RelationType::place();
         $this->offerId = new StringLiteral('relationId');
         $this->imported = true;
 
@@ -54,7 +40,7 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->labelName, $this->offerLabelRelation->getLabelName());
     }
@@ -62,7 +48,7 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_relation_type()
+    public function it_stores_a_relation_type(): void
     {
         $this->assertEquals(
             $this->relationType,
@@ -73,7 +59,7 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_relation_id()
+    public function it_stores_a_relation_id(): void
     {
         $this->assertEquals($this->offerId, $this->offerLabelRelation->getRelationId());
     }
@@ -81,13 +67,13 @@ class OfferLabelRelationTest extends TestCase
     /**
      * @test
      */
-    public function it_can_encode_to_json()
+    public function it_can_encode_to_json(): void
     {
-        $json = json_encode($this->offerLabelRelation);
+        $json = Json::encode($this->offerLabelRelation);
 
         $imported = $this->imported ? 'true' : 'false';
         $expectedJson = '{"labelName":"' . $this->labelName->toNative()
-            . '","relationType":"' . $this->relationType->toNative()
+            . '","relationType":"' . $this->relationType->toString()
             . '","relationId":"' . $this->offerId->toNative()
             . '","imported":' . $imported . '}';
 

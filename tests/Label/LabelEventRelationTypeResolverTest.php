@@ -31,7 +31,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
         $labelAdded = new EventLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
-            RelationType::EVENT(),
+            RelationType::event(),
             $this->labelEventRelationTypeResolver->getRelationType($labelAdded)
         );
     }
@@ -44,7 +44,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
         $labelRemoved = new EventLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
-            RelationType::EVENT(),
+            RelationType::event(),
             $this->labelEventRelationTypeResolver->getRelationType($labelRemoved)
         );
     }
@@ -57,7 +57,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
         $labelAdded = new PlaceLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
-            RelationType::PLACE(),
+            RelationType::place(),
             $this->labelEventRelationTypeResolver->getRelationType($labelAdded)
         );
     }
@@ -70,7 +70,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
         $labelRemoved = new PlaceLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
-            RelationType::PLACE(),
+            RelationType::place(),
             $this->labelEventRelationTypeResolver->getRelationType($labelRemoved)
         );
     }
@@ -83,7 +83,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
         $labelAdded = new OrganizerLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', 'foo');
 
         $this->assertEquals(
-            RelationType::ORGANIZER(),
+            RelationType::organizer(),
             $this->labelEventRelationTypeResolver->getRelationType($labelAdded)
         );
     }
@@ -96,7 +96,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
         $labelRemoved = new OrganizerLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', 'foo');
 
         $this->assertEquals(
-            RelationType::ORGANIZER(),
+            RelationType::organizer(),
             $this->labelEventRelationTypeResolver->getRelationType($labelRemoved)
         );
     }

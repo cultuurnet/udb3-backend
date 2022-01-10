@@ -11,45 +11,45 @@ class RelationTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_event_option()
+    public function it_has_an_event_option(): void
     {
-        $relationsType = RelationType::EVENT();
+        $relationsType = new RelationType('Event');
 
-        $this->assertEquals($relationsType, RelationType::EVENT);
+        $this->assertEquals($relationsType, RelationType::event());
     }
 
     /**
      * @test
      */
-    public function it_has_a_place_option()
+    public function it_has_a_place_option(): void
     {
-        $relationsType = RelationType::PLACE();
+        $relationsType = new RelationType('Place');
 
-        $this->assertEquals($relationsType, RelationType::PLACE);
+        $this->assertEquals($relationsType, RelationType::place());
     }
 
     /**
      * @test
      */
-    public function it_has_an_organizer_option()
+    public function it_has_an_organizer_option(): void
     {
-        $relationsType = RelationType::ORGANIZER();
+        $relationsType = new RelationType('Organizer');
 
-        $this->assertEquals($relationsType, RelationType::ORGANIZER);
+        $this->assertEquals($relationsType, RelationType::organizer());
     }
 
     /**
      * @test
      */
-    public function it_has_only_an_event_and_place_and_organizer_option()
+    public function it_has_only_an_event_and_place_and_organizer_option(): void
     {
-        $options = RelationType::getConstants();
+        $options = RelationType::getAllowedValues();
 
         $this->assertEquals(
             [
-                RelationType::EVENT()->getName() => RelationType::EVENT,
-                RelationType::PLACE()->getName() => RelationType::PLACE,
-                RelationType::ORGANIZER()->getName() => RelationType::ORGANIZER,
+                RelationType::event()->toString(),
+                RelationType::place()->toString(),
+                RelationType::organizer()->toString(),
             ],
             $options
         );

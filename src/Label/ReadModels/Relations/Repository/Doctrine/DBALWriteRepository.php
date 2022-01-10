@@ -13,15 +13,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function save(
         LabelName $labelName,
         RelationType $relationType,
         StringLiteral $relationId,
-        $imported
-    ) {
+        bool $imported
+    ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->insert($this->getTableName())
             ->values([
@@ -32,7 +29,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             ])
             ->setParameters([
                 $labelName->toNative(),
-                $relationType->toNative(),
+                $relationType->toString(),
                 $relationId->toNative(),
                 $imported ? 1 : 0,
             ]);
@@ -40,13 +37,10 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function deleteByLabelNameAndRelationId(
         LabelName $labelName,
         StringLiteral $relationId
-    ) {
+    ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
             ->where(SchemaConfigurator::LABEL_NAME . ' = ?')
@@ -56,10 +50,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deleteByRelationId(StringLiteral $relationId)
+    public function deleteByRelationId(StringLiteral $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
@@ -69,10 +60,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deleteImportedByRelationId(StringLiteral $relationId)
+    public function deleteImportedByRelationId(StringLiteral $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
@@ -88,8 +76,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-
-    private function executeTransactional(QueryBuilder $queryBuilder)
+    private function executeTransactional(QueryBuilder $queryBuilder): void
     {
         $this->getConnection()->transactional(function () use ($queryBuilder) {
             $queryBuilder->execute();

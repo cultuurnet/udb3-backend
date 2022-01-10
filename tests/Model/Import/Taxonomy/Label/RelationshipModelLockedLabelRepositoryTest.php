@@ -43,25 +43,25 @@ final class RelationshipModelLockedLabelRepositoryTest extends TestCase
         $relations = [
             new LabelRelation(
                 new Udb3LabelName('applied_via_ui_1'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 false
             ),
             new LabelRelation(
                 new Udb3LabelName('imported_1'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 true
             ),
             new LabelRelation(
                 new Udb3LabelName('applied_via_ui_2'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 false
             ),
             new LabelRelation(
                 new Udb3LabelName('imported_2'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 true
             ),
@@ -92,25 +92,25 @@ final class RelationshipModelLockedLabelRepositoryTest extends TestCase
         $relations = [
             new LabelRelation(
                 new Udb3LabelName('applied_via_ui_1'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 false
             ),
             new LabelRelation(
                 new Udb3LabelName('imported_1'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 true
             ),
             new LabelRelation(
                 new Udb3LabelName('applied_via_ui_2'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 false
             ),
             new LabelRelation(
                 new Udb3LabelName('imported_2'),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new StringLiteral($itemId),
                 true
             ),

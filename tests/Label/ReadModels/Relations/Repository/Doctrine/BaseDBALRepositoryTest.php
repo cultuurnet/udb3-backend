@@ -13,12 +13,9 @@ abstract class BaseDBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private StringLiteral $tableName;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tableName = new StringLiteral('test_places_relations');
 
@@ -29,16 +26,12 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $schemaConfigurator->configure($schemaManager);
     }
 
-    /**
-     * @return StringLiteral
-     */
-    protected function getTableName()
+    protected function getTableName(): StringLiteral
     {
         return $this->tableName;
     }
 
-
-    protected function saveLabelRelation(LabelRelation $labelRelation)
+    protected function saveLabelRelation(LabelRelation $labelRelation): void
     {
         $values = $this->labelRelationToValues($labelRelation);
 
@@ -47,14 +40,11 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $this->connection->executeQuery($sql, $values);
     }
 
-    /**
-     * @return array
-     */
-    protected function labelRelationToValues(LabelRelation $offerLabelRelation)
+    protected function labelRelationToValues(LabelRelation $offerLabelRelation): array
     {
         return [
             $offerLabelRelation->getLabelName()->toNative(),
-            $offerLabelRelation->getRelationType()->toNative(),
+            $offerLabelRelation->getRelationType()->toString(),
             $offerLabelRelation->getRelationId(),
             $offerLabelRelation->isImported(),
         ];
@@ -63,7 +53,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     /**
      * @return LabelRelation[]
      */
-    protected function getLabelRelations()
+    protected function getLabelRelations(): array
     {
         $sql = 'SELECT * FROM ' . $this->tableName;
 

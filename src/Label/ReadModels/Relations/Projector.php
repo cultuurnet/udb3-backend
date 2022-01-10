@@ -96,7 +96,7 @@ class Projector extends AbstractProjector
             $eventImportedFromUDB2->getCdbXml()
         );
 
-        $this->updateLabelRelationFromCdbItem($event, RelationType::EVENT());
+        $this->updateLabelRelationFromCdbItem($event, RelationType::event());
     }
 
     public function applyPlaceImportedFromUDB2(
@@ -107,7 +107,7 @@ class Projector extends AbstractProjector
             $placeImportedFromUDB2->getCdbXml()
         );
 
-        $this->updateLabelRelationFromCdbItem($place, RelationType::PLACE());
+        $this->updateLabelRelationFromCdbItem($place, RelationType::place());
     }
 
     public function applyOrganizerImportedFromUDB2(
@@ -118,7 +118,7 @@ class Projector extends AbstractProjector
             $organizerImportedFromUDB2->getCdbXml()
         );
 
-        $this->updateLabelRelationFromCdbItem($organizer, RelationType::ORGANIZER());
+        $this->updateLabelRelationFromCdbItem($organizer, RelationType::organizer());
     }
 
     public function applyEventUpdatedFromUDB2(
@@ -129,7 +129,7 @@ class Projector extends AbstractProjector
             $eventUpdatedFromUDB2->getCdbXml()
         );
 
-        $this->updateLabelRelationFromCdbItem($event, RelationType::EVENT());
+        $this->updateLabelRelationFromCdbItem($event, RelationType::event());
     }
 
     public function applyPlaceUpdatedFromUDB2(
@@ -140,7 +140,7 @@ class Projector extends AbstractProjector
             $placeUpdatedFromUDB2->getCdbXml()
         );
 
-        $this->updateLabelRelationFromCdbItem($place, RelationType::PLACE());
+        $this->updateLabelRelationFromCdbItem($place, RelationType::place());
     }
 
     public function applyOrganizerUpdatedFromUDB2(
@@ -151,7 +151,7 @@ class Projector extends AbstractProjector
             $organizerUpdatedFromUDB2->getCdbXml()
         );
 
-        $this->updateLabelRelationFromCdbItem($organizer, RelationType::ORGANIZER());
+        $this->updateLabelRelationFromCdbItem($organizer, RelationType::organizer());
     }
 
     private function updateLabelRelationFromCdbItem(

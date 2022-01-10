@@ -83,43 +83,43 @@ class LabelPreProcessingDocumentImporterTest extends TestCase
                 [
                     new LabelRelation(
                         new LabelName('udb3_visible_label'),
-                        RelationType::EVENT(),
+                        RelationType::event(),
                         new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
                         false
                     ),
                     new LabelRelation(
                         new LabelName('udb3_must_be_hidden'),
-                        RelationType::EVENT(),
+                        RelationType::event(),
                         new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
                         false
                     ),
                     new LabelRelation(
                         new LabelName('udb3_hidden_label'),
-                        RelationType::EVENT(),
+                        RelationType::event(),
                         new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
                         false
                     ),
                     new LabelRelation(
                         new LabelName('udb3_must_be_visible'),
-                        RelationType::EVENT(),
+                        RelationType::event(),
                         new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
                         false
                     ),
                     new LabelRelation(
                         new LabelName('udb3_missing_visible_label'),
-                        RelationType::EVENT(),
+                        RelationType::event(),
                         new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
                         false
                     ),
                     new LabelRelation(
                         new LabelName('udb3_missing_hidden_label'),
-                        RelationType::EVENT(),
+                        RelationType::event(),
                         new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
                         false
                     ),
                     new LabelRelation(
                         new LabelName('imported_old_hidden_label'),
-                        RelationType::EVENT(),
+                        RelationType::event(),
                         new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
                         true
                     ),

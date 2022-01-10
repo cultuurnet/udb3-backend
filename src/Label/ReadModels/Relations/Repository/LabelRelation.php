@@ -7,99 +7,66 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use JsonSerializable;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LabelRelation implements \JsonSerializable
+class LabelRelation implements JsonSerializable
 {
-    /**
-     * @var LabelName
-     */
-    private $labelName;
+    private LabelName $labelName;
 
-    /**
-     * @var RelationType
-     */
-    private $relationType;
+    private RelationType $relationType;
 
-    /**
-     * @var StringLiteral
-     */
-    private $relationId;
+    private StringLiteral $relationId;
 
-    /**
-     * @var bool
-     */
-    private $imported;
+    private bool $imported;
 
-    /**
-     * Entity constructor.
-     * @param bool $imported
-     */
     public function __construct(
         LabelName $labelName,
         RelationType $relationType,
         StringLiteral $relationId,
-        $imported
+        bool $imported
     ) {
         $this->labelName = $labelName;
         $this->relationType = $relationType;
         $this->relationId = $relationId;
-        $this->imported = (bool) $imported;
+        $this->imported = $imported;
     }
 
-    /**
-     * @return LabelName
-     */
-    public function getLabelName()
+    public function getLabelName(): LabelName
     {
         return $this->labelName;
     }
 
-    /**
-     * @return RelationType
-     */
-    public function getRelationType()
+    public function getRelationType(): RelationType
     {
         return $this->relationType;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getRelationId()
+    public function getRelationId(): StringLiteral
     {
         return $this->relationId;
     }
 
-    /**
-     * @return bool
-     */
-    public function isImported()
+    public function isImported(): bool
     {
         return $this->imported;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             SchemaConfigurator::LABEL_NAME => $this->labelName->toNative(),
-            SchemaConfigurator::RELATION_TYPE => $this->relationType->toNative(),
+            SchemaConfigurator::RELATION_TYPE => $this->relationType->toString(),
             SchemaConfigurator::RELATION_ID => $this->relationId->toNative(),
             SchemaConfigurator::IMPORTED => $this->imported,
         ];
     }
 
-    /**
-     * @return LabelRelation
-     */
-    public static function fromRelationalData(array $relation)
+    public static function fromRelationalData(array $relation): LabelRelation
     {
         return new self(
             new LabelName($relation[SchemaConfigurator::LABEL_NAME]),
-            RelationType::fromNative($relation[SchemaConfigurator::RELATION_TYPE]),
+            new RelationType($relation[SchemaConfigurator::RELATION_TYPE]),
             new StringLiteral($relation[SchemaConfigurator::RELATION_ID]),
             (bool) $relation[SchemaConfigurator::IMPORTED]
         );

@@ -130,15 +130,15 @@ class RelatedUDB3LabelApplierTest extends TestCase
         return [
             'Apply label on event' => [
                 $this->createAggregate(Event::class),
-                RelationType::EVENT(),
+                RelationType::event(),
             ],
             'Apply label on place' => [
                 $this->createAggregate(Place::class),
-                RelationType::PLACE(),
+                RelationType::place(),
             ],
             'Apply label on organizer' => [
                 $this->createAggregate(Organizer::class),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
             ],
         ];
     }
