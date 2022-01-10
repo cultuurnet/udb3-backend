@@ -15,7 +15,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
 
     private StringLiteral $tableName;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tableName = new StringLiteral('test_places_relations');
 
@@ -30,7 +30,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         return $this->tableName;
     }
-
 
     protected function saveLabelRelation(LabelRelation $labelRelation): void
     {

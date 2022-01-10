@@ -45,11 +45,11 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
     public function getRelationType(LabelEventInterface $labelEvent)
     {
         if ($this->eventTypeSpecification->isSatisfiedBy($labelEvent)) {
-            $relationType = RelationType::EVENT();
+            $relationType = RelationType::event();
         } elseif ($this->placeTypeSpecification->isSatisfiedBy($labelEvent)) {
-            $relationType = RelationType::PLACE();
+            $relationType = RelationType::place();
         } elseif ($this->organizerTypeSpecification->isSatisfiedBy($labelEvent)) {
-            $relationType = RelationType::ORGANIZER();
+            $relationType = RelationType::organizer();
         } else {
             $message = $this->createIllegalArgumentMessage($labelEvent);
             throw new \InvalidArgumentException($message);
@@ -64,11 +64,11 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
     public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported)
     {
         if ($labelsImported instanceof EventLabelsImported) {
-            return RelationType::EVENT();
+            return RelationType::event();
         } elseif ($labelsImported instanceof PlaceLabelsImported) {
-            return RelationType::PLACE();
+            return RelationType::place();
         } elseif ($labelsImported instanceof OrganizerLabelsImported) {
-            return RelationType::ORGANIZER();
+            return RelationType::organizer();
         } else {
             $message = $this->createIllegalArgumentMessage($labelsImported);
             throw new \InvalidArgumentException($message);

@@ -13,14 +13,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function save(
         LabelName $labelName,
         RelationType $relationType,
         StringLiteral $relationId,
-        $imported
+        bool $imported
     ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->insert($this->getTableName())
@@ -40,9 +37,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function deleteByLabelNameAndRelationId(
         LabelName $labelName,
         StringLiteral $relationId
@@ -56,9 +50,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function deleteByRelationId(StringLiteral $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
@@ -69,9 +60,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function deleteImportedByRelationId(StringLiteral $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
@@ -87,7 +75,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
 
         $this->executeTransactional($queryBuilder);
     }
-
 
     private function executeTransactional(QueryBuilder $queryBuilder): void
     {

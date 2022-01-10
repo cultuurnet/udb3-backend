@@ -113,7 +113,7 @@ class ProjectorTest extends TestCase
                     $this->getRelationId(),
                     new Label('labelName')
                 ),
-                RelationType::EVENT(),
+                RelationType::event(),
             ],
             [
                 $this->getRelationId(),
@@ -121,7 +121,7 @@ class ProjectorTest extends TestCase
                     $this->getRelationId(),
                     new Label('labelName')
                 ),
-                RelationType::PLACE(),
+                RelationType::place(),
             ],
             [
                 $this->getRelationId(),
@@ -129,7 +129,7 @@ class ProjectorTest extends TestCase
                     $this->getRelationId(),
                     'labelName'
                 ),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
             ],
         ];
     }
@@ -235,7 +235,7 @@ class ProjectorTest extends TestCase
         return [
             [
                 $this->getRelationId(),
-                RelationType::EVENT(),
+                RelationType::event(),
                 new EventLabelsImported(
                     $this->getRelationId(),
                     $labels
@@ -243,7 +243,7 @@ class ProjectorTest extends TestCase
             ],
             [
                 $this->getRelationId(),
-                RelationType::PLACE(),
+                RelationType::place(),
                 new PlaceLabelsImported(
                     $this->getRelationId(),
                     $labels
@@ -251,7 +251,7 @@ class ProjectorTest extends TestCase
             ],
             [
                 $this->getRelationId(),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
                 new OrganizerLabelsImported(
                     $this->getRelationId(),
                     $labels
@@ -328,7 +328,7 @@ class ProjectorTest extends TestCase
             ->willReturn([
                 new LabelRelation(
                     new LabelName('2DOTStwice'),
-                    RelationType::ORGANIZER(),
+                    RelationType::organizer(),
                     new StringLiteral('123'),
                     false
                 ),
@@ -338,7 +338,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 new LabelName('cultuurnet'),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
                 $itemId,
                 true
             );
@@ -359,7 +359,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/event.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::EVENT(),
+                RelationType::event(),
             ],
             [
                 $itemId,
@@ -368,7 +368,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/place.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::PLACE(),
+                RelationType::place(),
             ],
             [
                 $itemId,
@@ -377,7 +377,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/organizer.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
             ],
             [
                 $itemId,
@@ -386,7 +386,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/event.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::EVENT(),
+                RelationType::event(),
             ],
             [
                 $itemId,
@@ -395,7 +395,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/place.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::PLACE(),
+                RelationType::place(),
             ],
             [
                 $itemId,
@@ -404,7 +404,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/organizer.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
             ],
             [
                 $itemId,
@@ -413,7 +413,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
             ],
             [
                 $itemId,
@@ -422,7 +422,7 @@ class ProjectorTest extends TestCase
                     file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing_and_visibility.xml'),
                     $cdbXmlNamespaceUri
                 ),
-                RelationType::ORGANIZER(),
+                RelationType::organizer(),
             ],
         ];
     }

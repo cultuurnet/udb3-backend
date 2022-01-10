@@ -14,12 +14,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 {
-    /**
-     * @var DBALWriteRepository
-     */
-    private $dbalWriteRepository;
+    private DBALWriteRepository $dbalWriteRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -32,7 +29,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_save()
+    public function it_can_save(): void
     {
         $expectedEntity = new Entity(
             new UUID(),
@@ -58,7 +55,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_not_save_same_uuid()
+    public function it_can_not_save_same_uuid(): void
     {
         $entity1 = new Entity(
             new UUID(),
@@ -92,7 +89,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_not_save_same_name()
+    public function it_can_not_save_same_name(): void
     {
         $entity1 = new Entity(
             new UUID(),
@@ -126,7 +123,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_update_to_visible()
+    public function it_can_update_to_visible(): void
     {
         $entity = new Entity(
             new UUID(),
@@ -151,7 +148,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_update_to_invisible()
+    public function it_can_update_to_invisible(): void
     {
         $entity = new Entity(
             new UUID(),
@@ -176,7 +173,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_update_to_public()
+    public function it_can_update_to_public(): void
     {
         $entity = new Entity(
             new UUID(),
@@ -201,7 +198,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_update_to_private()
+    public function it_can_update_to_private(): void
     {
         $entity = new Entity(
             new UUID(),
@@ -226,7 +223,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_increment()
+    public function it_can_increment(): void
     {
         $expectedEntity = new Entity(
             new UUID(),
@@ -254,7 +251,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_decrement()
+    public function it_can_decrement(): void
     {
         $expectedEntity = new Entity(
             new UUID(),
@@ -282,7 +279,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function count_never_smaller_then_zero()
+    public function count_never_smaller_then_zero(): void
     {
         $expectedEntity = new Entity(
             new UUID(),
