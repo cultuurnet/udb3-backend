@@ -34,7 +34,7 @@ final class CategoryNotFound extends RuntimeException
                 'Category with id %s not found in %s domain or not applicable for %s.',
                 $id->toString(),
                 $domain->toString(),
-                $offerType->toNative()
+                $offerType->toString()
             )
         );
     }

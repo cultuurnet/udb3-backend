@@ -44,7 +44,7 @@ class ReindexOffersWithPopularityScore extends Command
         AMQPPublisher $AMQPPublisher,
         DocumentEventFactory $eventFactoryForEvents
     ) {
-        $this->type = \strtolower($type->toNative());
+        $this->type = \strtolower($type->toString());
         $this->connection = $connection;
         $this->amqpPublisher = $AMQPPublisher;
         $this->eventFactoryForEvents = $eventFactoryForEvents;

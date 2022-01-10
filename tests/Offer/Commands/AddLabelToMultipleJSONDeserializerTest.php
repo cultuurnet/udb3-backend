@@ -37,7 +37,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
                 function (StringLiteral $id) {
                     return new IriOfferIdentifier(
                         Url::fromNative("http://du.de/event/{$id}"),
-                        $id,
+                        $id->toNative(),
                         OfferType::EVENT()
                     );
                 }

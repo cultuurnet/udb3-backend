@@ -4,19 +4,30 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
-use ValueObjects\Enum\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
-/**
- * @method static OfferType EVENT()
- * @method static OfferType PLACE()
- */
 class OfferType extends Enum
 {
-    public const EVENT = 'Event';
-    public const PLACE = 'Place';
-
-    public static function fromCaseInsensitiveValue($value)
+    public static function getAllowedValues(): array
     {
-        return self::fromNative(ucfirst(strtolower($value)));
+        return [
+            'Event',
+            'Place',
+        ];
+    }
+
+    public static function EVENT(): OfferType
+    {
+        return new self('Event');
+    }
+
+    public static function PLACE(): OfferType
+    {
+        return new self('Place');
+    }
+
+    public static function fromCaseInsensitiveValue($value): OfferType
+    {
+        return new self(ucfirst(strtolower($value)));
     }
 }

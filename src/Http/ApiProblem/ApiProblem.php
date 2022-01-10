@@ -213,7 +213,7 @@ final class ApiProblem extends Exception
 
     public static function offerNotFound(OfferType $offerType, string $offerId): self
     {
-        return self::resourceNotFound(strtolower($offerType->toNative()), $offerId);
+        return self::resourceNotFound(strtolower($offerType->toString()), $offerId);
     }
 
     public static function eventNotFound(string $eventId): self

@@ -40,7 +40,7 @@ class PatchOfferRestController
     public function handle(Request $request, string $cdbid): Response
     {
         $domainModel = $this->parseDomainModelNameFromRequest($request);
-        $commandClass = 'CultuurNet\UDB3\\' . $this->offerType->getValue() . '\Commands\Moderation\\' . $domainModel;
+        $commandClass = 'CultuurNet\UDB3\\' . $this->offerType->toString() . '\Commands\Moderation\\' . $domainModel;
 
         if (!class_exists($commandClass)) {
             throw new \InvalidArgumentException('The command in content-type is not supported.');

@@ -67,7 +67,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
     {
         return [
             '@id' => (string) $this->iri,
-            '@type' => $this->type->toNative(),
+            '@type' => $this->type->toString(),
         ];
     }
 
@@ -80,7 +80,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
             [
                 'iri' => (string) $this->iri,
                 'id' => $this->id,
-                'type' => $this->type->toNative(),
+                'type' => $this->type->toString(),
             ]
         );
     }
@@ -93,6 +93,6 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
         $data = json_decode($serialized, true);
         $this->iri = Url::fromNative($data['iri']);
         $this->id = $data['id'];
-        $this->type = OfferType::fromNative($data['type']);
+        $this->type = new OfferType($data['type']);
     }
 }
