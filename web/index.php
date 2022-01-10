@@ -238,7 +238,7 @@ $app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControlle
 $app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
 $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
-$app->mount('/news_articles', new CuratorsControllerProvider());
+$app->mount('/news-articles', new CuratorsControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
