@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
+use CultuurNet\UDB3\Json;
 use ValueObjects\Web\Url;
 
 class IriOfferIdentifier implements \JsonSerializable, \Serializable
@@ -49,7 +50,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
 
     public function serialize(): string
     {
-        return json_encode(
+        return Json::encode(
             [
                 'iri' => (string) $this->iri,
                 'id' => $this->id,
@@ -63,7 +64,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
      */
     public function unserialize($serialized): void
     {
-        $data = json_decode($serialized, true);
+        $data = Json::decodeAssociatively($serialized);
         $this->iri = Url::fromNative($data['iri']);
         $this->id = $data['id'];
         $this->type = new OfferType($data['type']);

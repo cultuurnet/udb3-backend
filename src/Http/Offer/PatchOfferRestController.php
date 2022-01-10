@@ -16,15 +16,10 @@ class PatchOfferRestController
 {
     public const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';
 
-
     private CommandBus $commandBus;
-
 
     private OfferType $offerType;
 
-    /**
-     * PatchOfferRestController constructor.
-     */
     public function __construct(
         OfferType $offerType,
         CommandBus $commandBus
