@@ -78,7 +78,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
                 'hydra:member' => [
                     [
                         '@context' => '/contexts/NewsArticle',
-                        '@id' => '/news_articles/ec00bcd0-41e9-47a0-8364-71aad7e537c5',
+                        '@id' => '/news-articles/ec00bcd0-41e9-47a0-8364-71aad7e537c5',
                         '@type' => 'https://schema.org/NewsArticle',
                         'id' => 'ec00bcd0-41e9-47a0-8364-71aad7e537c5',
                         'headline' => 'publiq wint API award',
@@ -91,7 +91,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
                     ],
                     [
                         '@context' => '/contexts/NewsArticle',
-                        '@id' => '/news_articles/9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
+                        '@id' => '/news-articles/9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
                         '@type' => 'https://schema.org/NewsArticle',
                         'id' => '9bf7f5fa-4a0b-4475-9ebb-f776e33510f5',
                         'headline' => 'madewithlove creates API',

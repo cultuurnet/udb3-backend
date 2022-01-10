@@ -16,7 +16,7 @@ final class NewsArticleNormalizer implements NormalizerInterface
     {
         return [
             '@context' => '/contexts/NewsArticle',
-            '@id' => '/news_articles/' . $newsArticle->getId()->toString(),
+            '@id' => '/news-articles/' . $newsArticle->getId()->toString(),
             '@type' => 'https://schema.org/NewsArticle',
             'id' => $newsArticle->getId()->toString(),
             'headline' => $newsArticle->getHeadline(),
