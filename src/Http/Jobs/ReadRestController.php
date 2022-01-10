@@ -10,14 +10,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ReadRestController
 {
-    /**
-     * @var JobsStatusFactoryInterface
-     */
-    private $jobStatusFactory;
+    private JobsStatusFactoryInterface $jobStatusFactory;
 
-    /**
-     * ReadRestController constructor.
-     */
     public function __construct(JobsStatusFactoryInterface $jobStatusFactory)
     {
         $this->jobStatusFactory = $jobStatusFactory;
@@ -33,6 +27,6 @@ class ReadRestController
             throw ApiProblem::blank('No status for job with id: ' . $jobId, 400);
         }
 
-        return new JsonResponse($jobStatus->toNative());
+        return new JsonResponse($jobStatus->toString());
     }
 }
