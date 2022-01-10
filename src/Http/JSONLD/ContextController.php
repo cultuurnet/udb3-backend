@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\JSONLD;
 
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
+use CultuurNet\UDB3\Json;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -12,16 +13,12 @@ class ContextController
 {
     public const DEFAULT_BASE_PATH = 'https://io.uitdatabank.be';
 
-    /**
-     * @var Url|null
-     */
-    protected $basePath;
+    private ?Url $basePath;
 
-    protected StringLiteral $fileDirectory;
+    private StringLiteral $fileDirectory;
 
-    public function __construct(
-        StringLiteral $fileDirectory
-    ) {
+    public function __construct(StringLiteral $fileDirectory)
+    {
         $this->fileDirectory = $fileDirectory;
     }
 
@@ -46,7 +43,7 @@ class ContextController
     {
         $entityFilePath = $this->fileDirectory . $entityType->toString() . '.jsonld';
 
-        $jsonData = json_decode($this->getEntityFile($entityFilePath));
+        $jsonData = Json::decode($this->getEntityFile($entityFilePath));
 
         if ($this->basePath) {
             $this->replaceJsonPropertyBasePath($jsonData, 'udb', $this->basePath);
