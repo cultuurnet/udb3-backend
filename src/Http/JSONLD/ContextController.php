@@ -13,7 +13,7 @@ class ContextController
 {
     public const DEFAULT_BASE_PATH = 'https://io.uitdatabank.be';
 
-    private ?Url $basePath;
+    private ?Url $basePath = null;
 
     private StringLiteral $fileDirectory;
 
