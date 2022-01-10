@@ -8,27 +8,15 @@ use ValueObjects\Web\Url;
 
 class IriOfferIdentifier implements \JsonSerializable, \Serializable
 {
-    /**
-     * @var Url
-     */
-    private $iri;
+    private Url $iri;
 
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var OfferType
-     */
-    private $type;
+    private OfferType $type;
 
-    /**
-     * @param string $id
-     */
     public function __construct(
-        Url $iri,
-        $id,
+        Url       $iri,
+        string    $id,
         OfferType $type
     ) {
         $this->iri = $iri;
@@ -36,34 +24,22 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
         $this->id = $id;
     }
 
-    /**
-     * @return Url
-     */
-    public function getIri()
+    public function getIri(): Url
     {
         return $this->iri;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return OfferType
-     */
-    public function getType()
+    public function getType(): OfferType
     {
         return $this->type;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             '@id' => (string) $this->iri,
@@ -71,10 +47,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function serialize()
+    public function serialize(): string
     {
         return json_encode(
             [
@@ -88,7 +61,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
     /**
      * @param string $serialized
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         $data = json_decode($serialized, true);
         $this->iri = Url::fromNative($data['iri']);

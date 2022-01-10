@@ -18,25 +18,13 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ReindexOffersWithPopularityScore extends Command
 {
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var AMQPPublisher
-     */
-    private $amqpPublisher;
+    private AMQPPublisher $amqpPublisher;
 
-    /**
-     * @var DocumentEventFactory
-     */
-    private $eventFactoryForEvents;
+    private DocumentEventFactory $eventFactoryForEvents;
 
     public function __construct(
         OfferType $type,

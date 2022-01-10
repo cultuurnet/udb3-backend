@@ -19,20 +19,11 @@ use Psr\Log\NullLogger;
 
 final class LocationMarkedAsDuplicateProcessManager implements EventListener, LoggerAwareInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var ResultsGeneratorInterface
-     */
-    private $searchResultsGenerator;
+    private ResultsGeneratorInterface $searchResultsGenerator;
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(
         ResultsGeneratorInterface $searchResultsGenerator,

@@ -16,15 +16,11 @@ class PatchOfferRestController
 {
     public const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';
 
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
 
-    /**
-     * @var OfferType
-     */
-    private $offerType;
+    private CommandBus $commandBus;
+
+
+    private OfferType $offerType;
 
     /**
      * PatchOfferRestController constructor.
@@ -65,10 +61,9 @@ class PatchOfferRestController
     }
 
     /**
-     * @return string
      * @throws \Exception
      */
-    private function parseDomainModelNameFromRequest(Request $request)
+    private function parseDomainModelNameFromRequest(Request $request): string
     {
         $contentType = $request->headers->get('Content-Type');
         preg_match(self::DOMAIN_MODEL_REGEX, $contentType, $matches);

@@ -21,7 +21,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         RelationType $relationType,
         StringLiteral $relationId,
         $imported
-    ) {
+    ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->insert($this->getTableName())
             ->values([
@@ -46,7 +46,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     public function deleteByLabelNameAndRelationId(
         LabelName $labelName,
         StringLiteral $relationId
-    ) {
+    ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
             ->where(SchemaConfigurator::LABEL_NAME . ' = ?')
@@ -59,7 +59,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     /**
      * @inheritdoc
      */
-    public function deleteByRelationId(StringLiteral $relationId)
+    public function deleteByRelationId(StringLiteral $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
@@ -72,7 +72,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     /**
      * @inheritdoc
      */
-    public function deleteImportedByRelationId(StringLiteral $relationId)
+    public function deleteImportedByRelationId(StringLiteral $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
@@ -89,7 +89,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     }
 
 
-    private function executeTransactional(QueryBuilder $queryBuilder)
+    private function executeTransactional(QueryBuilder $queryBuilder): void
     {
         $this->getConnection()->transactional(function () use ($queryBuilder) {
             $queryBuilder->execute();
