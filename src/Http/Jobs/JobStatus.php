@@ -6,6 +6,12 @@ namespace CultuurNet\UDB3\Http\Jobs;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
+/**
+ * @method static JobStatus waiting()
+ * @method static JobStatus running()
+ * @method static JobStatus failed()
+ * @method static JobStatus complete()
+ */
 class JobStatus extends Enum
 {
     public static function getAllowedValues(): array
@@ -16,25 +22,5 @@ class JobStatus extends Enum
             'failed',
             'complete',
         ];
-    }
-
-    public static function WAITING(): JobStatus
-    {
-        return new self('waiting');
-    }
-
-    public static function RUNNING(): JobStatus
-    {
-        return new self('running');
-    }
-
-    public static function FAILED(): JobStatus
-    {
-        return new self('failed');
-    }
-
-    public static function COMPLETE(): JobStatus
-    {
-        return new self('complete');
     }
 }
