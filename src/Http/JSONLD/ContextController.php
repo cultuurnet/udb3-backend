@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\JSONLD;
 
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
+use CultuurNet\UDB3\Json;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -12,29 +13,16 @@ class ContextController
 {
     public const DEFAULT_BASE_PATH = 'https://io.uitdatabank.be';
 
-    /**
-     * @var Url|null
-     */
-    protected $basePath;
+    private ?Url $basePath = null;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $fileDirectory;
+    private StringLiteral $fileDirectory;
 
-    /**
-     * ContextController constructor.
-     */
-    public function __construct(
-        StringLiteral $fileDirectory
-    ) {
+    public function __construct(StringLiteral $fileDirectory)
+    {
         $this->fileDirectory = $fileDirectory;
     }
 
-    /**
-     * @return ContextController
-     */
-    public function withCustomBasePath(Url $basePath)
+    public function withCustomBasePath(Url $basePath): ContextController
     {
         $controller = clone $this;
 
@@ -45,28 +33,17 @@ class ContextController
         return $controller;
     }
 
-    /**
-     * @param string $entityName
-     *
-     * @return JsonLdResponse
-     */
-    public function get($entityName)
+    public function get(string $entityName): JsonLdResponse
     {
-        $entityType = EntityType::fromNative($entityName);
+        $entityType = new EntityType($entityName);
         return $this->getContext($entityType);
     }
 
-    /**
-     * @param EntityType $entityType
-     *  The entity type that you want the context for.
-     *
-     * @return JsonLdResponse
-     */
-    private function getContext(EntityType $entityType)
+    private function getContext(EntityType $entityType): JsonLdResponse
     {
-        $entityFilePath = $this->fileDirectory . $entityType->toNative() . '.jsonld';
+        $entityFilePath = $this->fileDirectory . $entityType->toString() . '.jsonld';
 
-        $jsonData = json_decode($this->getEntityFile($entityFilePath));
+        $jsonData = Json::decode($this->getEntityFile($entityFilePath));
 
         if ($this->basePath) {
             $this->replaceJsonPropertyBasePath($jsonData, 'udb', $this->basePath);
@@ -76,15 +53,7 @@ class ContextController
         return new JsonLdResponse($jsonData);
     }
 
-    /**
-     * @param object $jsonData
-     *  The json object that should have its base path replaced.
-     * @param string $propertyName
-     *  The name of the property where you want to replace the base path.
-     * @param Url $basePath
-     *  The new base path.
-     */
-    private function replaceJsonPropertyBasePath($jsonData, $propertyName, Url $basePath)
+    private function replaceJsonPropertyBasePath(object $jsonData, string $propertyName, Url $basePath): void
     {
         $jsonData
             ->{'@context'}
