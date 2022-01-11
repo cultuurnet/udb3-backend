@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -646,6 +647,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateWebsiteHandler::class]);
         $commandBus->subscribe($app[UpdateContactPointHandler::class]);
         $commandBus->subscribe($app[AddImageHandler::class]);
+        $commandBus->subscribe($app[UpdateMainImageHandler::class]);
         $commandBus->subscribe($app[UpdateImageHandler::class]);
         $commandBus->subscribe($app[RemoveImageHandler::class]);
 
