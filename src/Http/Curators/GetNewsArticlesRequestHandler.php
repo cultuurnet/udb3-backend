@@ -8,8 +8,10 @@ use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
+use CultuurNet\UDB3\Http\Request\Headers;
 use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -45,13 +47,24 @@ final class GetNewsArticlesRequestHandler implements RequestHandlerInterface
 
         $newsArticles = $this->newsArticleRepository->search($newsArticleSearch);
 
-        $newsArticleNormalizer = $this->newsArticleNormalizer->withJsonLd();
+        $headers = new Headers($request);
+        $responseContentType = $headers->determineResponseContentType(['application/json+ld', 'application/json']);
+        $withJsonLd = $responseContentType === 'application/json+ld';
 
-        return new JsonLdResponse([
-            'hydra:member' => array_map(
-                fn (NewsArticle $newsArticle) => $newsArticleNormalizer->normalize($newsArticle),
-                $newsArticles->toArray()
-            ),
-        ]);
+        $newsArticleNormalizer = $this->newsArticleNormalizer;
+        if ($withJsonLd) {
+            $newsArticleNormalizer = $newsArticleNormalizer->withJsonLd();
+        }
+
+        $newsArticlesJson = array_map(
+            fn (NewsArticle $newsArticle) => $newsArticleNormalizer->normalize($newsArticle),
+            $newsArticles->toArray()
+        );
+
+        if ($withJsonLd) {
+            return new JsonLdResponse(['hydra:member' => $newsArticlesJson]);
+        }
+
+        return new JsonResponse($newsArticlesJson);
     }
 }
