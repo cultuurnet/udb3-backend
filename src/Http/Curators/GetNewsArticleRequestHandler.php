@@ -40,6 +40,8 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
             throw ApiProblem::newsArticleNotFound($articleId);
         }
 
-        return new JsonLdResponse($this->newsArticleNormalizer->normalize($newsArticle));
+        $newsArticleNormalizer = $this->newsArticleNormalizer->withJsonLd();
+
+        return new JsonLdResponse($newsArticleNormalizer->normalize($newsArticle));
     }
 }

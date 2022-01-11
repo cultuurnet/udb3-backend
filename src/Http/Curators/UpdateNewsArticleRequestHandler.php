@@ -54,6 +54,6 @@ final class UpdateNewsArticleRequestHandler implements RequestHandlerInterface
 
         $this->newsArticleRepository->update($newsArticle);
 
-        return new JsonResponse((new NewsArticleNormalizer())->normalize($newsArticle));
+        return new JsonResponse((new NewsArticleNormalizer())->withJsonLd()->normalize($newsArticle));
     }
 }
