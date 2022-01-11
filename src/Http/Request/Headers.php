@@ -43,7 +43,7 @@ final class Headers
         $notAcceptable = ApiProblem::notAcceptable('Acceptable media types are: ' . implode(', ', $possibleContentTypes));
 
         try {
-            /** @var Accept $mediaType */
+            /** @var Accept|null $mediaType */
             $mediaType = $negotiator->getBest($acceptHeader, $possibleContentTypes);
         } catch (NegotiationException $e) {
             throw $notAcceptable;
