@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Headers;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -45,8 +46,11 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
         $responseContentType = $headers->determineResponseContentType(['application/json+ld', 'application/json']);
         $withJsonLd = $responseContentType === 'application/json+ld';
 
-        $newsArticleNormalizer = $this->newsArticleNormalizer->withJsonLd($withJsonLd);
+        $normalized = $this->newsArticleNormalizer->withJsonLd($withJsonLd)->normalize($newsArticle);
 
-        return new JsonLdResponse($newsArticleNormalizer->normalize($newsArticle));
+        if ($withJsonLd) {
+            return new JsonLdResponse($normalized);
+        }
+        return new JsonResponse($normalized);
     }
 }

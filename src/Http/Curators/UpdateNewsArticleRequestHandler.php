@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\Headers;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
@@ -53,14 +54,17 @@ final class UpdateNewsArticleRequestHandler implements RequestHandlerInterface
         /** @var NewsArticle $newsArticle */
         $newsArticle = $requestBodyParser->parse($request)->getParsedBody();
 
+        $this->newsArticleRepository->update($newsArticle);
+
         $headers = new Headers($request);
         $responseContentType = $headers->determineResponseContentType(['application/json+ld', 'application/json']);
         $withJsonLd = $responseContentType === 'application/json+ld';
 
-        $newsArticleNormalizer = (new NewsArticleNormalizer())->withJsonLd($withJsonLd);
+        $normalized = (new NewsArticleNormalizer())->withJsonLd($withJsonLd)->normalize($newsArticle);
 
-        $this->newsArticleRepository->update($newsArticle);
-
-        return new JsonResponse($newsArticleNormalizer->normalize($newsArticle));
+        if ($withJsonLd) {
+            return new JsonLdResponse($normalized);
+        }
+        return new JsonResponse($normalized);
     }
 }
