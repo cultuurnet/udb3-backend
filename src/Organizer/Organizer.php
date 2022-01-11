@@ -140,45 +140,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         return $organizer;
     }
 
-    public function updateOrganizer(?UUID $mainImageId): void
-    {
-        if ($mainImageId !== null && $this->needsUpdateMainImage($mainImageId)) {
-            $this->apply(
-                new MainImageUpdated($this->actorId, $mainImageId->toString())
-            );
-        }
-    }
-
-    private function needsUpdateMainImage(?UUID $mainImageId): bool
-    {
-        if ($mainImageId === null) {
-            return false;
-        }
-
-        // When the organizer has no images it can't be set has main.
-        if ($this->images->isEmpty()) {
-            return false;
-        }
-
-        // If the organizer does not contain the main image as a normal image it can't be set as main.
-        $mainImage = $this->images->filter(
-            fn (Image $currentImage) => $currentImage->getId()->sameAs($mainImageId)
-        )->getFirst();
-        if ($mainImage === null) {
-            return false;
-        }
-
-        // If the organizer had no main image just set it as main.
-        // Although this should be a race condition.
-        if ($this->mainImageId === null) {
-            return true;
-        }
-
-        // Only set it as main when there is a difference.
-        // This is to prevent having events in the event store with no change.
-        return !$this->mainImageId->sameAs($mainImageId);
-    }
-
     public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
     {
         $this->apply(
@@ -363,7 +324,35 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    public function hasImage(UUID $imageId): bool
+    public function updateMainImage(UUID $imageId): void
+    {
+        if ($this->needsUpdateMainImage($imageId)) {
+            $this->apply(
+                new MainImageUpdated($this->actorId, $imageId->toString())
+            );
+        }
+    }
+
+    private function needsUpdateMainImage(UUID $mainImageId): bool
+    {
+        // When the organizer has no images it can't be set as main.
+        // If the organizer does not contain the main image as a normal image it can't be set as main.
+        if (!$this->hasImage($mainImageId)) {
+            return false;
+        }
+
+        // If the organizer had no main image just set it as main.
+        // Although this should be a race condition.
+        if ($this->mainImageId === null) {
+            return true;
+        }
+
+        // Only set it as main when there is a difference.
+        // This is to prevent having events in the event store with no change.
+        return !$this->mainImageId->sameAs($mainImageId);
+    }
+
+    private function hasImage(UUID $imageId): bool
     {
         if ($this->images->isEmpty()) {
             return false;
