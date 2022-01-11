@@ -32,6 +32,7 @@ final class UpdateMainImageRequestHandler implements RequestHandlerInterface
         $organizerId = $routeParameters->getOrganizerId();
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new LegacyMainImageRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_MAIN_IMAGE_PUT),
             new DenormalizingRequestBodyParser(new UpdateMainImageDenormalizer($organizerId), UpdateMainImage::class)
         );

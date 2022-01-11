@@ -59,6 +59,29 @@ final class UpdateMainImageRequestHandlerTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_support_media_object_id(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withBodyFromArray([
+                'mediaObjectId' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+            ])
+            ->build('PUT');
+
+        $expectedCommand = new UpdateMainImage(
+            'c269632a-a887-4f21-8455-1631c31e4df5',
+            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
+        );
+
+        $response = $this->updateMainImageRequestHandler->handle($request);
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
      * @dataProvider invalidBodyDataProvider
      */
     public function it_throws_an_api_problem_for_an_invalid_body(string $body, ApiProblem $expectedApiProblem): void
