@@ -43,7 +43,7 @@ class GetNewsArticleRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_getting_a_news_article(): void
+    public function it_handles_getting_a_news_article_with_jsonld_if_no_accept_header_is_given(): void
     {
         $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
 
@@ -74,6 +74,99 @@ class GetNewsArticleRequestHandlerTest extends TestCase
                 '@context' => '/contexts/NewsArticle',
                 '@id' => '/news-articles/' . $articleId->toString(),
                 '@type' => 'https://schema.org/NewsArticle',
+                'id' => $articleId->toString(),
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/blog/api-reward',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_getting_a_news_article_with_jsonld_if_accept_header_includes_jsonld(): void
+    {
+        $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
+
+        $newsArticle = new NewsArticle(
+            $articleId,
+            'publiq wint API award',
+            new Language('nl'),
+            'Op 10 januari 2020 wint publiq de API award',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'BILL',
+            new Url('https://www.publiq.be/blog/api-reward'),
+            new Url('https://www.bill.be/img/favicon.png')
+        );
+
+        $getNewsArticleRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('articleId', $articleId->toString())
+            ->withHeader('accept', 'application/json+ld')
+            ->build('GET');
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('getById')
+            ->with($articleId)
+            ->willReturn($newsArticle);
+
+        $response = $this->getNewsArticleRequestHandler->handle($getNewsArticleRequest);
+
+        $this->assertEquals(
+            Json::encode([
+                '@context' => '/contexts/NewsArticle',
+                '@id' => '/news-articles/' . $articleId->toString(),
+                '@type' => 'https://schema.org/NewsArticle',
+                'id' => $articleId->toString(),
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/blog/api-reward',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_getting_a_news_article_with_json_if_accept_header_specifically_requests_json(): void
+    {
+        $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
+
+        $newsArticle = new NewsArticle(
+            $articleId,
+            'publiq wint API award',
+            new Language('nl'),
+            'Op 10 januari 2020 wint publiq de API award',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'BILL',
+            new Url('https://www.publiq.be/blog/api-reward'),
+            new Url('https://www.bill.be/img/favicon.png')
+        );
+
+        $getNewsArticleRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('articleId', $articleId->toString())
+            ->withHeader('accept', 'application/json')
+            ->build('GET');
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('getById')
+            ->with($articleId)
+            ->willReturn($newsArticle);
+
+        $response = $this->getNewsArticleRequestHandler->handle($getNewsArticleRequest);
+
+        $this->assertEquals(
+            Json::encode([
                 'id' => $articleId->toString(),
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',

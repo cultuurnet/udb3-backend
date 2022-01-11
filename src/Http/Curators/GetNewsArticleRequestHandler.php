@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Curators\NewsArticleNotFound;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\Headers;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -40,7 +41,14 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
             throw ApiProblem::newsArticleNotFound($articleId);
         }
 
-        $newsArticleNormalizer = $this->newsArticleNormalizer->withJsonLd();
+        $headers = new Headers($request);
+        $responseContentType = $headers->determineResponseContentType(['application/json+ld', 'application/json']);
+        $withJsonLd = $responseContentType === 'application/json+ld';
+
+        $newsArticleNormalizer = $this->newsArticleNormalizer;
+        if ($withJsonLd) {
+            $newsArticleNormalizer = $newsArticleNormalizer->withJsonLd();
+        }
 
         return new JsonLdResponse($newsArticleNormalizer->normalize($newsArticle));
     }
