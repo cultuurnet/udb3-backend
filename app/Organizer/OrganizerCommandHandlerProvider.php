@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
@@ -28,10 +27,6 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app[UpdateOrganizerHandler::class] = $app->share(
-            fn (Application $application) => new UpdateOrganizerHandler($app['organizer_repository'])
-        );
-
         $app[DeleteOrganizerHandler::class] = $app->share(
             fn (Application $application) => new DeleteOrganizerHandler(
                 $app['organizer_repository'],
