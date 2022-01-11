@@ -48,8 +48,8 @@ final class GetNewsArticlesRequestHandler implements RequestHandlerInterface
         $newsArticles = $this->newsArticleRepository->search($newsArticleSearch);
 
         $headers = new Headers($request);
-        $responseContentType = $headers->determineResponseContentType(['application/json+ld', 'application/json']);
-        $withJsonLd = $responseContentType === 'application/json+ld';
+        $responseContentType = $headers->determineResponseContentType(['application/ld+json', 'application/json']);
+        $withJsonLd = $responseContentType === 'application/ld+json';
 
         $newsArticleNormalizer = $this->newsArticleNormalizer->withJsonLd($withJsonLd);
 

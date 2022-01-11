@@ -14,7 +14,7 @@ final class HeadersTest extends TestCase
     use AssertApiProblemTrait;
 
     private const POSSIBLE_CONTENT_TYPES = [
-        'application/json+ld',
+        'application/ld+json',
         'application/json',
         'text/html',
         'text/xml',
@@ -27,7 +27,7 @@ final class HeadersTest extends TestCase
     {
         $request = (new Psr7RequestBuilder())->build('GET');
         $headers = new Headers($request);
-        $expected = 'application/json+ld';
+        $expected = 'application/ld+json';
         $actual = $headers->determineResponseContentType(self::POSSIBLE_CONTENT_TYPES);
         $this->assertEquals($expected, $actual);
     }
@@ -39,7 +39,7 @@ final class HeadersTest extends TestCase
     {
         $request = $this->createRequestWithAcceptHeader('');
         $headers = new Headers($request);
-        $expected = 'application/json+ld';
+        $expected = 'application/ld+json';
         $actual = $headers->determineResponseContentType(self::POSSIBLE_CONTENT_TYPES);
         $this->assertEquals($expected, $actual);
     }
@@ -51,7 +51,7 @@ final class HeadersTest extends TestCase
     {
         $request = $this->createRequestWithAcceptHeader('*');
         $headers = new Headers($request);
-        $expected = 'application/json+ld';
+        $expected = 'application/ld+json';
         $actual = $headers->determineResponseContentType(self::POSSIBLE_CONTENT_TYPES);
         $this->assertEquals($expected, $actual);
     }
@@ -63,7 +63,7 @@ final class HeadersTest extends TestCase
     {
         $request = $this->createRequestWithAcceptHeader('*/*');
         $headers = new Headers($request);
-        $expected = 'application/json+ld';
+        $expected = 'application/ld+json';
         $actual = $headers->determineResponseContentType(self::POSSIBLE_CONTENT_TYPES);
         $this->assertEquals($expected, $actual);
     }
@@ -125,7 +125,7 @@ final class HeadersTest extends TestCase
         $headers = new Headers($request);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::notAcceptable('Acceptable media types are: application/json+ld, application/json, text/html, text/xml'),
+            ApiProblem::notAcceptable('Acceptable media types are: application/ld+json, application/json, text/html, text/xml'),
             fn () => $headers->determineResponseContentType(self::POSSIBLE_CONTENT_TYPES)
         );
     }

@@ -107,7 +107,7 @@ class GetNewsArticleRequestHandlerTest extends TestCase
 
         $getNewsArticleRequest = $this->psr7RequestBuilder
             ->withRouteParameter('articleId', $articleId->toString())
-            ->withHeader('accept', 'application/json+ld')
+            ->withHeader('accept', 'application/ld+json')
             ->build('GET');
 
         $this->newsArticleRepository->expects($this->once())

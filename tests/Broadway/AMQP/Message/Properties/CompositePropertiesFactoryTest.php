@@ -65,14 +65,14 @@ class CompositePropertiesFactoryTest extends TestCase
             ->with($domainMessage)
             ->willReturn(
                 [
-                    'content_type' => 'application/json+ld',
+                    'content_type' => 'application/ld+json',
                     'delivery_mode' => 2,
                 ]
             );
 
         $expectedProperties = [
             'correlation_id' => '123456',
-            'content_type' => 'application/json+ld',
+            'content_type' => 'application/ld+json',
             'delivery_mode' => 2,
         ];
 
