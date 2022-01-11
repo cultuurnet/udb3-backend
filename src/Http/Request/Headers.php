@@ -27,7 +27,7 @@ final class Headers
      * thrown.
      *
      * @param string[] $possibleContentTypes
-     * @return string|null
+     * @return string
      *
      * @throws ApiProblem
      */
