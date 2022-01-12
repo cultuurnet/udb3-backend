@@ -8,14 +8,10 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\Serializer\NewsArticleDenormalizer;
-use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
-use CultuurNet\UDB3\Http\Request\Headers;
-use CultuurNet\UDB3\Http\Response\JsonLdResponse;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -51,15 +47,7 @@ final class CreateNewsArticleRequestHandler implements RequestHandlerInterface
 
         $this->newsArticleRepository->create($newsArticle);
 
-        $headers = new Headers($request);
-        $responseContentType = $headers->determineResponseContentType(['application/ld+json', 'application/json']);
-        $asJsonLd = $responseContentType === 'application/ld+json';
-
-        $normalized = (new NewsArticleNormalizer())->asJsonLd($asJsonLd)->normalize($newsArticle);
-
-        if ($asJsonLd) {
-            return new JsonLdResponse($normalized, StatusCodeInterface::STATUS_CREATED);
-        }
-        return new JsonResponse($normalized, StatusCodeInterface::STATUS_CREATED);
+        return (new NewsArticleResponseFactory($request))
+            ->createResourceResponse($newsArticle, StatusCodeInterface::STATUS_CREATED);
     }
 }
