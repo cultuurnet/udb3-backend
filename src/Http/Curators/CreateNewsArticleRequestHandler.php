@@ -53,11 +53,11 @@ final class CreateNewsArticleRequestHandler implements RequestHandlerInterface
 
         $headers = new Headers($request);
         $responseContentType = $headers->determineResponseContentType(['application/ld+json', 'application/json']);
-        $withJsonLd = $responseContentType === 'application/ld+json';
+        $asJsonLd = $responseContentType === 'application/ld+json';
 
-        $normalized = (new NewsArticleNormalizer())->asJsonLd($withJsonLd)->normalize($newsArticle);
+        $normalized = (new NewsArticleNormalizer())->asJsonLd($asJsonLd)->normalize($newsArticle);
 
-        if ($withJsonLd) {
+        if ($asJsonLd) {
             return new JsonLdResponse($normalized, StatusCodeInterface::STATUS_CREATED);
         }
         return new JsonResponse($normalized, StatusCodeInterface::STATUS_CREATED);

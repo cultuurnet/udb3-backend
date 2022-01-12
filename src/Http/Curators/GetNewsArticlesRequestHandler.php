@@ -49,16 +49,16 @@ final class GetNewsArticlesRequestHandler implements RequestHandlerInterface
 
         $headers = new Headers($request);
         $responseContentType = $headers->determineResponseContentType(['application/ld+json', 'application/json']);
-        $withJsonLd = $responseContentType === 'application/ld+json';
+        $asJsonLd = $responseContentType === 'application/ld+json';
 
-        $newsArticleNormalizer = $this->newsArticleNormalizer->asJsonLd($withJsonLd);
+        $newsArticleNormalizer = $this->newsArticleNormalizer->asJsonLd($asJsonLd);
 
         $newsArticlesJson = array_map(
             fn (NewsArticle $newsArticle) => $newsArticleNormalizer->normalize($newsArticle),
             $newsArticles->toArray()
         );
 
-        if ($withJsonLd) {
+        if ($asJsonLd) {
             return new JsonLdResponse(['hydra:member' => $newsArticlesJson]);
         }
 
