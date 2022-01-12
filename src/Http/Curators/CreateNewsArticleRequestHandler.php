@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -48,9 +47,7 @@ final class CreateNewsArticleRequestHandler implements RequestHandlerInterface
 
         $this->newsArticleRepository->create($newsArticle);
 
-        return new JsonResponse(
-            ['id' => $newsArticle->getId()->toString()],
-            StatusCodeInterface::STATUS_CREATED
-        );
+        return (new NewsArticleResponseFactory($request))
+            ->createResourceResponse($newsArticle, StatusCodeInterface::STATUS_CREATED);
     }
 }
