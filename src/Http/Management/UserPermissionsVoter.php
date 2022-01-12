@@ -69,7 +69,7 @@ class UserPermissionsVoter implements VoterInterface
                 continue;
             }
 
-            $permission = Permission::fromNative($attribute);
+            $permission = $attribute;
 
             if (!in_array($permission, $userPermissions)) {
                 // collect any missing permissions to revert access after we checked all matching attributes

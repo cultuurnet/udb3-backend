@@ -27,6 +27,6 @@ abstract class AbstractPermissionCommand extends AbstractCommand
 
     public function getRolePermission(): Permission
     {
-        return Permission::fromNative($this->rolePermission);
+        return new Permission($this->rolePermission);
     }
 }

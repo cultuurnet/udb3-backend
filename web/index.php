@@ -147,9 +147,9 @@ $app['security.access_manager'] = $app->share(function($app) {
 $app['security.access_rules'] = array(
     array(
         new RequestMatcher('^/labels/.*', null, ['POST', 'DELETE', 'PATCH']),
-        Permission::LABELS_BEHEREN
+        Permission::labelsBeheren()->toString()
     ),
-    array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
+    array('^/(roles|permissions|users)/.*', Permission::gebruikersBeheren()->toString()),
 );
 
 $app['security.entry_point.form._proto'] = $app::protect(
