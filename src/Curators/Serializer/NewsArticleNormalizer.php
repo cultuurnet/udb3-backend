@@ -9,13 +9,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class NewsArticleNormalizer implements NormalizerInterface
 {
-    private bool $jsonLd = false;
+    private bool $jsonLd;
 
-    public function asJsonLd(bool $asJsonLd): self
+    public function __construct(bool $jsonLd = false)
     {
-        $c = clone $this;
-        $c->jsonLd = $asJsonLd;
-        return $c;
+        $this->jsonLd = $jsonLd;
     }
 
     /**

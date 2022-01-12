@@ -27,8 +27,7 @@ final class NewsArticleResponseFactory
     {
         $headers = new Headers($request);
         $this->mediaType = $headers->determineResponseContentType(self::POSSIBLE_MEDIA_TYPES);
-        $this->normalizer = (new NewsArticleNormalizer())
-            ->asJsonLd($this->asJsonLd());
+        $this->normalizer = new NewsArticleNormalizer($this->asJsonLd());
     }
 
     public function createResourceResponse(
