@@ -39,7 +39,7 @@ class CommandAuthorizationExceptionTest extends TestCase
     protected function setUp()
     {
         $this->userId = new StringLiteral('85b040e5-766a-4ca7-a01b-e21e9250165f');
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
         $this->itemId = '69aa5d8d-5d56-4774-9320-d8e7c1721693';
 
         $this->command = $this->createMock(AuthorizableCommand::class);

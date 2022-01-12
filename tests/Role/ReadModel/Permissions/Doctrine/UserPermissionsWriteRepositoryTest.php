@@ -79,7 +79,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     public function it_should_update_permissions_when_a_role_is_assigned_permissions()
     {
         $roleId = new UUID();
-        $permission = Permission::get(Permission::LABELS_BEHEREN);
+        $permission = Permission::labelsBeheren();
 
         $this->repository->addRolePermission($roleId, $permission);
 
@@ -101,7 +101,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     public function it_should_revoke_permissions_when_a_role_permission_is_removed()
     {
         $roleId = new UUID();
-        $permission = Permission::get(Permission::GEBRUIKERS_BEHEREN);
+        $permission = Permission::gebruikersBeheren();
         $otherRoleId = UUID::generateAsString();
 
         $this->getConnection()->insert(

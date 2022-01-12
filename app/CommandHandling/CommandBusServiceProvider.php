@@ -37,16 +37,16 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                             // organizers.
                             ->withVoter(
                                 $app['organizer_permission_voter'],
-                                Permission::ORGANISATIES_BEWERKEN()
+                                Permission::organisatiesBewerken()
                             )
                             // Use the offer voter for AANBOD permissions to take into account who is the owner
                             // and/or look at the constraint query in the role to only allow edits to a subset of
                             // offers.
                             ->withVoter(
                                 $app['offer_permission_voter'],
-                                Permission::AANBOD_BEWERKEN(),
-                                Permission::AANBOD_MODEREREN(),
-                                Permission::AANBOD_VERWIJDEREN()
+                                Permission::aanbodBewerken(),
+                                Permission::aanbodModereren(),
+                                Permission::aanbodVerwijderen()
                             )
                             // Other permissions should just be checked by seeing if the user has that permission.
                             ->withDefaultVoter(

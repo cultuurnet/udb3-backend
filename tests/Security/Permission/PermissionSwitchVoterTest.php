@@ -23,28 +23,28 @@ class PermissionSwitchVoterTest extends TestCase
         $b = $this->getMockBuilder(PermissionVoter::class)->getMock();
 
         $voter = (new PermissionSwitchVoter())
-            ->withVoter($a, Permission::LABELS_BEHEREN(), Permission::AANBOD_VERWIJDEREN())
-            ->withVoter($b, Permission::ORGANISATIES_BEWERKEN());
+            ->withVoter($a, Permission::labelsBeheren(), Permission::aanbodVerwijderen())
+            ->withVoter($b, Permission::organisatiesBewerken());
 
         $a->expects($this->once())
             ->method('isAllowed')
-            ->with(Permission::AANBOD_VERWIJDEREN(), $offerId, $userId)
+            ->with(Permission::aanbodVerwijderen(), $offerId, $userId)
             ->willReturn(true);
 
         $b->expects($this->once())
             ->method('isAllowed')
-            ->with(Permission::ORGANISATIES_BEWERKEN(), $organizerId, $userId)
+            ->with(Permission::organisatiesBewerken(), $organizerId, $userId)
             ->willReturn(false);
 
         $this->assertTrue(
-            $voter->isAllowed(Permission::AANBOD_VERWIJDEREN(), $offerId, $userId)
+            $voter->isAllowed(Permission::aanbodVerwijderen(), $offerId, $userId)
         );
         $this->assertFalse(
-            $voter->isAllowed(Permission::ORGANISATIES_BEWERKEN(), $organizerId, $userId)
+            $voter->isAllowed(Permission::organisatiesBewerken(), $organizerId, $userId)
         );
 
         $this->assertFalse(
-            $voter->isAllowed(Permission::AANBOD_MODEREREN(), $offerId, $userId)
+            $voter->isAllowed(Permission::aanbodModereren(), $offerId, $userId)
         );
     }
 
@@ -60,25 +60,25 @@ class PermissionSwitchVoterTest extends TestCase
         $default = $this->getMockBuilder(PermissionVoter::class)->getMock();
 
         $voter = (new PermissionSwitchVoter())
-            ->withVoter($specific, Permission::AANBOD_VERWIJDEREN())
+            ->withVoter($specific, Permission::aanbodVerwijderen())
             ->withDefaultVoter($default);
 
         $specific->expects($this->once())
             ->method('isAllowed')
-            ->with(Permission::AANBOD_VERWIJDEREN(), $offerId, $userId)
+            ->with(Permission::aanbodVerwijderen(), $offerId, $userId)
             ->willReturn(false);
 
         $default->expects($this->once())
             ->method('isAllowed')
-            ->with(Permission::LABELS_BEHEREN(), $offerId, $userId)
+            ->with(Permission::labelsBeheren(), $offerId, $userId)
             ->willReturn(true);
 
         $this->assertFalse(
-            $voter->isAllowed(Permission::AANBOD_VERWIJDEREN(), $offerId, $userId)
+            $voter->isAllowed(Permission::aanbodVerwijderen(), $offerId, $userId)
         );
 
         $this->assertTrue(
-            $voter->isAllowed(Permission::LABELS_BEHEREN(), $offerId, $userId)
+            $voter->isAllowed(Permission::labelsBeheren(), $offerId, $userId)
         );
     }
 }

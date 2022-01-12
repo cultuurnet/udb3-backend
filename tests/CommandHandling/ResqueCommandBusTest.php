@@ -83,7 +83,7 @@ class ResqueCommandBusTest extends TestCase
 
         $command = $this->createMock(AuthorizableCommand::class);
         $command->method('getPermission')
-            ->willReturn(Permission::AANBOD_BEWERKEN());
+            ->willReturn(Permission::aanbodBewerken());
         $command->method('getItemId')
             ->willReturn('itemId');
 

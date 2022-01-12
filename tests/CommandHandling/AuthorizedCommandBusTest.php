@@ -113,7 +113,7 @@ class AuthorizedCommandBusTest extends TestCase
 
         $this->mockIsAuthorized(false);
 
-        $this->mockGetPermission(Permission::AANBOD_BEWERKEN());
+        $this->mockGetPermission(Permission::aanbodBewerken());
         $this->mockGetItemId('itemId');
 
         $this->expectException(CommandAuthorizationException::class);

@@ -38,6 +38,6 @@ final class UpdateOrganizer implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::ORGANISATIES_BEWERKEN();
+        return Permission::organisatiesBewerken();
     }
 }

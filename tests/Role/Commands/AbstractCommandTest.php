@@ -56,7 +56,7 @@ class AbstractCommandTest extends TestCase
     public function it_has_permission_aanbod_labelen()
     {
         $this->assertEquals(
-            Permission::GEBRUIKERS_BEHEREN(),
+            Permission::gebruikersBeheren(),
             $this->abstractCommand->getPermission()
         );
     }

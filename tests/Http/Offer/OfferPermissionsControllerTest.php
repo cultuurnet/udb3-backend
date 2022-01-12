@@ -49,9 +49,9 @@ class OfferPermissionsControllerTest extends TestCase
     public function setUp()
     {
         $permissionsToCheck = [
-            Permission::AANBOD_BEWERKEN(),
-            Permission::AANBOD_MODEREREN(),
-            Permission::AANBOD_VERWIJDEREN(),
+            Permission::aanbodBewerken(),
+            Permission::aanbodModereren(),
+            Permission::aanbodVerwijderen(),
         ];
         $this->permissions = $permissionsToCheck;
         $this->voter = $this->createMock(PermissionVoter::class);

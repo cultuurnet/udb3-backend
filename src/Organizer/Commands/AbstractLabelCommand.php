@@ -43,6 +43,6 @@ abstract class AbstractLabelCommand implements AuthorizableCommand, Authorizable
 
     public function getPermission(): Permission
     {
-        return Permission::ORGANISATIES_BEWERKEN();
+        return Permission::organisatiesBewerken();
     }
 }

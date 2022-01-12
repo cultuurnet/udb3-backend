@@ -59,7 +59,7 @@ class AbstractLabelCommandTest extends TestCase
         $this->assertEquals($expectedItemId, $itemId);
 
         $permission = $this->labelCommand->getPermission();
-        $expectedPermission = Permission::AANBOD_BEWERKEN();
+        $expectedPermission = Permission::aanbodBewerken();
 
         $this->assertEquals($expectedPermission, $permission);
     }

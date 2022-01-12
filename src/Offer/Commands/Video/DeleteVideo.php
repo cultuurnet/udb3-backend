@@ -31,6 +31,6 @@ final class DeleteVideo implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::AANBOD_BEWERKEN();
+        return Permission::aanbodBewerken();
     }
 }

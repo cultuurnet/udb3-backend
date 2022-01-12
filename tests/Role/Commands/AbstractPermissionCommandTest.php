@@ -29,7 +29,7 @@ class AbstractPermissionCommandTest extends TestCase
     protected function setUp()
     {
         $this->uuid = new UUID();
-        $this->rolePermission = Permission::AANBOD_BEWERKEN();
+        $this->rolePermission = Permission::aanbodBewerken();
 
         $this->abstractPermissionCommand = $this->getMockForAbstractClass(
             AbstractPermissionCommand::class,

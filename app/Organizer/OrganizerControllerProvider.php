@@ -91,7 +91,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $app['organizer_permissions_controller'] = $app->share(
             function (Application $app) {
                 return new OfferPermissionsController(
-                    [Permission::ORGANISATIES_BEWERKEN()],
+                    [Permission::organisatiesBewerken()],
                     $app['organizer_permission_voter'],
                     $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
                 );

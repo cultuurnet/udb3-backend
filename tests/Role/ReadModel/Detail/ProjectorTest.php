@@ -348,7 +348,7 @@ class ProjectorTest extends TestCase
             new StringLiteral('roleName')
         );
 
-        $permission = Permission::AANBOD_BEWERKEN();
+        $permission = Permission::aanbodBewerken();
 
         $domainMessageCreated = $this->createDomainMessage(
             $this->uuid,
@@ -397,7 +397,7 @@ class ProjectorTest extends TestCase
      */
     public function it_handles_the_removal_of_a_permission(): void
     {
-        $permission = Permission::AANBOD_BEWERKEN();
+        $permission = Permission::aanbodBewerken();
 
         $permissionAdded = new PermissionAdded(
             $this->uuid,

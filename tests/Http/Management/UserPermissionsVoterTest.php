@@ -44,8 +44,8 @@ class UserPermissionsVoterTest extends TestCase
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
         ];
 
         $this->permissionRepository
@@ -67,8 +67,8 @@ class UserPermissionsVoterTest extends TestCase
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
         ];
 
         $this->permissionRepository
@@ -92,8 +92,8 @@ class UserPermissionsVoterTest extends TestCase
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
         ];
 
         $this->permissionRepository
@@ -102,7 +102,7 @@ class UserPermissionsVoterTest extends TestCase
             ->willReturn($grantedPermissions);
 
         $requiredPermissions = $grantedPermissions;
-        $requiredPermissions[] = Permission::AANBOD_MODEREREN();
+        $requiredPermissions[] = Permission::aanbodModereren();
         $access = $this->voter->vote($userToken, $request, $requiredPermissions);
 
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $access);
@@ -117,8 +117,8 @@ class UserPermissionsVoterTest extends TestCase
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
         ];
 
         $this->permissionRepository

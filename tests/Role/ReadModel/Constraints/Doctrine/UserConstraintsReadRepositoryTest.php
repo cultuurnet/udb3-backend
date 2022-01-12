@@ -84,7 +84,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user1'),
-            Permission::AANBOD_MODEREREN()
+            Permission::aanbodModereren()
         );
 
         $expectedConstraints = [
@@ -109,7 +109,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user3'),
-            Permission::AANBOD_MODEREREN()
+            Permission::aanbodModereren()
         );
 
         $this->assertEmpty($constraints);
@@ -122,7 +122,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user2'),
-            Permission::AANBOD_BEWERKEN()
+            Permission::aanbodBewerken()
         );
 
         $this->assertEmpty($constraints);
@@ -139,17 +139,17 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     private function seedRolePermissions()
     {
-        $this->insertUserPermission($this->roleIds[0], Permission::AANBOD_BEWERKEN());
-        $this->insertUserPermission($this->roleIds[0], Permission::AANBOD_VERWIJDEREN());
-        $this->insertUserPermission($this->roleIds[0], Permission::AANBOD_MODEREREN());
+        $this->insertUserPermission($this->roleIds[0], Permission::aanbodBewerken());
+        $this->insertUserPermission($this->roleIds[0], Permission::aanbodVerwijderen());
+        $this->insertUserPermission($this->roleIds[0], Permission::aanbodModereren());
 
-        $this->insertUserPermission($this->roleIds[1], Permission::LABELS_BEHEREN());
-        $this->insertUserPermission($this->roleIds[1], Permission::GEBRUIKERS_BEHEREN());
+        $this->insertUserPermission($this->roleIds[1], Permission::labelsBeheren());
+        $this->insertUserPermission($this->roleIds[1], Permission::gebruikersBeheren());
 
-        $this->insertUserPermission($this->roleIds[2], Permission::AANBOD_MODEREREN());
+        $this->insertUserPermission($this->roleIds[2], Permission::aanbodModereren());
 
-        $this->insertUserPermission($this->roleIds[3], Permission::AANBOD_VERWIJDEREN());
-        $this->insertUserPermission($this->roleIds[3], Permission::AANBOD_MODEREREN());
+        $this->insertUserPermission($this->roleIds[3], Permission::aanbodVerwijderen());
+        $this->insertUserPermission($this->roleIds[3], Permission::aanbodModereren());
     }
 
     private function seedRolesSearch()

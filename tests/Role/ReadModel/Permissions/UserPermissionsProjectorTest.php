@@ -92,7 +92,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_add_role_permission_on_permission_added_event()
     {
-        $permissionAdded = new PermissionAdded(new UUID(), Permission::AANBOD_MODEREREN());
+        $permissionAdded = new PermissionAdded(new UUID(), Permission::aanbodModereren());
         $domainMessage = $this->createDomainMessage($permissionAdded);
 
         $this->userPermissionsWriteRepository->expects($this->once())
@@ -107,7 +107,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_remove_role_permission_on_permission_removed_event()
     {
-        $permissionRemoved = new PermissionRemoved(new UUID(), Permission::AANBOD_MODEREREN());
+        $permissionRemoved = new PermissionRemoved(new UUID(), Permission::aanbodModereren());
         $domainMessage = $this->createDomainMessage($permissionRemoved);
 
         $this->userPermissionsWriteRepository->expects($this->once())

@@ -73,7 +73,7 @@ class AbstractLabelCommandTest extends TestCase
     public function it_returns_a_permission(): void
     {
         $this->assertEquals(
-            Permission::ORGANISATIES_BEWERKEN(),
+            Permission::organisatiesBewerken(),
             $this->abstractLabelCommand->getPermission()
         );
     }

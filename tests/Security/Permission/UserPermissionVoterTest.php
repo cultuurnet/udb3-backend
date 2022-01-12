@@ -45,8 +45,8 @@ class UserPermissionVoterTest extends TestCase
                 $this->returnCallback(function (StringLiteral $userId) {
                     if ($userId === $this->userId) {
                         return [
-                            Permission::AANBOD_BEWERKEN(),
-                            Permission::VOORZIENINGEN_BEWERKEN(),
+                            Permission::aanbodBewerken(),
+                            Permission::voorzieningenBewerken(),
                         ];
                     } else {
                         return [];
@@ -54,7 +54,7 @@ class UserPermissionVoterTest extends TestCase
                 })
             );
 
-        $this->requiredPermission = Permission::VOORZIENINGEN_BEWERKEN();
+        $this->requiredPermission = Permission::voorzieningenBewerken();
 
         $this->userPermissionVoter = new UserPermissionVoter($this->userPermissionsReadRepository);
     }
@@ -66,7 +66,7 @@ class UserPermissionVoterTest extends TestCase
     {
         $this->assertTrue(
             $this->userPermissionVoter->isAllowed(
-                Permission::VOORZIENINGEN_BEWERKEN(),
+                Permission::voorzieningenBewerken(),
                 new StringLiteral(''),
                 $this->userId
             )
@@ -80,7 +80,7 @@ class UserPermissionVoterTest extends TestCase
     {
         $this->assertFalse(
             $this->userPermissionVoter->isAllowed(
-                Permission::GEBRUIKERS_BEHEREN(),
+                Permission::gebruikersBeheren(),
                 new StringLiteral(''),
                 $this->userId
             )
@@ -94,7 +94,7 @@ class UserPermissionVoterTest extends TestCase
     {
         $this->assertFalse(
             $this->userPermissionVoter->isAllowed(
-                Permission::VOORZIENINGEN_BEWERKEN(),
+                Permission::voorzieningenBewerken(),
                 new StringLiteral(''),
                 new StringLiteral('')
             )

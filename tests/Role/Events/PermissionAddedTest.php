@@ -29,7 +29,7 @@ class PermissionAddedTest extends TestCase
     {
         $this->uuid = new UUID();
 
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
 
         $this->event = new PermissionAdded(
             $this->uuid,

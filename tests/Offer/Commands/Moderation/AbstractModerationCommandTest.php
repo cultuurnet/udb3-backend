@@ -21,7 +21,7 @@ class AbstractModerationCommandTest extends TestCase
         );
 
         $this->assertEquals(
-            Permission::AANBOD_MODEREREN(),
+            Permission::aanbodModereren(),
             $abstractModerationCommand->getPermission()
         );
     }

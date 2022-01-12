@@ -85,7 +85,7 @@ class ImportLabelsTest extends TestCase
     public function it_has_permission_aanbod_bewerken()
     {
         $this->assertEquals(
-            Permission::AANBOD_BEWERKEN(),
+            Permission::aanbodBewerken(),
             $this->importLabels->getPermission()
         );
     }

@@ -42,7 +42,7 @@ class OfferPermissionControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
         $this->voter = $this->createMock(PermissionVoter::class);
 
         $this->currentUserId = new StringLiteral('07e4d93e-3b0a-4b04-b37b-204a82b9c4d2');

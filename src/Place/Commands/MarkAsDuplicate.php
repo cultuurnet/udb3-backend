@@ -42,6 +42,6 @@ final class MarkAsDuplicate implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::GEBRUIKERS_BEHEREN();
+        return Permission::gebruikersBeheren();
     }
 }

@@ -80,7 +80,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
             ->willReturn('offerId');
 
         $authorizableCommand->method('getPermission')
-            ->willReturn(Permission::AANBOD_BEWERKEN());
+            ->willReturn(Permission::aanbodBewerken());
 
         $allowsUpdate = $security->isAuthorized($authorizableCommand);
 
