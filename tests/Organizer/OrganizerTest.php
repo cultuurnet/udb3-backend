@@ -999,7 +999,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [],
             ],
             'Main image can not be set on organizer with no images' => [
@@ -1007,7 +1007,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [],
             ],
             'Main image can not be set when organizer does not contain the image' => [
@@ -1022,7 +1022,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
+                    $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
                 [],
             ],
             'Main image finally set' => [
@@ -1044,7 +1044,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
+                    $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
                 [
                     new MainImageUpdated(
                         'ae3aab28-6351-489e-a61c-c48aec0a77df',

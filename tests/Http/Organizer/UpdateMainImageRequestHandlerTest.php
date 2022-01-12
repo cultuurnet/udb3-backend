@@ -10,16 +10,16 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Organizer\Commands\UpdateOrganizer;
+use CultuurNet\UDB3\Organizer\Commands\UpdateMainImage;
 use PHPUnit\Framework\TestCase;
 
-final class UpdateOrganizerRequestHandlerTest extends TestCase
+final class UpdateMainImageRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
     private TraceableCommandBus $commandBus;
 
-    private UpdateOrganizerRequestHandler $updateOrganizerRequestHandler;
+    private UpdateMainImageRequestHandler $updateMainImageRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -27,7 +27,7 @@ final class UpdateOrganizerRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->updateOrganizerRequestHandler = new UpdateOrganizerRequestHandler($this->commandBus);
+        $this->updateMainImageRequestHandler = new UpdateMainImageRequestHandler($this->commandBus);
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
@@ -37,19 +37,44 @@ final class UpdateOrganizerRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_updating_an_organizer(): void
+    public function it_handles_updating_the_main_image(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
             ->withBodyFromArray([
-                'mainImageId' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                'imageId' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
             ])
-            ->build('PATCH');
+            ->build('PUT');
 
-        $expectedCommand = (new UpdateOrganizer('c269632a-a887-4f21-8455-1631c31e4df5'))
-            ->withMainImageId(new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'));
+        $expectedCommand = new UpdateMainImage(
+            'c269632a-a887-4f21-8455-1631c31e4df5',
+            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
+        );
 
-        $response = $this->updateOrganizerRequestHandler->handle($request);
+        $response = $this->updateMainImageRequestHandler->handle($request);
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
+    public function it_support_media_object_id(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withBodyFromArray([
+                'mediaObjectId' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+            ])
+            ->build('PUT');
+
+        $expectedCommand = new UpdateMainImage(
+            'c269632a-a887-4f21-8455-1631c31e4df5',
+            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
+        );
+
+        $response = $this->updateMainImageRequestHandler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
@@ -64,11 +89,11 @@ final class UpdateOrganizerRequestHandlerTest extends TestCase
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
             ->withBodyFromString($body)
-            ->build('POST');
+            ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             $expectedApiProblem,
-            fn () => $this->updateOrganizerRequestHandler->handle($request)
+            fn () => $this->updateMainImageRequestHandler->handle($request)
         );
     }
 
@@ -86,15 +111,15 @@ final class UpdateOrganizerRequestHandlerTest extends TestCase
             [
                 '{}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/', 'Object must have at least 1 properties, 0 found')
+                    new SchemaError('/', 'The required properties (imageId) are missing')
                 ),
             ],
             [
                 '{
-                    "mainImageId":"not a uuid"
+                    "imageId":"not a uuid"
                 }',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/mainImageId', 'The data must match the \'uuid\' format')
+                    new SchemaError('/imageId', 'The data must match the \'uuid\' format')
                 ),
             ],
         ];
