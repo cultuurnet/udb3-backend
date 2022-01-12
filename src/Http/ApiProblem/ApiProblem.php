@@ -196,6 +196,16 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function notAcceptable(string $detail = null): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/headers/not-acceptable',
+            'Not Acceptable',
+            406,
+            $detail
+        );
+    }
+
     public static function urlNotFound(string $detail = null): self
     {
         return self::create(
