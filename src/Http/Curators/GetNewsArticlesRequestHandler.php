@@ -51,7 +51,7 @@ final class GetNewsArticlesRequestHandler implements RequestHandlerInterface
         $responseContentType = $headers->determineResponseContentType(['application/ld+json', 'application/json']);
         $withJsonLd = $responseContentType === 'application/ld+json';
 
-        $newsArticleNormalizer = $this->newsArticleNormalizer->withJsonLd($withJsonLd);
+        $newsArticleNormalizer = $this->newsArticleNormalizer->asJsonLd($withJsonLd);
 
         $newsArticlesJson = array_map(
             fn (NewsArticle $newsArticle) => $newsArticleNormalizer->normalize($newsArticle),

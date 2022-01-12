@@ -60,7 +60,7 @@ final class UpdateNewsArticleRequestHandler implements RequestHandlerInterface
         $responseContentType = $headers->determineResponseContentType(['application/ld+json', 'application/json']);
         $withJsonLd = $responseContentType === 'application/ld+json';
 
-        $normalized = (new NewsArticleNormalizer())->withJsonLd($withJsonLd)->normalize($newsArticle);
+        $normalized = (new NewsArticleNormalizer())->asJsonLd($withJsonLd)->normalize($newsArticle);
 
         if ($withJsonLd) {
             return new JsonLdResponse($normalized);

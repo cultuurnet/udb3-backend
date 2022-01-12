@@ -11,10 +11,10 @@ final class NewsArticleNormalizer implements NormalizerInterface
 {
     private bool $jsonLd = false;
 
-    public function withJsonLd(bool $jsonLd): self
+    public function asJsonLd(bool $asJsonLd): self
     {
         $c = clone $this;
-        $c->jsonLd = $jsonLd;
+        $c->jsonLd = $asJsonLd;
         return $c;
     }
 
