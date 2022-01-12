@@ -102,7 +102,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new Language('en'),
                     new Description('A nice image'),
                     new CopyrightHolder('publiq')
-                )
+                ),
             ],
             'Only id provided' => [
                 [
@@ -113,7 +113,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new Language('nl'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('madewithlove')
-                )
+                ),
             ],
             'Only id and language provided' => [
                 [
@@ -125,7 +125,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new Language('fr'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('madewithlove')
-                )
+                ),
             ],
             'Only id and description provided' => [
                 [
@@ -137,7 +137,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new Language('nl'),
                     new Description('A nice image'),
                     new CopyrightHolder('madewithlove')
-                )
+                ),
             ],
             'Only id and copyrigght holder provided' => [
                 [
@@ -149,7 +149,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new Language('nl'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('publiq')
-                )
+                ),
             ],
         ];
     }
