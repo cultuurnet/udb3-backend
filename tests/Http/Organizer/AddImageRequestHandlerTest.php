@@ -54,17 +54,13 @@ final class AddImageRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider addImageDataProvider
      */
-    public function it_handles_adding_an_image(): void
+    public function it_handles_adding_an_image(array $body, Image $image): void
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
-            ->withBodyFromArray([
-                'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
-                'language' => 'en',
-                'description' => 'A nice image',
-                'copyrightHolder' => 'publiq',
-            ])
+            ->withBodyFromArray($body)
             ->build('POST');
 
         $this->imageRepository->method('load')
@@ -74,7 +70,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     new LegacyUUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
                     new StringLiteral('Uploaded image'),
-                    new CopyrightHolder('publiq'),
+                    new CopyrightHolder('madewithlove'),
                     Url::fromNative('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
                     new LegacyLanguage('nl')
                 )
@@ -82,18 +78,80 @@ final class AddImageRequestHandlerTest extends TestCase
 
         $expectedCommand = new AddImage(
             'c269632a-a887-4f21-8455-1631c31e4df5',
-            new Image(
-                new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
-                new Language('en'),
-                new Description('A nice image'),
-                new CopyrightHolder('publiq')
-            )
+            $image
         );
 
         $response = $this->addImageRequestHandler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
+    }
+
+    public function addImageDataProvider(): array
+    {
+        return [
+            'All properties' => [
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                    'language' => 'en',
+                    'description' => 'A nice image',
+                    'copyrightHolder' => 'publiq',
+                ],
+                new Image(
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new Language('en'),
+                    new Description('A nice image'),
+                    new CopyrightHolder('publiq')
+                ),
+            ],
+            'Only id provided' => [
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                ],
+                new Image(
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new Language('nl'),
+                    new Description('Uploaded image'),
+                    new CopyrightHolder('madewithlove')
+                ),
+            ],
+            'Only id and language provided' => [
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                    'language' => 'fr',
+                ],
+                new Image(
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new Language('fr'),
+                    new Description('Uploaded image'),
+                    new CopyrightHolder('madewithlove')
+                ),
+            ],
+            'Only id and description provided' => [
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                    'description' => 'A nice image',
+                ],
+                new Image(
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new Language('nl'),
+                    new Description('A nice image'),
+                    new CopyrightHolder('madewithlove')
+                ),
+            ],
+            'Only id and copyrigght holder provided' => [
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                    'copyrightHolder' => 'publiq',
+                ],
+                new Image(
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new Language('nl'),
+                    new Description('Uploaded image'),
+                    new CopyrightHolder('publiq')
+                ),
+            ],
+        ];
     }
 
     /**
@@ -152,7 +210,7 @@ final class AddImageRequestHandlerTest extends TestCase
             [
                 '{}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/', 'The required properties (id, language, copyrightHolder, description) are missing')
+                    new SchemaError('/', 'The required properties (id) are missing')
                 ),
             ],
             [
