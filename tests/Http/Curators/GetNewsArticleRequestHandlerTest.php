@@ -32,11 +32,7 @@ class GetNewsArticleRequestHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->newsArticleRepository = $this->createMock(NewsArticleRepository::class);
-        $this->getNewsArticleRequestHandler = new GetNewsArticleRequestHandler(
-            $this->newsArticleRepository,
-            new NewsArticleNormalizer()
-        );
-
+        $this->getNewsArticleRequestHandler = new GetNewsArticleRequestHandler($this->newsArticleRepository);
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
     }
 
