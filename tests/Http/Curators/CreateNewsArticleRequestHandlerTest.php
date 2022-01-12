@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Http\Curators;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
+use CultuurNet\UDB3\Curators\NewsArticles;
+use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -64,6 +66,17 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
             ->build('POST');
 
         $this->newsArticleRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new NewsArticleSearch(
+                    null,
+                    '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'https://www.publiq.be/blog/api-reward'
+                )
+            )
+            ->willReturn(new NewsArticles());
+
+        $this->newsArticleRepository->expects($this->once())
             ->method('create')
             ->with(new NewsArticle(
                 new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
@@ -115,6 +128,17 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
             ->build('POST');
 
         $this->newsArticleRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new NewsArticleSearch(
+                    null,
+                    '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'https://www.publiq.be/blog/api-reward'
+                )
+            )
+            ->willReturn(new NewsArticles());
+
+        $this->newsArticleRepository->expects($this->once())
             ->method('create')
             ->with(new NewsArticle(
                 new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
@@ -164,6 +188,17 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                 'publisherLogo' => 'https://www.bill.be/img/favicon.png',
             ])
             ->build('POST');
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new NewsArticleSearch(
+                    null,
+                    '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'https://www.publiq.be/blog/api-reward'
+                )
+            )
+            ->willReturn(new NewsArticles());
 
         $this->newsArticleRepository->expects($this->once())
             ->method('create')
