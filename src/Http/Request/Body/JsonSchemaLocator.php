@@ -34,13 +34,13 @@ final class JsonSchemaLocator
     public const PLACE_VIDEOS_POST = 'place-videos-post.json';
 
     public const ORGANIZER_POST = 'organizer-post.json';
-    public const ORGANIZER_PATCH = 'organizer-patch.json';
     public const ORGANIZER_NAME_PUT = 'organizer-name-put.json';
     public const ORGANIZER_DESCRIPTION_PUT = 'organizer-description-put.json';
     public const ORGANIZER_ADDRESS_PUT = 'organizer-address-put.json';
     public const ORGANIZER_URL_PUT = 'organizer-url-put.json';
     public const ORGANIZER_CONTACT_POINT_PUT = 'organizer-contactPoint-put.json';
     public const ORGANIZER_IMAGE_POST = 'organizer-image-post.json';
+    public const ORGANIZER_MAIN_IMAGE_PUT = 'organizer-main-image-put.json';
     public const ORGANIZER_IMAGES_PATCH = 'organizer-images-patch.json';
 
     public const NEWS_ARTICLE_POST = 'newsArticle-post.json';
