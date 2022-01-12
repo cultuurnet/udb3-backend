@@ -47,6 +47,7 @@ final class CreateNewsArticleRequestHandler implements RequestHandlerInterface
         /** @var NewsArticle $newsArticle */
         $newsArticle = $requestBodyParser->parse($request)->getParsedBody();
 
+        // Do not include publisher to search for duplicates, because each publisher already has its own URL anyway.
         $existingNewsArticles = $this->newsArticleRepository->search(
             new NewsArticleSearch(
                 null,
