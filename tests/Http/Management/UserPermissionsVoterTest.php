@@ -126,7 +126,7 @@ class UserPermissionsVoterTest extends TestCase
             ->method('getPermissions')
             ->willReturn($grantedPermissions);
 
-        $access = $this->voter->vote($userToken, $request, Permission::getConstants());
+        $access = $this->voter->vote($userToken, $request, Permission::getAllowedValues());
 
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $access);
     }

@@ -192,7 +192,7 @@ class ReadRoleRestController
 
     public function getPermissions(): JsonResponse
     {
-        $list = $this->createPermissionsList(Permission::getConstants());
+        $list = $this->createPermissionsList(Permission::getAllowedValues());
 
         return (new JsonResponse())
             ->setData($list)
