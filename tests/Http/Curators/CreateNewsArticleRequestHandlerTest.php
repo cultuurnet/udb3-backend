@@ -280,7 +280,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                 'A news article with the given url and about already exists. (d684fc46-b0ba-4b64-9584-5f61fb5c4963) '
                 . 'Do a GET /news-articles request with `url` and `about` parameters to find it programmatically.'
             ),
-            fn() => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
+            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
         );
     }
 
