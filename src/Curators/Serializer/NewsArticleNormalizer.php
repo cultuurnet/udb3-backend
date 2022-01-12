@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class NewsArticleNormalizer implements NormalizerInterface
 {
-    private $jsonLd = false;
+    private bool $jsonLd = false;
 
     public function withJsonLd(bool $jsonLd): self
     {
