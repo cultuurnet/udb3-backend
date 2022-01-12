@@ -22,7 +22,7 @@ abstract class AbstractPermissionCommand extends AbstractCommand
 
         // The built-in serialize call does not work on Enum.
         // Just store them internally as string but expose as Enum.
-        $this->rolePermission = $rolePermission->toNative();
+        $this->rolePermission = $rolePermission->toString();
     }
 
     public function getRolePermission(): Permission

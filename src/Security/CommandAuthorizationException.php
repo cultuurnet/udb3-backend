@@ -29,7 +29,7 @@ class CommandAuthorizationException extends \Exception
             sprintf(
                 'User with id: %s has no permission: "%s" on item: %s when executing command: %s',
                 $userId->toNative(),
-                $command->getPermission()->toNative(),
+                $command->getPermission()->toString(),
                 $command->getItemId(),
                 get_class($command)
             ),

@@ -55,7 +55,7 @@ class PermissionAddedTest extends TestCase
 
         $expectedArray = [
             'uuid' => $this->uuid->toNative(),
-            'permission' => $this->permission->toNative(),
+            'permission' => $this->permission->toString(),
         ];
 
         $this->assertEquals($expectedArray, $actualArray);
@@ -65,7 +65,7 @@ class PermissionAddedTest extends TestCase
     {
         $data = [
             'uuid' => $this->uuid->toNative(),
-            'permission' => $this->permission->toNative(),
+            'permission' => $this->permission->toString(),
         ];
         $actualEvent = $this->event->deserialize($data);
         $expectedEvent = $this->event;

@@ -76,7 +76,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
+                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }
@@ -90,7 +90,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
+                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }

@@ -83,7 +83,7 @@ class OfferPermissionsController
             );
 
             if ($hasPermission) {
-                $permissionsToReturn[] = (string) $permission;
+                $permissionsToReturn[] = $permission->toString();
             }
         }
 

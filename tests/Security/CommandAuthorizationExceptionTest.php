@@ -82,7 +82,7 @@ class CommandAuthorizationExceptionTest extends TestCase
     public function it_creates_a_message()
     {
         $expectedMessage = 'User with id: ' . $this->userId->toNative() .
-            ' has no permission: "' . $this->permission->toNative() .
+            ' has no permission: "' . $this->permission->toString() .
             '" on item: ' . $this->itemId .
             ' when executing command: ' . get_class($this->command);
 

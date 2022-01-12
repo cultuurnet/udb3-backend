@@ -151,7 +151,7 @@ class RoleTest extends AggregateRootScenarioTestCase
 
         $this->scenario
             ->withAggregateId($this->uuid)
-            ->given([$this->roleCreated, new PermissionAdded($this->uuid, Permission::AANBOD_BEWERKEN())])
+            ->given([$this->roleCreated, new PermissionAdded($this->uuid, Permission::aanbodBewerken())])
             ->when(function (Role $role) use ($uuid, $permission) {
                 $role->addPermission(
                     $uuid,

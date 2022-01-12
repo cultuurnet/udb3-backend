@@ -56,7 +56,7 @@ class AbstractPermissionEventTest extends TestCase
 
         $expectedArray = [
             'uuid' => $this->uuid->toNative(),
-            'permission' => $this->permission->toNative(),
+            'permission' => $this->permission->toString(),
         ];
 
         $this->assertEquals($expectedArray, $actualArray);
@@ -66,7 +66,7 @@ class AbstractPermissionEventTest extends TestCase
     {
         $data = [
             'uuid' => $this->uuid->toNative(),
-            'permission' => $this->permission->toNative(),
+            'permission' => $this->permission->toString(),
         ];
         $actualEvent = $this->event->deserialize($data);
         $expectedEvent = $this->event;

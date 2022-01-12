@@ -27,11 +27,11 @@ final class PermissionSwitchVoter implements PermissionVoter
         StringLiteral $itemId,
         StringLiteral $userId
     ): bool {
-        if (!isset($this->mapping[(string)$permission])) {
+        if (!isset($this->mapping[$permission->toString()])) {
             return isset($this->defaultVoter) && $this->defaultVoter->isAllowed($permission, $itemId, $userId);
         }
 
-        return $this->mapping[(string)$permission]->isAllowed($permission, $itemId, $userId);
+        return $this->mapping[$permission->toString()]->isAllowed($permission, $itemId, $userId);
     }
 
     public function withVoter(
@@ -41,7 +41,7 @@ final class PermissionSwitchVoter implements PermissionVoter
         $c = clone $this;
 
         foreach ($permissions as $permission) {
-            $c->mapping[(string)$permission] = $voter;
+            $c->mapping[$permission->toString()] = $voter;
         }
 
         return $c;

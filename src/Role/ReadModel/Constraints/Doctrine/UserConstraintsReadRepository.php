@@ -81,7 +81,7 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
                 'rs.' . SearchSchemaConfigurator::CONSTRAINT_COLUMN
             ))
             ->setParameter('userId', $userId->toNative())
-            ->setParameter('permission', $permission->toNative());
+            ->setParameter('permission', $permission->toString());
 
         $results = $userConstraintsQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
 

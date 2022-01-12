@@ -82,14 +82,14 @@ class UserPermissionsReadRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -98,23 +98,23 @@ class UserPermissionsReadRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::AANBOD_MODEREREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::aanbodModereren()->toString(),
             ]
         );
 
         $permissions = $this->repository->getPermissions($userId);
 
         $expectedPermissions = [
-            Permission::LABELS_BEHEREN(),
-            Permission::GEBRUIKERS_BEHEREN(),
-            Permission::AANBOD_MODEREREN(),
+            Permission::labelsBeheren(),
+            Permission::gebruikersBeheren(),
+            Permission::aanbodModereren(),
         ];
         $this->assertEquals(
             $expectedPermissions,

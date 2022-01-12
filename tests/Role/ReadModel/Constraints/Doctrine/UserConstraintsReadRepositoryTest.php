@@ -179,7 +179,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
             $this->rolePermissionsTableName,
             [
                 PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
-                PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toNative(),
+                PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }

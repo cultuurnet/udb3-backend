@@ -88,7 +88,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $expectedRows = [
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
+                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ],
         ];
 
@@ -108,7 +108,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
 
@@ -116,7 +116,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -124,7 +124,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -135,11 +135,11 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $expectedRows = [
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ],
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ],
         ];
 
@@ -159,7 +159,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
 
@@ -167,7 +167,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -175,7 +175,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -195,7 +195,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $expectedRolePermissions = [
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ],
         ];
 
