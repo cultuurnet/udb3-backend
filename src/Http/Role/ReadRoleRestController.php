@@ -142,7 +142,7 @@ class ReadRoleRestController
         $userId = new StringLiteral($this->currentUserId);
 
         if ($this->userIsGodUser) {
-            $list = $this->createPermissionsList(Permission::getConstants());
+            $list = $this->createPermissionsList(Permission::getAllowedValues());
         } else {
             $list = array_map(
                 function (Permission $permission) {
@@ -165,8 +165,8 @@ class ReadRoleRestController
     {
         $list = [];
 
-        foreach ($permissions as $key => $name) {
-            $list[] = $key;
+        foreach ($permissions as $permission) {
+            $list[] = (new Permission($permission))->getName();
         }
 
         return $list;

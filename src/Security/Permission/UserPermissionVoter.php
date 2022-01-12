@@ -32,7 +32,7 @@ class UserPermissionVoter implements PermissionVoter
         );
 
         foreach ($permissions as $currentPermission) {
-            if ($requiredPermission === $currentPermission) {
+            if ($requiredPermission->sameAs($currentPermission)) {
                 return true;
             }
         }
