@@ -80,7 +80,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private Images $images;
 
-    private ?UUID $mainImageId = null;
+    private ?string $mainImageId = null;
 
     private Labels $labels;
 
@@ -341,15 +341,9 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             return false;
         }
 
-        // If the organizer had no main image just set it as main.
-        // Although this should be a race condition.
-        if ($this->mainImageId === null) {
-            return true;
-        }
-
         // Only set it as main when there is a difference.
         // This is to prevent having events in the event store with no change.
-        return !$this->mainImageId->sameAs($mainImageId);
+        return $this->mainImageId !== $mainImageId->toString();
     }
 
     private function hasImage(UUID $imageId): bool
@@ -620,7 +614,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->images = $this->images->with($imageAdded->getImage());
 
         if ($this->mainImageId === null) {
-            $this->mainImageId = $imageAdded->getImage()->getId();
+            $this->mainImageId = $imageAdded->getImage()->getId()->toString();
         }
     }
 
@@ -646,14 +640,16 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             return;
         }
 
-        if ($imageRemoved->getImageId() === $this->mainImageId->toString()) {
-            $this->mainImageId = $this->images->getFirst()->getImageId();
+        if ($imageRemoved->getImageId() === $this->mainImageId) {
+            /** @var Image $firstImage */
+            $firstImage = $this->images->getFirst();
+            $this->mainImageId = $firstImage->getId()->toString();
         }
     }
 
     protected function applyMainImageUpdated(MainImageUpdated $organizerUpdated): void
     {
-        $this->mainImageId = new UUID($organizerUpdated->getMainImageId());
+        $this->mainImageId = $organizerUpdated->getMainImageId();
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void
