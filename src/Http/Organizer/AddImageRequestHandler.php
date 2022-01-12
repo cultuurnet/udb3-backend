@@ -39,6 +39,7 @@ final class AddImageRequestHandler implements RequestHandlerInterface
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_IMAGE_POST),
+            new AddMediaObjectPropertiesRequestBodyParser($this->mediaRepository),
             new DenormalizingRequestBodyParser(new AddImageDenormalizer($organizerId), AddImage::class)
         );
 
