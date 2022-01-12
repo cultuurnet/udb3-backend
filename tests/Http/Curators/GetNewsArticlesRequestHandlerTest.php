@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\NewsArticles;
 use CultuurNet\UDB3\Curators\NewsArticleSearch;
-use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;

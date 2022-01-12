@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Curators;
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleNotFound;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
-use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
