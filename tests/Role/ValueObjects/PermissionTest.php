@@ -11,7 +11,7 @@ class PermissionTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_fixed_list_of_possible_permissions()
+    public function it_has_a_fixed_list_of_possible_permissions(): void
     {
         $permissions = Permission::getAllowedValues();
 

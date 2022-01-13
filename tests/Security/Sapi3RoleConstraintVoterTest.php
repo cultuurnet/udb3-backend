@@ -27,10 +27,7 @@ class Sapi3RoleConstraintVoterTest extends TestCase
      */
     private $httpClient;
 
-    /**
-     * @var Sapi3RoleConstraintVoter
-     */
-    private $roleConstraintVoter;
+    private Sapi3RoleConstraintVoter $roleConstraintVoter;
 
     protected function setUp(): void
     {

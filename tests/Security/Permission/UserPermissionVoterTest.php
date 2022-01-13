@@ -17,22 +17,13 @@ class UserPermissionVoterTest extends TestCase
      */
     private $userPermissionsReadRepository;
 
-    /**
-     * @var Permission
-     */
-    private $requiredPermission;
+    private Permission $requiredPermission;
 
-    /**
-     * @var UserPermissionVoter
-     */
-    private $userPermissionVoter;
+    private UserPermissionVoter $userPermissionVoter;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private StringLiteral $userId;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->userPermissionsReadRepository = $this->createMock(
             UserPermissionsReadRepositoryInterface::class
@@ -62,7 +53,7 @@ class UserPermissionVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_true_when_user_has_a_role_with_required_permission()
+    public function it_returns_true_when_user_has_a_role_with_required_permission(): void
     {
         $this->assertTrue(
             $this->userPermissionVoter->isAllowed(
@@ -76,7 +67,7 @@ class UserPermissionVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_when_user_does_not_have_a_role_with_required_permission()
+    public function it_returns_false_when_user_does_not_have_a_role_with_required_permission(): void
     {
         $this->assertFalse(
             $this->userPermissionVoter->isAllowed(
@@ -90,7 +81,7 @@ class UserPermissionVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_for_unknown_user()
+    public function it_returns_false_for_unknown_user(): void
     {
         $this->assertFalse(
             $this->userPermissionVoter->isAllowed(

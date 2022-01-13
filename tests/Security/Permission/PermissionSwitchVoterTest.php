@@ -13,7 +13,7 @@ class PermissionSwitchVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_to_a_voter_responsible_for_the_permission()
+    public function it_delegates_to_a_voter_responsible_for_the_permission(): void
     {
         $offerId = new StringLiteral('232');
         $userId = new StringLiteral('john_doe');
