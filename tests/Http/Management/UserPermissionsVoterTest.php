@@ -69,6 +69,7 @@ class UserPermissionsVoterTest extends TestCase
         $grantedPermissions = [
             Permission::gebruikersBeheren(),
             Permission::labelsBeheren(),
+            Permission::filmsAanmaken(),
         ];
 
         $this->permissionRepository
@@ -76,8 +77,10 @@ class UserPermissionsVoterTest extends TestCase
             ->method('getPermissions')
             ->willReturn($grantedPermissions);
 
-        $requiredPermissions = $grantedPermissions;
-        $requiredPermissions[] = 'Something not supported';
+        $requiredPermissions = [
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
+        ];
         $access = $this->voter->vote($userToken, $request, $requiredPermissions);
 
         $this->assertEquals(VoterInterface::ACCESS_GRANTED, $access);
@@ -126,7 +129,10 @@ class UserPermissionsVoterTest extends TestCase
             ->method('getPermissions')
             ->willReturn($grantedPermissions);
 
-        $access = $this->voter->vote($userToken, $request, Permission::getAllowedValues());
+        $expectedPermissions = $grantedPermissions;
+        $expectedPermissions[] = Permission::filmsAanmaken();
+
+        $access = $this->voter->vote($userToken, $request, $expectedPermissions);
 
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $access);
     }
