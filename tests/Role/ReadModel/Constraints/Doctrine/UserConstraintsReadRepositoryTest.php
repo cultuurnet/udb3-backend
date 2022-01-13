@@ -20,29 +20,17 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @var UUID[]
      */
-    private $roleIds;
+    private array $roleIds;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRolesTableName;
+    private StringLiteral $userRolesTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionsTableName;
+    private StringLiteral $rolePermissionsTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolesSearchTableName;
+    private StringLiteral $rolesSearchTableName;
 
-    /**
-     * @var UserConstraintsReadRepositoryInterface
-     */
-    private $userConstraintsReadRepository;
+    private UserConstraintsReadRepositoryInterface $userConstraintsReadRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->roleIds = [new UUID(), new UUID(), new UUID(), new UUID()];
 
@@ -80,7 +68,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_constraints_for_a_certain_user_and_permission()
+    public function it_returns_constraints_for_a_certain_user_and_permission(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user1'),
@@ -105,7 +93,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_array_for_a_missing_user()
+    public function it_returns_empty_array_for_a_missing_user(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user3'),
@@ -118,7 +106,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_array_for_a_missing_permission()
+    public function it_returns_empty_array_for_a_missing_permission(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user2'),
@@ -128,7 +116,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->assertEmpty($constraints);
     }
 
-    private function seedUserRoles()
+    private function seedUserRoles(): void
     {
         $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[0]);
         $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[1]);
@@ -137,7 +125,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[3]);
     }
 
-    private function seedRolePermissions()
+    private function seedRolePermissions(): void
     {
         $this->insertUserPermission($this->roleIds[0], Permission::aanbodBewerken());
         $this->insertUserPermission($this->roleIds[0], Permission::aanbodVerwijderen());
@@ -152,7 +140,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->insertUserPermission($this->roleIds[3], Permission::aanbodModereren());
     }
 
-    private function seedRolesSearch()
+    private function seedRolesSearch(): void
     {
         $this->insertRole($this->roleIds[0], new StringLiteral('Brussel Validatoren'), new StringLiteral('zipCode:1000'));
         $this->insertRole($this->roleIds[1], new StringLiteral('Antwerpen Validatoren'), new StringLiteral('zipCode:2000'));
@@ -161,7 +149,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
 
-    private function insertUserRole(StringLiteral $userId, UUID $roleId)
+    private function insertUserRole(StringLiteral $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->userRolesTableName,
@@ -173,7 +161,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
 
-    private function insertUserPermission(UUID $roleId, Permission $permission)
+    private function insertUserPermission(UUID $roleId, Permission $permission): void
     {
         $this->getConnection()->insert(
             $this->rolePermissionsTableName,
@@ -184,14 +172,11 @@ class UserConstraintsReadRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @param StringLiteral $constraint
-     */
     private function insertRole(
         UUID $roleId,
         StringLiteral $roleName,
         StringLiteral $constraint = null
-    ) {
+    ): void {
         $this->getConnection()->insert(
             $this->rolesSearchTableName,
             [

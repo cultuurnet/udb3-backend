@@ -15,22 +15,13 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var UserPermissionsWriteRepositoryInterface
-     */
-    private $repository;
+    private UserPermissionsWriteRepositoryInterface $repository;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRoleTableName;
+    private StringLiteral $userRoleTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionTableName;
+    private StringLiteral $rolePermissionTableName;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->userRoleTableName = new StringLiteral('user_role');
         $this->rolePermissionTableName = new StringLiteral('role_permission');
@@ -54,7 +45,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_permissions_when_a_user_is_assigned_a_role()
+    public function it_should_update_permissions_when_a_user_is_assigned_a_role(): void
     {
         $userId = new StringLiteral('4A9F8064-755E-46C5-A5C2-DFD7970A4BF3');
         $roleId = new UUID();
@@ -76,7 +67,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_permissions_when_a_role_is_assigned_permissions()
+    public function it_should_update_permissions_when_a_role_is_assigned_permissions(): void
     {
         $roleId = new UUID();
         $permission = Permission::labelsBeheren();
@@ -98,7 +89,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_revoke_permissions_when_a_role_permission_is_removed()
+    public function it_should_revoke_permissions_when_a_role_permission_is_removed(): void
     {
         $roleId = new UUID();
         $permission = Permission::gebruikersBeheren();
@@ -149,7 +140,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_revoke_permissions_when_a_role_is_removed()
+    public function it_should_revoke_permissions_when_a_role_is_removed(): void
     {
         $roleId = new UUID();
         $otherRoleId = UUID::generateAsString();
@@ -206,7 +197,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_revoke_permissions_when_a_role_is_taken_from_a_user()
+    public function it_should_revoke_permissions_when_a_role_is_taken_from_a_user(): void
     {
         $userId = new StringLiteral('4A9F8064-755E-46C5-A5C2-DFD7970A4BF3');
         $otherUserId = UUID::generateAsString();

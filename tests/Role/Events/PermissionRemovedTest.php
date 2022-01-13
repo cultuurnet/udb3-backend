@@ -10,22 +10,13 @@ use ValueObjects\Identity\UUID;
 
 class PermissionRemovedTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var Permission
-     */
-    protected $permission;
+    protected Permission $permission;
 
-    /**
-     * @var PermissionRemoved
-     */
-    protected $event;
+    protected PermissionRemoved $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID();
 
@@ -40,7 +31,7 @@ class PermissionRemovedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid_and_a_permission()
+    public function it_stores_a_uuid_and_a_permission(): void
     {
         $this->assertEquals($this->uuid, $this->event->getUuid());
         $this->assertEquals($this->permission, $this->event->getPermission());
@@ -49,7 +40,7 @@ class PermissionRemovedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualArray = $this->event->serialize();
 
@@ -61,7 +52,7 @@ class PermissionRemovedTest extends TestCase
         $this->assertEquals($expectedArray, $actualArray);
     }
 
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $data = [
             'uuid' => $this->uuid->toNative(),

@@ -10,22 +10,13 @@ use ValueObjects\Identity\UUID;
 
 class AddPermissionTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var Permission
-     */
-    protected $permission;
+    protected Permission $permission;
 
-    /**
-     * @var AddPermission
-     */
-    protected $addPermission;
+    protected AddPermission $addPermission;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID();
 
@@ -40,7 +31,7 @@ class AddPermissionTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_command()
+    public function it_extends_an_abstract_command(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->addPermission,
@@ -51,7 +42,7 @@ class AddPermissionTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualCreate = unserialize(serialize($this->addPermission));
 
