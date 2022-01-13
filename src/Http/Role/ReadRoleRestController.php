@@ -128,7 +128,7 @@ class ReadRoleRestController
         } else {
             $list = array_map(
                 function (Permission $permission) {
-                    return $permission->getName();
+                    return self::getUppercaseName($permission->toString());
                 },
                 $this->permissionsRepository->getPermissions($userId)
             );
@@ -148,10 +148,19 @@ class ReadRoleRestController
         $list = [];
 
         foreach ($permissions as $permission) {
-            $list[] = (new Permission($permission))->getName();
+            $list[] = self::getUppercaseName((new Permission($permission))->toString());
         }
 
         return $list;
+    }
+
+    /**
+     * This function was added during the refactoring of Permission.
+     * Because the API expects Uppercase/Underscore names for Permission.
+     */
+    private static function getUppercaseName(string $value): string
+    {
+        return str_replace(' ', '_', strtoupper($value));
     }
 
     public function getRoleLabels(string $roleId): Response

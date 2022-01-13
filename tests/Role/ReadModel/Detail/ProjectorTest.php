@@ -374,7 +374,7 @@ class ProjectorTest extends TestCase
         $json = $document->getBody();
         $json->uuid = $this->uuid->toNative();
         $json->name = $this->name->toNative();
-        $json->permissions = [$permission->getName()];
+        $json->permissions = ['AANBOD_BEWERKEN'];
 
         $document = $document->withBody($json);
 
@@ -487,7 +487,7 @@ class ProjectorTest extends TestCase
         $json = $document->getBody();
         $json->uuid = $this->uuid->toNative();
         $json->name = $this->name->toNative();
-        $json->permissions = [$permission->getName()];
+        $json->permissions = ['AANBOD_BEWERKEN'];
 
         return $document->withBody($json);
     }

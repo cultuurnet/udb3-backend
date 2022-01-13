@@ -84,11 +84,6 @@ class Permission extends Enum
 
     public static function getByName(string $key): Permission
     {
-        return new self(str_replace('_', ' ', ucfirst(strtolower($key))));
-    }
-
-    public function getName(): string
-    {
-        return str_replace(' ', '_', strtoupper($this->toString()));
+        return new self(ucfirst(str_replace('_', ' ', strtolower($key))));
     }
 }
