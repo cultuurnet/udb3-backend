@@ -30,7 +30,7 @@ class PermissionsVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute->toString(), Permission::getAllowedValues());
+        return in_array($attribute->toString(), Permission::getAllowedValues(), true);
     }
 
     /**
