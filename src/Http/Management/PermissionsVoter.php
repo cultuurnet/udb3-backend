@@ -15,12 +15,12 @@ class PermissionsVoter implements VoterInterface
     /**
      * @var string[][]
      */
-    private $authorizationList;
+    private array $authorizationList;
 
     /**
      * @param string[][] $authorizationList
      */
-    public function __construct($authorizationList)
+    public function __construct(array $authorizationList)
     {
         $this->authorizationList = $authorizationList;
     }
@@ -28,7 +28,7 @@ class PermissionsVoter implements VoterInterface
     /**
      * @inheritdoc
      */
-    public function supportsAttribute($attribute)
+    public function supportsAttribute($attribute): bool
     {
         return in_array($attribute->toString(), Permission::getAllowedValues(), true);
     }
@@ -36,7 +36,7 @@ class PermissionsVoter implements VoterInterface
     /**
      * @inheritdoc
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return true;
     }

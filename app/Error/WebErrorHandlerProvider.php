@@ -26,7 +26,7 @@ use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
 {
-    private static $debug = false;
+    private static bool $debug = false;
 
     public function register(Application $app): void
     {

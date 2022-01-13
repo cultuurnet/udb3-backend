@@ -15,12 +15,9 @@ class OfferPermissionsController
     /**
      * @var Permission[]
      */
-    private $permissions;
+    private array $permissions;
 
-    /**
-     * @var PermissionVoter
-     */
-    private $permissionVoter;
+    private PermissionVoter $permissionVoter;
 
     /**
      * @var StringLiteral|null
@@ -69,10 +66,7 @@ class OfferPermissionsController
         );
     }
 
-    /**
-     * @return Response
-     */
-    private function getPermissions(StringLiteral $offerId, StringLiteral $userId)
+    private function getPermissions(StringLiteral $offerId, StringLiteral $userId): Response
     {
         $permissionsToReturn = [];
         foreach ($this->permissions as $permission) {

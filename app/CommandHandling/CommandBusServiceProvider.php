@@ -21,7 +21,7 @@ use Silex\ServiceProviderInterface;
 
 class CommandBusServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['command_bus.security'] = $app->share(
             function ($app) {
@@ -140,7 +140,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

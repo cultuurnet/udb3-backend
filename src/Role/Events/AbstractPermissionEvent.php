@@ -9,10 +9,7 @@ use ValueObjects\Identity\UUID;
 
 abstract class AbstractPermissionEvent extends AbstractEvent
 {
-    /**
-     * @var Permission
-     */
-    private $permission;
+    private Permission $permission;
 
     final public function __construct(UUID $uuid, Permission $permission)
     {

@@ -21,12 +21,9 @@ class UserPermissionsVoterTest extends TestCase
      */
     protected $permissionRepository;
 
-    /**
-     * @var VoterInterface
-     */
-    protected $voter;
+    protected VoterInterface $voter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->permissionRepository = $this->createMock(
             UserPermissionsReadRepositoryInterface::class
@@ -38,7 +35,7 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_grant_access_to_a_user_with_all_the_required_permissions()
+    public function it_should_grant_access_to_a_user_with_all_the_required_permissions(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);
@@ -61,7 +58,7 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_grants_access_to_a_user_with_all_the_required_permissions_and_one_not_supported()
+    public function it_grants_access_to_a_user_with_all_the_required_permissions_and_one_not_supported(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);
@@ -89,7 +86,7 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_denies_access_to_a_user_with_missing_required_permissions()
+    public function it_denies_access_to_a_user_with_missing_required_permissions(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);
@@ -114,7 +111,7 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_deny_access_to_a_user_without_all_the_required_permissions()
+    public function it_should_deny_access_to_a_user_without_all_the_required_permissions(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);

@@ -12,7 +12,7 @@ class DeleteOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_the_permission_to_manage_organizers()
+    public function it_requires_the_permission_to_manage_organizers(): void
     {
         $command = new DeleteOrganizer('C95FB255-B1F3-4F3F-A48A-E9B845310732');
         $expectedPermission = Permission::organisatiesBeheren();

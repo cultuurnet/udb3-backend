@@ -14,10 +14,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsVoter implements VoterInterface
 {
-    /**
-     * @var UserPermissionsReadRepositoryInterface
-     */
-    private $permissionsRepository;
+    private UserPermissionsReadRepositoryInterface $permissionsRepository;
 
     /**
      * PermissionVoter constructor.
@@ -30,7 +27,7 @@ class UserPermissionsVoter implements VoterInterface
     /**
      * @inheritdoc
      */
-    public function supportsAttribute($attribute)
+    public function supportsAttribute($attribute): bool
     {
         return in_array($attribute->toString(), Permission::getAllowedValues(), true);
     }
@@ -38,7 +35,7 @@ class UserPermissionsVoter implements VoterInterface
     /**
      * @inheritdoc
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return true;
     }

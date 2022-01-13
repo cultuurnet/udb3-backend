@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Security\AuthorizableCommand;
 
 final class ChangeOwner implements AuthorizableCommand
 {
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var string
-     */
-    private $newOwnerId;
+    private string $newOwnerId;
 
     public function __construct(string $offerId, string $newOwnerId)
     {

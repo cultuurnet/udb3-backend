@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 final class AddEventToProduction implements AuthorizableCommand
 {
-    /**
-     * @var string
-     */
-    private $eventId;
+    private string $eventId;
 
-    /**
-     * @var ProductionId
-     */
-    private $productionId;
+    private ProductionId $productionId;
 
     public function __construct(
         string $eventId,

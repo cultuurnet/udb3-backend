@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 final class MarkAsDuplicate implements AuthorizableCommand
 {
-    /**
-     * @var string
-     */
-    private $duplicatePlaceId;
+    private string $duplicatePlaceId;
 
-    /**
-     * @var string
-     */
-    private $canonicalPlaceId;
+    private string $canonicalPlaceId;
 
     public function __construct(string $duplicatePlaceId, string $canonicalPlaceId)
     {

@@ -11,17 +11,14 @@ use ValueObjects\Identity\UUID;
 
 class AbstractCommandTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
     /**
      * @var AbstractCommand|MockObject
      */
     private $abstractCommand;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID();
 
@@ -34,7 +31,7 @@ class AbstractCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->abstractCommand->getUuid());
     }
@@ -42,7 +39,7 @@ class AbstractCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_item_id()
+    public function it_has_an_item_id(): void
     {
         $this->assertEquals(
             $this->uuid->toNative(),
@@ -53,7 +50,7 @@ class AbstractCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_has_permission_aanbod_labelen()
+    public function it_has_permission_aanbod_labelen(): void
     {
         $this->assertEquals(
             Permission::labelsBeheren(),

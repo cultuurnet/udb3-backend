@@ -10,15 +10,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 final class UpdateStatus implements AuthorizableCommand
 {
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var Status
-     */
-    private $status;
+    private Status $status;
 
     public function __construct(string $offerId, Status $status)
     {

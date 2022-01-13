@@ -10,10 +10,7 @@ use ValueObjects\Identity\UUID;
 
 abstract class AbstractCommand implements AuthorizableCommand
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
     public function __construct(UUID $uuid)
     {

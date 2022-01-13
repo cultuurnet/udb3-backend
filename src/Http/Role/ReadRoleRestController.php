@@ -19,35 +19,17 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ReadRoleRestController
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $roleSearchRepository;
+    private RepositoryInterface $roleSearchRepository;
 
-    /**
-     * @var EntityServiceInterface
-     */
-    private $service;
+    private EntityServiceInterface $service;
 
-    /**
-     * @var RoleReadingServiceInterface
-     */
-    private $roleService;
+    private RoleReadingServiceInterface $roleService;
 
-    /**
-     * @var string
-     */
-    private $currentUserId;
+    private string $currentUserId;
 
-    /**
-     * @var UserPermissionsReadRepositoryInterface
-     */
-    private $permissionsRepository;
+    private UserPermissionsReadRepositoryInterface $permissionsRepository;
 
-    /**
-     * @var bool
-     */
-    private $userIsGodUser;
+    private bool $userIsGodUser;
 
     public function __construct(
         EntityServiceInterface $service,

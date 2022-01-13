@@ -20,17 +20,14 @@ class ResqueCommandBusTest extends TestCase
      */
     protected $decoratedCommandBus;
 
-    /**
-     * @var ResqueCommandBus
-     */
-    protected $commandBus;
+    protected ResqueCommandBus $commandBus;
 
     /**
      * @var EventDispatcher|MockObject
      */
     protected $dispatcher;
 
-    public function setUp()
+    public function setUp(): void
     {
         $queueName = 'test';
 
@@ -47,7 +44,7 @@ class ResqueCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_passes_its_context_to_the_decorated_context_aware_command_bus()
+    public function it_passes_its_context_to_the_decorated_context_aware_command_bus(): void
     {
         $context = new Metadata(
             [
@@ -65,7 +62,7 @@ class ResqueCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_command_authorization_exception_when_decoratee_is_an_instance_of_authorized_command_bus_and_command_is_an_instance_of_authorizable_command()
+    public function it_throws_command_authorization_exception_when_decoratee_is_an_instance_of_authorized_command_bus_and_command_is_an_instance_of_authorizable_command(): void
     {
         $decoratee = $this->createMock(AuthorizedCommandBusInterface::class);
         $decoratee->method('isAuthorized')
@@ -98,7 +95,7 @@ class ResqueCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function on_deferred_dispatch_it_dispatches_the_command_to_the_decorated_command_bus()
+    public function on_deferred_dispatch_it_dispatches_the_command_to_the_decorated_command_bus(): void
     {
         $command = new \stdClass();
         $command->foo = 'bar';
@@ -113,7 +110,7 @@ class ResqueCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_emits_context_changes_to_the_event_dispatcher()
+    public function it_emits_context_changes_to_the_event_dispatcher(): void
     {
         $context = new Metadata(
             [

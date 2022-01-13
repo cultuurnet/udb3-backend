@@ -20,10 +20,7 @@ class AuthorizedCommandBusTest extends TestCase
      */
     private $decoratee;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
     /**
      * @var CommandBusSecurity|MockObject
@@ -35,12 +32,9 @@ class AuthorizedCommandBusTest extends TestCase
      */
     private $command;
 
-    /**
-     * @var AuthorizedCommandBus
-     */
-    private $authorizedCommandBus;
+    private AuthorizedCommandBus $authorizedCommandBus;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->decoratee = $this->createMock([CommandBus::class, ContextAwareInterface::class]);
 
@@ -60,7 +54,7 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_is_authorized_call_to_security()
+    public function it_delegates_is_authorized_call_to_security(): void
     {
         /** @var AuthorizableCommand $command */
         $command = $this->createMock(AuthorizableCommand::class);
@@ -79,7 +73,7 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_and_returns_user_id()
+    public function it_stores_and_returns_user_id(): void
     {
         $userId = $this->authorizedCommandBus->getUserId();
 
@@ -89,7 +83,7 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function is_does_not_call_is_authorized_when_command_is_not_an_instance_of_authorizable_command()
+    public function is_does_not_call_is_authorized_when_command_is_not_an_instance_of_authorizable_command(): void
     {
         $command = new DummyCommand();
 
@@ -103,7 +97,7 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_command_authorization_exception_when_not_authorized()
+    public function it_throws_command_authorization_exception_when_not_authorized(): void
     {
         $authorizedCommandBus = new AuthorizedCommandBus(
             $this->decoratee,
@@ -124,7 +118,7 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_parent_dispatch_when_authorized()
+    public function it_calls_parent_dispatch_when_authorized(): void
     {
         $this->mockIsAuthorized(true);
 
@@ -138,7 +132,7 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_should_pass_on_context_to_the_decoratee()
+    public function it_should_pass_on_context_to_the_decoratee(): void
     {
         $context = new Metadata(['user' => 'dirk']);
 
@@ -150,26 +144,20 @@ class AuthorizedCommandBusTest extends TestCase
         $this->authorizedCommandBus->setContext($context);
     }
 
-    /**
-     * @param bool $isAuthorized
-     */
-    private function mockIsAuthorized($isAuthorized)
+    private function mockIsAuthorized(bool $isAuthorized): void
     {
         $this->security
             ->method('isAuthorized')
             ->willReturn($isAuthorized);
     }
 
-    private function mockGetPermission(Permission $permission)
+    private function mockGetPermission(Permission $permission): void
     {
         $this->command->method('getPermission')
             ->willReturn($permission);
     }
 
-    /**
-     * @param string $itemId
-     */
-    private function mockGetItemId($itemId)
+    private function mockGetItemId(string $itemId): void
     {
         $this->command->method('getItemId')
             ->willReturn($itemId);

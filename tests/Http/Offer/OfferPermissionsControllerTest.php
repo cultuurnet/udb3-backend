@@ -16,37 +16,22 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferPermissionsControllerTest extends TestCase
 {
-    /**
-     * @var array
-     */
-    private $permissions;
+    private array $permissions;
 
     /**
      * @var PermissionVoter|MockObject
      */
     private $voter;
 
-    /**
-     * @var StringLiteral
-     */
-    private $currentUserId;
+    private StringLiteral $currentUserId;
 
-    /**d
-     * @var OfferPermissionsController
-     */
-    private $controllerWithUser;
+    private OfferPermissionsController $controllerWithUser;
 
-    /**
-     * @var OfferPermissionsController
-     */
-    private $controllerWithoutUser;
+    private OfferPermissionsController $controllerWithoutUser;
 
-    /**
-     * @var JsonEquals
-     */
-    private $jsonEquals;
+    private JsonEquals $jsonEquals;
 
-    public function setUp()
+    public function setUp(): void
     {
         $permissionsToCheck = [
             Permission::aanbodBewerken(),
@@ -76,7 +61,7 @@ class OfferPermissionsControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_array_of_permissions_for_the_current_user()
+    public function it_returns_an_array_of_permissions_for_the_current_user(): void
     {
         $this->voter->method('isAllowed')->willReturn(true);
 
@@ -97,7 +82,7 @@ class OfferPermissionsControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_array_of_permissions_for_a_given_user()
+    public function it_returns_an_array_of_permissions_for_a_given_user(): void
     {
         $this->voter->method('isAllowed')->willReturn(true);
 
@@ -121,7 +106,7 @@ class OfferPermissionsControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_always_returns_empty_array_if_there_is_no_given_or_current_user()
+    public function it_always_returns_empty_array_if_there_is_no_given_or_current_user(): void
     {
         $offerId = new StringLiteral('235344aa-fb9a-4fa8-bcaa-85a8b19657c7');
 

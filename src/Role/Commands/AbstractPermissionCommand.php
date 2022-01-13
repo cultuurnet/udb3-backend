@@ -9,10 +9,7 @@ use ValueObjects\Identity\UUID;
 
 abstract class AbstractPermissionCommand extends AbstractCommand
 {
-    /**
-     * @var string
-     */
-    private $rolePermission;
+    private string $rolePermission;
 
     public function __construct(
         UUID $uuid,

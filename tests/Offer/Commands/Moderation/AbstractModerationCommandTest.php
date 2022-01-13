@@ -12,7 +12,7 @@ class AbstractModerationCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_has_permission_aanbod_modereren()
+    public function it_has_permission_aanbod_modereren(): void
     {
         /** @var AbstractModerationCommand $abstractModerationCommand */
         $abstractModerationCommand = $this->getMockForAbstractClass(

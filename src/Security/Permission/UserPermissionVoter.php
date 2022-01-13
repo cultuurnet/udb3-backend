@@ -10,10 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionVoter implements PermissionVoter
 {
-    /**
-     * @var UserPermissionsReadRepositoryInterface
-     */
-    private $userPermissionsReadRepository;
+    private UserPermissionsReadRepositoryInterface $userPermissionsReadRepository;
 
 
     public function __construct(

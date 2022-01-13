@@ -12,17 +12,11 @@ class GroupEventsAsProduction implements AuthorizableCommand
     /**
      * @var string[]
      */
-    private $eventIds;
+    private array $eventIds;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var ProductionId
-     */
-    private $productionId;
+    private ProductionId $productionId;
 
     public function __construct(ProductionId $productionId, array $eventIds, string $name)
     {

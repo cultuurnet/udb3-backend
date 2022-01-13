@@ -8,15 +8,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class CommandAuthorizationException extends \Exception
 {
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private StringLiteral $userId;
 
-    /**
-     * @var AuthorizableCommand
-     */
-    private $command;
+    private AuthorizableCommand $command;
 
     /**
      * CommandAuthorizationException constructor.
@@ -40,18 +34,12 @@ class CommandAuthorizationException extends \Exception
         $this->command = $command;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): StringLiteral
     {
         return $this->userId;
     }
 
-    /**
-     * @return AuthorizableCommand
-     */
-    public function getCommand()
+    public function getCommand(): AuthorizableCommand
     {
         return $this->command;
     }

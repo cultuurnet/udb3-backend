@@ -15,7 +15,7 @@ final class PermissionSwitchVoter implements PermissionVoter
     /**
      * @var \CultuurNet\UDB3\Security\Permission\PermissionVoter[]
      */
-    private $mapping;
+    private array $mapping;
 
     /**
      * @var PermissionVoter|null
