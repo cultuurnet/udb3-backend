@@ -121,7 +121,7 @@ class EditRoleRestController
 
         $this->service->addPermission(
             new UUID($roleId),
-            Permission::getByName($permissionKey)
+            self::getByUppercaseName($permissionKey)
         );
 
         return new NoContent();
@@ -139,7 +139,7 @@ class EditRoleRestController
 
         $this->service->removePermission(
             new UUID($roleId),
-            Permission::getByName($permissionKey)
+            self::getByUppercaseName($permissionKey)
         );
 
         return new NoContent();
@@ -232,5 +232,14 @@ class EditRoleRestController
 
             return is_null($entity) ? null : $entity->getUuid();
         }
+    }
+
+    /**
+     * This function was added during the refactoring of Permission.
+     * Because the API expects Uppercase/Underscore names for Permission.
+     */
+    public static function getByUppercaseName(string $key): Permission
+    {
+        return new Permission(ucfirst(str_replace('_', ' ', strtolower($key))));
     }
 }

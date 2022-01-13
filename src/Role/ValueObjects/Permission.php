@@ -81,9 +81,4 @@ class Permission extends Enum
     {
         return new self('Films aanmaken');
     }
-
-    public static function getByName(string $key): Permission
-    {
-        return new self(ucfirst(str_replace('_', ' ', strtolower($key))));
-    }
 }
