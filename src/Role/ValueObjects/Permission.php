@@ -27,7 +27,7 @@ class Permission extends Enum
     public static function getAllowedPermissions(): array
     {
         return array_map(
-            fn(string $permission) => new Permission($permission),
+            fn (string $permission) => new Permission($permission),
             self::getAllowedValues()
         );
     }
@@ -52,7 +52,7 @@ class Permission extends Enum
         return new self('Organisaties beheren');
     }
 
-    public static function  organisatiesBewerken(): Permission
+    public static function organisatiesBewerken(): Permission
     {
         return new self('Organisaties bewerken');
     }
