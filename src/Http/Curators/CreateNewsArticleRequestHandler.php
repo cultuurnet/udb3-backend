@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Http\Curators;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
+use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\Curators\Serializer\NewsArticleDenormalizer;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -44,6 +46,26 @@ final class CreateNewsArticleRequestHandler implements RequestHandlerInterface
 
         /** @var NewsArticle $newsArticle */
         $newsArticle = $requestBodyParser->parse($request)->getParsedBody();
+
+        // Do not include publisher to search for duplicates, because each publisher already has its own URL anyway.
+        $existingNewsArticles = $this->newsArticleRepository->search(
+            new NewsArticleSearch(
+                null,
+                $newsArticle->getAbout(),
+                $newsArticle->getUrl()->toString()
+            )
+        );
+
+        if (!$existingNewsArticles->isEmpty()) {
+            /** @var NewsArticle $first */
+            $first = $existingNewsArticles->getFirst();
+            $id = $first->getId()->toString();
+
+            throw ApiProblem::bodyInvalidDataWithDetail(
+                'A news article with the given url and about already exists. (' . $id . ') '
+                    . 'Do a GET /news-articles request with `url` and `about` parameters to find it programmatically.'
+            );
+        }
 
         $this->newsArticleRepository->create($newsArticle);
 
