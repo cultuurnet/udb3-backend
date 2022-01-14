@@ -187,7 +187,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateDescription(Description $description, Language $language): void
     {
-        if ($this->needsDescriptionUpdate($description, $language)) {
+        if ($this->descriptionCanBeUpdated($description, $language)) {
             $this->apply(
                 new DescriptionUpdated(
                     $this->actorId,
@@ -198,7 +198,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    public function needsDescriptionUpdate(Description $description, Language $language): bool
+    private function descriptionCanBeUpdated(Description $description, Language $language): bool
     {
         if ($this->translatedDescription === null) {
             return true;
