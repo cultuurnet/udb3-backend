@@ -22,15 +22,11 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
 
     private UpdateDescriptionRequestHandler $updateDescriptionRequestHandler;
 
-    private Psr7RequestBuilder $psr7RequestBuilder;
-
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
         $this->updateDescriptionRequestHandler = new UpdateDescriptionRequestHandler($this->commandBus);
-
-        $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
         $this->commandBus->record();
     }
