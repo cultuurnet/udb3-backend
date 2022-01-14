@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
@@ -71,6 +72,7 @@ class OrganizerLDProjector implements EventListener
      * @uses applyTitleUpdated
      * @uses applyTitleTranslated
      * @uses applyDescriptionUpdated
+     * @uses applyDescriptionDeleted
      * @uses applyAddressUpdated
      * @uses applyAddressRemoved
      * @uses applyAddressTranslated
@@ -314,6 +316,20 @@ class OrganizerLDProjector implements EventListener
         }
 
         $jsonLD->description->{$descriptionUpdated->getLanguage()} = $descriptionUpdated->getDescription();
+
+        return $document->withBody($jsonLD);
+    }
+
+    private function applyDescriptionDeleted(DescriptionDeleted $descriptionDeleted): JsonDocument
+    {
+        $document = $this->repository->fetch($descriptionDeleted->getOrganizerId());
+        $jsonLD = $document->getBody();
+
+        unset($jsonLD->description->{$descriptionDeleted->getLanguage()});
+
+        if (empty((array) $jsonLD->description)) {
+            unset($jsonLD->description);
+        }
 
         return $document->withBody($jsonLD);
     }
