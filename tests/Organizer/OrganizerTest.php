@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
@@ -634,6 +635,72 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         'Beschrijving van de organisatie',
                         'nl'
                     ),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider deleteDescriptionDataProvider
+     */
+    public function it_can_delete_a_description(array $given, callable $delete, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $delete($organizer))
+            ->then($then);
+    }
+
+    public function deleteDescriptionDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Delete existing description' => [
+                [
+                    $organizerCreated,
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->deleteDescription(new Language('en'));
+                },
+                [
+                    new DescriptionDeleted('ae3aab28-6351-489e-a61c-c48aec0a77df', 'en'),
+                ],
+            ],
+            'Try deleting non-existing description' => [
+                [
+                    $organizerCreated,
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->deleteDescription(new Language('fr'));
+                },
+                [
+                ],
+            ],
+            'Try deleting when no description available' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->deleteDescription(new Language('fr'));
+                },
+                [
                 ],
             ],
         ];
