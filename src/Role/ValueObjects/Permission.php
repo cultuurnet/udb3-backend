@@ -24,7 +24,7 @@ class Permission extends Enum
         ];
     }
 
-    public static function getAllowedPermissions(): array
+    public static function getAllPermissions(): array
     {
         return array_map(
             fn (string $permission) => new Permission($permission),

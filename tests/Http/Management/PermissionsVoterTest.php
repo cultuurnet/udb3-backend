@@ -41,7 +41,7 @@ class PermissionsVoterTest extends TestCase
         $kingToken = $this->createMockToken($this->kingId);
 
         $request = $this->createMock(Request::class);
-        $access = $this->voter->vote($kingToken, $request, Permission::getAllowedPermissions());
+        $access = $this->voter->vote($kingToken, $request, Permission::getAllPermissions());
 
         $this->assertEquals(VoterInterface::ACCESS_GRANTED, $access);
     }
@@ -54,7 +54,7 @@ class PermissionsVoterTest extends TestCase
         $peasantToken = $this->createMockToken($this->peasantId);
 
         $request = $this->createMock(Request::class);
-        $access = $this->voter->vote($peasantToken, $request, Permission::getAllowedPermissions());
+        $access = $this->voter->vote($peasantToken, $request, Permission::getAllPermissions());
 
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $access);
     }
