@@ -24,15 +24,9 @@ class EventExportCommandHandlerTest extends TestCase
      */
     private $eventExportService;
 
-    /**
-     * @var string
-     */
-    private $princeXMLBinaryPath;
+    private string $princeXMLBinaryPath;
 
-    /**
-     * @var EventExportCommandHandler
-     */
-    private $eventExportCommandHandler;
+    private EventExportCommandHandler $eventExportCommandHandler;
 
     /**
      * @var LoggerInterface|MockObject

@@ -14,10 +14,7 @@ use ValueObjects\Web\EmailAddress;
 
 class ExportEventsAsPDF implements ExportEventsInterface
 {
-    /**
-     * @var EventExportQuery
-     */
-    private $query;
+    private EventExportQuery $query;
 
     /**
      * @var null|EmailAddress
@@ -27,42 +24,21 @@ class ExportEventsAsPDF implements ExportEventsInterface
     /**
      * @var string[]
      */
-    private $selection;
+    private array $selection;
 
-    /**
-     * @var string
-     */
-    private $brand;
+    private string $brand;
 
-    /**
-     * @var string
-     */
-    private $logo;
+    private string $logo;
 
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
-    /**
-     * @var Subtitle
-     */
-    private $subtitle;
+    private Subtitle $subtitle;
 
-    /**
-     * @var Footer
-     */
-    private $footer;
+    private Footer $footer;
 
-    /**
-     * @var Publisher
-     */
-    private $publisher;
+    private Publisher $publisher;
 
-    /**
-     * @var string
-     */
-    private $template;
+    private string $template;
 
 
     public function __construct(
@@ -79,10 +55,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->template = $template->toString();
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withEmailNotificationTo(EmailAddress $address)
+    public function withEmailNotificationTo(EmailAddress $address): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setAddress($address);
@@ -90,16 +63,15 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
 
-    private function setAddress(EmailAddress $address)
+    private function setAddress(EmailAddress $address): void
     {
         $this->address = $address;
     }
 
     /**
      * @param string[] $selection
-     * @return ExportEventsAsPDF
      */
-    public function withSelection(array $selection)
+    public function withSelection(array $selection): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setSelection($selection);
@@ -110,15 +82,12 @@ class ExportEventsAsPDF implements ExportEventsInterface
     /**
      * @param string[] $selection
      */
-    private function setSelection(array $selection)
+    private function setSelection(array $selection): void
     {
         $this->selection = $selection;
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withSubtitle(Subtitle $subtitle)
+    public function withSubtitle(Subtitle $subtitle): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setSubtitle($subtitle);
@@ -127,15 +96,12 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
 
-    private function setSubtitle(Subtitle $subtitle)
+    private function setSubtitle(Subtitle $subtitle): void
     {
         $this->subtitle = $subtitle;
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withFooter(Footer $footer)
+    public function withFooter(Footer $footer): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setFooter($footer);
@@ -143,10 +109,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withPublisher(Publisher $publisher)
+    public function withPublisher(Publisher $publisher): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setPublisher($publisher);
@@ -154,77 +117,52 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-
-    private function setPublisher(Publisher $publisher)
+    private function setPublisher(Publisher $publisher): void
     {
         $this->publisher = $publisher;
     }
 
 
-    private function setFooter(Footer $footer)
+    private function setFooter(Footer $footer): void
     {
         $this->footer = $footer;
     }
 
-    /**
-     * @return string
-     */
-    public function getBrand()
+    public function getBrand(): string
     {
         return $this->brand;
     }
 
-    /**
-     * @return string
-     */
-    public function getLogo()
+    public function getLogo(): string
     {
         return $this->logo;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }
 
-    /**
-     * @return Subtitle
-     */
-    public function getSubtitle()
+    public function getSubtitle(): Subtitle
     {
         return $this->subtitle;
     }
 
-    /**
-     * @return Footer
-     */
-    public function getFooter()
+    public function getFooter(): Footer
     {
         return $this->footer;
     }
 
-    /**
-     * @return Publisher
-     */
-    public function getPublisher()
+    public function getPublisher(): Publisher
     {
         return $this->publisher;
     }
 
-    /**
-     * @return WebArchiveTemplate
-     */
-    public function getTemplate()
+    public function getTemplate(): WebArchiveTemplate
     {
-        return WebArchiveTemplate::fromNative($this->template);
+        return new WebArchiveTemplate($this->template);
     }
 
-    /**
-     * @return EventExportQuery The query.
-     */
     public function getQuery(): EventExportQuery
     {
         return $this->query;

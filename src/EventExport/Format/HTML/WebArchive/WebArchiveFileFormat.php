@@ -9,10 +9,7 @@ use Twig_Environment;
 
 abstract class WebArchiveFileFormat
 {
-    /**
-     * @var HTMLFileWriter
-     */
-    protected $htmlFileWriter;
+    protected HTMLFileWriter $htmlFileWriter;
 
     /**
      * @param string                $brand
@@ -44,10 +41,7 @@ abstract class WebArchiveFileFormat
         $this->htmlFileWriter = new HTMLFileWriter("export.{$template->toString()}.html.twig", $variables, $twig);
     }
 
-    /**
-     * @return HTMLFileWriter
-     */
-    public function getHTMLFileWriter()
+    public function getHTMLFileWriter(): HTMLFileWriter
     {
         return $this->htmlFileWriter;
     }

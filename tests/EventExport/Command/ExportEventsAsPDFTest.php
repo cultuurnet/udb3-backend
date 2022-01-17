@@ -15,12 +15,9 @@ use ValueObjects\Web\EmailAddress;
 
 class ExportEventsAsPDFTest extends TestCase
 {
-    /**
-     * @var ExportEventsAsPDF
-     */
-    private $export;
+    private ExportEventsAsPDF $export;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->export = new ExportEventsAsPDF(
             new EventExportQuery('*.*'),
@@ -34,7 +31,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_a_query()
+    public function it_includes_a_query(): void
     {
         $query = new EventExportQuery('*.*');
         $this->assertEquals($query, $this->export->getQuery());
@@ -43,7 +40,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_a_brand()
+    public function it_includes_a_brand(): void
     {
         $query = 'vlieg';
         $this->assertEquals($query, $this->export->getBrand());
@@ -52,7 +49,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_a_title()
+    public function it_includes_a_title(): void
     {
         $query = new Title('title');
         $this->assertEquals($query, $this->export->getTitle());
@@ -61,7 +58,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_a_template()
+    public function it_includes_a_template(): void
     {
         $template = WebArchiveTemplate::tips();
         $this->assertEquals($template, $this->export->getTemplate());
@@ -70,7 +67,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_to_specify_a_notification_email_address()
+    public function it_allows_to_specify_a_notification_email_address(): void
     {
         $email = new EmailAddress('john@doe.com');
         $newExport = $this->export->withEmailNotificationTo($email);
@@ -83,7 +80,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_to_specify_a_subtitle()
+    public function it_allows_to_specify_a_subtitle(): void
     {
         $subtitle = new Subtitle('Some subtitle');
         $newExport = $this->export->withSubtitle($subtitle);
@@ -96,7 +93,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_to_specify_a_footer()
+    public function it_allows_to_specify_a_footer(): void
     {
         $footer = new Footer('footer text');
         $newExport = $this->export->withFooter($footer);
@@ -109,7 +106,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_to_specify_a_publisher()
+    public function it_allows_to_specify_a_publisher(): void
     {
         $publisher = new Publisher('publisher text');
         $newExport = $this->export->withPublisher($publisher);
@@ -122,7 +119,7 @@ class ExportEventsAsPDFTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_to_specify_a_selection_of_events_to_include()
+    public function it_allows_to_specify_a_selection_of_events_to_include(): void
     {
         $selection = [
             'some-id',
