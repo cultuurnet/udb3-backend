@@ -44,25 +44,11 @@ class ExportEventsAsPDF implements ExportEventsInterface
      */
     private $title;
 
-    /**
-     * @var Subtitle
-     */
-    private $subtitle;
+    private ?Subtitle $subtitle;
 
-    /**
-     * @var Footer
-     */
-    private $footer;
+    private ?Footer $footer;
 
-    /**
-     * @var Publisher
-     */
-    private $publisher;
-
-    /**
-     * @var string
-     */
-    private $template;
+    private ?Publisher $publisher;
 
 
     public function __construct(
@@ -77,6 +63,10 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->query = $query;
         $this->title = $title;
         $this->template = $template->toString();
+        $this->selection = null;
+        $this->subtitle = null;
+        $this->footer = null;
+        $this->publisher = null;
     }
 
     /**
@@ -115,10 +105,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->selection = $selection;
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withSubtitle(Subtitle $subtitle)
+    public function withSubtitle(Subtitle $subtitle): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setSubtitle($subtitle);
@@ -126,8 +113,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-
-    private function setSubtitle(Subtitle $subtitle)
+    private function setSubtitle(Subtitle $subtitle): void
     {
         $this->subtitle = $subtitle;
     }
@@ -154,8 +140,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-
-    private function setPublisher(Publisher $publisher)
+    private function setPublisher(Publisher $publisher): void
     {
         $this->publisher = $publisher;
     }
@@ -190,26 +175,17 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $this->title;
     }
 
-    /**
-     * @return Subtitle
-     */
-    public function getSubtitle()
+    public function getSubtitle(): ?Subtitle
     {
         return $this->subtitle;
     }
 
-    /**
-     * @return Footer
-     */
-    public function getFooter()
+    public function getFooter(): ?Footer
     {
         return $this->footer;
     }
 
-    /**
-     * @return Publisher
-     */
-    public function getPublisher()
+    public function getPublisher(): ?Publisher
     {
         return $this->publisher;
     }
