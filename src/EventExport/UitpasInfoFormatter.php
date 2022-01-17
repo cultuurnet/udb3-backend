@@ -9,24 +9,14 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 
 class UitpasInfoFormatter
 {
-    /**
-     * @var PriceFormatter;
-     */
-    protected $priceFormatter;
+    protected PriceFormatter $priceFormatter;
 
-    /**
-     * UitpasInfoFormatter constructor.
-     *
-     */
     public function __construct(PriceFormatter $priceFormatter)
     {
         $this->priceFormatter = $priceFormatter;
     }
 
-    /**
-     * @return array
-     */
-    public function format(EventInfo $uitpasInfo)
+    public function format(EventInfo $uitpasInfo): array
     {
         // Format prices.
         $prices = $uitpasInfo->getPrices();
