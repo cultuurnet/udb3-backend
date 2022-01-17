@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
@@ -187,7 +188,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateDescription(Description $description, Language $language): void
     {
-        if ($this->needsDescriptionUpdate($description, $language)) {
+        if ($this->descriptionCanBeUpdated($description, $language)) {
             $this->apply(
                 new DescriptionUpdated(
                     $this->actorId,
@@ -198,7 +199,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    public function needsDescriptionUpdate(Description $description, Language $language): bool
+    private function descriptionCanBeUpdated(Description $description, Language $language): bool
     {
         if ($this->translatedDescription === null) {
             return true;
@@ -208,6 +209,29 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             return !$this->translatedDescription->getTranslation($language)->sameAs($description);
         } catch (OutOfBoundsException $outOfBoundsException) {
             return true;
+        }
+    }
+
+    public function deleteDescription(Language $language): void
+    {
+        if ($this->descriptionCanBeDeleted($language)) {
+            $this->apply(
+                new DescriptionDeleted($this->actorId, $language->toString())
+            );
+        }
+    }
+
+    private function descriptionCanBeDeleted(Language $language): bool
+    {
+        if ($this->translatedDescription === null) {
+            return false;
+        }
+
+        try {
+            $this->translatedDescription->getTranslation($language);
+            return true;
+        } catch (OutOfBoundsException $outOfBoundsException) {
+            return false;
         }
     }
 
@@ -554,7 +578,19 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             return;
         }
 
-        $this->translatedDescription->withTranslation($language, $description);
+        $this->translatedDescription = $this->translatedDescription->withTranslation($language, $description);
+    }
+
+    protected function applyDescriptionDeleted(DescriptionDeleted $descriptionDeleted): void
+    {
+        if ($this->translatedDescription->getLanguages()->count() === 1) {
+            $this->translatedDescription = null;
+            return;
+        }
+
+        $this->translatedDescription = $this->translatedDescription->withoutTranslation(
+            new Language($descriptionDeleted->getLanguage())
+        );
     }
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void

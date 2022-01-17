@@ -24,15 +24,11 @@ final class UpdateImagesRequestHandlerTest extends TestCase
 
     private UpdateImagesRequestHandler $updateImagesRequestHandler;
 
-    private Psr7RequestBuilder $psr7RequestBuilder;
-
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
         $this->updateImagesRequestHandler = new UpdateImagesRequestHandler($this->commandBus);
-
-        $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
         $this->commandBus->record();
     }

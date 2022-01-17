@@ -34,8 +34,6 @@ final class AddImageRequestHandlerTest extends TestCase
 
     private AddImageRequestHandler $addImageRequestHandler;
 
-    private Psr7RequestBuilder $psr7RequestBuilder;
-
     /** @var Repository|MockObject */
     private $imageRepository;
 
@@ -46,8 +44,6 @@ final class AddImageRequestHandlerTest extends TestCase
         $this->imageRepository = $this->createMock(Repository::class);
 
         $this->addImageRequestHandler = new AddImageRequestHandler($this->commandBus, $this->imageRepository);
-
-        $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
         $this->commandBus->record();
     }
