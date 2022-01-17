@@ -43,7 +43,7 @@ class UitpasInfoFormatter
             EventAdvantage::KANSENTARIEF()->toString() => 'Korting voor kansentarief',
         ];
         foreach ($advantageLabels as $advantage => $advantageLabel) {
-            if (!in_array($advantage, $advantages)) {
+            if (!in_array(new EventAdvantage($advantage), $advantages)) {
                 unset($advantageLabels[$advantage]);
             }
         }
