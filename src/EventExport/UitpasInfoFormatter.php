@@ -39,8 +39,8 @@ class UitpasInfoFormatter
         // Otherwise the order could get mixed up.
         $advantages = $uitpasInfo->getAdvantages();
         $advantageLabels = [
-            EventAdvantage::POINT_COLLECTING => 'Spaar punten',
-            EventAdvantage::KANSENTARIEF => 'Korting voor kansentarief',
+            EventAdvantage::POINT_COLLECTING()->toString() => 'Spaar punten',
+            EventAdvantage::KANSENTARIEF()->toString() => 'Korting voor kansentarief',
         ];
         foreach ($advantageLabels as $advantage => $advantageLabel) {
             if (!in_array($advantage, $advantages)) {

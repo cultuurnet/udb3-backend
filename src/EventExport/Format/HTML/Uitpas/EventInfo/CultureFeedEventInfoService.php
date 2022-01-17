@@ -131,7 +131,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         $advantages = [];
 
         if ($this->pointCollecting->isSatisfiedBy($event)) {
-            $advantages[] = EventAdvantage::POINT_COLLECTING;
+            $advantages[] = EventAdvantage::POINT_COLLECTING();
         }
 
         return $advantages;

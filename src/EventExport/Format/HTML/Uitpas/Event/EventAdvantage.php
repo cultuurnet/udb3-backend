@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event;
 
-use ValueObjects\Enum\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
  * Class EventAdvantage
  *
  * @package CultuurNet\UDB3\EventExport\Format\HTML\Uitpas
  *
- * @method static $this POINT_COLLECTING()
- * @method static $this KANSENTARIEF()
+ * @method static EventAdvantage POINT_COLLECTING()
+ * @method static EventAdvantage KANSENTARIEF()
  */
 class EventAdvantage extends Enum
 {
-    public const POINT_COLLECTING = 'POINT_COLLECTING';
-    public const KANSENTARIEF = 'KANSENTARIEF';
+    public static function getAllowedValues(): array
+    {
+        return [
+            'POINT_COLLECTING',
+            'KANSENTARIEF',
+        ];
+    }
 }
