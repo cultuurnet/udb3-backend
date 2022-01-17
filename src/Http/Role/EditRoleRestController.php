@@ -115,7 +115,7 @@ class EditRoleRestController
             throw new InvalidArgumentException('Required field roleId is missing');
         }
 
-        if (!array_key_exists($permissionKey, Permission::getAllowedValues())) {
+        if (!in_array($permissionKey, Permission::getAllowedValues())) {
             throw new InvalidArgumentException('Field permission is invalid.');
         }
 
