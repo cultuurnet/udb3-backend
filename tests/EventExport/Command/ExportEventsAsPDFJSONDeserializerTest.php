@@ -43,7 +43,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
                 'vlieg',
                 'http://foo.bar/logo.svg',
                 new Title('a title'),
-                WebArchiveTemplate::TIPS()
+                WebArchiveTemplate::tips()
             ),
             $command
         );

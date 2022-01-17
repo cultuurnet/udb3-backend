@@ -27,7 +27,7 @@ class ExportEventsAsPDFTest extends TestCase
             'vlieg',
             'http://foo.bar/logo.svg',
             new Title('title'),
-            WebArchiveTemplate::TIPS()
+            WebArchiveTemplate::tips()
         );
     }
 
@@ -63,7 +63,7 @@ class ExportEventsAsPDFTest extends TestCase
      */
     public function it_includes_a_template()
     {
-        $template = WebArchiveTemplate::TIPS();
+        $template = WebArchiveTemplate::tips();
         $this->assertEquals($template, $this->export->getTemplate());
     }
 

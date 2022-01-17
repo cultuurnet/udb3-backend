@@ -41,7 +41,7 @@ abstract class WebArchiveFileFormat
             'publisher' => $publisher,
             'partner' => !in_array($brand, ['uit', 'vlieg', 'uitpas', 'paspartoe']),
         ];
-        $this->htmlFileWriter = new HTMLFileWriter("export.{$template->getValue()}.html.twig", $variables, $twig);
+        $this->htmlFileWriter = new HTMLFileWriter("export.{$template->toString()}.html.twig", $variables, $twig);
     }
 
     /**

@@ -76,7 +76,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->logo = $logo;
         $this->query = $query;
         $this->title = $title;
-        $this->template = $template->toNative();
+        $this->template = $template->toString();
     }
 
     /**

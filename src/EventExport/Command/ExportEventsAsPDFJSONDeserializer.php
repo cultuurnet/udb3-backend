@@ -64,9 +64,9 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 
         $title = new Title($customizations->title);
 
-        $template = WebArchiveTemplate::TIPS();
+        $template = WebArchiveTemplate::tips();
         if (isset($customizations->template)) {
-            $template = WebArchiveTemplate::fromNative($customizations->template);
+            $template = new WebArchiveTemplate($customizations->template);
         }
 
         $command = new ExportEventsAsPDF(
