@@ -14,35 +14,20 @@ use ValueObjects\Web\EmailAddress;
 
 class ExportEventsAsPDF implements ExportEventsInterface
 {
-    /**
-     * @var EventExportQuery
-     */
-    private $query;
+    private EventExportQuery $query;
+
+    private ?EmailAddress $address;
 
     /**
-     * @var null|EmailAddress
+     * @var null|string[]
      */
-    private $address;
+    private ?array $selection;
 
-    /**
-     * @var string[]
-     */
-    private $selection;
+    private string $brand;
 
-    /**
-     * @var string
-     */
-    private $brand;
+    private string $logo;
 
-    /**
-     * @var string
-     */
-    private $logo;
-
-    /**
-     * @var Title
-     */
-    private $title;
+    private Title $title;
 
     private ?Subtitle $subtitle;
 
@@ -50,6 +35,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
 
     private ?Publisher $publisher;
 
+    private string $template;
 
     public function __construct(
         EventExportQuery $query,
@@ -69,10 +55,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->publisher = null;
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withEmailNotificationTo(EmailAddress $address)
+    public function withEmailNotificationTo(EmailAddress $address): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setAddress($address);
@@ -80,16 +63,15 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
 
-    private function setAddress(EmailAddress $address)
+    private function setAddress(EmailAddress $address): void
     {
         $this->address = $address;
     }
 
     /**
      * @param string[] $selection
-     * @return ExportEventsAsPDF
      */
-    public function withSelection(array $selection)
+    public function withSelection(array $selection): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setSelection($selection);
@@ -100,7 +82,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
     /**
      * @param string[] $selection
      */
-    private function setSelection(array $selection)
+    private function setSelection(array $selection): void
     {
         $this->selection = $selection;
     }
@@ -118,10 +100,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->subtitle = $subtitle;
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withFooter(Footer $footer)
+    public function withFooter(Footer $footer): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setFooter($footer);
@@ -129,10 +108,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function withPublisher(Publisher $publisher)
+    public function withPublisher(Publisher $publisher): ExportEventsAsPDF
     {
         $exportEvents = clone $this;
         $exportEvents->setPublisher($publisher);
@@ -145,32 +121,22 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->publisher = $publisher;
     }
 
-
-    private function setFooter(Footer $footer)
+    private function setFooter(Footer $footer): void
     {
         $this->footer = $footer;
     }
 
-    /**
-     * @return string
-     */
-    public function getBrand()
+    public function getBrand(): string
     {
         return $this->brand;
     }
 
-    /**
-     * @return string
-     */
-    public function getLogo()
+    public function getLogo(): string
     {
         return $this->logo;
     }
 
-    /**
-     * @return Title
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }
@@ -190,22 +156,15 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $this->publisher;
     }
 
-    /**
-     * @return WebArchiveTemplate
-     */
-    public function getTemplate()
+    public function getTemplate(): WebArchiveTemplate
     {
         return new WebArchiveTemplate($this->template);
     }
 
-    /**
-     * @return EventExportQuery The query.
-     */
     public function getQuery(): EventExportQuery
     {
         return $this->query;
     }
-
 
     public function getAddress(): ?EmailAddress
     {
