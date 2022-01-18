@@ -117,7 +117,7 @@ class EditRoleRestController
 
         try {
             $permission = Permission::fromUpperCaseString($permissionKey);
-        } catch(InvalidArgumentException $ex) {
+        } catch (InvalidArgumentException $ex) {
             throw new InvalidArgumentException('Field permission is invalid.');
         }
 
@@ -137,7 +137,7 @@ class EditRoleRestController
 
         try {
             $permission = Permission::fromUpperCaseString($permissionKey);
-        } catch(InvalidArgumentException $ex) {
+        } catch (InvalidArgumentException $ex) {
             throw new InvalidArgumentException('Field permission is invalid.');
         }
 
