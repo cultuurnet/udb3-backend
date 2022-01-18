@@ -23,31 +23,15 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var CultureFeed_Uitpas
-     */
-    protected $uitpas;
+    private CultureFeed_Uitpas $uitpas;
 
-    /**
-     * @var DistributionKeySpecification
-     */
-    protected $kansenTariefForCurrentCardSystem;
+    private DistributionKeySpecification $kansenTariefForCurrentCardSystem;
 
-    /**
-     * @var DistributionKeySpecification
-     */
-    protected $kansenTariefForOtherCardSystems;
+    private DistributionKeySpecification $kansenTariefForOtherCardSystems;
 
-    /**
-     * @var PointCollectingSpecification
-     */
-    protected $pointCollecting;
+    private PointCollectingSpecification $pointCollecting;
 
-    /**
-     * @var PromotionQueryFactoryInterface
-     */
-    protected $promotionQueryFactory;
-
+    private PromotionQueryFactoryInterface $promotionQueryFactory;
 
     public function __construct(
         CultureFeed_Uitpas $uitpas,
@@ -66,10 +50,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         $this->promotionQueryFactory = $promotionQueryFactory;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getEventInfo($eventId)
+    public function getEventInfo(string $eventId): EventInfo
     {
         $prices = [];
         $advantages = [];
@@ -101,10 +82,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         );
     }
 
-    /**
-     * @return array
-     */
-    private function getUitpasPricesFromEvent(CultureFeed_Uitpas_Event_CultureEvent $event)
+    private function getUitpasPricesFromEvent(CultureFeed_Uitpas_Event_CultureEvent $event): array
     {
         $prices = [];
 
@@ -126,7 +104,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     /**
      * @return EventAdvantage[]
      */
-    private function getUitpasAdvantagesFromEvent(CultureFeed_Uitpas_Event_CultureEvent $event)
+    private function getUitpasAdvantagesFromEvent(CultureFeed_Uitpas_Event_CultureEvent $event): array
     {
         $advantages = [];
 
@@ -138,11 +116,9 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     }
 
     /**
-     * Get a list of formatted promotions
-     *
      * @return string[]
      */
-    private function getUitpasPointsPromotionsFromEvent(\CultureFeed_Uitpas_Event_CultureEvent $event)
+    private function getUitpasPointsPromotionsFromEvent(\CultureFeed_Uitpas_Event_CultureEvent $event): array
     {
         $promotions = [];
         $promotionQuery = $this->promotionQueryFactory->createForEvent($event);
@@ -180,13 +156,10 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         return $promotions;
     }
 
-    /**
-     * @return array
-     */
     private function getUitpasPricesFromDistributionKey(
         CultureFeed_Uitpas_CardSystem $cardSystem,
         CultureFeed_Uitpas_DistributionKey $key
-    ) {
+    ): array {
         $uitpasPrices = [];
 
         $tariffAsNumeric = (float) $key->tariff;
