@@ -154,12 +154,12 @@ class EditRoleRestController
         }
 
         try {
-            $roleId = new UUID($roleId);
+            $roleUuid = new UUID($roleId);
         } catch (InvalidNativeArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
 
-        $this->service->addLabel($roleId, $labelId);
+        $this->service->addLabel($roleUuid, $labelId);
 
         return new NoContent();
     }
@@ -173,12 +173,12 @@ class EditRoleRestController
         }
 
         try {
-            $roleId = new UUID($roleId);
+            $roleUuid = new UUID($roleId);
         } catch (InvalidNativeArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
 
-        $this->service->removeLabel($roleId, $labelId);
+        $this->service->removeLabel($roleUuid, $labelId);
 
         return new NoContent();
     }
@@ -186,7 +186,7 @@ class EditRoleRestController
     public function addUser(string $roleId, string $userId): Response
     {
         try {
-            $roleId = new UUID($roleId);
+            $roleUuid = new UUID($roleId);
         } catch (InvalidNativeArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
@@ -195,9 +195,7 @@ class EditRoleRestController
             throw new InvalidArgumentException('Required field userId is missing');
         }
 
-        $userId = new StringLiteral($userId);
-
-        $this->service->addUser($roleId, $userId);
+        $this->service->addUser($roleUuid, new StringLiteral($userId));
 
         return new NoContent();
     }
@@ -205,7 +203,7 @@ class EditRoleRestController
     public function removeUser(string $roleId, string $userId): Response
     {
         try {
-            $roleId = new UUID($roleId);
+            $roleUuid = new UUID($roleId);
         } catch (InvalidNativeArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
@@ -214,9 +212,7 @@ class EditRoleRestController
             throw new InvalidArgumentException('Required field userId is missing');
         }
 
-        $userId = new StringLiteral($userId);
-
-        $this->service->removeUser($roleId, $userId);
+        $this->service->removeUser($roleUuid, new StringLiteral($userId));
 
         return new NoContent();
     }
