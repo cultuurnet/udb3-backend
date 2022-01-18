@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
@@ -49,8 +50,6 @@ class ReadRoleRestController
 
     public function get(string $id): JsonResponse
     {
-        $response = null;
-
         $role = $this->service->getEntity($id);
 
         if (!$role) {
@@ -69,16 +68,10 @@ class ReadRoleRestController
     {
         $document = $this->roleService->getUsersByRoleUuid(new UUID($roleId));
 
-        $body = json_decode($document->getRawBody(), true);
+        $body = Json::decodeAssociatively($document->getRawBody());
 
         $response = JsonResponse::create()
-            ->setContent(
-                json_encode(
-                    array_values(
-                        $body
-                    )
-                )
-            );
+            ->setContent(Json::encode(array_values($body)));
 
         $response->headers->set('Vary', 'Origin');
 
@@ -87,10 +80,9 @@ class ReadRoleRestController
 
     public function getUserRoles(string $userId): Response
     {
-        $userId = new StringLiteral($userId);
         try {
-            $document = $this->roleService->getRolesByUserId($userId);
-            $body = json_decode($document->getRawBody(), true);
+            $document = $this->roleService->getRolesByUserId(new StringLiteral($userId));
+            $body = Json::decodeAssociatively($document->getRawBody());
         } catch (DocumentDoesNotExist $e) {
             // It's possible the document does not exist if the user exists but has
             // no roles, since we don't have a "UserCreated" event to listen to and
@@ -101,13 +93,7 @@ class ReadRoleRestController
         }
 
         $response = JsonResponse::create()
-            ->setContent(
-                json_encode(
-                    array_values(
-                        $body
-                    )
-                )
-            );
+            ->setContent(Json::encode(array_values($body)));
 
         $response->headers->set('Vary', 'Origin');
 
@@ -166,14 +152,10 @@ class ReadRoleRestController
     public function getRoleLabels(string $roleId): Response
     {
         $document = $this->roleService->getLabelsByRoleUuid(new UUID($roleId));
-        $body = json_decode($document->getRawBody(), true);
+        $body = Json::decodeAssociatively($document->getRawBody());
         $response = JsonResponse::create()
             ->setContent(
-                json_encode(
-                    array_values(
-                        $body
-                    )
-                )
+                Json::encode(array_values($body))
             );
 
         $response->headers->set('Vary', 'Origin');
