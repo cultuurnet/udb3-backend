@@ -124,7 +124,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     }
 
     /**
-     * @return string[]
+     * @return EventAdvantage[]
      */
     private function getUitpasAdvantagesFromEvent(CultureFeed_Uitpas_Event_CultureEvent $event)
     {
