@@ -17,12 +17,9 @@ use ValueObjects\Web\EmailAddress;
 
 class ExportEventsAsPDFJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var ExportEventsAsPDFJSONDeserializer
-     */
-    private $deserializer;
+    private ExportEventsAsPDFJSONDeserializer $deserializer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->deserializer = new ExportEventsAsPDFJSONDeserializer();
     }
@@ -30,7 +27,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_PDF_export_command()
+    public function it_returns_a_PDF_export_command(): void
     {
         $exportData = $this->getJSONStringFromFile('minimum_export_pdf_data.json');
         $command = $this->deserializer->deserialize($exportData);
@@ -43,7 +40,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
                 'vlieg',
                 'http://foo.bar/logo.svg',
                 new Title('a title'),
-                WebArchiveTemplate::TIPS()
+                WebArchiveTemplate::tips()
             ),
             $command
         );
@@ -52,7 +49,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_expects_a_query_property()
+    public function it_expects_a_query_property(): void
     {
         $exportData = $this->getJSONStringFromFile('export_pdf_data_without_query.json');
 
@@ -64,7 +61,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_expects_a_brand_property()
+    public function it_expects_a_brand_property(): void
     {
         $exportData = $this->getJSONStringFromFile('export_pdf_data_without_brand.json');
 
@@ -76,7 +73,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_expects_a_title_property()
+    public function it_expects_a_title_property(): void
     {
         $exportData = $this->getJSONStringFromFile('export_pdf_data_without_title.json');
 
@@ -88,7 +85,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_optional_properties()
+    public function it_includes_optional_properties(): void
     {
         $exportData = $this->getJSONStringFromFile('export_pdf_data.json');
         $command = $this->deserializer->deserialize($exportData);
@@ -97,14 +94,14 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
         $this->assertEquals(new Publisher('a publisher'), $command->getPublisher());
         $this->assertEquals(new Footer('a footer'), $command->getFooter());
         $this->assertEquals(new EmailAddress('john@doe.com'), $command->getAddress());
-        $this->assertEquals(WebArchiveTemplate::MAP(), $command->getTemplate());
+        $this->assertEquals(WebArchiveTemplate::map(), $command->getTemplate());
     }
 
     /**
      * Test property provider
      * property, value, getter
      */
-    public function exportPropertyDataProvider()
+    public function exportPropertyDataProvider(): array
     {
         return [
             ['subtitle', new Subtitle('a subtitle'), 'getSubtitle'],
@@ -114,7 +111,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
         ];
     }
 
-    private function getJSONStringFromFile($fileName)
+    private function getJSONStringFromFile($fileName): StringLiteral
     {
         $json = file_get_contents(
             __DIR__ . '/' . $fileName

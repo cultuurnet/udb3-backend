@@ -13,42 +13,24 @@ use Twig_Environment;
 
 class PDFWebArchiveFileFormat extends WebArchiveFileFormat implements FileFormatInterface
 {
-    /**
-     * @var string
-     */
-    protected $princeXMLBinaryPath;
+    private string $princeXMLBinaryPath;
 
-    /**
-     * @var EventInfoServiceInterface
-     */
-    protected $uitpas;
+    private ?EventInfoServiceInterface $uitpas;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface
-     */
-    protected $calendarSummaryRepository;
+    private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
-    /**
-     * @param string                                  $princeXMLBinaryPath
-     * @param string                                  $brand
-     * @param string                                  $logo
-     * @param string                                  $title
-     * @param string|null                             $subTitle
-     * @param string|null                             $footer
-     * @param string|null                             $publisher
-     */
     public function __construct(
         $princeXMLBinaryPath,
         WebArchiveTemplate $template,
-        $brand,
-        $logo,
-        $title,
-        $subTitle = null,
-        $footer = null,
-        $publisher = null,
-        EventInfoServiceInterface $uitpas = null,
-        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
-        Twig_Environment $twig = null
+        string $brand,
+        string $logo,
+        string $title,
+        ?string $subTitle = null,
+        ?string $footer = null,
+        ?string $publisher = null,
+        ?EventInfoServiceInterface $uitpas = null,
+        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
+        ?Twig_Environment $twig = null
     ) {
         parent::__construct($template, $brand, $logo, $title, $subTitle, $footer, $publisher, $twig);
         $this->princeXMLBinaryPath = $princeXMLBinaryPath;
@@ -56,18 +38,12 @@ class PDFWebArchiveFileFormat extends WebArchiveFileFormat implements FileFormat
         $this->calendarSummaryRepository = $calendarSummaryRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFileNameExtension()
+    public function getFileNameExtension(): string
     {
         return 'pdf';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getWriter()
+    public function getWriter(): PDFWebArchiveFileWriter
     {
         return new PDFWebArchiveFileWriter(
             $this->princeXMLBinaryPath,

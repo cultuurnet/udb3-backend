@@ -9,28 +9,17 @@ use Twig_Environment;
 
 abstract class WebArchiveFileFormat
 {
-    /**
-     * @var HTMLFileWriter
-     */
-    protected $htmlFileWriter;
+    protected HTMLFileWriter $htmlFileWriter;
 
-    /**
-     * @param string                $brand
-     * @param string                $logo
-     * @param string                $title
-     * @param string|null           $subtitle
-     * @param string|null           $footer
-     * @param string|null           $publisher
-     */
     public function __construct(
         WebArchiveTemplate $template,
-        $brand,
-        $logo,
-        $title,
-        $subtitle = null,
-        $footer = null,
-        $publisher = null,
-        Twig_Environment $twig = null
+        string $brand,
+        string $logo,
+        string $title,
+        ?string $subtitle = null,
+        ?string $footer = null,
+        ?string $publisher = null,
+        ?Twig_Environment $twig = null
     ) {
         $variables = [
             'brand' => $brand,
@@ -41,13 +30,10 @@ abstract class WebArchiveFileFormat
             'publisher' => $publisher,
             'partner' => !in_array($brand, ['uit', 'vlieg', 'uitpas', 'paspartoe']),
         ];
-        $this->htmlFileWriter = new HTMLFileWriter("export.{$template->getValue()}.html.twig", $variables, $twig);
+        $this->htmlFileWriter = new HTMLFileWriter("export.{$template->toString()}.html.twig", $variables, $twig);
     }
 
-    /**
-     * @return HTMLFileWriter
-     */
-    public function getHTMLFileWriter()
+    public function getHTMLFileWriter(): HTMLFileWriter
     {
         return $this->htmlFileWriter;
     }
