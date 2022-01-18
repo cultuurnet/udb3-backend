@@ -110,12 +110,10 @@ class ReadRoleRestController
         $userId = new StringLiteral($this->currentUserId);
 
         if ($this->userIsGodUser) {
-            $list = $this->createPermissionsList(Permission::getAllowedValues());
+            $list = $this->createPermissionsList(Permission::getAllPermissions());
         } else {
             $list = array_map(
-                function (Permission $permission) {
-                    return self::getUppercaseName($permission->toString());
-                },
+                fn (Permission $permission) => $permission->toUpperCaseString(),
                 $this->permissionsRepository->getPermissions($userId)
             );
         }
@@ -129,24 +127,19 @@ class ReadRoleRestController
             ->setPrivate();
     }
 
+    /**
+     * @param Permission[] $permissions
+     * @return string[]
+     */
     private function createPermissionsList(array $permissions): array
     {
         $list = [];
 
         foreach ($permissions as $permission) {
-            $list[] = self::getUppercaseName((new Permission($permission))->toString());
+            $list[] = $permission->toUpperCaseString();
         }
 
         return $list;
-    }
-
-    /**
-     * This function was added during the refactoring of Permission.
-     * Because the API expects Uppercase/Underscore names for Permission.
-     */
-    private static function getUppercaseName(string $value): string
-    {
-        return str_replace(' ', '_', strtoupper($value));
     }
 
     public function getRoleLabels(string $roleId): Response
@@ -165,7 +158,7 @@ class ReadRoleRestController
 
     public function getPermissions(): JsonResponse
     {
-        $list = $this->createPermissionsList(Permission::getAllowedValues());
+        $list = $this->createPermissionsList(Permission::getAllPermissions());
 
         return (new JsonResponse())
             ->setData($list)
