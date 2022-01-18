@@ -95,12 +95,10 @@ class Projector extends RoleProjector
             $permissionAdded->getUuid()->toNative()
         );
 
-        $permission = $permissionAdded->getPermission();
-
         $json = $document->getBody();
 
         $permissions = property_exists($json, 'permissions') ? $json->permissions : [];
-        array_push($permissions, self::getUppercaseName($permission->toString()));
+        $permissions[] = $permissionAdded->getPermission()->toUpperCaseString();
 
         $json->permissions = array_unique($permissions);
 
@@ -113,8 +111,7 @@ class Projector extends RoleProjector
             $permissionRemoved->getUuid()->toNative()
         );
 
-        $permission = $permissionRemoved->getPermission();
-        $permissionName = self::getUppercaseName($permission->toString());
+        $permissionName = $permissionRemoved->getPermission()->toUpperCaseString();
 
         $json = $document->getBody();
         $json->permissions = array_values(
@@ -127,14 +124,5 @@ class Projector extends RoleProjector
         );
 
         $this->repository->save($document->withBody($json));
-    }
-
-    /**
-     * This function was added during the refactoring of Permission.
-     * Because the API expects Uppercase/Underscore names for Permission.
-     */
-    private static function getUppercaseName(string $value): string
-    {
-        return str_replace(' ', '_', strtoupper($value));
     }
 }
