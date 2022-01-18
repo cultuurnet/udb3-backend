@@ -26,11 +26,11 @@ class PermissionsVoter implements VoterInterface
     }
 
     /**
-     * @param Permission $attribute
+     * @param string $attribute
      */
     public function supportsAttribute($attribute): bool
     {
-        return in_array($attribute->toString(), Permission::getAllowedValues(), true);
+        return in_array($attribute, Permission::getAllowedValues(), true);
     }
 
     public function supportsClass($class): bool
@@ -39,7 +39,7 @@ class PermissionsVoter implements VoterInterface
     }
 
     /**
-     * @param Permission[] $attributes
+     * @param string[] $attributes
      */
     public function vote(TokenInterface $token, $object, array $attributes): int
     {
