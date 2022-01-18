@@ -25,25 +25,22 @@ class UserPermissionsVoter implements VoterInterface
     }
 
     /**
-     * @inheritdoc
+     * @param Permission $attribute
      */
     public function supportsAttribute($attribute): bool
     {
         return in_array($attribute->toString(), Permission::getAllowedValues(), true);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function supportsClass($class): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * @param Permission[] $attributes
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         $result = self::ACCESS_ABSTAIN;
 
