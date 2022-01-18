@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-/**
- * Interface for a service responsible for search-related tasks.
- */
 interface SearchServiceInterface
 {
     /**
@@ -18,10 +15,8 @@ interface SearchServiceInterface
      *   How many items to retrieve.
      * @param int $start
      *   Offset to start from.
-     * @param array $sort
+     * @param ?array $sort
      *   Sort by fields. Eg. ['created' => 'asc']
-     *
-     * @return Results
      */
-    public function search(string $query, $limit = 30, $start = 0, array $sort = null);
+    public function search(string $query, int $limit = 30, int $start = 0, ?array $sort = null): Results;
 }

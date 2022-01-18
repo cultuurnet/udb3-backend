@@ -42,7 +42,7 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    public function search(string $query, $limit = 30, $start = 0, array $sort = null): Results
+    public function search(string $query, int $limit = 30, int $start = 0, ?array $sort = null): Results
     {
         $queryParameters = [
             'q' => $query,
