@@ -17,7 +17,7 @@ class ResultsTest extends TestCase
     /**
      * @test
      */
-    public function it_is_instantiated_with_result_items_and_total()
+    public function it_is_instantiated_with_result_items_and_total(): void
     {
         $items = OfferIdentifierCollection::fromArray(
             [
@@ -54,7 +54,7 @@ class ResultsTest extends TestCase
     /**
      * @test
      */
-    public function it_only_accepts_an_items_array()
+    public function it_only_accepts_an_items_array(): void
     {
         $this->expectException(TypeError::class);
         new Results('foo', new Integer(5));
@@ -63,7 +63,7 @@ class ResultsTest extends TestCase
     /**
      * @test
      */
-    public function it_only_accepts_a_total_items_integer()
+    public function it_only_accepts_a_total_items_integer(): void
     {
         $this->expectException(TypeError::class);
 

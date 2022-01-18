@@ -10,15 +10,9 @@ use ValueObjects\Number\Integer as IntegerLiteral;
 
 class Results
 {
-    /**
-     * @var OfferIdentifierCollection
-     */
-    private $items;
+    private OfferIdentifierCollection $items;
 
-    /**
-     * @var IntegerLiteral
-     */
-    private $totalItems;
+    private IntegerLiteral $totalItems;
 
     public function __construct(OfferIdentifierCollection $items, IntegerLiteral $totalItems)
     {
