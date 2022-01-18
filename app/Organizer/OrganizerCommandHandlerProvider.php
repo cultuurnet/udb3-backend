@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Organizer;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
@@ -16,7 +17,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateOrganizerHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
@@ -28,10 +29,6 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app[UpdateOrganizerHandler::class] = $app->share(
-            fn (Application $application) => new UpdateOrganizerHandler($app['organizer_repository'])
-        );
-
         $app[DeleteOrganizerHandler::class] = $app->share(
             fn (Application $application) => new DeleteOrganizerHandler(
                 $app['organizer_repository'],
@@ -76,6 +73,10 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
             fn (Application $application) => new UpdateDescriptionHandler($app['organizer_repository'])
         );
 
+        $app[DeleteDescriptionHandler::class] = $app->share(
+            fn (Application $application) => new DeleteDescriptionHandler($app['organizer_repository'])
+        );
+
         $app[UpdateAddressHandler::class] = $app->share(
             fn (Application $application) => new UpdateAddressHandler($app['organizer_repository'])
         );
@@ -94,6 +95,10 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 
         $app[AddImageHandler::class] = $app->share(
             fn (Application $application) => new AddImageHandler($app['organizer_repository'])
+        );
+
+        $app[UpdateMainImageHandler::class] = $app->share(
+            fn (Application $application) => new UpdateMainImageHandler($app['organizer_repository'])
         );
 
         $app[UpdateImageHandler::class] = $app->share(

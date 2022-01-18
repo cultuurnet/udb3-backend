@@ -38,6 +38,7 @@ use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler;
@@ -45,7 +46,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateOrganizerHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -636,18 +637,19 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateAudienceHandler::class]);
 
         // Organizer command handlers
-        $commandBus->subscribe($app[UpdateOrganizerHandler::class]);
         $commandBus->subscribe($app[DeleteOrganizerHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class]);
         $commandBus->subscribe($app[UpdateTitleHandler::class]);
         $commandBus->subscribe($app[UpdateDescriptionHandler::class]);
+        $commandBus->subscribe($app[DeleteDescriptionHandler::class]);
         $commandBus->subscribe($app[UpdateAddressHandler::class]);
         $commandBus->subscribe($app[RemoveAddressHandler::class]);
         $commandBus->subscribe($app[UpdateWebsiteHandler::class]);
         $commandBus->subscribe($app[UpdateContactPointHandler::class]);
         $commandBus->subscribe($app[AddImageHandler::class]);
+        $commandBus->subscribe($app[UpdateMainImageHandler::class]);
         $commandBus->subscribe($app[UpdateImageHandler::class]);
         $commandBus->subscribe($app[RemoveImageHandler::class]);
 

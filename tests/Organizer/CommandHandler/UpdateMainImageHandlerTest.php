@@ -9,17 +9,17 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Organizer\Commands\UpdateOrganizer;
+use CultuurNet\UDB3\Organizer\Commands\UpdateMainImage;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
-final class UpdateOrganizerHandlerTest extends CommandHandlerScenarioTestCase
+final class UpdateMainImageHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new UpdateOrganizerHandler(new OrganizerRepository($eventStore, $eventBus));
+        return new UpdateMainImageHandler(new OrganizerRepository($eventStore, $eventBus));
     }
 
     /**
@@ -49,7 +49,7 @@ final class UpdateOrganizerHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ])
             ->when(
-                (new UpdateOrganizer($id))->withMainImageId(new UUID('cf539408-bba9-4e77-9f85-72019013db37'))
+                new UpdateMainImage($id, new UUID('cf539408-bba9-4e77-9f85-72019013db37'))
             )
             ->then([
                 new MainImageUpdated($id, 'cf539408-bba9-4e77-9f85-72019013db37'),

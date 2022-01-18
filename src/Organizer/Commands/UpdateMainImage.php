@@ -8,27 +8,21 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class UpdateOrganizer implements AuthorizableCommand
+final class UpdateMainImage implements AuthorizableCommand
 {
     private string $organizerId;
 
-    private ?UUID $mainImageId = null;
+    private UUID $imageId;
 
-    public function __construct(string $organizerId)
+    public function __construct(string $organizerId, UUID $imageId)
     {
         $this->organizerId = $organizerId;
+        $this->imageId = $imageId;
     }
 
-    public function getMainImageId(): ?UUID
+    public function getImageId(): UUID
     {
-        return $this->mainImageId;
-    }
-
-    public function withMainImageId(UUID $mainImageId): UpdateOrganizer
-    {
-        $clone = clone $this;
-        $clone->mainImageId = $mainImageId;
-        return $clone;
+        return $this->imageId;
     }
 
     public function getItemId(): string

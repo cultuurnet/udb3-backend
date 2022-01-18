@@ -11,13 +11,13 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Organizer\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Organizer\Serializers\UpdateOrganizerDenormalizer;
-use Psr\Http\Message\ResponseInterface;
+use CultuurNet\UDB3\Organizer\Commands\UpdateMainImage;
+use CultuurNet\UDB3\Organizer\Serializers\UpdateMainImageDenormalizer;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateOrganizerRequestHandler implements RequestHandlerInterface
+final class UpdateMainImageRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -32,14 +32,15 @@ final class UpdateOrganizerRequestHandler implements RequestHandlerInterface
         $organizerId = $routeParameters->getOrganizerId();
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_PATCH),
-            new DenormalizingRequestBodyParser(new UpdateOrganizerDenormalizer($organizerId), UpdateOrganizer::class)
+            new LegacyMainImageRequestBodyParser(),
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_MAIN_IMAGE_PUT),
+            new DenormalizingRequestBodyParser(new UpdateMainImageDenormalizer($organizerId), UpdateMainImage::class)
         );
 
-        /** @var UpdateOrganizer $updateOrganizer */
-        $updateOrganizer = $requestBodyParser->parse($request)->getParsedBody();
+        /** @var UpdateMainImage $updateMainImage */
+        $updateMainImage = $requestBodyParser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch($updateOrganizer);
+        $this->commandBus->dispatch($updateMainImage);
 
         return new NoContentResponse();
     }

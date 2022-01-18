@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use Broadway\CommandHandling\CommandBus;
-use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -39,18 +37,12 @@ final class AddImageRequestHandler implements RequestHandlerInterface
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_IMAGE_POST),
+            new AddMediaObjectPropertiesRequestBodyParser($this->mediaRepository),
             new DenormalizingRequestBodyParser(new AddImageDenormalizer($organizerId), AddImage::class)
         );
 
         /** @var AddImage $addImage */
         $addImage = $requestBodyParser->parse($request)->getParsedBody();
-        $imageId = $addImage->getImage()->getId()->toString();
-
-        try {
-            $this->mediaRepository->load($imageId);
-        } catch (AggregateNotFoundException $exception) {
-            throw ApiProblem::imageNotFound($imageId);
-        }
 
         $this->commandBus->dispatch($addImage);
 
