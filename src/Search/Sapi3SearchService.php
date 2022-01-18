@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use GuzzleHttp\Psr7\Request;
@@ -20,26 +21,13 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var UriInterface
-     */
-    private $searchLocation;
+    private UriInterface $searchLocation;
 
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    private HttpClient $httpClient;
 
-    /**
-     * @var IriOfferIdentifierFactoryInterface
-     */
-    private $offerIdentifier;
+    private IriOfferIdentifierFactoryInterface $offerIdentifier;
 
-    /**
-     * @var string|null
-     */
-    private $apiKey;
-
+    private ?string $apiKey;
 
     public function __construct(
         UriInterface $searchLocation,
@@ -54,7 +42,7 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    public function search(string $query, $limit = 30, $start = 0, array $sort = null)
+    public function search(string $query, $limit = 30, $start = 0, array $sort = null): Results
     {
         $queryParameters = [
             'q' => $query,
@@ -88,10 +76,10 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
             ->getBody()
             ->getContents();
 
-        $this->logger->debug('Sent SAPI3 request with the following parameters: ' . json_encode($queryParameters));
+        $this->logger->debug('Sent SAPI3 request with the following parameters: ' . Json::encode($queryParameters));
         $this->logger->debug('Response data: ' . $searchResponseData);
 
-        $searchResponseData = json_decode($searchResponseData);
+        $searchResponseData = Json::decode($searchResponseData);
 
         $offerIds = array_reduce(
             $searchResponseData->{'member'},

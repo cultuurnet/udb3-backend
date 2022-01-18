@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
-use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use GuzzleHttp\Psr7\Request;
@@ -26,35 +25,25 @@ class Sapi3SearchServiceTest extends TestCase
      */
     private $httpClient;
 
-    /**
-     * @var IriOfferIdentifierFactoryInterface
-     */
-    private $offerIdentifier;
+    private Sapi3SearchService $searchService;
 
-    /**
-     * @var Sapi3SearchService
-     */
-    private $searchService;
+    private UriInterface $searchLocation;
 
-    /**
-     * @var UriInterface
-     */
-    private $searchLocation;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->httpClient = $this->createMock(HttpClient::class);
-        $this->offerIdentifier = new IriOfferIdentifierFactory(
+        $this->searchLocation =  new Uri('http://udb-search.dev/offers/');
+
+        $offerIdentifier = new IriOfferIdentifierFactory(
             'https?://udb-silex\.dev/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)'
         );
-        $this->searchLocation =  new Uri('http://udb-search.dev/offers/');
-        $this->searchService = new Sapi3SearchService($this->searchLocation, $this->httpClient, $this->offerIdentifier);
+        $this->searchService = new Sapi3SearchService($this->searchLocation, $this->httpClient, $offerIdentifier);
     }
 
     /**
      * @test
      */
-    public function it_should_fetch_search_results_from_sapi_3()
+    public function it_should_fetch_search_results_from_sapi_3(): void
     {
         $searchResponse = new Response(200, [], file_get_contents(__DIR__ . '/samples/search-response.json'));
 
@@ -93,7 +82,7 @@ class Sapi3SearchServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_properly_encode_plus_signs_in_queries()
+    public function it_should_properly_encode_plus_signs_in_queries(): void
     {
         $searchResponse = new Response(200, [], file_get_contents(__DIR__ . '/samples/search-response.json'));
 
