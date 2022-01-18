@@ -11,23 +11,15 @@ abstract class WebArchiveFileFormat
 {
     protected HTMLFileWriter $htmlFileWriter;
 
-    /**
-     * @param string                $brand
-     * @param string                $logo
-     * @param string                $title
-     * @param string|null           $subtitle
-     * @param string|null           $footer
-     * @param string|null           $publisher
-     */
     public function __construct(
         WebArchiveTemplate $template,
-        $brand,
-        $logo,
-        $title,
-        $subtitle = null,
-        $footer = null,
-        $publisher = null,
-        Twig_Environment $twig = null
+        string $brand,
+        string $logo,
+        string $title,
+        ?string $subtitle = null,
+        ?string $footer = null,
+        ?string $publisher = null,
+        ?Twig_Environment $twig = null
     ) {
         $variables = [
             'brand' => $brand,
