@@ -81,4 +81,20 @@ class Permission extends Enum
     {
         return new self('Films aanmaken');
     }
+
+    // The API exposes the permissions in uppercase and underscore format.
+    // The business layer and database use the lowercase and space format.
+    // This method should only be used inside the context of the API.
+    public static function fromUpperCaseString(string $upperCaseValue): Permission
+    {
+        return new Permission(ucfirst(str_replace('_', ' ', strtolower($upperCaseValue))));
+    }
+
+    // The API exposes the permissions in uppercase and underscore format.
+    // The business layer and database use the lowercase and space format.
+    // This method should only be used inside the context of the API.
+    public function toUpperCaseString(): string
+    {
+        return str_replace(' ', '_', strtoupper($this->toString()));
+    }
 }
