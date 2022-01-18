@@ -19,15 +19,11 @@ final class DeleteImageRequestHandlerTest extends TestCase
 
     private DeleteImageRequestHandler $deleteImageRequestHandler;
 
-    private Psr7RequestBuilder $psr7RequestBuilder;
-
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
         $this->deleteImageRequestHandler = new DeleteImageRequestHandler($this->commandBus);
-
-        $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
         $this->commandBus->record();
     }

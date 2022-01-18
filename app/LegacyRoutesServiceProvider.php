@@ -54,6 +54,9 @@ final class LegacyRoutesServiceProvider implements ServiceProviderInterface
                     // Convert old "calsum" path to "calendar-summary"
                     '/\/calsum/' => '/calendar-summary',
 
+                    // Convert old "news_articles" path to "news-articles"
+                    '/news_articles/' => 'news-articles',
+
                     // Add trailing slash if missing
                     '/^(.*)(?<!\/)$/' => '${1}/',
                 ];

@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
@@ -80,7 +81,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private Images $images;
 
-    private ?UUID $mainImageId = null;
+    private ?string $mainImageId = null;
 
     private Labels $labels;
 
@@ -140,45 +141,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         return $organizer;
     }
 
-    public function updateOrganizer(?UUID $mainImageId): void
-    {
-        if ($mainImageId !== null && $this->needsUpdateMainImage($mainImageId)) {
-            $this->apply(
-                new MainImageUpdated($this->actorId, $mainImageId->toString())
-            );
-        }
-    }
-
-    private function needsUpdateMainImage(?UUID $mainImageId): bool
-    {
-        if ($mainImageId === null) {
-            return false;
-        }
-
-        // When the organizer has no images it can't be set has main.
-        if ($this->images->isEmpty()) {
-            return false;
-        }
-
-        // If the organizer does not contain the main image as a normal image it can't be set as main.
-        $mainImage = $this->images->filter(
-            fn (Image $currentImage) => $currentImage->getId()->sameAs($mainImageId)
-        )->getFirst();
-        if ($mainImage === null) {
-            return false;
-        }
-
-        // If the organizer had no main image just set it as main.
-        // Although this should be a race condition.
-        if ($this->mainImageId === null) {
-            return true;
-        }
-
-        // Only set it as main when there is a difference.
-        // This is to prevent having events in the event store with no change.
-        return !$this->mainImageId->sameAs($mainImageId);
-    }
-
     public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
     {
         $this->apply(
@@ -226,7 +188,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateDescription(Description $description, Language $language): void
     {
-        if ($this->needsDescriptionUpdate($description, $language)) {
+        if ($this->descriptionCanBeUpdated($description, $language)) {
             $this->apply(
                 new DescriptionUpdated(
                     $this->actorId,
@@ -237,7 +199,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    public function needsDescriptionUpdate(Description $description, Language $language): bool
+    private function descriptionCanBeUpdated(Description $description, Language $language): bool
     {
         if ($this->translatedDescription === null) {
             return true;
@@ -247,6 +209,29 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             return !$this->translatedDescription->getTranslation($language)->sameAs($description);
         } catch (OutOfBoundsException $outOfBoundsException) {
             return true;
+        }
+    }
+
+    public function deleteDescription(Language $language): void
+    {
+        if ($this->descriptionCanBeDeleted($language)) {
+            $this->apply(
+                new DescriptionDeleted($this->actorId, $language->toString())
+            );
+        }
+    }
+
+    private function descriptionCanBeDeleted(Language $language): bool
+    {
+        if ($this->translatedDescription === null) {
+            return false;
+        }
+
+        try {
+            $this->translatedDescription->getTranslation($language);
+            return true;
+        } catch (OutOfBoundsException $outOfBoundsException) {
+            return false;
         }
     }
 
@@ -363,7 +348,29 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    public function hasImage(UUID $imageId): bool
+    public function updateMainImage(UUID $imageId): void
+    {
+        if ($this->needsUpdateMainImage($imageId)) {
+            $this->apply(
+                new MainImageUpdated($this->actorId, $imageId->toString())
+            );
+        }
+    }
+
+    private function needsUpdateMainImage(UUID $mainImageId): bool
+    {
+        // When the organizer has no images it can't be set as main.
+        // If the organizer does not contain the main image as a normal image it can't be set as main.
+        if (!$this->hasImage($mainImageId)) {
+            return false;
+        }
+
+        // Only set it as main when there is a difference.
+        // This is to prevent having events in the event store with no change.
+        return $this->mainImageId !== $mainImageId->toString();
+    }
+
+    private function hasImage(UUID $imageId): bool
     {
         if ($this->images->isEmpty()) {
             return false;
@@ -571,7 +578,19 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             return;
         }
 
-        $this->translatedDescription->withTranslation($language, $description);
+        $this->translatedDescription = $this->translatedDescription->withTranslation($language, $description);
+    }
+
+    protected function applyDescriptionDeleted(DescriptionDeleted $descriptionDeleted): void
+    {
+        if ($this->translatedDescription->getLanguages()->count() === 1) {
+            $this->translatedDescription = null;
+            return;
+        }
+
+        $this->translatedDescription = $this->translatedDescription->withoutTranslation(
+            new Language($descriptionDeleted->getLanguage())
+        );
     }
 
     protected function applyAddressUpdated(AddressUpdated $addressUpdated): void
@@ -631,7 +650,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->images = $this->images->with($imageAdded->getImage());
 
         if ($this->mainImageId === null) {
-            $this->mainImageId = $imageAdded->getImage()->getId();
+            $this->mainImageId = $imageAdded->getImage()->getId()->toString();
         }
     }
 
@@ -657,14 +676,16 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             return;
         }
 
-        if ($imageRemoved->getImageId() === $this->mainImageId->toString()) {
-            $this->mainImageId = $this->images->getFirst()->getImageId();
+        if ($imageRemoved->getImageId() === $this->mainImageId) {
+            /** @var Image $firstImage */
+            $firstImage = $this->images->getFirst();
+            $this->mainImageId = $firstImage->getId()->toString();
         }
     }
 
     protected function applyMainImageUpdated(MainImageUpdated $organizerUpdated): void
     {
-        $this->mainImageId = new UUID($organizerUpdated->getMainImageId());
+        $this->mainImageId = $organizerUpdated->getMainImageId();
     }
 
     protected function applyLabelAdded(LabelAdded $labelAdded): void

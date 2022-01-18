@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
@@ -333,6 +334,42 @@ final class OrganizerLDProjectorTest extends TestCase
         );
 
         $this->expectSave($organizerId, 'organizer_with_translated_description.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleting_a_translated_description(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer_with_translated_description.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new DescriptionDeleted($organizerId, 'fr')
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_updated_description.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_deleting_a_description(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer_with_updated_description.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new DescriptionDeleted($organizerId, 'en')
+        );
+
+        $this->expectSave($organizerId, 'organizer_without_description.json');
 
         $this->projector->handle($domainMessage);
     }

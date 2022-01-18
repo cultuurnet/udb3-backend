@@ -32,6 +32,7 @@ final class ImageNormalizer implements NormalizerInterface
 
         return [
             '@id' => $this->mediaIriGenerator->iri($image->getId()->toString()),
+            'id' => $image->getId()->toString(),
             'contentUrl' => (string) $mediaObject->getSourceLocation(),
             'thumbnailUrl' => (string) $mediaObject->getSourceLocation(),
             'language' => $image->getLanguage()->toString(),

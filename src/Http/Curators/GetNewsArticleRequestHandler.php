@@ -6,10 +6,8 @@ namespace CultuurNet\UDB3\Http\Curators;
 
 use CultuurNet\UDB3\Curators\NewsArticleNotFound;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
-use CultuurNet\UDB3\Curators\Serializer\NewsArticleNormalizer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,14 +17,10 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
 {
     private NewsArticleRepository $newsArticleRepository;
 
-    private NewsArticleNormalizer $newsArticleNormalizer;
-
     public function __construct(
-        NewsArticleRepository $newsArticleRepository,
-        NewsArticleNormalizer $newsArticleNormalizer
+        NewsArticleRepository $newsArticleRepository
     ) {
         $this->newsArticleRepository = $newsArticleRepository;
-        $this->newsArticleNormalizer = $newsArticleNormalizer;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -40,6 +34,6 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
             throw ApiProblem::newsArticleNotFound($articleId);
         }
 
-        return new JsonLdResponse($this->newsArticleNormalizer->normalize($newsArticle));
+        return (new NewsArticleResponseFactory($request))->createResourceResponse($newsArticle);
     }
 }

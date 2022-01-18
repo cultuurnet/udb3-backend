@@ -19,17 +19,5 @@
   "creator": "20a72430-7e3e-4b75-ab59-043156b3169c (LucW)",
   "languages": ["nl"],
   "completedLanguages": ["nl"],
-  "images": [
-    {
-      "@id": "http://example.com/entity/03789a2f-5063-4062-b7cb-95a0a2280d92",
-      "id": "03789a2f-5063-4062-b7cb-95a0a2280d92",
-      "contentUrl": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",
-      "thumbnailUrl": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",
-      "language": "nl",
-      "description": "Beschrijving van de afbeelding",
-      "copyrightHolder": "publiq"
-    }
-  ],
-  "mainImage": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",
   "modified": "2018-01-18T13:57:09+00:00"
 }

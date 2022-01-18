@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Organizer\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Organizer\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
@@ -641,6 +642,72 @@ class OrganizerTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
+     * @dataProvider deleteDescriptionDataProvider
+     */
+    public function it_can_delete_a_description(array $given, callable $delete, array $then): void
+    {
+        $this->scenario
+            ->given($given)
+            ->when(fn (Organizer $organizer) => $delete($organizer))
+            ->then($then);
+    }
+
+    public function deleteDescriptionDataProvider(): array
+    {
+        $organizerCreated = new OrganizerCreatedWithUniqueWebsite(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'en',
+            'https://www.publiq.be',
+            'publiq'
+        );
+
+        return [
+            'Delete existing description' => [
+                [
+                    $organizerCreated,
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->deleteDescription(new Language('en'));
+                },
+                [
+                    new DescriptionDeleted('ae3aab28-6351-489e-a61c-c48aec0a77df', 'en'),
+                ],
+            ],
+            'Try deleting non-existing description' => [
+                [
+                    $organizerCreated,
+                    new DescriptionUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'Description of the organizer',
+                        'en'
+                    ),
+                ],
+                function (Organizer $organizer) {
+                    $organizer->deleteDescription(new Language('fr'));
+                },
+                [
+                ],
+            ],
+            'Try deleting when no description available' => [
+                [
+                    $organizerCreated,
+                ],
+                function (Organizer $organizer) {
+                    $organizer->deleteDescription(new Language('fr'));
+                },
+                [
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
      * @dataProvider addImageDataProvider
      */
     public function it_can_add_an_image(array $given, callable $addImage, array $then): void
@@ -999,7 +1066,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [],
             ],
             'Main image can not be set on organizer with no images' => [
@@ -1007,7 +1074,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $organizerCreated,
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [],
             ],
             'Main image can not be set when organizer does not contain the image' => [
@@ -1022,7 +1089,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
+                    $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
                 [],
             ],
             'Main image finally set' => [
@@ -1044,7 +1111,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateOrganizer(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
+                    $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
                 [
                     new MainImageUpdated(
                         'ae3aab28-6351-489e-a61c-c48aec0a77df',
