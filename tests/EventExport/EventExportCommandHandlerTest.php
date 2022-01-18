@@ -122,7 +122,7 @@ class EventExportCommandHandlerTest extends TestCase
                     WebArchiveTemplate::tips(),
                     'brand',
                     'logo',
-                    new Title('title')
+                    'title'
                 ),
                 new EventExportQuery('query'),
                 new EmailAddress('jane@anonymous.com'),
