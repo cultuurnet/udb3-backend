@@ -435,7 +435,7 @@ class TabularDataEventFormatterTest extends TestCase
                         ],
                     ],
                     [
-                        EventAdvantage::KANSENTARIEF(),
+                        EventAdvantage::kansenTarief(),
                     ],
                     [
                         '12 punten: Een voordeel van 12 punten.',
@@ -459,7 +459,7 @@ class TabularDataEventFormatterTest extends TestCase
                         ],
                     ],
                     [
-                        EventAdvantage::KANSENTARIEF(),
+                        EventAdvantage::kansenTarief(),
                     ],
                     [
                         '12 punten: Een voordeel van 12 punten.',
@@ -487,7 +487,7 @@ class TabularDataEventFormatterTest extends TestCase
                         ],
                     ],
                     [
-                        EventAdvantage::KANSENTARIEF(),
+                        EventAdvantage::kansenTarief(),
                     ],
                     [
                         '12 punten: Een voordeel van 12 punten.',

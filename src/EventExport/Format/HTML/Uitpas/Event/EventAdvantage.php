@@ -16,12 +16,12 @@ class EventAdvantage extends Enum
         ];
     }
 
-    public static function POINT_COLLECTING(): EventAdvantage
+    public static function pointCollecting(): EventAdvantage
     {
         return new EventAdvantage('POINT_COLLECTING');
     }
 
-    public static function KANSENTARIEF(): EventAdvantage
+    public static function kansenTarief(): EventAdvantage
     {
         return new EventAdvantage('KANSENTARIEF');
     }

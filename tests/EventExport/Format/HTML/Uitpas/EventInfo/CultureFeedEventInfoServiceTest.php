@@ -179,7 +179,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
 
         $this->assertEquals(
             [
-                EventAdvantage::POINT_COLLECTING(),
+                EventAdvantage::pointCollecting(),
             ],
             $advantages
         );
@@ -231,7 +231,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
         $eventInfo = $this->infoService->getEventInfo($event->cdbid);
         $this->assertEquals(
             [
-                EventAdvantage::POINT_COLLECTING(),
+                EventAdvantage::pointCollecting(),
             ],
             $eventInfo->getAdvantages()
         );
@@ -244,7 +244,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
         $eventInfo = $this->infoService->getEventInfo($event->cdbid);
         $this->assertEquals(
             [
-                EventAdvantage::POINT_COLLECTING(),
+                EventAdvantage::pointCollecting(),
             ],
             $eventInfo->getAdvantages()
         );
