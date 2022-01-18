@@ -19,29 +19,21 @@ use Monolog\Logger;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class CultureFeedEventInfoServiceTest
- *
- * @package CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo
- */
 class CultureFeedEventInfoServiceTest extends TestCase
 {
     /**
      * @var \CultureFeed_Uitpas|MockObject
      */
-    protected $uitpas;
+    private $uitpas;
 
-    /**
-     * @var CultureFeedEventInfoService
-     */
-    protected $infoService;
+    private CultureFeedEventInfoService $infoService;
 
     /**
      * @var PromotionQueryFactoryInterface|MockObject
      */
-    protected $promotionQueryFactory;
+    private $promotionQueryFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->promotionQueryFactory = $this->createMock(PromotionQueryFactoryInterface::class);
 
@@ -55,7 +47,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_multiple_prices_and_advantages()
+    public function it_can_return_multiple_prices_and_advantages(): void
     {
         // Create an event with a specific id and a point collecting advantage.
         $eventFactory = new EventFactory();
@@ -196,7 +188,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_failures_occurring_when_retrieving_promotions()
+    public function it_logs_failures_occurring_when_retrieving_promotions(): void
     {
         // Create an event with a specific id.
         $eventFactory = new EventFactory();
