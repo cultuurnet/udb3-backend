@@ -23,39 +23,27 @@ class ResultsGeneratorTest extends TestCase
     /**
      * @var string[]
      */
-    private $sorting;
+    private array $sorting;
 
-    /**
-     * @var int
-     */
-    private $pageSize;
-
-    /**
-     * @var ResultsGenerator
-     */
-    private $generator;
+    private ResultsGenerator $generator;
 
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
-    /**
-     * @var string
-     */
-    private $query;
+    private string $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->searchService = $this->createMock(SearchServiceInterface::class);
 
         $this->sorting = ['created' => 'asc'];
-        $this->pageSize = 2;
 
         $this->generator = new ResultsGenerator(
             $this->searchService,
             $this->sorting,
-            $this->pageSize
+            2
         );
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -99,7 +87,7 @@ class ResultsGeneratorTest extends TestCase
     /**
      * @test
      */
-    public function it_has_configurable_sorting_and_page_size_with_default_values()
+    public function it_has_configurable_sorting_and_page_size_with_default_values(): void
     {
         $generator = new ResultsGenerator($this->searchService);
 
@@ -132,11 +120,11 @@ class ResultsGeneratorTest extends TestCase
      *   All expected logs in a single array.
      */
     public function it_loops_over_all_pages_and_yields_each_unique_result_while_logging_duplicates(
-        $givenPageSize,
-        $givenPages,
-        $expectedResults,
-        $expectedLogs = []
-    ) {
+        int $givenPageSize,
+        array $givenPages,
+        array $expectedResults,
+        array $expectedLogs = []
+    ): void {
         $currentPage = 0;
         $totalPages = count($givenPages);
         $totalResults = count($expectedResults);
@@ -197,10 +185,8 @@ class ResultsGeneratorTest extends TestCase
         $this->assertEquals($expectedLogs, $actualLogs);
     }
 
-    /**
-     * @return array
-     */
-    public function pagedResultsDataProvider()
+
+    public function pagedResultsDataProvider(): array
     {
         $event1 = new IriOfferIdentifier(
             Url::fromNative('http://du.de/event/1'),
