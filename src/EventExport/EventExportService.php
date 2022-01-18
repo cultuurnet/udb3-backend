@@ -122,7 +122,7 @@ class EventExportService implements EventExportServiceInterface
                     1,
                     0
                 );
-                $totalItemCount = $preQueryResult->getTotalItems()->toNative();
+                $totalItemCount = $preQueryResult->getTotalItems();
             } catch (Exception $e) {
                 $logger->error(
                     'not_exported',

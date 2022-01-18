@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
 use TypeError;
-use ValueObjects\Number\Integer;
 use ValueObjects\Web\Url;
 
 class ResultsTest extends TestCase
@@ -43,7 +42,7 @@ class ResultsTest extends TestCase
                 ),
             ]
         );
-        $totalItems = new Integer(20);
+        $totalItems = 20;
 
         $results = new Results($items, $totalItems);
 
@@ -57,7 +56,7 @@ class ResultsTest extends TestCase
     public function it_only_accepts_an_items_array(): void
     {
         $this->expectException(TypeError::class);
-        new Results('foo', new Integer(5));
+        new Results('foo', 5);
     }
 
     /**

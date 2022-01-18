@@ -23,7 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Traversable;
-use ValueObjects\Number\Integer;
 use ValueObjects\Web\EmailAddress;
 use ValueObjects\Web\Url;
 
@@ -142,19 +141,19 @@ class EventExportServiceTest extends TestCase
                     OfferIdentifierCollection::fromArray(
                         array_slice($this->searchResults, 0, 1)
                     ),
-                    new Integer(self::AMOUNT)
+                    self::AMOUNT
                 ),
                 new Results(
                     OfferIdentifierCollection::fromArray(
                         array_slice($this->searchResults, 0, 10)
                     ),
-                    new Integer(self::AMOUNT)
+                    self::AMOUNT
                 ),
                 new Results(
                     OfferIdentifierCollection::fromArray(
                         array_slice($this->searchResults, 10)
                     ),
-                    new Integer(self::AMOUNT)
+                    self::AMOUNT
                 )
             );
     }

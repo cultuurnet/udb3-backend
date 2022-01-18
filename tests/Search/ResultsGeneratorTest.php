@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Number\Integer;
 use ValueObjects\Web\Url;
 
 class ResultsGeneratorTest extends TestCase
@@ -75,7 +74,7 @@ class ResultsGeneratorTest extends TestCase
                             ),
                         ]
                     ),
-                    new Integer($expectedCount)
+                    $expectedCount
                 )
             );
 
@@ -160,7 +159,7 @@ class ResultsGeneratorTest extends TestCase
 
                     return new Results(
                         OfferIdentifierCollection::fromArray($pageResults),
-                        new Integer($totalResults)
+                        $totalResults
                     );
                 }
             );

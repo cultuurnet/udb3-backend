@@ -6,15 +6,14 @@ namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use ValueObjects\Number\Integer as IntegerLiteral;
 
 class Results
 {
     private OfferIdentifierCollection $items;
 
-    private IntegerLiteral $totalItems;
+    private int $totalItems;
 
-    public function __construct(OfferIdentifierCollection $items, IntegerLiteral $totalItems)
+    public function __construct(OfferIdentifierCollection $items, int $totalItems)
     {
         $this->items = $items;
         $this->totalItems = $totalItems;
@@ -28,7 +27,7 @@ class Results
         return $this->items->toArray();
     }
 
-    public function getTotalItems(): IntegerLiteral
+    public function getTotalItems(): int
     {
         return $this->totalItems;
     }

@@ -74,8 +74,7 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
     {
         return $this->searchService
             ->search($query, self::COUNT_PAGE_LIMIT, self::COUNT_PAGE_START)
-            ->getTotalItems()
-            ->toNative();
+            ->getTotalItems();
     }
 
     public function search(string $query): Generator
@@ -95,7 +94,7 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
                 $this->sorting
             );
 
-            $total = $results->getTotalItems()->toNative();
+            $total = $results->getTotalItems();
 
             $this->logger->info('Search API reported ' . $total . ' results');
 

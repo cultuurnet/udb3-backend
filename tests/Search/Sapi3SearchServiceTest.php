@@ -15,7 +15,6 @@ use Http\Client\HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
-use ValueObjects\Number\Integer;
 use ValueObjects\Web\Url;
 
 class Sapi3SearchServiceTest extends TestCase
@@ -71,7 +70,7 @@ class Sapi3SearchServiceTest extends TestCase
                     OfferType::event()
                 ),
             ]),
-            Integer::fromNative(2)
+            2
         );
 
         $results = $this->searchService->search('foo:bar');

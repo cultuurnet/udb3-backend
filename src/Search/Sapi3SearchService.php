@@ -13,7 +13,6 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use ValueObjects\Number\Integer;
 use ValueObjects\Web\Url;
 use function http_build_query;
 
@@ -91,6 +90,6 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
             new OfferIdentifierCollection()
         );
 
-        return new Results($offerIds, new Integer($searchResponseData->{'totalItems'}));
+        return new Results($offerIds, (int) $searchResponseData->{'totalItems'});
     }
 }
