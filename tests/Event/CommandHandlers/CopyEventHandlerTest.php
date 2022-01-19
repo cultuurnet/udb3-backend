@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 class CopyEventHandlerTest extends TestCase
 {
     /**
-     * @var MockObject|EventRepository $eventRepository
+     * @var MockObject|EventRepository
      */
     private MockObject $eventRepository;
     private CopyEventHandler $copyEventHandler;
@@ -61,7 +61,7 @@ class CopyEventHandlerTest extends TestCase
                     new Timestamp(
                         DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-01T12:00:00+01:00'),
                         DateTimeImmutable::createFromFormat(DATE_ATOM, '2022-01-02T12:00:00+01:00')
-                    )
+                    ),
                 ]
             )
         );
