@@ -5,6 +5,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
+use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
@@ -635,6 +636,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateThemeHandler::class]);
         $commandBus->subscribe($app[RemoveThemeHandler::class]);
         $commandBus->subscribe($app[UpdateAudienceHandler::class]);
+        $commandBus->subscribe($app[CopyEventHandler::class]);
 
         // Organizer command handlers
         $commandBus->subscribe($app[DeleteOrganizerHandler::class]);
