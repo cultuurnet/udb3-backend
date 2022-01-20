@@ -77,7 +77,7 @@ class CopyEventRequestHandlerTest extends TestCase
     {
         $response = $this->copyEventRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($data))
+                ->withBodyFromArray($data)
                 ->withRouteParameter('eventId', self::ORIGINAL_EVENT_ID)
                 ->build('POST')
         );
@@ -628,7 +628,7 @@ class CopyEventRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->copyEventRequestHandler->handle(
                 (new Psr7RequestBuilder())
-                    ->withBodyFromString(json_encode($data))
+                    ->withBodyFromArray($data)
                     ->withRouteParameter('eventId', self::ORIGINAL_EVENT_ID)
                     ->build('POST')
             )

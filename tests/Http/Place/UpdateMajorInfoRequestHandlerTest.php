@@ -50,7 +50,7 @@ class UpdateMajorInfoRequestHandlerTest extends TestCase
 
         $updateMajorInfoRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($updateMajorInfoData))
+                ->withBodyFromArray($updateMajorInfoData)
                 ->withRouteParameter('placeId', 'place_id')
                 ->build('PUT')
         );

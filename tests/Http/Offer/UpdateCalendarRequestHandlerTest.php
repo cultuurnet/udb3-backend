@@ -52,7 +52,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($data))
+                ->withBodyFromArray($data)
                 ->withRouteParameter('offerType', 'events')
                 ->withRouteParameter('offerId', self::EVENT_ID)
                 ->build('PUT')
@@ -493,7 +493,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->updateCalendarRequestHandler->handle(
                 (new Psr7RequestBuilder())
-                    ->withBodyFromString(json_encode($data))
+                    ->withBodyFromArray($data)
                     ->withRouteParameter('offerType', 'events')
                     ->withRouteParameter('offerId', self::EVENT_ID)
                     ->build('PUT')
@@ -759,7 +759,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($data))
+                ->withBodyFromArray($data)
                 ->withRouteParameter('offerType', 'places')
                 ->withRouteParameter('offerId', self::PLACE_ID)
                 ->build('PUT')
@@ -946,7 +946,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->updateCalendarRequestHandler->handle(
                 (new Psr7RequestBuilder())
-                    ->withBodyFromString(json_encode($data))
+                    ->withBodyFromArray($data)
                     ->withRouteParameter('offerType', 'places')
                     ->withRouteParameter('offerId', self::PLACE_ID)
                     ->build('PUT')
