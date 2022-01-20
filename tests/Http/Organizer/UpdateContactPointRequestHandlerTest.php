@@ -48,7 +48,7 @@ class UpdateContactPointRequestHandlerTest extends TestCase
     {
         $updateUrlRequest = $this->psr7RequestBuilder
             ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
-            ->withBodyFromArray($body)
+            ->withJsonBodyFromArray($body)
             ->build('PUT');
 
         $this->updateContactPointRequestHandler->handle($updateUrlRequest);

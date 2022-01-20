@@ -77,7 +77,7 @@ class CopyEventRequestHandlerTest extends TestCase
     {
         $response = $this->copyEventRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromObject($data)
+                ->withJsonBodyFromObject($data)
                 ->withRouteParameter('eventId', self::ORIGINAL_EVENT_ID)
                 ->build('POST')
         );
@@ -626,10 +626,10 @@ class CopyEventRequestHandlerTest extends TestCase
     {
         $requestBuilder = new Psr7RequestBuilder();
         if (is_array($data)) {
-            $requestBuilder = $requestBuilder->withBodyFromArray($data);
+            $requestBuilder = $requestBuilder->withJsonBodyFromArray($data);
         }
         if (is_object($data)) {
-            $requestBuilder = $requestBuilder->withBodyFromObject($data);
+            $requestBuilder = $requestBuilder->withJsonBodyFromObject($data);
         }
 
         $this->assertCallableThrowsApiProblem(

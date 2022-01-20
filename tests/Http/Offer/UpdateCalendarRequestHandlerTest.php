@@ -52,7 +52,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromObject($data)
+                ->withJsonBodyFromObject($data)
                 ->withRouteParameter('offerType', 'events')
                 ->withRouteParameter('offerId', self::EVENT_ID)
                 ->build('PUT')
@@ -491,10 +491,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $requestBuilder = new Psr7RequestBuilder();
         if (is_array($data)) {
-            $requestBuilder = $requestBuilder->withBodyFromArray($data);
+            $requestBuilder = $requestBuilder->withJsonBodyFromArray($data);
         }
         if (is_object($data)) {
-            $requestBuilder = $requestBuilder->withBodyFromObject($data);
+            $requestBuilder = $requestBuilder->withJsonBodyFromObject($data);
         }
 
         $this->assertCallableThrowsApiProblem(
@@ -766,7 +766,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromObject($data)
+                ->withJsonBodyFromObject($data)
                 ->withRouteParameter('offerType', 'places')
                 ->withRouteParameter('offerId', self::PLACE_ID)
                 ->build('PUT')
@@ -951,10 +951,10 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $requestBuilder = new Psr7RequestBuilder();
         if (is_array($data)) {
-            $requestBuilder = $requestBuilder->withBodyFromArray($data);
+            $requestBuilder = $requestBuilder->withJsonBodyFromArray($data);
         }
         if (is_object($data)) {
-            $requestBuilder = $requestBuilder->withBodyFromObject($data);
+            $requestBuilder = $requestBuilder->withJsonBodyFromObject($data);
         }
 
         $this->assertCallableThrowsApiProblem(

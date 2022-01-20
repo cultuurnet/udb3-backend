@@ -52,14 +52,14 @@ final class Psr7RequestBuilder
         return $c;
     }
 
-    public function withBodyFromArray(array $body): self
+    public function withJsonBodyFromArray(array $body): self
     {
         $c = clone $this;
         $c->body = self::getStreamFactory()->createStream(Json::encode($body));
         return $c;
     }
 
-    public function withBodyFromObject(object $body): self
+    public function withJsonBodyFromObject(object $body): self
     {
         $c = clone $this;
         $c->body = self::getStreamFactory()->createStream(Json::encode($body));

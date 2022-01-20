@@ -39,7 +39,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
             ->withRouteParameter('language', 'nl')
-            ->withBodyFromArray(['description' => 'Beschrijving'])
+            ->withJsonBodyFromArray(['description' => 'Beschrijving'])
             ->build('PUT');
 
         $expectedCommand = new UpdateDescription(

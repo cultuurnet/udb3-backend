@@ -37,7 +37,7 @@ class UpdateAudienceRequestHandlerTest extends TestCase
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', 'c269632a-a887-4f21-8455-1631c31e4df5')
-            ->withBodyFromArray(['audienceType' => 'members'])
+            ->withJsonBodyFromArray(['audienceType' => 'members'])
             ->build('PUT');
 
         $expectedCommand = new UpdateAudience(
@@ -60,7 +60,7 @@ class UpdateAudienceRequestHandlerTest extends TestCase
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
-            ->withBodyFromArray(['audienceType' => 'members'])
+            ->withJsonBodyFromArray(['audienceType' => 'members'])
             ->build('PUT');
 
         $commandBus = $this->createMock(CommandBus::class);
