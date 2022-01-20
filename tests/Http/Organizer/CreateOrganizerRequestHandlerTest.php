@@ -94,7 +94,7 @@ class CreateOrganizerRequestHandlerTest extends TestCase
         array $expectedCommands
     ): void {
         $createOrganizerRequest = $this->psr7RequestBuilder
-            ->withBodyFromArray($body)
+            ->withJsonBodyFromArray($body)
             ->build('POST');
 
         $this->createOrganizerRequestHandler->handle($createOrganizerRequest);
@@ -322,7 +322,7 @@ class CreateOrganizerRequestHandlerTest extends TestCase
     public function it_fails_on_invalid_data(array $body, SchemaError $schemaError): void
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
-            ->withBodyFromArray($body)
+            ->withJsonBodyFromArray($body)
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
@@ -11,6 +12,7 @@ use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
+use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -29,6 +31,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
         $controllers->delete('/{eventId}/theme/', DeleteThemeRequestHandler::class);
         $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
+        $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
 
         $controllers->post('/', 'event_editing_controller:createEvent');
 
@@ -43,8 +46,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
-
-        $controllers->post('/{cdbid}/copies/', 'event_editing_controller:copyEvent');
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
@@ -97,6 +98,14 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[UpdateAudienceRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateAudienceRequestHandler($app['event_command_bus'])
+        );
+
+        $app[CopyEventRequestHandler::class] = $app->share(
+            fn (Application $app) => new CopyEventRequestHandler(
+                $app['event_command_bus'],
+                new UuidFactory(),
+                $app['event_iri_generator']
+            )
         );
 
         $app[UpdateMajorInfoRequestHandler::class] = $app->share(

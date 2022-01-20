@@ -47,7 +47,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
     {
         $this->requestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($data))
+                ->withJsonBodyFromArray($data)
                 ->withRouteParameter('eventId', self::EVENT_ID)
                 ->build('PUT')
         );
@@ -250,7 +250,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->requestHandler->handle(
                 (new Psr7RequestBuilder())
-                    ->withBodyFromString(json_encode($data))
+                    ->withJsonBodyFromArray($data)
                     ->withRouteParameter('eventId', self::EVENT_ID)
                     ->build('PUT')
             )

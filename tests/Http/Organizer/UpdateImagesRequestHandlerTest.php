@@ -40,7 +40,7 @@ final class UpdateImagesRequestHandlerTest extends TestCase
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 [
                     'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
                     'language' => 'en',
@@ -71,7 +71,7 @@ final class UpdateImagesRequestHandlerTest extends TestCase
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 [
                     'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
                     'language' => 'en',

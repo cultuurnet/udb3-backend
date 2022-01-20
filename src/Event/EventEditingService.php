@@ -128,33 +128,4 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
 
         return $eventId;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function copyEvent($originalEventId, Calendar $calendar)
-    {
-        if (!is_string($originalEventId)) {
-            throw new \InvalidArgumentException(
-                'Expected originalEventId to be a string, received ' . gettype($originalEventId)
-            );
-        }
-
-        try {
-            /** @var Event $event */
-            $event = $this->writeRepository->load($originalEventId);
-        } catch (AggregateNotFoundException $exception) {
-            throw new \InvalidArgumentException(
-                'No original event found to copy with id ' . $originalEventId
-            );
-        }
-
-        $eventId = $this->uuidGenerator->generate();
-
-        $newEvent = $event->copy($eventId, $calendar);
-
-        $this->writeRepository->save($newEvent);
-
-        return $eventId;
-    }
 }
