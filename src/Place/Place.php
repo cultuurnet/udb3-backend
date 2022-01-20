@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Offer\WorkflowStatus as LegacyWorkflowStatus;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
@@ -145,7 +145,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->typeId = $placeCreated->getEventType()->getId();
         $this->addresses[$this->mainLanguage->getCode()] = $placeCreated->getAddress();
         $this->placeId = $placeCreated->getPlaceId();
-        $this->workflowStatus = WorkflowStatus::DRAFT();
+        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
     }
 
     public function updateMajorInfo(
@@ -331,7 +331,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function applyPlaceDeleted(PlaceDeleted $event): void
     {
-        $this->workflowStatus = WorkflowStatus::DELETED();
+        $this->workflowStatus = LegacyWorkflowStatus::DELETED();
     }
 
     protected function applyMarkedAsDuplicate(MarkedAsDuplicate $event): void

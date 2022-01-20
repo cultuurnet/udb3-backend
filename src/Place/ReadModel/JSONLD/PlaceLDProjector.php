@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Offer\WorkflowStatus as LegacyWorkflowStatus;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
@@ -215,7 +215,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $jsonLD->creator = $metaData['user_id'];
         }
 
-        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->getName();
+        $jsonLD->workflowStatus = LegacyWorkflowStatus::DRAFT()->getName();
 
         return $document->withBody($jsonLD);
     }
@@ -226,7 +226,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
 
         $jsonLD = $document->getBody();
 
-        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->getName();
+        $jsonLD->workflowStatus = LegacyWorkflowStatus::DELETED()->getName();
 
         return $document->withBody($jsonLD);
     }

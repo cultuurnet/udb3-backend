@@ -57,7 +57,7 @@ use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Offer\WorkflowStatus as LegacyWorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
@@ -82,12 +82,12 @@ class Item extends Offer
     {
         $this->id = $created->getItemId();
         $this->mainLanguage = $created->getMainLanguage();
-        $this->workflowStatus = WorkflowStatus::DRAFT();
+        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
     }
 
     protected function applyItemDeleted(ItemDeleted $event): void
     {
-        $this->workflowStatus = WorkflowStatus::DELETED();
+        $this->workflowStatus = LegacyWorkflowStatus::DELETED();
     }
 
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged

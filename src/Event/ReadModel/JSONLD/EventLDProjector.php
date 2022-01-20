@@ -66,7 +66,7 @@ use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Offer\WorkflowStatus as LegacyWorkflowStatus;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -260,7 +260,7 @@ class EventLDProjector extends OfferLDProjector implements
             $jsonLD->creator = $author->toNative();
         }
 
-        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->getName();
+        $jsonLD->workflowStatus = LegacyWorkflowStatus::DRAFT()->getName();
 
         $defaultAudience = new Audience(AudienceType::everyone());
         $jsonLD->audience = $defaultAudience->serialize();
@@ -306,7 +306,7 @@ class EventLDProjector extends OfferLDProjector implements
         }
 
         // Set workflow status.
-        $eventJsonLD->workflowStatus = WorkflowStatus::DRAFT()->getName();
+        $eventJsonLD->workflowStatus = LegacyWorkflowStatus::DRAFT()->getName();
 
         // Remove labels.
         unset($eventJsonLD->labels);
@@ -336,7 +336,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD = $document->getBody();
 
-        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->getName();
+        $jsonLD->workflowStatus = LegacyWorkflowStatus::DELETED()->getName();
 
         return $document->withBody($jsonLD);
     }

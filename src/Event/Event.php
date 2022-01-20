@@ -78,7 +78,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Offer\WorkflowStatus as LegacyWorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
@@ -203,13 +203,13 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId() : null;
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
-        $this->workflowStatus = WorkflowStatus::DRAFT();
+        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
     }
 
     protected function applyEventCopied(EventCopied $eventCopied): void
     {
         $this->eventId = $eventCopied->getItemId();
-        $this->workflowStatus = WorkflowStatus::DRAFT();
+        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
         $this->labels = new LabelCollection();
     }
 
@@ -229,7 +229,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function applyEventDeleted(EventDeleted $event): void
     {
-        $this->workflowStatus = WorkflowStatus::DELETED();
+        $this->workflowStatus = LegacyWorkflowStatus::DELETED();
     }
 
     protected function setUDB2Data(EventCdbXMLInterface $eventCdbXML): void

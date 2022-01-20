@@ -10,7 +10,7 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\DateTimeFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Offer\WorkflowStatus as LegacyWorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\Tariff;
@@ -136,7 +136,7 @@ class CdbXMLItemBaseImporter
     ) {
         $wfStatus = $item->getWfStatus();
 
-        $workflowStatus = $wfStatus ? WorkflowStatus::fromNative($wfStatus) : WorkflowStatus::READY_FOR_VALIDATION();
+        $workflowStatus = $wfStatus ? LegacyWorkflowStatus::fromNative($wfStatus) : LegacyWorkflowStatus::READY_FOR_VALIDATION();
 
         $jsonLD->workflowStatus = $workflowStatus->getName();
     }
