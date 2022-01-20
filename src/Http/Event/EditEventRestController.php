@@ -131,20 +131,4 @@ class EditEventRestController extends OfferRestBaseController
             201
         );
     }
-
-    public function copyEvent(Request $request, string $cdbid): JsonResponse
-    {
-        $copyCalendar = $this->calendarDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $copiedEventId = $this->editor->copyEvent($cdbid, $copyCalendar);
-
-        return JsonResponse::create(
-            [
-                'eventId' => $copiedEventId,
-                'url' => $this->iriGenerator->iri($copiedEventId),
-            ]
-        );
-    }
 }
