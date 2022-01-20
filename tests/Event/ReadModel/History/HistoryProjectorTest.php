@@ -262,7 +262,7 @@ class HistoryProjectorTest extends TestCase
      * @test
      * @dataProvider metadataProvider
      */
-    public function it_logs_creating_an_event(Metadata $metadata, array $expectedKeys)
+    public function it_logs_creating_an_event(Metadata $metadata, array $expectedKeys): void
     {
         $eventId = 'f2b227c5-4756-49f6-a25d-8286b6a2351f';
 
@@ -305,7 +305,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_copying_an_event()
+    public function it_logs_copying_an_event(): void
     {
         $eventId = 'f2b227c5-4756-49f6-a25d-8286b6a2351f';
         $originalEventId = '1fd05542-ce0b-4ed1-ad17-cf5a0f316da4';
@@ -343,7 +343,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_titleTranslated()
+    public function it_logs_titleTranslated(): void
     {
         $titleTranslated = new TitleTranslated(
             self::EVENT_ID_1,
@@ -378,7 +378,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_descriptionTranslated()
+    public function it_logs_descriptionTranslated(): void
     {
         $descriptionTranslated = new DescriptionTranslated(
             self::EVENT_ID_1,
@@ -413,7 +413,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_eventWasTagged()
+    public function it_logs_eventWasTagged(): void
     {
         $eventWasTagged = new LabelAdded(
             self::EVENT_ID_1,
@@ -447,7 +447,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_tagErased()
+    public function it_logs_tagErased(): void
     {
         $tagErased = new LabelRemoved(
             self::EVENT_ID_1,

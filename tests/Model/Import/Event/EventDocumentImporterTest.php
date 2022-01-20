@@ -714,10 +714,7 @@ class EventDocumentImporterTest extends TestCase
         ];
     }
 
-    /**
-     * @return DecodedDocument
-     */
-    private function getEventDocument()
+    private function getEventDocument(): DecodedDocument
     {
         return new DecodedDocument($this->getEventId(), $this->getEventData());
     }
@@ -756,10 +753,7 @@ class EventDocumentImporterTest extends TestCase
         ];
     }
 
-    /**
-     * @return DecodedDocument
-     */
-    private function getPlaceDocument()
+    private function getPlaceDocument(): DecodedDocument
     {
         return new DecodedDocument($this->getPlaceId(), $this->getPlaceData());
     }
