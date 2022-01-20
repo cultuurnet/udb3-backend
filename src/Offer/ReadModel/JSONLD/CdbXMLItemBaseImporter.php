@@ -25,6 +25,9 @@ class CdbXMLItemBaseImporter
 
     private PriceDescriptionParser $priceDescriptionParser;
 
+    /**
+     * @var string[]
+     */
     private array $basePriceTranslations;
 
 
