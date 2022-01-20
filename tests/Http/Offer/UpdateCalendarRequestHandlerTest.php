@@ -62,6 +62,9 @@ class UpdateCalendarRequestHandlerTest extends TestCase
 
     public function validEventDataProvider(): array
     {
+        // WHEN UpdateCalendar GETS REFACTORED TO USE THE NEW CALENDAR VALUE-OBJECT LIKE CopyEvent, THIS TEST DATA CAN
+        // EASILY BE REPLACED WITH THE TEST DATA FROM CopyEventRequestHandlerTest::validEventDataProvider() TO SAVE YOU
+        // SOME TIME.
         return [
             'single' => [
                 'data' => (object) [
