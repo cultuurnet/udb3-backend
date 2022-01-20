@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request;
 
+use CultuurNet\UDB3\Json;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
@@ -54,9 +55,7 @@ final class Psr7RequestBuilder
     public function withBodyFromArray(array $body): self
     {
         $c = clone $this;
-        $c->body = self::getStreamFactory()->createStream(
-            json_encode($body, JSON_THROW_ON_ERROR)
-        );
+        $c->body = self::getStreamFactory()->createStream(Json::encode($body));
         return $c;
     }
 
