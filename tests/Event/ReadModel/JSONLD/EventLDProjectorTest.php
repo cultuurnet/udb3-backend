@@ -1362,7 +1362,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
     }
 
-    public function eventUpdateDataProvider()
+    public function eventUpdateDataProvider(): array
     {
         $documentWithUDB3Media = new JsonDocument(
             CdbXMLEventFactory::AN_EVENT_ID,

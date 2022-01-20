@@ -879,7 +879,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new LocationUpdated($eventId, $newLocationId),
-                    new AudienceUpdated($eventId, new Audience(AudienceType::EDUCATION())),
+                    new AudienceUpdated($eventId, new Audience(AudienceType::education())),
                 ]
             );
     }
@@ -1054,7 +1054,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $calendar = new Calendar(
             CalendarType::PERMANENT()
         );
-        $audience = new Audience(AudienceType::EDUCATION());
+        $audience = new Audience(AudienceType::education());
 
         $event = $this->event;
         $event->updateAudience($audience);
@@ -1183,7 +1183,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event) {
                     $event->updateAudience(
-                        new Audience(AudienceType::EVERYONE())
+                        new Audience(AudienceType::everyone())
                     );
                 }
             )

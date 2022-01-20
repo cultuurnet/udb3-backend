@@ -95,17 +95,11 @@ class HistoryProjectorTest extends TestCase
 
     private const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
-    /**
-     * @var HistoryProjector
-     */
-    protected $historyProjector;
+    protected HistoryProjector $historyProjector;
 
-    /**
-     * @var DocumentRepository
-     */
-    protected $documentRepository;
+    protected DocumentRepository $documentRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
@@ -132,11 +126,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
     }
 
-    /**
-     * @param string $eventId
-     * @return string
-     */
-    protected function getEventCdbXml($eventId)
+    protected function getEventCdbXml(string $eventId): string
     {
         return file_get_contents(__DIR__ . '/event-' . $eventId . '.xml');
     }
@@ -144,7 +134,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_EventImportedFromUDB2()
+    public function it_logs_EventImportedFromUDB2(): void
     {
         $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
@@ -198,7 +188,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_EventUpdatedFromUDB2()
+    public function it_logs_EventUpdatedFromUDB2(): void
     {
         $eventUpdated = new EventUpdatedFromUDB2(
             self::EVENT_ID_1,

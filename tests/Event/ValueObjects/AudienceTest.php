@@ -9,22 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 class AudienceTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $itemId;
+    private string $itemId;
 
-    /**
-     * @var AudienceType
-     */
-    private $audienceType;
+    private AudienceType $audienceType;
 
-    /**
-     * @var Audience
-     */
-    private $audience;
+    private Audience $audience;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->itemId = '6eaaa9b6-d0d2-11e6-bf26-cec0c932ce01';
 
@@ -38,7 +29,7 @@ class AudienceTest extends TestCase
     /**
      * @test
      */
-    public function if_stores_an_audience_type()
+    public function if_stores_an_audience_type(): void
     {
         $this->assertEquals(
             $this->audienceType,
@@ -49,7 +40,7 @@ class AudienceTest extends TestCase
     /**
      * @test
      */
-    public function if_can_deserialize_from_an_array()
+    public function if_can_deserialize_from_an_array(): void
     {
         $this->assertEquals(
             $this->audience,
@@ -64,7 +55,7 @@ class AudienceTest extends TestCase
     /**
      * @test
      */
-    public function if_serialize_to_an_array()
+    public function if_serialize_to_an_array(): void
     {
         $this->assertEquals(
             [
@@ -77,23 +68,19 @@ class AudienceTest extends TestCase
     /**
      * @test
      * @dataProvider audienceDataProvider
-     * @param bool $equal
      */
     public function it_can_check_for_equality(
         Audience $audience,
         Audience $otherAudience,
-        $equal
-    ) {
+        bool $equal
+    ): void {
         $this->assertEquals(
             $equal,
             $audience->equals($otherAudience)
         );
     }
 
-    /**
-     * @return array
-     */
-    public function audienceDataProvider()
+    public function audienceDataProvider(): array
     {
         return [
             'equal audience' =>

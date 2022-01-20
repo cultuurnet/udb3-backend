@@ -13,12 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
  */
 final class Audience implements Serializable
 {
-    /**
-     * Store the Audience enum internally as a string to make sure that PHP encode works.
-     * @var string
-     */
-    private $audienceType;
-
+    private string $audienceType;
 
     public function __construct(AudienceType $audienceType)
     {

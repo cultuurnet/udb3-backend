@@ -21,25 +21,13 @@ use CultuurNet\UDB3\SluggerInterface;
  */
 class CdbXMLImporter
 {
-    /**
-     * @var CdbXMLItemBaseImporter
-     */
-    private $cdbXMLItemBaseImporter;
+    private CdbXMLItemBaseImporter $cdbXMLItemBaseImporter;
 
-    /**
-     * @var EventCdbIdExtractorInterface
-     */
-    private $cdbIdExtractor;
+    private EventCdbIdExtractorInterface $cdbIdExtractor;
 
-    /**
-     * @var CalendarFactoryInterface
-     */
-    private $calendarFactory;
+    private CalendarFactoryInterface $calendarFactory;
 
-    /**
-     * @var CdbXmlContactInfoImporterInterface
-     */
-    private $cdbXmlContactInfoImporter;
+    private CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter;
 
 
     public function __construct(
@@ -153,7 +141,7 @@ class CdbXMLImporter
      * @param \stdClass $jsonLD
      * @param string $language
      */
-    private function importDescription($languageDetail, $jsonLD, $language)
+    private function importDescription($languageDetail, $jsonLD, $language): void
     {
         try {
             $description = MergedDescription::fromCdbDetail($languageDetail);

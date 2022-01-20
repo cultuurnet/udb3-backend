@@ -42,15 +42,13 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     use OfferCommandHandlerTestTrait;
 
-    /**
-     * @var EventCommandFactory
-     */
-    private $commandFactory;
+
+    private EventCommandFactory $commandFactory;
 
     protected function createCommandHandler(
         EventStore $eventStore,
         EventBus $eventBus
-    ) {
+    ): EventCommandHandler {
         $repository = new EventRepository(
             $eventStore,
             $eventBus
@@ -69,7 +67,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         );
     }
 
-    private function factorOfferCreated($id)
+    private function factorOfferCreated($id): EventCreated
     {
         return new EventCreated(
             $id,
@@ -84,7 +82,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_should_create_a_new_event()
+    public function it_should_create_a_new_event(): void
     {
         $id = '5e36d2f2-b5de-4f5e-81b3-a129d996e9b6';
         $language = new Language('nl');
@@ -121,7 +119,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_translate_the_title_of_an_event_by_updating_with_a_foreign_language()
+    public function it_can_translate_the_title_of_an_event_by_updating_with_a_foreign_language(): void
     {
         $id = '1';
         $title = new Title('Voorbeeld');
@@ -144,7 +142,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_translate_the_description_of_an_event_by_updating_with_a_foreign_language()
+    public function it_can_translate_the_description_of_an_event_by_updating_with_a_foreign_language(): void
     {
         $id = '1';
         $description = new Description('Lorem ipsum dolor si amet...');
@@ -161,7 +159,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_major_info_of_an_event()
+    public function it_can_update_major_info_of_an_event(): void
     {
         $id = '1';
         $title = new Title('foo');
@@ -183,7 +181,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_updates_the_audience_type_when_setting_the_location_to_a_dummy_location_via_major_info()
+    public function it_updates_the_audience_type_when_setting_the_location_to_a_dummy_location_via_major_info(): void
     {
         LocationId::setDummyPlaceForEducationIds(['6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31']);
 
@@ -212,7 +210,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_location_of_an_event()
+    public function it_can_update_location_of_an_event(): void
     {
         $eventId = '3ed90f18-93a3-4340-981d-12e57efa0211';
 
@@ -238,7 +236,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_price_info()
+    public function it_can_update_price_info(): void
     {
         $id = '1';
 
