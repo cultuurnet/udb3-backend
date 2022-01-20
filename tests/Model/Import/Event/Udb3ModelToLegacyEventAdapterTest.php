@@ -30,15 +30,7 @@ use PHPUnit\Framework\TestCase;
 
 class Udb3ModelToLegacyEventAdapterTest extends TestCase
 {
-    /**
-     * @var ImmutableEvent
-     */
-    private $event;
-
-    /**
-     * @var ImmutableEvent
-     */
-    private $completeEvent;
+    private Udb3ModelToLegacyEventAdapter $adapter;
 
     private Udb3ModelToLegacyEventAdapter $completeAdapter;
 
@@ -89,7 +81,7 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
             )
         );
 
-        $this->completeEvent = $this->event
+        $completeEvent = $event
             ->withAudienceType(
                 AudienceType::members()
             )
@@ -97,8 +89,8 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
                 \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00')
             );
 
-        $this->adapter = new Udb3ModelToLegacyEventAdapter($this->event);
-        $this->completeAdapter = new Udb3ModelToLegacyEventAdapter($this->completeEvent);
+        $this->adapter = new Udb3ModelToLegacyEventAdapter($event);
+        $this->completeAdapter = new Udb3ModelToLegacyEventAdapter($completeEvent);
     }
 
     /**
