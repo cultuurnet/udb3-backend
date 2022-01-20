@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 
 final class UpdateAudienceHandler implements CommandHandler
 {
@@ -30,7 +30,7 @@ final class UpdateAudienceHandler implements CommandHandler
         $event = $this->eventRepository->load($command->getItemId());
 
         $event->updateAudience(
-            new Audience(AudienceType::fromNative($command->getAudienceType()->toString()))
+            new Audience(new AudienceType($command->getAudienceType()->toString()))
         );
 
         $this->eventRepository->save($event);

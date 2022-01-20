@@ -41,7 +41,7 @@ class UpdateAudienceHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($eventId)
             ->given([$this->getEventCreated($eventId)])
             ->when(new UpdateAudience($eventId, AudienceType::education()))
-            ->then([new AudienceUpdated($eventId, new Audience(LegacyAudienceType::EDUCATION()))]);
+            ->then([new AudienceUpdated($eventId, new Audience(AudienceType::education()))]);
     }
 
     private function getEventCreated(string $id): EventCreated

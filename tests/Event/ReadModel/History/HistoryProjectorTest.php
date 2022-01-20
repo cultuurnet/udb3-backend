@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -522,7 +523,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_audience_updated(): void
     {
-        $event = new AudienceUpdated(self::EVENT_ID_1, new Audience(AudienceType::EDUCATION()));
+        $event = new AudienceUpdated(self::EVENT_ID_1, new Audience(AudienceType::education()));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

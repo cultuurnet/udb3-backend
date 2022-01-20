@@ -124,7 +124,7 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
      */
     public function it_should_return_audience_type_everyone_by_default()
     {
-        $expected = \CultuurNet\UDB3\Event\ValueObjects\AudienceType::EVERYONE();
+        $expected = AudienceType::everyone();
         $actual = $this->adapter->getAudienceType();
         $this->assertEquals($expected, $actual);
     }
@@ -134,7 +134,7 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
      */
     public function it_should_return_the_audience_type_that_was_set()
     {
-        $expected = \CultuurNet\UDB3\Event\ValueObjects\AudienceType::MEMBERS();
+        $expected = AudienceType::members();
         $actual = $this->completeAdapter->getAudienceType();
         $this->assertEquals($expected, $actual);
     }
