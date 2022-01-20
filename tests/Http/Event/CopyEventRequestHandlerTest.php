@@ -42,10 +42,7 @@ class CopyEventRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /**
-     * @var UuidFactoryInterface|MockObject
-     */
-    private UuidFactoryInterface $uuidFactory;
+    private MockObject $uuidFactory;
     private CallableIriGenerator $iriGenerator;
     private TraceableCommandBus $commandBus;
     private CopyEventRequestHandler $copyEventRequestHandler;
@@ -73,7 +70,6 @@ class CopyEventRequestHandlerTest extends TestCase
             $this->iriGenerator
         );
     }
-
 
     /**
      * @test

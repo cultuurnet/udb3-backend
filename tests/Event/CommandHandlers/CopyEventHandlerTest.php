@@ -24,9 +24,6 @@ use PHPUnit\Framework\TestCase;
 
 class CopyEventHandlerTest extends TestCase
 {
-    /**
-     * @var MockObject|EventRepository
-     */
     private MockObject $eventRepository;
     private CopyEventHandler $copyEventHandler;
 
