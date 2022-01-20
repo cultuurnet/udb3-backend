@@ -13,22 +13,13 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ImportLabelsTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $organizerId;
+    private string $organizerId;
 
-    /**
-     * @var Labels
-     */
-    private $labels;
+    private Labels $labels;
 
-    /**
-     * @var ImportLabels
-     */
-    private $importLabels;
+    private ImportLabels $importLabels;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->organizerId = '77a4a93b-f62d-4fed-b5c1-500064bcf2cf';
 
@@ -46,7 +37,7 @@ class ImportLabelsTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_item_id()
+    public function it_stores_an_item_id(): void
     {
         $this->assertEquals(
             $this->organizerId,
@@ -57,7 +48,7 @@ class ImportLabelsTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_labels_collection()
+    public function it_stores_a_labels_collection(): void
     {
         $this->assertEquals(
             $this->labels,
@@ -68,7 +59,7 @@ class ImportLabelsTest extends TestCase
     /**
      * @test
      */
-    public function it_can_convert_a_labels_collection_to_label_names()
+    public function it_can_convert_a_labels_collection_to_label_names(): void
     {
         $this->assertEquals(
             [
@@ -82,10 +73,10 @@ class ImportLabelsTest extends TestCase
     /**
      * @test
      */
-    public function it_has_permission_aanbod_bewerken()
+    public function it_has_permission_aanbod_bewerken(): void
     {
         $this->assertEquals(
-            Permission::AANBOD_BEWERKEN(),
+            Permission::aanbodBewerken(),
             $this->importLabels->getPermission()
         );
     }

@@ -61,7 +61,7 @@ final class UpdateDescriptionTest extends TestCase
     public function it_stores_a_permission(): void
     {
         $this->assertEquals(
-            Permission::ORGANISATIES_BEWERKEN(),
+            Permission::organisatiesBewerken(),
             $this->updateDescription->getPermission()
         );
     }

@@ -11,24 +11,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRoleTableName;
+    private StringLiteral $userRoleTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionTableName;
+    private StringLiteral $rolePermissionTableName;
 
-    /**
-     * UserPermissionsReadRepository constructor.
-     */
     public function __construct(
         Connection $connection,
         StringLiteral $userRoleTableName,
@@ -42,7 +30,7 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     /**
      * @return Permission[]
      */
-    public function getPermissions(StringLiteral $userId)
+    public function getPermissions(StringLiteral $userId): array
     {
         $userRoleQuery = $this->connection->createQueryBuilder()
             ->select(SchemaConfigurator::ROLE_ID_COLUMN)
@@ -62,9 +50,9 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
 
         $results = $userPermissionQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
 
-        /** @var Permission[] $permissions */
-        $permissions = array_map([Permission::class, 'fromNative'], $results);
-
-        return $permissions;
+        return array_map(
+            fn (string $permission) => new Permission($permission),
+            $results
+        );
     }
 }

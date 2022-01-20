@@ -41,6 +41,6 @@ final class DeleteDescriptionTest extends TestCase
      */
     public function it_stores_a_permission(): void
     {
-        $this->assertEquals(Permission::ORGANISATIES_BEWERKEN(), $this->deleteDescription->getPermission());
+        $this->assertEquals(Permission::organisatiesBewerken(), $this->deleteDescription->getPermission());
     }
 }

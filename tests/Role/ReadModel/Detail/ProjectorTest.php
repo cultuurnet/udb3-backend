@@ -348,7 +348,7 @@ class ProjectorTest extends TestCase
             new StringLiteral('roleName')
         );
 
-        $permission = Permission::AANBOD_BEWERKEN();
+        $permission = Permission::aanbodBewerken();
 
         $domainMessageCreated = $this->createDomainMessage(
             $this->uuid,
@@ -374,7 +374,7 @@ class ProjectorTest extends TestCase
         $json = $document->getBody();
         $json->uuid = $this->uuid->toNative();
         $json->name = $this->name->toNative();
-        $json->permissions = [$permission->getName()];
+        $json->permissions = ['AANBOD_BEWERKEN'];
 
         $document = $document->withBody($json);
 
@@ -397,7 +397,7 @@ class ProjectorTest extends TestCase
      */
     public function it_handles_the_removal_of_a_permission(): void
     {
-        $permission = Permission::AANBOD_BEWERKEN();
+        $permission = Permission::aanbodBewerken();
 
         $permissionAdded = new PermissionAdded(
             $this->uuid,
@@ -487,7 +487,7 @@ class ProjectorTest extends TestCase
         $json = $document->getBody();
         $json->uuid = $this->uuid->toNative();
         $json->name = $this->name->toNative();
-        $json->permissions = [$permission->getName()];
+        $json->permissions = ['AANBOD_BEWERKEN'];
 
         return $document->withBody($json);
     }

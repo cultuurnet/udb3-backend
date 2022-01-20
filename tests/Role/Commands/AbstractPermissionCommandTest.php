@@ -11,25 +11,19 @@ use ValueObjects\Identity\UUID;
 
 class AbstractPermissionCommandTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var Permission
-     */
-    private $rolePermission;
+    private Permission $rolePermission;
 
     /**
      * @var AbstractPermissionCommand|MockObject
      */
     private $abstractPermissionCommand;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID();
-        $this->rolePermission = Permission::AANBOD_BEWERKEN();
+        $this->rolePermission = Permission::aanbodBewerken();
 
         $this->abstractPermissionCommand = $this->getMockForAbstractClass(
             AbstractPermissionCommand::class,
@@ -40,7 +34,7 @@ class AbstractPermissionCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_permission()
+    public function it_stores_a_permission(): void
     {
         $this->assertEquals(
             $this->rolePermission,

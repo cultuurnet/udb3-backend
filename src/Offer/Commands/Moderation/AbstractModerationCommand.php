@@ -11,6 +11,6 @@ abstract class AbstractModerationCommand extends AbstractCommand
 {
     public function getPermission(): Permission
     {
-        return Permission::AANBOD_MODEREREN();
+        return Permission::aanbodModereren();
     }
 }

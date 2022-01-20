@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 final class RemoveEventFromProduction implements AuthorizableCommand
 {
-    /**
-     * @var string
-     */
-    private $eventId;
+    private string $eventId;
 
-    /**
-     * @var ProductionId
-     */
-    private $productionId;
+    private ProductionId $productionId;
 
     public function __construct(
         string $eventId,
@@ -44,6 +38,6 @@ final class RemoveEventFromProduction implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::PRODUCTIES_AANMAKEN();
+        return Permission::productiesAanmaken();
     }
 }

@@ -13,29 +13,14 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRolesTableName;
+    private StringLiteral $userRolesTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionsTableName;
+    private StringLiteral $rolePermissionsTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolesSearchTableName;
+    private StringLiteral $rolesSearchTableName;
 
-    /**
-     * UserConstraintsReadRepository constructor.
-     */
     public function __construct(
         Connection $connection,
         StringLiteral $userRolesTableName,
@@ -54,7 +39,7 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
     public function getByUserAndPermission(
         StringLiteral $userId,
         Permission $permission
-    ) {
+    ): array {
         $userRolesSubQuery = $this->connection->createQueryBuilder()
             ->select(PermissionsSchemaConfigurator::ROLE_ID_COLUMN)
             ->from($this->userRolesTableName->toNative())
@@ -81,7 +66,7 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
                 'rs.' . SearchSchemaConfigurator::CONSTRAINT_COLUMN
             ))
             ->setParameter('userId', $userId->toNative())
-            ->setParameter('permission', $permission->toNative());
+            ->setParameter('permission', $permission->toString());
 
         $results = $userConstraintsQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
 

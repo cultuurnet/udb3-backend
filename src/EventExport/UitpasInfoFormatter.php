@@ -9,24 +9,14 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 
 class UitpasInfoFormatter
 {
-    /**
-     * @var PriceFormatter;
-     */
-    protected $priceFormatter;
+    protected PriceFormatter $priceFormatter;
 
-    /**
-     * UitpasInfoFormatter constructor.
-     *
-     */
     public function __construct(PriceFormatter $priceFormatter)
     {
         $this->priceFormatter = $priceFormatter;
     }
 
-    /**
-     * @return array
-     */
-    public function format(EventInfo $uitpasInfo)
+    public function format(EventInfo $uitpasInfo): array
     {
         // Format prices.
         $prices = $uitpasInfo->getPrices();
@@ -39,11 +29,11 @@ class UitpasInfoFormatter
         // Otherwise the order could get mixed up.
         $advantages = $uitpasInfo->getAdvantages();
         $advantageLabels = [
-            EventAdvantage::POINT_COLLECTING => 'Spaar punten',
-            EventAdvantage::KANSENTARIEF => 'Korting voor kansentarief',
+            EventAdvantage::pointCollecting()->toString() => 'Spaar punten',
+            EventAdvantage::kansenTarief()->toString() => 'Korting voor kansentarief',
         ];
         foreach ($advantageLabels as $advantage => $advantageLabel) {
-            if (!in_array($advantage, $advantages)) {
+            if (!in_array(new EventAdvantage($advantage), $advantages)) {
                 unset($advantageLabels[$advantage]);
             }
         }

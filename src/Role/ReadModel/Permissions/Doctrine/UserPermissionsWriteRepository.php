@@ -12,24 +12,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryInterface
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRoleTableName;
+    private StringLiteral $userRoleTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionTableName;
+    private StringLiteral $rolePermissionTableName;
 
-    /**
-     * UserPermissionsWriteRepository constructor.
-     */
     public function __construct(
         Connection $connection,
         StringLiteral $userRoleTableName,
@@ -43,7 +31,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     /**
      * @inheritdoc
      */
-    public function removeRole(UUID $roleId)
+    public function removeRole(UUID $roleId): void
     {
         $connection = $this->connection;
 
@@ -70,13 +58,13 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     /**
      * @inheritdoc
      */
-    public function addRolePermission(UUID $roleId, Permission $permission)
+    public function addRolePermission(UUID $roleId, Permission $permission): void
     {
         $this->connection->insert(
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
+                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }
@@ -84,13 +72,13 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     /**
      * @inheritdoc
      */
-    public function removeRolePermission(UUID $roleId, Permission $permission)
+    public function removeRolePermission(UUID $roleId, Permission $permission): void
     {
         $this->connection->delete(
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
+                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }
@@ -98,7 +86,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     /**
      * @inheritdoc
      */
-    public function addUserRole(StringLiteral $userId, UUID $roleId)
+    public function addUserRole(StringLiteral $userId, UUID $roleId): void
     {
         $this->connection->insert(
             $this->userRoleTableName,
@@ -112,7 +100,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     /**
      * @inheritdoc
      */
-    public function removeUserRole(StringLiteral $userId, UUID $roleId)
+    public function removeUserRole(StringLiteral $userId, UUID $roleId): void
     {
         $this->connection->delete(
             $this->userRoleTableName,

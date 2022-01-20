@@ -106,9 +106,9 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $app[$this->getPermissionsControllerName()] = $app->share(
             function (Application $app) {
                 $permissionsToCheck = [
-                    Permission::AANBOD_BEWERKEN(),
-                    Permission::AANBOD_MODEREREN(),
-                    Permission::AANBOD_VERWIJDEREN(),
+                    Permission::aanbodBewerken(),
+                    Permission::aanbodModereren(),
+                    Permission::aanbodVerwijderen(),
                 ];
                 return new OfferPermissionsController(
                     $permissionsToCheck,
@@ -122,7 +122,7 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $app[$this->getDeprecatedPermissionControllerName()] = $app->share(
             function (Application $app) {
                 return new OfferPermissionController(
-                    Permission::AANBOD_BEWERKEN(),
+                    Permission::aanbodBewerken(),
                     $app['offer_permission_voter'],
                     $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
                 );

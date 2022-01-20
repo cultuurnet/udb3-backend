@@ -15,22 +15,13 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var UserPermissionsWriteRepositoryInterface
-     */
-    private $repository;
+    private UserPermissionsWriteRepositoryInterface $repository;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRoleTableName;
+    private StringLiteral $userRoleTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionTableName;
+    private StringLiteral $rolePermissionTableName;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->userRoleTableName = new StringLiteral('user_role');
         $this->rolePermissionTableName = new StringLiteral('role_permission');
@@ -54,7 +45,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_permissions_when_a_user_is_assigned_a_role()
+    public function it_should_update_permissions_when_a_user_is_assigned_a_role(): void
     {
         $userId = new StringLiteral('4A9F8064-755E-46C5-A5C2-DFD7970A4BF3');
         $roleId = new UUID();
@@ -76,10 +67,10 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_permissions_when_a_role_is_assigned_permissions()
+    public function it_should_update_permissions_when_a_role_is_assigned_permissions(): void
     {
         $roleId = new UUID();
-        $permission = Permission::get(Permission::LABELS_BEHEREN);
+        $permission = Permission::labelsBeheren();
 
         $this->repository->addRolePermission($roleId, $permission);
 
@@ -88,7 +79,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $expectedRows = [
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
+                SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ],
         ];
 
@@ -98,17 +89,17 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_revoke_permissions_when_a_role_permission_is_removed()
+    public function it_should_revoke_permissions_when_a_role_permission_is_removed(): void
     {
         $roleId = new UUID();
-        $permission = Permission::get(Permission::GEBRUIKERS_BEHEREN);
+        $permission = Permission::gebruikersBeheren();
         $otherRoleId = UUID::generateAsString();
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
 
@@ -116,7 +107,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -124,7 +115,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -135,11 +126,11 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $expectedRows = [
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ],
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ],
         ];
 
@@ -149,7 +140,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_revoke_permissions_when_a_role_is_removed()
+    public function it_should_revoke_permissions_when_a_role_is_removed(): void
     {
         $roleId = new UUID();
         $otherRoleId = UUID::generateAsString();
@@ -159,7 +150,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
 
@@ -167,7 +158,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -175,7 +166,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -195,7 +186,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
         $expectedRolePermissions = [
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ],
         ];
 
@@ -206,7 +197,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_revoke_permissions_when_a_role_is_taken_from_a_user()
+    public function it_should_revoke_permissions_when_a_role_is_taken_from_a_user(): void
     {
         $userId = new StringLiteral('4A9F8064-755E-46C5-A5C2-DFD7970A4BF3');
         $otherUserId = UUID::generateAsString();

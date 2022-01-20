@@ -95,12 +95,10 @@ class Projector extends RoleProjector
             $permissionAdded->getUuid()->toNative()
         );
 
-        $permission = $permissionAdded->getPermission();
-
         $json = $document->getBody();
 
         $permissions = property_exists($json, 'permissions') ? $json->permissions : [];
-        array_push($permissions, $permission->getName());
+        $permissions[] = $permissionAdded->getPermission()->toUpperCaseString();
 
         $json->permissions = array_unique($permissions);
 
@@ -113,8 +111,7 @@ class Projector extends RoleProjector
             $permissionRemoved->getUuid()->toNative()
         );
 
-        $permission = $permissionRemoved->getPermission();
-        $permissionName = $permission->getName();
+        $permissionName = $permissionRemoved->getPermission()->toUpperCaseString();
 
         $json = $document->getBody();
         $json->permissions = array_values(

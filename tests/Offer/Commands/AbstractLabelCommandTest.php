@@ -17,22 +17,16 @@ class AbstractLabelCommandTest extends TestCase
      */
     protected $labelCommand;
 
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
     /**
      * @var Permission[]
      */
-    protected $permissions;
+    protected array $permissions;
 
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->itemId = 'Foo';
         $this->label = new Label('LabelTest');
@@ -46,7 +40,7 @@ class AbstractLabelCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_its_properties()
+    public function it_can_return_its_properties(): void
     {
         $label = $this->labelCommand->getLabel();
         $expectedLabel = new Label('LabelTest');
@@ -59,7 +53,7 @@ class AbstractLabelCommandTest extends TestCase
         $this->assertEquals($expectedItemId, $itemId);
 
         $permission = $this->labelCommand->getPermission();
-        $expectedPermission = Permission::AANBOD_BEWERKEN();
+        $expectedPermission = Permission::aanbodBewerken();
 
         $this->assertEquals($expectedPermission, $permission);
     }
@@ -67,7 +61,7 @@ class AbstractLabelCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_does_use_label_name()
+    public function it_does_use_label_name(): void
     {
         $this->assertEquals(
             [

@@ -58,6 +58,6 @@ final class AddImageTest extends TestCase
      */
     public function it_stores_a_permission(): void
     {
-        $this->assertEquals(Permission::ORGANISATIES_BEWERKEN(), $this->addImage->getPermission());
+        $this->assertEquals(Permission::organisatiesBewerken(), $this->addImage->getPermission());
     }
 }

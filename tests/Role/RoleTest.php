@@ -47,7 +47,7 @@ class RoleTest extends AggregateRootScenarioTestCase
 
         $this->uuid = new UUID();
         $this->name = new StringLiteral('roleName');
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
 
@@ -151,7 +151,7 @@ class RoleTest extends AggregateRootScenarioTestCase
 
         $this->scenario
             ->withAggregateId($this->uuid)
-            ->given([$this->roleCreated, new PermissionAdded($this->uuid, Permission::AANBOD_BEWERKEN())])
+            ->given([$this->roleCreated, new PermissionAdded($this->uuid, Permission::aanbodBewerken())])
             ->when(function (Role $role) use ($uuid, $permission) {
                 $role->addPermission(
                     $uuid,

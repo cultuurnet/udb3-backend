@@ -26,6 +26,6 @@ final class UpdateFacilities extends AbstractCommand
 
     public function getPermission(): Permission
     {
-        return Permission::VOORZIENINGEN_BEWERKEN();
+        return Permission::voorzieningenBewerken();
     }
 }
