@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 
 /**
  * @deprecated
@@ -21,25 +22,25 @@ final class Audience implements Serializable
 
     public function __construct(AudienceType $audienceType)
     {
-        $this->audienceType = $audienceType->toNative();
+        $this->audienceType = $audienceType->toString();
     }
 
     public function getAudienceType(): AudienceType
     {
-        return AudienceType::fromNative($this->audienceType);
+        return new AudienceType($this->audienceType);
     }
 
     public static function deserialize(array $data): Audience
     {
         return new self(
-            AudienceType::fromNative($data['audienceType'])
+            new AudienceType($data['audienceType'])
         );
     }
 
     public function serialize(): array
     {
         return [
-            'audienceType' => $this->getAudienceType()->toNative(),
+            'audienceType' => $this->getAudienceType()->toString(),
         ];
     }
 

@@ -663,7 +663,7 @@ class EventDocumentImporterTest extends TestCase
         LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
         $document = $this->getEventDocument();
         $body = $document->getBody();
-        $body['audience']['audienceType'] = LegacyAudienceType::EVERYONE()->toNative();
+        $body['audience']['audienceType'] = AudienceType::everyone()->toString();
         $body['location']['@id'] = 'https://io.uitdatabank.be/places/' . $dummyPlaceId;
         $document = $document->withBody($body);
         $id = $document->getId();

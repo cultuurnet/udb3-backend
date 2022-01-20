@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -133,7 +134,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $event->apply(
-                new AudienceUpdated($eventId, new Audience(AudienceType::EDUCATION()))
+                new AudienceUpdated($eventId, new Audience(AudienceType::education()))
             );
         }
 
@@ -196,7 +197,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $this->calendar = $eventCreated->getCalendar();
-        $this->audience = new Audience(AudienceType::EVERYONE());
+        $this->audience = new Audience(AudienceType::everyone());
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $eventCreated->getEventType()->getId();
@@ -283,7 +284,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $this->apply(
-                new AudienceUpdated($this->eventId, new Audience(AudienceType::EDUCATION()))
+                new AudienceUpdated($this->eventId, new Audience(AudienceType::education()))
             );
         }
     }
@@ -306,7 +307,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
             $this->apply(
-                new AudienceUpdated($this->eventId, new Audience(AudienceType::EDUCATION()))
+                new AudienceUpdated($this->eventId, new Audience(AudienceType::education()))
             );
         }
     }
@@ -367,7 +368,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $audienceType = $audience->getAudienceType();
         if ($this->locationId &&
             $this->locationId->isDummyPlaceForEducation() &&
-            !$audienceType->sameValueAs(AudienceType::EDUCATION())
+            !$audienceType->sameAs(AudienceType::education())
         ) {
             throw IncompatibleAudienceType::forEvent($this->eventId, $audienceType);
         }

@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -1197,7 +1198,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $audienceUpdated = new AudienceUpdated(
             $eventId,
-            new Audience(AudienceType::EDUCATION())
+            new Audience(AudienceType::education())
         );
 
         $body = $this->project($audienceUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());

@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -204,7 +205,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->then(
                 [
                     new MajorInfoUpdated($id, $title, $eventType, $location, $calendar),
-                    new AudienceUpdated($id, new Audience(AudienceType::EDUCATION())),
+                    new AudienceUpdated($id, new Audience(AudienceType::education())),
                 ]
             );
     }

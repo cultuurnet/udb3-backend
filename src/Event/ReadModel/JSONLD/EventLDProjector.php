@@ -61,6 +61,7 @@ use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -262,7 +263,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->getName();
 
-        $defaultAudience = new Audience(AudienceType::EVERYONE());
+        $defaultAudience = new Audience(AudienceType::everyone());
         $jsonLD->audience = $defaultAudience->serialize();
 
         return $document->withBody($jsonLD);
