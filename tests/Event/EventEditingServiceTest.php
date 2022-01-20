@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;

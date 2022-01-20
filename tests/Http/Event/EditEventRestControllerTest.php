@@ -9,8 +9,6 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
