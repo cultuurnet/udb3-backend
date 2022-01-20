@@ -204,13 +204,13 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->themeId = $eventCreated->getTheme() ? $eventCreated->getTheme()->getId() : null;
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
-        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
+        $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
     protected function applyEventCopied(EventCopied $eventCopied): void
     {
         $this->eventId = $eventCopied->getItemId();
-        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
+        $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelCollection();
     }
 
@@ -230,7 +230,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function applyEventDeleted(EventDeleted $event): void
     {
-        $this->workflowStatus = LegacyWorkflowStatus::DELETED();
+        $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
     protected function setUDB2Data(EventCdbXMLInterface $eventCdbXML): void

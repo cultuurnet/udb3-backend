@@ -146,7 +146,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->typeId = $placeCreated->getEventType()->getId();
         $this->addresses[$this->mainLanguage->getCode()] = $placeCreated->getAddress();
         $this->placeId = $placeCreated->getPlaceId();
-        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
+        $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
     public function updateMajorInfo(
@@ -332,7 +332,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function applyPlaceDeleted(PlaceDeleted $event): void
     {
-        $this->workflowStatus = LegacyWorkflowStatus::DELETED();
+        $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
     protected function applyMarkedAsDuplicate(MarkedAsDuplicate $event): void

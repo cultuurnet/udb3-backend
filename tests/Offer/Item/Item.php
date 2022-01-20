@@ -83,12 +83,12 @@ class Item extends Offer
     {
         $this->id = $created->getItemId();
         $this->mainLanguage = $created->getMainLanguage();
-        $this->workflowStatus = LegacyWorkflowStatus::DRAFT();
+        $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
     protected function applyItemDeleted(ItemDeleted $event): void
     {
-        $this->workflowStatus = LegacyWorkflowStatus::DELETED();
+        $this->workflowStatus = WorkflowStatus::DELETED();
     }
 
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
