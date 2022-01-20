@@ -731,11 +731,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function importWorkflowStatus(CultureFeed_Cdb_Item_Base $cdbItem): void
     {
-        try {
-            $workflowStatus = WorkflowStatus::fromNative($cdbItem->getWfStatus());
-        } catch (\InvalidArgumentException $exception) {
-            $workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
-        }
+        $wfStatus = $cdbItem->getWfStatus();
+        $workflowStatus = $wfStatus ? new WorkflowStatus(str_replace('READYFORVALIDATION', 'READY_FOR_VALIDATION', strtoupper($wfStatus))) : WorkflowStatus::READY_FOR_VALIDATION();
+
         $this->workflowStatus = $workflowStatus;
     }
 

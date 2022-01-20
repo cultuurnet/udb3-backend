@@ -137,9 +137,9 @@ class CdbXMLItemBaseImporter
     ) {
         $wfStatus = $item->getWfStatus();
 
-        $workflowStatus = $wfStatus ? LegacyWorkflowStatus::fromNative($wfStatus) : LegacyWorkflowStatus::READY_FOR_VALIDATION();
+        $workflowStatus = $wfStatus ? new WorkflowStatus(str_replace('READYFORVALIDATION', 'READY_FOR_VALIDATION', strtoupper($wfStatus))) : WorkflowStatus::READY_FOR_VALIDATION();
 
-        $jsonLD->workflowStatus = $workflowStatus->getName();
+        $jsonLD->workflowStatus = $workflowStatus->toString();
     }
 
     /**
