@@ -12,8 +12,6 @@ class AudienceUpdatedTest extends TestCase
 {
     private string $itemId;
 
-    private AudienceType $audienceType;
-
     private Audience $audience;
 
     private AudienceUpdated $audienceUpdated;
@@ -22,10 +20,8 @@ class AudienceUpdatedTest extends TestCase
     {
         $this->itemId = '6eaaa9b6-d0d2-11e6-bf26-cec0c932ce01';
 
-        $this->audienceType = AudienceType::members();
-
         $this->audience = new Audience(
-            $this->audienceType
+            AudienceType::members()
         );
 
         $this->audienceUpdated = new AudienceUpdated(
