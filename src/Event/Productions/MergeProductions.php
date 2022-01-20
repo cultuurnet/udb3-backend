@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 final class MergeProductions implements AuthorizableCommand
 {
-    /**
-     * @var ProductionId
-     */
-    private $from;
+    private ProductionId $from;
 
-    /**
-     * @var ProductionId
-     */
-    private $to;
+    private ProductionId $to;
 
     public function __construct(
         ProductionId $from,
@@ -44,6 +38,6 @@ final class MergeProductions implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::PRODUCTIES_AANMAKEN();
+        return Permission::productiesAanmaken();
     }
 }

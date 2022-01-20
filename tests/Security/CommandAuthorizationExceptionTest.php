@@ -11,35 +11,23 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class CommandAuthorizationExceptionTest extends TestCase
 {
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private StringLiteral $userId;
 
-    /**
-     * @var Permission
-     */
-    private $permission;
+    private Permission $permission;
 
-    /**
-     * @var string
-     */
-    private $itemId;
+    private string $itemId;
 
     /**
      * @var AuthorizableCommand|MockObject
      */
     private $command;
 
-    /**
-     * @var CommandAuthorizationException
-     */
-    private $commandAuthorizationException;
+    private CommandAuthorizationException $commandAuthorizationException;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->userId = new StringLiteral('85b040e5-766a-4ca7-a01b-e21e9250165f');
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
         $this->itemId = '69aa5d8d-5d56-4774-9320-d8e7c1721693';
 
         $this->command = $this->createMock(AuthorizableCommand::class);
@@ -57,7 +45,7 @@ class CommandAuthorizationExceptionTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_user_id()
+    public function it_stores_a_user_id(): void
     {
         $this->assertEquals(
             $this->userId,
@@ -68,7 +56,7 @@ class CommandAuthorizationExceptionTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_command()
+    public function it_stores_a_command(): void
     {
         $this->assertEquals(
             $this->command,
@@ -79,10 +67,10 @@ class CommandAuthorizationExceptionTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_message()
+    public function it_creates_a_message(): void
     {
         $expectedMessage = 'User with id: ' . $this->userId->toNative() .
-            ' has no permission: "' . $this->permission->toNative() .
+            ' has no permission: "' . $this->permission->toString() .
             '" on item: ' . $this->itemId .
             ' when executing command: ' . get_class($this->command);
 

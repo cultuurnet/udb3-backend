@@ -9,10 +9,7 @@ use ValueObjects\Identity\UUID;
 
 abstract class AbstractPermissionCommand extends AbstractCommand
 {
-    /**
-     * @var string
-     */
-    private $rolePermission;
+    private string $rolePermission;
 
     public function __construct(
         UUID $uuid,
@@ -22,11 +19,11 @@ abstract class AbstractPermissionCommand extends AbstractCommand
 
         // The built-in serialize call does not work on Enum.
         // Just store them internally as string but expose as Enum.
-        $this->rolePermission = $rolePermission->toNative();
+        $this->rolePermission = $rolePermission->toString();
     }
 
     public function getRolePermission(): Permission
     {
-        return Permission::fromNative($this->rolePermission);
+        return new Permission($this->rolePermission);
     }
 }

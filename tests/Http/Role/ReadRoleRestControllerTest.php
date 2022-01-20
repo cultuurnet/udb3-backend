@@ -302,7 +302,7 @@ class ReadRoleRestControllerTest extends TestCase
     public function it_returns_an_array_of_permissions_for_the_current_user()
     {
         $permissions = [
-            0 => Permission::getByName('AANBOD_MODEREREN'),
+            0 => Permission::aanbodModereren(),
         ];
 
         $this->permissionsRepository

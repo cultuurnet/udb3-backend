@@ -47,6 +47,6 @@ final class RemoveImageTest extends TestCase
      */
     public function it_stores_a_permission(): void
     {
-        $this->assertEquals(Permission::ORGANISATIES_BEWERKEN(), $this->removeImage->getPermission());
+        $this->assertEquals(Permission::organisatiesBewerken(), $this->removeImage->getPermission());
     }
 }

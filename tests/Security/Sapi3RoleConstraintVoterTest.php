@@ -27,10 +27,7 @@ class Sapi3RoleConstraintVoterTest extends TestCase
      */
     private $httpClient;
 
-    /**
-     * @var Sapi3RoleConstraintVoter
-     */
-    private $roleConstraintVoter;
+    private Sapi3RoleConstraintVoter $roleConstraintVoter;
 
     protected function setUp(): void
     {
@@ -61,7 +58,7 @@ class Sapi3RoleConstraintVoterTest extends TestCase
         bool $expected
     ): void {
         $userId = new StringLiteral('ff085fed-8500-4dd9-8ac0-459233c642f4');
-        $permission = Permission::AANBOD_BEWERKEN();
+        $permission = Permission::aanbodBewerken();
         $constraints = [
             new StringLiteral('address.\*.postalCode:3000'),
         ];
@@ -124,7 +121,7 @@ class Sapi3RoleConstraintVoterTest extends TestCase
     public function it_does_not_match_offer_when_user_has_no_matching_constraints(): void
     {
         $userId = new StringLiteral('ff085fed-8500-4dd9-8ac0-459233c642f4');
-        $permission = Permission::AANBOD_BEWERKEN();
+        $permission = Permission::aanbodBewerken();
         $offerId = new StringLiteral('625a4e74-a1ca-4bee-9e85-39869457d531');
 
         $this->userConstraintsReadRepository->expects($this->once())

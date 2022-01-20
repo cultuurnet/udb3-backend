@@ -21,12 +21,9 @@ class UserPermissionsVoterTest extends TestCase
      */
     protected $permissionRepository;
 
-    /**
-     * @var VoterInterface
-     */
-    protected $voter;
+    protected VoterInterface $voter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->permissionRepository = $this->createMock(
             UserPermissionsReadRepositoryInterface::class
@@ -38,14 +35,14 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_grant_access_to_a_user_with_all_the_required_permissions()
+    public function it_should_grant_access_to_a_user_with_all_the_required_permissions(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
         ];
 
         $this->permissionRepository
@@ -61,14 +58,15 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_grants_access_to_a_user_with_all_the_required_permissions_and_one_not_supported()
+    public function it_grants_access_to_a_user_with_all_the_required_permissions_and_one_not_supported(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
+            Permission::filmsAanmaken(),
         ];
 
         $this->permissionRepository
@@ -76,8 +74,10 @@ class UserPermissionsVoterTest extends TestCase
             ->method('getPermissions')
             ->willReturn($grantedPermissions);
 
-        $requiredPermissions = $grantedPermissions;
-        $requiredPermissions[] = 'Something not supported';
+        $requiredPermissions = [
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
+        ];
         $access = $this->voter->vote($userToken, $request, $requiredPermissions);
 
         $this->assertEquals(VoterInterface::ACCESS_GRANTED, $access);
@@ -86,14 +86,14 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_denies_access_to_a_user_with_missing_required_permissions()
+    public function it_denies_access_to_a_user_with_missing_required_permissions(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
         ];
 
         $this->permissionRepository
@@ -102,7 +102,7 @@ class UserPermissionsVoterTest extends TestCase
             ->willReturn($grantedPermissions);
 
         $requiredPermissions = $grantedPermissions;
-        $requiredPermissions[] = Permission::AANBOD_MODEREREN();
+        $requiredPermissions[] = Permission::aanbodModereren();
         $access = $this->voter->vote($userToken, $request, $requiredPermissions);
 
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $access);
@@ -111,14 +111,14 @@ class UserPermissionsVoterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_deny_access_to_a_user_without_all_the_required_permissions()
+    public function it_should_deny_access_to_a_user_without_all_the_required_permissions(): void
     {
         $userId = UUID::generateAsString();
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
-            Permission::get(Permission::GEBRUIKERS_BEHEREN),
-            Permission::get(Permission::LABELS_BEHEREN),
+            Permission::gebruikersBeheren(),
+            Permission::labelsBeheren(),
         ];
 
         $this->permissionRepository
@@ -126,7 +126,10 @@ class UserPermissionsVoterTest extends TestCase
             ->method('getPermissions')
             ->willReturn($grantedPermissions);
 
-        $access = $this->voter->vote($userToken, $request, Permission::getConstants());
+        $expectedPermissions = $grantedPermissions;
+        $expectedPermissions[] = Permission::filmsAanmaken();
+
+        $access = $this->voter->vote($userToken, $request, $expectedPermissions);
 
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $access);
     }

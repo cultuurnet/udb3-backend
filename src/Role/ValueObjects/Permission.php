@@ -4,32 +4,97 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ValueObjects;
 
-use ValueObjects\Enum\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
-/**
- * Class Permission
- * @package CultuurNet\UDB3\Role\ValueObjects
- * @method static Permission AANBOD_BEWERKEN()
- * @method static Permission AANBOD_MODEREREN()
- * @method static Permission AANBOD_VERWIJDEREN()
- * @method static Permission ORGANISATIES_BEHEREN()
- * @method static Permission ORGANISATIES_BEWERKEN()
- * @method static Permission GEBRUIKERS_BEHEREN()
- * @method static Permission LABELS_BEHEREN()
- * @method static Permission VOORZIENINGEN_BEWERKEN()
- * @method static Permission PRODUCTIES_AANMAKEN()
- * @method static Permission FILMS_AANMAKEN()
- */
 class Permission extends Enum
 {
-    public const AANBOD_BEWERKEN = 'Aanbod bewerken';
-    public const AANBOD_MODEREREN = 'Aanbod modereren';
-    public const AANBOD_VERWIJDEREN = 'Aanbod verwijderen';
-    public const ORGANISATIES_BEHEREN = 'Organisaties beheren';
-    public const ORGANISATIES_BEWERKEN = 'Organisaties bewerken';
-    public const GEBRUIKERS_BEHEREN = 'Gebruikers beheren';
-    public const LABELS_BEHEREN = 'Labels beheren';
-    public const VOORZIENINGEN_BEWERKEN = 'Voorzieningen bewerken';
-    public const PRODUCTIES_AANMAKEN = 'Producties aanmaken';
-    public const FILMS_AANMAKEN = 'Films aanmaken';
+    public static function getAllowedValues(): array
+    {
+        return [
+            'Aanbod bewerken',
+            'Aanbod modereren',
+            'Aanbod verwijderen',
+            'Organisaties beheren',
+            'Organisaties bewerken',
+            'Gebruikers beheren',
+            'Labels beheren',
+            'Voorzieningen bewerken',
+            'Producties aanmaken',
+            'Films aanmaken',
+        ];
+    }
+
+    public static function getAllPermissions(): array
+    {
+        return array_map(
+            fn (string $permission) => new Permission($permission),
+            self::getAllowedValues()
+        );
+    }
+
+    public static function aanbodBewerken(): Permission
+    {
+        return new self('Aanbod bewerken');
+    }
+
+    public static function aanbodModereren(): Permission
+    {
+        return new self('Aanbod modereren');
+    }
+
+    public static function aanbodVerwijderen(): Permission
+    {
+        return new self('Aanbod verwijderen');
+    }
+
+    public static function organisatiesBeheren(): Permission
+    {
+        return new self('Organisaties beheren');
+    }
+
+    public static function organisatiesBewerken(): Permission
+    {
+        return new self('Organisaties bewerken');
+    }
+
+    public static function gebruikersBeheren(): Permission
+    {
+        return new self('Gebruikers beheren');
+    }
+
+    public static function labelsBeheren(): Permission
+    {
+        return new self('Labels beheren');
+    }
+
+    public static function voorzieningenBewerken(): Permission
+    {
+        return new self('Voorzieningen bewerken');
+    }
+
+    public static function productiesAanmaken(): Permission
+    {
+        return new self('Producties aanmaken');
+    }
+
+    public static function filmsAanmaken(): Permission
+    {
+        return new self('Films aanmaken');
+    }
+
+    // The API exposes the permissions in uppercase and underscore format.
+    // The business layer and database use the lowercase and space format.
+    // This method should only be used inside the context of the API.
+    public static function fromUpperCaseString(string $upperCaseValue): Permission
+    {
+        return new Permission(ucfirst(str_replace('_', ' ', strtolower($upperCaseValue))));
+    }
+
+    // The API exposes the permissions in uppercase and underscore format.
+    // The business layer and database use the lowercase and space format.
+    // This method should only be used inside the context of the API.
+    public function toUpperCaseString(): string
+    {
+        return str_replace(' ', '_', strtoupper($this->toString()));
+    }
 }

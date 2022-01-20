@@ -9,10 +9,7 @@ use ValueObjects\Identity\UUID;
 
 abstract class AbstractPermissionEvent extends AbstractEvent
 {
-    /**
-     * @var Permission
-     */
-    private $permission;
+    private Permission $permission;
 
     final public function __construct(UUID $uuid, Permission $permission)
     {
@@ -27,13 +24,13 @@ abstract class AbstractPermissionEvent extends AbstractEvent
 
     public static function deserialize(array $data): AbstractPermissionEvent
     {
-        return new static(new UUID($data['uuid']), Permission::fromNative($data['permission']));
+        return new static(new UUID($data['uuid']), new Permission($data['permission']));
     }
 
     public function serialize(): array
     {
         return parent::serialize() + [
-            'permission' => $this->permission->toNative(),
+            'permission' => $this->permission->toString(),
         ];
     }
 }

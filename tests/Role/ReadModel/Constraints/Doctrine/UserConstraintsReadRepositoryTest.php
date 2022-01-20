@@ -20,29 +20,17 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @var UUID[]
      */
-    private $roleIds;
+    private array $roleIds;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRolesTableName;
+    private StringLiteral $userRolesTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionsTableName;
+    private StringLiteral $rolePermissionsTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolesSearchTableName;
+    private StringLiteral $rolesSearchTableName;
 
-    /**
-     * @var UserConstraintsReadRepositoryInterface
-     */
-    private $userConstraintsReadRepository;
+    private UserConstraintsReadRepositoryInterface $userConstraintsReadRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->roleIds = [new UUID(), new UUID(), new UUID(), new UUID()];
 
@@ -80,11 +68,11 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_constraints_for_a_certain_user_and_permission()
+    public function it_returns_constraints_for_a_certain_user_and_permission(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user1'),
-            Permission::AANBOD_MODEREREN()
+            Permission::aanbodModereren()
         );
 
         $expectedConstraints = [
@@ -105,11 +93,11 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_array_for_a_missing_user()
+    public function it_returns_empty_array_for_a_missing_user(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user3'),
-            Permission::AANBOD_MODEREREN()
+            Permission::aanbodModereren()
         );
 
         $this->assertEmpty($constraints);
@@ -118,17 +106,17 @@ class UserConstraintsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_array_for_a_missing_permission()
+    public function it_returns_empty_array_for_a_missing_permission(): void
     {
         $constraints = $this->userConstraintsReadRepository->getByUserAndPermission(
             new StringLiteral('user2'),
-            Permission::AANBOD_BEWERKEN()
+            Permission::aanbodBewerken()
         );
 
         $this->assertEmpty($constraints);
     }
 
-    private function seedUserRoles()
+    private function seedUserRoles(): void
     {
         $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[0]);
         $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[1]);
@@ -137,22 +125,22 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->insertUserRole(new StringLiteral('user1'), $this->roleIds[3]);
     }
 
-    private function seedRolePermissions()
+    private function seedRolePermissions(): void
     {
-        $this->insertUserPermission($this->roleIds[0], Permission::AANBOD_BEWERKEN());
-        $this->insertUserPermission($this->roleIds[0], Permission::AANBOD_VERWIJDEREN());
-        $this->insertUserPermission($this->roleIds[0], Permission::AANBOD_MODEREREN());
+        $this->insertUserPermission($this->roleIds[0], Permission::aanbodBewerken());
+        $this->insertUserPermission($this->roleIds[0], Permission::aanbodVerwijderen());
+        $this->insertUserPermission($this->roleIds[0], Permission::aanbodModereren());
 
-        $this->insertUserPermission($this->roleIds[1], Permission::LABELS_BEHEREN());
-        $this->insertUserPermission($this->roleIds[1], Permission::GEBRUIKERS_BEHEREN());
+        $this->insertUserPermission($this->roleIds[1], Permission::labelsBeheren());
+        $this->insertUserPermission($this->roleIds[1], Permission::gebruikersBeheren());
 
-        $this->insertUserPermission($this->roleIds[2], Permission::AANBOD_MODEREREN());
+        $this->insertUserPermission($this->roleIds[2], Permission::aanbodModereren());
 
-        $this->insertUserPermission($this->roleIds[3], Permission::AANBOD_VERWIJDEREN());
-        $this->insertUserPermission($this->roleIds[3], Permission::AANBOD_MODEREREN());
+        $this->insertUserPermission($this->roleIds[3], Permission::aanbodVerwijderen());
+        $this->insertUserPermission($this->roleIds[3], Permission::aanbodModereren());
     }
 
-    private function seedRolesSearch()
+    private function seedRolesSearch(): void
     {
         $this->insertRole($this->roleIds[0], new StringLiteral('Brussel Validatoren'), new StringLiteral('zipCode:1000'));
         $this->insertRole($this->roleIds[1], new StringLiteral('Antwerpen Validatoren'), new StringLiteral('zipCode:2000'));
@@ -161,7 +149,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
 
-    private function insertUserRole(StringLiteral $userId, UUID $roleId)
+    private function insertUserRole(StringLiteral $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->userRolesTableName,
@@ -173,25 +161,22 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
 
-    private function insertUserPermission(UUID $roleId, Permission $permission)
+    private function insertUserPermission(UUID $roleId, Permission $permission): void
     {
         $this->getConnection()->insert(
             $this->rolePermissionsTableName,
             [
                 PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
-                PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toNative(),
+                PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
     }
 
-    /**
-     * @param StringLiteral $constraint
-     */
     private function insertRole(
         UUID $roleId,
         StringLiteral $roleName,
         StringLiteral $constraint = null
-    ) {
+    ): void {
         $this->getConnection()->insert(
             $this->rolesSearchTableName,
             [

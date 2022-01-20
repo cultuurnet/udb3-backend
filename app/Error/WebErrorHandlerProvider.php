@@ -26,7 +26,7 @@ use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
 {
-    private static $debug = false;
+    private static bool $debug = false;
 
     public function register(Application $app): void
     {
@@ -80,7 +80,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                     sprintf(
                         'User %s has no permission "%s" on resource %s',
                         $e->getUserId()->toNative(),
-                        $e->getCommand()->getPermission()->toNative(),
+                        $e->getCommand()->getPermission()->toString(),
                         $e->getCommand()->getItemId()
                     )
                 );

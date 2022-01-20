@@ -11,28 +11,22 @@ class JSONLDFileFormat implements FileFormatInterface
     /**
      * @var string[]
      */
-    protected $include;
+    protected ?array $include;
 
     /**
-     * @param string[] $include
+     * @param null|string[] $include
      */
-    public function __construct($include = null)
+    public function __construct(?array $include = null)
     {
         $this->include = $include;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getFileNameExtension()
+    public function getFileNameExtension(): string
     {
         return 'json';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getWriter()
+    public function getWriter(): JSONLDFileWriter
     {
         return new JSONLDFileWriter($this->include);
     }

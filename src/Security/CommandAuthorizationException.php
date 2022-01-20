@@ -8,15 +8,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class CommandAuthorizationException extends \Exception
 {
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private StringLiteral $userId;
 
-    /**
-     * @var AuthorizableCommand
-     */
-    private $command;
+    private AuthorizableCommand $command;
 
     /**
      * CommandAuthorizationException constructor.
@@ -29,7 +23,7 @@ class CommandAuthorizationException extends \Exception
             sprintf(
                 'User with id: %s has no permission: "%s" on item: %s when executing command: %s',
                 $userId->toNative(),
-                $command->getPermission()->toNative(),
+                $command->getPermission()->toString(),
                 $command->getItemId(),
                 get_class($command)
             ),
@@ -40,18 +34,12 @@ class CommandAuthorizationException extends \Exception
         $this->command = $command;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): StringLiteral
     {
         return $this->userId;
     }
 
-    /**
-     * @return AuthorizableCommand
-     */
-    public function getCommand()
+    public function getCommand(): AuthorizableCommand
     {
         return $this->command;
     }

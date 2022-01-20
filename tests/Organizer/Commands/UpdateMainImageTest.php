@@ -44,6 +44,6 @@ final class UpdateMainImageTest extends TestCase
      */
     public function it_stores_a_permission(): void
     {
-        $this->assertEquals(Permission::ORGANISATIES_BEWERKEN(), $this->updateMainImage->getPermission());
+        $this->assertEquals(Permission::organisatiesBewerken(), $this->updateMainImage->getPermission());
     }
 }
