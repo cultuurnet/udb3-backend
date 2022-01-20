@@ -689,7 +689,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $offerLd->workflowStatus = LegacyWorkflowStatus::READY_FOR_VALIDATION()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::READY_FOR_VALIDATION()->toString();
 
         $publicationDate = $published->getPublicationDate();
         $offerLd->availableFrom = $publicationDate->format(DateTimeInterface::ATOM);
@@ -701,7 +701,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $document = $this->loadDocumentFromRepository($approved);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = LegacyWorkflowStatus::APPROVED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::APPROVED()->toString();
         return $document->withBody($offerLd);
     }
 
@@ -709,7 +709,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $document = $this->loadDocumentFromRepository($rejected);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = LegacyWorkflowStatus::REJECTED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->toString();
         return $document->withBody($offerLd);
     }
 
@@ -718,7 +718,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     ): JsonDocument {
         $document = $this->loadDocumentFromRepository($flaggedAsDuplicate);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = LegacyWorkflowStatus::REJECTED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->toString();
         return $document->withBody($offerLd);
     }
 
@@ -727,7 +727,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     ): JsonDocument {
         $document = $this->loadDocumentFromRepository($flaggedAsInappropriate);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = LegacyWorkflowStatus::REJECTED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->toString();
         return $document->withBody($offerLd);
     }
 

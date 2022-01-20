@@ -216,7 +216,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $jsonLD->creator = $metaData['user_id'];
         }
 
-        $jsonLD->workflowStatus = LegacyWorkflowStatus::DRAFT()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
         return $document->withBody($jsonLD);
     }
@@ -227,7 +227,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
 
         $jsonLD = $document->getBody();
 
-        $jsonLD->workflowStatus = LegacyWorkflowStatus::DELETED()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->toString();
 
         return $document->withBody($jsonLD);
     }

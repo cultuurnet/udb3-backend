@@ -261,7 +261,7 @@ class EventLDProjector extends OfferLDProjector implements
             $jsonLD->creator = $author->toNative();
         }
 
-        $jsonLD->workflowStatus = LegacyWorkflowStatus::DRAFT()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
         $defaultAudience = new Audience(AudienceType::everyone());
         $jsonLD->audience = $defaultAudience->serialize();
@@ -307,7 +307,7 @@ class EventLDProjector extends OfferLDProjector implements
         }
 
         // Set workflow status.
-        $eventJsonLD->workflowStatus = LegacyWorkflowStatus::DRAFT()->getName();
+        $eventJsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
         // Remove labels.
         unset($eventJsonLD->labels);
@@ -337,7 +337,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD = $document->getBody();
 
-        $jsonLD->workflowStatus = LegacyWorkflowStatus::DELETED()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->toString();
 
         return $document->withBody($jsonLD);
     }
