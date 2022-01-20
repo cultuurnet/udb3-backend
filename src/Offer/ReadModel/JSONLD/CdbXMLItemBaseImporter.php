@@ -129,7 +129,7 @@ class CdbXMLItemBaseImporter
     ): void {
         $wfStatus = $item->getWfStatus();
 
-        $workflowStatus = $wfStatus ? new WorkflowStatus(str_replace('READYFORVALIDATION', 'READY_FOR_VALIDATION', strtoupper($wfStatus))) : WorkflowStatus::READY_FOR_VALIDATION();
+        $workflowStatus = $wfStatus ? WorkflowStatus::fromCultureFeedWorkflowStatus($wfStatus) : WorkflowStatus::READY_FOR_VALIDATION();
 
         $jsonLD->workflowStatus = $workflowStatus->toString();
     }
