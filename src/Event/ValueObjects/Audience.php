@@ -13,16 +13,16 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
  */
 final class Audience implements Serializable
 {
-    private string $audienceType;
+    private AudienceType $audienceType;
 
     public function __construct(AudienceType $audienceType)
     {
-        $this->audienceType = $audienceType->toString();
+        $this->audienceType = $audienceType;
     }
 
     public function getAudienceType(): AudienceType
     {
-        return new AudienceType($this->audienceType);
+        return $this->audienceType;
     }
 
     public static function deserialize(array $data): Audience
