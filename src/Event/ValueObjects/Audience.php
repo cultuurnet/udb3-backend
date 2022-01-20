@@ -46,6 +46,6 @@ final class Audience implements Serializable
 
     public function equals(Audience $otherAudience): bool
     {
-        return $this->getAudienceType() === $otherAudience->getAudienceType();
+        return $this->getAudienceType()->sameAs($otherAudience->getAudienceType());
     }
 }
