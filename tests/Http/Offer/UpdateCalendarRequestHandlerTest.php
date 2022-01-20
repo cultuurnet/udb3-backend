@@ -52,7 +52,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromArray($data)
+                ->withBodyFromObject($data)
                 ->withRouteParameter('offerType', 'events')
                 ->withRouteParameter('offerId', self::EVENT_ID)
                 ->build('PUT')
@@ -489,11 +489,18 @@ class UpdateCalendarRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_given_invalid_event_data($data, array $expectedSchemaErrors): void
     {
+        $requestBuilder = new Psr7RequestBuilder();
+        if (is_array($data)) {
+            $requestBuilder = $requestBuilder->withBodyFromArray($data);
+        }
+        if (is_object($data)) {
+            $requestBuilder = $requestBuilder->withBodyFromObject($data);
+        }
+
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->updateCalendarRequestHandler->handle(
-                (new Psr7RequestBuilder())
-                    ->withBodyFromArray($data)
+                $requestBuilder
                     ->withRouteParameter('offerType', 'events')
                     ->withRouteParameter('offerId', self::EVENT_ID)
                     ->build('PUT')
@@ -759,7 +766,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromArray($data)
+                ->withBodyFromObject($data)
                 ->withRouteParameter('offerType', 'places')
                 ->withRouteParameter('offerId', self::PLACE_ID)
                 ->build('PUT')
@@ -942,11 +949,18 @@ class UpdateCalendarRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_given_invalid_place_data($data, array $expectedSchemaErrors): void
     {
+        $requestBuilder = new Psr7RequestBuilder();
+        if (is_array($data)) {
+            $requestBuilder = $requestBuilder->withBodyFromArray($data);
+        }
+        if (is_object($data)) {
+            $requestBuilder = $requestBuilder->withBodyFromObject($data);
+        }
+
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->updateCalendarRequestHandler->handle(
-                (new Psr7RequestBuilder())
-                    ->withBodyFromArray($data)
+                $requestBuilder
                     ->withRouteParameter('offerType', 'places')
                     ->withRouteParameter('offerId', self::PLACE_ID)
                     ->build('PUT')
