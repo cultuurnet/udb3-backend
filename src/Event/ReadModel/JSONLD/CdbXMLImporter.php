@@ -29,7 +29,6 @@ class CdbXMLImporter
 
     private CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter;
 
-
     public function __construct(
         CdbXMLItemBaseImporter $cdbXMLItemBaseImporter,
         EventCdbIdExtractorInterface $cdbIdExtractor,
@@ -60,12 +59,12 @@ class CdbXMLImporter
      *   The document with the UDB2 event data merged in.
      */
     public function documentWithCdbXML(
-        $base,
+        \stdClass $base,
         \CultureFeed_Cdb_Item_Event $event,
         PlaceServiceInterface $placeManager,
         OrganizerServiceInterface $organizerManager,
         SluggerInterface $slugger
-    ) {
+    ): \stdClass {
         $jsonLD = clone $base;
 
         $detail = null;
@@ -136,13 +135,11 @@ class CdbXMLImporter
         return $jsonLD;
     }
 
-    /**
-     * @param \CultureFeed_Cdb_Data_EventDetail $languageDetail
-     * @param \stdClass $jsonLD
-     * @param string $language
-     */
-    private function importDescription($languageDetail, $jsonLD, $language): void
-    {
+    private function importDescription(
+        \CultureFeed_Cdb_Data_EventDetail $languageDetail,
+        \stdClass $jsonLD,
+        string $language
+    ): void {
         try {
             $description = MergedDescription::fromCdbDetail($languageDetail);
             $jsonLD->description[$language] = $description->toNative();
@@ -151,11 +148,11 @@ class CdbXMLImporter
         }
     }
 
-    /**
-     * @param \stdClass $jsonLD
-     */
-    private function importLocation(\CultureFeed_Cdb_Item_Event $event, PlaceServiceInterface $placeManager, $jsonLD)
-    {
+    private function importLocation(
+        \CultureFeed_Cdb_Item_Event $event,
+        PlaceServiceInterface $placeManager,
+        \stdClass $jsonLD
+    ): void {
         $location = [];
         $location['@type'] = 'Place';
 
@@ -180,14 +177,11 @@ class CdbXMLImporter
         $jsonLD->location = $location;
     }
 
-    /**
-     * @param \stdClass $jsonLD
-     */
     private function importOrganizer(
         \CultureFeed_Cdb_Item_Event $event,
         OrganizerServiceInterface $organizerManager,
-        $jsonLD
-    ) {
+        \stdClass $jsonLD
+    ): void {
         $organizer = null;
         $organizerId = $this->cdbIdExtractor->getRelatedOrganizerCdbId($event);
         $organizerCdb = $event->getOrganiser();
@@ -224,10 +218,7 @@ class CdbXMLImporter
         }
     }
 
-    /**
-     * @param \stdClass $jsonLD
-     */
-    private function importTerms(\CultureFeed_Cdb_Item_Event $event, $jsonLD)
+    private function importTerms(\CultureFeed_Cdb_Item_Event $event, \stdClass $jsonLD): void
     {
         $themeBlacklist = [
             'Thema onbepaald',
@@ -248,10 +239,7 @@ class CdbXMLImporter
         $jsonLD->terms = $categories;
     }
 
-    /**
-     * @param \stdClass $jsonLD
-     */
-    private function importTypicalAgeRange(\CultureFeed_Cdb_Item_Event $event, $jsonLD)
+    private function importTypicalAgeRange(\CultureFeed_Cdb_Item_Event $event, \stdClass $jsonLD): void
     {
         $ageFrom = $event->getAgeFrom();
         $ageTo = $event->getAgeTo();
@@ -263,10 +251,7 @@ class CdbXMLImporter
         $jsonLD->typicalAgeRange = "{$ageFrom}-{$ageTo}";
     }
 
-    /**
-     * @param \stdClass $jsonLD
-     */
-    private function importPerformers(\CultureFeed_Cdb_Data_EventDetail $detail, $jsonLD)
+    private function importPerformers(\CultureFeed_Cdb_Data_EventDetail $detail, \stdClass $jsonLD): void
     {
         /** @var CultureFeed_Cdb_Data_PerformerList|null $performers */
         $performers = $detail->getPerformers();
@@ -286,7 +271,7 @@ class CdbXMLImporter
     private function importSeeAlso(
         \CultureFeed_Cdb_Item_Event $event,
         \stdClass $jsonLD
-    ) {
+    ): void {
         if (!property_exists($jsonLD, 'seeAlso')) {
             $jsonLD->seeAlso = [];
         }
@@ -305,14 +290,11 @@ class CdbXMLImporter
         }
     }
 
-    /**
-     * @param \stdClass $jsonLD
-     */
     private function importUitInVlaanderenReference(
         \CultureFeed_Cdb_Item_Event $event,
         SluggerInterface $slugger,
-        $jsonLD
-    ) {
+        \stdClass $jsonLD
+    ): void {
 
         // Some events seem to not have a Dutch name, even though this is
         // required. If there's no Dutch name, we just leave the slug empty as
@@ -337,7 +319,7 @@ class CdbXMLImporter
     }
 
 
-    private function importAudience(\CultureFeed_Cdb_Item_Event $event, \stdClass $jsonLD)
+    private function importAudience(\CultureFeed_Cdb_Item_Event $event, \stdClass $jsonLD): void
     {
         $eventIsPrivate = (bool) $event->isPrivate();
         $eventTargetsEducation = $eventIsPrivate && $event->getCategories()->hasCategory('2.1.3.0.0');
