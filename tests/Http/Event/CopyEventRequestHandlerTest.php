@@ -42,8 +42,6 @@ class CopyEventRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private MockObject $uuidFactory;
-    private CallableIriGenerator $iriGenerator;
     private TraceableCommandBus $commandBus;
     private CopyEventRequestHandler $copyEventRequestHandler;
 
@@ -55,19 +53,19 @@ class CopyEventRequestHandlerTest extends TestCase
         $this->commandBus = new TraceableCommandBus();
         $this->commandBus->record();
 
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
-        $this->uuidFactory->expects($this->any())
+        $uuidFactory = $this->createMock(UuidFactoryInterface::class);
+        $uuidFactory->expects($this->any())
             ->method('uuid4')
             ->willReturn(Uuid::fromString(self::NEW_EVENT_ID));
 
-        $this->iriGenerator = new CallableIriGenerator(
+        $iriGenerator = new CallableIriGenerator(
             fn (string $id) => 'https://mock.io/events/' . $id
         );
 
         $this->copyEventRequestHandler = new CopyEventRequestHandler(
             $this->commandBus,
-            $this->uuidFactory,
-            $this->iriGenerator
+            $uuidFactory,
+            $iriGenerator
         );
     }
 
