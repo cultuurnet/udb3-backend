@@ -23,15 +23,9 @@ class CdbXMLItemBaseImporter
 {
     use MultilingualJsonLDProjectorTrait;
 
-    /**
-     * @var PriceDescriptionParser
-     */
-    private $priceDescriptionParser;
+    private PriceDescriptionParser $priceDescriptionParser;
 
-    /**
-     * @var string[]
-     */
-    private $basePriceTranslations;
+    private array $basePriceTranslations;
 
 
     public function __construct(
@@ -93,11 +87,7 @@ class CdbXMLItemBaseImporter
         }
     }
 
-    /**
-     * @param string $availableString
-     * @return string
-     */
-    private function formatAvailableString($availableString)
+    private function formatAvailableString(string $availableString): string
     {
         $available = DateTimeFactory::dateTimeFromDateString(
             $availableString
@@ -110,7 +100,7 @@ class CdbXMLItemBaseImporter
     public function importExternalId(
         \CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
-    ) {
+    ): void {
         $externalId = $item->getExternalId();
         if (empty($externalId)) {
             return;
@@ -133,7 +123,7 @@ class CdbXMLItemBaseImporter
     public function importWorkflowStatus(
         CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
-    ) {
+    ): void {
         $wfStatus = $item->getWfStatus();
 
         $workflowStatus = $wfStatus ? new WorkflowStatus(str_replace('READYFORVALIDATION', 'READY_FOR_VALIDATION', strtoupper($wfStatus))) : WorkflowStatus::READY_FOR_VALIDATION();
@@ -143,12 +133,11 @@ class CdbXMLItemBaseImporter
 
     /**
      * @param \CultureFeed_Cdb_Data_DetailList|\CultureFeed_Cdb_Data_Detail[] $details
-     * @param \stdClass $jsonLD
      */
     public function importPriceInfo(
         \CultureFeed_Cdb_Data_DetailList $details,
-        $jsonLD
-    ) {
+        \stdClass $jsonLD
+    ): void {
         $mainLanguage = $this->getMainLanguage($jsonLD);
 
         $detailsArray = [];
