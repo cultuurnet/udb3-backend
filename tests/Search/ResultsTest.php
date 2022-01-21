@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use TypeError;
-use ValueObjects\Web\Url;
 
 class ResultsTest extends TestCase
 {
@@ -18,29 +18,27 @@ class ResultsTest extends TestCase
      */
     public function it_is_instantiated_with_result_items_and_total(): void
     {
-        $items = OfferIdentifierCollection::fromArray(
-            [
-                new IriOfferIdentifier(
-                    Url::fromNative('http://du.de/event/1'),
-                    '1',
-                    OfferType::event()
-                ),
-                new IriOfferIdentifier(
-                    Url::fromNative('http://du.de/event/2'),
-                    '2',
-                    OfferType::event()
-                ),
-                new IriOfferIdentifier(
-                    Url::fromNative('http://du.de/event/3'),
-                    '3',
-                    OfferType::event()
-                ),
-                new IriOfferIdentifier(
-                    Url::fromNative('http://du.de/event/4'),
-                    '4',
-                    OfferType::event()
-                ),
-            ]
+        $items = new ItemIdentifiers(
+            new ItemIdentifier(
+                new Url('http://du.de/event/1'),
+                '1',
+                ItemType::event()
+            ),
+            new ItemIdentifier(
+                new Url('http://du.de/event/2'),
+                '2',
+                ItemType::event()
+            ),
+            new ItemIdentifier(
+                new Url('http://du.de/event/3'),
+                '3',
+                ItemType::event()
+            ),
+            new ItemIdentifier(
+                new Url('http://du.de/event/4'),
+                '4',
+                ItemType::event()
+            )
         );
         $totalItems = 20;
 
@@ -67,10 +65,8 @@ class ResultsTest extends TestCase
         $this->expectException(TypeError::class);
 
         new Results(
-            OfferIdentifierCollection::fromArray(
-                [
-                    new IriOfferIdentifier(Url::fromNative('http://du.de/event/1'), '1', OfferType::event()),
-                ]
+            new ItemIdentifiers(
+                new ItemIdentifier(new Url('http://du.de/event/1'), '1', ItemType::event()),
             ),
             'foo'
         );

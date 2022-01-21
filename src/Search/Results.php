@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 
 class Results
 {
-    private OfferIdentifierCollection $items;
+    private ItemIdentifiers $items;
 
     private int $totalItems;
 
-    public function __construct(OfferIdentifierCollection $items, int $totalItems)
+    public function __construct(ItemIdentifiers $items, int $totalItems)
     {
         $this->items = $items;
         $this->totalItems = $totalItems;
     }
 
     /**
-     * @return IriOfferIdentifier[]
+     * @return ItemIdentifier[]
      */
     public function getItems(): array
     {
