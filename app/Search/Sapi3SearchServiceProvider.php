@@ -18,7 +18,7 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
     public const SEARCH_SERVICE_PLACES = 'sapi3_search_service_places';
     public const SEARCH_SERVICE_ORGANIZERS = 'sapi3_search_service_organizers';
 
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[self::SEARCH_SERVICE_OFFERS] = $app->share(
             function ($app) {
@@ -65,7 +65,7 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
