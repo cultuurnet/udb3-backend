@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -33,7 +34,10 @@ final class EventCommandHandlerProvider implements ServiceProviderInterface
         );
 
         $app[CopyEventHandler::class] = $app->share(
-            fn (Application $application) => new CopyEventHandler($app['event_repository'])
+            fn (Application $application) => new CopyEventHandler(
+                $app['event_repository'],
+                $app[ProductionRepository::class]
+            )
         );
     }
 
