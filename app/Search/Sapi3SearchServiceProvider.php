@@ -52,6 +52,17 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
                 );
             }
         );
+
+        $app[self::SEARCH_SERVICE_ORGANIZERS] = $app->share(
+            function ($app) {
+                return new Sapi3SearchService(
+                    new Uri($app['config']['search']['v3']['base_url'] . '/organizers/'),
+                    new Client(new \GuzzleHttp\Client()),
+                    new ItemIdentifierFactory($app['config']['item_url_regex']),
+                    $app['config']['export']['search']['api_key'] ?? null
+                );
+            }
+        );
     }
 
     public function boot(Application $app)
