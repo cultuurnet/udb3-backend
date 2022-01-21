@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
-use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Event\EventNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
+use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -24,7 +25,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Traversable;
 use ValueObjects\Web\EmailAddress;
-use ValueObjects\Web\Url;
 
 class EventExportServiceTest extends TestCase
 {
@@ -108,18 +108,22 @@ class EventExportServiceTest extends TestCase
         $range = range(1, self::AMOUNT);
         $this->searchResults = array_map(
             function ($i) {
-                return new IriOfferIdentifier(
-                    Url::fromNative('http://example.com/event/' . $i),
+                return new ItemIdentifier(
+                    new Url('http://example.com/event/' . $i),
                     (string) $i,
-                    OfferType::event()
+                    ItemType::event()
                 );
             },
             $range
         );
 
         $this->searchResultsDetails = array_map(
-            function (\JsonSerializable $item) {
-                return $item->jsonSerialize() + ['foo' => 'bar'];
+            function (ItemIdentifier $item) {
+                return [
+                    '@id' => $item->getUrl()->toString(),
+                    '@type' => $item->getItemType()->toString(),
+                    'foo' => 'bar',
+                ];
             },
             $this->searchResults
         );
@@ -138,20 +142,20 @@ class EventExportServiceTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        array_slice($this->searchResults, 0, 1)
+                    new ItemIdentifiers(
+                        ...array_slice($this->searchResults, 0, 1)
                     ),
                     self::AMOUNT
                 ),
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        array_slice($this->searchResults, 0, 10)
+                    new ItemIdentifiers(
+                        ...array_slice($this->searchResults, 0, 10)
                     ),
                     self::AMOUNT
                 ),
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        array_slice($this->searchResults, 10)
+                    new ItemIdentifiers(
+                        ...array_slice($this->searchResults, 10)
                     ),
                     self::AMOUNT
                 )
@@ -173,7 +177,7 @@ class EventExportServiceTest extends TestCase
 
                     return json_encode([
                         '@id' => $eventId,
-                        '@type' => 'Event',
+                        '@type' => 'event',
                         'foo' => 'bar',
                     ]);
                 }
@@ -560,11 +564,6 @@ class EventExportServiceTest extends TestCase
                     'http://example.com/event/7',
                     'http://example.com/event/16',
                 ],
-            ],
-            [
-                'fileFormat' => $this->getFileFormat('txt'),
-                'query' => new EventExportQuery('city:Leuven'),
-                'selection' => null,
             ],
         ];
     }

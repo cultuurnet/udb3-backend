@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
-use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Event\EventNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
+use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Generator;
@@ -252,7 +253,8 @@ class EventExportService implements EventExportServiceInterface
 
         $count = 0;
         foreach ($events as $eventIdentifier) {
-            $event = $this->getEventAsJSONLD((string) $eventIdentifier->getIri(), $logger);
+            /** @var ItemIdentifier $eventIdentifier */
+            $event = $this->getEventAsJSONLD($eventIdentifier->getUrl()->toString(), $logger);
 
             if ($event) {
                 $count++;
