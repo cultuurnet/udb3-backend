@@ -1,0 +1,64 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3;
+
+use DateTimeImmutable;
+use DateTimeZone;
+use PHPUnit\Framework\TestCase;
+
+class DateTimeFactoryTest extends TestCase
+{
+    /**
+     * @test
+     * @dataProvider validISO8601DataProvider
+     */
+    public function it_creates_a_date_time_object_from_a_valid_iso_8601_string(string $given, string $expectedAsRFC3339InBrussels): void
+    {
+        $object = DateTimeFactory::fromISO8601($given)->setTimezone(new DateTimeZone('Europe/Brussels'));
+        $asRFC3339 = $object->format(DateTimeImmutable::RFC3339);
+        $this->assertEquals($expectedAsRFC3339InBrussels, $asRFC3339);
+    }
+
+    public function validISO8601DataProvider(): array
+    {
+        return [
+            'utc' => [
+                'given' => '2022-02-28T13:23:47Z',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T14:23:47+01:00',
+            ],
+            'offset' => [
+                'given' => '2022-02-28T13:23:47+01:30',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T12:53:47+01:00',
+            ],
+            'utc_with_100ms_second_fraction' => [
+                'given' => '2022-02-28T13:23:47.100Z',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T14:23:47+01:00',
+            ],
+            'offset_with_7ms_second_fraction' => [
+                'given' => '2022-02-28T13:23:47.007+01:00',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T13:23:47+01:00',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidISO8601DataProvider
+     */
+    public function it_throws_when_given_an_invalid_iso_8601_string(string $invalidDateTime): void
+    {
+        $this->expectException(DateTimeInvalid::class);
+        DateTimeFactory::fromISO8601($invalidDateTime);
+    }
+
+    public function invalidISO8601DataProvider(): array
+    {
+        return [
+            'no_timezone' => ['dateTime' => '2022-02-28T13:23:47'],
+            'no_T' => ['dateTime' => '2022-02-28 13:23:47+01:30'],
+            'just_a_date' => ['dateTime' => '2022-02-28'],
+        ];
+    }
+}
