@@ -6,6 +6,9 @@ namespace CultuurNet\UDB3\Http\Organizer;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -56,14 +59,23 @@ final class CreateOrganizerRequestHandler implements RequestHandlerInterface
         /** @var Organizer $organizer */
         $organizer = $requestBodyParser->parse($request)->getParsedBody();
 
-        $this->organizerRepository->save(
-            OrganizerAggregate::create(
-                $organizer->getId()->toString(),
-                $organizer->getMainLanguage(),
-                $organizer->getUrl(),
-                $organizer->getName()->getTranslation($organizer->getMainLanguage())
-            )
-        );
+        try {
+            $this->organizerRepository->save(
+                OrganizerAggregate::create(
+                    $organizer->getId()->toString(),
+                    $organizer->getMainLanguage(),
+                    $organizer->getUrl(),
+                    $organizer->getName()->getTranslation($organizer->getMainLanguage())
+                )
+            );
+        } catch (UniqueConstraintException $e) {
+            // Saving the organizer to the event store can trigger a UniqueConstraintException if the URL is already in
+            // use by another organizer. This is intended but we need to return a prettier error for API integrators.
+            // Note that in reality the organizer should always have a URL in this request handler, but in other cases
+            // it can be null so we need to handle a theoretical null pointer exception here.
+            $originalUrl = $organizer->getUrl() ? $organizer->getUrl()->toString() : '';
+            throw ApiProblem::organizerUrlAlreadyInUse($originalUrl, $e->getDuplicateValue());
+        }
 
         $commands = [];
 
