@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
 use Http\Client\HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
-use ValueObjects\Web\Url;
 
 class Sapi3SearchServiceTest extends TestCase
 {
@@ -33,10 +33,10 @@ class Sapi3SearchServiceTest extends TestCase
         $this->httpClient = $this->createMock(HttpClient::class);
         $this->searchLocation =  new Uri('http://udb-search.dev/offers/');
 
-        $offerIdentifier = new IriOfferIdentifierFactory(
-            'https?://udb-silex\.dev/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)'
+        $itemIdentifierFactory = new ItemIdentifierFactory(
+            'https?://udb-silex\.dev/(?<itemType>[event|place]+)/(?<itemId>[a-zA-Z0-9\-]+)'
         );
-        $this->searchService = new Sapi3SearchService($this->searchLocation, $this->httpClient, $offerIdentifier);
+        $this->searchService = new Sapi3SearchService($this->searchLocation, $this->httpClient, $itemIdentifierFactory);
     }
 
     /**
@@ -58,18 +58,18 @@ class Sapi3SearchServiceTest extends TestCase
             ->willReturn($searchResponse);
 
         $expectedResults = new Results(
-            OfferIdentifierCollection::fromArray([
-                new IriOfferIdentifier(
-                    Url::fromNative('http://udb-silex.dev/place/c90bc8d5-11c5-4ae3-9bf9-cce0969fdc56'),
+            new ItemIdentifiers(
+                new ItemIdentifier(
+                    new Url('http://udb-silex.dev/place/c90bc8d5-11c5-4ae3-9bf9-cce0969fdc56'),
                     'c90bc8d5-11c5-4ae3-9bf9-cce0969fdc56',
-                    OfferType::place()
+                    ItemType::place()
                 ),
-                new IriOfferIdentifier(
-                    Url::fromNative('http://udb-silex.dev/event/c54b1323-0928-402f-9419-16d7acd44d36'),
+                new ItemIdentifier(
+                    new Url('http://udb-silex.dev/event/c54b1323-0928-402f-9419-16d7acd44d36'),
                     'c54b1323-0928-402f-9419-16d7acd44d36',
-                    OfferType::event()
-                ),
-            ]),
+                    ItemType::event()
+                )
+            ),
             2
         );
 
