@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Web\Url;
 
 class ResultsGeneratorTest extends TestCase
 {
@@ -65,14 +65,12 @@ class ResultsGeneratorTest extends TestCase
             ->with($givenQuery, 1, 0)
             ->willReturn(
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        [
-                            new IriOfferIdentifier(
-                                Url::fromNative('http://io.uitdatabank.dev/event/0d325df2-da0a-4d4e-957f-60220c2f9baf'),
-                                '0d325df2-da0a-4d4e-957f-60220c2f9baf',
-                                OfferType::event()
-                            ),
-                        ]
+                    new ItemIdentifiers(
+                        new ItemIdentifier(
+                            new Url('http://io.uitdatabank.dev/event/0d325df2-da0a-4d4e-957f-60220c2f9baf'),
+                            '0d325df2-da0a-4d4e-957f-60220c2f9baf',
+                            ItemType::event()
+                        )
                     ),
                     $expectedCount
                 )
@@ -158,7 +156,7 @@ class ResultsGeneratorTest extends TestCase
                     $currentPage++;
 
                     return new Results(
-                        OfferIdentifierCollection::fromArray($pageResults),
+                        new ItemIdentifiers(...$pageResults),
                         $totalResults
                     );
                 }
@@ -187,46 +185,46 @@ class ResultsGeneratorTest extends TestCase
 
     public function pagedResultsDataProvider(): array
     {
-        $event1 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/1'),
+        $event1 = new ItemIdentifier(
+            new Url('http://du.de/event/1'),
             '1',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event2 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/2'),
+        $event2 = new ItemIdentifier(
+            new Url('http://du.de/event/2'),
             '2',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event3 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/3'),
+        $event3 = new ItemIdentifier(
+            new Url('http://du.de/event/3'),
             '3',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event4 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/4'),
+        $event4 = new ItemIdentifier(
+            new Url('http://du.de/event/4'),
             '4',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event5 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/5'),
+        $event5 = new ItemIdentifier(
+            new Url('http://du.de/event/5'),
             '5',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event6 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/6'),
+        $event6 = new ItemIdentifier(
+            new Url('http://du.de/event/6'),
             '6',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event7 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/7'),
+        $event7 = new ItemIdentifier(
+            new Url('http://du.de/event/7'),
             '7',
-            OfferType::event()
+            ItemType::event()
         );
 
         return [
