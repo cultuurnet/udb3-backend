@@ -11,22 +11,22 @@ class PermissionTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_fixed_list_of_possible_permissions()
+    public function it_has_a_fixed_list_of_possible_permissions(): void
     {
-        $permissions = Permission::getConstants();
+        $permissions = Permission::getAllowedValues();
 
         $this->assertEquals(
             [
-                Permission::AANBOD_BEWERKEN()->getName() => Permission::AANBOD_BEWERKEN,
-                Permission::AANBOD_MODEREREN()->getName() => Permission::AANBOD_MODEREREN,
-                Permission::AANBOD_VERWIJDEREN()->getName() => Permission::AANBOD_VERWIJDEREN,
-                Permission::GEBRUIKERS_BEHEREN()->getName() => Permission::GEBRUIKERS_BEHEREN,
-                Permission::LABELS_BEHEREN()->getName() => Permission::LABELS_BEHEREN,
-                Permission::ORGANISATIES_BEHEREN()->getName() => Permission::ORGANISATIES_BEHEREN,
-                Permission::VOORZIENINGEN_BEWERKEN()->getName() => Permission::VOORZIENINGEN_BEWERKEN,
-                Permission::ORGANISATIES_BEWERKEN()->getName() => Permission::ORGANISATIES_BEWERKEN,
-                Permission::PRODUCTIES_AANMAKEN()->getName() => Permission::PRODUCTIES_AANMAKEN,
-                Permission::FILMS_AANMAKEN()->getName() => Permission::FILMS_AANMAKEN,
+                Permission::aanbodBewerken()->toString(),
+                Permission::aanbodModereren()->toString(),
+                Permission::aanbodVerwijderen()->toString(),
+                Permission::organisatiesBeheren()->toString(),
+                Permission::organisatiesBewerken()->toString(),
+                Permission::gebruikersBeheren()->toString(),
+                Permission::labelsBeheren()->toString(),
+                Permission::voorzieningenBewerken()->toString(),
+                Permission::productiesAanmaken()->toString(),
+                Permission::filmsAanmaken()->toString(),
             ],
             $permissions
         );

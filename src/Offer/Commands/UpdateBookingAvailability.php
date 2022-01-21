@@ -10,15 +10,9 @@ use CultuurNet\UDB3\Security\AuthorizableCommand;
 
 final class UpdateBookingAvailability implements AuthorizableCommand
 {
-    /**
-     * @var string
-     */
-    private $itemId;
+    private string $itemId;
 
-    /**
-     * @var BookingAvailability
-     */
-    private $bookingAvailability;
+    private BookingAvailability $bookingAvailability;
 
     public function __construct(string $offerId, BookingAvailability $bookingAvailability)
     {
@@ -38,6 +32,6 @@ final class UpdateBookingAvailability implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return  Permission::AANBOD_BEWERKEN();
+        return Permission::aanbodBewerken();
     }
 }

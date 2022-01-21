@@ -86,12 +86,12 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->addPermission = new AddPermission(
             $this->uuid,
-            Permission::AANBOD_BEWERKEN()
+            Permission::aanbodBewerken()
         );
 
         $this->removePermission = new RemovePermission(
             $this->uuid,
-            Permission::AANBOD_BEWERKEN()
+            Permission::aanbodBewerken()
         );
 
         $this->addLabel = new AddLabel(
@@ -214,7 +214,7 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->roleEditingService->addPermission(
             $this->uuid,
-            Permission::AANBOD_BEWERKEN()
+            Permission::aanbodBewerken()
         );
     }
 
@@ -229,7 +229,7 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->roleEditingService->removePermission(
             $this->uuid,
-            Permission::AANBOD_BEWERKEN()
+            Permission::aanbodBewerken()
         );
     }
 

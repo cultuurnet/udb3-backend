@@ -108,12 +108,4 @@ interface EventEditingServiceInterface
         Calendar $calendar,
         Theme $theme = null
     );
-
-    /**
-     * @param string $originalEventId
-     * @return string $eventId
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function copyEvent($originalEventId, Calendar $calendar);
 }

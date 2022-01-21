@@ -32,6 +32,6 @@ final class AddVideo implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::AANBOD_BEWERKEN();
+        return Permission::aanbodBewerken();
     }
 }

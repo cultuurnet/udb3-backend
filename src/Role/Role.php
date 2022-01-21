@@ -189,14 +189,14 @@ class Role extends EventSourcedAggregateRoot
     {
         $permission = $permissionAdded->getPermission();
 
-        $this->permissions[$permission->getName()] = $permission;
+        $this->permissions[$permission->toString()] = $permission;
     }
 
     public function applyPermissionRemoved(PermissionRemoved $permissionRemoved): void
     {
         $permission = $permissionRemoved->getPermission();
 
-        unset($this->permissions[$permission->getName()]);
+        unset($this->permissions[$permission->toString()]);
     }
 
     public function applyLabelAdded(LabelAdded $labelAdded): void

@@ -21,10 +21,7 @@ use ValueObjects\Web\EmailAddress;
  */
 class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 {
-    /**
-     * @return ExportEventsAsPDF
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): ExportEventsAsPDF
     {
         $json = parent::deserialize($data);
 
@@ -64,9 +61,9 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 
         $title = new Title($customizations->title);
 
-        $template = WebArchiveTemplate::TIPS();
+        $template = WebArchiveTemplate::tips();
         if (isset($customizations->template)) {
-            $template = WebArchiveTemplate::fromNative($customizations->template);
+            $template = new WebArchiveTemplate($customizations->template);
         }
 
         $command = new ExportEventsAsPDF(

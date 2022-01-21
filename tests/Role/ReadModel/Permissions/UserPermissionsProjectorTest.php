@@ -26,12 +26,9 @@ class UserPermissionsProjectorTest extends TestCase
      */
     private $userPermissionsWriteRepository;
 
-    /**
-     * @var UserPermissionsProjector
-     */
-    private $userPermissionsProjector;
+    private UserPermissionsProjector $userPermissionsProjector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->userPermissionsWriteRepository = $this->createMock(
             UserPermissionsWriteRepositoryInterface::class
@@ -45,7 +42,7 @@ class UserPermissionsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_remove_role_on_role_deleted_event()
+    public function it_calls_remove_role_on_role_deleted_event(): void
     {
         $roleDeleted = new RoleDeleted(new UUID());
         $domainMessage = $this->createDomainMessage($roleDeleted);
@@ -60,7 +57,7 @@ class UserPermissionsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_add_user_role_on_user_added_event()
+    public function it_calls_add_user_role_on_user_added_event(): void
     {
         $userAdded = new UserAdded(new UUID(), new StringLiteral('userId'));
         $domainMessage = $this->createDomainMessage($userAdded);
@@ -75,7 +72,7 @@ class UserPermissionsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_remove_user_role_on_user_removed_event()
+    public function it_calls_remove_user_role_on_user_removed_event(): void
     {
         $userRemoved = new UserRemoved(new UUID(), new StringLiteral('userId'));
         $domainMessage = $this->createDomainMessage($userRemoved);
@@ -90,9 +87,9 @@ class UserPermissionsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_add_role_permission_on_permission_added_event()
+    public function it_calls_add_role_permission_on_permission_added_event(): void
     {
-        $permissionAdded = new PermissionAdded(new UUID(), Permission::AANBOD_MODEREREN());
+        $permissionAdded = new PermissionAdded(new UUID(), Permission::aanbodModereren());
         $domainMessage = $this->createDomainMessage($permissionAdded);
 
         $this->userPermissionsWriteRepository->expects($this->once())
@@ -105,9 +102,9 @@ class UserPermissionsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_remove_role_permission_on_permission_removed_event()
+    public function it_calls_remove_role_permission_on_permission_removed_event(): void
     {
-        $permissionRemoved = new PermissionRemoved(new UUID(), Permission::AANBOD_MODEREREN());
+        $permissionRemoved = new PermissionRemoved(new UUID(), Permission::aanbodModereren());
         $domainMessage = $this->createDomainMessage($permissionRemoved);
 
         $this->userPermissionsWriteRepository->expects($this->once())

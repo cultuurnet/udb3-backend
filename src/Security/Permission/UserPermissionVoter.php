@@ -10,10 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionVoter implements PermissionVoter
 {
-    /**
-     * @var UserPermissionsReadRepositoryInterface
-     */
-    private $userPermissionsReadRepository;
+    private UserPermissionsReadRepositoryInterface $userPermissionsReadRepository;
 
 
     public function __construct(
@@ -32,7 +29,7 @@ class UserPermissionVoter implements PermissionVoter
         );
 
         foreach ($permissions as $currentPermission) {
-            if ($requiredPermission === $currentPermission) {
+            if ($requiredPermission->sameAs($currentPermission)) {
                 return true;
             }
         }

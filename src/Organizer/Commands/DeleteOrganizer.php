@@ -23,6 +23,6 @@ final class DeleteOrganizer implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::ORGANISATIES_BEHEREN();
+        return Permission::organisatiesBeheren();
     }
 }

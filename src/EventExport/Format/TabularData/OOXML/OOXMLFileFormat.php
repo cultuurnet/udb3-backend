@@ -14,44 +14,32 @@ class OOXMLFileFormat implements FileFormatInterface
     /**
      * @var string[]
      */
-    protected $include;
+    private ?array $include;
 
-    /**
-     * @var EventInfoServiceInterface;
-     */
-    protected $uitpas;
+    private ?EventInfoServiceInterface $uitpas;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface|null
-     */
-    protected $calendarSummaryRepository;
+
+    protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
      * @param string[]|null                      $include
-     * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
      */
     public function __construct(
-        $include = null,
-        EventInfoServiceInterface $uitpas = null,
-        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+        ?array $include = null,
+        ?EventInfoServiceInterface $uitpas = null,
+        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
     ) {
         $this->include = $include;
         $this->uitpas = $uitpas;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getFileNameExtension()
+    public function getFileNameExtension(): string
     {
         return 'xlsx';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getWriter()
+    public function getWriter(): TabularDataFileWriter
     {
         return new TabularDataFileWriter(
             new OOXMLFileWriterFactory(),

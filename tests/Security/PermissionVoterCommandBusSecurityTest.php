@@ -14,37 +14,22 @@ use PHPUnit\Framework\TestCase;
 
 class PermissionVoterCommandBusSecurityTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $godUserId;
+    private string $godUserId;
 
-    /**
-     * @var string
-     */
-    private $ownerUserId;
+    private string $ownerUserId;
 
-    /**
-     * @var string
-     */
-    private $roleUserId;
+    private string $roleUserId;
 
-    /**
-     * @var string
-     */
-    private $notAllowedUserId;
+    private string $notAllowedUserId;
 
     /**
      * @var ResourceOwnerQuery|MockObject
      */
     private $permissionRepository;
 
-    /**
-     * @var AnyOfVoter
-     */
-    private $permissionVoter;
+    private AnyOfVoter $permissionVoter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->godUserId = 'bb0bf2b3-49ba-4f2a-a1e4-ce7ec93a5ea0';
         $this->ownerUserId = '9cb28282-30a1-4afc-aa23-fc825c7d8ac3';
@@ -69,7 +54,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_authorizable_command()
+    public function it_handles_authorizable_command(): void
     {
         $security = $this->createSecurityForUserId($this->godUserId);
 
@@ -80,7 +65,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
             ->willReturn('offerId');
 
         $authorizableCommand->method('getPermission')
-            ->willReturn(Permission::AANBOD_BEWERKEN());
+            ->willReturn(Permission::aanbodBewerken());
 
         $allowsUpdate = $security->isAuthorized($authorizableCommand);
 

@@ -54,7 +54,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
     public function it_creates_a_news_article_and_returns_jsonld_if_no_accept_header_is_given(): void
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',
@@ -116,7 +116,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/ld+json')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',
@@ -178,7 +178,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/json')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',
@@ -237,7 +237,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/json')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',
@@ -320,7 +320,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
     public function it_throws_on_missing_properties(array $body, ApiProblem $apiProblem): void
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
-            ->withBodyFromArray($body)
+            ->withJsonBodyFromArray($body)
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(

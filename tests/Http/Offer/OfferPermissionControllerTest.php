@@ -15,34 +15,22 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferPermissionControllerTest extends TestCase
 {
-    /**
-     * @var Permission
-     */
-    private $permission;
+    private Permission $permission;
 
     /**
      * @var PermissionVoter|MockObject
      */
     private $voter;
 
-    /**
-     * @var StringLiteral
-     */
-    private $currentUserId;
+    private StringLiteral $currentUserId;
 
-    /**
-     * @var OfferPermissionController
-     */
-    private $controllerWithUser;
+    private OfferPermissionController $controllerWithUser;
 
-    /**
-     * @var OfferPermissionController
-     */
-    private $controllerWithoutUser;
+    private OfferPermissionController $controllerWithoutUser;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
         $this->voter = $this->createMock(PermissionVoter::class);
 
         $this->currentUserId = new StringLiteral('07e4d93e-3b0a-4b04-b37b-204a82b9c4d2');
@@ -63,10 +51,8 @@ class OfferPermissionControllerTest extends TestCase
     /**
      * @test
      * @dataProvider hasPermissionDataProvider
-     *
-     * @param bool $hasPermission
      */
-    public function it_checks_if_the_current_user_has_permission($hasPermission)
+    public function it_checks_if_the_current_user_has_permission(bool $hasPermission): void
     {
         $offerId = new StringLiteral('235344aa-fb9a-4fa8-bcaa-85a8b19657c7');
 
@@ -89,10 +75,8 @@ class OfferPermissionControllerTest extends TestCase
     /**
      * @test
      * @dataProvider hasPermissionDataProvider
-     *
-     * @param bool $hasPermission
      */
-    public function it_checks_if_a_given_user_has_permission_if_no_user_is_authenticated($hasPermission)
+    public function it_checks_if_a_given_user_has_permission_if_no_user_is_authenticated(bool $hasPermission): void
     {
         $offerId = new StringLiteral('235344aa-fb9a-4fa8-bcaa-85a8b19657c7');
         $givenUserId = new StringLiteral('08289d30-8f7d-4012-9170-9dc8911c7ba2');
@@ -116,10 +100,8 @@ class OfferPermissionControllerTest extends TestCase
     /**
      * @test
      * @dataProvider hasPermissionDataProvider
-     *
-     * @param bool $hasPermission
      */
-    public function it_checks_if_a_given_user_has_permission_even_if_a_user_is_authenticated($hasPermission)
+    public function it_checks_if_a_given_user_has_permission_even_if_a_user_is_authenticated(bool $hasPermission): void
     {
         $offerId = new StringLiteral('235344aa-fb9a-4fa8-bcaa-85a8b19657c7');
         $givenUserId = new StringLiteral('08289d30-8f7d-4012-9170-9dc8911c7ba2');
@@ -143,7 +125,7 @@ class OfferPermissionControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_always_returns_false_if_there_is_no_given_or_current_user()
+    public function it_always_returns_false_if_there_is_no_given_or_current_user(): void
     {
         $offerId = new StringLiteral('235344aa-fb9a-4fa8-bcaa-85a8b19657c7');
 
@@ -157,10 +139,7 @@ class OfferPermissionControllerTest extends TestCase
         $this->assertEquals($expectedResponse->getContent(), $actualResponse->getContent());
     }
 
-    /**
-     * @return array
-     */
-    public function hasPermissionDataProvider()
+    public function hasPermissionDataProvider(): array
     {
         return [
             [true],

@@ -39,7 +39,7 @@ final class UpdateSubEventsTest extends TestCase
     {
         $updateSubEvents = new UpdateSubEvents('event_id', new SubEventUpdate(1));
 
-        $this->assertEquals(Permission::AANBOD_BEWERKEN(), $updateSubEvents->getPermission());
+        $this->assertEquals(Permission::aanbodBewerken(), $updateSubEvents->getPermission());
         $this->assertEquals('event_id', $updateSubEvents->getItemId());
     }
 }

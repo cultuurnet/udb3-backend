@@ -451,7 +451,7 @@ class HTMLEventFormatterTest extends TestCase
                 ],
                 [
                     'original' => [
-                        EventAdvantage::KANSENTARIEF(),
+                        EventAdvantage::kansenTarief(),
                     ],
                     'formatted' => [
                         'Korting voor kansentarief',
@@ -479,8 +479,8 @@ class HTMLEventFormatterTest extends TestCase
                 ],
                 [
                     'original' => [
-                        EventAdvantage::POINT_COLLECTING(),
-                        EventAdvantage::KANSENTARIEF(),
+                        EventAdvantage::pointCollecting(),
+                        EventAdvantage::kansenTarief(),
                     ],
                     'formatted' => [
                         'Spaar punten',
@@ -509,8 +509,8 @@ class HTMLEventFormatterTest extends TestCase
                 ],
                 [
                     'original' => [
-                        EventAdvantage::KANSENTARIEF(),
-                        EventAdvantage::POINT_COLLECTING(),
+                        EventAdvantage::kansenTarief(),
+                        EventAdvantage::pointCollecting(),
                     ],
                     'formatted' => [
                         'Spaar punten',
@@ -553,7 +553,7 @@ class HTMLEventFormatterTest extends TestCase
                 ],
                 [
                     'original' => [
-                        EventAdvantage::POINT_COLLECTING(),
+                        EventAdvantage::pointCollecting(),
                     ],
                     'formatted' => [
                         'Spaar punten',

@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 class RenameProduction implements AuthorizableCommand
 {
-    /**
-     * @var ProductionId
-     */
-    private $productionId;
+    private ProductionId $productionId;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     public function __construct(ProductionId $productionId, string $name)
     {
@@ -42,6 +36,6 @@ class RenameProduction implements AuthorizableCommand
 
     public function getPermission(): Permission
     {
-        return Permission::PRODUCTIES_AANMAKEN();
+        return Permission::productiesAanmaken();
     }
 }

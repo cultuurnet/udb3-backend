@@ -11,26 +11,20 @@ use ValueObjects\Identity\UUID;
 
 class AbstractPermissionEventTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var Permission
-     */
-    protected $permission;
+    protected Permission $permission;
 
     /**
      * @var AbstractPermissionEvent|MockObject
      */
     protected $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID();
 
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
 
         $this->event = $this->getMockForAbstractClass(
             AbstractPermissionEvent::class,
@@ -41,7 +35,7 @@ class AbstractPermissionEventTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid_and_a_permission()
+    public function it_stores_a_uuid_and_a_permission(): void
     {
         $this->assertEquals($this->uuid, $this->event->getUuid());
         $this->assertEquals($this->permission, $this->event->getPermission());
@@ -50,23 +44,23 @@ class AbstractPermissionEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualArray = $this->event->serialize();
 
         $expectedArray = [
             'uuid' => $this->uuid->toNative(),
-            'permission' => $this->permission->toNative(),
+            'permission' => $this->permission->toString(),
         ];
 
         $this->assertEquals($expectedArray, $actualArray);
     }
 
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $data = [
             'uuid' => $this->uuid->toNative(),
-            'permission' => $this->permission->toNative(),
+            'permission' => $this->permission->toString(),
         ];
         $actualEvent = $this->event->deserialize($data);
         $expectedEvent = $this->event;

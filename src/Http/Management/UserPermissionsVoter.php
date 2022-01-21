@@ -14,10 +14,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsVoter implements VoterInterface
 {
-    /**
-     * @var UserPermissionsReadRepositoryInterface
-     */
-    private $permissionsRepository;
+    private UserPermissionsReadRepositoryInterface $permissionsRepository;
 
     /**
      * PermissionVoter constructor.
@@ -28,25 +25,22 @@ class UserPermissionsVoter implements VoterInterface
     }
 
     /**
-     * @inheritdoc
+     * @param Permission $attribute
      */
-    public function supportsAttribute($attribute)
+    public function supportsAttribute($attribute): bool
     {
-        return Permission::has($attribute);
+        return in_array($attribute->toString(), Permission::getAllowedValues(), true);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * @param Permission[] $attributes
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         $result = self::ACCESS_ABSTAIN;
 
@@ -69,7 +63,7 @@ class UserPermissionsVoter implements VoterInterface
                 continue;
             }
 
-            $permission = Permission::fromNative($attribute);
+            $permission = $attribute;
 
             if (!in_array($permission, $userPermissions)) {
                 // collect any missing permissions to revert access after we checked all matching attributes

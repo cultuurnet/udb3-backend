@@ -15,36 +15,33 @@ class PermissionsVoter implements VoterInterface
     /**
      * @var string[][]
      */
-    private $authorizationList;
+    private array $authorizationList;
 
     /**
      * @param string[][] $authorizationList
      */
-    public function __construct($authorizationList)
+    public function __construct(array $authorizationList)
     {
         $this->authorizationList = $authorizationList;
     }
 
     /**
-     * @inheritdoc
+     * @param string $attribute
      */
-    public function supportsAttribute($attribute)
+    public function supportsAttribute($attribute): bool
     {
-        return Permission::has($attribute);
+        return in_array($attribute, Permission::getAllowedValues(), true);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * @param string[] $attributes
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         $result = self::ACCESS_ABSTAIN;
 

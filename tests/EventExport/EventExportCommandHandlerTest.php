@@ -24,15 +24,9 @@ class EventExportCommandHandlerTest extends TestCase
      */
     private $eventExportService;
 
-    /**
-     * @var string
-     */
-    private $princeXMLBinaryPath;
+    private string $princeXMLBinaryPath;
 
-    /**
-     * @var EventExportCommandHandler
-     */
-    private $eventExportCommandHandler;
+    private EventExportCommandHandler $eventExportCommandHandler;
 
     /**
      * @var LoggerInterface|MockObject
@@ -114,7 +108,7 @@ class EventExportCommandHandlerTest extends TestCase
             'brand',
             'logo',
             new Title('title'),
-            WebArchiveTemplate::TIPS()
+            WebArchiveTemplate::tips()
         );
         $exportEventsAsPDF = $exportEventsAsPDF->withEmailNotificationTo(
             new EmailAddress('jane@anonymous.com')
@@ -125,10 +119,10 @@ class EventExportCommandHandlerTest extends TestCase
             ->with(
                 new PDFWebArchiveFileFormat(
                     $this->princeXMLBinaryPath,
-                    WebArchiveTemplate::TIPS(),
+                    WebArchiveTemplate::tips(),
                     'brand',
                     'logo',
-                    new Title('title')
+                    'title'
                 ),
                 new EventExportQuery('query'),
                 new EmailAddress('jane@anonymous.com'),

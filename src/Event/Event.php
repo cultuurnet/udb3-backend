@@ -209,6 +209,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyEventCopied(EventCopied $eventCopied): void
     {
         $this->eventId = $eventCopied->getItemId();
+        $this->calendar = $eventCopied->getCalendar();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelCollection();
     }

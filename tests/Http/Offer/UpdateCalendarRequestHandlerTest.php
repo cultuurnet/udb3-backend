@@ -52,7 +52,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($data))
+                ->withJsonBodyFromObject($data)
                 ->withRouteParameter('offerType', 'events')
                 ->withRouteParameter('offerId', self::EVENT_ID)
                 ->build('PUT')
@@ -62,6 +62,9 @@ class UpdateCalendarRequestHandlerTest extends TestCase
 
     public function validEventDataProvider(): array
     {
+        // WHEN UpdateCalendar GETS REFACTORED TO USE THE NEW CALENDAR VALUE-OBJECT LIKE CopyEvent, THIS TEST DATA CAN
+        // EASILY BE REPLACED WITH THE TEST DATA FROM CopyEventRequestHandlerTest::validEventDataProvider() TO SAVE YOU
+        // SOME TIME.
         return [
             'single' => [
                 'data' => (object) [
@@ -486,11 +489,18 @@ class UpdateCalendarRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_given_invalid_event_data($data, array $expectedSchemaErrors): void
     {
+        $requestBuilder = new Psr7RequestBuilder();
+        if (is_array($data)) {
+            $requestBuilder = $requestBuilder->withJsonBodyFromArray($data);
+        }
+        if (is_object($data)) {
+            $requestBuilder = $requestBuilder->withJsonBodyFromObject($data);
+        }
+
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->updateCalendarRequestHandler->handle(
-                (new Psr7RequestBuilder())
-                    ->withBodyFromString(json_encode($data))
+                $requestBuilder
                     ->withRouteParameter('offerType', 'events')
                     ->withRouteParameter('offerId', self::EVENT_ID)
                     ->build('PUT')
@@ -756,7 +766,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     {
         $this->updateCalendarRequestHandler->handle(
             (new Psr7RequestBuilder())
-                ->withBodyFromString(json_encode($data))
+                ->withJsonBodyFromObject($data)
                 ->withRouteParameter('offerType', 'places')
                 ->withRouteParameter('offerId', self::PLACE_ID)
                 ->build('PUT')
@@ -939,11 +949,18 @@ class UpdateCalendarRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_given_invalid_place_data($data, array $expectedSchemaErrors): void
     {
+        $requestBuilder = new Psr7RequestBuilder();
+        if (is_array($data)) {
+            $requestBuilder = $requestBuilder->withJsonBodyFromArray($data);
+        }
+        if (is_object($data)) {
+            $requestBuilder = $requestBuilder->withJsonBodyFromObject($data);
+        }
+
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedSchemaErrors),
             fn () => $this->updateCalendarRequestHandler->handle(
-                (new Psr7RequestBuilder())
-                    ->withBodyFromString(json_encode($data))
+                $requestBuilder
                     ->withRouteParameter('offerType', 'places')
                     ->withRouteParameter('offerId', self::PLACE_ID)
                     ->build('PUT')

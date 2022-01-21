@@ -63,7 +63,7 @@ final class ImportLabels implements AuthorizableCommand, AuthorizableLabelComman
 
     public function getPermission(): Permission
     {
-        return Permission::AANBOD_BEWERKEN();
+        return Permission::aanbodBewerken();
     }
 
     public function getLabelNames(): array

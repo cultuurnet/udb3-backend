@@ -56,7 +56,7 @@ final class AddImageRequestHandlerTest extends TestCase
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
-            ->withBodyFromArray($body)
+            ->withJsonBodyFromArray($body)
             ->build('POST');
 
         $this->imageRepository->method('load')
@@ -157,7 +157,7 @@ final class AddImageRequestHandlerTest extends TestCase
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'id' => '08805a3c-ffe0-4c94-a1bc-453a6dd9d01f',
                 'language' => 'en',
                 'description' => 'A nice image',

@@ -76,7 +76,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->uuid = new UUID();
         $this->name = new StringLiteral('labelName');
-        $this->permission = Permission::AANBOD_BEWERKEN();
+        $this->permission = Permission::aanbodBewerken();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
         $this->labelId = new UUID();

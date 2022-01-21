@@ -46,7 +46,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
     {
         $createOrganizerRequest = $this->psr7RequestBuilder
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',
@@ -105,7 +105,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
         $createOrganizerRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/ld+json')
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',
@@ -164,7 +164,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
         $createOrganizerRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/json')
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
-            ->withBodyFromArray([
+            ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
                 'text' => 'Op 10 januari 2020 wint publiq de API award',

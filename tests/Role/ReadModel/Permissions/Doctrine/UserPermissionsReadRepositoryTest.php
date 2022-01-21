@@ -14,22 +14,13 @@ class UserPermissionsReadRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    /**
-     * @var UserPermissionsReadRepositoryInterface
-     */
-    private $repository;
+    private UserPermissionsReadRepositoryInterface $repository;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRoleTableName;
+    private StringLiteral $userRoleTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $rolePermissionTableName;
+    private StringLiteral $rolePermissionTableName;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->userRoleTableName = new StringLiteral('user_role');
         $this->rolePermissionTableName = new StringLiteral('role_permission');
@@ -53,7 +44,7 @@ class UserPermissionsReadRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_permissions_for_a_user_that_are_granted_by_his_roles()
+    public function it_should_return_the_permissions_for_a_user_that_are_granted_by_his_roles(): void
     {
         $userId = new StringLiteral('7D23021B-C9AA-4B64-97A5-ECA8168F4A27');
         $roleId = new StringLiteral('7B6A161E-987B-4069-8BB2-9956B01782CB');
@@ -82,14 +73,14 @@ class UserPermissionsReadRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::LABELS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
 
@@ -98,23 +89,23 @@ class UserPermissionsReadRepositoryTest extends TestCase
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::GEBRUIKERS_BEHEREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
             ]
         );
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
-                SchemaConfigurator::PERMISSION_COLUMN => (string) Permission::AANBOD_MODEREREN,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::aanbodModereren()->toString(),
             ]
         );
 
         $permissions = $this->repository->getPermissions($userId);
 
         $expectedPermissions = [
-            Permission::LABELS_BEHEREN(),
-            Permission::GEBRUIKERS_BEHEREN(),
-            Permission::AANBOD_MODEREREN(),
+            Permission::labelsBeheren(),
+            Permission::gebruikersBeheren(),
+            Permission::aanbodModereren(),
         ];
         $this->assertEquals(
             $expectedPermissions,
