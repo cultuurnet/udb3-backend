@@ -20,10 +20,13 @@ final class DateTimeFactory
         // The docs say to use ATOM instead, which is exactly the same as RFC3339.
         // We also accept RFC3339_EXTENDED, which is the same but includes milliseconds, to ensure better compatibility
         // with Javascript API clients.
+        // We also accept "Y-m-d\TH:i:s.uP" which is the same as RFC3339_EXTENDED but with microseconds instead of
+        // milliseconds ("u" instead of "v"). Because the RFC3339 docs do not specify the amount of possible decimals.
         // See https://datatracker.ietf.org/doc/html/rfc3339 for more info.
         $acceptedFormats = [
             DateTimeImmutable::RFC3339,
             DateTimeImmutable::RFC3339_EXTENDED,
+            'Y-m-d\TH:i:s.uP',
         ];
 
         foreach ($acceptedFormats as $acceptedFormat) {

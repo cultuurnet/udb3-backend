@@ -40,6 +40,14 @@ class DateTimeFactoryTest extends TestCase
                 'given' => '2022-02-28T13:23:47.007+01:00',
                 'expectedAsRFC3339InBrussels' => '2022-02-28T13:23:47+01:00',
             ],
+            'utc_with_5μs_second_fraction' => [
+                'given' => '2022-02-28T13:23:47.000005Z',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T14:23:47+01:00',
+            ],
+            'offset_with_600μs_second_fraction' => [
+                'given' => '2022-02-28T13:23:47.000600+01:00',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T13:23:47+01:00',
+            ],
         ];
     }
 
