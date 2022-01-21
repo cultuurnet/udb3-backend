@@ -58,6 +58,6 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
             new UpdateGeoCoordinatesFromAddress($organizerId, $address)
         );
 
-        $output->writeln("Dispatched geocode command for place {$organizerId}.");
+        $output->writeln("Dispatched geocode command for organizer {$organizerId}.");
     }
 }
