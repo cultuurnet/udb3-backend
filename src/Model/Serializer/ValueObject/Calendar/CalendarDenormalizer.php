@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -166,8 +167,8 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     private function denormalizeDateRange(array $dateRangeData): DateRange
     {
-        $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['startDate']);
-        $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['endDate']);
+        $startDate = DateTimeFactory::fromISO8601($dateRangeData['startDate']);
+        $endDate = DateTimeFactory::fromISO8601($dateRangeData['endDate']);
 
         return new DateRange($startDate, $endDate);
     }

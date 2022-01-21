@@ -52,8 +52,8 @@ class BookingInfoDataValidatorTest extends TestCase
                 'urlLabel' => ['nl' => 'Publiq vzw'],
                 'phone' => '044/444444',
                 'email' => 'info@publiq.be',
-                'availabilityStarts' => '2018-01-01T00:00:00.234Z',
-                'availabilityEnds' => '2018-01-31T23:59:59.234Z',
+                'availabilityStarts' => '2018-01-01',
+                'availabilityEnds' => '2018-01-31',
             ],
         ];
 
