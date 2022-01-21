@@ -370,4 +370,14 @@ final class ApiProblem extends Exception
             'The id ' . $id . ' is already in use by a resource of a different type.'
         );
     }
+
+    public static function organizerUrlAlreadyInUse(string $originalUrl, string $normalized): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/organizer-url-already-in-use',
+            'URL already in use by another organizer',
+            400,
+            'The url ' . $originalUrl . ' (normalized to ' . $normalized . ') is already in use by a another organizer. Use GET /organizers?url=... to find duplicate organizer URLs programmatically.'
+        );
+    }
 }
