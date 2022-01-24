@@ -14,6 +14,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInf
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory;
 use CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
@@ -111,7 +112,8 @@ class ExportServiceProvider implements ServiceProviderInterface
         }
 
         return new EventExportService(
-            $app['external_event_service'],
+            $app['event_jsonld_repository'],
+            new ItemIdentifierFactory($app['config']['item_url_regex']),
             $searchService,
             new Version4Generator(),
             realpath(__DIR__ . '/../../web/downloads'),
