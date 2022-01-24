@@ -41,7 +41,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
     public const RELATED_PROJECTOR = 'related_event_jsonld_projector';
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'event_jsonld_projected_event_factory';
 
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['event_jsonld_repository'] = $app->share(
             function ($app) {
@@ -101,7 +101,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
 
         $app[self::PROJECTOR] = $app->share(
             function ($app) {
-                $projector = new EventLDProjector(
+                return new EventLDProjector(
                     $app['event_jsonld_repository'],
                     $app['event_iri_generator'],
                     $app['place_service'],
@@ -116,8 +116,6 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     $app['config']['base_price_translations'],
                     new VideoNormalizer($app['config']['media']['video_default_copyright'])
                 );
-
-                return $projector;
             }
         );
 
@@ -159,7 +157,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
