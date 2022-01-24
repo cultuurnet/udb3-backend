@@ -118,16 +118,10 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
 
         $lastCommandId = null;
         foreach ($commands as $command) {
-            try {
-                /** @var string|null $commandId */
-                $commandId = $this->commandBus->dispatch($command);
-            } catch (UniqueConstraintException $e) {
-                if ($command instanceof UpdateWebsite) {
-                    throw ApiProblem::duplicateUrl($command->getWebsite()->toString(), $e->getDuplicateValue());
-                }
-                throw $e;
-            }
-
+            // It's not possible to catch the UniqueConstraintException that UpdateWebsite can cause here, since the
+            // commands are handled async.
+            /** @var string|null $commandId */
+            $commandId = $this->commandBus->dispatch($command);
             if ($commandId) {
                 $lastCommandId = $commandId;
             }
