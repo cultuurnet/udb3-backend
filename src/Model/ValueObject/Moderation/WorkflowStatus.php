@@ -25,4 +25,14 @@ class WorkflowStatus extends Enum
             'DELETED',
         ];
     }
+
+    /// This method is only needed to import UDB2 items, which use
+    /// lowercase values without underscores.
+    /// It should only be used in those contexts.
+    /// It could be removed after UDB2 imports are switched off.
+    ///
+    public static function fromCultureFeedWorkflowStatus(string $wfStatus): WorkflowStatus
+    {
+        return new self(str_replace('READYFORVALIDATION', 'READY_FOR_VALIDATION', strtoupper($wfStatus)));
+    }
 }

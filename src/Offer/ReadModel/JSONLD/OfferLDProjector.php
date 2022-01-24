@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
@@ -50,7 +51,6 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsDuplicate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsInappropriate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -688,7 +688,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $offerLd->workflowStatus = WorkflowStatus::READY_FOR_VALIDATION()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::READY_FOR_VALIDATION()->toString();
 
         $publicationDate = $published->getPublicationDate();
         $offerLd->availableFrom = $publicationDate->format(DateTimeInterface::ATOM);
@@ -700,7 +700,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $document = $this->loadDocumentFromRepository($approved);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = WorkflowStatus::APPROVED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::APPROVED()->toString();
         return $document->withBody($offerLd);
     }
 
@@ -708,7 +708,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     {
         $document = $this->loadDocumentFromRepository($rejected);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->toString();
         return $document->withBody($offerLd);
     }
 
@@ -717,7 +717,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     ): JsonDocument {
         $document = $this->loadDocumentFromRepository($flaggedAsDuplicate);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->toString();
         return $document->withBody($offerLd);
     }
 
@@ -726,7 +726,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     ): JsonDocument {
         $document = $this->loadDocumentFromRepository($flaggedAsInappropriate);
         $offerLd = $document->getBody();
-        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->getName();
+        $offerLd->workflowStatus = WorkflowStatus::REJECTED()->toString();
         return $document->withBody($offerLd);
     }
 

@@ -15,12 +15,12 @@ use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
@@ -215,7 +215,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $jsonLD->creator = $metaData['user_id'];
         }
 
-        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
         return $document->withBody($jsonLD);
     }
@@ -226,7 +226,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
 
         $jsonLD = $document->getBody();
 
-        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->toString();
 
         return $document->withBody($jsonLD);
     }

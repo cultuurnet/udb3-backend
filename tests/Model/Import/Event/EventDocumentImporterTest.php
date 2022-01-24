@@ -29,7 +29,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType as LegacyAudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
@@ -88,10 +87,7 @@ class EventDocumentImporterTest extends TestCase
      */
     private $imageCollectionFactory;
 
-    /**
-     * @var TraceableCommandBus
-     */
-    private $commandBus;
+    private TraceableCommandBus $commandBus;
 
     /**
      * @var ConsumerInterface|MockObject
@@ -108,12 +104,9 @@ class EventDocumentImporterTest extends TestCase
      */
     private $lockedLabelRepository;
 
-    /**
-     * @var DocumentImporterInterface
-     */
-    private $importer;
+    private DocumentImporterInterface $importer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->createMock(Repository::class);
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
@@ -146,7 +139,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_create_an_new_event_and_publish_it_if_no_aggregate_exists_for_the_given_id()
+    public function it_should_create_an_new_event_and_publish_it_if_no_aggregate_exists_for_the_given_id(): void
     {
         $document = $this->getEventDocument();
         $id = $document->getId();
@@ -204,7 +197,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_create_an_new_event_and_approve_it_if_no_aggregate_exists_and_the_consumer_can_approve()
+    public function it_should_create_an_new_event_and_approve_it_if_no_aggregate_exists_and_the_consumer_can_approve(): void
     {
         $document = $this->getEventDocument();
         $id = $document->getId();
@@ -268,7 +261,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_an_existing_event_if_an_aggregate_exists_for_the_given_id()
+    public function it_should_update_an_existing_event_if_an_aggregate_exists_for_the_given_id(): void
     {
         $document = $this->getEventDocument();
         $id = $document->getId();
@@ -322,7 +315,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_the_description_and_translations()
+    public function it_should_update_the_description_and_translations(): void
     {
         $document = $this->getEventDocument();
         $body = $document->getBody();
@@ -358,7 +351,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_the_organizer_id()
+    public function it_should_update_the_organizer_id(): void
     {
         $document = $this->getEventDocument();
         $body = $document->getBody();
@@ -388,7 +381,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_the_typical_age_range()
+    public function it_should_update_the_typical_age_range(): void
     {
         $document = $this->getEventDocument();
         $body = $document->getBody();
@@ -416,7 +409,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_the_price_info()
+    public function it_should_update_the_price_info(): void
     {
         $document = $this->getEventDocument();
         $body = $document->getBody();
@@ -459,7 +452,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_import_media_object_references()
+    public function it_should_import_media_object_references(): void
     {
         $document = $this->getEventDocument();
         $body = $document->getBody();
@@ -593,7 +586,7 @@ class EventDocumentImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_an_existing_event_with_labels()
+    public function it_should_update_an_existing_event_with_labels(): void
     {
         $document = $this->getEventDocument();
         $body = $document->getBody();
@@ -663,7 +656,7 @@ class EventDocumentImporterTest extends TestCase
         LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
         $document = $this->getEventDocument();
         $body = $document->getBody();
-        $body['audience']['audienceType'] = LegacyAudienceType::EVERYONE()->toNative();
+        $body['audience']['audienceType'] = AudienceType::everyone()->toString();
         $body['location']['@id'] = 'https://io.uitdatabank.be/places/' . $dummyPlaceId;
         $document = $document->withBody($body);
         $id = $document->getId();
@@ -687,15 +680,13 @@ class EventDocumentImporterTest extends TestCase
         );
     }
 
-    private function getEventId()
+    private function getEventId(): string
     {
         return 'c33b4498-0932-4fbe-816f-c6641f30ba3b';
     }
 
-    /**
-     * @return array
-     */
-    private function getEventData()
+
+    private function getEventData(): array
     {
         return [
             '@id' => 'https://io.uitdatabank.be/events/c33b4498-0932-4fbe-816f-c6641f30ba3b',
@@ -723,26 +714,17 @@ class EventDocumentImporterTest extends TestCase
         ];
     }
 
-    /**
-     * @return DecodedDocument
-     */
-    private function getEventDocument()
+    private function getEventDocument(): DecodedDocument
     {
         return new DecodedDocument($this->getEventId(), $this->getEventData());
     }
 
-    /**
-     * @return string
-     */
-    private function getPlaceId()
+    private function getPlaceId(): string
     {
         return 'f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0';
     }
 
-    /**
-     * @return array
-     */
-    private function getPlaceData()
+    private function getPlaceData(): array
     {
         return [
             '@id' => 'https://io.uitdatabank.be/places/f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0',
@@ -771,18 +753,12 @@ class EventDocumentImporterTest extends TestCase
         ];
     }
 
-    /**
-     * @return DecodedDocument
-     */
-    private function getPlaceDocument()
+    private function getPlaceDocument(): DecodedDocument
     {
         return new DecodedDocument($this->getPlaceId(), $this->getPlaceData());
     }
 
-    /**
-     * @param string $eventId
-     */
-    private function expectEventIdExists($eventId)
+    private function expectEventIdExists(string $eventId): void
     {
         $this->repository->expects($this->once())
             ->method('load')
@@ -790,7 +766,7 @@ class EventDocumentImporterTest extends TestCase
             ->willReturn($this->createMock(Event::class));
     }
 
-    private function expectEventDoesNotExist($eventId)
+    private function expectEventDoesNotExist($eventId): void
     {
         $this->repository->expects($this->once())
             ->method('load')
@@ -798,7 +774,7 @@ class EventDocumentImporterTest extends TestCase
             ->willThrowException(new AggregateNotFoundException());
     }
 
-    private function expectCreateEvent(Event $expectedEvent)
+    private function expectCreateEvent(Event $expectedEvent): void
     {
         $this->repository->expects($this->once())
             ->method('save')
@@ -807,28 +783,28 @@ class EventDocumentImporterTest extends TestCase
             }));
     }
 
-    private function expectNoImages()
+    private function expectNoImages(): void
     {
         $this->imageCollectionFactory->expects($this->any())
             ->method('fromMediaObjectReferences')
             ->willReturn(new ImageCollection());
     }
 
-    private function expectNoLockedLabels()
+    private function expectNoLockedLabels(): void
     {
         $this->lockedLabelRepository->expects($this->any())
             ->method('getLockedLabelsForItem')
             ->willReturn(new Labels());
     }
 
-    private function expectNoUnlockedLabels()
+    private function expectNoUnlockedLabels(): void
     {
         $this->lockedLabelRepository->expects($this->any())
             ->method('getUnlockedLabelsForItem')
             ->willReturn(new Labels());
     }
 
-    private function assertContainsObject($needle, array $haystack)
+    private function assertContainsObject($needle, array $haystack): void
     {
         $this->assertContains(
             $needle,

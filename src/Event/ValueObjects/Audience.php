@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 
 /**
  * @deprecated
@@ -12,39 +13,34 @@ use Broadway\Serializer\Serializable;
  */
 final class Audience implements Serializable
 {
-    /**
-     * Store the Audience enum internally as a string to make sure that PHP encode works.
-     * @var string
-     */
-    private $audienceType;
-
+    private AudienceType $audienceType;
 
     public function __construct(AudienceType $audienceType)
     {
-        $this->audienceType = $audienceType->toNative();
+        $this->audienceType = $audienceType;
     }
 
     public function getAudienceType(): AudienceType
     {
-        return AudienceType::fromNative($this->audienceType);
+        return $this->audienceType;
     }
 
     public static function deserialize(array $data): Audience
     {
         return new self(
-            AudienceType::fromNative($data['audienceType'])
+            new AudienceType($data['audienceType'])
         );
     }
 
     public function serialize(): array
     {
         return [
-            'audienceType' => $this->getAudienceType()->toNative(),
+            'audienceType' => $this->getAudienceType()->toString(),
         ];
     }
 
     public function equals(Audience $otherAudience): bool
     {
-        return $this->getAudienceType() === $otherAudience->getAudienceType();
+        return $this->getAudienceType()->sameAs($otherAudience->getAudienceType());
     }
 }
