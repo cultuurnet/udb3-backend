@@ -204,19 +204,6 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$app['event_service'] = $app->share(
-    function ($app) {
-        $service = new \CultuurNet\UDB3\Event\LocalEventService(
-            $app['event_jsonld_repository'],
-            $app['event_repository'],
-            $app['event_relations_repository'],
-            $app['event_iri_generator']
-        );
-
-        return $service;
-    }
-);
-
 $app['external_event_service'] = $app->share(
     function ($app) {
         return new ExternalEventService($app['http.guzzle']);
