@@ -38,9 +38,9 @@ final class UpdateUrlRequestHandler implements RequestHandlerInterface
             )
         );
 
-        $updateTitle = $requestBodyParser->parse($request)->getParsedBody();
+        $updateWebsite = $requestBodyParser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch($updateTitle);
+        $this->commandBus->dispatch($updateWebsite);
 
         return new NoContentResponse();
     }
