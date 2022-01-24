@@ -40,11 +40,6 @@ class EventEditingServiceTest extends TestCase
     private $eventEditingService;
 
     /**
-     * @var EventServiceInterface|MockObject
-     */
-    private $eventService;
-
-    /**
      * @var CommandBus|MockObject
      */
     private $commandBus;
@@ -81,7 +76,6 @@ class EventEditingServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->eventService = $this->createMock(EventServiceInterface::class);
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
@@ -98,7 +92,6 @@ class EventEditingServiceTest extends TestCase
         );
 
         $this->eventEditingService = new EventEditingService(
-            $this->eventService,
             $this->commandBus,
             $this->uuidGenerator,
             $this->readRepository,

@@ -21,10 +21,6 @@ use CultuurNet\UDB3\Title;
 
 class EventEditingService extends DefaultOfferEditingService implements EventEditingServiceInterface
 {
-    /**
-     * @var EventServiceInterface
-     */
-    protected $eventService;
 
     /**
      * @var Repository
@@ -37,7 +33,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
     private $placeRepository;
 
     public function __construct(
-        EventServiceInterface $eventService,
         CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
@@ -51,7 +46,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
             $readRepository,
             $commandFactory
         );
-        $this->eventService = $eventService;
         $this->writeRepository = $writeRepository;
         $this->placeRepository = $placeRepository;
     }
