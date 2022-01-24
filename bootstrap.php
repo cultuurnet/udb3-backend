@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
-use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
@@ -201,12 +200,6 @@ $app['event_iri_generator'] = $app->share(
                 return $app['config']['url'] . '/event/' . $cdbid;
             }
         );
-    }
-);
-
-$app['external_event_service'] = $app->share(
-    function ($app) {
-        return new ExternalEventService($app['http.guzzle']);
     }
 );
 
