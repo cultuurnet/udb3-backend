@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
-use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Event\EventNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
+use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Generator;
@@ -19,49 +20,23 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ValueObjects\Web\EmailAddress;
 
-class EventExportService implements EventExportServiceInterface
+final class EventExportService implements EventExportServiceInterface
 {
-    /**
-     * @var EventServiceInterface
-     */
-    protected $eventService;
+    private EventServiceInterface $eventService;
 
-    /**
-     * @var SearchServiceInterface
-     */
-    protected $searchService;
+    private SearchServiceInterface $searchService;
 
-    /**
-     * @var UuidGeneratorInterface
-     */
-    protected $uuidGenerator;
+    private UuidGeneratorInterface $uuidGenerator;
 
-    /**
-     * Publicly accessible directory where exports will be stored.
-     *
-     * @var string
-     */
-    protected $publicDirectory;
+    private string $publicDirectory;
 
-    /**
-     * @var NotificationMailerInterface
-     */
-    protected $mailer;
+    private NotificationMailerInterface $mailer;
 
-    /**
-     * @var IriGeneratorInterface
-     */
-    protected $iriGenerator;
+    private IriGeneratorInterface $iriGenerator;
 
-    /**
-     * @var ResultsGeneratorInterface
-     */
-    protected $resultsGenerator;
+    private ResultsGeneratorInterface $resultsGenerator;
 
-    /**
-     * @var int
-     */
-    private $maxAmountOfItems;
+    private int $maxAmountOfItems;
 
     public function __construct(
         EventServiceInterface $eventService,
@@ -83,6 +58,9 @@ class EventExportService implements EventExportServiceInterface
         $this->maxAmountOfItems = $maxAmountOfItems;
     }
 
+    /**
+     * @return bool|string
+     */
     public function exportEvents(
         FileFormatInterface $fileFormat,
         EventExportQuery $query,
@@ -117,12 +95,8 @@ class EventExportService implements EventExportServiceInterface
         } else {
             // do a pre query to test if the query is valid and check the item count
             try {
-                $preQueryResult = $this->searchService->search(
-                    (string) $query,
-                    1,
-                    0
-                );
-                $totalItemCount = $preQueryResult->getTotalItems()->toNative();
+                $preQueryResult = $this->searchService->search((string) $query, 1);
+                $totalItemCount = $preQueryResult->getTotalItems();
             } catch (Exception $e) {
                 $logger->error(
                     'not_exported',
@@ -252,7 +226,8 @@ class EventExportService implements EventExportServiceInterface
 
         $count = 0;
         foreach ($events as $eventIdentifier) {
-            $event = $this->getEventAsJSONLD((string) $eventIdentifier->getIri(), $logger);
+            /** @var ItemIdentifier $eventIdentifier */
+            $event = $this->getEventAsJSONLD($eventIdentifier->getUrl()->toString(), $logger);
 
             if ($event) {
                 $count++;
@@ -273,10 +248,7 @@ class EventExportService implements EventExportServiceInterface
         return $this->publicDirectory . '/' . $finalFileName;
     }
 
-    /**
-     * @param string $url
-     */
-    private function notifyByMail(EmailAddress $address, $url): void
+    private function notifyByMail(EmailAddress $address, string $url): void
     {
         $this->mailer->sendNotificationMail(
             $address,

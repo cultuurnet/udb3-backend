@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
-use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Event\EventNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
+use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -23,68 +25,51 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Traversable;
-use ValueObjects\Number\Integer;
 use ValueObjects\Web\EmailAddress;
-use ValueObjects\Web\Url;
 
-class EventExportServiceTest extends TestCase
+final class EventExportServiceTest extends TestCase
 {
     public const AMOUNT = 19;
 
-    /**
-     * @var EventExportService
-     */
-    protected $eventExportService;
+    private EventExportService $eventExportService;
 
     /**
      * @var EventServiceInterface|MockObject
      */
-    protected $eventService;
+    private $eventService;
 
     /**
      * @var SearchServiceInterface|MockObject
      */
-    protected $searchService;
+    private $searchService;
 
     /**
      * @var UuidGeneratorInterface|MockObject
      */
-    protected $uuidGenerator;
+    private $uuidGenerator;
 
     /**
      * @var IriGeneratorInterface|MockObject
      */
-    protected $iriGenerator;
+    private $iriGenerator;
 
     /**
      * @var NotificationMailerInterface|MockObject
      */
-    protected $mailer;
+    private $mailer;
 
-    /**
-     * @var vfsStreamDirectory
-     */
-    protected $publicDirectory;
+    private vfsStreamDirectory $publicDirectory;
 
-    /**
-     * @var array
-     */
-    protected $searchResults;
+    private array $searchResults;
 
-    /**
-     * @var array
-     */
-    protected $searchResultsDetails;
+    private array $searchResultsDetails;
 
     /**
      * @var ResultsGeneratorInterface|MockObject
      */
-    protected $resultsGenerator;
+    private $resultsGenerator;
 
-    /**
-     * @inheritdoc
-     */
-    public function setUp()
+    public function setUp(): void
     {
         $this->publicDirectory = vfsStream::setup('exampleDir');
         $this->eventService = $this->createMock(EventServiceInterface::class);
@@ -109,18 +94,22 @@ class EventExportServiceTest extends TestCase
         $range = range(1, self::AMOUNT);
         $this->searchResults = array_map(
             function ($i) {
-                return new IriOfferIdentifier(
-                    Url::fromNative('http://example.com/event/' . $i),
+                return new ItemIdentifier(
+                    new Url('http://example.com/event/' . $i),
                     (string) $i,
-                    OfferType::event()
+                    ItemType::event()
                 );
             },
             $range
         );
 
         $this->searchResultsDetails = array_map(
-            function (\JsonSerializable $item) {
-                return $item->jsonSerialize() + ['foo' => 'bar'];
+            function (ItemIdentifier $item) {
+                return [
+                    '@id' => $item->getUrl()->toString(),
+                    '@type' => $item->getItemType()->toString(),
+                    'foo' => 'bar',
+                ];
             },
             $this->searchResults
         );
@@ -139,28 +128,28 @@ class EventExportServiceTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        array_slice($this->searchResults, 0, 1)
+                    new ItemIdentifiers(
+                        ...array_slice($this->searchResults, 0, 1)
                     ),
-                    new Integer(self::AMOUNT)
+                    self::AMOUNT
                 ),
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        array_slice($this->searchResults, 0, 10)
+                    new ItemIdentifiers(
+                        ...array_slice($this->searchResults, 0, 10)
                     ),
-                    new Integer(self::AMOUNT)
+                    self::AMOUNT
                 ),
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        array_slice($this->searchResults, 10)
+                    new ItemIdentifiers(
+                        ...array_slice($this->searchResults, 10)
                     ),
-                    new Integer(self::AMOUNT)
+                    self::AMOUNT
                 )
             );
     }
 
 
-    private function setUpEventService(array $unavailableEventIds = [])
+    private function setUpEventService(array $unavailableEventIds = []): void
     {
         $this->eventService->expects($this->any())
             ->method('getEvent')
@@ -172,9 +161,9 @@ class EventExportServiceTest extends TestCase
                         );
                     }
 
-                    return json_encode([
+                    return Json::encode([
                         '@id' => $eventId,
-                        '@type' => 'Event',
+                        '@type' => 'event',
                         'foo' => 'bar',
                     ]);
                 }
@@ -190,11 +179,9 @@ class EventExportServiceTest extends TestCase
     }
 
     /**
-     * @param string $fileNameExtension
-     *
      * @return FileFormatInterface|MockObject
      */
-    private function getFileFormat($fileNameExtension)
+    private function getFileFormat(string $fileNameExtension)
     {
         /** @var FileFormatInterface|MockObject $fileFormat */
         $fileFormat = $this->createMock(FileFormatInterface::class);
@@ -216,9 +203,9 @@ class EventExportServiceTest extends TestCase
                 function ($tmpPath, Traversable $events) {
                     $contents = iterator_to_array($events);
                     $contents = array_map(function ($content) {
-                        return json_decode($content);
+                        return Json::decode($content);
                     }, $contents);
-                    $contents = json_encode($contents);
+                    $contents = Json::encode($contents);
                     file_put_contents($tmpPath, $contents);
                 }
             );
@@ -226,7 +213,7 @@ class EventExportServiceTest extends TestCase
         return $fileFormat;
     }
 
-    private function forceUuidGeneratorToReturn($uuid)
+    private function forceUuidGeneratorToReturn($uuid): void
     {
         $this->uuidGenerator->expects($this->any())
             ->method('generate')
@@ -236,7 +223,7 @@ class EventExportServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_exports_events_to_a_file()
+    public function it_exports_events_to_a_file(): void
     {
         $this->setUpEventService();
 
@@ -270,7 +257,7 @@ class EventExportServiceTest extends TestCase
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 
         $this->assertJsonStringEqualsJsonString(
-            json_encode($this->searchResultsDetails),
+            Json::encode($this->searchResultsDetails),
             $file->getContent()
         );
     }
@@ -278,7 +265,7 @@ class EventExportServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_the_url_of_the_exported_file()
+    public function it_logs_the_url_of_the_exported_file(): void
     {
         $this->setUpEventService();
 
@@ -327,7 +314,7 @@ class EventExportServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_sends_an_email_with_a_link_to_the_export_if_address_is_provided()
+    public function it_sends_an_email_with_a_link_to_the_export_if_address_is_provided(): void
     {
         $this->setUpEventService();
 
@@ -373,12 +360,7 @@ class EventExportServiceTest extends TestCase
         );
     }
 
-    /**
-     * @param array $results
-     * @param array $without
-     * @return array
-     */
-    private function searchResultsWithout($results, $without)
+    private function searchResultsWithout(array $results, array $without): array
     {
         $newResults = [];
         foreach ($results as $offerId => $result) {
@@ -395,7 +377,7 @@ class EventExportServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_items_that_can_not_be_found_by_the_event_service()
+    public function it_ignores_items_that_can_not_be_found_by_the_event_service(): void
     {
         $unavailableEventIds = [
             'http://example.com/event/3',
@@ -434,7 +416,7 @@ class EventExportServiceTest extends TestCase
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 
         $this->assertJsonStringEqualsJsonString(
-            json_encode($expectedDetails),
+            Json::encode($expectedDetails),
             $file->getContent()
         );
     }
@@ -447,7 +429,7 @@ class EventExportServiceTest extends TestCase
         $fileFormat,
         $query,
         $selection
-    ) {
+    ): void {
         $unavailableEventIds = [
             'http://example.com/event/4',
             'http://example.com/event/7',
@@ -494,7 +476,7 @@ class EventExportServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_if_number_of_items_for_query_is_greater_than_allowed()
+    public function it_throws_exception_if_number_of_items_for_query_is_greater_than_allowed(): void
     {
         $query = new EventExportQuery('city:Leuven');
         $logger = $this->createMock(LoggerInterface::class);
@@ -527,7 +509,7 @@ class EventExportServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_if_number_of_selection_is_greater_than_allowed()
+    public function it_throws_exception_if_number_of_selection_is_greater_than_allowed(): void
     {
         $query = new EventExportQuery('city:Leuven');
         $logger = $this->createMock(LoggerInterface::class);
@@ -550,7 +532,7 @@ class EventExportServiceTest extends TestCase
         );
     }
 
-    public function exportParametersDataProvider()
+    public function exportParametersDataProvider(): array
     {
         return [
             [
@@ -561,11 +543,6 @@ class EventExportServiceTest extends TestCase
                     'http://example.com/event/7',
                     'http://example.com/event/16',
                 ],
-            ],
-            [
-                'fileFormat' => $this->getFileFormat('txt'),
-                'query' => new EventExportQuery('city:Leuven'),
-                'selection' => null,
             ],
         ];
     }

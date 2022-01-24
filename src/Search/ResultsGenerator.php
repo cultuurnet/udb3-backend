@@ -14,28 +14,18 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
     use LoggerAwareTrait;
 
     /**
-     * Default sorting method because it's ideal for getting consistent paging
-     * results.
+     * Default sorting method because it's ideal for getting consistent paging results.
      */
     private const SORT_CREATED_ASC = ['created' => 'asc'];
 
     private const COUNT_PAGE_LIMIT = 1;
     private const COUNT_PAGE_START = 0;
 
-    /**
-     * @var SearchServiceInterface
-     */
-    private $searchService;
+    private SearchServiceInterface $searchService;
 
-    /**
-     * @var array
-     */
-    private $sorting;
+    private ?array $sorting;
 
-    /**
-     * @var int
-     */
-    private $pageSize;
+    private int $pageSize;
 
     public function __construct(
         SearchServiceInterface $searchService,
@@ -84,8 +74,7 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
     {
         return $this->searchService
             ->search($query, self::COUNT_PAGE_LIMIT, self::COUNT_PAGE_START)
-            ->getTotalItems()
-            ->toNative();
+            ->getTotalItems();
     }
 
     public function search(string $query): Generator
@@ -105,7 +94,7 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
                 $this->sorting
             );
 
-            $total = $results->getTotalItems()->toNative();
+            $total = $results->getTotalItems();
 
             $this->logger->info('Search API reported ' . $total . ' results');
 

@@ -4,57 +4,44 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
+use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use ValueObjects\Number\Integer;
-use ValueObjects\Web\Url;
 use function http_build_query;
 
 class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var UriInterface
-     */
-    private $searchLocation;
+    private UriInterface $searchLocation;
 
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+    private HttpClient $httpClient;
 
-    /**
-     * @var IriOfferIdentifierFactoryInterface
-     */
-    private $offerIdentifier;
+    private ItemIdentifierFactory $itemIdentifierFactory;
 
-    /**
-     * @var string|null
-     */
-    private $apiKey;
-
+    private ?string $apiKey;
 
     public function __construct(
         UriInterface $searchLocation,
         HttpClient $httpClient,
-        IriOfferIdentifierFactoryInterface $offerIdentifier,
+        ItemIdentifierFactory $itemIdentifierFactory,
         string $apiKey = null
     ) {
         $this->searchLocation = $searchLocation;
         $this->httpClient = $httpClient;
-        $this->offerIdentifier = $offerIdentifier;
+        $this->itemIdentifierFactory = $itemIdentifierFactory;
         $this->apiKey = $apiKey;
         $this->logger = new NullLogger();
     }
 
-    public function search(string $query, $limit = 30, $start = 0, array $sort = null)
+    public function search(string $query, int $limit = 30, int $start = 0, ?array $sort = null): Results
     {
         $queryParameters = [
             'q' => $query,
@@ -75,34 +62,32 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
             $headers['X-Api-Key'] = $this->apiKey;
         }
 
-        $offerQuery = $this->searchLocation->withQuery($queryParameters);
+        $itemQuery = $this->searchLocation->withQuery($queryParameters);
 
-        $offerRequest = new Request(
+        $itemRequest = new Request(
             'GET',
-            (string) $offerQuery,
+            (string) $itemQuery,
             $headers
         );
 
         $searchResponseData = $this->httpClient
-            ->sendRequest($offerRequest)
+            ->sendRequest($itemRequest)
             ->getBody()
             ->getContents();
 
-        $this->logger->debug('Sent SAPI3 request with the following parameters: ' . json_encode($queryParameters));
+        $this->logger->debug('Sent SAPI3 request with the following parameters: ' . Json::encode($queryParameters));
         $this->logger->debug('Response data: ' . $searchResponseData);
 
-        $searchResponseData = json_decode($searchResponseData);
+        $searchResponseData = Json::decode($searchResponseData);
 
-        $offerIds = array_reduce(
+        $itemIds = array_reduce(
             $searchResponseData->{'member'},
-            function (OfferIdentifierCollection $offerIds, $item) {
-                return $offerIds->with(
-                    $this->offerIdentifier->fromIri(Url::fromNative($item->{'@id'}))
-                );
-            },
-            new OfferIdentifierCollection()
+            fn (ItemIdentifiers $itemIdentifiers, $item) => $itemIdentifiers->with(
+                $this->itemIdentifierFactory->fromUrl(new Url($item->{'@id'}))
+            ),
+            new ItemIdentifiers()
         );
 
-        return new Results($offerIds, new Integer($searchResponseData->{'totalItems'}));
+        return new Results($itemIds, (int) $searchResponseData->{'totalItems'});
     }
 }

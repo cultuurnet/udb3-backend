@@ -18,15 +18,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class AbstractGeocodeCommand extends AbstractCommand
 {
-    /**
-     * @var ResultsGeneratorInterface
-     */
-    private $searchResultsGenerator;
+    private ResultsGeneratorInterface $searchResultsGenerator;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $documentRepository;
+    private DocumentRepository $documentRepository;
 
     public function __construct(
         CommandBus $commandBus,
@@ -42,14 +36,14 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         $this->documentRepository = $documentRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(
                 'id',
                 null,
                 InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
-                'Fixed list of ids of the places to geocode.'
+                'Fixed list of ids of the items to geocode.'
             )
             ->addOption(
                 'force',
