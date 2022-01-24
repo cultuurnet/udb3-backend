@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
@@ -35,26 +35,23 @@ class RelatedEventLDProjector implements EventListener
      */
     protected $organizerService;
 
-    /**
-     * @var EventServiceInterface
-     */
-    protected $eventService;
 
     /**
      * @var IriOfferIdentifierFactoryInterface
      */
     protected $iriOfferIdentifierFactory;
+    private RepositoryInterface $relationsRepository;
 
 
     public function __construct(
         DocumentRepository $repository,
-        EventServiceInterface $eventService,
+        RepositoryInterface $relationsRepository,
         LocalPlaceService $placeService,
         OrganizerService $organizerService,
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
     ) {
         $this->repository = $repository;
-        $this->eventService = $eventService;
+        $this->relationsRepository = $relationsRepository;
         $this->placeService = $placeService;
         $this->organizerService = $organizerService;
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
@@ -62,8 +59,8 @@ class RelatedEventLDProjector implements EventListener
 
     protected function applyOrganizerProjectedToJSONLD(
         OrganizerProjectedToJSONLD $organizerProjectedToJSONLD
-    ) {
-        $eventIds = $this->eventService->eventsOrganizedByOrganizer(
+    ): void {
+        $eventIds = $this->relationsRepository->getEventsOrganizedByOrganizer(
             $organizerProjectedToJSONLD->getId()
         );
 
@@ -85,7 +82,7 @@ class RelatedEventLDProjector implements EventListener
             Url::fromNative($placeProjectedToJSONLD->getIri())
         );
 
-        $eventsLocatedAtPlace = $this->eventService->eventsLocatedAtPlace(
+        $eventsLocatedAtPlace = $this->relationsRepository->getEventsLocatedAtPlace(
             $placeProjectedToJSONLD->getItemId()
         );
 

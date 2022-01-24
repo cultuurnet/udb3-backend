@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -36,9 +36,9 @@ class RelatedEventLDProjectorTest extends TestCase
     private $organizerService;
 
     /**
-     * @var EventServiceInterface|MockObject
+     * @var RepositoryInterface|MockObject
      */
-    private $eventService;
+    private $relationsRepository;
 
     /**
      * @var LocalPlaceService|MockObject
@@ -64,7 +64,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $this->organizerService = $this->createMock(OrganizerService::class);
 
-        $this->eventService = $this->createMock(EventServiceInterface::class);
+        $this->relationsRepository = $this->createMock(RepositoryInterface::class);
 
         $this->placeService = $this->createMock(LocalPlaceService::class);
 
@@ -72,7 +72,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $this->projector = new RelatedEventLDProjector(
             $this->documentRepository,
-            $this->eventService,
+            $this->relationsRepository,
             $this->placeService,
             $this->organizerService,
             $this->iriOfferIdentifierFactory
@@ -104,9 +104,9 @@ class RelatedEventLDProjectorTest extends TestCase
             ->with($placeIri)
             ->willReturn($placeIdentifier);
 
-        $this->eventService
+        $this->relationsRepository
             ->expects($this->once())
-            ->method('eventsLocatedAtPlace')
+            ->method('getEventsLocatedAtPlace')
             ->with($placeID)
             ->willReturn(
                 [
@@ -218,9 +218,9 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $organizerId = '101214';
 
-        $this->eventService
+        $this->relationsRepository
             ->expects($this->once())
-            ->method('eventsOrganizedByOrganizer')
+            ->method('getEventsOrganizedByOrganizer')
             ->with($organizerId)
             ->willReturn(
                 [
