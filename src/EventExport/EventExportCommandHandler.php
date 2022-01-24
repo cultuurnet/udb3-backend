@@ -102,7 +102,7 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
             $exportCommand->getLogo(),
             $exportCommand->getTitle()->toNative(),
             $exportCommand->getSubtitle() ? $exportCommand->getSubtitle()->toNative() : null,
-            $exportCommand->getFooter() ? $exportCommand->getFooter()->toNative(): null,
+            $exportCommand->getFooter() ? $exportCommand->getFooter()->toNative() : null,
             $exportCommand->getPublisher() ? $exportCommand->getPublisher()->toNative() : null,
             $this->uitpas,
             $this->calendarSummaryRepository,
