@@ -8,6 +8,8 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
@@ -74,7 +76,12 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
                 $url,
                 $title
             );
-            $this->aggregateRepository->save($organizer);
+
+            try {
+                $this->aggregateRepository->save($organizer);
+            } catch (UniqueConstraintException $e) {
+                throw ApiProblem::duplicateUrl($url->toString(), $e->getDuplicateValue());
+            }
         } else {
             $commands[] = new UpdateTitle(
                 $id,
@@ -110,8 +117,16 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
 
         $lastCommandId = null;
         foreach ($commands as $command) {
-            /** @var string|null $commandId */
-            $commandId = $this->commandBus->dispatch($command);
+            try {
+                /** @var string|null $commandId */
+                $commandId = $this->commandBus->dispatch($command);
+            } catch (UniqueConstraintException $e) {
+                if ($command instanceof UpdateWebsite) {
+                    throw ApiProblem::duplicateUrl($command->getWebsite()->toString(), $e->getDuplicateValue());
+                }
+                throw $e;
+            }
+
             if ($commandId) {
                 $lastCommandId = $commandId;
             }
