@@ -9,7 +9,6 @@ use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
@@ -32,17 +31,9 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventEditingServiceTest extends TestCase
+final class EventEditingServiceTest extends TestCase
 {
-    /**
-     * @var EventEditingService
-     */
-    private $eventEditingService;
-
-    /**
-     * @var CommandBus|MockObject
-     */
-    private $commandBus;
+    private EventEditingService $eventEditingService;
 
     /**
      * @var UuidGeneratorInterface|MockObject
@@ -50,35 +41,21 @@ class EventEditingServiceTest extends TestCase
     private $uuidGenerator;
 
     /**
-     * @var OfferCommandFactoryInterface|MockObject
-     */
-    private $commandFactory;
-
-    /**
      * @var DocumentRepository|MockObject
      */
     private $readRepository;
 
-    /**
-     * @var Repository|MockObject
-     */
-    private $writeRepository;
 
-    /**
-     * @var TraceableEventStore
-     */
-    private $eventStore;
+    private TraceableEventStore $eventStore;
 
     /**
      * @var PlaceRepository|MockObject
      */
     private $placeRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->commandBus = $this->createMock(CommandBus::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
         $this->readRepository = $this->createMock(DocumentRepository::class);
         $this->placeRepository = $this->createMock(PlaceRepository::class);
 
@@ -86,17 +63,12 @@ class EventEditingServiceTest extends TestCase
             new InMemoryEventStore()
         );
 
-        $this->writeRepository = new EventRepository(
-            $this->eventStore,
-            new SimpleEventBus()
-        );
-
         $this->eventEditingService = new EventEditingService(
-            $this->commandBus,
+            $this->createMock(CommandBus::class),
             $this->uuidGenerator,
             $this->readRepository,
-            $this->commandFactory,
-            $this->writeRepository,
+            $this->createMock(OfferCommandFactoryInterface::class),
+            new EventRepository($this->eventStore, new SimpleEventBus()),
             $this->placeRepository
         );
     }
@@ -104,7 +76,7 @@ class EventEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_refuses_to_update_title_of_unknown_event()
+    public function it_refuses_to_update_title_of_unknown_event(): void
     {
         $id = 'some-unknown-id';
 
@@ -122,7 +94,7 @@ class EventEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_refuses_to_update_the_description_of_unknown_event()
+    public function it_refuses_to_update_the_description_of_unknown_event(): void
     {
         $id = 'some-unknown-id';
 
@@ -140,7 +112,7 @@ class EventEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_a_new_event()
+    public function it_can_create_a_new_event(): void
     {
         $eventId = 'generated-uuid';
         $mainLanguage = new Language('nl');
@@ -184,7 +156,7 @@ class EventEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_able_to_create_a_new_event_and_approve_it_immediately()
+    public function it_should_be_able_to_create_a_new_event_and_approve_it_immediately(): void
     {
         $eventId = 'generated-uuid';
         $mainLanguage = new Language('nl');
@@ -303,7 +275,7 @@ class EventEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_create_a_new_event_with_a_fixed_publication_date()
+    public function it_can_create_a_new_event_with_a_fixed_publication_date(): void
     {
         $eventId = 'generated-uuid';
         $mainLanguage = new Language('nl');
@@ -352,7 +324,7 @@ class EventEditingServiceTest extends TestCase
         );
     }
 
-    private function setUpEventNotFound($id)
+    private function setUpEventNotFound($id): void
     {
         $this->readRepository->expects($this->once())
             ->method('fetch')
