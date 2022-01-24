@@ -83,14 +83,12 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
                 throw ApiProblem::duplicateUrl($url->toString(), $e->getDuplicateValue());
             }
         } else {
-            // Update the website as the very first property to update, so if it's not unique the other properties are
-            // not updated either.
-            $commands[] = new UpdateWebsite($id, $import->getUrl());
             $commands[] = new UpdateTitle(
                 $id,
                 $title,
                 $mainLanguage
             );
+            $commands[] = new UpdateWebsite($id, $import->getUrl());
         }
 
         $commands[] = new UpdateContactPoint($id, $import->getContactPoint());
