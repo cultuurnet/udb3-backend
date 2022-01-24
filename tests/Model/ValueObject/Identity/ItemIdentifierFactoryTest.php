@@ -14,7 +14,7 @@ final class ItemIdentifierFactoryTest extends TestCase
     protected function setUp(): void
     {
         $this->itemIdentifierFactory = new ItemIdentifierFactory(
-            'https://io\.uitdatabank\.dev/(?<itemType>[event|place|organizer]+)s?/(?<itemId>[a-zA-Z0-9\-]+)'
+            'https?://.+\.uitdatabank\.dev/(?<itemType>[event|place|organizer]+)s?/(?<itemId>[a-zA-Z0-9\-]+)'
         );
     }
 
