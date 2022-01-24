@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -730,11 +731,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function importWorkflowStatus(CultureFeed_Cdb_Item_Base $cdbItem): void
     {
-        try {
-            $workflowStatus = WorkflowStatus::fromNative($cdbItem->getWfStatus());
-        } catch (\InvalidArgumentException $exception) {
-            $workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
-        }
+        $wfStatus = $cdbItem->getWfStatus();
+        $workflowStatus = $wfStatus ? WorkflowStatus::fromCultureFeedWorkflowStatus($wfStatus) : WorkflowStatus::READY_FOR_VALIDATION();
+
         $this->workflowStatus = $workflowStatus;
     }
 
@@ -764,11 +763,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private function guardPublish(): bool
     {
-        if ($this->workflowStatus === WorkflowStatus::READY_FOR_VALIDATION()) {
+        if ($this->workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
             return true; // nothing left to do if the offer has already been published
         }
 
-        if ($this->workflowStatus !== WorkflowStatus::DRAFT()) {
+        if (!$this->workflowStatus->sameAs(WorkflowStatus::DRAFT())) {
             throw new Exception('You can not publish an offer that is not draft');
         }
 
@@ -782,11 +781,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private function guardApprove(): bool
     {
-        if ($this->workflowStatus === WorkflowStatus::APPROVED()) {
+        if ($this->workflowStatus->sameAs(WorkflowStatus::APPROVED())) {
             return true; // nothing left to do if the offer has already been approved
         }
 
-        if ($this->workflowStatus !== WorkflowStatus::READY_FOR_VALIDATION()) {
+        if (!$this->workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
             throw new Exception('You can not approve an offer that is not ready for validation');
         }
 
@@ -812,7 +811,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private function guardRejection(StringLiteral $reason): bool
     {
-        if ($this->workflowStatus === WorkflowStatus::REJECTED()) {
+        if ($this->workflowStatus->sameAs(WorkflowStatus::REJECTED())) {
             if ($this->rejectedReason && $reason->sameValueAs($this->rejectedReason)) {
                 return true; // nothing left to do if the offer has already been rejected for the same reason
             } else {
@@ -820,7 +819,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             }
         }
 
-        if ($this->workflowStatus !== WorkflowStatus::READY_FOR_VALIDATION()) {
+        if (!$this->workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
             throw new Exception('You can not reject an offer that is not ready for validation');
         }
 
@@ -845,7 +844,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function isDeleted(): bool
     {
-        return $this->workflowStatus && $this->workflowStatus->sameValueAs(WorkflowStatus::DELETED());
+        return $this->workflowStatus && $this->workflowStatus->sameAs(WorkflowStatus::DELETED());
     }
 
     /**

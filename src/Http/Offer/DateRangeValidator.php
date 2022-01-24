@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use DateTimeImmutable;
 
 class DateRangeValidator
 {
@@ -19,10 +20,11 @@ class DateRangeValidator
             return [];
         }
 
-        $startDate = DateTimeImmutable::createFromFormat(DATE_ATOM, $data->startDate);
-        $endDate = DateTimeImmutable::createFromFormat(DATE_ATOM, $data->endDate);
-        if ($startDate === false || $endDate === false) {
-            // Error(s) will be reported by the Schema validation.
+        try {
+            $startDate = DateTimeFactory::fromISO8601($data->startDate);
+            $endDate = DateTimeFactory::fromISO8601($data->endDate);
+        } catch (DateTimeInvalid $e) {
+            // Date format error(s) will be reported by the Schema validation.
             return [];
         }
 

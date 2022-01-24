@@ -10,7 +10,7 @@ use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\DateTimeFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\Tariff;
@@ -23,15 +23,12 @@ class CdbXMLItemBaseImporter
 {
     use MultilingualJsonLDProjectorTrait;
 
-    /**
-     * @var PriceDescriptionParser
-     */
-    private $priceDescriptionParser;
+    private PriceDescriptionParser $priceDescriptionParser;
 
     /**
      * @var string[]
      */
-    private $basePriceTranslations;
+    private array $basePriceTranslations;
 
 
     public function __construct(
@@ -93,11 +90,7 @@ class CdbXMLItemBaseImporter
         }
     }
 
-    /**
-     * @param string $availableString
-     * @return string
-     */
-    private function formatAvailableString($availableString)
+    private function formatAvailableString(string $availableString): string
     {
         $available = DateTimeFactory::dateTimeFromDateString(
             $availableString
@@ -110,7 +103,7 @@ class CdbXMLItemBaseImporter
     public function importExternalId(
         \CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
-    ) {
+    ): void {
         $externalId = $item->getExternalId();
         if (empty($externalId)) {
             return;
@@ -133,22 +126,21 @@ class CdbXMLItemBaseImporter
     public function importWorkflowStatus(
         CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
-    ) {
+    ): void {
         $wfStatus = $item->getWfStatus();
 
-        $workflowStatus = $wfStatus ? WorkflowStatus::fromNative($wfStatus) : WorkflowStatus::READY_FOR_VALIDATION();
+        $workflowStatus = $wfStatus ? WorkflowStatus::fromCultureFeedWorkflowStatus($wfStatus) : WorkflowStatus::READY_FOR_VALIDATION();
 
-        $jsonLD->workflowStatus = $workflowStatus->getName();
+        $jsonLD->workflowStatus = $workflowStatus->toString();
     }
 
     /**
      * @param \CultureFeed_Cdb_Data_DetailList|\CultureFeed_Cdb_Data_Detail[] $details
-     * @param \stdClass $jsonLD
      */
     public function importPriceInfo(
         \CultureFeed_Cdb_Data_DetailList $details,
-        $jsonLD
-    ) {
+        \stdClass $jsonLD
+    ): void {
         $mainLanguage = $this->getMainLanguage($jsonLD);
 
         $detailsArray = [];

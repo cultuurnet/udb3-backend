@@ -57,16 +57,16 @@ use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
-use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -260,9 +260,9 @@ class EventLDProjector extends OfferLDProjector implements
             $jsonLD->creator = $author->toNative();
         }
 
-        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
-        $defaultAudience = new Audience(AudienceType::EVERYONE());
+        $defaultAudience = new Audience(AudienceType::everyone());
         $jsonLD->audience = $defaultAudience->serialize();
 
         return $document->withBody($jsonLD);
@@ -306,7 +306,7 @@ class EventLDProjector extends OfferLDProjector implements
         }
 
         // Set workflow status.
-        $eventJsonLD->workflowStatus = WorkflowStatus::DRAFT()->getName();
+        $eventJsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
         // Remove labels.
         unset($eventJsonLD->labels);
@@ -336,7 +336,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD = $document->getBody();
 
-        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->getName();
+        $jsonLD->workflowStatus = WorkflowStatus::DELETED()->toString();
 
         return $document->withBody($jsonLD);
     }

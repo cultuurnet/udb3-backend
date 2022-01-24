@@ -41,12 +41,12 @@ use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -1197,7 +1197,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $audienceUpdated = new AudienceUpdated(
             $eventId,
-            new Audience(AudienceType::EDUCATION())
+            new Audience(AudienceType::education())
         );
 
         $body = $this->project($audienceUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
@@ -1362,7 +1362,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
     }
 
-    public function eventUpdateDataProvider()
+    public function eventUpdateDataProvider(): array
     {
         $documentWithUDB3Media = new JsonDocument(
             CdbXMLEventFactory::AN_EVENT_ID,

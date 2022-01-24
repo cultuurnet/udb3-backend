@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Number\Integer;
-use ValueObjects\Web\Url;
 
 class ResultsGeneratorTest extends TestCase
 {
@@ -23,39 +22,27 @@ class ResultsGeneratorTest extends TestCase
     /**
      * @var string[]
      */
-    private $sorting;
+    private array $sorting;
 
-    /**
-     * @var int
-     */
-    private $pageSize;
-
-    /**
-     * @var ResultsGenerator
-     */
-    private $generator;
+    private ResultsGenerator $generator;
 
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
-    /**
-     * @var string
-     */
-    private $query;
+    private string $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->searchService = $this->createMock(SearchServiceInterface::class);
 
         $this->sorting = ['created' => 'asc'];
-        $this->pageSize = 2;
 
         $this->generator = new ResultsGenerator(
             $this->searchService,
             $this->sorting,
-            $this->pageSize
+            2
         );
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -78,16 +65,14 @@ class ResultsGeneratorTest extends TestCase
             ->with($givenQuery, 1, 0)
             ->willReturn(
                 new Results(
-                    OfferIdentifierCollection::fromArray(
-                        [
-                            new IriOfferIdentifier(
-                                Url::fromNative('http://io.uitdatabank.dev/event/0d325df2-da0a-4d4e-957f-60220c2f9baf'),
-                                '0d325df2-da0a-4d4e-957f-60220c2f9baf',
-                                OfferType::event()
-                            ),
-                        ]
+                    new ItemIdentifiers(
+                        new ItemIdentifier(
+                            new Url('http://io.uitdatabank.dev/event/0d325df2-da0a-4d4e-957f-60220c2f9baf'),
+                            '0d325df2-da0a-4d4e-957f-60220c2f9baf',
+                            ItemType::event()
+                        )
                     ),
-                    new Integer($expectedCount)
+                    $expectedCount
                 )
             );
 
@@ -99,7 +84,7 @@ class ResultsGeneratorTest extends TestCase
     /**
      * @test
      */
-    public function it_has_configurable_sorting_and_page_size_with_default_values()
+    public function it_has_configurable_sorting_and_page_size_with_default_values(): void
     {
         $generator = new ResultsGenerator($this->searchService);
 
@@ -132,11 +117,11 @@ class ResultsGeneratorTest extends TestCase
      *   All expected logs in a single array.
      */
     public function it_loops_over_all_pages_and_yields_each_unique_result_while_logging_duplicates(
-        $givenPageSize,
-        $givenPages,
-        $expectedResults,
-        $expectedLogs = []
-    ) {
+        int $givenPageSize,
+        array $givenPages,
+        array $expectedResults,
+        array $expectedLogs = []
+    ): void {
         $currentPage = 0;
         $totalPages = count($givenPages);
         $totalResults = count($expectedResults);
@@ -171,8 +156,8 @@ class ResultsGeneratorTest extends TestCase
                     $currentPage++;
 
                     return new Results(
-                        OfferIdentifierCollection::fromArray($pageResults),
-                        new Integer($totalResults)
+                        new ItemIdentifiers(...$pageResults),
+                        $totalResults
                     );
                 }
             );
@@ -197,51 +182,49 @@ class ResultsGeneratorTest extends TestCase
         $this->assertEquals($expectedLogs, $actualLogs);
     }
 
-    /**
-     * @return array
-     */
-    public function pagedResultsDataProvider()
+
+    public function pagedResultsDataProvider(): array
     {
-        $event1 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/1'),
+        $event1 = new ItemIdentifier(
+            new Url('http://du.de/event/1'),
             '1',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event2 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/2'),
+        $event2 = new ItemIdentifier(
+            new Url('http://du.de/event/2'),
             '2',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event3 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/3'),
+        $event3 = new ItemIdentifier(
+            new Url('http://du.de/event/3'),
             '3',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event4 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/4'),
+        $event4 = new ItemIdentifier(
+            new Url('http://du.de/event/4'),
             '4',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event5 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/5'),
+        $event5 = new ItemIdentifier(
+            new Url('http://du.de/event/5'),
             '5',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event6 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/6'),
+        $event6 = new ItemIdentifier(
+            new Url('http://du.de/event/6'),
             '6',
-            OfferType::event()
+            ItemType::event()
         );
 
-        $event7 = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/7'),
+        $event7 = new ItemIdentifier(
+            new Url('http://du.de/event/7'),
             '7',
-            OfferType::event()
+            ItemType::event()
         );
 
         return [

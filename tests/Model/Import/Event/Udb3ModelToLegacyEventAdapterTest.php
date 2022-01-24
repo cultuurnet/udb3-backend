@@ -30,29 +30,13 @@ use PHPUnit\Framework\TestCase;
 
 class Udb3ModelToLegacyEventAdapterTest extends TestCase
 {
-    /**
-     * @var ImmutableEvent
-     */
-    private $event;
+    private Udb3ModelToLegacyEventAdapter $adapter;
 
-    /**
-     * @var ImmutableEvent
-     */
-    private $completeEvent;
+    private Udb3ModelToLegacyEventAdapter $completeAdapter;
 
-    /**
-     * @var Udb3ModelToLegacyEventAdapter
-     */
-    private $adapter;
-
-    /**
-     * @var Udb3ModelToLegacyEventAdapter
-     */
-    private $completeAdapter;
-
-    public function setUp()
+    public function setUp(): void
     {
-        $this->event = new ImmutableEvent(
+        $event = new ImmutableEvent(
             new UUID('91060c19-a860-4a47-8591-8a779bfa520a'),
             new Language('nl'),
             (new TranslatedTitle(new Language('nl'), new Title('Voorbeeld titel')))
@@ -97,7 +81,7 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
             )
         );
 
-        $this->completeEvent = $this->event
+        $completeEvent = $event
             ->withAudienceType(
                 AudienceType::members()
             )
@@ -105,14 +89,14 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
                 \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00')
             );
 
-        $this->adapter = new Udb3ModelToLegacyEventAdapter($this->event);
-        $this->completeAdapter = new Udb3ModelToLegacyEventAdapter($this->completeEvent);
+        $this->adapter = new Udb3ModelToLegacyEventAdapter($event);
+        $this->completeAdapter = new Udb3ModelToLegacyEventAdapter($completeEvent);
     }
 
     /**
      * @test
      */
-    public function it_should_return_the_embedded_location()
+    public function it_should_return_the_embedded_location(): void
     {
         $expected = new LocationId('6ba87a6b-efea-4467-9e87-458d145384d9');
         $actual = $this->adapter->getLocation();
@@ -122,9 +106,9 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_audience_type_everyone_by_default()
+    public function it_should_return_audience_type_everyone_by_default(): void
     {
-        $expected = \CultuurNet\UDB3\Event\ValueObjects\AudienceType::EVERYONE();
+        $expected = AudienceType::everyone();
         $actual = $this->adapter->getAudienceType();
         $this->assertEquals($expected, $actual);
     }
@@ -132,9 +116,9 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_audience_type_that_was_set()
+    public function it_should_return_the_audience_type_that_was_set(): void
     {
-        $expected = \CultuurNet\UDB3\Event\ValueObjects\AudienceType::MEMBERS();
+        $expected = AudienceType::members();
         $actual = $this->completeAdapter->getAudienceType();
         $this->assertEquals($expected, $actual);
     }

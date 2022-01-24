@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 
+use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -28,17 +30,17 @@ class BookingInfoDataValidator implements DataValidatorInterface
         $availabilityFormatError = 'Invalid format. Expected ISO-8601 (eg. 2018-01-01T00:00:00+01:00).';
 
         if (isset($bookingInfo['availabilityStarts'])) {
-            $dateTime = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $bookingInfo['availabilityStarts']);
-
-            if (!$dateTime) {
+            try {
+                DateTimeFactory::fromISO8601($bookingInfo['availabilityStarts']);
+            } catch (DateTimeInvalid $e) {
                 $messages['bookingInfo.availabilityStarts'] = $availabilityFormatError;
             }
         }
 
         if (isset($bookingInfo['availabilityEnds'])) {
-            $dateTime = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $bookingInfo['availabilityEnds']);
-
-            if (!$dateTime) {
+            try {
+                DateTimeFactory::fromISO8601($bookingInfo['availabilityEnds']);
+            } catch (DateTimeInvalid $e) {
                 $messages['bookingInfo.availabilityEnds'] = $availabilityFormatError;
             }
         }

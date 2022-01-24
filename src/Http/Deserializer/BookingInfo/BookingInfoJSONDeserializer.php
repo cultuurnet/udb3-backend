@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
@@ -47,18 +48,12 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
 
         $availabilityStarts = null;
         if (isset($bookingInfo['availabilityStarts'])) {
-            $availabilityStarts = \DateTimeImmutable::createFromFormat(
-                \DATE_ATOM,
-                $bookingInfo['availabilityStarts']
-            );
+            $availabilityStarts = DateTimeFactory::fromISO8601($bookingInfo['availabilityStarts']);
         }
 
         $availabilityEnds = null;
         if (isset($bookingInfo['availabilityEnds'])) {
-            $availabilityEnds = \DateTimeImmutable::createFromFormat(
-                \DATE_ATOM,
-                $bookingInfo['availabilityEnds']
-            );
+            $availabilityEnds = DateTimeFactory::fromISO8601($bookingInfo['availabilityEnds']);
         }
 
         $bookingInfo = new BookingInfo(

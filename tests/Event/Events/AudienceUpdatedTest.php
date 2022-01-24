@@ -5,39 +5,23 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use PHPUnit\Framework\TestCase;
 
 class AudienceUpdatedTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $itemId;
+    private string $itemId;
 
-    /**
-     * @var AudienceType
-     */
-    private $audienceType;
+    private Audience $audience;
 
-    /**
-     * @var Audience
-     */
-    private $audience;
+    private AudienceUpdated $audienceUpdated;
 
-    /**
-     * @var AudienceUpdated
-     */
-    private $audienceUpdated;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->itemId = '6eaaa9b6-d0d2-11e6-bf26-cec0c932ce01';
 
-        $this->audienceType = AudienceType::MEMBERS();
-
         $this->audience = new Audience(
-            $this->audienceType
+            AudienceType::members()
         );
 
         $this->audienceUpdated = new AudienceUpdated(
@@ -49,7 +33,7 @@ class AudienceUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_should_identify_the_updated_event_by_item_id()
+    public function it_should_identify_the_updated_event_by_item_id(): void
     {
         $this->assertEquals('6eaaa9b6-d0d2-11e6-bf26-cec0c932ce01', $this->audienceUpdated->getItemId());
     }
@@ -57,7 +41,7 @@ class AudienceUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_audience()
+    public function it_stores_an_audience(): void
     {
         $this->assertEquals(
             $this->audience,
@@ -68,7 +52,7 @@ class AudienceUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize_to_an_array()
+    public function it_can_serialize_to_an_array(): void
     {
         $this->assertEquals(
             [
@@ -82,7 +66,7 @@ class AudienceUpdatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_from_an_array()
+    public function it_can_deserialize_from_an_array(): void
     {
         $audienceUpdated = AudienceUpdated::deserialize(
             [

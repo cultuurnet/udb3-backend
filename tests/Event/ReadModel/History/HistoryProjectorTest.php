@@ -60,13 +60,13 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -95,17 +95,11 @@ class HistoryProjectorTest extends TestCase
 
     private const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
-    /**
-     * @var HistoryProjector
-     */
-    protected $historyProjector;
+    protected HistoryProjector $historyProjector;
 
-    /**
-     * @var DocumentRepository
-     */
-    protected $documentRepository;
+    protected DocumentRepository $documentRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
@@ -132,11 +126,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
     }
 
-    /**
-     * @param string $eventId
-     * @return string
-     */
-    protected function getEventCdbXml($eventId)
+    protected function getEventCdbXml(string $eventId): string
     {
         return file_get_contents(__DIR__ . '/event-' . $eventId . '.xml');
     }
@@ -144,7 +134,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_EventImportedFromUDB2()
+    public function it_logs_EventImportedFromUDB2(): void
     {
         $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
@@ -198,7 +188,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_EventUpdatedFromUDB2()
+    public function it_logs_EventUpdatedFromUDB2(): void
     {
         $eventUpdated = new EventUpdatedFromUDB2(
             self::EVENT_ID_1,
@@ -272,7 +262,7 @@ class HistoryProjectorTest extends TestCase
      * @test
      * @dataProvider metadataProvider
      */
-    public function it_logs_creating_an_event(Metadata $metadata, array $expectedKeys)
+    public function it_logs_creating_an_event(Metadata $metadata, array $expectedKeys): void
     {
         $eventId = 'f2b227c5-4756-49f6-a25d-8286b6a2351f';
 
@@ -315,7 +305,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_copying_an_event()
+    public function it_logs_copying_an_event(): void
     {
         $eventId = 'f2b227c5-4756-49f6-a25d-8286b6a2351f';
         $originalEventId = '1fd05542-ce0b-4ed1-ad17-cf5a0f316da4';
@@ -353,7 +343,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_titleTranslated()
+    public function it_logs_titleTranslated(): void
     {
         $titleTranslated = new TitleTranslated(
             self::EVENT_ID_1,
@@ -388,7 +378,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_descriptionTranslated()
+    public function it_logs_descriptionTranslated(): void
     {
         $descriptionTranslated = new DescriptionTranslated(
             self::EVENT_ID_1,
@@ -423,7 +413,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_eventWasTagged()
+    public function it_logs_eventWasTagged(): void
     {
         $eventWasTagged = new LabelAdded(
             self::EVENT_ID_1,
@@ -457,7 +447,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_tagErased()
+    public function it_logs_tagErased(): void
     {
         $tagErased = new LabelRemoved(
             self::EVENT_ID_1,
@@ -522,7 +512,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_audience_updated(): void
     {
-        $event = new AudienceUpdated(self::EVENT_ID_1, new Audience(AudienceType::EDUCATION()));
+        $event = new AudienceUpdated(self::EVENT_ID_1, new Audience(AudienceType::education()));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),

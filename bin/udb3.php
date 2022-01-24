@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodeEventCommand;
+use CultuurNet\UDB3\Silex\Console\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
@@ -96,6 +97,7 @@ $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['even
 $consoleApp->add(new PurgeModelCommand($app['dbal_connection']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES], $app['place_jsonld_repository']));
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS], $app['event_jsonld_repository']));
+$consoleApp->add(new GeocodeOrganizerCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_ORGANIZERS], $app['organizer_jsonld_repository']));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));

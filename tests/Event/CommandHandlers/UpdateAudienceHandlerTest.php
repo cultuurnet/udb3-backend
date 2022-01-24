@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\Event\ValueObjects\AudienceType as LegacyAudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -41,7 +40,7 @@ class UpdateAudienceHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($eventId)
             ->given([$this->getEventCreated($eventId)])
             ->when(new UpdateAudience($eventId, AudienceType::education()))
-            ->then([new AudienceUpdated($eventId, new Audience(LegacyAudienceType::EDUCATION()))]);
+            ->then([new AudienceUpdated($eventId, new Audience(AudienceType::education()))]);
     }
 
     private function getEventCreated(string $id): EventCreated
