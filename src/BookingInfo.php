@@ -139,12 +139,12 @@ final class BookingInfo implements JsonLdSerializableInterface
 
         $availabilityStarts = null;
         if ($data['availabilityStarts']) {
-            $availabilityStarts = DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availabilityStarts']);
+            $availabilityStarts = DateTimeFactory::fromISO8601($data['availabilityStarts']);
         }
 
         $availabilityEnds = null;
         if ($data['availabilityEnds']) {
-            $availabilityEnds = DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availabilityEnds']);
+            $availabilityEnds = DateTimeFactory::fromISO8601($data['availabilityEnds']);
         }
 
         $urlLabel = null;

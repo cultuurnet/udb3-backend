@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\Offer;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
@@ -328,7 +329,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     protected function denormalizeAvailableFrom(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['availableFrom'])) {
-            $availableFrom = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availableFrom']);
+            $availableFrom = DateTimeFactory::fromISO8601($data['availableFrom']);
             $offer = $offer->withAvailableFrom($availableFrom);
         }
 

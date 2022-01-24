@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Contact;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\TranslatedWebsiteLabelDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -71,12 +72,12 @@ class BookingInfoDenormalizer implements DenormalizerInterface
 
         $starts = null;
         if (isset($data['availabilityStarts'])) {
-            $starts = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availabilityStarts']);
+            $starts = DateTimeFactory::fromISO8601($data['availabilityStarts']);
         }
 
         $ends = null;
         if (isset($data['availabilityEnds'])) {
-            $ends = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availabilityEnds']);
+            $ends = DateTimeFactory::fromISO8601($data['availabilityEnds']);
         }
 
         if ($starts || $ends) {
