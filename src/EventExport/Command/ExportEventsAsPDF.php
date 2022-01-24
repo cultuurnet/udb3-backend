@@ -49,6 +49,8 @@ class ExportEventsAsPDF implements ExportEventsInterface
         $this->query = $query;
         $this->title = $title;
         $this->template = $template->toString();
+
+        $this->address = null;
         $this->selection = null;
         $this->subtitle = null;
         $this->footer = null;
