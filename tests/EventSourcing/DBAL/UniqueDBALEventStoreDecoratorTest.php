@@ -121,7 +121,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
         } catch (\Exception $e) {
             $this->assertInstanceOf(UniqueConstraintException::class, $e);
             $this->assertEquals(
-                'Not unique: uuid = ' . self::ID . ', unique value = ' . self::UNIQUE_VALUE,
+                'Not unique: uuid = ' . self::ID . ', duplicate value = ' . self::UNIQUE_VALUE,
                 $e->getMessage()
             );
 
