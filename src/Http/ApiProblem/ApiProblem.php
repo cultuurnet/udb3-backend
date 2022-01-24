@@ -371,13 +371,13 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function organizerUrlAlreadyInUse(string $originalUrl, string $normalized): self
+    public static function duplicateUrl(string $originalUrl, string $normalized): self
     {
         return self::create(
-            'https://api.publiq.be/probs/uitdatabank/organizer-url-already-in-use',
-            'URL already in use by another organizer',
+            'https://api.publiq.be/probs/uitdatabank/duplicate-url',
+            'Duplicate URL',
             400,
-            'The url ' . $originalUrl . ' (normalized to ' . $normalized . ') is already in use by a another organizer. Use GET /organizers?url=... to find duplicate organizer URLs programmatically.'
+            'The url ' . $originalUrl . ' (normalized to ' . $normalized . ') is already in use.'
         );
     }
 }

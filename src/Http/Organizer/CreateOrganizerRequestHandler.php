@@ -73,7 +73,7 @@ final class CreateOrganizerRequestHandler implements RequestHandlerInterface
             // Note that in reality the organizer should always have a URL in this request handler, but in other cases
             // it can be null so we need to handle a theoretical null pointer exception here.
             $originalUrl = $organizer->getUrl() ? $organizer->getUrl()->toString() : '';
-            throw ApiProblem::organizerUrlAlreadyInUse($originalUrl, $e->getDuplicateValue());
+            throw ApiProblem::duplicateUrl($originalUrl, $e->getDuplicateValue());
         }
 
         $commands = [];
