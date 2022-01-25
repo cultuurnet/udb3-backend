@@ -33,6 +33,9 @@ use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+/**
+ * @deprecated Should be moved to new PSR-15 request parser for importing places (cfr ImportOrganizerRequestHandler)
+ */
 class PlaceDocumentImporter implements DocumentImporterInterface
 {
     private Repository $aggregateRepository;

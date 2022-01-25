@@ -23,6 +23,10 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer as OrganizerAggregate;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+/**
+ * @deprecated Logic should be moved to ImportOrganizerRequestHandler
+ * @see https://jira.uitdatabank.be/browse/III-4405
+ */
 class OrganizerDocumentImporter implements DocumentImporterInterface
 {
     private Repository $aggregateRepository;

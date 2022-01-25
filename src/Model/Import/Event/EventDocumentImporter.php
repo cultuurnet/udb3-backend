@@ -38,6 +38,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+/**
+ * @deprecated Should be moved to new PSR-15 request parser for importing events (cfr ImportOrganizerRequestHandler)
+ */
 class EventDocumentImporter implements DocumentImporterInterface
 {
     private Repository $aggregateRepository;
