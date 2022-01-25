@@ -19,6 +19,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @deprecated Replace with PSR-15 implementations cfr ImportOrganizerRequestHandler
+ */
 class ImportRestController
 {
     private ApiKeyReaderInterface $apiKeyReader;
