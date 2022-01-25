@@ -22,7 +22,14 @@ final class IdPropertyPolyfillRequestBodyParser implements RequestBodyParser
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $data = $request->getParsedBody();
-        $data->{'@id'} = $this->iri;
+
+        if (is_array($data)) {
+            $data['@id'] = $this->iri;
+        }
+        if (is_object($data)) {
+            $data->{'@id'} = $this->iri;
+        }
+
         return $request->withParsedBody($data);
     }
 }
