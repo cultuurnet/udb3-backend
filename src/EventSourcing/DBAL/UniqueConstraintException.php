@@ -6,14 +6,16 @@ namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 class UniqueConstraintException extends \Exception
 {
-    /**
-     * UniqueConstraintException constructor.
-     * @param string $uuid
-     * @param string $unique
-     */
-    public function __construct($uuid, $unique)
+    private string $duplicateValue;
+
+    public function __construct(string $uuid, string $duplicateValue)
     {
-        $message = 'Not unique: uuid = ' . $uuid . ', unique value = ' . $unique;
-        parent::__construct($message);
+        parent::__construct('Not unique: uuid = ' . $uuid . ', duplicate value = ' . $duplicateValue);
+        $this->duplicateValue = $duplicateValue;
+    }
+
+    public function getDuplicateValue(): string
+    {
+        return $this->duplicateValue;
     }
 }

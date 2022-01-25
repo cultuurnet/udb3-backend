@@ -27,7 +27,6 @@ class EventEditingServiceProvider implements ServiceProviderInterface
         $app['event_editor'] = $app->share(
             function ($app) {
                 return new EventEditingService(
-                    $app['event_service'],
                     $app['event_command_bus'],
                     new Version4Generator(),
                     $app['event_jsonld_repository'],

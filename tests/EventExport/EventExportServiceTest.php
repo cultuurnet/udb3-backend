@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Event\EventNotFoundException;
-use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -34,9 +36,11 @@ final class EventExportServiceTest extends TestCase
     private EventExportService $eventExportService;
 
     /**
-     * @var EventServiceInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
-    private $eventService;
+    private $eventRepository;
+
+    private ItemIdentifierFactory $itemIdentifierFactory;
 
     /**
      * @var SearchServiceInterface|MockObject
@@ -72,8 +76,10 @@ final class EventExportServiceTest extends TestCase
     public function setUp(): void
     {
         $this->publicDirectory = vfsStream::setup('exampleDir');
-        $this->eventService = $this->createMock(EventServiceInterface::class);
-
+        $this->eventRepository = $this->createMock(DocumentRepository::class);
+        $this->itemIdentifierFactory = new ItemIdentifierFactory(
+            'http://example\.com/(?<itemType>[event]+)/(?<itemId>[0-9]+)'
+        );
         $this->searchService = $this->createMock(SearchServiceInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
@@ -81,7 +87,8 @@ final class EventExportServiceTest extends TestCase
         $this->resultsGenerator = $this->createMock(ResultsGeneratorInterface::class);
 
         $this->eventExportService = new EventExportService(
-            $this->eventService,
+            $this->eventRepository,
+            $this->itemIdentifierFactory,
             $this->searchService,
             $this->uuidGenerator,
             $this->publicDirectory->url(),
@@ -148,24 +155,26 @@ final class EventExportServiceTest extends TestCase
             );
     }
 
-
     private function setUpEventService(array $unavailableEventIds = []): void
     {
-        $this->eventService->expects($this->any())
-            ->method('getEvent')
+        $this->eventRepository->expects($this->any())
+            ->method('fetch')
             ->willReturnCallback(
                 function ($eventId) use ($unavailableEventIds) {
                     if (in_array($eventId, $unavailableEventIds)) {
-                        throw new EventNotFoundException(
-                            "Event with cdbid {$eventId} could not be found via Entry API."
+                        throw new DocumentDoesNotExist(
+                            "Event with cdbid $eventId could not be found via Entry API."
                         );
                     }
 
-                    return Json::encode([
-                        '@id' => $eventId,
-                        '@type' => 'event',
-                        'foo' => 'bar',
-                    ]);
+                    return new JsonDocument(
+                        $eventId,
+                        Json::encode([
+                            '@id' => 'http://example.com/event/' . $eventId,
+                            '@type' => 'event',
+                            'foo' => 'bar',
+                        ])
+                    );
                 }
             );
 
@@ -364,7 +373,7 @@ final class EventExportServiceTest extends TestCase
     {
         $newResults = [];
         foreach ($results as $offerId => $result) {
-            if (in_array($result['@id'], $without)) {
+            if (in_array($offerId, $without)) {
                 continue;
             }
 
@@ -379,18 +388,15 @@ final class EventExportServiceTest extends TestCase
      */
     public function it_ignores_items_that_can_not_be_found_by_the_event_service(): void
     {
-        $unavailableEventIds = [
-            'http://example.com/event/3',
-            'http://example.com/event/6',
-            'http://example.com/event/17',
-        ];
+        $unavailableEventIds = [3, 6, 17];
+
         $expectedDetails = $this->searchResultsWithout(
             $this->searchResultsDetails,
             $unavailableEventIds
         );
 
         foreach ($unavailableEventIds as $unavailableEventId) {
-            $this->assertArrayNotHasKey($unavailableEventId, $expectedDetails);
+            $this->assertNotContains($unavailableEventId, $expectedDetails);
         }
 
         $this->setUpEventService($unavailableEventIds);
@@ -430,11 +436,7 @@ final class EventExportServiceTest extends TestCase
         $query,
         $selection
     ): void {
-        $unavailableEventIds = [
-            'http://example.com/event/4',
-            'http://example.com/event/7',
-            'http://example.com/event/16',
-        ];
+        $unavailableEventIds = [4, 7, 16];
 
         $this->setUpEventService($unavailableEventIds);
 
@@ -443,7 +445,7 @@ final class EventExportServiceTest extends TestCase
 
         $logger = $this->createMock(LoggerInterface::class);
         $expectedLogContextCallback = function ($context) {
-            return $context['exception'] instanceof EventNotFoundException;
+            return $context['exception'] instanceof DocumentDoesNotExist;
         };
 
         $logger
@@ -451,15 +453,15 @@ final class EventExportServiceTest extends TestCase
             ->method('error')
             ->withConsecutive(
                 [
-                    $this->equalTo('Event with cdbid http://example.com/event/4 could not be found via Entry API.'),
+                    $this->equalTo('Event with cdbid 4 could not be found via Entry API.'),
                     $this->callback($expectedLogContextCallback),
                 ],
                 [
-                    $this->equalTo('Event with cdbid http://example.com/event/7 could not be found via Entry API.'),
+                    $this->equalTo('Event with cdbid 7 could not be found via Entry API.'),
                     $this->callback($expectedLogContextCallback),
                 ],
                 [
-                    $this->equalTo('Event with cdbid http://example.com/event/16 could not be found via Entry API.'),
+                    $this->equalTo('Event with cdbid 16 could not be found via Entry API.'),
                     $this->callback($expectedLogContextCallback),
                 ]
             );
@@ -478,17 +480,11 @@ final class EventExportServiceTest extends TestCase
      */
     public function it_throws_exception_if_number_of_items_for_query_is_greater_than_allowed(): void
     {
-        $query = new EventExportQuery('city:Leuven');
-        $logger = $this->createMock(LoggerInterface::class);
-
-
-        /** @var FileFormatInterface|MockObject $fileFormat */
-        $fileFormat = $this->createMock(FileFormatInterface::class);
-
         $this->expectException(MaximumNumberOfExportItemsExceeded::class);
 
         $this->eventExportService = new EventExportService(
-            $this->eventService,
+            $this->eventRepository,
+            $this->itemIdentifierFactory,
             $this->searchService,
             $this->uuidGenerator,
             $this->publicDirectory->url(),
@@ -499,10 +495,10 @@ final class EventExportServiceTest extends TestCase
         );
 
         $this->eventExportService->exportEvents(
-            $fileFormat,
-            $query,
+            $this->createMock(FileFormatInterface::class),
+            new EventExportQuery('city:Leuven'),
             null,
-            $logger
+            $this->createMock(LoggerInterface::class)
         );
     }
 

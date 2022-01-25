@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Event\EventNotFoundException;
-use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Generator;
@@ -22,7 +24,9 @@ use ValueObjects\Web\EmailAddress;
 
 final class EventExportService implements EventExportServiceInterface
 {
-    private EventServiceInterface $eventService;
+    private DocumentRepository $eventRepository;
+
+    private ItemIdentifierFactory $itemIdentifierFactory;
 
     private SearchServiceInterface $searchService;
 
@@ -39,7 +43,8 @@ final class EventExportService implements EventExportServiceInterface
     private int $maxAmountOfItems;
 
     public function __construct(
-        EventServiceInterface $eventService,
+        DocumentRepository $eventRepository,
+        ItemIdentifierFactory $itemIdentifierFactory,
         SearchServiceInterface $searchService,
         UuidGeneratorInterface $uuidGenerator,
         string $publicDirectory,
@@ -48,7 +53,8 @@ final class EventExportService implements EventExportServiceInterface
         ResultsGeneratorInterface $resultsGenerator,
         int $maxAmountOfItems
     ) {
-        $this->eventService = $eventService;
+        $this->eventRepository = $eventRepository;
+        $this->itemIdentifierFactory = $itemIdentifierFactory;
         $this->searchService = $searchService;
         $this->uuidGenerator = $uuidGenerator;
         $this->publicDirectory = $publicDirectory;
@@ -192,7 +198,10 @@ final class EventExportService implements EventExportServiceInterface
     private function getEventsAsJSONLD(array $eventIris, LoggerInterface $logger): Generator
     {
         foreach ($eventIris as $eventIri) {
-            $event = $this->getEventAsJSONLD($eventIri, $logger);
+            $event = $this->getEventAsJSONLD(
+                $this->itemIdentifierFactory->fromUrl(new Url($eventIri)),
+                $logger
+            );
 
             if ($event) {
                 yield $eventIri => $event;
@@ -200,16 +209,15 @@ final class EventExportService implements EventExportServiceInterface
         }
     }
 
-    private function getEventAsJSONLD(string $iri, LoggerInterface $logger): ?string
+    private function getEventAsJSONLD(ItemIdentifier $itemIdentifier, LoggerInterface $logger): ?string
     {
         try {
-            /* @var string|null $event */
-            $event = $this->eventService->getEvent($iri);
-        } catch (EventNotFoundException $e) {
+            $event = $this->eventRepository->fetch($itemIdentifier->getId())->getRawBody();
+        } catch (DocumentDoesNotExist $e) {
             $logger->error(
                 $e->getMessage(),
                 [
-                    'eventId' => $iri,
+                    'eventId' => $itemIdentifier->getId(),
                     'exception' => $e,
                 ]
             );
@@ -227,7 +235,7 @@ final class EventExportService implements EventExportServiceInterface
         $count = 0;
         foreach ($events as $eventIdentifier) {
             /** @var ItemIdentifier $eventIdentifier */
-            $event = $this->getEventAsJSONLD($eventIdentifier->getUrl()->toString(), $logger);
+            $event = $this->getEventAsJSONLD($eventIdentifier, $logger);
 
             if ($event) {
                 $count++;

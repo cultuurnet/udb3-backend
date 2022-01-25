@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -17,18 +18,14 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use ValueObjects\Web\Url;
 
-class RelatedEventLDProjectorTest extends TestCase
+final class RelatedEventLDProjectorTest extends TestCase
 {
-    /**
-     * @var DomainMessageBuilder
-     */
-    protected $domainMessageBuilder;
-    /**
-     * @var InMemoryDocumentRepository
-     */
-    private $documentRepository;
+    private DomainMessageBuilder $domainMessageBuilder;
+
+    private InMemoryDocumentRepository $documentRepository;
 
     /**
      * @var OrganizerService|MockObject
@@ -36,9 +33,9 @@ class RelatedEventLDProjectorTest extends TestCase
     private $organizerService;
 
     /**
-     * @var EventServiceInterface|MockObject
+     * @var RepositoryInterface|MockObject
      */
-    private $eventService;
+    private $relationsRepository;
 
     /**
      * @var LocalPlaceService|MockObject
@@ -50,21 +47,18 @@ class RelatedEventLDProjectorTest extends TestCase
      */
     private $iriOfferIdentifierFactory;
 
-    /**
-     * @var RelatedEventLDProjector
-     */
-    private $projector;
+    private RelatedEventLDProjector $projector;
 
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->documentRepository = new InMemoryDocumentRepository();
 
         $this->organizerService = $this->createMock(OrganizerService::class);
 
-        $this->eventService = $this->createMock(EventServiceInterface::class);
+        $this->relationsRepository = $this->createMock(RepositoryInterface::class);
 
         $this->placeService = $this->createMock(LocalPlaceService::class);
 
@@ -72,7 +66,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $this->projector = new RelatedEventLDProjector(
             $this->documentRepository,
-            $this->eventService,
+            $this->relationsRepository,
             $this->placeService,
             $this->organizerService,
             $this->iriOfferIdentifierFactory
@@ -85,7 +79,7 @@ class RelatedEventLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_embeds_the_projection_of_a_place_in_all_events_located_at_that_place()
+    public function it_embeds_the_projection_of_a_place_in_all_events_located_at_that_place(): void
     {
         $eventID = '468';
         $secondEventID = '579';
@@ -104,9 +98,9 @@ class RelatedEventLDProjectorTest extends TestCase
             ->with($placeIri)
             ->willReturn($placeIdentifier);
 
-        $this->eventService
+        $this->relationsRepository
             ->expects($this->once())
-            ->method('eventsLocatedAtPlace')
+            ->method('getEventsLocatedAtPlace')
             ->with($placeID)
             ->willReturn(
                 [
@@ -115,7 +109,7 @@ class RelatedEventLDProjectorTest extends TestCase
                 ]
             );
 
-        $placeJSONLD = json_encode(
+        $placeJSONLD = Json::encode(
             [
                 'name' => 't,arsenaal mechelen',
                 'address' => [
@@ -135,7 +129,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $initialEventDocument = new JsonDocument(
             $eventID,
-            json_encode([
+            Json::encode([
                 'labels' => ['test 1', 'test 2'],
                 'modified' => '2018-09-23T17:51:06+00:00',
             ])
@@ -143,7 +137,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $initialSecondEventDocument = new JsonDocument(
             $secondEventID,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Quicksand Valley',
                 ],
@@ -211,16 +205,16 @@ class RelatedEventLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_embeds_the_projection_of_an_organizer_in_all_related_events()
+    public function it_embeds_the_projection_of_an_organizer_in_all_related_events(): void
     {
         $eventID = '468';
         $secondEventID = '579';
 
         $organizerId = '101214';
 
-        $this->eventService
+        $this->relationsRepository
             ->expects($this->once())
-            ->method('eventsOrganizedByOrganizer')
+            ->method('getEventsOrganizedByOrganizer')
             ->with($organizerId)
             ->willReturn(
                 [
@@ -229,7 +223,7 @@ class RelatedEventLDProjectorTest extends TestCase
                 ]
             );
 
-        $organizerJSONLD = json_encode(
+        $organizerJSONLD = Json::encode(
             [
                 'name' => 'stichting tegen Kanker',
                 'email' => [
@@ -246,7 +240,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $initialEventDocument = new JsonDocument(
             $eventID,
-            json_encode([
+            Json::encode([
                 'labels' => ['beweging', 'kanker'],
                 'modified' => '2018-09-23T17:51:06+00:00',
             ])
@@ -254,7 +248,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $initialSecondEventDocument = new JsonDocument(
             $secondEventID,
-            json_encode([
+            Json::encode([
                 'name' => [
                     'nl' => 'Rekanto - TaiQi',
                     'fr' => 'Raviva - TaiQi',
@@ -315,13 +309,8 @@ class RelatedEventLDProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param string $id
-     * @return \stdClass
-     */
-    protected function getBody($id)
+    private function getBody(string $id): stdClass
     {
-        $document = $this->documentRepository->fetch($id);
-        return $document->getBody();
+        return $this->documentRepository->fetch($id)->getBody();
     }
 }

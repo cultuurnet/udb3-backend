@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\OrganizerService;
@@ -16,45 +17,29 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Web\Url;
 
-class RelatedEventLDProjector implements EventListener
+final class RelatedEventLDProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $repository;
+    private DocumentRepository $repository;
 
-    /**
-     * @var LocalPlaceService
-     */
-    protected $placeService;
+    private LocalPlaceService $placeService;
 
-    /**
-     * @var OrganizerService
-     */
-    protected $organizerService;
+    private OrganizerService $organizerService;
 
-    /**
-     * @var EventServiceInterface
-     */
-    protected $eventService;
+    private RepositoryInterface $relationsRepository;
 
-    /**
-     * @var IriOfferIdentifierFactoryInterface
-     */
-    protected $iriOfferIdentifierFactory;
-
+    private IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory;
 
     public function __construct(
         DocumentRepository $repository,
-        EventServiceInterface $eventService,
+        RepositoryInterface $relationsRepository,
         LocalPlaceService $placeService,
         OrganizerService $organizerService,
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
     ) {
         $this->repository = $repository;
-        $this->eventService = $eventService;
+        $this->relationsRepository = $relationsRepository;
         $this->placeService = $placeService;
         $this->organizerService = $organizerService;
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
@@ -62,8 +47,8 @@ class RelatedEventLDProjector implements EventListener
 
     protected function applyOrganizerProjectedToJSONLD(
         OrganizerProjectedToJSONLD $organizerProjectedToJSONLD
-    ) {
-        $eventIds = $this->eventService->eventsOrganizedByOrganizer(
+    ): void {
+        $eventIds = $this->relationsRepository->getEventsOrganizedByOrganizer(
             $organizerProjectedToJSONLD->getId()
         );
 
@@ -71,7 +56,7 @@ class RelatedEventLDProjector implements EventListener
             $organizerProjectedToJSONLD->getId()
         );
 
-        $organizerJSONLD = json_decode($organizer);
+        $organizerJSONLD = Json::decode($organizer);
 
         foreach ($eventIds as $eventId) {
             $this->updateEmbeddedOrganizer($eventId, $organizerJSONLD);
@@ -80,26 +65,26 @@ class RelatedEventLDProjector implements EventListener
 
     protected function applyPlaceProjectedToJSONLD(
         PlaceProjectedToJSONLD $placeProjectedToJSONLD
-    ) {
+    ): void {
         $identifier = $this->iriOfferIdentifierFactory->fromIri(
             Url::fromNative($placeProjectedToJSONLD->getIri())
         );
 
-        $eventsLocatedAtPlace = $this->eventService->eventsLocatedAtPlace(
+        $eventsLocatedAtPlace = $this->relationsRepository->getEventsLocatedAtPlace(
             $placeProjectedToJSONLD->getItemId()
         );
 
         $placeJSONLDString = $this->placeService->getEntity(
             $identifier->getId()
         );
-        $placeJSONLD = json_decode($placeJSONLDString);
+        $placeJSONLD = Json::decode($placeJSONLDString);
 
         foreach ($eventsLocatedAtPlace as $eventId) {
             $this->updatedEmbeddedLocation($eventId, $placeJSONLD);
         }
     }
 
-    private function updateEmbeddedOrganizer($eventId, $organizerJSONLD)
+    private function updateEmbeddedOrganizer($eventId, $organizerJSONLD): void
     {
         $this->updateJSONLD(
             $eventId,
@@ -109,7 +94,7 @@ class RelatedEventLDProjector implements EventListener
         );
     }
 
-    private function updatedEmbeddedLocation($eventId, $placeJSONLD)
+    private function updatedEmbeddedLocation($eventId, $placeJSONLD): void
     {
         $this->updateJSONLD(
             $eventId,
@@ -119,7 +104,7 @@ class RelatedEventLDProjector implements EventListener
         );
     }
 
-    private function updateJSONLD($eventId, $callback)
+    private function updateJSONLD($eventId, $callback): void
     {
         try {
             $document = $this->repository->fetch($eventId);
