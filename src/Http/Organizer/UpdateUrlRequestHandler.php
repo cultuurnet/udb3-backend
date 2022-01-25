@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -38,9 +40,16 @@ final class UpdateUrlRequestHandler implements RequestHandlerInterface
             )
         );
 
-        $updateTitle = $requestBodyParser->parse($request)->getParsedBody();
+        /** @var UpdateWebsite $updateWebsite */
+        $updateWebsite = $requestBodyParser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch($updateTitle);
+        try {
+            $this->commandBus->dispatch($updateWebsite);
+        } catch (UniqueConstraintException $e) {
+            // Saving the organizer to the event store can trigger a UniqueConstraintException if the URL is already in
+            // use by another organizer. This is intended but we need to return a prettier error for API integrators.
+            throw ApiProblem::duplicateUrl($updateWebsite->getWebsite()->toString(), $e->getDuplicateValue());
+        }
 
         return new NoContentResponse();
     }

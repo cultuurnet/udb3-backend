@@ -370,4 +370,14 @@ final class ApiProblem extends Exception
             'The id ' . $id . ' is already in use by a resource of a different type.'
         );
     }
+
+    public static function duplicateUrl(string $originalUrl, string $normalized): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/duplicate-url',
+            'Duplicate URL',
+            400,
+            'The url ' . $originalUrl . ' (normalized to ' . $normalized . ') is already in use.'
+        );
+    }
 }
