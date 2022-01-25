@@ -19,25 +19,13 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
-class EventEditingService extends DefaultOfferEditingService implements EventEditingServiceInterface
+final class EventEditingService extends DefaultOfferEditingService implements EventEditingServiceInterface
 {
-    /**
-     * @var EventServiceInterface
-     */
-    protected $eventService;
+    private Repository $writeRepository;
 
-    /**
-     * @var Repository
-     */
-    protected $writeRepository;
-
-    /**
-     * @var PlaceRepository
-     */
-    private $placeRepository;
+    private PlaceRepository $placeRepository;
 
     public function __construct(
-        EventServiceInterface $eventService,
         CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
@@ -51,14 +39,10 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
             $readRepository,
             $commandFactory
         );
-        $this->eventService = $eventService;
         $this->writeRepository = $writeRepository;
         $this->placeRepository = $placeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createEvent(
         Language $mainLanguage,
         Title $title,
@@ -66,7 +50,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
         LocationId $location,
         Calendar $calendar,
         $theme = null
-    ) {
+    ): string {
         $eventId = $this->uuidGenerator->generate();
 
         try {
@@ -91,9 +75,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
         return $eventId;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function createApprovedEvent(
         Language $mainLanguage,
         Title $title,
@@ -101,7 +82,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
         LocationId $location,
         Calendar $calendar,
         Theme $theme = null
-    ) {
+    ): string {
         $eventId = $this->uuidGenerator->generate();
 
         try {
@@ -120,7 +101,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
             $theme
         );
 
-        $publicationDate = $this->publicationDate ? $this->publicationDate : new \DateTimeImmutable();
+        $publicationDate = $this->publicationDate ?: new \DateTimeImmutable();
         $event->publish($publicationDate);
         $event->approve();
 
