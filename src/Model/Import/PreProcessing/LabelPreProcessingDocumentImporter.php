@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
- * @deprecated Should become a RequestBodyParser implementation
+ * @deprecated Use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser instead.
  */
 class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
 {
