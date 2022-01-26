@@ -9,6 +9,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
@@ -26,15 +27,18 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
     private DocumentImporterInterface $documentImporter;
     private UuidGeneratorInterface $uuidGenerator;
     private IriGeneratorInterface $iriGenerator;
+    private RequestBodyParser $importPreProcessingRequestBodyParser;
 
     public function __construct(
         DocumentImporterInterface $documentImporter,
         UuidGeneratorInterface $uuidGenerator,
-        IriGeneratorInterface $iriGenerator
+        IriGeneratorInterface $iriGenerator,
+        RequestBodyParser $importPreProcessingRequestBodyParser
     ) {
         $this->documentImporter = $documentImporter;
         $this->uuidGenerator = $uuidGenerator;
         $this->iriGenerator = $iriGenerator;
+        $this->importPreProcessingRequestBodyParser = $importPreProcessingRequestBodyParser;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -51,6 +55,7 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         /** @var array $data */
         $data = RequestBodyParserFactory::createBaseParser(
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $organizerId),
+            $this->importPreProcessingRequestBodyParser,
             new AssociativeArrayRequestBodyParser()
         )->parse($request)->getParsedBody();
 

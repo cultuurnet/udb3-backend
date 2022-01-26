@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Import;
 
+use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportRestController;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -44,7 +47,13 @@ class ImportControllerProvider implements ControllerProviderInterface
             fn (Application $app) => new ImportOrganizerRequestHandler(
                 $app['organizer_importer'],
                 $app['uuid_generator'],
-                $app['organizer_iri_generator']
+                $app['organizer_iri_generator'],
+                new CombinedRequestBodyParser(
+                    new ImportLabelVisibilityRequestBodyParser(
+                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    )
+                )
             )
         );
 
