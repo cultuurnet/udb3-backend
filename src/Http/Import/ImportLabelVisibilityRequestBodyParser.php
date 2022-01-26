@@ -89,8 +89,9 @@ final class ImportLabelVisibilityRequestBodyParser implements RequestBodyParser
             }
         }
 
-        $json->labels = array_values($json->labels);
-        $json->hiddenLabels = array_values($json->hiddenLabels);
+        // Remove any duplicates and make sure the labels are always arrays.
+        $json->labels = array_values(array_unique($json->labels));
+        $json->hiddenLabels = array_values(array_unique($json->hiddenLabels));
 
         if (empty($json->labels)) {
             unset($json->labels);

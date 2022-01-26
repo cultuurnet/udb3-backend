@@ -260,4 +260,47 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
 
         $this->assertEquals($expectedRequest, $actualRequest);
     }
+
+    /**
+     * @test
+     */
+    public function it_removes_duplicates_in_each_property_to_avoid_unnecessary_validation_errors(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withParsedBody(
+                (object) [
+                    '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+                    'labels' => [
+                        'foo',
+                        'foo',
+                    ],
+                    'hiddenLabels' => [
+                        'bar',
+                        'bar',
+                    ],
+                ]
+            )
+            ->build('POST');
+
+        $this->labelRelationsRepository->expects($this->once())
+            ->method('getLabelRelationsForItem')
+            ->with(new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'))
+            ->willReturn([]);
+
+        $expectedRequest = $request->withParsedBody(
+            (object) [
+                '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+                'labels' => [
+                    'foo',
+                ],
+                'hiddenLabels' => [
+                    'bar',
+                ],
+            ]
+        );
+
+        $actualRequest = $this->importLabelVisibilityRequestBodyParser->parse($request);
+
+        $this->assertEquals($expectedRequest, $actualRequest);
+    }
 }
