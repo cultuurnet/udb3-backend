@@ -28,6 +28,11 @@ final class Psr7RequestBuilder
 
     private array $routeParameters = [];
 
+    /**
+     * @var array|object|null
+     */
+    private $parsedBody = null;
+
     public function withUriFromString(string $uri): self
     {
         $c = clone $this;
@@ -66,6 +71,16 @@ final class Psr7RequestBuilder
         return $c;
     }
 
+    /**
+     * @param array|object $parsedBody
+     */
+    public function withParsedBody($parsedBody): self
+    {
+        $c = clone $this;
+        $c->parsedBody = $parsedBody;
+        return $c;
+    }
+
     public function withRouteParameter(string $parameterName, string $parameterValue): self
     {
         $c = clone $this;
@@ -84,7 +99,9 @@ final class Psr7RequestBuilder
                 [],
                 $this->body ?? self::getStreamFactory()->createStream()
             )
-        )->withAttribute('_route_params', $this->routeParameters);
+        )
+            ->withAttribute('_route_params', $this->routeParameters)
+            ->withParsedBody($this->parsedBody);
     }
 
     private static function getUriFactory(): UriFactory
