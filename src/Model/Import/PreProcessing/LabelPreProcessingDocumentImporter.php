@@ -13,6 +13,9 @@ use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated Should become a RequestBodyParser implementation
+ */
 class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
 {
     /**

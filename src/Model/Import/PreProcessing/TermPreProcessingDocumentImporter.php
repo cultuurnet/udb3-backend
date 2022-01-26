@@ -10,6 +10,9 @@ use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 
+/**
+ * @deprecated Should become a RequestBodyParser implementation
+ */
 class TermPreProcessingDocumentImporter implements DocumentImporterInterface
 {
     /**

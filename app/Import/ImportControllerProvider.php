@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Import;
 
 use CultuurNet\UDB3\Http\Import\ImportRestController;
+use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -39,16 +40,12 @@ class ImportControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app['organizer_import_controller'] = $app->share(
-            function (Application $app) {
-                return new ImportRestController(
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['organizer_importer'],
-                    $app['uuid_generator'],
-                    $app['organizer_iri_generator']
-                );
-            }
+        $app[ImportOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new ImportOrganizerRequestHandler(
+                $app['organizer_importer'],
+                $app['uuid_generator'],
+                $app['organizer_iri_generator']
+            )
         );
 
         /* @var ControllerCollection $controllers */
@@ -60,8 +57,8 @@ class ImportControllerProvider implements ControllerProviderInterface
         $controllers->post('/places/', 'place_import_controller:importWithoutId');
         $controllers->put('/places/{cdbid}/', 'place_import_controller:importWithId');
 
-        $controllers->post('/organizers/', 'organizer_import_controller:importWithoutId');
-        $controllers->put('/organizers/{cdbid}/', 'organizer_import_controller:importWithId');
+        $controllers->post('/organizers/', ImportOrganizerRequestHandler::class);
+        $controllers->put('/organizers/{cdbid}/', ImportOrganizerRequestHandler::class);
 
         return $controllers;
     }
