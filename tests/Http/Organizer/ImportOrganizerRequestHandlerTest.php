@@ -8,6 +8,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
@@ -33,7 +34,8 @@ class ImportOrganizerRequestHandlerTest extends TestCase
         $this->importOrganizerRequestHandler = new ImportOrganizerRequestHandler(
             $this->documentImporter,
             $this->uuidGenerator,
-            new CallableIriGenerator(fn (string $id) => 'https://mock.uitdatabank.be/organizers/' . $id)
+            new CallableIriGenerator(fn (string $id) => 'https://mock.uitdatabank.be/organizers/' . $id),
+            new CombinedRequestBodyParser()
         );
     }
 
