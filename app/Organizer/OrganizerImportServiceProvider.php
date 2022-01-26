@@ -41,20 +41,12 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
 
         $app['organizer_importer'] = $app->share(
             function (Application $app) {
-                $organizerImporter = new OrganizerDocumentImporter(
+                return new OrganizerDocumentImporter(
                     $app['organizer_repository'],
                     $app['organizer_denormalizer'],
                     $app['imports_command_bus'],
                     $app['labels.labels_locked_for_import_repository']
                 );
-
-                $labelPreProcessor = new LabelPreProcessingDocumentImporter(
-                    $organizerImporter,
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
-                );
-
-                return $labelPreProcessor;
             }
         );
     }
