@@ -17,57 +17,7 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
 
     public function __construct(Organizer $organizer)
     {
-        if (is_null($organizer->getUrl())) {
-            throw new \InvalidArgumentException('Organizer URL required.');
-        }
-
         $this->organizer = $organizer;
-    }
-
-    public function getId(): string
-    {
-        return $this->organizer->getId()->toString();
-    }
-
-    public function getMainLanguage(): Language
-    {
-        return new Language(
-            $this->organizer->getMainLanguage()->toString()
-        );
-    }
-
-    public function getTitle(): Title
-    {
-        $translatedTitle = $this->organizer->getName();
-
-        return Title::fromUdb3ModelTitle(
-            $translatedTitle->getTranslation(
-                $translatedTitle->getOriginalLanguage()
-            )
-        );
-    }
-
-    public function getWebsite(): Url
-    {
-        return Url::fromNative($this->organizer->getUrl()->toString());
-    }
-
-    public function getAddress(): ?Address
-    {
-        $address = $this->organizer->getAddress();
-
-        if ($address) {
-            $address = $address->getTranslation($address->getOriginalLanguage());
-            return Address::fromUdb3ModelAddress($address);
-        }
-
-        return null;
-    }
-
-    public function getContactPoint(): ContactPoint
-    {
-        $contactPoint = $this->organizer->getContactPoint();
-        return ContactPoint::fromUdb3ModelContactPoint($contactPoint);
     }
 
     /**
@@ -87,29 +37,5 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
         }
 
         return $titles;
-    }
-
-    /**
-     * @return Address[]
-     *   Language code as key, and Address as value.
-     */
-    public function getAddressTranslations(): array
-    {
-        $addresses = [];
-
-        /* @var \CultuurNet\UDB3\Model\ValueObject\Translation\Language $language */
-        $translatedAddress = $this->organizer->getAddress();
-
-        if (!$translatedAddress) {
-            return [];
-        }
-
-        foreach ($translatedAddress->getLanguagesWithoutOriginal() as $language) {
-            $addresses[$language->toString()] = Address::fromUdb3ModelAddress(
-                $translatedAddress->getTranslation($language)
-            );
-        }
-
-        return $addresses;
     }
 }

@@ -12,27 +12,9 @@ use ValueObjects\Web\Url;
 
 interface LegacyOrganizer
 {
-    public function getId(): string;
-
-    public function getMainLanguage(): Language;
-
-    public function getTitle(): Title;
-
-    public function getWebsite(): Url;
-
-    public function getAddress(): ?Address;
-
-    public function getContactPoint(): ?ContactPoint;
-
     /**
      * @return Title[]
      *   Language code as key, and Title as value.
      */
     public function getTitleTranslations(): array;
-
-    /**
-     * @return Address[]
-     *   Language code as key, and Address as value.
-     */
-    public function getAddressTranslations(): array;
 }
