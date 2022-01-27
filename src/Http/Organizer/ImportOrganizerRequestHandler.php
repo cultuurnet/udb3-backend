@@ -88,8 +88,6 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser($this->organizerDenormalizer, Organizer::class)
         )->parse($request)->getParsedBody();
 
-        $adapter = new Udb3ModelToLegacyOrganizerAdapter($data);
-
         $mainLanguage = $data->getMainLanguage();
         $title = $data->getName()->getTranslation($data->getMainLanguage());
         $url = $data->getUrl();
