@@ -139,8 +139,10 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             $commands[] = new RemoveAddress($organizerId);
         }
 
-        foreach ($adapter->getTitleTranslations() as $language => $title) {
-            $commands[] = new UpdateTitle($organizerId, new Title($title->toNative()), new Language($language));
+        $translatedTitle = $data->getName();
+        foreach ($translatedTitle->getLanguagesWithoutOriginal() as $language) {
+            $title = $translatedTitle->getTranslation($language);
+            $commands[] = new UpdateTitle($organizerId, $title, $language);
         }
 
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($organizerId);
