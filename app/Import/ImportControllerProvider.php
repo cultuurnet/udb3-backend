@@ -67,7 +67,7 @@ class ImportControllerProvider implements ControllerProviderInterface
         $controllers->put('/places/{cdbid}/', 'place_import_controller:importWithId');
 
         $controllers->post('/organizers/', ImportOrganizerRequestHandler::class);
-        $controllers->put('/organizers/{cdbid}/', ImportOrganizerRequestHandler::class);
+        $controllers->put('/organizers/{organizerId}/', ImportOrganizerRequestHandler::class);
 
         return $controllers;
     }
