@@ -57,14 +57,10 @@ final class ImportLabelVisibilityRequestBodyParser implements RequestBodyParser
             $this->labelRelationsRepository->getLabelRelationsForItem(
                 new StringLiteral($id)
             ),
-            function (LabelRelation $labelRelation) {
-                return !$labelRelation->isImported();
-            }
+            fn (LabelRelation $labelRelation) => !$labelRelation->isImported()
         );
         $udb3Labels = array_map(
-            function (LabelRelation $labelRelation) {
-                return $labelRelation->getLabelName()->toNative();
-            },
+            fn (LabelRelation $labelRelation) => $labelRelation->getLabelName()->toNative(),
             $udb3LabelRelations
         );
 
