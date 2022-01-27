@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
-use CultuurNet\UDB3\Model\Import\Organizer\OrganizerDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Validation\Organizer\OrganizerImportValidator;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
@@ -35,17 +34,6 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
                 );
 
                 return new OrganizerDenormalizer($organizerValidatorFactory);
-            }
-        );
-
-        $app['organizer_importer'] = $app->share(
-            function (Application $app) {
-                return new OrganizerDocumentImporter(
-                    $app['organizer_repository'],
-                    $app['organizer_denormalizer'],
-                    $app['imports_command_bus'],
-                    $app['labels.labels_locked_for_import_repository']
-                );
             }
         );
     }
