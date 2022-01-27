@@ -21,8 +21,6 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Import\Organizer\Udb3ModelToLegacyOrganizerAdapter;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;

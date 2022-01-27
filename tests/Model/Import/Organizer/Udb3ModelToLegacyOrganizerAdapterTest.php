@@ -6,25 +6,12 @@ namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\Model\Import\Organizer\Udb3ModelToLegacyOrganizerAdapter;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
-use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
-use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
-use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
-use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class Udb3ModelToLegacyOrganizerAdapterTest extends TestCase
 {
