@@ -6,13 +6,12 @@ namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
-final class Hostname extends Domain
+final class Hostname
 {
     use IsString;
 
     public function __construct(string $value)
     {
-        parent::__construct($value);
         if (filter_var($value, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) === false) {
             throw new \InvalidArgumentException('Given string is not a valid hostname.');
         }

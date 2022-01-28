@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
-use CultuurNet\UDB3\Model\ValueObject\Web\Domain;
+use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -24,7 +24,7 @@ class CdbXmlProxy extends Proxy
      */
     public function __construct(
         StringLiteral $accept,
-        Domain $domain,
+        Hostname $hostname,
         PortNumber $port,
         DiactorosFactory $diactorosFactory,
         HttpFoundationFactory $httpFoundationFactory,
@@ -32,7 +32,7 @@ class CdbXmlProxy extends Proxy
     ) {
         $cdbXmlFilter = $this->createFilter($accept);
 
-        $requestTransformer = $this->createTransformer($domain, $port);
+        $requestTransformer = $this->createTransformer($hostname, $port);
 
         parent::__construct(
             $cdbXmlFilter,
@@ -58,10 +58,10 @@ class CdbXmlProxy extends Proxy
      * @return CombinedReplacer
      */
     private function createTransformer(
-        Domain $domain,
+        Hostname $hostname,
         PortNumber $port
     ) {
-        $domainReplacer = new DomainReplacer($domain);
+        $domainReplacer = new DomainReplacer($hostname);
 
         $portReplacer = new PortReplacer($port);
 

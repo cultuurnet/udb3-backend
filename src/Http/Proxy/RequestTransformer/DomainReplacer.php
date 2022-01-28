@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
-use CultuurNet\UDB3\Model\ValueObject\Web\Domain;
+use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use Psr\Http\Message\RequestInterface;
 
 class DomainReplacer implements RequestTransformerInterface
 {
-    /**
-     * @var Domain
-     */
-    private $domain;
+    private Hostname $hostname;
 
-    public function __construct(Domain $domain)
+    public function __construct(Hostname $hostname)
     {
-        $this->domain = $domain;
+        $this->hostname = $hostname;
     }
 
     /**
@@ -25,7 +22,7 @@ class DomainReplacer implements RequestTransformerInterface
     public function transform(RequestInterface $request)
     {
         return $request->withUri(
-            $request->getUri()->withHost($this->domain->toString())
+            $request->getUri()->withHost($this->hostname->toString())
         );
     }
 }
