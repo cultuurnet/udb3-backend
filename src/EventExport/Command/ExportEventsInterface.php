@@ -9,11 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 interface ExportEventsInterface
 {
-    /**
-     * @return EventExportQuery The query.
-     */
     public function getQuery(): EventExportQuery;
-
 
     public function getAddress(): ?EmailAddress;
 

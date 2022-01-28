@@ -18,7 +18,7 @@ abstract class ExportEvents implements ExportEventsInterface
     private $query;
 
     /**
-     * @var null|EmailAddress
+     * @var ?EmailAddress
      */
     private $address;
 
