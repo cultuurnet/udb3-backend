@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Validation\Organizer;
 
-use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Geography\TranslatedAddressValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\HasMainLanguageRule;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
-use Respect\Validation\Rules\Key;
 use Respect\Validation\Rules\Url;
 use Respect\Validation\Validator;
 
