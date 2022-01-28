@@ -88,7 +88,7 @@ class OpeningTime
     public function sameValueAs(OpeningTime $time)
     {
         return $this->getHour()->sameAs($time->getHour()) &&
-            $this->getMinute()->sameValueAs($time->getMinute());
+            $this->getMinute()->sameAs($time->getMinute());
     }
 
     /**
@@ -105,7 +105,7 @@ class OpeningTime
     private function toNativeDateTime()
     {
         $hour   = $this->getHour()->toInteger();
-        $minute = $this->getMinute()->toNative();
+        $minute = $this->getMinute()->toInteger();
 
         $time = new \DateTime('now');
         $time->setTime($hour, $minute);
