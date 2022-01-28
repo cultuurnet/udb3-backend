@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
 class OpeningHourTest extends TestCase

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
-use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
 /**

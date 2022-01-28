@@ -29,13 +29,13 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
 class CalendarTest extends TestCase

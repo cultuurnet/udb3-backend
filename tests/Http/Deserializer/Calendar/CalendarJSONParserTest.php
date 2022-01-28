@@ -12,11 +12,11 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Timestamp;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
 class CalendarJSONParserTest extends TestCase
