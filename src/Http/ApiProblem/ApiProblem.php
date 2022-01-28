@@ -380,4 +380,14 @@ final class ApiProblem extends Exception
             'The url ' . $originalUrl . ' (normalized to ' . $normalized . ') is already in use.'
         );
     }
+
+    public static function labelNotAllowed(string $labelName): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/label-not-allowed',
+            'Label not allowed',
+            403,
+            'The label "' . $labelName .  '" is reserved and you do not have sufficient permissions to use it.'
+        );
+    }
 }
