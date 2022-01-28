@@ -73,7 +73,7 @@ class DefaultMessageFactory implements MessageFactoryInterface
             'text/plain'
         );
 
-        $message->addTo((string) $address);
+        $message->addTo($address->toString());
 
         $message->setSender($this->senderAddress, $this->senderName);
         $message->setFrom($this->senderAddress, $this->senderName);

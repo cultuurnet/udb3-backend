@@ -30,7 +30,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolver
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        return $this->fetchUser('email:"' . urlencode($email->toNative()) . '"');
+        return $this->fetchUser('email:"' . urlencode($email->toString()) . '"');
     }
 
     public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
