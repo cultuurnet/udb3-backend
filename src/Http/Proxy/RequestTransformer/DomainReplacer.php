@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Domain;
 use Psr\Http\Message\RequestInterface;
-use ValueObjects\Web\Domain;
 
 class DomainReplacer implements RequestTransformerInterface
 {
@@ -25,7 +25,7 @@ class DomainReplacer implements RequestTransformerInterface
     public function transform(RequestInterface $request)
     {
         return $request->withUri(
-            $request->getUri()->withHost($this->domain->toNative())
+            $request->getUri()->withHost($this->domain->toString())
         );
     }
 }
