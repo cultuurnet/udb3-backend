@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportRestController;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
+use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -46,7 +47,7 @@ class ImportControllerProvider implements ControllerProviderInterface
         $app[ImportOrganizerRequestHandler::class] = $app->share(
             fn (Application $app) => new ImportOrganizerRequestHandler(
                 $app['organizer_repository'],
-                $app['organizer_denormalizer'],
+                new OrganizerDenormalizer(),
                 $app['imports_command_bus'],
                 $app['labels.labels_locked_for_import_repository'],
                 $app['uuid_generator'],
