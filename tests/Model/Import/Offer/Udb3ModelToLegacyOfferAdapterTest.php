@@ -308,8 +308,8 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     public function it_should_return_an_age_range_if_there_is_one()
     {
         $expected = new \CultuurNet\UDB3\Offer\AgeRange(
-            new \ValueObjects\Person\Age(8),
-            new \ValueObjects\Person\Age(12)
+            new Age(8),
+            new Age(12)
         );
         $actual = $this->completeAdapter->getAgeRange();
         $this->assertEquals($expected, $actual);
