@@ -36,7 +36,6 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
             $data->mainLanguage === ''
         ) {
             // Will be caught by JSON schema validation.
-            var_dump('no mainLanguage for some reason');
             return $request;
         }
 
