@@ -26,16 +26,8 @@ class OrganizerValidator extends Validator
         // by UiTdatabank, because older organizers were created without url.
         // However, url is required to create new organizers.
         $rules = [
-            new Key('@id', new OrganizerIDValidator(), true),
-            new Key('mainLanguage', new LanguageValidator(), true),
-            new Key('name', new TranslatedStringValidator('name'), true),
             new HasMainLanguageRule('name'),
-            new Key('url', new Url(), $urlRequired),
-            new Key('address', new TranslatedAddressValidator(), false),
             new HasMainLanguageRule('address'),
-            new Key('labels', new LabelsValidator(), false),
-            new Key('hiddenLabels', new LabelsValidator(), false),
-            new Key('contactPoint', new ContactPointValidator(), false),
         ];
 
         $rules = array_merge($rules, $extraRules);
