@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportRestController;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
-use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ControllerCollection;

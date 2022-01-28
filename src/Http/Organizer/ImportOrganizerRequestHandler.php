@@ -36,7 +36,6 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 {
