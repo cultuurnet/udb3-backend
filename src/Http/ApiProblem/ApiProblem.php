@@ -31,6 +31,7 @@ final class ApiProblem extends Exception
     private ?string $detail;
     private array $schemaErrors = [];
     private array $debugInfo = [];
+    private array $extraProperties = [];
 
     /**
      * @deprecated
@@ -77,6 +78,13 @@ final class ApiProblem extends Exception
         $problem->code = $status;
 
         return $problem;
+    }
+
+    private function withExtraProperties(array $extraProperties): self
+    {
+        $c = clone $this;
+        $c->extraProperties = $extraProperties;
+        return $c;
     }
 
     public function getType(): string
@@ -139,6 +147,10 @@ final class ApiProblem extends Exception
                 ],
                 $this->schemaErrors
             );
+        }
+
+        if (count($this->extraProperties) > 0) {
+            $json = array_merge($this->extraProperties, $json);
         }
 
         /** @deprecated Remove once withValidationMessages() is removed. */
@@ -383,11 +395,11 @@ final class ApiProblem extends Exception
 
     public static function labelNotAllowed(string $labelName): self
     {
-        return self::create(
+        return (self::create(
             'https://api.publiq.be/probs/uitdatabank/label-not-allowed',
             'Label not allowed',
             403,
             'The label "' . $labelName .  '" is reserved and you do not have sufficient permissions to use it.'
-        );
+        ))->withExtraProperties(['label' => $labelName]);
     }
 }
