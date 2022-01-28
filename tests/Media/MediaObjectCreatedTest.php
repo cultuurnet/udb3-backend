@@ -8,10 +8,10 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class MediaObjectCreatedTest extends TestCase
 {
@@ -60,7 +60,7 @@ class MediaObjectCreatedTest extends TestCase
                     new MIMEType('image/png'),
                     new StringLiteral('The Gleaners'),
                     new CopyrightHolder('Jean-François Millet'),
-                    Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                    new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
                     new Language('en')
                 ),
             ],
@@ -85,7 +85,7 @@ class MediaObjectCreatedTest extends TestCase
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('nl')
         );
 
@@ -110,7 +110,7 @@ class MediaObjectCreatedTest extends TestCase
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
             new CopyrightHolder('J_'),
-            Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('nl')
         );
 

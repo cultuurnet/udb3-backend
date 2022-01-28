@@ -12,10 +12,10 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
-use ValueObjects\Web\Url;
 
 class MediaImporterTest extends TestCase
 {
@@ -62,7 +62,7 @@ class MediaImporterTest extends TestCase
                     MIMEType::fromNative('image/jpeg'),
                     new Description('no description'),
                     new CopyrightHolder('Zelf gemaakt'),
-                    Url::fromNative('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
+                    new Url('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
                     new Language('nl')
                 ),
             ]));
@@ -75,7 +75,7 @@ class MediaImporterTest extends TestCase
                 MIMEType::fromNative('image/jpeg'),
                 new Description('no description'),
                 new CopyrightHolder('Zelf gemaakt'),
-                Url::fromNative('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
+                new Url('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
                 new Language('nl')
             );
 

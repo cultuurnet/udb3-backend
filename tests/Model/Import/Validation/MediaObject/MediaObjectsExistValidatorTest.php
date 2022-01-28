@@ -10,12 +10,12 @@ use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class MediaObjectsExistValidatorTest extends TestCase
 {
@@ -100,7 +100,7 @@ class MediaObjectsExistValidatorTest extends TestCase
                             new MIMEType('image/png'),
                             new StringLiteral('The Gleaners'),
                             new CopyrightHolder('Jean-François Millet'),
-                            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
                             new Language('en')
                         );
                     }

@@ -9,9 +9,9 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 /**
  * MediaObjects for UDB3.

@@ -11,9 +11,9 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
-use ValueObjects\Web\Url;
 
 class ImageCollectionFactoryTest extends TestCase
 {
@@ -27,7 +27,7 @@ class ImageCollectionFactoryTest extends TestCase
             MIMEType::fromNative('image/jpeg'),
             new Description('Ruime Activiteit'),
             new CopyrightHolder('Zelf gemaakt'),
-            Url::fromNative('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
+            new Url('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
             new Language('nl')
         );
         $imageweb = new Image(
@@ -35,7 +35,7 @@ class ImageCollectionFactoryTest extends TestCase
             MIMEType::fromNative('application/octet-stream'),
             new Description('Ruime Activiteit'),
             new CopyrightHolder('KWB'),
-            Url::fromNative('http://testfilm.uitdatabank.be/images/20160531/kwbeensgezind.jpg'),
+            new Url('http://testfilm.uitdatabank.be/images/20160531/kwbeensgezind.jpg'),
             new Language('nl')
         );
         $expectedImages = (ImageCollection::fromArray([$photo, $imageweb]));
@@ -61,7 +61,7 @@ class ImageCollectionFactoryTest extends TestCase
             MIMEType::fromNative('image/jpeg'),
             new Description('KARBIDO ENSEMBLE - The Table (7+)'),
             new CopyrightHolder('Karbido Ensemble'),
-            Url::fromNative('http://media.uitdatabank.be/20140418/edb05b66-611b-4829-b8f6-bb31c285ec89.jpg'),
+            new Url('http://media.uitdatabank.be/20140418/edb05b66-611b-4829-b8f6-bb31c285ec89.jpg'),
             new Language('nl')
         );
         $expectedImages = (new ImageCollection())->withMain($image);
@@ -87,7 +87,7 @@ class ImageCollectionFactoryTest extends TestCase
             MIMEType::fromNative('image/jpeg'),
             new Description('Ruime Activiteit'),
             new CopyrightHolder('Zelf gemaakt'),
-            Url::fromNative('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
+            new Url('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
             new Language('nl')
         );
         $expectedImages = (new ImageCollection())->with($image);
@@ -113,7 +113,7 @@ class ImageCollectionFactoryTest extends TestCase
             MIMEType::fromNative('image/jpeg'),
             new Description('RB'),
             new CopyrightHolder('faire soi-même'),
-            Url::fromNative('http://85.255.197.172/images/20140108/1554d6f6-bed1-4303-8d42-3fcec4601e0d.jpg'),
+            new Url('http://85.255.197.172/images/20140108/1554d6f6-bed1-4303-8d42-3fcec4601e0d.jpg'),
             new Language('fr')
         );
         $expectedImages = (new ImageCollection())->with($image);
@@ -141,7 +141,7 @@ class ImageCollectionFactoryTest extends TestCase
             MIMEType::fromNative('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('my dog'),
-            Url::fromNative('http://udb-silex.dev/web/media/edb05b66-611b-4829-b8f6-bb31c285ec89.jpg'),
+            new Url('http://udb-silex.dev/web/media/edb05b66-611b-4829-b8f6-bb31c285ec89.jpg'),
             new Language('nl')
         );
         $expectedImages = (new ImageCollection())->withMain($image);

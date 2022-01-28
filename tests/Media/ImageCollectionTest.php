@@ -8,9 +8,9 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
-use ValueObjects\Web\Url;
 
 class ImageCollectionTest extends TestCase
 {
@@ -24,7 +24,7 @@ class ImageCollectionTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Henk'),
-            Url::fromNative('http://du.de/images/henk_032.jpg'),
+            new Url('http://du.de/images/henk_032.jpg'),
             new Language('en')
         );
         $images = (new ImageCollection())->withMain($mainImage);
@@ -42,7 +42,7 @@ class ImageCollectionTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Henk'),
-            Url::fromNative('http://du.de/images/henk_032.jpg'),
+            new Url('http://du.de/images/henk_032.jpg'),
             new Language('en')
         );
         $images = (new ImageCollection())->with($image);
@@ -70,7 +70,7 @@ class ImageCollectionTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Henk'),
-            Url::fromNative('http://du.de/images/henk_032.jpg'),
+            new Url('http://du.de/images/henk_032.jpg'),
             new Language('en')
         );
 
@@ -79,7 +79,7 @@ class ImageCollectionTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new Description('world biggest cat'),
             new CopyrightHolder('Doggy Junier'),
-            Url::fromNative('http://www.cats.com/biggest.jpeg'),
+            new Url('http://www.cats.com/biggest.jpeg'),
             new Language('en')
         );
 

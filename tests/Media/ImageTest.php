@@ -8,9 +8,9 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
-use ValueObjects\Web\Url;
 
 class ImageTest extends TestCase
 {
@@ -24,7 +24,7 @@ class ImageTest extends TestCase
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
@@ -60,7 +60,7 @@ class ImageTest extends TestCase
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
@@ -88,7 +88,7 @@ class ImageTest extends TestCase
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('1_'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
@@ -113,7 +113,7 @@ class ImageTest extends TestCase
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('nl')
         );
 

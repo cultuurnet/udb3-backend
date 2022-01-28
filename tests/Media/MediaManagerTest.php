@@ -12,12 +12,12 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class MediaManagerTest extends TestCase
 {
@@ -146,7 +146,7 @@ class MediaManagerTest extends TestCase
         $fileType = new MIMEType('image/png');
         $description = new Description('The Gleaners');
         $copyrightHolder = new CopyrightHolder('Jean-François Millet');
-        $location = Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+        $location = new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
         $language = new Language('en');
 
         $mediaObject = MediaObject::create(
