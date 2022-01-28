@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Command;
 
 use CultuurNet\UDB3\EventExport\EventExportQuery;
-use ValueObjects\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
  * @deprecated

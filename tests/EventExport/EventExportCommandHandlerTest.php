@@ -12,10 +12,10 @@ use CultuurNet\UDB3\EventExport\Format\HTML\PDF\PDFWebArchiveFileFormat;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\EventExport\Format\JSONLD\JSONLDFileFormat;
 use CultuurNet\UDB3\EventExport\Format\TabularData\OOXML\OOXMLFileFormat;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Web\EmailAddress;
 
 class EventExportCommandHandlerTest extends TestCase
 {

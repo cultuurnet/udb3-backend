@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTID;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -11,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class CdbXmlCreatedByToUserIdResolverTest extends TestCase
 {

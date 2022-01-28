@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -27,7 +28,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Traversable;
-use ValueObjects\Web\EmailAddress;
 
 final class EventExportServiceTest extends TestCase
 {
