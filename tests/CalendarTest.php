@@ -1629,12 +1629,12 @@ class CalendarTest extends TestCase
                     Day::tuesday()
                 ),
                 new Time(
-                    new Udb3ModelHour(8),
-                    new Udb3ModelMinute(0)
+                    new Hour(8),
+                    new Minute(0)
                 ),
                 new Time(
-                    new Udb3ModelHour(12),
-                    new Udb3ModelMinute(59)
+                    new Hour(12),
+                    new Minute(59)
                 )
             ),
             new Udb3ModelOpeningHour(
@@ -1642,12 +1642,12 @@ class CalendarTest extends TestCase
                     Day::saturday()
                 ),
                 new Time(
-                    new Udb3ModelHour(10),
-                    new Udb3ModelMinute(0)
+                    new Hour(10),
+                    new Minute(0)
                 ),
                 new Time(
-                    new Udb3ModelHour(14),
-                    new Udb3ModelMinute(0)
+                    new Hour(14),
+                    new Minute(0)
                 )
             )
         );
@@ -1716,12 +1716,12 @@ class CalendarTest extends TestCase
                     Day::tuesday()
                 ),
                 new Time(
-                    new Udb3ModelHour(8),
-                    new Udb3ModelMinute(0)
+                    new Hour(8),
+                    new Minute(0)
                 ),
                 new Time(
-                    new Udb3ModelHour(12),
-                    new Udb3ModelMinute(59)
+                    new Hour(12),
+                    new Minute(59)
                 )
             ),
             new Udb3ModelOpeningHour(
@@ -1729,12 +1729,12 @@ class CalendarTest extends TestCase
                     Day::saturday()
                 ),
                 new Time(
-                    new Udb3ModelHour(10),
-                    new Udb3ModelMinute(0)
+                    new Hour(10),
+                    new Minute(0)
                 ),
                 new Time(
-                    new Udb3ModelHour(14),
-                    new Udb3ModelMinute(0)
+                    new Hour(14),
+                    new Minute(0)
                 )
             )
         );
