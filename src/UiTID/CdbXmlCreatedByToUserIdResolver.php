@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTID;
 
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Exception;
@@ -12,7 +13,6 @@ use InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -40,7 +40,7 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
             // If the createdby is a UUID, return it immediately.
             UUID::fromNative($createdByIdentifier->toNative());
             return $createdByIdentifier;
-        } catch (InvalidNativeArgumentException $exception) {
+        } catch (InvalidArgumentException $exception) {
             $this->logger->info(
                 'The provided createdByIdentifier ' . $createdByIdentifier->toNative() . ' is not a UUID.',
                 [
@@ -61,7 +61,7 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
             try {
                 $email = new EmailAddress($createdByIdentifier->toNative());
                 $user = $this->users->getUserByEmail($email);
-            } catch (InvalidNativeArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 $user = $this->users->getUserByNick($createdByIdentifier);
             }
             if ($user instanceof UserIdentityDetails) {

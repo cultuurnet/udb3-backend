@@ -40,7 +40,7 @@ class UserIdentityController
         $emailAddressString = $request->getAttribute('emailAddress', '');
         try {
             $emailAddress = new EmailAddress($emailAddressString);
-        } catch (InvalidNativeArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw ApiProblem::invalidEmailAddress($emailAddressString);
         }
 
