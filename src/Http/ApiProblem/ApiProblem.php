@@ -397,7 +397,7 @@ final class ApiProblem extends Exception
             'https://api.publiq.be/probs/uitdatabank/label-not-allowed',
             'Label not allowed',
             403,
-            'The label "' . $labelName .  '" is reserved and you do not have sufficient permissions to use it.'
+            'The label "' . $labelName . '" is reserved and you do not have sufficient permissions to use it.'
         );
         $e->setExtraProperties(['label' => $labelName]);
         return $e;

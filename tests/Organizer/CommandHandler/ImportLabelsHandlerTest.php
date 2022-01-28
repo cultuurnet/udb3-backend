@@ -147,7 +147,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->organizerCreated($id),
-                    new LabelAdded($id, 'not_allowed')
+                    new LabelAdded($id, 'not_allowed'),
                 ]
             )
             ->when(
@@ -167,7 +167,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                             new Label(new LabelName('allowed'))
                         )
                     ),
-                    new LabelAdded($id, 'allowed')
+                    new LabelAdded($id, 'allowed'),
                 ]
             );
     }
