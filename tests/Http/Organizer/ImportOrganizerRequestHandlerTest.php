@@ -325,6 +325,16 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/name', 'The data (string) must match the type: object'),
                 ],
             ],
+            'name_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['fr' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/name', 'A value in the mainLanguage (nl) is required.'),
+                ],
+            ],
             'name_empty' => [
                 'given' => [
                     'mainLanguage' => 'nl',
@@ -344,6 +354,24 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                 ],
                 'schemaErrors' => [
                     new SchemaError('/address', 'The data (string) must match the type: object'),
+                ],
+            ],
+            'address_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'address' => [
+                        'fr' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => 'Leuven',
+                            'postalCode' => '3000',
+                            'streetAddress' => 'Mockstraat 1',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/address', 'A value in the mainLanguage (nl) is required.'),
                 ],
             ],
             'address_properties_missing' => [
