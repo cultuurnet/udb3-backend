@@ -12,9 +12,8 @@ class OrganizerValidator extends Validator
 {
     /**
      * @param Validator[] $extraRules
-     * @param bool $urlRequired
      */
-    public function __construct(array $extraRules = [], $urlRequired = false)
+    public function __construct(array $extraRules = [])
     {
         // Note that url is NOT required when validating Organizer JSON returned
         // by UiTdatabank, because older organizers were created without url.

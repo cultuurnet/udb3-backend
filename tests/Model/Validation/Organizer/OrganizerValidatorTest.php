@@ -40,25 +40,6 @@ class OrganizerValidatorTest extends ValidatorTestCase
     /**
      * @test
      */
-    public function it_should_pass_if_url_is_required_and_present()
-    {
-        $validator = new OrganizerValidator([], true);
-
-        $organizer = [
-            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Publiq vzw',
-            ],
-            'url' => 'https://www.google.com',
-        ];
-
-        $this->assertTrue($validator->validate($organizer));
-    }
-
-    /**
-     * @test
-     */
     public function it_should_pass_if_url_is_a_valid_url()
     {
         $organizer = [

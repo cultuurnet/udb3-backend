@@ -12,15 +12,11 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 
 class OrganizerImportValidator extends OrganizerValidator
 {
-    /**
-     * @param bool $urlRequired
-     */
     public function __construct(
         UUIDParser $uuidParser,
         string $userId,
         LabelsRepository $labelsRepository,
-        LabelRelationsRepository $labelRelationsRepository,
-        $urlRequired = false
+        LabelRelationsRepository $labelRelationsRepository
     ) {
         $extraRules = [
             new DocumentLabelPermissionRule(
@@ -31,6 +27,6 @@ class OrganizerImportValidator extends OrganizerValidator
             ),
         ];
 
-        parent::__construct($extraRules, $urlRequired);
+        parent::__construct($extraRules);
     }
 }

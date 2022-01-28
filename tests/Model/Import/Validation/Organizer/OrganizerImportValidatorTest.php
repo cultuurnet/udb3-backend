@@ -46,8 +46,7 @@ class OrganizerImportValidatorTest extends TestCase
             $this->uuidParser,
             'user_id',
             $this->labelsRepository,
-            $this->labelRelationsRepository,
-            true
+            $this->labelRelationsRepository
         );
 
         $this->assertInstanceOf(OrganizerValidator::class, $organizerDocumentValidator);

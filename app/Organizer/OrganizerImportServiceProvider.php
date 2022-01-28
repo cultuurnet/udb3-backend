@@ -24,8 +24,7 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
                     new OrganizerIDParser(),
                     $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY],
-                    true
+                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
                 );
 
                 return new OrganizerDenormalizer($organizerValidatorFactory);
