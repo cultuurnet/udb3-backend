@@ -17,8 +17,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour as Udb3ModelHour;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute as Udb3ModelMinute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
@@ -29,14 +29,12 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailabilityType;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\DateTime\Minute;
 
 class CalendarTest extends TestCase
 {
