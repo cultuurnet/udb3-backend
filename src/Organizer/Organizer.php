@@ -401,6 +401,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
+    public function getLabels(): Labels
+    {
+        return $this->labels;
+    }
+
     public function addLabel(Label $label): void
     {
         $labelName = new LabelName($label->getName()->toString());
