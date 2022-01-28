@@ -6,12 +6,7 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\JsonPointer;
-use Opis\JsonSchema\Parsers\SchemaParser;
-use Opis\JsonSchema\SchemaLoader;
-use Opis\JsonSchema\Validator;
-use Opis\Uri\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
