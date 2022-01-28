@@ -61,8 +61,8 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
                 return new ImportLabelsHandler(
                     $app['organizer_repository'],
                     $app['labels.constraint_aware_service'],
-                    $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app['current_user_id']
                 );
             }
         );
