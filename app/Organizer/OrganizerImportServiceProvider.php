@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex\Organizer;
 use CultuurNet\UDB3\Model\Import\Validation\Organizer\OrganizerImportValidator;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
-use CultuurNet\UDB3\Organizer\DBALWebsiteLookupService;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -22,10 +21,6 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
         $app['organizer_denormalizer'] = $app->share(
             function (Application $app) {
                 $organizerValidatorFactory = new OrganizerImportValidator(
-                    new DBALWebsiteLookupService(
-                        $app['dbal_connection'],
-                        'organizer_unique_websites'
-                    ),
                     new OrganizerIDParser(),
                     $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],

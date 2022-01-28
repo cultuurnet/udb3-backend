@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
-use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -18,11 +17,6 @@ class OrganizerImportValidatorTest extends TestCase
      * @var UUIDParser|MockObject
      */
     private $uuidParser;
-
-    /**
-     * @var WebsiteLookupServiceInterface|MockObject
-     */
-    private $websiteLookupService;
 
     /**
      * @var LabelsRepository|MockObject
@@ -38,8 +32,6 @@ class OrganizerImportValidatorTest extends TestCase
     {
         $this->uuidParser = $this->createMock(UUIDParser::class);
 
-        $this->websiteLookupService = $this->createMock(WebsiteLookupServiceInterface::class);
-
         $this->labelsRepository = $this->createMock(LabelsRepository::class);
 
         $this->labelRelationsRepository = $this->createMock(LabelRelationsRepository::class);
@@ -51,7 +43,6 @@ class OrganizerImportValidatorTest extends TestCase
     public function it_creates_organizer_validator_for_document()
     {
         $organizerDocumentValidator = new OrganizerImportValidator(
-            $this->websiteLookupService,
             $this->uuidParser,
             'user_id',
             $this->labelsRepository,
