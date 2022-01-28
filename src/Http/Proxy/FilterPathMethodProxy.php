@@ -13,11 +13,11 @@ use CultuurNet\UDB3\Http\Proxy\Filter\PreflightFilter;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
+use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Domain;
 use ValueObjects\Web\PortNumber;
 
 class FilterPathMethodProxy extends Proxy
@@ -25,7 +25,7 @@ class FilterPathMethodProxy extends Proxy
     public function __construct(
         FilterPathRegex $path,
         StringLiteral $method,
-        Domain $domain,
+        Hostname $hostname,
         PortNumber $port,
         DiactorosFactory $diactorosFactory,
         HttpFoundationFactory $httpFoundationFactory,
@@ -33,7 +33,7 @@ class FilterPathMethodProxy extends Proxy
     ) {
         parent::__construct(
             $this->createFilter($path, $method),
-            $this->createTransformer($domain, $port),
+            $this->createTransformer($hostname, $port),
             $diactorosFactory,
             $httpFoundationFactory,
             $client
@@ -64,10 +64,10 @@ class FilterPathMethodProxy extends Proxy
      * @return CombinedReplacer
      */
     private function createTransformer(
-        Domain $domain,
+        Hostname $hostname,
         PortNumber $port
     ) {
-        $domainReplacer = new DomainReplacer($domain);
+        $domainReplacer = new DomainReplacer($hostname);
 
         $portReplacer = new PortReplacer($port);
 

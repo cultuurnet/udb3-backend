@@ -7,13 +7,13 @@ namespace CultuurNet\UDB3\Silex\Proxy;
 use CultuurNet\UDB3\Http\Proxy\CdbXmlProxy;
 use CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy;
 use CultuurNet\UDB3\Http\Proxy\FilterPathRegex;
+use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use GuzzleHttp\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Hostname;
 use ValueObjects\Web\PortNumber;
 
 class ProxyServiceProvider implements ServiceProviderInterface
