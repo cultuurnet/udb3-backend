@@ -80,11 +80,9 @@ final class ApiProblem extends Exception
         return $problem;
     }
 
-    private function withExtraProperties(array $extraProperties): self
+    private function setExtraProperties(array $extraProperties): void
     {
-        $c = clone $this;
-        $c->extraProperties = $extraProperties;
-        return $c;
+        $this->extraProperties = $extraProperties;
     }
 
     public function getType(): string
@@ -395,11 +393,13 @@ final class ApiProblem extends Exception
 
     public static function labelNotAllowed(string $labelName): self
     {
-        return (self::create(
+        $e = self::create(
             'https://api.publiq.be/probs/uitdatabank/label-not-allowed',
             'Label not allowed',
             403,
             'The label "' . $labelName .  '" is reserved and you do not have sufficient permissions to use it.'
-        ))->withExtraProperties(['label' => $labelName]);
+        );
+        $e->setExtraProperties(['label' => $labelName]);
+        return $e;
     }
 }
