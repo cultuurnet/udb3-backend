@@ -13,6 +13,8 @@ use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
@@ -84,6 +86,7 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         $data = RequestBodyParserFactory::createBaseParser(
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $organizerId),
             $this->importPreProcessingRequestBodyParser,
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER),
             new DenormalizingRequestBodyParser($this->organizerDenormalizer, Organizer::class)
         )->parse($request)->getParsedBody();
 
