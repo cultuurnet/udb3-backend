@@ -13,7 +13,7 @@ final class Hostname extends Domain
     public function __construct(string $value)
     {
         parent::__construct($value);
-        if (filter_var($value, FILTER_VALIDATE_DOMAIN) === false) {
+        if (filter_var($value, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) === false) {
             throw new \InvalidArgumentException('Given string is not a valid hostname.');
         }
 
