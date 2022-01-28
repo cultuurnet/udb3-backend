@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Notification\Swift;
 use CultuurNet\UDB3\EventExport\EventExportResult;
 use CultuurNet\UDB3\EventExport\Notification\BodyFactoryInterface;
 use CultuurNet\UDB3\EventExport\Notification\SubjectFactoryInterface;
-use ValueObjects\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 class DefaultMessageFactory implements MessageFactoryInterface
 {

@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Silex\User;
 
 use Auth0\SDK\API\Management;
 use Auth0\SDK\API\Management\Users;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class Auth0UserIdentityResolverTest extends TestCase
 {

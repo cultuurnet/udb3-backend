@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\EventExport\Notification\Swift;
 
 use CultuurNet\UDB3\EventExport\EventExportResult;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
-use ValueObjects\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 class NotificationMailer implements NotificationMailerInterface
 {

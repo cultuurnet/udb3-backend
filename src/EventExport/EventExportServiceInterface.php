@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Web\EmailAddress;
 
 interface EventExportServiceInterface
 {

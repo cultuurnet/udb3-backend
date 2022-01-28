@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\EventExport\Command;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class ExportEventsJSONDeserializerTest extends TestCase
 {
