@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
-use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -66,7 +65,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $this->importOrganizerRequestHandler = new ImportOrganizerRequestHandler(
             $this->aggregateRepository,
-            new OrganizerDenormalizer(),
             $this->commandBus,
             $this->lockedLabelRepository,
             $this->uuidGenerator,
