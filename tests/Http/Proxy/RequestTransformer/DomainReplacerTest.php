@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
+use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
-use ValueObjects\Web\Hostname;
 
 class DomainReplacerTest extends TestCase
 {
