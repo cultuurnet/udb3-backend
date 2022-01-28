@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
+use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Person\Age;
 
 class AgeRangeTest extends TestCase
 {
