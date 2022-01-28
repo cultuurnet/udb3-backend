@@ -62,8 +62,8 @@ class AgeRange
 
     public function __toString(): string
     {
-        $from = $this->from ? (string) $this->from : '';
-        $to = $this->to ? (string) $this->to : '';
+        $from = $this->from ? (string) $this->from->toInteger() : '';
+        $to = $this->to ? (string) $this->to->toInteger() : '';
 
         return $from . '-' . $to;
     }
@@ -90,7 +90,7 @@ class AgeRange
         [$fromString, $toString] = $stringValues;
 
         if (is_numeric($fromString) || empty($fromString)) {
-            $from = is_numeric($fromString) ? new Age($fromString) : null;
+            $from = is_numeric($fromString) ? new Age((int) $fromString) : null;
         } else {
             throw new InvalidAgeRangeException(
                 'The "from" age should be a natural number or empty.'
@@ -98,7 +98,7 @@ class AgeRange
         }
 
         if (is_numeric($toString) || empty($toString)) {
-            $to = is_numeric($toString) ? new Age($toString) : null;
+            $to = is_numeric($toString) ? new Age((int) $toString) : null;
         } else {
             throw new InvalidAgeRangeException(
                 'The "to" age should be a natural number or empty.'
