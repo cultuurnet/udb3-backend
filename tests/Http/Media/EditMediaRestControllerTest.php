@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\Identity\UUID;
 
 class EditMediaRestControllerTest extends TestCase
 {
@@ -126,7 +126,7 @@ class EditMediaRestControllerTest extends TestCase
             ]
         );
 
-        $imageId = new UUID('08d9df2e-091d-4f65-930b-00f565a9158f');
+        $imageId = new UUId('08d9df2e-091d-4f65-930b-00f565a9158f');
 
         $this->imageUploader
             ->expects($this->once())
@@ -136,7 +136,7 @@ class EditMediaRestControllerTest extends TestCase
         $response = $this->controller->upload($uploadRequest);
 
         $expectedResponseContent = json_encode([
-            'imageId' => $imageId->toNative(),
+            'imageId' => $imageId->toString(),
         ]);
 
         $this->assertEquals($expectedResponseContent, $response->getContent());

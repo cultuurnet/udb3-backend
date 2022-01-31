@@ -9,11 +9,11 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -94,7 +94,7 @@ class MediaObjectsExistValidatorTest extends TestCase
             ->method('get')
             ->willReturnCallback(
                 function (UUID $id) use ($ids) {
-                    if (in_array($id->toNative(), $ids)) {
+                    if (in_array($id->toString(), $ids)) {
                         return MediaObject::create(
                             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
                             new MIMEType('image/png'),

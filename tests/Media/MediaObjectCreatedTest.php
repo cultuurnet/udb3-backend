@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\Media;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -81,7 +81,7 @@ class MediaObjectCreatedTest extends TestCase
         ];
 
         $expectedEvent = new MediaObjectCreated(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUId('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -106,7 +106,7 @@ class MediaObjectCreatedTest extends TestCase
         ];
 
         $expectedEvent = new MediaObjectCreated(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUId('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
             new CopyrightHolder('J_'),

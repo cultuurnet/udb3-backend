@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ImageUpdatedTest extends TestCase
@@ -53,7 +53,7 @@ class ImageUpdatedTest extends TestCase
                 ],
                 new ImageUpdated(
                     'de305d54-75b4-431b-adb2-eb6b9e546014',
-                    new UUID('ea305d54-75b4-431b-adb2-eb6b9e546019'),
+                    new UUId('ea305d54-75b4-431b-adb2-eb6b9e546019'),
                     new StringLiteral('some description'),
                     new CopyrightHolder('Dirk')
                 ),

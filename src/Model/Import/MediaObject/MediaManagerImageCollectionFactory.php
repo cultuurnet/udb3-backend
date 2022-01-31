@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
-use ValueObjects\Identity\UUID;
 
 class MediaManagerImageCollectionFactory implements ImageCollectionFactory
 {
@@ -47,7 +46,7 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
                 $id = $mediaObjectReference->getMediaObjectId();
 
                 try {
-                    $mediaObjectAggregate = $this->mediaManager->get(new UUID($id->toString()));
+                    $mediaObjectAggregate = $this->mediaManager->get($id);
                 } catch (MediaObjectNotFoundException $e) {
                     return null;
                 }
