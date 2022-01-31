@@ -155,7 +155,7 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
             );
 
             throw new EventNotFoundException(
-                'Unable to retrieve event from ' . (string) $url
+                'Unable to retrieve event from ' . $url->toString()
             );
         }
 

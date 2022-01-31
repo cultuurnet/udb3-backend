@@ -191,7 +191,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
             );
 
             throw new ActorNotFoundException(
-                'Unable to retrieve actor from ' . (string) $url
+                'Unable to retrieve actor from ' . $url->toString()
             );
         }
 
