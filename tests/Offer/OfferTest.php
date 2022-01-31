@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -82,7 +83,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->with(new LegacyLabel('label'))
             ->with(new LegacyLabel('cultuurnet'));
         $this->image = new Image(
-            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/gif'),
             new Description('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
@@ -405,7 +406,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_set_the_main_image_when_selecting_another_one(): void
     {
         $anotherImage = new Image(
-            new LegacyUUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -444,7 +445,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_can_select_main_image_even_after_image_update(): void
     {
         $anotherImage = new Image(
-            new LegacyUUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -615,7 +616,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_make_the_oldest_image_main_when_deleting_the_current_main_image(): void
     {
         $oldestImage = new Image(
-            new LegacyUUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/gif'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -623,7 +624,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new LegacyLanguage('en')
         );
         $newerImage = new Image(
-            new LegacyUUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
+            new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
@@ -694,7 +695,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $originalMainImage = $this->image;
         $newMainImage = new Image(
-            new LegacyUUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
+            new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
@@ -1866,7 +1867,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = LegacyUUID::generateAsString();
 
         $dutchUdb3Image = new Image(
-            new LegacyUUID('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
+            new UUID('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
             new MIMEType('image/jpg'),
             new Description('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
@@ -1876,7 +1877,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $udb2Images = ImageCollection::fromArray([
             new Image(
-                new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+                new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
                 new MIMEType('image/jpg'),
                 new Description('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
@@ -1931,7 +1932,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function imageCollectionDataProvider(): array
     {
         $image = new Image(
-            new LegacyUUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
