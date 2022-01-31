@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventHandling\TraceableEventBus;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\Actor\Events\ActorCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Actor\Events\ActorUpdatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreated;
@@ -22,7 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ActorEventCdbXmlEnricherTest extends TestCase
 {
@@ -161,11 +161,11 @@ class ActorEventCdbXmlEnricherTest extends TestCase
         ];
     }
 
-    private function expectHttpClientToReturnCdbXmlFromUrl($url)
+    private function expectHttpClientToReturnCdbXmlFromUrl(Url $url)
     {
         $request = new Request(
             'GET',
-            (string)$url,
+            $url->toString(),
             [
                 'Accept' => 'application/xml',
             ]
@@ -232,7 +232,7 @@ class ActorEventCdbXmlEnricherTest extends TestCase
     {
         $actorId = new StringLiteral('318F2ACB-F612-6F75-0037C9C29F44087A');
         $author = new StringLiteral('me@example.com');
-        $url = Url::fromNative('https://io.uitdatabank.be/event/318F2ACB-F612-6F75-0037C9C29F44087A');
+        $url = new Url('https://io.uitdatabank.be/event/318F2ACB-F612-6F75-0037C9C29F44087A');
 
         return new ActorCreated(
             $actorId,
@@ -246,7 +246,7 @@ class ActorEventCdbXmlEnricherTest extends TestCase
     {
         $actorId = new StringLiteral('318F2ACB-F612-6F75-0037C9C29F44087A');
         $author = new StringLiteral('me@example.com');
-        $url = Url::fromNative('https://io.uitdatabank.be/event/318F2ACB-F612-6F75-0037C9C29F44087A');
+        $url = new Url('https://io.uitdatabank.be/event/318F2ACB-F612-6F75-0037C9C29F44087A');
 
         return new ActorUpdated(
             $actorId,

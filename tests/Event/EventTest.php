@@ -41,6 +41,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
@@ -53,7 +54,6 @@ use RuntimeException;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class EventTest extends AggregateRootScenarioTestCase
 {
@@ -671,7 +671,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
 
@@ -718,7 +718,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
 
@@ -768,7 +768,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
 

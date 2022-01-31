@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventHandling\TraceableEventBus;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use CultuurNet\UDB3\UDB2\Event\Events\EventCreatedEnrichedWithCdbXml;
@@ -22,7 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class EventCdbXmlEnricherTest extends TestCase
 {
@@ -162,7 +162,7 @@ class EventCdbXmlEnricherTest extends TestCase
     {
         $request = new Request(
             'GET',
-            (string)$url,
+            $url->toString(),
             [
                 'Accept' => 'application/xml',
             ]
@@ -245,7 +245,7 @@ class EventCdbXmlEnricherTest extends TestCase
     {
         $eventId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
         $author = new StringLiteral('jonas@cultuurnet.be');
-        $url = Url::fromNative('https://io.uitdatabank.be/event/d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
+        $url = new Url('https://io.uitdatabank.be/event/d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
 
         return new EventCreated(
             $eventId,
@@ -262,7 +262,7 @@ class EventCdbXmlEnricherTest extends TestCase
     {
         $eventId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
         $author = new StringLiteral('jonas@cultuurnet.be');
-        $url = Url::fromNative('https://io.uitdatabank.be/event/d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
+        $url = new Url('https://io.uitdatabank.be/event/d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
 
         return new EventUpdated(
             $eventId,
