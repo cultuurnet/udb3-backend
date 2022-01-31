@@ -12,16 +12,6 @@ use stdClass;
 
 final class LegacyOrganizerRequestBodyParser implements RequestBodyParser
 {
-    private UuidGeneratorInterface $uuidGenerator;
-
-    private IriGeneratorInterface $iriGenerator;
-
-    public function __construct(UuidGeneratorInterface $uuidGenerator, IriGeneratorInterface $iriGenerator)
-    {
-        $this->uuidGenerator = $uuidGenerator;
-        $this->iriGenerator = $iriGenerator;
-    }
-
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $data = $request->getParsedBody();
@@ -30,10 +20,6 @@ final class LegacyOrganizerRequestBodyParser implements RequestBodyParser
             return $request;
         }
         $data = clone $data;
-
-        $data->{'@id'} = $this->iriGenerator->iri(
-            $this->uuidGenerator->generate()
-        );
 
         $data->url = $data->website;
 

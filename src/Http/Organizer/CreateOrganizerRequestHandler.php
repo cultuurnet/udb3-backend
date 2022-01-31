@@ -9,6 +9,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
@@ -48,10 +49,13 @@ final class CreateOrganizerRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $id = $this->uuidGenerator->generate();
+
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new LegacyContactPointRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER_POST),
-            new LegacyOrganizerRequestBodyParser($this->uuidGenerator, $this->iriGenerator),
+            new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $id),
+            new LegacyOrganizerRequestBodyParser(),
             new DenormalizingRequestBodyParser(new OrganizerDenormalizer(), Organizer::class)
         );
 
