@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -22,7 +23,6 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 /**
  * Base test  case class for testing common Offer JSON-LD projector
@@ -218,7 +218,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $description = new MediaDescription('Some description.');
         $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $type = new MIMEType('image/png');
-        $location = Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+        $location = new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
         $language = new Language('en');
 
         $image = new Image($imageId, $type, $description, $copyrightHolder, $location, $language);

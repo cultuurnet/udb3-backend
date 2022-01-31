@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class OfferIdentifierCollectionTest extends TestCase
 {
@@ -19,7 +19,7 @@ class OfferIdentifierCollectionTest extends TestCase
 
         $collection = $collection->with(
             new IriOfferIdentifier(
-                Url::fromNative('http://du.de/event/1'),
+                new Url('http://du.de/event/1'),
                 '1',
                 OfferType::event()
             )

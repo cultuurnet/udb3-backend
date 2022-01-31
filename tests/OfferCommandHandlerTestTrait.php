@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -21,7 +22,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionObject;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 /**
  * Provides a trait to test commands that are applicable for all UDB3 offer types
@@ -159,7 +159,7 @@ trait OfferCommandHandlerTestTrait
             new MIMEType('image/png'),
             new MediaDescription('Some description.'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $commandClass = $this->getCommandClass('AddImage');
@@ -192,7 +192,7 @@ trait OfferCommandHandlerTestTrait
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
         $imageAddedEventClass = $this->getEventClass('ImageAdded');
@@ -238,7 +238,7 @@ trait OfferCommandHandlerTestTrait
                             new MIMEType('image/jpeg'),
                             new MediaDescription('my best selfie'),
                             new CopyrightHolder('Dirk Dirkington'),
-                            Url::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+                            new Url('http://foo.bar/media/my_best_selfie.gif'),
                             new Language('en')
                         )
                     ),
@@ -297,7 +297,7 @@ trait OfferCommandHandlerTestTrait
                 new MIMEType('image/jpeg'),
                 new MediaDescription('my best selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
-                Url::fromNative('http://foo.bar/media/my_best_selfie.jpg'),
+                new Url('http://foo.bar/media/my_best_selfie.jpg'),
                 new Language('en')
             ),
             new Image(
@@ -305,7 +305,7 @@ trait OfferCommandHandlerTestTrait
                 new MIMEType('image/png'),
                 new MediaDescription('mijn beste selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
-                Url::fromNative('http://foo.bar/media/mijn_beste_selfie.png'),
+                new Url('http://foo.bar/media/mijn_beste_selfie.png'),
                 new Language('nl')
             ),
             new Image(
@@ -313,7 +313,7 @@ trait OfferCommandHandlerTestTrait
                 new MIMEType('image/jpeg'),
                 new MediaDescription('my second best selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
-                Url::fromNative('http://foo.bar/media/my_second_best_selfie.jpg'),
+                new Url('http://foo.bar/media/my_second_best_selfie.jpg'),
                 new Language('en')
             ),
             new Image(
@@ -321,7 +321,7 @@ trait OfferCommandHandlerTestTrait
                 new MIMEType('image/gif'),
                 new MediaDescription('mijn tweede beste selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
-                Url::fromNative('http://foo.bar/media/mijn_tweede_beste_selfie.gif'),
+                new Url('http://foo.bar/media/mijn_tweede_beste_selfie.gif'),
                 new Language('nl')
             ),
         ];
@@ -332,7 +332,7 @@ trait OfferCommandHandlerTestTrait
                 new MIMEType('image/jpeg'),
                 new MediaDescription('new selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
-                Url::fromNative('http://foo.bar/media/new_selfie.jpg'),
+                new Url('http://foo.bar/media/new_selfie.jpg'),
                 new Language('en')
             ),
             new Image(
@@ -340,7 +340,7 @@ trait OfferCommandHandlerTestTrait
                 new MIMEType('image/jpeg'),
                 new MediaDescription('my best selfie UPDATED'),
                 new CopyrightHolder('Dirk Dirkington UPDATED'),
-                Url::fromNative('http://foo.bar/media/my_best_selfie.jpg'),
+                new Url('http://foo.bar/media/my_best_selfie.jpg'),
                 new Language('en')
             ),
             new Image(
@@ -348,7 +348,7 @@ trait OfferCommandHandlerTestTrait
                 new MIMEType('image/png'),
                 new MediaDescription('mijn beste selfie UPDATED'),
                 new CopyrightHolder('Dirk Dirkington UPDATED'),
-                Url::fromNative('http://foo.bar/media/mijn_beste_selfie.png'),
+                new Url('http://foo.bar/media/mijn_beste_selfie.png'),
                 new Language('nl')
             ),
         ];
