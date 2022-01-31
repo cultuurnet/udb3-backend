@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Organizer;
 
-use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 
