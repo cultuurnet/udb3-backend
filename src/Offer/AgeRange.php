@@ -62,8 +62,8 @@ class AgeRange
 
     public function __toString(): string
     {
-        $from = $this->from ? (string) $this->from->toInteger() : '';
-        $to = $this->to ? (string) $this->to->toInteger() : '';
+        $from = $this->from ? $this->from->toInteger() : '';
+        $to = $this->to ? $this->to->toInteger() : '';
 
         return $from . '-' . $to;
     }
