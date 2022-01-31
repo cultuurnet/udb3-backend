@@ -156,7 +156,7 @@ abstract class OfferRestBaseController
         }
 
         // @todo Validate that this id exists and is in fact an image and not a different type of media object
-        $imageId = new LegacyUUID($bodyContent->mediaObjectId);
+        $imageId = new UUID($bodyContent->mediaObjectId);
 
         $this->editor->addImage($itemId, $imageId);
 
@@ -170,7 +170,7 @@ abstract class OfferRestBaseController
             return new JsonResponse(['error' => 'media object id required'], 400);
         }
 
-        $mediaObjectId = new LegacyUUID($bodyContent->mediaObjectId);
+        $mediaObjectId = new UUID($bodyContent->mediaObjectId);
 
         // Can we be sure that the given $mediaObjectId points to an image and not a different type?
         $image = $this->mediaManager->getImage($mediaObjectId);
