@@ -21,20 +21,46 @@ final class LegacyOrganizerRequestBodyParser implements RequestBodyParser
         }
         $data = clone $data;
 
-        $data->url = $data->website;
+        $mainLanguage = $data->mainLanguage ?? null;
 
-        $data->name = [
-            $data->mainLanguage => $data->name,
-        ];
+        if (isset($data->website) && !isset($data->url)) {
+            $data->url = $data->website;
+            unset($data->website);
+        }
 
-        if (isset($data->address)) {
-            $data->address = [
-                $data->mainLanguage => $data->address,
+        if ($mainLanguage && isset($data->name) && is_string($data->name)) {
+            $data->name = (object) [
+                $data->mainLanguage => $data->name,
             ];
         }
 
-        if (isset($data->contact)) {
+        if ($mainLanguage && isset($data->address->streetAddress)) {
+            $data->address->{$mainLanguage} = $data->address->{$mainLanguage} ?? (object) [];
+            $data->address->{$mainLanguage}->streetAddress = $data->address->streetAddress;
+            unset($data->address->streetAddress);
+        }
+        if ($mainLanguage && isset($data->address->postalCode)) {
+            $data->address->{$mainLanguage} = $data->address->{$mainLanguage} ?? (object) [];
+            $data->address->{$mainLanguage}->postalCode = $data->address->postalCode;
+            unset($data->address->postalCode);
+        }
+        if ($mainLanguage && isset($data->address->addressLocality)) {
+            $data->address->{$mainLanguage} = $data->address->{$mainLanguage} ?? (object) [];
+            $data->address->{$mainLanguage}->addressLocality = $data->address->addressLocality;
+            unset($data->address->addressLocality);
+        }
+        if ($mainLanguage && isset($data->address->addressCountry)) {
+            $data->address->{$mainLanguage} = $data->address->{$mainLanguage} ?? (object) [];
+            $data->address->{$mainLanguage}->addressCountry = $data->address->addressCountry;
+            unset($data->address->addressCountry);
+        }
+
+        if (isset($data->contact) && is_array($data->contact)) {
             foreach ($data->contact as $contactEntry) {
+                if (!isset($contactEntry->type, $contactEntry->value)) {
+                    continue;
+                }
+
                 switch ($contactEntry->type) {
                     case 'phone':
                         $phones[] = $contactEntry->value;
@@ -50,7 +76,7 @@ final class LegacyOrganizerRequestBodyParser implements RequestBodyParser
                 }
             }
 
-            $data->contactPoint = [
+            $data->contactPoint = (object) [
                 'phone' => $phones ?? [],
                 'email' => $emails ?? [],
                 'url' => $urls ?? [],
