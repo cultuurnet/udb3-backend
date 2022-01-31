@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
-use ValueObjects\DateTime\Minute;
 
 /**
  * @deprecated
@@ -88,7 +88,7 @@ class OpeningTime
     public function sameValueAs(OpeningTime $time)
     {
         return $this->getHour()->sameAs($time->getHour()) &&
-            $this->getMinute()->sameValueAs($time->getMinute());
+            $this->getMinute()->sameAs($time->getMinute());
     }
 
     /**
@@ -105,7 +105,7 @@ class OpeningTime
     private function toNativeDateTime()
     {
         $hour   = $this->getHour()->toInteger();
-        $minute = $this->getMinute()->toNative();
+        $minute = $this->getMinute()->toInteger();
 
         $time = new \DateTime('now');
         $time->setTime($hour, $minute);
