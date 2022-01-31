@@ -81,7 +81,7 @@ class MediaObjectCreatedTest extends TestCase
         ];
 
         $expectedEvent = new MediaObjectCreated(
-            new UUId('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -106,7 +106,7 @@ class MediaObjectCreatedTest extends TestCase
         ];
 
         $expectedEvent = new MediaObjectCreated(
-            new UUId('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
             new CopyrightHolder('J_'),

@@ -126,7 +126,7 @@ class EditMediaRestControllerTest extends TestCase
             ]
         );
 
-        $imageId = new UUId('08d9df2e-091d-4f65-930b-00f565a9158f');
+        $imageId = new UUID('08d9df2e-091d-4f65-930b-00f565a9158f');
 
         $this->imageUploader
             ->expects($this->once())
