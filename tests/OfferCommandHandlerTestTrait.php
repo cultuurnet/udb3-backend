@@ -13,13 +13,13 @@ use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Organizer\Organizer;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionObject;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -153,7 +153,7 @@ trait OfferCommandHandlerTestTrait
     public function it_can_add_an_image_to_an_offer()
     {
         $id = '1';
-        $imageId = UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $image = new Image(
             $imageId,
             new MIMEType('image/png'),
