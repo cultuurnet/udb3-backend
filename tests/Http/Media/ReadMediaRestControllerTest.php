@@ -12,9 +12,9 @@ use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 

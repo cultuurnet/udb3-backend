@@ -9,8 +9,8 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use ValueObjects\Identity\UUID;
 
 final class ReadMediaRestController
 {
@@ -45,6 +45,7 @@ final class ReadMediaRestController
         $serializedMediaObject['contentUrl'] = $this->mediaUrlMapping->getUpdatedUrl($serializedMediaObject['contentUrl']);
         $serializedMediaObject['thumbnailUrl'] = $this->mediaUrlMapping->getUpdatedUrl($serializedMediaObject['thumbnailUrl']);
 
+        var_dump($serializedMediaObject);
         return JsonResponse::create($serializedMediaObject);
     }
 }
