@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
@@ -19,7 +20,6 @@ use CultuurNet\UDB3\Organizer\Organizer;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionObject;
 use ValueObjects\Identity\UUID;
-use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 

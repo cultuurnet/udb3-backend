@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -44,7 +45,6 @@ use DateTimeInterface;
 use Ramsey\Uuid\Uuid;
 use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
-use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class PlaceTest extends AggregateRootScenarioTestCase

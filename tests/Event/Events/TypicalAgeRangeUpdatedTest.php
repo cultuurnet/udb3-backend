@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace test\Event\Events;
 
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Offer\AgeRange;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Person\Age;
 
 class TypicalAgeRangeUpdatedTest extends TestCase
 {
