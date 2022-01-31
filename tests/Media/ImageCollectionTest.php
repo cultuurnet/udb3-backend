@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid as BaseUUID;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Web\Url;
 
@@ -21,7 +22,7 @@ class ImageCollectionTest extends TestCase
     public function it_should_remember_the_main_image()
     {
         $mainImage = new Image(
-            new UUID((new LegacyUUID())->toNative()),
+            new UUID(BaseUUID::uuid4()->toString()),
             MIMEType::fromSubtype('jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Henk'),
@@ -39,7 +40,7 @@ class ImageCollectionTest extends TestCase
     public function it_should_return_the_first_image_as_main_when_set_explicitly()
     {
         $image = new Image(
-            new UUID((new LegacyUUID())->toNative()),
+            new UUID(baseUUID::uuid4()->toString()),
             MIMEType::fromSubtype('jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Henk'),
@@ -64,7 +65,7 @@ class ImageCollectionTest extends TestCase
      */
     public function it_can_find_an_image_based_on_uuid()
     {
-        $uuid = new UUID((new LegacyUUID())->toNative());
+        $uuid = new UUID(baseUUID::uuid4()->toString());
 
         $image = new Image(
             $uuid,
@@ -76,7 +77,7 @@ class ImageCollectionTest extends TestCase
         );
 
         $anotherImage = new Image(
-            new UUID((new LegacyUUID())->toNative()),
+            new UUID(BaseUUID::uuid4()->toString()),
             MIMEType::fromSubtype('jpeg'),
             new Description('world biggest cat'),
             new CopyrightHolder('Doggy Junier'),
