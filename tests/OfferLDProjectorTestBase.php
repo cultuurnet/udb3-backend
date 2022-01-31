@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -20,7 +21,6 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -214,7 +214,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     public function it_projects_the_adding_of_an_image(): void
     {
         $id = 'foo';
-        $imageId = UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = new MediaDescription('Some description.');
         $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $type = new MIMEType('image/png');
@@ -255,7 +255,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     public function it_projects_the_editing_of_an_image(): void
     {
         $id = 'foo';
-        $imageId = UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = StringLiteral::fromNative('Some description.');
         $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $eventClass = $this->getEventClass('ImageUpdated');

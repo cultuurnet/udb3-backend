@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\AvailableTo;
@@ -59,7 +60,6 @@ use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SluggerInterface;
 use DateTimeInterface;
-use ValueObjects\Identity\UUID;
 
 abstract class OfferLDProjector implements OrganizerServiceInterface
 {
@@ -371,7 +371,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             $mediaObjectMatches = (
                 strpos(
                     $mediaObject->{'@id'},
-                    (string)$imageUpdated->getMediaObjectId()
+                    $imageUpdated->getMediaObjectId()->toString()
                 ) > 0
             );
 
@@ -401,7 +401,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             return null;
         }
 
-        $imageId = (string) $imageRemoved->getImage()->getMediaObjectId();
+        $imageId = $imageRemoved->getImage()->getMediaObjectId()->toString();
 
         /**
          * @return bool
@@ -461,7 +461,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     protected function mediaObjectMatchesId(object $mediaObject, UUID $mediaObjectId): bool
     {
-        return strpos($mediaObject->{'@id'}, (string) $mediaObjectId) > 0;
+        return strpos($mediaObject->{'@id'}, $mediaObjectId->toString()) > 0;
     }
 
     protected function applyVideoAdded(AbstractVideoEvent $videoAdded): JsonDocument
