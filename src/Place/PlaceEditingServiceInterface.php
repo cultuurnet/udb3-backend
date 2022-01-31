@@ -11,9 +11,9 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Identity\UUID;
 
 interface PlaceEditingServiceInterface
 {
