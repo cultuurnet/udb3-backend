@@ -115,7 +115,12 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c']),
+            Json::encode(
+                [
+                    'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                ]
+            ),
             $response->getBody()->getContents()
         );
         $this->assertEquals($expectedCommands, $actualCommands);
@@ -221,7 +226,12 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $id]),
+            Json::encode(
+                [
+                    'id' => $id,
+                    'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
+                ]
+            ),
             $response->getBody()->getContents()
         );
         $this->assertEquals($expectedCommands, $actualCommands);
