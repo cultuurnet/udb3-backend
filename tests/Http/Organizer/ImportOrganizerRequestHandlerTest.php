@@ -240,6 +240,141 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_imports_an_organizer_from_legacy_schema_with_only_required_properties(): void
+    {
+        $organizerId = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($organizerId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Mock organizer',
+            'website' => 'https://www.mock-organizer.be',
+        ];
+
+        $this->expectOrganizerDoesNotExist($organizerId);
+
+        $this->expectCreateOrganizer(
+            OrganizerAggregate::create(
+                $organizerId,
+                new Language('nl'),
+                new Url('https://www.mock-organizer.be'),
+                new Title('Mock organizer')
+            )
+        );
+
+        $expectedCommands = [
+            new UpdateContactPoint($organizerId, new ContactPoint()),
+            new RemoveAddress($organizerId),
+            new ImportLabels($organizerId, new Labels()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('POST');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(
+                [
+                    'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                ]
+            ),
+            $response->getBody()->getContents()
+        );
+        $this->assertEquals($expectedCommands, $actualCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_an_organizer_from_legacy_schema_with_all_properties_from_old_create_request(): void
+    {
+        $id = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Mock organizer',
+            'website' => 'https://www.mock-organizer.be',
+            'address' => [
+                'streetAddress' => 'Henegouwenkaai 41-43',
+                'postalCode' => '1080',
+                'addressLocality' => 'Brussel',
+                'addressCountry' => 'BE',
+            ],
+            'contact' => [
+                ['type' => 'phone', 'value' => '123'],
+                ['type' => 'email', 'value' => 'mock@publiq.be'],
+                ['type' => 'url', 'value' => 'https://www.publiq.be'],
+            ],
+        ];
+
+        $this->expectOrganizerExists($id);
+        $this->expectNoLockedLabels();
+
+        $expectedCommands = [
+            new UpdateTitle(
+                $id,
+                new Title('Mock organizer'),
+                new Language('nl')
+            ),
+            new UpdateWebsite(
+                $id,
+                new Url('https://www.mock-organizer.be')
+            ),
+            new UpdateContactPoint(
+                $id,
+                new ContactPoint(
+                    new TelephoneNumbers(new TelephoneNumber('123')),
+                    new EmailAddresses(new EmailAddress('mock@publiq.be')),
+                    new Urls(new Url('https://www.publiq.be'))
+                )
+            ),
+            new UpdateAddress(
+                $id,
+                new Address(
+                    new Street('Henegouwenkaai 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Brussel'),
+                    new CountryCode('BE')
+                ),
+                new Language('nl')
+            ),
+            new ImportLabels($id, new Labels()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', $id)
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(
+                [
+                    'id' => $id,
+                    'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
+                ]
+            ),
+            $response->getBody()->getContents()
+        );
+        $this->assertEquals($expectedCommands, $actualCommands);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_an_api_problem_if_an_existing_uuid_of_an_event_or_place_is_given(): void
     {
         $id = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
@@ -326,11 +461,11 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             'name_invalid' => [
                 'given' => [
                     'mainLanguage' => 'nl',
-                    'name' => 'Test',
+                    'name' => false,
                     'url' => 'https://www.organizer.be',
                 ],
                 'schemaErrors' => [
-                    new SchemaError('/name', 'The data (string) must match the type: object'),
+                    new SchemaError('/name', 'The data (boolean) must match the type: object'),
                 ],
             ],
             'name_missing_value_for_mainLanguage' => [
