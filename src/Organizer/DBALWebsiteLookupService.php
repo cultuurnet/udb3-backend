@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Doctrine\DBAL\Connection;
-use ValueObjects\Web\Url;
 
 class DBALWebsiteLookupService implements WebsiteLookupServiceInterface
 {
@@ -42,7 +42,7 @@ class DBALWebsiteLookupService implements WebsiteLookupServiceInterface
             ->select(UniqueDBALEventStoreDecorator::UUID_COLUMN)
             ->from($this->tableName)
             ->where($expr->eq(UniqueDBALEventStoreDecorator::UNIQUE_COLUMN, ':url'))
-            ->setParameter(':url', (string) $url)
+            ->setParameter(':url', $url->toString())
             ->execute();
 
         $uuid = $results->fetchColumn();

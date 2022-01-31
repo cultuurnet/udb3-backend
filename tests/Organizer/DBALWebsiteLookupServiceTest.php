@@ -8,8 +8,8 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class DBALWebsiteLookupServiceTest extends TestCase
 {
@@ -60,17 +60,17 @@ class DBALWebsiteLookupServiceTest extends TestCase
     public function it_should_return_the_organizer_uuid_the_url_belongs_to()
     {
         $publiqId = '7736697b-da7d-4d71-b468-2bd356eb6c36';
-        $publiqUrl = Url::fromNative('https://www.publiq.be');
+        $publiqUrl = new Url('https://www.publiq.be');
 
         $uitDatabankId = '984bed58-7925-417b-ab3c-2da0e9c266b0';
-        $uitDatabankUrl = Url::fromNative('https://www.uitdatabank.be');
+        $uitDatabankUrl = new Url('https://www.uitdatabank.be');
 
         $this->insertOrganizerWebsite($publiqId, $publiqUrl);
         $this->insertOrganizerWebsite($uitDatabankId, $uitDatabankUrl);
 
         $this->assertEquals($publiqId, $this->lookupService->lookup($publiqUrl));
         $this->assertEquals($uitDatabankId, $this->lookupService->lookup($uitDatabankUrl));
-        $this->assertNull($this->lookupService->lookup(Url::fromNative('https://google.com')));
+        $this->assertNull($this->lookupService->lookup(new Url('https://google.com')));
     }
 
     /**
@@ -78,7 +78,7 @@ class DBALWebsiteLookupServiceTest extends TestCase
      */
     public function it_should_return_null_if_the_url_does_not_belong_to_any_existing_organizer()
     {
-        $url = Url::fromNative('https://publiq.be');
+        $url = new Url ('https://publiq.be');
         $this->assertNull($this->lookupService->lookup($url));
     }
 
@@ -91,7 +91,7 @@ class DBALWebsiteLookupServiceTest extends TestCase
             $this->tableName,
             [
                 UniqueDBALEventStoreDecorator::UUID_COLUMN => $uuid,
-                UniqueDBALEventStoreDecorator::UNIQUE_COLUMN => (string) $url,
+                UniqueDBALEventStoreDecorator::UNIQUE_COLUMN => $url->toString(),
             ]
         );
     }

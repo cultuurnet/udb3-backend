@@ -71,7 +71,6 @@ use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class PlaceDocumentImporterTest extends TestCase
 {
@@ -529,7 +528,7 @@ class PlaceDocumentImporterTest extends TestCase
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Example description'),
                     new CopyrightHolder('Bob'),
-                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
+                    new Url('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
                     new LegacyLanguage('en')
                 ),
                 new Image(
@@ -537,7 +536,7 @@ class PlaceDocumentImporterTest extends TestCase
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Voorbeeld beschrijving'),
                     new CopyrightHolder('Bob'),
-                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
+                    new Url('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
                     new LegacyLanguage('nl')
                 ),
             ]

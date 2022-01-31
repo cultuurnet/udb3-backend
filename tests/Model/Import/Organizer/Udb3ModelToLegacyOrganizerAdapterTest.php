@@ -153,7 +153,7 @@ class Udb3ModelToLegacyOrganizerAdapterTest extends TestCase
      */
     public function it_should_return_a_website()
     {
-        $expected = \ValueObjects\Web\Url::fromNative('https://www.publiq.be');
+        $expected = new Url('https://www.publiq.be');
         $actual = $this->adapter->getWebsite();
         $this->assertEquals($expected, $actual);
     }

@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Web\Url;
 
 class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
 {
@@ -49,7 +49,7 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
 
     public function getWebsite(): Url
     {
-        return Url::fromNative($this->organizer->getUrl()->toString());
+        return $this->organizer->getUrl();
     }
 
     public function getAddress(): ?Address

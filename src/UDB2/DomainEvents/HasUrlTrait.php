@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
-use ValueObjects\Web\Url;
+
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 trait HasUrlTrait
 {
@@ -32,7 +33,7 @@ trait HasUrlTrait
     public function serialize()
     {
         return [
-            'url' => (string) $this->getUrl(),
+            'url' => $this->getUrl()->toString(),
         ];
     }
 }
