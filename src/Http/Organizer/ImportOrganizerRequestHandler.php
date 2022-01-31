@@ -160,6 +160,7 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 
         $responseBody = [
             'id' => $organizerId,
+            'organizerId' => $organizerId,
             'url' => $this->iriGenerator->iri($organizerId),
         ];
         if ($lastCommandId) {

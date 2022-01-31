@@ -118,6 +118,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             Json::encode(
                 [
                     'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                 ]
             ),
@@ -229,6 +230,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             Json::encode(
                 [
                     'id' => $id,
+                    'organizerId' => $id,
                     'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
                 ]
             ),
@@ -284,6 +286,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             Json::encode(
                 [
                     'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                 ]
             ),
@@ -364,6 +367,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             Json::encode(
                 [
                     'id' => $id,
+                    'organizerId' => $id,
                     'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
                 ]
             ),
