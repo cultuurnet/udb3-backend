@@ -13,10 +13,10 @@ use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ReadMediaRestControllerTest extends TestCase
 {
@@ -43,7 +43,7 @@ class ReadMediaRestControllerTest extends TestCase
                     MIMEType::fromSubtype('jpeg'),
                     new StringLiteral('UDB2 image'),
                     new CopyrightHolder('publiq'),
-                    Url::fromNative('https://media.uitdatabank.be/123/5624b810-c340-40a4-8f38-0393eca59bfe.jpg'),
+                    new Url('https://media.uitdatabank.be/123/5624b810-c340-40a4-8f38-0393eca59bfe.jpg'),
                     new Language('nl')
                 )
             );

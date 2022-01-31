@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UDB2\Actor\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ActorUpdatedEnrichedWithCdbXmlTest extends TestCase
 {
@@ -15,7 +15,7 @@ class ActorUpdatedEnrichedWithCdbXmlTest extends TestCase
         $id = new StringLiteral('foo');
         $time = new \DateTimeImmutable();
         $author = new StringLiteral('me@example.com');
-        $url = Url::fromNative('http://www.some.url');
+        $url = new Url('http://www.some.url');
         $cdbXml = new StringLiteral(file_get_contents(__DIR__ . '/actor.xml'));
         $cdbXmlNamespaceUri = new StringLiteral(
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'

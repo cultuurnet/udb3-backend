@@ -14,7 +14,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ImportEventCdbXmlCommand extends AbstractCommand
 {
@@ -67,7 +66,7 @@ class ImportEventCdbXmlCommand extends AbstractCommand
             new StringLiteral($input->getArgument(self::ID)),
             new DateTimeImmutable(),
             new StringLiteral($this->systemUserId),
-            Url::fromNative($input->getArgument(self::URL))
+            new Url($input->getArgument(self::URL))
         );
 
         $domainMessage = (new DomainMessageBuilder())

@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Model\Import\Organizer;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Web\Url;
 
 interface LegacyOrganizer
 {

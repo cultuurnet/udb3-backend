@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
 use Respect\Validation\Exceptions\CallbackException;
 use Respect\Validation\Rules\Callback;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerHasUniqueUrlValidator extends Callback
 {
@@ -27,7 +26,7 @@ class OrganizerHasUniqueUrlValidator extends Callback
                 $idUrl = new Url($organizerData['@id']);
                 $id = $organizerIDParser->fromUrl($idUrl)->toString();
 
-                $url = LegacyUrl::fromNative((string) $organizerData['url']);
+                $url = new Url((string) $organizerData['url']);
                 $organizerId = $websiteLookupService->lookup($url);
 
                 return is_null($organizerId) || $organizerId === $id;

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Import\Validation\Organizer;
 
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\CallbackException;
-use ValueObjects\Web\Url;
 
 class OrganizerHasUniqueUrlValidatorTest extends TestCase
 {
@@ -101,7 +101,7 @@ class OrganizerHasUniqueUrlValidatorTest extends TestCase
     {
         $this->lookupService->expects($this->once())
             ->method('lookup')
-            ->with(Url::fromNative('https://www.publiq.be'))
+            ->with(new Url('https://www.publiq.be'))
             ->willReturn(null);
 
         $organizer = [
@@ -119,7 +119,7 @@ class OrganizerHasUniqueUrlValidatorTest extends TestCase
     {
         $this->lookupService->expects($this->once())
             ->method('lookup')
-            ->with(Url::fromNative('https://www.publiq.be'))
+            ->with(new Url('https://www.publiq.be'))
             ->willReturn('f3597251-3a51-4e39-806b-a91110af3a65');
 
         $organizer = [
@@ -137,7 +137,7 @@ class OrganizerHasUniqueUrlValidatorTest extends TestCase
     {
         $this->lookupService->expects($this->once())
             ->method('lookup')
-            ->with(Url::fromNative('https://www.publiq.be'))
+            ->with(new Url('https://www.publiq.be'))
             ->willReturn('5a9c7219-0a50-4f27-9a13-0a74579f3e61');
 
         $organizer = [
