@@ -13,6 +13,9 @@ use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\MainLanguageValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
@@ -20,6 +23,7 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
@@ -32,12 +36,10 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 {
     private Repository $aggregateRepository;
-    private DenormalizerInterface $organizerDenormalizer;
     private CommandBus $commandBus;
     private LockedLabelRepository $lockedLabelRepository;
     private UuidGeneratorInterface $uuidGenerator;
@@ -46,7 +48,6 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 
     public function __construct(
         Repository $aggregateRepository,
-        DenormalizerInterface $organizerDenormalizer,
         CommandBus $commandBus,
         LockedLabelRepository $lockedLabelRepository,
         UuidGeneratorInterface $uuidGenerator,
@@ -54,7 +55,6 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         RequestBodyParser $importPreProcessingRequestBodyParser
     ) {
         $this->aggregateRepository = $aggregateRepository;
-        $this->organizerDenormalizer = $organizerDenormalizer;
         $this->commandBus = $commandBus;
         $this->lockedLabelRepository = $lockedLabelRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -84,7 +84,9 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         $data = RequestBodyParserFactory::createBaseParser(
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $organizerId),
             $this->importPreProcessingRequestBodyParser,
-            new DenormalizingRequestBodyParser($this->organizerDenormalizer, Organizer::class)
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER),
+            MainLanguageValidatingRequestBodyParser::createForOrganizer(),
+            new DenormalizingRequestBodyParser(new OrganizerDenormalizer(), Organizer::class)
         )->parse($request)->getParsedBody();
 
         $mainLanguage = $data->getMainLanguage();

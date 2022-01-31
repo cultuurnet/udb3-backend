@@ -46,7 +46,6 @@ class ImportControllerProvider implements ControllerProviderInterface
         $app[ImportOrganizerRequestHandler::class] = $app->share(
             fn (Application $app) => new ImportOrganizerRequestHandler(
                 $app['organizer_repository'],
-                $app['organizer_denormalizer'],
                 $app['imports_command_bus'],
                 $app['labels.labels_locked_for_import_repository'],
                 $app['uuid_generator'],
