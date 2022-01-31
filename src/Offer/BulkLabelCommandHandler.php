@@ -81,7 +81,7 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
             );
         } catch (\Exception $e) {
             $logContext = [
-                'iri' => (string) $offerIdentifier->getIri(),
+                'iri' => $offerIdentifier->getIri()->toString(),
                 'command' => $originalCommandName,
                 'exception' => get_class($e),
                 'message' => $e->getMessage(),

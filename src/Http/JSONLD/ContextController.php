@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Http\JSONLD;
 
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ContextController
 {
@@ -26,8 +26,8 @@ class ContextController
     {
         $controller = clone $this;
 
-        $controller->basePath = Url::fromNative(
-            rtrim((string) $basePath, '/')
+        $controller->basePath = new Url(
+            rtrim($basePath->toString(), '/')
         );
 
         return $controller;
@@ -59,7 +59,7 @@ class ContextController
             ->{'@context'}
             ->{$propertyName} = str_replace(
                 self::DEFAULT_BASE_PATH,
-                (string) $basePath,
+                $basePath->toString(),
                 $jsonData->{'@context'}->{$propertyName}
             );
     }
