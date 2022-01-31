@@ -10,10 +10,10 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
 class CalendarFactoryTest extends TestCase

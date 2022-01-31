@@ -9,11 +9,11 @@ use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Timestamp;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
 class CalendarConverterTest extends TestCase
