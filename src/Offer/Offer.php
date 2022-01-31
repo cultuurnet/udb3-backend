@@ -74,7 +74,6 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
@@ -219,7 +218,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Get the id of the main image if one is selected for this offer.
      */
-    protected function getMainImageId(): ?LegacyUUID
+    protected function getMainImageId(): ?UUID
     {
         $mainImage = $this->images->getMain();
         return isset($mainImage) ? $mainImage->getMediaObjectId() : null;

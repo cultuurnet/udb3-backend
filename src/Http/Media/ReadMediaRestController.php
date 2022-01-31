@@ -45,7 +45,6 @@ final class ReadMediaRestController
         $serializedMediaObject['contentUrl'] = $this->mediaUrlMapping->getUpdatedUrl($serializedMediaObject['contentUrl']);
         $serializedMediaObject['thumbnailUrl'] = $this->mediaUrlMapping->getUpdatedUrl($serializedMediaObject['thumbnailUrl']);
 
-        var_dump($serializedMediaObject);
         return JsonResponse::create($serializedMediaObject);
     }
 }

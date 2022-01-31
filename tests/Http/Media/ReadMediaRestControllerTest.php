@@ -36,7 +36,7 @@ class ReadMediaRestControllerTest extends TestCase
         $mediaManager = $this->createMock(MediaManager::class);
         $mediaManager->expects($this->once())
             ->method('get')
-            ->with($id)
+            ->with(new UUID($id))
             ->willReturn(
                 MediaObject::create(
                     new UUID($id),
