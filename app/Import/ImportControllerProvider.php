@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Import;
 use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportRestController;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
@@ -65,8 +66,8 @@ class ImportControllerProvider implements ControllerProviderInterface
         $controllers->post('/events/', 'event_import_controller:importWithoutId');
         $controllers->put('/events/{cdbid}/', 'event_import_controller:importWithId');
 
-        $controllers->post('/places/', 'place_import_controller:importWithoutId');
-        $controllers->put('/places/{cdbid}/', 'place_import_controller:importWithId');
+        $controllers->post('/places/', ImportPlaceRequestHandler::class);
+        $controllers->put('/places/{placeId}/', ImportPlaceRequestHandler::class);
 
         $controllers->post('/organizers/', ImportOrganizerRequestHandler::class);
         $controllers->put('/organizers/{organizerId}/', ImportOrganizerRequestHandler::class);
