@@ -82,6 +82,7 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 
         /** @var Organizer $data */
         $data = RequestBodyParserFactory::createBaseParser(
+            new LegacyOrganizerRequestBodyParser(),
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $organizerId),
             $this->importPreProcessingRequestBodyParser,
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER),
@@ -157,7 +158,11 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             }
         }
 
-        $responseBody = ['id' => $organizerId];
+        $responseBody = [
+            'id' => $organizerId,
+            'organizerId' => $organizerId,
+            'url' => $this->iriGenerator->iri($organizerId),
+        ];
         if ($lastCommandId) {
             $responseBody['commandId'] = $lastCommandId;
         }
