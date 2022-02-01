@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
+use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
+use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
+use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\PreProcessing\LabelPreProcessingDocumentImporter;
@@ -59,6 +63,30 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
 
                 return $labelPreProcessor;
             }
+        );
+
+        $app[ImportPlaceRequestHandler::class] = $app->share(
+            fn (Application $application) => new ImportPlaceRequestHandler(
+                $app['place_repository'],
+                $app['uuid_generator'],
+                $app['place_denormalizer'],
+                new CombinedRequestBodyParser(
+                    new ImportLabelVisibilityRequestBodyParser(
+                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    ),
+                    new ImportTermRequestBodyParser(
+                        new PlaceCategoryResolver()
+                    )
+                ),
+                $app['place_iri_generator'],
+                $app['imports_command_bus'],
+                $app['import_image_collection_factory'],
+                $app['labels.labels_locked_for_import_repository'],
+                $app['should_auto_approve_new_offer'],
+                $app['auth.api_key_reader'],
+                $app['auth.consumer_repository']
+            )
         );
     }
 
