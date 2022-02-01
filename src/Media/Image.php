@@ -45,12 +45,12 @@ final class Image implements Serializable
     private $language;
 
     public function __construct(
-        UUID      $id,
-        MIMEType        $mimeType,
-        Description     $description,
+        UUID $id,
+        MIMEType $mimeType,
+        Description $description,
         CopyrightHolder $copyrightHolder,
-        Url             $sourceLocation,
-        Language        $language
+        Url $sourceLocation,
+        Language $language
     ) {
         $this->mediaObjectId = $id;
         $this->mimeType = $mimeType;

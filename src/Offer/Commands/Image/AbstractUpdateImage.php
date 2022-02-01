@@ -24,9 +24,9 @@ abstract class AbstractUpdateImage extends AbstractCommand
     protected $copyrightHolder;
 
     public function __construct(
-        string          $itemId,
-        UUID      $mediaObjectId,
-        StringLiteral   $description,
+        string $itemId,
+        UUID $mediaObjectId,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ) {
         parent::__construct($itemId);
