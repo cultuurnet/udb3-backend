@@ -10,6 +10,10 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
+/**
+ * @deprecated
+ *   Should only register old /imports/... endpoints for backward compatibility.
+ */
 class ImportControllerProvider implements ControllerProviderInterface
 {
     public const PATH = '/imports';
