@@ -97,16 +97,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             fn (Application $application) => new DeleteOrganizerRequestHandler($app['event_command_bus'])
         );
 
-        $app['organizer_permissions_controller'] = $app->share(
-            function (Application $app) {
-                return new OfferPermissionsController(
-                    [Permission::organisatiesBewerken()],
-                    $app['organizer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
-                );
-            }
-        );
-
         $app[UpdateTitleRequestHandler::class] = $app->share(
             fn (Application $application) => new UpdateTitleRequestHandler($app['event_command_bus'])
         );
@@ -160,6 +150,16 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[DeleteLabelRequestHandler::class] = $app->share(
             fn (Application $application) => new DeleteLabelRequestHandler($app['event_command_bus'])
+        );
+
+        $app['organizer_permissions_controller'] = $app->share(
+            function (Application $app) {
+                return new OfferPermissionsController(
+                    [Permission::organisatiesBewerken()],
+                    $app['organizer_permission_voter'],
+                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                );
+            }
         );
     }
 
