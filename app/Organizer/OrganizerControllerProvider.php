@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
@@ -20,8 +21,10 @@ use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
+use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -70,6 +73,22 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
     public function register(Application $app): void
     {
+        $app[ImportOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new ImportOrganizerRequestHandler(
+                $app['organizer_repository'],
+                $app['imports_command_bus'],
+                $app['labels.labels_locked_for_import_repository'],
+                $app['uuid_generator'],
+                $app['organizer_iri_generator'],
+                new CombinedRequestBodyParser(
+                    new ImportLabelVisibilityRequestBodyParser(
+                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    )
+                )
+            )
+        );
+
         $app[GetOrganizerRequestHandler::class] = $app->share(
             fn (Application $application) => new GetOrganizerRequestHandler($app['organizer_service'])
         );
