@@ -1,0 +1,205 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Http\Import;
+
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
+use PHPUnit\Framework\TestCase;
+
+final class ImportTermRequestBodyParserTest extends TestCase
+{
+    private ImportTermRequestBodyParser $importTermRequestBodyParser;
+
+    protected function setUp(): void
+    {
+        $this->importTermRequestBodyParser = new ImportTermRequestBodyParser(new PlaceCategoryResolver());
+    }
+
+    /**
+     * @test
+     * @dataProvider bodyDataProvider
+     */
+    public function it_adds_missing_term_fields(object $originalBody, object $expectedBody): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withParsedBody($originalBody)
+            ->build('POST');
+
+        $this->assertEquals(
+            $expectedBody,
+            $this->importTermRequestBodyParser->parse($request)->getParsedBody()
+        );
+    }
+
+    public function bodyDataProvider(): array
+    {
+        return [
+            'body with missing term fields' => [
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => '0.8.0.0.0',
+                        ],
+                    ],
+                ],
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => '0.8.0.0.0',
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+            ],
+            'body with no term fields' => [
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                ],
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                ],
+            ],
+            'body with terms fields without id' => [
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+            ],
+            'body with invalid terms id' => [
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => 123,
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => 123,
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+            ],
+            'body with unknown terms id' => [
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => 'Unknown id',
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => 'Unknown id',
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+            ],
+            'body with wrong term fields' => [
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => '0.8.0.0.0',
+                            'label' => 'wrong label',
+                            'domain' => 'wrong domain',
+                        ],
+                    ],
+                ],
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => '0.8.0.0.0',
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+            ],
+            'body with correct term' => [
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => '0.8.0.0.0',
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+                (object) [
+                    'name' => (object) [
+                        'nl' => 'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        (object) [
+                            'id' => '0.8.0.0.0',
+                            'label' => 'Openbare ruimte',
+                            'domain' => 'eventtype',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+}
