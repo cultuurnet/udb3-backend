@@ -11,12 +11,12 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
-use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -65,7 +65,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $this->importOrganizerRequestHandler = new ImportOrganizerRequestHandler(
             $this->aggregateRepository,
-            new OrganizerDenormalizer(),
             $this->commandBus,
             $this->lockedLabelRepository,
             $this->uuidGenerator,
@@ -116,7 +115,13 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c']),
+            Json::encode(
+                [
+                    'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                ]
+            ),
             $response->getBody()->getContents()
         );
         $this->assertEquals($expectedCommands, $actualCommands);
@@ -222,7 +227,150 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $id]),
+            Json::encode(
+                [
+                    'id' => $id,
+                    'organizerId' => $id,
+                    'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
+                ]
+            ),
+            $response->getBody()->getContents()
+        );
+        $this->assertEquals($expectedCommands, $actualCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_an_organizer_from_legacy_schema_with_only_required_properties(): void
+    {
+        $organizerId = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($organizerId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Mock organizer',
+            'website' => 'https://www.mock-organizer.be',
+        ];
+
+        $this->expectOrganizerDoesNotExist($organizerId);
+
+        $this->expectCreateOrganizer(
+            OrganizerAggregate::create(
+                $organizerId,
+                new Language('nl'),
+                new Url('https://www.mock-organizer.be'),
+                new Title('Mock organizer')
+            )
+        );
+
+        $expectedCommands = [
+            new UpdateContactPoint($organizerId, new ContactPoint()),
+            new RemoveAddress($organizerId),
+            new ImportLabels($organizerId, new Labels()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('POST');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(
+                [
+                    'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                ]
+            ),
+            $response->getBody()->getContents()
+        );
+        $this->assertEquals($expectedCommands, $actualCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_an_organizer_from_legacy_schema_with_all_properties_from_old_create_request(): void
+    {
+        $id = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Mock organizer',
+            'website' => 'https://www.mock-organizer.be',
+            'address' => [
+                'streetAddress' => 'Henegouwenkaai 41-43',
+                'postalCode' => '1080',
+                'addressLocality' => 'Brussel',
+                'addressCountry' => 'BE',
+            ],
+            'contact' => [
+                ['type' => 'phone', 'value' => '123'],
+                ['type' => 'email', 'value' => 'mock@publiq.be'],
+                ['type' => 'url', 'value' => 'https://www.publiq.be'],
+            ],
+        ];
+
+        $this->expectOrganizerExists($id);
+        $this->expectNoLockedLabels();
+
+        $expectedCommands = [
+            new UpdateTitle(
+                $id,
+                new Title('Mock organizer'),
+                new Language('nl')
+            ),
+            new UpdateWebsite(
+                $id,
+                new Url('https://www.mock-organizer.be')
+            ),
+            new UpdateContactPoint(
+                $id,
+                new ContactPoint(
+                    new TelephoneNumbers(new TelephoneNumber('123')),
+                    new EmailAddresses(new EmailAddress('mock@publiq.be')),
+                    new Urls(new Url('https://www.publiq.be'))
+                )
+            ),
+            new UpdateAddress(
+                $id,
+                new Address(
+                    new Street('Henegouwenkaai 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Brussel'),
+                    new CountryCode('BE')
+                ),
+                new Language('nl')
+            ),
+            new ImportLabels($id, new Labels()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', $id)
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(
+                [
+                    'id' => $id,
+                    'organizerId' => $id,
+                    'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
+                ]
+            ),
             $response->getBody()->getContents()
         );
         $this->assertEquals($expectedCommands, $actualCommands);
@@ -256,6 +404,297 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             ApiProblem::resourceIdAlreadyInUse('5829cdfb-21b1-4494-86da-f2dbd7c8d69c'),
             fn () => $this->importOrganizerRequestHandler->handle($request)
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider schemaErrorsDataProvider
+     */
+    public function it_throws_an_api_problem_if_schema_errors_occur(array $given, array $schemaErrors): void
+    {
+        $id = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', $id)
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->expectOrganizerDoesNotExist($id);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(...$schemaErrors),
+            fn () => $this->importOrganizerRequestHandler->handle($request)
+        );
+    }
+
+    public function schemaErrorsDataProvider(): array
+    {
+        return [
+            'required_properties_missing' => [
+                'given' => [
+                    'foo' => 'bar',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/', 'The required properties (mainLanguage, url, name) are missing'),
+                ],
+            ],
+            'mainLanguage_invalid' => [
+                'given' => [
+                    'mainLanguage' => 'foo',
+                    'name' => [
+                        'nl' => 'Test',
+                    ],
+                    'url' => 'https://www.organizer.be',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/mainLanguage', 'The data should match one item from enum'),
+                ],
+            ],
+            'url_invalid' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => [
+                        'nl' => 'Test',
+                    ],
+                    'url' => 'foobar',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/url', 'The data must match the \'uri\' format'),
+                ],
+            ],
+            'name_invalid' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => false,
+                    'url' => 'https://www.organizer.be',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/name', 'The data (boolean) must match the type: object'),
+                ],
+            ],
+            'name_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['fr' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/name', 'A value in the mainLanguage (nl) is required.'),
+                ],
+            ],
+            'name_empty' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => ''],
+                    'url' => 'https://www.organizer.be',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/name/nl', 'Minimum string length is 1, found 0'),
+                ],
+            ],
+            'address_invalid' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'address' => 'foo',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/address', 'The data (string) must match the type: object'),
+                ],
+            ],
+            'address_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'address' => [
+                        'fr' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => 'Leuven',
+                            'postalCode' => '3000',
+                            'streetAddress' => 'Mockstraat 1',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/address', 'A value in the mainLanguage (nl) is required.'),
+                ],
+            ],
+            'address_properties_missing' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'address' => ['nl' => (object) []],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/address/nl', 'The required properties (addressCountry, addressLocality, postalCode, streetAddress) are missing'),
+                ],
+            ],
+            'address_properties_empty' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'address' => [
+                        'nl' => [
+                            'addressCountry' => '',
+                            'addressLocality' => '',
+                            'postalCode' => '',
+                            'streetAddress' => '',
+                        ],
+                        'fr' => [
+                            'addressCountry' => '',
+                            'addressLocality' => '',
+                            'postalCode' => '',
+                            'streetAddress' => '',
+                        ],
+                        'en' => [
+                            'addressCountry' => '',
+                            'addressLocality' => '',
+                            'postalCode' => '',
+                            'streetAddress' => '',
+                        ],
+                        'de' => [
+                            'addressCountry' => '',
+                            'addressLocality' => '',
+                            'postalCode' => '',
+                            'streetAddress' => '',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/address/nl/addressCountry', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/nl/addressLocality', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/nl/postalCode', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/nl/streetAddress', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/fr/addressCountry', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/fr/addressLocality', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/fr/postalCode', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/fr/streetAddress', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/de/addressCountry', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/de/addressLocality', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/de/postalCode', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/de/streetAddress', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/en/addressCountry', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/en/addressLocality', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/en/postalCode', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/address/en/streetAddress', 'Minimum string length is 1, found 0'),
+                ],
+            ],
+            'address_countries_too_long' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'address' => [
+                        'nl' => [
+                            'addressCountry' => 'BEE',
+                            'addressLocality' => 'Leuven',
+                            'postalCode' => '3000',
+                            'streetAddress' => 'Mockstraat 1',
+                        ],
+                        'fr' => [
+                            'addressCountry' => 'BEE',
+                            'addressLocality' => 'Leuven',
+                            'postalCode' => '3000',
+                            'streetAddress' => 'Mockstraat 1',
+                        ],
+                        'en' => [
+                            'addressCountry' => 'BEE',
+                            'addressLocality' => 'Leuven',
+                            'postalCode' => '3000',
+                            'streetAddress' => 'Mockstraat 1',
+                        ],
+                        'de' => [
+                            'addressCountry' => 'BEE',
+                            'addressLocality' => 'Leuven',
+                            'postalCode' => '3000',
+                            'streetAddress' => 'Mockstraat 1',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/address/nl/addressCountry', 'Maximum string length is 2, found 3'),
+                    new SchemaError('/address/fr/addressCountry', 'Maximum string length is 2, found 3'),
+                    new SchemaError('/address/de/addressCountry', 'Maximum string length is 2, found 3'),
+                    new SchemaError('/address/en/addressCountry', 'Maximum string length is 2, found 3'),
+                ],
+            ],
+            'contactPoint_properties_missing' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'contactPoint' => (object) [],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/contactPoint', 'The required properties (phone, email, url) are missing'),
+                ],
+            ],
+            'contactPoint_properties_invalid' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'contactPoint' => (object) [
+                        'phone' => '123',
+                        'url' => 'https://www.organizer.be/contact',
+                        'email' => 'info@organizer.be',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/contactPoint/phone', 'The data (string) must match the type: array'),
+                    new SchemaError('/contactPoint/email', 'The data (string) must match the type: array'),
+                    new SchemaError('/contactPoint/url', 'The data (string) must match the type: array'),
+                ],
+            ],
+            'contactPoint_properties_invalid_array_values' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'contactPoint' => (object) [
+                        'phone' => [''],
+                        'url' => ['foobar'],
+                        'email' => ['foobar'],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/contactPoint/phone/0', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/contactPoint/email/0', 'The data must match the \'email\' format'),
+                    new SchemaError('/contactPoint/url/0', 'The data must match the \'uri\' format'),
+                ],
+            ],
+            'labels_invalid_type' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'labels' => 'foo',
+                    'hiddenLabels' => 'bar',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/labels', 'The data (string) must match the type: array'),
+                    new SchemaError('/hiddenLabels', 'The data (string) must match the type: array'),
+                ],
+            ],
+            'labels_invalid_values' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'labels' => ['', 'waytoolong' . implode('', range(0, 255))],
+                    'hiddenLabels' => ['shouldnotcontain;'],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/labels/0', 'Minimum string length is 2, found 0'),
+                    new SchemaError('/labels/1', 'Maximum string length is 255, found 668'),
+                    new SchemaError('/hiddenLabels/0', 'The string should match pattern: ^[^;]{2,255}$'),
+                ],
+            ],
+        ];
     }
 
     private function getOrganizerData(): array

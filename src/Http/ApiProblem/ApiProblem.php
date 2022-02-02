@@ -31,6 +31,7 @@ final class ApiProblem extends Exception
     private ?string $detail;
     private array $schemaErrors = [];
     private array $debugInfo = [];
+    private array $extraProperties = [];
 
     /**
      * @deprecated
@@ -77,6 +78,11 @@ final class ApiProblem extends Exception
         $problem->code = $status;
 
         return $problem;
+    }
+
+    private function setExtraProperties(array $extraProperties): void
+    {
+        $this->extraProperties = $extraProperties;
     }
 
     public function getType(): string
@@ -139,6 +145,10 @@ final class ApiProblem extends Exception
                 ],
                 $this->schemaErrors
             );
+        }
+
+        if (count($this->extraProperties) > 0) {
+            $json = array_merge($this->extraProperties, $json);
         }
 
         /** @deprecated Remove once withValidationMessages() is removed. */
@@ -379,5 +389,17 @@ final class ApiProblem extends Exception
             400,
             'The url ' . $originalUrl . ' (normalized to ' . $normalized . ') is already in use.'
         );
+    }
+
+    public static function labelNotAllowed(string $labelName): self
+    {
+        $e = self::create(
+            'https://api.publiq.be/probs/uitdatabank/label-not-allowed',
+            'Label not allowed',
+            403,
+            'The label "' . $labelName . '" is reserved and you do not have sufficient permissions to use it.'
+        );
+        $e->setExtraProperties(['label' => $labelName]);
+        return $e;
     }
 }
