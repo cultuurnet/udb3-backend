@@ -533,8 +533,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     private function updateImageAllowed(
-        UUID      $mediaObjectId,
-        StringLiteral   $description,
+        UUID $mediaObjectId,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): bool {
         $image = $this->images->findImageByUUID($mediaObjectId);
