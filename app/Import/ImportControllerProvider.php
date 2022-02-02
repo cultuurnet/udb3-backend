@@ -32,18 +32,6 @@ class ImportControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app['place_import_controller'] = $app->share(
-            function (Application $app) {
-                return new ImportRestController(
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['place_importer'],
-                    $app['uuid_generator'],
-                    $app['place_iri_generator']
-                );
-            }
-        );
-
         $app[ImportOrganizerRequestHandler::class] = $app->share(
             fn (Application $app) => new ImportOrganizerRequestHandler(
                 $app['organizer_repository'],
