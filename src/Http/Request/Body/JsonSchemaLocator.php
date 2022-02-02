@@ -25,6 +25,7 @@ final class JsonSchemaLocator
     public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
     public const EVENT_VIDEOS_POST = 'event-videos-post.json';
 
+    public const PLACE = 'place.json';
     public const PLACE_AVAILABLE_FROM_PUT = 'place-availableFrom-put.json';
     public const PLACE_BOOKING_AVAILABILITY = 'place-bookingAvailability.json';
     public const PLACE_CALENDAR_PUT = 'place-calendar-put.json';
