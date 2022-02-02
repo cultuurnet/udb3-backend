@@ -43,7 +43,7 @@ class LabelRolesProjector extends RoleProjector
 
     public function applyCreated(LabelCreated $labelCreated)
     {
-        $document = $this->createNewDocument($labelCreated->getUuid());
+        $document = $this->createNewDocument(new UUID($labelCreated->getUuid()->toNative()));
         $this->repository->save($document);
     }
 
