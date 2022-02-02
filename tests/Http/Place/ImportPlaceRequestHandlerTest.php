@@ -466,6 +466,36 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     ),
                 ],
             ],
+            'The name has an invalid format' => [
+                [
+                    'name' => [
+                        'Cafe Den Hemel',
+                    ],
+                    'terms' => [
+                        [
+                            'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                            'domain' => 'eventtype',
+                            'label' => 'Cultuur- of ontmoetingscentrum',
+                        ],
+                    ],
+                    'address' => [
+                        'nl' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => 'Scherpenheuvel-Zichem',
+                            'postalCode' => '3271',
+                            'streetAddress' => 'Hoornblaas 107',
+                        ],
+                    ],
+                    'calendarType' => 'permanent',
+                    'mainLanguage' => 'nl',
+                ],
+                [
+                    new SchemaError(
+                        '/name',
+                        'The data (array) must match the type: object'
+                    ),
+                ],
+            ],
         ];
     }
 }
