@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
-use ValueObjects\Identity\UUID;
 
 class RoleLabelsProjector extends RoleProjector
 {
@@ -115,7 +115,7 @@ class RoleLabelsProjector extends RoleProjector
     private function getDocument(UUID $uuid): ?JsonDocument
     {
         try {
-            return $this->repository->fetch($uuid->toNative());
+            return $this->repository->fetch($uuid->toString());
         } catch (DocumentDoesNotExist $e) {
             return null;
         }
@@ -135,7 +135,7 @@ class RoleLabelsProjector extends RoleProjector
     private function createNewDocument(UUID $uuid)
     {
         $document = new JsonDocument(
-            $uuid->toNative(),
+            $uuid->toString(),
             json_encode([])
         );
         return $document;

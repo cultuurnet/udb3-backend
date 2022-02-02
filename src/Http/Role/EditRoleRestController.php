@@ -57,7 +57,7 @@ class EditRoleRestController
             new StringLiteral($bodyContent->name)
         );
 
-        return new JsonResponse(['roleId' => $roleId->toNative()], 201);
+        return new JsonResponse(['roleId' => $roleId->toString()], 201);
     }
 
     public function update(Request $request, string $id): Response

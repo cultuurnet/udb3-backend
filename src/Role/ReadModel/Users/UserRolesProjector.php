@@ -42,7 +42,7 @@ class UserRolesProjector extends RoleProjector
     public function applyUserAdded(UserAdded $userAdded)
     {
         $userId = $userAdded->getUserId()->toNative();
-        $roleId = $userAdded->getUuid()->toNative();
+        $roleId = $userAdded->getUuid()->toString();
 
         try {
             $roleDetailsDocument = $this->roleDetailsDocumentRepository->fetch($roleId);
@@ -73,7 +73,7 @@ class UserRolesProjector extends RoleProjector
     public function applyUserRemoved(UserRemoved $userRemoved)
     {
         $userId = $userRemoved->getUserId()->toNative();
-        $roleId = $userRemoved->getUuid()->toNative();
+        $roleId = $userRemoved->getUuid()->toString();
 
         try {
             $document = $this->repository->fetch($userId);
@@ -92,7 +92,7 @@ class UserRolesProjector extends RoleProjector
 
     public function applyRoleDetailsProjectedToJSONLD(RoleDetailsProjectedToJSONLD $roleDetailsProjectedToJSONLD)
     {
-        $roleId = $roleDetailsProjectedToJSONLD->getUuid()->toNative();
+        $roleId = $roleDetailsProjectedToJSONLD->getUuid()->toString();
 
         try {
             $roleDetailsDocument = $this->roleDetailsDocumentRepository->fetch($roleId);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -14,7 +15,6 @@ use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use ValueObjects\Identity\UUID;
 
 class RoleUsersProjector extends RoleProjector
 {
@@ -74,7 +74,7 @@ class RoleUsersProjector extends RoleProjector
     {
         $this->repository->save(
             new JsonDocument(
-                $roleCreated->getUuid()->toNative(),
+                $roleCreated->getUuid()->toString(),
                 json_encode([])
             )
         );
@@ -89,7 +89,7 @@ class RoleUsersProjector extends RoleProjector
     private function getDocument(UUID $uuid): ?JsonDocument
     {
         try {
-            return $this->repository->fetch($uuid->toNative());
+            return $this->repository->fetch($uuid->toString());
         } catch (DocumentDoesNotExist $e) {
             return null;
         }

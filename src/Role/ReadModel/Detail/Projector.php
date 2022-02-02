@@ -19,9 +19,9 @@ class Projector extends RoleProjector
     protected function applyRoleCreated(RoleCreated $roleCreated): void
     {
         $this->saveNewDocument(
-            $roleCreated->getUuid()->toNative(),
+            $roleCreated->getUuid()->toString(),
             function (\stdClass $json) use ($roleCreated) {
-                $json->uuid = $roleCreated->getUuid()->toNative();
+                $json->uuid = $roleCreated->getUuid()->toString();
                 $json->name = $roleCreated->getName()->toNative();
                 $json->permissions = [];
                 return $json;
@@ -32,7 +32,7 @@ class Projector extends RoleProjector
     protected function applyRoleRenamed(RoleRenamed $roleRenamed): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
-            $roleRenamed->getUuid()->toNative()
+            $roleRenamed->getUuid()->toString()
         );
 
         $json = $document->getBody();
@@ -49,7 +49,7 @@ class Projector extends RoleProjector
     protected function applyConstraintAdded(ConstraintAdded $constraintAdded): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
-            $constraintAdded->getUuid()->toNative()
+            $constraintAdded->getUuid()->toString()
         );
 
         $json = $document->getBody();
@@ -66,7 +66,7 @@ class Projector extends RoleProjector
     protected function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
-            $constraintUpdated->getUuid()->toNative()
+            $constraintUpdated->getUuid()->toString()
         );
 
         $json = $document->getBody();
@@ -79,7 +79,7 @@ class Projector extends RoleProjector
     protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
-            $constraintRemoved->getUuid()->toNative()
+            $constraintRemoved->getUuid()->toString()
         );
 
         $json = $document->getBody();
@@ -92,7 +92,7 @@ class Projector extends RoleProjector
     public function applyPermissionAdded(PermissionAdded $permissionAdded): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
-            $permissionAdded->getUuid()->toNative()
+            $permissionAdded->getUuid()->toString()
         );
 
         $json = $document->getBody();
@@ -108,7 +108,7 @@ class Projector extends RoleProjector
     public function applyPermissionRemoved(PermissionRemoved $permissionRemoved): void
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
-            $permissionRemoved->getUuid()->toNative()
+            $permissionRemoved->getUuid()->toString()
         );
 
         $permissionName = $permissionRemoved->getPermission()->toUpperCaseString();

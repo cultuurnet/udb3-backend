@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
 use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
@@ -19,7 +20,6 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Role extends EventSourcedAggregateRoot
@@ -47,7 +47,7 @@ class Role extends EventSourcedAggregateRoot
 
     public function getAggregateRootId(): string
     {
-        return $this->uuid->toNative();
+        return $this->uuid->toString();
     }
 
     public static function create(

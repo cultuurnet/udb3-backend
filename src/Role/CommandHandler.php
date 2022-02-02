@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Role;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler as AbstractCommandHandler;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
@@ -18,7 +19,6 @@ use CultuurNet\UDB3\Role\Commands\RemovePermission;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
-use ValueObjects\Identity\UUID;
 
 class CommandHandler extends AbstractCommandHandler
 {

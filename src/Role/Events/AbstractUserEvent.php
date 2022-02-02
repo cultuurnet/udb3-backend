@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class AbstractUserEvent extends AbstractEvent
