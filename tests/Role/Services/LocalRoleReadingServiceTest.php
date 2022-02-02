@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Role\Services;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class LocalRoleReadingServiceTest extends TestCase
 {
@@ -96,9 +96,9 @@ class LocalRoleReadingServiceTest extends TestCase
      */
     public function it_returns_the_labels_of_a_role()
     {
-        $roleId = new UUID();
+        $roleId = new UUID('f55bb2d5-1b73-478b-976e-5d97bb2c5512');
 
-        $expectedLabels = (new JsonDocument($roleId->toNative()))->withAssocBody([]);
+        $expectedLabels = (new JsonDocument($roleId->toString()))->withAssocBody([]);
 
         $this->roleLabelsReadRepository->expects($this->once())
             ->method('fetch')

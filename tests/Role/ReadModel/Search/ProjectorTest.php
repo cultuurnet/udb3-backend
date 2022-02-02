@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
 use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
@@ -33,7 +33,7 @@ class ProjectorTest extends TestCase
         $this->repository = $this->createMock(RepositoryInterface::class);
         $this->projector = new Projector($this->repository);
         $this->domainMessage = new DomainMessage('id', 0, new Metadata(), '', DateTime::now());
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('58a35de9-eb6b-46b7-89ab-26c598304a67');
     }
 
     /**
@@ -49,7 +49,7 @@ class ProjectorTest extends TestCase
         $this->repository
             ->expects($this->once())
             ->method('save')
-            ->with($this->uuid->toNative(), 'role_name');
+            ->with($this->uuid->toString(), 'role_name');
 
         $this->projector->applyRoleCreated($roleCreated, $this->domainMessage);
     }
@@ -67,7 +67,7 @@ class ProjectorTest extends TestCase
         $this->repository
             ->expects($this->once())
             ->method('updateName')
-            ->with($this->uuid->toNative(), 'role_name');
+            ->with($this->uuid->toString(), 'role_name');
 
         $this->projector->applyRoleRenamed($roleRenamed, $this->domainMessage);
     }
@@ -84,7 +84,7 @@ class ProjectorTest extends TestCase
         $this->repository
             ->expects($this->once())
             ->method('remove')
-            ->with($this->uuid->toNative());
+            ->with($this->uuid->toString());
 
         $this->projector->applyRoleDeleted($roleDeleted, $this->domainMessage);
     }
@@ -95,7 +95,7 @@ class ProjectorTest extends TestCase
     public function it_calls_update_constraint_on_constraint_created_event(): void
     {
         $constraintAdded = new ConstraintAdded(
-            new UUID(),
+            new UUID('54c49e3e-d022-4c39-8ff9-dfc7f1f79bf2'),
             new Query('zipCode:3000')
         );
         $domainMessage = $this->createDomainMessage($constraintAdded);
@@ -113,7 +113,7 @@ class ProjectorTest extends TestCase
     public function it_calls_update_constraint_on_constraint_updated_event(): void
     {
         $constraintUpdated = new ConstraintUpdated(
-            new UUID(),
+            new UUID('1acb8dcc-90cd-4b3e-af40-2db11af15106'),
             new Query('zipCode:3000')
         );
         $domainMessage = $this->createDomainMessage($constraintUpdated);
@@ -130,7 +130,7 @@ class ProjectorTest extends TestCase
      */
     public function it_calls_update_constraint_on_constraint_removed_event(): void
     {
-        $constraintRemoved = new ConstraintRemoved(new UUID());
+        $constraintRemoved = new ConstraintRemoved(new UUID('b2d63a70-1796-452f-9779-ca759327d975'));
         $domainMessage = $this->createDomainMessage($constraintRemoved);
 
         $this->repository->expects($this->once())

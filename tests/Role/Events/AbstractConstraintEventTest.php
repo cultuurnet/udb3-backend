@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class AbstractConstraintEventTest extends TestCase
 {
@@ -22,7 +22,7 @@ class AbstractConstraintEventTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('8e846b43-3e65-4672-a76b-cdf30ab4f9de');
 
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
 
@@ -49,7 +49,7 @@ class AbstractConstraintEventTest extends TestCase
         $actualArray = $this->event->serialize();
 
         $expectedArray = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
             'query' => $this->query->toNative(),
         ];
 
@@ -62,7 +62,7 @@ class AbstractConstraintEventTest extends TestCase
     public function it_can_deserialize(): void
     {
         $data = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
             'query' => $this->query->toNative(),
         ];
         $actualEvent = $this->event->deserialize($data);

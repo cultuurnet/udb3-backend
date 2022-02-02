@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionSchemaConfigurator;
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator as SearchSchemaConfigurator;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UserConstraintsReadRepositoryTest extends TestCase
@@ -32,7 +32,12 @@ class UserConstraintsReadRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->roleIds = [new UUID(), new UUID(), new UUID(), new UUID()];
+        $this->roleIds = [
+            new UUID('36c96c3b-9ce4-492b-9b4e-fee465beb597'),
+            new UUID('f874cea2-4f8e-475c-8e97-47f881fc5e1a'),
+            new UUID('eec38cda-9e24-441e-9584-2dafe80590a3'),
+            new UUID('09e79125-5982-4a0f-aba6-a28774b84699')
+        ];
 
         $this->userRolesTableName = new StringLiteral('user_roles');
         $this->rolePermissionsTableName = new StringLiteral('role_permissions');
@@ -155,7 +160,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
             $this->userRolesTableName,
             [
                 PermissionSchemaConfigurator::USER_ID_COLUMN => $userId->toNative(),
-                PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -166,7 +171,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolePermissionsTableName,
             [
-                PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                PermissionSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
                 PermissionSchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
@@ -180,7 +185,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->rolesSearchTableName,
             [
-                SearchSchemaConfigurator::UUID_COLUMN => $roleId->toNative(),
+                SearchSchemaConfigurator::UUID_COLUMN => $roleId->toString(),
                 SearchSchemaConfigurator::NAME_COLUMN => $roleName->toNative(),
                 SearchSchemaConfigurator::CONSTRAINT_COLUMN => $constraint ? $constraint->toNative() : null,
             ]

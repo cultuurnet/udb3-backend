@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class AbstractUserEventTest extends TestCase
@@ -28,7 +28,7 @@ class AbstractUserEventTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('7c296342-d72b-4444-9f8b-2a0c99763c9a');
 
         $this->userId = new StringLiteral('userId');
 
@@ -62,7 +62,7 @@ class AbstractUserEventTest extends TestCase
         $actualArray = $this->abstractUserEvent->serialize();
 
         $expectedArray = [
-            AbstractUserEvent::UUID => $this->uuid->toNative(),
+            AbstractUserEvent::UUID => $this->uuid->toString(),
             AbstractUserEvent::USER_ID => $this->userId->toNative(),
         ];
 
