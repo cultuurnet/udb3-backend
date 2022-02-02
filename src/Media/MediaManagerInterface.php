@@ -22,11 +22,11 @@ interface MediaManagerInterface extends CommandHandler
     public function handleUploadImage(UploadImage $uploadImage): void;
 
     public function create(
-        UUID      $id,
-        MIMEType        $mimeType,
-        StringLiteral   $description,
+        UUID $id,
+        MIMEType $mimeType,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder,
-        Url             $sourceLocation,
-        Language        $language
+        Url $sourceLocation,
+        Language $language
     ): MediaObject;
 }

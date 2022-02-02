@@ -40,12 +40,12 @@ class UploadImage
     protected $filePath;
 
     public function __construct(
-        UUID      $fileId,
-        MIMEType        $mimeType,
-        StringLiteral   $description,
+        UUID $fileId,
+        MIMEType $mimeType,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder,
-        StringLiteral   $filePath,
-        Language        $language
+        StringLiteral$filePath,
+        Language $language
     ) {
         $this->fileId = $fileId;
         $this->description = $description;

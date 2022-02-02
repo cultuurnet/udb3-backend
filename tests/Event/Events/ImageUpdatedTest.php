@@ -53,7 +53,7 @@ class ImageUpdatedTest extends TestCase
                 ],
                 new ImageUpdated(
                     'de305d54-75b4-431b-adb2-eb6b9e546014',
-                    new UUId('ea305d54-75b4-431b-adb2-eb6b9e546019'),
+                    new UUID('ea305d54-75b4-431b-adb2-eb6b9e546019'),
                     new StringLiteral('some description'),
                     new CopyrightHolder('Dirk')
                 ),

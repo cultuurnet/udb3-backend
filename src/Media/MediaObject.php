@@ -53,12 +53,12 @@ class MediaObject extends EventSourcedAggregateRoot
     protected $language;
 
     public static function create(
-        UUID      $id,
-        MIMEType        $mimeType,
-        StringLiteral   $description,
+        UUID $id,
+        MIMEType $mimeType,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder,
-        Url             $sourceLocation,
-        Language        $language
+        Url $sourceLocation,
+        Language $language
     ): MediaObject {
         $mediaObject = new self();
         $mediaObject->apply(
