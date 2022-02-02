@@ -21,6 +21,9 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -70,6 +73,8 @@ use ValueObjects\Web\Url as LegacyUrl;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
     private MockObject $aggregateRepository;
 
     private MockObject $uuidGenerator;
@@ -423,5 +428,44 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             $this->commandBus->getRecordedCommands()
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidPlaceProvider
+     */
+    public function it_throws_an_api_problem_when_importing_invalid_place(array $invalidPlace, array $schemaErrors): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($invalidPlace)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(...$schemaErrors),
+            fn () => $this->importPlaceRequestHandler->handle($request)
+        );
+    }
+
+    public function invalidPlaceProvider(): array
+    {
+        return [
+            'The required properties are missing' => [
+                [
+                    'foo' => 'bar',
+                ],
+                [
+                    new SchemaError(
+                        '/',
+                        'The required properties (mainLanguage, name, terms, calendarType, address) are missing'
+                    ),
+                ],
+            ],
+        ];
     }
 }
