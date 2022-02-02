@@ -149,7 +149,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_create(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([])
             ->when(new CreateRole(
                 $this->uuid,
@@ -164,7 +164,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_rename(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(new RenameRole(
                 $this->uuid,
@@ -179,7 +179,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_addPermission(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(new AddPermission(
                 $this->uuid,
@@ -194,7 +194,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_removePermission(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, new PermissionAdded($this->uuid, $this->permission)])
             ->when(new RemovePermission(
                 $this->uuid,
@@ -211,7 +211,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $userId = new StringLiteral('123456');
 
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
 
             // Add a user.
@@ -287,7 +287,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_addConstraint(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(new AddConstraint(
                 $this->uuid,
@@ -302,7 +302,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_updateConstraint(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, $this->constraintAdded])
             ->when(new UpdateConstraint(
                 $this->uuid,
@@ -317,7 +317,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_removeConstraint(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, $this->constraintAdded])
             ->when(new RemoveConstraint($this->uuid))
             ->then([$this->constraintRemoved]);
@@ -329,7 +329,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_addLabel(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(
                 new AddLabel(
@@ -346,7 +346,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_removeLabel(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, $this->labelAdded])
             ->when(
                 new RemoveLabel(
@@ -363,7 +363,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_deleteRole_by_deleting_the_role(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(new DeleteRole(
                 $this->uuid

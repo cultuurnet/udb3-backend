@@ -208,7 +208,9 @@ class Role extends EventSourcedAggregateRoot
     public function applyLabelRemoved(LabelRemoved $labelRemoved): void
     {
         $labelId = $labelRemoved->getLabelId();
-        $this->labelIds = array_diff($this->labelIds, [$labelId]);
+        if (($index = array_search($labelId, $this->labelIds)) !== false) {
+            unset($this->labelIds[$index]);
+        }
     }
 
     public function applyUserAdded(UserAdded $userAdded): void

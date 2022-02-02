@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ValueObjects\Identity\UUID as LegacyUUID;
 
 class LabelRolesProjectorTest extends TestCase
 {
@@ -47,18 +48,18 @@ class LabelRolesProjectorTest extends TestCase
     public function it_creates_projection_with_empty_list_of_roles_on_label_created_event()
     {
         $labelCreated = new LabelCreated(
-            new UUID('32574fe8-e752-49dd-9dc1-6856372f5f2f'),
+            new LegacyUUID('32574fe8-e752-49dd-9dc1-6856372f5f2f'),
             new LabelName('labelName'),
             Visibility::getByName('INVISIBLE'),
             Privacy::getByName('PRIVACY_PRIVATE')
         );
 
         $domainMessage = $this->createDomainMessage(
-            $labelCreated->getUuid(),
+            new UUID($labelCreated->getUuid()->toNative()),
             $labelCreated
         );
 
-        $jsonDocument = $this->createEmptyJsonDocument($labelCreated->getUuid());
+        $jsonDocument = $this->createEmptyJsonDocument(new UUID($labelCreated->getUuid()->toNative()));
 
         $this->labelRolesRepository
             ->expects($this->once())

@@ -274,7 +274,7 @@ class EditRoleRestControllerTest extends TestCase
                 new UUID($this->labelId)
             );
 
-        $response = $this->controller->addLabel($this->roleId, $labelName);
+        $response = $this->controller->addLabel($this->roleId, $this->labelId);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -321,7 +321,7 @@ class EditRoleRestControllerTest extends TestCase
         $labelName = 'foo';
 
         $label = new Entity(
-            new UUID($this->labelId),
+            new LegacyUUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -339,7 +339,7 @@ class EditRoleRestControllerTest extends TestCase
                 new UUID($this->labelId)
             );
 
-        $response = $this->controller->removeLabel($this->roleId, $labelName);
+        $response = $this->controller->removeLabel($this->roleId, $this->labelId);
 
         $this->assertEquals(204, $response->getStatusCode());
     }

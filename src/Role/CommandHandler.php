@@ -160,7 +160,7 @@ class CommandHandler extends AbstractCommandHandler
     private function load(UUID $uuid): Role
     {
         /** @var Role $role */
-        $role = $this->repository->load($uuid);
+        $role = $this->repository->load($uuid->toString());
         return $role;
     }
 
