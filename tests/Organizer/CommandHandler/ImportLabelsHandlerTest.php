@@ -7,11 +7,14 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as Udb3ModelLabel;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as Udb3ModelLabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels as Udb3ModelLabels;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
@@ -19,16 +22,25 @@ use CultuurNet\UDB3\Organizer\Events\LabelsImported;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
+use ValueObjects\StringLiteral\StringLiteral;
 
 final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var LabelServiceInterface|MockObject
-     */
-    private $labelService;
+    use AssertApiProblemTrait;
+
+    private MockObject $labelService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): ImportLabelsHandler
     {
+        $labelPermissionRepository = $this->createMock(ReadRepositoryInterface::class);
+        $labelPermissionRepository->expects($this->any())
+            ->method('canUseLabel')
+            ->willReturnCallback(
+                function (StringLiteral $userId, StringLiteral $labelName) {
+                    return $labelName->toNative() !== 'not_allowed';
+                }
+            );
+
         $this->labelService = $this->createMock(LabelServiceInterface::class);
 
         return new ImportLabelsHandler(
@@ -36,7 +48,9 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 $eventStore,
                 $eventBus
             ),
-            $this->labelService
+            $this->labelService,
+            $labelPermissionRepository,
+            'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
         );
     }
 
@@ -47,11 +61,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'), true);
+            ->with(new LegacyLabelName('foo'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('bar'), true);
+            ->with(new LegacyLabelName('bar'), true);
 
         $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
 
@@ -65,13 +79,13 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new ImportLabels(
                     $id,
-                    new Udb3ModelLabels(
-                        new Udb3ModelLabel(
-                            new Udb3ModelLabelName('foo'),
+                    new Labels(
+                        new Label(
+                            new LabelName('foo'),
                             true
                         ),
-                        new Udb3ModelLabel(
-                            new Udb3ModelLabelName('bar'),
+                        new Label(
+                            new LabelName('bar'),
                             true
                         )
                     )
@@ -81,19 +95,79 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new LabelsImported(
                         $id,
-                        new Udb3ModelLabels(
-                            new Udb3ModelLabel(
-                                new Udb3ModelLabelName('foo'),
+                        new Labels(
+                            new Label(
+                                new LabelName('foo'),
                                 true
                             ),
-                            new Udb3ModelLabel(
-                                new Udb3ModelLabelName('bar'),
+                            new Label(
+                                new LabelName('bar'),
                                 true
                             )
                         )
                     ),
                     new LabelAdded($id, 'foo'),
                     new LabelAdded($id, 'bar'),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_trying_to_add_a_private_label(): void
+    {
+        $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::labelNotAllowed('not_allowed'),
+            fn () => $this->scenario
+                ->withAggregateId($id)
+                ->given(
+                    [
+                        $this->organizerCreated($id),
+                    ]
+                )
+                ->when(
+                    (new ImportLabels($id, new Labels(new Label(new LabelName('not_allowed')))))
+                )
+                ->then([])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_throw_if_a_private_label_is_used_but_already_on_the_organizer_anyway(): void
+    {
+        $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
+
+        $this->scenario
+            ->withAggregateId($id)
+            ->given(
+                [
+                    $this->organizerCreated($id),
+                    new LabelAdded($id, 'not_allowed'),
+                ]
+            )
+            ->when(
+                new ImportLabels(
+                    $id,
+                    new Labels(
+                        new Label(new LabelName('not_allowed')),
+                        new Label(new LabelName('allowed'))
+                    )
+                )
+            )
+            ->then(
+                [
+                    new LabelsImported(
+                        $id,
+                        new Labels(
+                            new Label(new LabelName('allowed'))
+                        )
+                    ),
+                    new LabelAdded($id, 'allowed'),
                 ]
             );
     }
@@ -119,11 +193,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 ]
             )
             ->when(
-                (new ImportLabels($id, new Udb3ModelLabels()))
+                (new ImportLabels($id, new Labels()))
                     ->withLabelsToKeepIfAlreadyOnOrganizer(
-                        new Udb3ModelLabels(
-                            new Udb3ModelLabel(
-                                new Udb3ModelLabelName('existing_private')
+                        new Labels(
+                            new Label(
+                                new LabelName('existing_private')
                             )
                         )
                     )

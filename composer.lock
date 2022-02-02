@@ -5226,12 +5226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "e4b72f8c4536561517350281e8bd42669f7f6b7f"
+                "reference": "0b1334c3b96aa05ab99869310525ceadfd34f009"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/e4b72f8c4536561517350281e8bd42669f7f6b7f",
-                "reference": "e4b72f8c4536561517350281e8bd42669f7f6b7f",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/0b1334c3b96aa05ab99869310525ceadfd34f009",
+                "reference": "0b1334c3b96aa05ab99869310525ceadfd34f009",
                 "shasum": ""
             },
             "type": "library",
@@ -5250,7 +5250,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/unreleased"
             },
-            "time": "2022-01-12T14:05:15+00:00"
+            "time": "2022-01-31T11:35:23+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

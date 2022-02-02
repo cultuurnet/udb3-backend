@@ -101,7 +101,7 @@ final class UpdateUrlRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/url', 'The string should match pattern: ^http[s]?:\/\/')
+                new SchemaError('/url', 'The data must match the \'uri\' format')
             ),
             fn () => $this->updateUrlRequestHandler->handle($updateUrlRequest)
         );

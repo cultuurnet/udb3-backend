@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormaliz
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
-use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
@@ -21,14 +20,11 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use Respect\Validation\Validator;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class OrganizerDenormalizer implements DenormalizerInterface
 {
-    private Validator $organizerValidator;
-
     private UUIDParser $organizerIDParser;
 
     private DenormalizerInterface $titleDenormalizer;
@@ -42,7 +38,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
     private DenormalizerInterface $geoCoordinatesDenormalizer;
 
     public function __construct(
-        Validator $organizerValidator = null,
         UUIDParser $organizerIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,
@@ -50,10 +45,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
         DenormalizerInterface $contactPointDenormalizer = null,
         DenormalizerInterface $geoCoordinatesDenormalizer = null
     ) {
-        if (!$organizerValidator) {
-            $organizerValidator = new OrganizerValidator();
-        }
-
         if (!$organizerIDParser) {
             $organizerIDParser = new OrganizerIDParser();
         }
@@ -78,7 +69,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
         }
 
-        $this->organizerValidator = $organizerValidator;
         $this->organizerIDParser = $organizerIDParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->addressDenormalizer = $addressDenormalizer;
@@ -99,8 +89,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
         if (!is_array($data)) {
             throw new UnsupportedException('Organizer data should be an associative array.');
         }
-
-        $this->organizerValidator->assert($data);
 
         $idUrl = new Url($data['@id']);
         $id = $this->organizerIDParser->fromUrl($idUrl);
