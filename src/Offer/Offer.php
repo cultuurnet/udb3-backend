@@ -1015,8 +1015,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createImageRemovedEvent(Image $image): AbstractImageRemoved;
 
     abstract protected function createImageUpdatedEvent(
-        UUID      $uuid,
-        StringLiteral   $description,
+        UUID $uuid,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): AbstractImageUpdated;
 
