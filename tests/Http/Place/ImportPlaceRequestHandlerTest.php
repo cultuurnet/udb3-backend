@@ -496,6 +496,35 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     ),
                 ],
             ],
+            'The terms have a missing id' => [
+                [
+                    'name' => [
+                        'nl' => 'In De Hel',
+                    ],
+                    'terms' => [
+                        [
+                            'domain' => 'eventtype',
+                            'label' => 'Cultuur- of ontmoetingscentrum',
+                        ],
+                    ],
+                    'address' => [
+                        'nl' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => 'Scherpenheuvel-Zichem',
+                            'postalCode' => '3271',
+                            'streetAddress' => 'Hoornblaas 107',
+                        ],
+                    ],
+                    'calendarType' => 'permanent',
+                    'mainLanguage' => 'nl',
+                ],
+                [
+                    new SchemaError(
+                        '/terms/0',
+                        'The required properties (id) are missing'
+                    ),
+                ],
+            ],
         ];
     }
 }
