@@ -31,11 +31,11 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
                 SchemaConfigurator::PARENT_UUID_COLUMN => '?',
             ])
             ->setParameters([
-                $uuid->toNative(),
+                $uuid->toString(),
                 $name->toNative(),
                 $visibility === Visibility::VISIBLE() ? 1 : 0,
                 $privacy === Privacy::PRIVACY_PRIVATE() ? 1 : 0,
-                $parentUuid ? $parentUuid->toNative() : null,
+                $parentUuid ? $parentUuid->toString() : null,
             ]);
 
         $queryBuilder->execute();
@@ -114,7 +114,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             ->where(SchemaConfigurator::UUID_COLUMN . ' = ?')
             ->setParameters([
                 $value ? 1 : 0,
-                $uuid->toNative(),
+                $uuid->toString(),
             ]);
 
         $queryBuilder->execute();
@@ -135,7 +135,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
                 $newCount < 0 ? 0 : $newCount
             )
             ->where(SchemaConfigurator::UUID_COLUMN . ' = ?')
-            ->setParameters([$uuid->toNative()]);
+            ->setParameters([$uuid->toString()]);
 
         $queryBuilder->execute();
     }
@@ -146,7 +146,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             ->select([SchemaConfigurator::COUNT_COLUMN])
             ->from($this->getTableName()->toNative())
             ->where(SchemaConfigurator::UUID_COLUMN . ' = ?')
-            ->setParameters([$uuid->toNative()]);
+            ->setParameters([$uuid->toString()]);
 
         $statement = $queryBuilder->execute();
         $row = $statement->fetch(\PDO::FETCH_NUM);

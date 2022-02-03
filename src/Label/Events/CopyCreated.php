@@ -49,7 +49,7 @@ final class CopyCreated extends Created
     public function serialize(): array
     {
         return parent::serialize() + [
-            self::PARENT_UUID => $this->getParentUuid()->toNative(),
+            self::PARENT_UUID => $this->getParentUuid()->toString(),
         ];
     }
 }

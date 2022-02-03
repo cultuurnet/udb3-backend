@@ -47,7 +47,7 @@ class ConstraintAwareLabelService implements LabelServiceInterface
 
             $this->labelRepository->save($labelAggregate);
 
-            return UUID::fromNative($labelAggregate->getAggregateRootId());
+            return new UUID($labelAggregate->getAggregateRootId());
         } catch (UniqueConstraintException $exception) {
             return null;
         }

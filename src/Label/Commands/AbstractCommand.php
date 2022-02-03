@@ -24,7 +24,7 @@ abstract class AbstractCommand implements AuthorizableCommand
 
     public function getItemId(): string
     {
-        return $this->uuid->toNative();
+        return $this->uuid->toString();
     }
 
     public function getPermission(): Permission

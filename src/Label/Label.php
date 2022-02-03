@@ -46,7 +46,7 @@ class Label extends EventSourcedAggregateRoot
 
     public function getAggregateRootId(): string
     {
-        return $this->uuid->toNative();
+        return $this->uuid->toString();
     }
 
     /**
