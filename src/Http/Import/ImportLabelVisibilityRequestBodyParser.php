@@ -35,59 +35,54 @@ final class ImportLabelVisibilityRequestBodyParser implements RequestBodyParser
             // Something went wrong in an earlier step, but this should be handled by the validation layer.
             return $request;
         }
-        if ((!isset($json->labels) || !is_array($json->labels)) &&
-            (!isset($json->hiddenLabels) || !is_array($json->hiddenLabels))) {
-            // No valid labels properties on the JSON so nothing to do here.
+
+        // Get all labels from the JSON to import
+        $labels = isset($json->labels) && is_array($json->labels) ? $json->labels : [];
+        $hiddenLabels = isset($json->hiddenLabels) && is_array($json->hiddenLabels) ? $json->hiddenLabels : [];
+
+        // Combine all labels to import into a single array, and remove anything that is not a string to prevent type
+        // errors down the line (should be caught by another request body parser).
+        $importLabels = array_merge($labels, $hiddenLabels);
+        $importLabels = array_filter($importLabels, fn ($label) => is_string($label));
+
+        // Stop if there are no labels to import.
+        if (empty($importLabels)) {
             return $request;
         }
 
+        // Get all labels that are already on the resource and which were not imported (thus added via the UI usually).
         $idParts = explode('/', $json->{'@id'});
         $id = array_pop($idParts);
 
-        // Approach is to:
-        //  1. get all pre-existing UDB3 labels from label relation (hidden and visible)
-        //  2. remove all pre-existing UDB3 labels from document (both hidden and visible)
-        //  3. re-add all pre-existing UDB3 labels to document (both hidden and visible) with the correct visibility
-        // By using this approach the correct visible/invisible label state
-        // is taken into account and the JSON document is correct.
-
-        //  1. get all pre-existing UDB3 labels from label relation (hidden and visible)
-        /** @var LabelRelation[] $udb3LabelRelations */
-        $udb3LabelRelations = array_filter(
-            $this->labelRelationsRepository->getLabelRelationsForItem(
-                new StringLiteral($id)
-            ),
-            fn (LabelRelation $labelRelation) => !$labelRelation->isImported()
-        );
-        $udb3Labels = array_map(
+        $uiLabels = array_map(
             fn (LabelRelation $labelRelation) => $labelRelation->getLabelName()->toNative(),
-            $udb3LabelRelations
+            array_filter(
+                $this->labelRelationsRepository->getLabelRelationsForItem(new StringLiteral($id)),
+                fn (LabelRelation $labelRelation) => !$labelRelation->isImported()
+            )
         );
 
-        //  2. remove all pre-existing UDB3 labels from document (both hidden and visible)
-        //  Also take into account missing labels/hiddenLabels arrays by setting it to an empty array.
-        $json->labels = array_diff($json->labels ?? [], $udb3Labels);
-        $json->hiddenLabels = array_diff($json->hiddenLabels ?? [], $udb3Labels);
+        // Add the UI labels to the labels to import so they do not get removed by importers who don't take check that
+        // new labels have been added before sending an update. Remove any duplicates. Use array_values() to prevent
+        // gaps in the keys, which would make it an associative array instead of a sequential array.
+        $importLabels = array_values(array_unique(array_merge($importLabels, $uiLabels)));
 
-        //  3. re-add all pre-existing UDB3 labels to document (both hidden and visible) with the correct visibility
-        foreach ($udb3LabelRelations as $udb3LabelRelation) {
-            $name = $udb3LabelRelation->getLabelName();
-            $label = $this->labelsRepository->getByName($name);
+        // Reset the label properties on the JSON and add each label to the correct one.
+        $json->labels = [];
+        $json->hiddenLabels = [];
+        foreach ($importLabels as $importLabel) {
+            $label = $this->labelsRepository->getByName(new StringLiteral($importLabel));
             $visibility = Visibility::VISIBLE();
             if ($label !== null) {
                 $visibility = $label->getVisibility();
             }
 
             if ($visibility->sameValueAs(Visibility::VISIBLE())) {
-                $json->labels[] = $name->toNative();
+                $json->labels[] = $importLabel;
             } else {
-                $json->hiddenLabels[] = $name->toNative();
+                $json->hiddenLabels[] = $importLabel;
             }
         }
-
-        // Remove any duplicates and make sure the labels are always arrays.
-        $json->labels = array_values(array_unique($json->labels));
-        $json->hiddenLabels = array_values(array_unique($json->hiddenLabels));
 
         if (empty($json->labels)) {
             unset($json->labels);
