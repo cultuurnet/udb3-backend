@@ -683,7 +683,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/terms',
                 'Array should have at least 1 items, 0 found'
-            )
+            ),
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -721,7 +721,12 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/terms/0',
                 'The required properties (id) are missing'
-            )
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
     /**
      * @test
      */
