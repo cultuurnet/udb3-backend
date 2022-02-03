@@ -430,6 +430,24 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_a_required_property_is_missing(): void
+    {
+        $place = [
+            'foo' => 'bar',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/',
+                'The required properties (mainLanguage, name, terms, calendarType, address) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
 
     private function assertValidationErrors(array $place, array $expectedErrors): void
     {
