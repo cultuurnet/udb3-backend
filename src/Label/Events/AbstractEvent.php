@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 abstract class AbstractEvent implements Serializable
 {

@@ -9,7 +9,6 @@ use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 class LabelRolesProjector implements EventListener
 {
@@ -33,8 +32,8 @@ class LabelRolesProjector implements EventListener
     protected function applyLabelAdded(LabelAdded $labelAdded)
     {
         $this->labelRolesWriteRepository->insertLabelRole(
-            new LegacyUUID($labelAdded->getLabelId()->toString()),
-            new LegacyUUID($labelAdded->getUuid()->toString())
+            new UUID($labelAdded->getLabelId()->toString()),
+            new UUID($labelAdded->getUuid()->toString())
         );
     }
 
@@ -42,8 +41,8 @@ class LabelRolesProjector implements EventListener
     protected function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
         $this->labelRolesWriteRepository->removeLabelRole(
-            new LegacyUUID($labelRemoved->getLabelId()->toString()),
-            new LegacyUUID($labelRemoved->getUuid()->toString())
+            new UUID($labelRemoved->getLabelId()->toString()),
+            new UUID($labelRemoved->getUuid()->toString())
         );
     }
 
