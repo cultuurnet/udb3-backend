@@ -1390,7 +1390,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'contactPoint' => [
                 'phone' => [
                     '02 551 18 70',
-                    '',
+                    '   ',
                 ],
                 'email' => [
                     'info@publiq.be',
@@ -1406,7 +1406,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/contactPoint/phone/1',
-                'Minimum string length is 1, found 0'
+                'The string should match pattern: \S'
             ),
         ];
 
