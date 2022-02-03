@@ -117,11 +117,11 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         for ($i = 0; $i < 10; $i++) {
             $entity = new Entity(
-                new UUID('15c8c391-724d-4878-8a06-86163ed5412b'),
+                new UUID('15c8c391-724d-4878-8a06-86163ed5412' . $i),
                 new StringLiteral('label' . $i),
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PUBLIC(),
-                new UUID('d774403f-18bf-40b5-8e79-6048fb71162a')
+                new UUID('d774403f-18bf-40b5-8e79-6048fb71162' . $i)
             );
             $this->saveEntity($entity);
         }

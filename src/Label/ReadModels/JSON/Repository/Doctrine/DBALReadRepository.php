@@ -56,7 +56,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
             ->from($this->getTableName()->toNative())
             ->where($whereId)
-            ->setParameters([$uuid]);
+            ->setParameters([$uuid->toString()]);
 
         return $this->getResult($queryBuilder);
     }
