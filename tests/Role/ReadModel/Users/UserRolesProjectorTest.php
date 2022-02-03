@@ -82,7 +82,7 @@ class UserRolesProjectorTest extends TestCase
         );
         // Which will come from the role details repo.
         $this->roleDetailsDocumentRepository->method('fetch')
-            ->with($newRoleUuid)
+            ->with($newRoleUuid->toString())
             ->willReturn($newRoleDetailsDocument);
 
         // The existing role details document.
