@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -21,7 +22,7 @@ use CultuurNet\UDB3\Place\Place;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class RelatedUDB3LabelApplierTest extends TestCase
@@ -115,7 +116,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
             )
             ->willReturn(
                 new Entity(
-                    new UUID(),
+                    new UUID('ecedf33c-d4ea-4f62-a6e8-a7bcdf839bbe'),
                     new StringLiteral('2dotstwice'),
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PUBLIC()

@@ -256,7 +256,7 @@ class EditRoleRestControllerTest extends TestCase
         $labelName = 'foo';
 
         $label = new Entity(
-            new LegacyUUID($this->labelId),
+            new UUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -321,7 +321,7 @@ class EditRoleRestControllerTest extends TestCase
         $labelName = 'foo';
 
         $label = new Entity(
-            new LegacyUUID($this->labelId),
+            new UUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()

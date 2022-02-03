@@ -54,7 +54,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelRepository->method('getByUuid')
-            ->with('86c5b0f4-a5da-4a81-815f-3839634c212c')
+            ->with(new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'))
             ->willReturn(
                 new Entity(
                     new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'),

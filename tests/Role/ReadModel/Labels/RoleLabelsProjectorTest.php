@@ -196,7 +196,7 @@ class RoleLabelsProjectorTest extends TestCase
     public function it_updates_projections_with_label_details_on_label_details_projected_to_json_ld()
     {
         $labelProjected = new LabelDetailsProjectedToJSONLD(
-            new LegacyUUID('6ef7028c-a5e6-454d-8732-75cbdc481508')
+            new UUID('6ef7028c-a5e6-454d-8732-75cbdc481508')
         );
 
         $roleId = new UUID('7133b129-8ab9-44d5-b94d-1e9a849e9661');
@@ -275,7 +275,7 @@ class RoleLabelsProjectorTest extends TestCase
     public function createLabelEntity(UUID $uuid)
     {
         return new Entity(
-            new LegacyUUID($uuid->toString()),
+            new UUID($uuid->toString()),
             new StringLiteral('labelName'),
             Visibility::getByName('INVISIBLE'),
             Privacy::getByName('PRIVACY_PRIVATE')

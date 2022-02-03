@@ -50,7 +50,7 @@ class ReadRestController
     {
         try {
             $entity = $this->readService->getByUuid(new UUID($id));
-        } catch (InvalidNativeArgumentException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             $entity = $this->readService->getByName(new StringLiteral($id));
         }
 

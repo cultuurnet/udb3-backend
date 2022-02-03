@@ -91,7 +91,7 @@ class CommandHandler extends AbstractCommandHandler
     private function load(UUID $uuid): Label
     {
         /** @var Label $label */
-        $label =  $this->repository->load($uuid);
+        $label =  $this->repository->load($uuid->toString());
 
         return $label;
     }
