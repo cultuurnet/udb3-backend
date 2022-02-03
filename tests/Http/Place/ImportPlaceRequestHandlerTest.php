@@ -541,7 +541,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'mainLanguage' => 'nl',
             'name' => [
                 'nl' => 'Test place',
-                'fr' => '',
+                'fr' => '   ',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -567,7 +567,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/name/fr',
-                'Minimum string length is 1, found 0'
+                'The string should match pattern: \S'
             ),
         ];
 
