@@ -60,7 +60,7 @@ class WriteServiceTest extends TestCase
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->uuidGenerator->method('generate')
-            ->willReturn($this->create->getUuid()->toNative());
+            ->willReturn($this->create->getUuid()->toString());
 
         $this->writeService = new WriteService(
             $this->commandBus,

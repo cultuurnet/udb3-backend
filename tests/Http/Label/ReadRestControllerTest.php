@@ -94,7 +94,7 @@ class ReadRestControllerTest extends TestCase
     public function it_returns_json_response_for_get_by_uuid()
     {
         $jsonResponse = $this->readRestController->get(
-            (string) $this->entity->getUuid()
+            $this->entity->getUuid()->toString()
         );
 
         $expectedJsonResponse = new JsonResponse(
@@ -182,7 +182,7 @@ class ReadRestControllerTest extends TestCase
     private function mockGetByUuid()
     {
         $this->readService->method('getByUuid')
-            ->with($this->entity->getUuid()->toNative())
+            ->with($this->entity->getUuid()->toString())
             ->willReturn($this->entity);
     }
 
@@ -220,7 +220,7 @@ class ReadRestControllerTest extends TestCase
     private function entityToArray(Entity $entity)
     {
         return [
-            'uuid' => $entity->getUuid()->toNative(),
+            'uuid' => $entity->getUuid()->toString(),
             'name' => $entity->getName()->toNative(),
             'visibility' => $entity->getVisibility()->toNative(),
             'privacy' => $entity->getPrivacy()->toNative(),

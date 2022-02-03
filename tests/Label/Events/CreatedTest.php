@@ -124,7 +124,7 @@ class CreatedTest extends TestCase
     protected function createdAsArray()
     {
         return [
-            Created::UUID => $this->created->getUuid()->toNative(),
+            Created::UUID => $this->created->getUuid()->toString(),
             Created::NAME => $this->created->getName()->toNative(),
             Created::VISIBILITY => $this->created->getVisibility()->toNative(),
             Created::PRIVACY => $this->created->getPrivacy()->toNative(),

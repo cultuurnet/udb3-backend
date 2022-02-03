@@ -55,11 +55,11 @@ class LabelRolesProjectorTest extends TestCase
         );
 
         $domainMessage = $this->createDomainMessage(
-            new UUID($labelCreated->getUuid()->toNative()),
+            new UUID($labelCreated->getUuid()->toString()),
             $labelCreated
         );
 
-        $jsonDocument = $this->createEmptyJsonDocument(new UUID($labelCreated->getUuid()->toNative()));
+        $jsonDocument = $this->createEmptyJsonDocument(new UUID($labelCreated->getUuid()->toString()));
 
         $this->labelRolesRepository
             ->expects($this->once())

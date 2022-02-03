@@ -57,13 +57,13 @@ abstract class BaseDBALRepositoryTest extends TestCase
     protected function entityToValues(Entity $entity)
     {
         return [
-            $entity->getUuid()->toNative(),
+            $entity->getUuid()->toString(),
             $entity->getName()->toNative(),
             $entity->getVisibility() === Visibility::VISIBLE()
                 ? true : false,
             $entity->getPrivacy() === Privacy::PRIVACY_PRIVATE()
                 ? true : false,
-            $entity->getParentUuid()->toNative(),
+            $entity->getParentUuid()->toString(),
             $entity->getCount()->toNative(),
         ];
     }

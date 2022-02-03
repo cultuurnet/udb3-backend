@@ -202,12 +202,12 @@ class RoleLabelsProjectorTest extends TestCase
         $roleId = new UUID('7133b129-8ab9-44d5-b94d-1e9a849e9661');
 
         $domainMessage = $this->createDomainMessage(
-            new UUID($labelProjected->getUuid()->toNative()),
+            new UUID($labelProjected->getUuid()->toString()),
             $labelProjected
         );
 
         $jsonDocument = new JsonDocument(
-            $labelProjected->getUuid()->toNative(),
+            $labelProjected->getUuid()->toString(),
             json_encode([$roleId->toString() => $roleId->toString()])
         );
 
@@ -216,15 +216,15 @@ class RoleLabelsProjectorTest extends TestCase
             ->with($labelProjected->getUuid())
             ->willReturn($jsonDocument);
 
-        $jsonDocument = $this->createJsonDocument($roleId, new UUID($labelProjected->getUuid()->toNative()));
+        $jsonDocument = $this->createJsonDocument($roleId, new UUID($labelProjected->getUuid()->toString()));
 
         $this->mockRoleLabelsFetch($roleId, $jsonDocument);
 
         $labelEntity = $this->createLabelEntity(
-            new UUID($labelProjected->getUuid()->toNative())
+            new UUID($labelProjected->getUuid()->toString())
         );
 
-        $this->mockLabelJsonGet(new UUID($labelProjected->getUuid()->toNative()), $labelEntity);
+        $this->mockLabelJsonGet(new UUID($labelProjected->getUuid()->toString()), $labelEntity);
 
 
         $this->roleLabelsRepository->expects($this->once())
