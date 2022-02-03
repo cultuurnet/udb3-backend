@@ -83,7 +83,7 @@ class RoleUsersProjector extends RoleProjector
 
     public function applyRoleDeleted(RoleDeleted $roleDeleted)
     {
-        $this->repository->remove($roleDeleted->getUuid());
+        $this->repository->remove($roleDeleted->getUuid()->toString());
     }
 
     private function getDocument(UUID $uuid): ?JsonDocument
