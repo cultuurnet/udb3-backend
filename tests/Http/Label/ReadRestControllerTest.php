@@ -182,7 +182,7 @@ class ReadRestControllerTest extends TestCase
     private function mockGetByUuid()
     {
         $this->readService->method('getByUuid')
-            ->with($this->entity->getUuid()->toString())
+            ->with($this->entity->getUuid())
             ->willReturn($this->entity);
     }
 

@@ -213,7 +213,7 @@ class RoleLabelsProjectorTest extends TestCase
 
         $this->labelRolesRepository
             ->method('fetch')
-            ->with($labelProjected->getUuid())
+            ->with($labelProjected->getUuid()->toString())
             ->willReturn($jsonDocument);
 
         $jsonDocument = $this->createJsonDocument($roleId, new UUID($labelProjected->getUuid()->toString()));
@@ -239,7 +239,7 @@ class RoleLabelsProjectorTest extends TestCase
         Serializable $payload
     ): DomainMessage {
         return new DomainMessage(
-            $uuid,
+            $uuid->toString(),
             0,
             new Metadata(),
             $payload,
@@ -295,7 +295,7 @@ class RoleLabelsProjectorTest extends TestCase
     {
         $this->labelJsonRepository
             ->method('getByUuid')
-            ->with(new LegacyUUID($uuid->toString()))
+            ->with(new UUID($uuid->toString()))
             ->willReturn(
                 $entity
             );
