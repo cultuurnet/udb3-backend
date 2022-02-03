@@ -339,7 +339,7 @@ class EditRoleRestControllerTest extends TestCase
                 new UUID($this->labelId)
             );
 
-        $response = $this->controller->removeLabel($this->roleId, $this->labelId);
+        $response = $this->controller->removeLabel($this->roleId, $labelName);
 
         $this->assertEquals(204, $response->getStatusCode());
     }

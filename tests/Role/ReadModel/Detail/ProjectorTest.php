@@ -460,7 +460,7 @@ class ProjectorTest extends TestCase
         }
 
         return new DomainMessage(
-            $id,
+            $id->toString(),
             0,
             new Metadata(),
             $payload,

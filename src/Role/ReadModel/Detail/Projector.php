@@ -43,7 +43,7 @@ class Projector extends RoleProjector
 
     protected function applyRoleDeleted(RoleDeleted $roleDeleted): void
     {
-        $this->repository->remove($roleDeleted->getUuid());
+        $this->repository->remove($roleDeleted->getUuid()->toString());
     }
 
     protected function applyConstraintAdded(ConstraintAdded $constraintAdded): void
