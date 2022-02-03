@@ -225,7 +225,7 @@ class EditRoleRestController
     {
         try {
             return new UUID($labelIdentifier);
-        } catch (InvalidNativeArgumentException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             $entity = $this->labelEntityService->getByName(
                 new StringLiteral($labelIdentifier)
             );
