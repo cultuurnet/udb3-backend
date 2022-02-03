@@ -141,7 +141,7 @@ class UserRolesProjectorTest extends TestCase
 
         $this->roleDetailsDocumentRepository
             ->method('fetch')
-            ->with($userAdded->getUuid())
+            ->with($userAdded->getUuid()->toString())
             ->willReturn($roleDetailsDocument);
 
         $this->userRolesDocumentRepository
@@ -273,7 +273,7 @@ class UserRolesProjectorTest extends TestCase
         );
 
         $this->roleDetailsDocumentRepository->method('fetch')
-            ->with($userAdded->getUuid())
+            ->with($userAdded->getUuid()->toString())
             ->willThrowException(DocumentDoesNotExist::withId($userAdded->getUuid()->toString()));
 
         $this->userRolesDocumentRepository->expects($this->never())

@@ -142,7 +142,7 @@ class LabelRolesProjectorTest extends TestCase
         Serializable $payload
     ): DomainMessage {
         return new DomainMessage(
-            $uuid,
+            $uuid->toString(),
             0,
             new Metadata(),
             $payload,
@@ -177,7 +177,7 @@ class LabelRolesProjectorTest extends TestCase
     {
         $this->labelRolesRepository
             ->method('fetch')
-            ->with($labelId)
+            ->with($labelId->toString())
             ->willReturn($jsonDocument);
     }
 }

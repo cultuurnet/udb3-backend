@@ -102,7 +102,7 @@ class LocalRoleReadingServiceTest extends TestCase
 
         $this->roleLabelsReadRepository->expects($this->once())
             ->method('fetch')
-            ->with($roleId)
+            ->with($roleId->toString())
             ->willReturn($expectedLabels);
 
         $actualLabels = $this->readingService->getLabelsByRoleUuid($roleId);

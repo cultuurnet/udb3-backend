@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
@@ -17,7 +18,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
@@ -128,7 +128,7 @@ class ReadRoleRestControllerTest extends TestCase
      */
     public function it_returns_labels()
     {
-        $roleId = new UUID();
+        $roleId = new UUID('1e1fa709-cd79-4531-999a-1a91902385e1');
 
         $this->roleService
             ->expects($this->once())
@@ -136,12 +136,12 @@ class ReadRoleRestControllerTest extends TestCase
             ->with($roleId)
             ->willReturn(
                 new JsonDocument(
-                    $roleId->toNative(),
+                    $roleId->toString(),
                     json_encode([])
                 )
             );
 
-        $response = $this->roleRestController->getRoleLabels($roleId->toNative());
+        $response = $this->roleRestController->getRoleLabels($roleId->toString());
 
         $this->assertEquals($response->getContent(), '[]');
     }
@@ -157,7 +157,7 @@ class ReadRoleRestControllerTest extends TestCase
         $expectedResponseJson = file_get_contents(__DIR__ . '/samples/role_users_response.json');
 
         $readmodelDocument = new JsonDocument(
-            $roleId->toNative(),
+            $roleId->toString(),
             $readmodelJson
         );
 
@@ -166,8 +166,10 @@ class ReadRoleRestControllerTest extends TestCase
             ->with($roleId)
             ->willReturn($readmodelDocument);
 
-        $response = $this->roleRestController->getRoleUsers($roleId->toNative());
+        $response = $this->roleRestController->getRoleUsers($roleId->toString());
         $actualResponseJson = $response->getContent();
+        var_dump($expectedResponseJson);
+        var_dump($actualResponseJson);
 
         $this->jsonEquals->assert($expectedResponseJson, $actualResponseJson);
     }
