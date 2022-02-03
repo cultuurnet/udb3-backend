@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesWriteRepositoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelRolesWriteRepositoryTest extends TestCase
@@ -55,8 +55,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $expectedRows = [
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toNative(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ],
         ];
 

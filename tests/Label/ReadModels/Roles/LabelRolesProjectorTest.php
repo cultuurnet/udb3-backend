@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 class LabelRolesProjectorTest extends TestCase
 {
@@ -53,8 +52,8 @@ class LabelRolesProjectorTest extends TestCase
         $this->labelRolesWriteRepository->expects($this->once())
             ->method('insertLabelRole')
             ->with(
-                new LegacyUUID($labelAdded->getLabelId()->toString()),
-                new LegacyUUID($labelAdded->getUuid()->toString())
+                $labelAdded->getLabelId(),
+                $labelAdded->getUuid()
             );
 
         $this->labelRolesProjector->handle($domainMessage);
@@ -74,8 +73,8 @@ class LabelRolesProjectorTest extends TestCase
         $this->labelRolesWriteRepository->expects($this->once())
             ->method('removeLabelRole')
             ->with(
-                new LegacyUUID($labelRemoved->getLabelId()->toString()),
-                new LegacyUUID($labelRemoved->getUuid()->toString())
+                $labelRemoved->getLabelId(),
+                $labelRemoved->getUuid()
             );
 
         $this->labelRolesProjector->handle($domainMessage);
@@ -91,7 +90,7 @@ class LabelRolesProjectorTest extends TestCase
 
         $this->labelRolesWriteRepository->expects($this->once())
             ->method('removeRole')
-            ->with(new LegacyUUID($roleDeleted->getUuid()->toString()));
+            ->with($roleDeleted->getUuid());
 
         $this->labelRolesProjector->handle($domainMessage);
     }
