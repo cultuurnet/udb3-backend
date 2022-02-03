@@ -265,14 +265,11 @@ class RoleUsersProjectorTest extends TestCase
         $this->roleUsersProjector->handle($domainMessage);
     }
 
-    /**
-     * @param JsonDocument $jsonDocument
-     */
-    private function mockFetch(UUID $uuid, JsonDocument $jsonDocument = null)
+    private function mockFetch(UUID $uuid, JsonDocument $jsonDocument = null): void
     {
         $this->repository
             ->method('fetch')
-            ->with($uuid)
+            ->with($uuid->toString())
             ->willReturn($jsonDocument);
     }
 
