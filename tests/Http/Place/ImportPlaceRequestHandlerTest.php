@@ -485,7 +485,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/mainLanguage',
                 'The data should match one item from enum'
-            )
+            ),
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -525,7 +525,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/name',
                 'The data (array) must match the type: object'
-            )
+            ),
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -568,7 +568,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/name/fr',
                 'Minimum string length is 1, found 0'
-            )
+            ),
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -608,7 +608,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/name',
                 'The data (string) must match the type: object'
-            )
+            ),
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
