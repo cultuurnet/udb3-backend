@@ -68,12 +68,12 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
     public function setUp()
     {
-        $this->uuid = new UUID();
-        $this->extraUuid = new UUID();
+        $this->uuid = new UUID('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
+        $this->extraUuid = new UUID('04568db8-a137-44d8-a7eb-d7a00ae545bf');
         $this->name = new LabelName('labelName');
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
-        $this->parentUuid = new UUID();
+        $this->parentUuid = new UUID('f4e5608b-348d-4321-86f7-567891bf33b7');
 
         $this->created = new Created(
             $this->uuid,

@@ -39,7 +39,7 @@ class CreateTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('fec0c4d7-80e1-4713-98f9-4c436af6e650');
 
         $this->name = new LabelName('labelName');
 

@@ -40,18 +40,18 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
         $this->name = new LabelName('labelName');
 
         $this->created = $this->createDomainMessage(new Created(
-            new UUID(),
+            new UUID('23ad437f-b6f0-4fc4-95c0-0c6faf13050f'),
             $this->name,
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         ));
 
         $this->copyCreated = $this->createDomainMessage(new CopyCreated(
-            new UUID(),
+            new UUID('55dacee0-d7de-4070-920b-c80d5985b687'),
             $this->name,
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE(),
-            new UUID()
+            new UUID('01395b0b-001c-4425-9d57-19688d2d27fa')
         ));
 
         $this->uniqueHelper = new LabelNameUniqueConstraintService();
@@ -83,7 +83,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
         $this->assertFalse($this->uniqueHelper->hasUniqueConstraint(
             $this->createDomainMessage(
                 new MadeInvisible(
-                    new UUID(),
+                    new UUID('f9b74707-5d2d-4dbb-886b-b149786a94c5'),
                     new LabelName('2dotstwice')
                 )
             )
@@ -128,7 +128,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     private function createDomainMessage(AbstractEvent $event)
     {
         return new DomainMessage(
-            $event->getUuid(),
+            $event->getUuid()->toString(),
             0,
             new Metadata(),
             $event,

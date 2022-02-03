@@ -47,7 +47,7 @@ class WriteServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('91a6cfb3-f556-48cd-91ef-b0675b827728');
 
         $this->create = new Create(
             $this->uuid,

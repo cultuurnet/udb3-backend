@@ -80,48 +80,48 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->entityByUuid = new Entity(
-            new UUID(),
+            new UUID('7f328086-0e56-4c7d-a2e7-38ac5eaa0347'),
             new StringLiteral('bibliotheekweek'),
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
-            new UUID()
+            new UUID('ad920ce0-fdca-463f-80ac-991c8cbad6d2')
         );
         $this->saveEntity($this->entityByUuid);
 
         $this->entityByName = new Entity(
-            new UUID(),
+            new UUID('25ea383c-b14d-4776-989c-24e0ac044638'),
             new StringLiteral('boswandeling'),
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
-            new UUID()
+            new UUID('50ecf0e6-6948-4331-937d-7424010c522a')
         );
         $this->saveEntity($this->entityByName);
 
         $this->entityPrivateAccess = new Entity(
-            new UUID(),
+            new UUID('6639d6d2-ac7d-4995-91e3-7660c74cf1eb'),
             new StringLiteral('wandeltocht'),
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE(),
-            new UUID()
+            new UUID('2d6b6f7c-15b8-4e8d-99c2-e7583a31f703')
         );
         $this->saveEntity($this->entityPrivateAccess);
 
         $this->entityPrivateNoAccess = new Entity(
-            new UUID(),
+            new UUID('b14dd3ea-6962-4565-91b6-d0e8d929e685'),
             new StringLiteral('stadswandeling'),
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE(),
-            new UUID()
+            new UUID('23c7e1ae-a908-49a0-b328-ec4c7719d789')
         );
         $this->saveEntity($this->entityPrivateNoAccess);
 
         for ($i = 0; $i < 10; $i++) {
             $entity = new Entity(
-                new UUID(),
+                new UUID('15c8c391-724d-4878-8a06-86163ed5412b'),
                 new StringLiteral('label' . $i),
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PUBLIC(),
-                new UUID()
+                new UUID('d774403f-18bf-40b5-8e79-6048fb71162a')
             );
             $this->saveEntity($entity);
         }
@@ -145,7 +145,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_returns_null_when_not_found_by_uuid()
     {
         $entity = $this->dbalReadRepository->getByUuid(
-            new UUID()
+            new UUID('d8d9737f-c31e-4a5d-bc11-8780a23fdb24')
         );
 
         $this->assertNull($entity);
@@ -420,8 +420,8 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->getConnection()->insert(
             $this->labelRolesTableName->toNative(),
             [
-                LabelRolesSchemaConfigurator::LABEL_ID_COLUMN => $labelId->toNative(),
-                LabelRolesSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                LabelRolesSchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
+                LabelRolesSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -433,7 +433,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->userRolesTableName->toNative(),
             [
                 PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId->toNative(),
-                PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -441,8 +441,8 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private function seedRoles(StringLiteral $userId)
     {
-        $roleId1 = new UUID();
-        $roleId2 = new UUID();
+        $roleId1 = new UUID('5d0842b4-4fd1-4bc2-8577-c06a5ac5000a');
+        $roleId2 = new UUID('56a8b820-2262-4a17-a496-bfa07f7e49bb');
 
         $this->insertUserRole($userId, $roleId1);
 

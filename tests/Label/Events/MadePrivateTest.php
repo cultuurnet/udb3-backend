@@ -24,7 +24,7 @@ class MadePrivateTestAbstract extends AbstractExtendsTest
     {
         return MadePrivate::deserialize(
             [
-                'uuid' => $this->uuid->toNative(),
+                'uuid' => $this->uuid->toString(),
                 'name' => $this->name->toNative(),
             ]
         );

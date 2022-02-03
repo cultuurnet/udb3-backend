@@ -67,7 +67,7 @@ class ProjectorTest extends TestCase
             $this->labelName,
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE(),
-            new UUID()
+            new UUID('e7dd8377-b697-4ba1-a688-164daaf961b5')
         );
 
         $uuidMap = [
@@ -365,7 +365,7 @@ class ProjectorTest extends TestCase
     private function createDomainMessage(UUID $id, $payload): DomainMessage
     {
         return new DomainMessage(
-            $id->toNative(),
+            $id->toString(),
             0,
             new Metadata(),
             $payload,

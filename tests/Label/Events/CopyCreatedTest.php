@@ -22,7 +22,7 @@ class CopyCreatedTest extends CreatedTest
     {
         parent::setUp();
 
-        $this->parentUuid = new UUID();
+        $this->parentUuid = new UUID('5ae6d41e-5321-43e8-989d-a4e77864b397');
 
         $this->created = new CopyCreated(
             $this->uuid,

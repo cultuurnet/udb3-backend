@@ -22,7 +22,7 @@ class CreateCopyTest extends CreateTest
     {
         parent::setUp();
 
-        $this->parentUuid = new UUID();
+        $this->parentUuid = new UUID('f020fb41-fc0e-4706-bddb-f25674bc3953');
 
         $this->create = new CreateCopy(
             $this->uuid,

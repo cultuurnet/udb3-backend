@@ -40,7 +40,7 @@ class ReadServiceTest extends TestCase
     protected function setUp()
     {
         $this->entity = new Entity(
-            new UUID(),
+            new UUID('749bc3dd-9d9b-4b4f-b5ab-9cc03fc7f669'),
             new StringLiteral('labelName'),
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()

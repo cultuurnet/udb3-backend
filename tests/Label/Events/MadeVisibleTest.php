@@ -24,7 +24,7 @@ class MadeVisibleTestAbstract extends AbstractExtendsTest
     {
         return MadeVisible::deserialize(
             [
-                'uuid' => $this->uuid->toNative(),
+                'uuid' => $this->uuid->toString(),
                 'name' => $this->name->toNative(),
             ]
         );

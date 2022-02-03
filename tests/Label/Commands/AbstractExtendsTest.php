@@ -21,7 +21,7 @@ abstract class AbstractExtendsTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('cab65670-ae30-41ec-b30d-2416232ec785');
 
         $this->command = $this->createCommand($this->uuid);
     }

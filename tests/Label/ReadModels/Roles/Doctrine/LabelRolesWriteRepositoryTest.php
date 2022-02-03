@@ -46,8 +46,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
      */
     public function it_inserts_a_label_and_related_role()
     {
-        $labelId = new UUID();
-        $roleId = new UUID();
+        $labelId = new UUID('bc579c8e-cc4a-4c21-abb2-a7d63b5f820f');
+        $roleId = new UUID('2fd60f5c-8d0f-4efd-a005-128636a5530b');
 
         $this->labelRolesWriteRepository->insertLabelRole($labelId, $roleId);
 
@@ -68,10 +68,10 @@ class LabelRolesWriteRepositoryTest extends TestCase
      */
     public function it_removes_a_label_and_related_role()
     {
-        $labelId1 = new UUID();
-        $labelId2 = new UUID();
-        $roleId1 = new UUID();
-        $roleId2 = new UUID();
+        $labelId1 = new UUID('b18215d5-2d66-45e1-ae5d-1316a3b40897');
+        $labelId2 = new UUID('72bffc2b-d784-403c-97b5-ef4f74decd5b');
+        $roleId1 = new UUID('167ae73d-52ab-45c1-862e-d3638a1c7c5a');
+        $roleId2 = new UUID('35acce4d-25e6-441b-8162-87a764e77ed4');
 
         $this->insertLabelRole($labelId1, $roleId1);
         $this->insertLabelRole($labelId1, $roleId2);
@@ -81,12 +81,12 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $expectedRows = [
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId1->toNative(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId1->toNative(),
+                SchemaConfigurator::LABEL_ID_COLUMN => $labelId1->toString(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId1->toString(),
             ],
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId2->toNative(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId2->toNative(),
+                SchemaConfigurator::LABEL_ID_COLUMN => $labelId2->toString(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId2->toString(),
             ],
         ];
 
@@ -100,10 +100,10 @@ class LabelRolesWriteRepositoryTest extends TestCase
      */
     public function it_removes_a_role_and_all_related_labels()
     {
-        $labelId1 = new UUID();
-        $labelId2 = new UUID();
-        $roleId1 = new UUID();
-        $roleId2 = new UUID();
+        $labelId1 = new UUID('d5f8236b-f252-4d62-984b-e956dc2da15f');
+        $labelId2 = new UUID('8b04e55d-08de-491c-9387-59c24197d42d');
+        $roleId1 = new UUID('9e91887a-e40a-4dc8-a8b7-1b946146d59d');
+        $roleId2 = new UUID('47ee089d-39de-4fdc-a8de-d07bea709865');
 
         $this->insertLabelRole($labelId1, $roleId1);
         $this->insertLabelRole($labelId1, $roleId2);
@@ -113,8 +113,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
 
         $expectedRows = [
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId1->toNative(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId1->toNative(),
+                SchemaConfigurator::LABEL_ID_COLUMN => $labelId1->toString(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId1->toString(),
             ],
         ];
 
@@ -129,8 +129,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
         $this->connection->insert(
             $this->labelRolesTableName,
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toNative(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }

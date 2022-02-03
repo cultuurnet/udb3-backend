@@ -77,7 +77,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
             ->method('getByUuid')
             ->willReturnCallback(
                 function (UUID $uuid) {
-                    $uuid = $uuid->toNative();
+                    $uuid = $uuid->toString();
 
                     if (isset($this->labels[$uuid])) {
                         return $this->labels[$uuid];
