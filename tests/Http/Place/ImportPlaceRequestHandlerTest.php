@@ -1724,6 +1724,69 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->assertValidationErrors($place, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_priceInfo_has_an_invalid_tariff(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => 'Senioren',
+                    'price' => '100',
+                    'priceCurrency' => 'USD',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/priceInfo/1/price',
+                'The data (string) must match the type: number'
+            ),
+            new SchemaError(
+                '/priceInfo/1/priceCurrency',
+                'The data should match one item from enum'
+            ),
+            new SchemaError(
+                '/priceInfo/1/name',
+                'The data (string) must match the type: object'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $place, array $expectedErrors): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
