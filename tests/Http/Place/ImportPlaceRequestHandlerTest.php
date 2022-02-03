@@ -1672,6 +1672,58 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertValidationErrors($place, $expectedErrors);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_contactPoint_has_an_empty_url(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    '',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/contactPoint/url/1',
+                'The data must match the \'uri\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $place, array $expectedErrors): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
