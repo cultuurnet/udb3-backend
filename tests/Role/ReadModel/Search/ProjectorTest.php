@@ -102,7 +102,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('updateConstraint')
-            ->with($constraintAdded->getUuid(), $constraintAdded->getQuery());
+            ->with($constraintAdded->getUuid()->toString(), $constraintAdded->getQuery());
 
         $this->projector->handle($domainMessage);
     }
@@ -120,7 +120,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('updateConstraint')
-            ->with($constraintUpdated->getUuid(), $constraintUpdated->getQuery());
+            ->with($constraintUpdated->getUuid()->toString(), $constraintUpdated->getQuery());
 
         $this->projector->handle($domainMessage);
     }
@@ -135,7 +135,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('updateConstraint')
-            ->with($constraintRemoved->getUuid());
+            ->with($constraintRemoved->getUuid()->toString());
 
         $this->projector->handle($domainMessage);
     }

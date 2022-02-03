@@ -55,7 +55,7 @@ class Projector implements EventListener
     protected function applyConstraintAdded(ConstraintAdded $constraintAdded): void
     {
         $this->repository->updateConstraint(
-            $constraintAdded->getUuid(),
+            $constraintAdded->getUuid()->toString(),
             $constraintAdded->getQuery()
         );
     }
@@ -63,7 +63,7 @@ class Projector implements EventListener
     protected function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
     {
         $this->repository->updateConstraint(
-            $constraintUpdated->getUuid(),
+            $constraintUpdated->getUuid()->toString(),
             $constraintUpdated->getQuery()
         );
     }
@@ -71,7 +71,7 @@ class Projector implements EventListener
     protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
         $this->repository->updateConstraint(
-            $constraintRemoved->getUuid()
+            $constraintRemoved->getUuid()->toString()
         );
     }
 }
