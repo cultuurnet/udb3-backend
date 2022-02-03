@@ -1551,7 +1551,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ],
                 'email' => [
                     'info@publiq.be',
-                    '',
+                    '   ',
                 ],
                 'url' => [
                     'https://www.publiq.be',
@@ -1709,7 +1709,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ],
                 'url' => [
                     'https://www.publiq.be',
-                    '',
+                    '   ',
                 ],
             ],
         ];
