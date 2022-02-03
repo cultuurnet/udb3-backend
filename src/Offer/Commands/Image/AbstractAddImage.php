@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands\Image;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use ValueObjects\Identity\UUID;
 
 abstract class AbstractAddImage extends AbstractCommand
 {
-    /**
-     * @var UUID
-     */
-    protected $imageId;
+    protected UUID $imageId;
 
     public function __construct($itemId, UUID $imageId)
     {
@@ -20,10 +17,7 @@ abstract class AbstractAddImage extends AbstractCommand
         $this->imageId = $imageId;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getImageId()
+    public function getImageId(): UUID
     {
         return $this->imageId;
     }

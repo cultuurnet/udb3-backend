@@ -69,7 +69,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\Web\Url as LegacyUrl;
 
@@ -525,7 +524,7 @@ class PlaceDocumentImporterTest extends TestCase
         $expectedImages = ImageCollection::fromArray(
             [
                 new Image(
-                    new LegacyUUID('6984df33-62b4-4c94-ba2d-59d4a87d17dd'),
+                    new UUID('6984df33-62b4-4c94-ba2d-59d4a87d17dd'),
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Example description'),
                     new CopyrightHolder('Bob'),
@@ -533,7 +532,7 @@ class PlaceDocumentImporterTest extends TestCase
                     new LegacyLanguage('en')
                 ),
                 new Image(
-                    new LegacyUUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
+                    new UUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Voorbeeld beschrijving'),
                     new CopyrightHolder('Bob'),

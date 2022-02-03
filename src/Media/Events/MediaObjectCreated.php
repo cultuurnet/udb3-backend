@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Media\Events;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -93,7 +93,7 @@ final class MediaObjectCreated implements Serializable
     public function serialize(): array
     {
         return [
-            'media_object_id' => $this->getMediaObjectId()->toNative(),
+            'media_object_id' => $this->getMediaObjectId()->toString(),
             'mime_type' => $this->getMimeType()->toNative(),
             'description' => $this->getDescription()->toNative(),
             'copyright_holder' => $this->getCopyrightHolder()->toString(),

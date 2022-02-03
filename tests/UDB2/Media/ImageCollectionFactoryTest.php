@@ -10,9 +10,9 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Web\Url;
 
 class ImageCollectionFactoryTest extends TestCase
@@ -23,7 +23,7 @@ class ImageCollectionFactoryTest extends TestCase
     public function it_should_return_a_collection_of_images_from_udb2_item()
     {
         $photo = new Image(
-            UUID::fromNative('84c4ddea-a00d-5241-bb1a-f4c01cef0a76'),
+            new UUID('84c4ddea-a00d-5241-bb1a-f4c01cef0a76'),
             MIMEType::fromNative('image/jpeg'),
             new Description('Ruime Activiteit'),
             new CopyrightHolder('Zelf gemaakt'),
@@ -31,7 +31,7 @@ class ImageCollectionFactoryTest extends TestCase
             new Language('nl')
         );
         $imageweb = new Image(
-            UUID::fromNative('96d1d210-9804-55a4-a2c5-6245031a1d4a'),
+            new UUID('96d1d210-9804-55a4-a2c5-6245031a1d4a'),
             MIMEType::fromNative('application/octet-stream'),
             new Description('Ruime Activiteit'),
             new CopyrightHolder('KWB'),
@@ -57,7 +57,7 @@ class ImageCollectionFactoryTest extends TestCase
     public function it_should_set_the_first_main_udb2_image_as_main_collection_image()
     {
         $image = new Image(
-            UUID::fromNative('6f064917-3b55-5459-97fe-4ac15b1e3db3'),
+            new UUID('6f064917-3b55-5459-97fe-4ac15b1e3db3'),
             MIMEType::fromNative('image/jpeg'),
             new Description('KARBIDO ENSEMBLE - The Table (7+)'),
             new CopyrightHolder('Karbido Ensemble'),
@@ -83,7 +83,7 @@ class ImageCollectionFactoryTest extends TestCase
     public function it_should_only_pick_the_dutch_images_from_an_udb2_item_if_there_is_a_dutch_eventdetail(): void
     {
         $image = new Image(
-            UUID::fromNative('84c4ddea-a00d-5241-bb1a-f4c01cef0a76'),
+            new UUID('84c4ddea-a00d-5241-bb1a-f4c01cef0a76'),
             MIMEType::fromNative('image/jpeg'),
             new Description('Ruime Activiteit'),
             new CopyrightHolder('Zelf gemaakt'),
@@ -109,7 +109,7 @@ class ImageCollectionFactoryTest extends TestCase
     public function it_should_only_pick_the_images_from_the_first_eventdetail_if_there_is_no_dutch_eventdetail(): void
     {
         $image = new Image(
-            UUID::fromNative('e42af85b-4f72-5186-94f0-cd69d763e8e6'),
+            new UUID('e42af85b-4f72-5186-94f0-cd69d763e8e6'),
             MIMEType::fromNative('image/jpeg'),
             new Description('RB'),
             new CopyrightHolder('faire soi-même'),
@@ -137,7 +137,7 @@ class ImageCollectionFactoryTest extends TestCase
         $regex = 'https?:\/\/udb-silex\.dev\/web\/media\/(?<uuid>[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})\.jpg';
 
         $image = new Image(
-            UUID::fromNative('edb05b66-611b-4829-b8f6-bb31c285ec89'),
+            new UUID('edb05b66-611b-4829-b8f6-bb31c285ec89'),
             MIMEType::fromNative('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('my dog'),

@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -73,7 +74,6 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
@@ -218,7 +218,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Get the id of the main image if one is selected for this offer.
      */
-    protected function getMainImageId(): ?LegacyUUID
+    protected function getMainImageId(): ?UUID
     {
         $mainImage = $this->images->getMain();
         return isset($mainImage) ? $mainImage->getMediaObjectId() : null;
@@ -517,7 +517,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     public function updateImage(
-        LegacyUUID $mediaObjectId,
+        UUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): void {
@@ -533,8 +533,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     private function updateImageAllowed(
-        LegacyUUID      $mediaObjectId,
-        StringLiteral   $description,
+        UUID $mediaObjectId,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): bool {
         $image = $this->images->findImageByUUID($mediaObjectId);
@@ -586,8 +586,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $currentImages = $currentImageCollection->toArray();
 
         $compareImages = function (Image $a, Image $b) {
-            $idA = $a->getMediaObjectId()->toNative();
-            $idB = $b->getMediaObjectId()->toNative();
+            $idA = $a->getMediaObjectId()->toString();
+            $idB = $b->getMediaObjectId()->toString();
             return strcmp($idA, $idB);
         };
 
@@ -1015,8 +1015,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createImageRemovedEvent(Image $image): AbstractImageRemoved;
 
     abstract protected function createImageUpdatedEvent(
-        LegacyUUID      $uuid,
-        StringLiteral   $description,
+        UUID $uuid,
+        StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): AbstractImageUpdated;
 

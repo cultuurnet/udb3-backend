@@ -56,7 +56,7 @@ class EditMediaRestController
 
         return new JsonResponse(
             [
-                'imageId' => $imageId->toNative(),
+                'imageId' => $imageId->toString(),
             ],
             201
         );

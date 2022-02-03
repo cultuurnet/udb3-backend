@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events\Image;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class AbstractImageUpdated extends AbstractEvent
 {
-    /**
-     * @var UUID
-     */
-    protected $mediaObjectId;
+    protected UUID $mediaObjectId;
 
     /**
      * @var StringLiteral
@@ -57,7 +54,7 @@ abstract class AbstractImageUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() +  [
-            'media_object_id' => (string) $this->mediaObjectId,
+            'media_object_id' => $this->mediaObjectId->toString(),
             'description' => (string) $this->description,
             'copyright_holder' => $this->copyrightHolder->toString(),
         ];

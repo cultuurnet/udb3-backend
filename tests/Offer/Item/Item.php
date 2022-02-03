@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -62,7 +63,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use RuntimeException;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
@@ -121,7 +121,7 @@ class Item extends Offer
     }
 
     protected function createImageUpdatedEvent(
-        LegacyUUID $mediaObjectId,
+        UUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): ImageUpdated {
