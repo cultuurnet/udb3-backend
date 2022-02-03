@@ -108,10 +108,10 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                 ]
             );
 
-        $this->labelsRepository->expects($this->exactly(6))
+        $this->labelsRepository->expects($this->exactly(8))
             ->method('getByName')
             ->willReturnCallback(function (StringLiteral $labelName) {
-                if ($labelName->sameValueAs(new LabelName('udb3_visible_label'))) {
+                if ($labelName->sameValueAs(new StringLiteral('udb3_visible_label'))) {
                     return new Entity(
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_visible_label'),
@@ -120,7 +120,7 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                     );
                 }
 
-                if ($labelName->sameValueAs(new LabelName('udb3_must_be_hidden'))) {
+                if ($labelName->sameValueAs(new StringLiteral('udb3_must_be_hidden'))) {
                     return new Entity(
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_must_be_hidden'),
@@ -129,7 +129,7 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                     );
                 }
 
-                if ($labelName->sameValueAs(new LabelName('udb3_hidden_label'))) {
+                if ($labelName->sameValueAs(new StringLiteral('udb3_hidden_label'))) {
                     return new Entity(
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_hidden_label'),
@@ -138,7 +138,7 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                     );
                 }
 
-                if ($labelName->sameValueAs(new LabelName('udb3_must_be_visible'))) {
+                if ($labelName->sameValueAs(new StringLiteral('udb3_must_be_visible'))) {
                     return new Entity(
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_must_be_visible'),
@@ -147,7 +147,7 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                     );
                 }
 
-                if ($labelName->sameValueAs(new LabelName('udb3_missing_visible_label'))) {
+                if ($labelName->sameValueAs(new StringLiteral('udb3_missing_visible_label'))) {
                     return new Entity(
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_missing_visible_label'),
@@ -156,7 +156,7 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                     );
                 }
 
-                if ($labelName->sameValueAs(new LabelName('udb3_missing_hidden_label'))) {
+                if ($labelName->sameValueAs(new StringLiteral('udb3_missing_hidden_label'))) {
                     return new Entity(
                         new UUID('94b863a8-715c-418b-a422-34ad941c6a48'),
                         new StringLiteral('udb3_missing_hidden_label'),
@@ -168,17 +168,19 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                 return null;
             });
 
+        // Note that imported_new_hidden_label should be visible because even though it was in hiddenLabels and it had
+        // no explicit config, new labels are always visible. Only admins can make a label hidden.
         $expectedRequest = $request->withParsedBody(
             (object) [
                 '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
                 'labels' => [
                     'imported_new_visible_label',
                     'udb3_visible_label',
+                    'imported_new_hidden_label',
                     'udb3_must_be_visible',
                     'udb3_missing_visible_label',
                 ],
                 'hiddenLabels' => [
-                    'imported_new_hidden_label',
                     'udb3_must_be_hidden',
                     'udb3_hidden_label',
                     'udb3_missing_hidden_label',
@@ -211,6 +213,20 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
             ->method('getLabelRelationsForItem')
             ->with(new StringLiteral('9f34efc7-a528-4ea8-a53e-a183f21abbab'))
             ->willReturn([]);
+
+        $this->labelsRepository->expects($this->any())
+            ->method('getByName')
+            ->willReturnCallback(function (StringLiteral $name) {
+                if (!$name->sameValueAs(new StringLiteral('foo'))) {
+                    return null;
+                }
+                return new Entity(
+                    new UUID('f37caa6d-0b79-4638-a6fb-eefc9696df5b'),
+                    $name,
+                    Visibility::INVISIBLE(),
+                    Privacy::PRIVACY_PUBLIC()
+                );
+            });
 
         $expectedRequest = $request->withParsedBody(
             (object) [
@@ -264,7 +280,7 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_duplicates_in_each_property_to_avoid_unnecessary_validation_errors(): void
+    public function it_removes_duplicates_to_avoid_unnecessary_validation_errors(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withParsedBody(
@@ -275,7 +291,7 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                         'foo',
                     ],
                     'hiddenLabels' => [
-                        'bar',
+                        'foo',
                         'bar',
                     ],
                 ]
@@ -292,8 +308,6 @@ class ImportLabelVisibilityRequestBodyParserTest extends TestCase
                 '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
                 'labels' => [
                     'foo',
-                ],
-                'hiddenLabels' => [
                     'bar',
                 ],
             ]
