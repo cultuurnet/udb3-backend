@@ -11,11 +11,11 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -54,7 +54,7 @@ class ReadRestControllerTest extends TestCase
     protected function setUp()
     {
         $this->entity = new Entity(
-            new UUID(),
+            new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'),
             new StringLiteral('labelName'),
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
