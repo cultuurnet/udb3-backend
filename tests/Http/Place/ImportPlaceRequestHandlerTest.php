@@ -722,6 +722,41 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 '/terms/0',
                 'The required properties (id) are missing'
             )
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_a_term_has_an_id_that_is_not_a_string(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => 1,
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms/0/id',
+                'The data (integer) must match the type: string'
+            ),
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
