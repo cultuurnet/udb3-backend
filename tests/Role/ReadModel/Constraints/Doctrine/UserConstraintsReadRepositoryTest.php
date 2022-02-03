@@ -36,7 +36,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
             new UUID('36c96c3b-9ce4-492b-9b4e-fee465beb597'),
             new UUID('f874cea2-4f8e-475c-8e97-47f881fc5e1a'),
             new UUID('eec38cda-9e24-441e-9584-2dafe80590a3'),
-            new UUID('09e79125-5982-4a0f-aba6-a28774b84699')
+            new UUID('09e79125-5982-4a0f-aba6-a28774b84699'),
         ];
 
         $this->userRolesTableName = new StringLiteral('user_roles');
