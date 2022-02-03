@@ -72,10 +72,7 @@ final class ImportLabelVisibilityRequestBodyParser implements RequestBodyParser
         $json->hiddenLabels = [];
         foreach ($importLabels as $importLabel) {
             $label = $this->labelsRepository->getByName(new StringLiteral($importLabel));
-            $visibility = Visibility::VISIBLE();
-            if ($label !== null) {
-                $visibility = $label->getVisibility();
-            }
+            $visibility = $label ? $label->getVisibility() : Visibility::VISIBLE();
 
             if ($visibility->sameValueAs(Visibility::VISIBLE())) {
                 $json->labels[] = $importLabel;
