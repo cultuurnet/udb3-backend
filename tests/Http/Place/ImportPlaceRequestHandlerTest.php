@@ -767,6 +767,38 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->assertValidationErrors($place, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_address_has_no_entries(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/address',
+                'The data (array) must match the type: object'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $place, array $expectedErrors): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
