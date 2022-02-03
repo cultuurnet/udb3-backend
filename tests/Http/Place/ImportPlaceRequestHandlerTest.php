@@ -430,6 +430,25 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         );
     }
 
+
+    private function assertValidationErrors(array $place, array $expectedErrors): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($place)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(...$expectedErrors),
+            fn () => $this->importPlaceRequestHandler->handle($request)
+        );
+    }
+
     /**
      * @test
      * @dataProvider invalidPlaceProvider
