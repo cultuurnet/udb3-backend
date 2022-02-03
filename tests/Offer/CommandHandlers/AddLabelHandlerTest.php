@@ -28,7 +28,6 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 use ValueObjects\StringLiteral\StringLiteral;
 

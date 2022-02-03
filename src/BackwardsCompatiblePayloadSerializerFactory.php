@@ -36,7 +36,6 @@ use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted as PlaceTypicalAgeRangeD
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated as PlaceTypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 /**
  * Factory chaining together the logic to manipulate the payload of old events

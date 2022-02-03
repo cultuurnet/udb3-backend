@@ -21,7 +21,6 @@ use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EditRoleRestControllerTest extends TestCase

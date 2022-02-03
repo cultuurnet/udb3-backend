@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 class LabelRolesProjectorTest extends TestCase
 {

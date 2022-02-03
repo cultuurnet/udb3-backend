@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 class RoleLabelsProjector extends RoleProjector
 {

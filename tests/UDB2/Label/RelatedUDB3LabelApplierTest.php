@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Place\Place;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class RelatedUDB3LabelApplierTest extends TestCase

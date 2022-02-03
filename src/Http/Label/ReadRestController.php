@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 

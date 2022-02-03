@@ -33,7 +33,6 @@ use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
