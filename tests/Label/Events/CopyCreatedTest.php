@@ -68,7 +68,7 @@ class CopyCreatedTest extends CreatedTest
     {
         $createdAsArray = parent::createdAsArray();
 
-        $createdAsArray[CopyCreated::PARENT_UUID] = $this->parentUuid;
+        $createdAsArray[CopyCreated::PARENT_UUID] = $this->parentUuid->toString();
 
         return $createdAsArray;
     }
