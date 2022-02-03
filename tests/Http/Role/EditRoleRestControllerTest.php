@@ -210,13 +210,13 @@ class EditRoleRestControllerTest extends TestCase
      */
     public function it_deletes_a_role()
     {
-        $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
+        $roleId = new UUID('d01e0e24-4a8e-11e6-beb8-9e71128cae77');
 
         $this->editService->expects($this->once())
             ->method('delete')
             ->with($roleId);
 
-        $response = $this->controller->delete($roleId);
+        $response = $this->controller->delete($roleId->toString());
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -274,7 +274,7 @@ class EditRoleRestControllerTest extends TestCase
                 new UUID($this->labelId)
             );
 
-        $response = $this->controller->addLabel($this->roleId, $this->labelId);
+        $response = $this->controller->addLabel($this->roleId, $labelName);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
