@@ -99,7 +99,7 @@ class RoleLabelsProjectorTest extends TestCase
 
         $this->roleLabelsRepository->expects($this->once())
             ->method('remove')
-            ->with($roleDeleted->getUuid());
+            ->with($roleDeleted->getUuid()->toString());
 
         $this->roleLabelsProjector->handle($domainMessage);
     }

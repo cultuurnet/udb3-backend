@@ -103,7 +103,7 @@ class RoleUsersProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('remove')
-            ->with($roleDeleted->getUuid());
+            ->with($roleDeleted->getUuid()->toString());
 
         $this->roleUsersProjector->handle($domainMessage);
     }
