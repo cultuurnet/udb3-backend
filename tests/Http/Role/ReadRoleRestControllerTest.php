@@ -168,8 +168,6 @@ class ReadRoleRestControllerTest extends TestCase
 
         $response = $this->roleRestController->getRoleUsers($roleId->toString());
         $actualResponseJson = $response->getContent();
-        var_dump($expectedResponseJson);
-        var_dump($actualResponseJson);
 
         $this->jsonEquals->assert($expectedResponseJson, $actualResponseJson);
     }
