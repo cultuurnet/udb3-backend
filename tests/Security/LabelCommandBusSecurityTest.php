@@ -83,25 +83,6 @@ class LabelCommandBusSecurityTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_is_authorized_when_label_security_command()
-    {
-        $labelSecurity = $this->getMockForAbstractClass(
-            OfferAbstractLabelCommand::class,
-            [
-                '6a475eb2-04dd-41e3-95d1-225a1cd511f1',
-                new Label('bibliotheekweek'),
-            ]
-        );
-
-        $this->labelReadRepository->expects($this->once())
-            ->method('canUseLabel');
-
-        $this->securityWithLabelPrivacy->isAuthorized($labelSecurity);
-    }
-
-    /**
-     * @test
-     */
     public function a_user_can_only_use_labels_he_is_allowed_to_use()
     {
         $this->labelReadRepository->method('canUseLabel')
