@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
@@ -20,8 +21,10 @@ use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
+use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -36,6 +39,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', ImportOrganizerRequestHandler::class);
+        $controllers->put('/{organizerId}/', ImportOrganizerRequestHandler::class);
         $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class)->bind('organizer');
         $controllers->delete('/{organizerId}/', DeleteOrganizerRequestHandler::class);
 
@@ -69,22 +73,28 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
     public function register(Application $app): void
     {
+        $app[ImportOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new ImportOrganizerRequestHandler(
+                $app['organizer_repository'],
+                $app['imports_command_bus'],
+                $app['labels.labels_locked_for_import_repository'],
+                $app['uuid_generator'],
+                $app['organizer_iri_generator'],
+                new CombinedRequestBodyParser(
+                    new ImportLabelVisibilityRequestBodyParser(
+                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    )
+                )
+            )
+        );
+
         $app[GetOrganizerRequestHandler::class] = $app->share(
             fn (Application $application) => new GetOrganizerRequestHandler($app['organizer_service'])
         );
 
         $app[DeleteOrganizerRequestHandler::class] = $app->share(
             fn (Application $application) => new DeleteOrganizerRequestHandler($app['event_command_bus'])
-        );
-
-        $app['organizer_permissions_controller'] = $app->share(
-            function (Application $app) {
-                return new OfferPermissionsController(
-                    [Permission::organisatiesBewerken()],
-                    $app['organizer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
-                );
-            }
         );
 
         $app[UpdateTitleRequestHandler::class] = $app->share(
@@ -140,6 +150,16 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $app[DeleteLabelRequestHandler::class] = $app->share(
             fn (Application $application) => new DeleteLabelRequestHandler($app['event_command_bus'])
+        );
+
+        $app['organizer_permissions_controller'] = $app->share(
+            function (Application $app) {
+                return new OfferPermissionsController(
+                    [Permission::organisatiesBewerken()],
+                    $app['organizer_permission_voter'],
+                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                );
+            }
         );
     }
 
