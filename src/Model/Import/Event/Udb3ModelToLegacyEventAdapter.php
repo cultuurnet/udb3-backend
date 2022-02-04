@@ -10,6 +10,9 @@ use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Import\Offer\Udb3ModelToLegacyOfferAdapter;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
+/**
+ * @deprecated Should no longer be used because all commands should use the VOs from the Model namespace.
+ */
 class Udb3ModelToLegacyEventAdapter extends Udb3ModelToLegacyOfferAdapter implements LegacyEvent
 {
     private Event $event;
