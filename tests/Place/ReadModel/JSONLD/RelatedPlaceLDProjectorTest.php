@@ -15,7 +15,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\RecordedOn;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidFactory;
 
 class RelatedPlaceLDProjectorTest extends TestCase
 {
@@ -64,7 +63,7 @@ class RelatedPlaceLDProjectorTest extends TestCase
             $this->placeRelations
         );
 
-        $this->domainMessageBuilder = new DomainMessageBuilder(new UuidFactory());
+        $this->domainMessageBuilder = new DomainMessageBuilder();
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
             DateTime::fromString('2018-01-01T08:30:00+0100')

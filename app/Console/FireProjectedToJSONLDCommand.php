@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
-use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,7 +39,7 @@ class FireProjectedToJSONLDCommand extends AbstractFireProjectedToJSONLDCommand
             ) {
                 $type = $input->getArgument('type');
 
-                $domainMessageBuilder = new DomainMessageBuilder(new UuidFactory());
+                $domainMessageBuilder = new DomainMessageBuilder();
 
                 $this->fireEvent(
                     $input->getArgument('id'),

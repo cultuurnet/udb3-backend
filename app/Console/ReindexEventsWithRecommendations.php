@@ -10,7 +10,6 @@ use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Knp\Command\Command;
-use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -100,7 +99,7 @@ final class ReindexEventsWithRecommendations extends Command
         $projectedEvent = $this->eventFactoryForEvents->createEvent($eventId);
 
         $this->amqpPublisher->handle(
-            (new DomainMessageBuilder(new UuidFactory()))->create($projectedEvent)
+            (new DomainMessageBuilder())->create($projectedEvent)
         );
     }
 }

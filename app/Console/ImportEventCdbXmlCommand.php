@@ -10,7 +10,6 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use DateTimeImmutable;
-use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -71,7 +70,7 @@ class ImportEventCdbXmlCommand extends AbstractCommand
             Url::fromNative($input->getArgument(self::URL))
         );
 
-        $domainMessage = (new DomainMessageBuilder(new UuidFactory()))
+        $domainMessage = (new DomainMessageBuilder())
             ->setUserId($this->systemUserId)
             ->create($incomingUdb2Event);
 
