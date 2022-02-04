@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class RelocateEventToCanonicalPlaceTest extends TestCase
 {
@@ -55,8 +54,8 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
      */
     public function it_will_not_relocate_events_when_they_already_use_a_canonical_place(): void
     {
-        $eventId = Uuid::generateAsString();
-        $locationId = new LocationId(Uuid::generateAsString());
+        $eventId = UUID::generateAsString();
+        $locationId = new LocationId(UUID::generateAsString());
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn(null);
         $place->method('getAggregateRootId')->willReturn($locationId->toNative());
@@ -82,9 +81,9 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
      */
     public function it_will_relocate_event_when_it_was_created_for_a_duplicate_place(): void
     {
-        $eventId = Uuid::generateAsString();
-        $locationId = new LocationId(Uuid::generateAsString());
-        $canonicalPlaceId = Uuid::generateAsString();
+        $eventId = UUID::generateAsString();
+        $locationId = new LocationId(UUID::generateAsString());
+        $canonicalPlaceId = UUID::generateAsString();
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
         $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);
@@ -115,9 +114,9 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
      */
     public function it_will_relocate_event_when_its_location_was_updated_to_a_duplicate_place(): void
     {
-        $eventId = Uuid::generateAsString();
-        $locationId = new LocationId(Uuid::generateAsString());
-        $canonicalPlaceId = Uuid::generateAsString();
+        $eventId = UUID::generateAsString();
+        $locationId = new LocationId(UUID::generateAsString());
+        $canonicalPlaceId = UUID::generateAsString();
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
         $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);

@@ -13,9 +13,9 @@ use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class AggregateAwareDBALEventStoreTest extends TestCase
 {
@@ -63,7 +63,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         $this->insertDomainMessage($domainMessage);
 
         $domainEventStream = $this->aggregateAwareDBALEventStore->load(
-            $uuid->toNative()
+            $uuid->toString()
         );
 
         $this->assertEquals(

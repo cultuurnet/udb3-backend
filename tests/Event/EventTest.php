@@ -51,7 +51,6 @@ use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
 use RuntimeException;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
@@ -80,7 +79,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Language('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
-            new LocationId(LegacyUUID::generateAsString()),
+            new LocationId(UUID::generateAsString()),
             new Calendar(CalendarType::PERMANENT())
         );
     }
@@ -92,7 +91,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Language('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
-            new LocationId(LegacyUUID::generateAsString()),
+            new LocationId(UUID::generateAsString()),
             new Calendar(CalendarType::PERMANENT())
         );
     }
@@ -104,7 +103,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Language('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
-            new LocationId(LegacyUUID::generateAsString()),
+            new LocationId(UUID::generateAsString()),
             new Calendar(CalendarType::PERMANENT()),
             new Theme('1.8.3.1.0', 'Pop en rock')
         );
@@ -115,8 +114,8 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_sets_the_audience_type_to_education_when_creating_an_event_with_a_dummy_education_location(): void
     {
-        $eventUuid = LegacyUUID::generateAsString();
-        $locationUuid = LegacyUUID::generateAsString();
+        $eventUuid = UUID::generateAsString();
+        $locationUuid = UUID::generateAsString();
         LocationId::setDummyPlaceForEducationIds([$locationUuid]);
 
         $event = Event::create(
@@ -863,7 +862,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $createEvent = $this->getCreationEvent();
         $eventId = $createEvent->getEventId();
-        $newLocationId = new LocationId(LegacyUUID::generateAsString());
+        $newLocationId = new LocationId(UUID::generateAsString());
         LocationId::setDummyPlaceForEducationIds([$newLocationId->toNative()]);
 
         $this->scenario
@@ -967,7 +966,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_will_not_update_audience_for_events_with_dummy_place(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $dummyLocationId = LegacyUUID::generateAsString();
+        $dummyLocationId = UUID::generateAsString();
         LocationId::setDummyPlaceForEducationIds([$dummyLocationId]);
         $this->expectException(IncompatibleAudienceType::class);
         $this->scenario

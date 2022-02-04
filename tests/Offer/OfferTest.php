@@ -59,7 +59,6 @@ use CultuurNet\UDB3\Offer\Item\Item;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Exception;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url as LegacyUrl;
 
@@ -132,7 +131,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_updates_facilities_when_changed(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $facilities = [
             new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
@@ -191,7 +190,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_updates_contact_point_when_changed(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $contactPoint = new ContactPoint(
             ['016/101010'],
@@ -237,7 +236,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_updates_typical_age_range_when_changed(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $typicalAgeRange = new AgeRange(new Age(8), new Age(11));
         $sameAgeRange = new AgeRange(new Age(8), new Age(11));
@@ -277,7 +276,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_remember_added_labels(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $this->scenario
             ->given([
@@ -306,7 +305,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_remember_which_labels_were_removed(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $this->scenario
             ->given([
@@ -336,7 +335,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_handles_import_labels(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $labels = new Labels(
             new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
@@ -1260,7 +1259,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_approve_an_offer_that_is_ready_for_validation(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -1288,7 +1287,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_approve_an_offer_more_than_once(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -1319,7 +1318,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_approve_an_offer_after_it_was_rejected(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $reason = new StringLiteral('There are spelling mistakes in the description.');
 
         $this->scenario
@@ -1343,7 +1342,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_more_than_once_for_the_same_reason(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $reason = new StringLiteral('The title is misleading.');
         $now = new \DateTime();
 
@@ -1375,7 +1374,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_that_is_already_rejected_for_a_different_reason(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $reason = new StringLiteral('The title is misleading.');
         $differentReason = new StringLiteral('I\'m afraid I can\'t let you do that.');
 
@@ -1400,7 +1399,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_reject_an_offer_that_is_ready_for_validation_with_a_reason(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $reason = new StringLiteral('You forgot to add an organizer.');
         $now = new \DateTime();
 
@@ -1429,7 +1428,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_flag_an_offer_that_is_ready_for_validation_as_duplicate(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -1459,7 +1458,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_reject_an_offer_when_it_is_flagged_as_duplicate(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $reason = new StringLiteral('The theme does not match the description.');
 
         $this->scenario
@@ -1483,7 +1482,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_flag_an_offer_that_is_ready_for_validation_as_inappropriate(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $now = new \DateTime();
 
         $this->scenario
@@ -1513,7 +1512,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_when_it_is_flagged_as_inappropriate(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $reason = new StringLiteral('The theme does not match the description.');
 
         $this->scenario
@@ -1539,7 +1538,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_reject_an_offer_that_is_flagged_as_approved(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $reason = new StringLiteral('Yeah, but no, but yeah...');
 
         $this->scenario
@@ -1563,8 +1562,8 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_update_an_offer_with_an_organizer_when_it_is_already_set(): void
     {
-        $itemId = LegacyUUID::generateAsString();
-        $organizerId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
+        $organizerId = UUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1587,8 +1586,8 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_update_an_offer_with_the_same_organizer_after_removing_it(): void
     {
-        $itemId = LegacyUUID::generateAsString();
-        $organizerId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
+        $organizerId = UUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1612,8 +1611,8 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_delete_the_current_organizer_regardless_of_the_id(): void
     {
-        $itemId = LegacyUUID::generateAsString();
-        $organizerId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
+        $organizerId = UUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1636,7 +1635,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_not_delete_the_current_organizer_if_there_is_none(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1658,7 +1657,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_ignore_a_title_update_that_does_not_change_the_existing_title(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $title = new Title('Titel');
 
         $this->scenario
@@ -1682,7 +1681,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_translate_the_title_when_updating_with_a_foreign_language(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $title = new Title('The Title');
         $language = new LegacyLanguage('en');
 
@@ -1709,7 +1708,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_ignore_a_title_translation_that_does_not_translate_the_title(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $title = new Title('The Title');
         $language = new LegacyLanguage('en');
 
@@ -1738,7 +1737,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_ignore_a_description_update_that_does_not_change_the_existing_descriptions(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $description = new \CultuurNet\UDB3\Description('Een beschrijving');
 
         $this->scenario
@@ -1762,7 +1761,7 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_should_translate_the_description_when_updating_with_a_foreign_language(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $description = new \CultuurNet\UDB3\Description('La description');
         $language = new LegacyLanguage('fr');
 
@@ -1842,7 +1841,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         Image $image,
         ImageCollection $imageCollection
     ): void {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)
@@ -1864,7 +1863,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_keep_images_translated_in_ubd3_when_updating_images_from_udb2(
         Image $image
     ): void {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $dutchUdb3Image = new Image(
             new UUID('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
@@ -1914,7 +1913,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         Image $image,
         ImageCollection $imageCollection
     ): void {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $this->scenario
             ->withAggregateId($itemId)

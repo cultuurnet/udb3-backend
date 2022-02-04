@@ -67,7 +67,6 @@ use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url as LegacyUrl;
@@ -1356,7 +1355,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_updates_available_from(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $itemDocumentReadyDraft = new JsonDocument(
             $itemId,
@@ -1395,7 +1394,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_updates_the_workflow_status_and_available_from_when_an_offer_is_published(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $now = new \DateTime();
 
         $publishedEvent = new Published($itemId, $now);
@@ -1427,7 +1426,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_update_the_workflow_status_when_an_offer_is_approved(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         $approvedEvent = new Approved($itemId);
         $itemDocumentReadyForValidation = new JsonDocument(
@@ -1485,7 +1484,7 @@ class OfferLDProjectorTest extends TestCase
 
     public function rejectionEventsDataProvider(): array
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
 
         return [
             'offer rejected' => [
@@ -1514,7 +1513,7 @@ class OfferLDProjectorTest extends TestCase
         ImageCollection $images,
         array $expectedMediaObjects
     ): void {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $imagesImportedEvent = new ImagesImportedFromUDB2($itemId, $images);
 
         $importedItem = $this->project($imagesImportedEvent, $itemId);
@@ -1529,7 +1528,7 @@ class OfferLDProjectorTest extends TestCase
         ImageCollection $images,
         array $expectedMediaObjects
     ): void {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $imagesImportedEvent = new ImagesUpdatedFromUDB2($itemId, $images);
 
         $importedItem = $this->project($imagesImportedEvent, $itemId);
@@ -1543,7 +1542,7 @@ class OfferLDProjectorTest extends TestCase
     public function it_should_project_the_main_udb2_picture_as_image(
         ImageCollection $images
     ): void {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $imagesImportedEvent = new ImagesImportedFromUDB2($itemId, $images);
         $expectedImage = 'http://foo.bar/media/my_pic.jpg';
 
@@ -1556,7 +1555,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_project_the_new_type_as_a_term_when_updated(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $type = new EventType('YVBc8KVdrU6XfTNvhMYUpg', 'Discotheek');
         $typeUpdatedEvent = new TypeUpdated($itemId, $type);
 
@@ -1577,7 +1576,7 @@ class OfferLDProjectorTest extends TestCase
      */
     public function it_should_replace_the_existing_type_term_when_updating_with_a_new_type(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
             Json::encode([

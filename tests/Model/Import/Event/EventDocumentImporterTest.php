@@ -71,7 +71,6 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\Web\Url as LegacyUrl;
 
@@ -652,7 +651,7 @@ class EventDocumentImporterTest extends TestCase
      */
     public function it_should_force_audience_type_to_education_for_dummy_place(): void
     {
-        $dummyPlaceId = LegacyUUID::generateAsString();
+        $dummyPlaceId = UUID::generateAsString();
         LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
         $document = $this->getEventDocument();
         $body = $document->getBody();

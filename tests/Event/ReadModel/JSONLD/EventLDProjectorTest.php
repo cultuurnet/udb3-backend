@@ -51,6 +51,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -65,7 +66,6 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 class EventLDProjectorTest extends OfferLDProjectorTestBase
 {
@@ -1238,7 +1238,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_should_project_the_new_theme_as_a_term_when_updated(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $theme = new Theme('1.8.3.3.0', 'Dance');
         $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
 
@@ -1260,7 +1260,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_should_replace_the_existing_theme_term_when_updating_with_a_new_theme(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = UUID::generateAsString();
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
             Json::encode([
