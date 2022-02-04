@@ -8,6 +8,9 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Import\Offer\Udb3ModelToLegacyOfferAdapter;
 
+/**
+ * @deprecated Should no longer be used because all commands should use the VOs from the Model namespace.
+ */
 class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implements LegacyPlace
 {
     private Place $place;

@@ -16,6 +16,9 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 
+/**
+ * @deprecated Should no longer be used because all commands should use the VOs from the Model namespace.
+ */
 interface LegacyOffer
 {
     public function getId(): string;
