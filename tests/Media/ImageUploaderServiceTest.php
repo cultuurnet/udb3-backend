@@ -101,7 +101,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory . '/' . $this->fileId . '.png';
+        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.png';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator
@@ -239,7 +239,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory . '/' . $this->fileId . '.jpg';
+        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.jpg';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator

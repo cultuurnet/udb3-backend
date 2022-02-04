@@ -24,7 +24,7 @@ class AbstractPublishTest extends TestCase
         /** @var AbstractPublish|MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
-            [(new UUID())->toNative(), $futurePublicationDate]
+            ['513b3060-c94c-4aef-bfaa-9ad4fc54d979', $futurePublicationDate]
         );
 
         $this->assertEquals(
@@ -44,7 +44,7 @@ class AbstractPublishTest extends TestCase
         /** @var AbstractPublish|MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
-            [(new UUID())->toNative()]
+            ['0399351f-89b6-4b16-981e-d4e71b8817e5']
         );
 
         $publicationDate = $publishCommand->getPublicationDate();
@@ -67,7 +67,7 @@ class AbstractPublishTest extends TestCase
         /** @var AbstractPublish|MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
-            [(new UUID())->toNative(), $lastMonth]
+            ['b9cf614a-96b1-467e-831f-9f91224994bf', $lastMonth]
         );
 
         $this->assertEquals($now, $publishCommand->getPublicationDate());
