@@ -542,6 +542,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'name' => [
                 'nl' => 'Test place',
                 'fr' => '   ',
+                'en' => '',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -568,6 +569,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/name/fr',
                 'The string should match pattern: \S'
+            ),
+            new SchemaError(
+                '/name/en',
+                'Minimum string length is 1, found 0'
             ),
         ];
 
@@ -1391,6 +1396,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'phone' => [
                     '02 551 18 70',
                     '   ',
+                    '',
                 ],
                 'email' => [
                     'info@publiq.be',
@@ -1407,6 +1413,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/contactPoint/phone/1',
                 'The string should match pattern: \S'
+            ),
+            new SchemaError(
+                '/contactPoint/phone/2',
+                'Minimum string length is 1, found 0'
             ),
         ];
 
@@ -1552,6 +1562,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'email' => [
                     'info@publiq.be',
                     '   ',
+                    '',
                 ],
                 'url' => [
                     'https://www.publiq.be',
@@ -1563,6 +1574,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/contactPoint/email/1',
+                'The data must match the \'email\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/email/2',
                 'The data must match the \'email\' format'
             ),
         ];
@@ -1710,6 +1725,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'url' => [
                     'https://www.publiq.be',
                     '   ',
+                    '',
                 ],
             ],
         ];
@@ -1717,6 +1733,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/contactPoint/url/1',
+                'The data must match the \'uri\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/url/2',
                 'The data must match the \'uri\' format'
             ),
         ];
@@ -1859,6 +1879,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'bookingInfo' => [
                 'phone' => '   ',
+                '',
             ],
         ];
 
