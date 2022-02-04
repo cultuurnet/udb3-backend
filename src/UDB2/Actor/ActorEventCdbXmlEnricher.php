@@ -24,6 +24,7 @@ use Http\Client\HttpClient;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Ramsey\Uuid\UuidFactoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 use XMLReader;
@@ -52,6 +53,8 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
      */
     protected $logContext;
 
+    protected UuidFactoryInterface $uuidFactory;
+
     /**
      * @var XMLValidationServiceInterface|null
      */
@@ -60,11 +63,13 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
     public function __construct(
         EventBus $eventBus,
         HttpClient $httpClient,
+        UuidFactoryInterface $uuidFactory,
         XMLValidationServiceInterface $xmlValidationService = null
     ) {
         $this->eventBus = $eventBus;
         $this->httpClient = $httpClient;
         $this->xmlValidationService = $xmlValidationService;
+        $this->uuidFactory = $uuidFactory;
         $this->logger = new NullLogger();
     }
 
@@ -132,7 +137,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
     private function publish($payload, Metadata $metadata)
     {
         $message = new DomainMessage(
-            UUID::generateAsString(),
+            $this->uuidFactory->uuid4()->toString(),
             1,
             $metadata,
             $payload,

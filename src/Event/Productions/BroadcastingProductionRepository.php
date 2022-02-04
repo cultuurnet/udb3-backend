@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
+use Ramsey\Uuid\UuidFactory;
 
 final class BroadcastingProductionRepository implements ProductionRepository
 {
@@ -111,7 +112,7 @@ final class BroadcastingProductionRepository implements ProductionRepository
         $domainMessages = [];
         foreach ($eventIds as $eventId) {
             $eventProjectedToJsonLd = $this->eventFactory->createEvent($eventId);
-            $domainMessages[] = (new DomainMessageBuilder())->create($eventProjectedToJsonLd);
+            $domainMessages[] = (new DomainMessageBuilder(new UuidFactory()))->create($eventProjectedToJsonLd);
         }
         $stream = new DomainEventStream($domainMessages);
         $this->eventBus->publish($stream);

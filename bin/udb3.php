@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Knp\Provider\ConsoleServiceProvider;
+use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -104,7 +105,14 @@ $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['e
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
-$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
+$consoleApp->add(
+        new DispatchMarkedAsDuplicateEventCommand(
+                $app['event_command_bus'],
+                $app[LocationMarkedAsDuplicateProcessManager::class],
+                $app['event_bus'],
+                new UuidFactory()
+        )
+);
 $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::event(),

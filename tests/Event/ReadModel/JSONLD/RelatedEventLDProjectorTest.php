@@ -18,6 +18,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\UuidFactory;
 use stdClass;
 use ValueObjects\Web\Url;
 
@@ -72,7 +73,7 @@ final class RelatedEventLDProjectorTest extends TestCase
             $this->iriOfferIdentifierFactory
         );
 
-        $this->domainMessageBuilder = new DomainMessageBuilder();
+        $this->domainMessageBuilder = new DomainMessageBuilder(new UuidFactory());
         $this->domainMessageBuilder->setRecordedOnFromDateTimeString('2018-09-27T20:00:00+00:00');
     }
 

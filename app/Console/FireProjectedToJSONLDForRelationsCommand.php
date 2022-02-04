@@ -9,6 +9,7 @@ use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use PDO;
+use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -42,7 +43,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
                 InputInterface $input,
                 OutputInterface $output
             ) use ($connection) {
-                $domainMessageBuilder = new DomainMessageBuilder();
+                $domainMessageBuilder = new DomainMessageBuilder(new UuidFactory());
 
                 $queryBuilder = $this->connection->createQueryBuilder();
 

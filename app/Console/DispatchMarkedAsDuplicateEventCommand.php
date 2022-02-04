@@ -13,6 +13,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use Psr\Log\LoggerAwareInterface;
+use Ramsey\Uuid\UuidFactoryInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -33,14 +34,18 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
      */
     private $eventBus;
 
+    private UuidFactoryInterface $uuidFactory;
+
     public function __construct(
         CommandBus $commandBus,
         EventListener $processManager,
-        EventBus $eventBus
+        EventBus $eventBus,
+        UuidFactoryInterface $uuidFactory
     ) {
         parent::__construct($commandBus);
         $this->processManager = $processManager;
         $this->eventBus = $eventBus;
+        $this->uuidFactory = $uuidFactory;
     }
 
 
@@ -65,7 +70,7 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
             new DomainEventStream(
                 [
                     DomainMessage::recordNow(
-                        UUID::generateAsString(),
+                        $this->uuidFactory->uuid4()->toString(),
                         0,
                         Metadata::deserialize([]),
                         new MarkedAsDuplicate(
