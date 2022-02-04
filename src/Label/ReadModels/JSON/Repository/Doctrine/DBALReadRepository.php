@@ -17,7 +17,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
