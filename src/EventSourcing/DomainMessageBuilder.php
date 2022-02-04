@@ -8,7 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 /**
  * Helper class for building domain messages, to be used in automated tests.

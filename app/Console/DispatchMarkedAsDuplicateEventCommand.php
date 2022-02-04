@@ -10,13 +10,13 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
-use ValueObjects\Identity\UUID;
 
 class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
 {
