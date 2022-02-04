@@ -31,7 +31,7 @@ class CanonicalPlaceRepositoryTest extends TestCase
      */
     public function it_will_return_place_without_defined_canonical(): void
     {
-        $placeId = UUID::generateAsString();
+        $placeId = 'ab4a570b-31bc-4538-9129-caf056c716d6';
         $canonicalPlace = $this->createMock(Place::class);
         $canonicalPlace->method('getCanonicalPlaceId')->willReturn(null);
         $canonicalPlace->method('getAggregateRootId')->willReturn($placeId);
@@ -47,15 +47,15 @@ class CanonicalPlaceRepositoryTest extends TestCase
      */
     public function it_will_return_canonical_place(): void
     {
-        $placeId = UUID::generateAsString();
+        $placeId = '58eb15e6-31b7-4d83-a637-5b75de21a7b4';
         $place = $this->createMock(Place::class);
         $place->method('getAggregateRootId')->willReturn($placeId);
 
-        $secondLevelDuplicatePlaceId = Uuid::generateAsString();
+        $secondLevelDuplicatePlaceId = '42cac5ac-f673-4c3a-9d36-b988f768ab47';
         $secondLevelDuplicatePlace = $this->createMock(Place::class);
         $secondLevelDuplicatePlace->method('getAggregateRootId')->willReturn($secondLevelDuplicatePlaceId);
 
-        $canonicalPlaceId = UUID::generateAsString();
+        $canonicalPlaceId = '29b2352d-1ebb-4ac3-9214-6bba43e6c7b4';
         $canonicalPlace = $this->createMock(Place::class);
         $canonicalPlace->method('getAggregateRootId')->willReturn($canonicalPlaceId);
 

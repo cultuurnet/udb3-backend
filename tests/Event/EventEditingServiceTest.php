@@ -118,7 +118,7 @@ final class EventEditingServiceTest extends TestCase
         $mainLanguage = new Language('nl');
         $title = new Title('Title');
         $eventType = new EventType('0.50.4.0.0', 'concert');
-        $location = new LocationId(UUID::generateAsString());
+        $location = new LocationId('1f33fff3-d975-4718-a065-95d10e6ab4f2');
         $calendar = new Calendar(CalendarType::PERMANENT());
         $theme = null;
 
@@ -162,7 +162,7 @@ final class EventEditingServiceTest extends TestCase
         $mainLanguage = new Language('nl');
         $title = new Title('Title');
         $eventType = new EventType('0.50.4.0.0', 'concert');
-        $location = new LocationId(UUID::generateAsString());
+        $location = new LocationId('5825b862-49b7-4d45-bccf-9fa01d2fec7f');
         $calendar = new Calendar(CalendarType::PERMANENT());
         $theme = null;
 
@@ -212,7 +212,7 @@ final class EventEditingServiceTest extends TestCase
         $mainLanguage = new Language('nl');
         $title = new Title('Title');
         $eventType = new EventType('0.50.4.0.0', 'concert');
-        $invalidLocation = new LocationId(UUID::generateAsString());
+        $invalidLocation = new LocationId('742ff804-2246-4c60-993b-a01967dac2c4');
         $calendar = new Calendar(CalendarType::PERMANENT());
         $theme = null;
 
@@ -246,7 +246,7 @@ final class EventEditingServiceTest extends TestCase
         $mainLanguage = new Language('nl');
         $title = new Title('Title');
         $eventType = new EventType('0.50.4.0.0', 'concert');
-        $invalidLocation = new LocationId(UUID::generateAsString());
+        $invalidLocation = new LocationId('783b2905-601e-4ef0-b9ac-88e59dd37a8a');
         $calendar = new Calendar(CalendarType::PERMANENT());
         $theme = null;
 
@@ -281,7 +281,7 @@ final class EventEditingServiceTest extends TestCase
         $mainLanguage = new Language('nl');
         $title = new Title('Title');
         $eventType = new EventType('0.50.4.0.0', 'concert');
-        $location = new LocationId(UUID::generateAsString());
+        $location = new LocationId('45a6c3fa-465a-43c6-89bd-cced3765d850');
         $calendar = new Calendar(CalendarType::PERMANENT());
         $theme = null;
         $publicationDate = \DateTimeImmutable::createFromFormat(

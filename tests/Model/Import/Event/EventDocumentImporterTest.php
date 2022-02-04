@@ -651,7 +651,7 @@ class EventDocumentImporterTest extends TestCase
      */
     public function it_should_force_audience_type_to_education_for_dummy_place(): void
     {
-        $dummyPlaceId = UUID::generateAsString();
+        $dummyPlaceId = 'a3a25ddb-7607-442b-baea-dfc91a9d6e6d';
         LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
         $document = $this->getEventDocument();
         $body = $document->getBody();

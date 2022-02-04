@@ -1238,7 +1238,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_should_project_the_new_theme_as_a_term_when_updated(): void
     {
-        $itemId = UUID::generateAsString();
+        $itemId = '528e26f7-9bad-48b8-b47f-c3a4b5b92bf6';
         $theme = new Theme('1.8.3.3.0', 'Dance');
         $themeUpdatedEvent = new ThemeUpdated($itemId, $theme);
 
@@ -1260,7 +1260,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_should_replace_the_existing_theme_term_when_updating_with_a_new_theme(): void
     {
-        $itemId = UUID::generateAsString();
+        $itemId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
         $documentWithExistingTerms = new JsonDocument(
             $itemId,
             Json::encode([
@@ -1307,7 +1307,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_handles_theme_removed(): void
     {
-        $itemId = LegacyUUID::generateAsString();
+        $itemId = 'd3140997-5e22-4e57-b6d3-04fc8d9b86cb';
 
         $documentWithExistingTerms = new JsonDocument(
             $itemId,

@@ -220,7 +220,7 @@ class ActorEventCdbXmlEnricherTest extends TestCase
     {
         $this->enricher->handle(
             DomainMessage::recordNow(
-                UUID::generateAsString(),
+                '9a821cfa-c49a-4aac-827f-a04c750b4a5b',
                 0,
                 new Metadata(),
                 $payload

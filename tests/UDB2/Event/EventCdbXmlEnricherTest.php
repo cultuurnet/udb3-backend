@@ -217,7 +217,7 @@ class EventCdbXmlEnricherTest extends TestCase
     {
         $this->enricher->handle(
             DomainMessage::recordNow(
-                UUID::generateAsString(),
+                'b868ba1d-13f2-4c5a-9b4c-4fb80730d2b0',
                 0,
                 new Metadata(),
                 $payload
