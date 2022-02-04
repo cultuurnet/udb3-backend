@@ -21,6 +21,7 @@ use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\UuidFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -61,6 +62,7 @@ class ActorEventCdbXmlEnricherTest extends TestCase
         $this->enricher = new ActorEventCdbXmlEnricher(
             $this->eventBus,
             $this->httpClient,
+            new UuidFactory(),
             $this->xmlValidationService
         );
     }

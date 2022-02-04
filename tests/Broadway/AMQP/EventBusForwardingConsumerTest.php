@@ -106,6 +106,7 @@ class EventBusForwardingConsumerTest extends TestCase
             $this->consumerTag,
             $this->exchangeName,
             $this->queueName,
+            new UuidFactory(),
             $this->delay
         );
 
