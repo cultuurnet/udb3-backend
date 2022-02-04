@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Media;
 
 use ArrayIterator;
 use CultuurNet\UDB3\Collection\AbstractCollection;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class ImageCollection extends AbstractCollection
 {
@@ -59,7 +59,7 @@ class ImageCollection extends AbstractCollection
     {
         /** @var Image $image */
         foreach ($this->items as $image) {
-            if ($image->getMediaObjectId()->sameValueAs($uuid)) {
+            if ($image->getMediaObjectId()->sameAs($uuid)) {
                 return $image;
             }
         }

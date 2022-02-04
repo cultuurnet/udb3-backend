@@ -8,8 +8,8 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -25,12 +25,7 @@ class MediaObject extends EventSourcedAggregateRoot
      */
     protected $mimeType;
 
-    /**
-     * The id of the media object.
-     *
-     * @var UUID
-     */
-    protected $mediaObjectId;
+    protected UUID $mediaObjectId;
 
     /**
      * Description of the media object.
@@ -82,7 +77,7 @@ class MediaObject extends EventSourcedAggregateRoot
 
     public function getAggregateRootId(): string
     {
-        return $this->mediaObjectId->toNative();
+        return $this->mediaObjectId->toString();
     }
 
     protected function applyMediaObjectCreated(MediaObjectCreated $mediaObjectCreated)
@@ -108,10 +103,7 @@ class MediaObject extends EventSourcedAggregateRoot
         return $this->copyrightHolder;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getMediaObjectId()
+    public function getMediaObjectId(): UUID
     {
         return $this->mediaObjectId;
     }

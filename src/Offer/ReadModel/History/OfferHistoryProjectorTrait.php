@@ -114,7 +114,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' toegevoegd")
+            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId->toString()}' toegevoegd")
         );
     }
 
@@ -126,7 +126,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' verwijderd")
+            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId->toString()}' verwijderd")
         );
     }
 
@@ -138,7 +138,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' aangepast")
+            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId->toString()}' aangepast")
         );
     }
 
@@ -154,7 +154,7 @@ trait OfferHistoryProjectorTrait
                 $domainMessage->getId(),
                 Log::createFromDomainMessage(
                     $domainMessage,
-                    "Afbeelding '{$mediaObjectId}' geïmporteerd uit UDB2",
+                    "Afbeelding '{$mediaObjectId->toString()}' geïmporteerd uit UDB2",
                     (string) $key
                 )
             );
@@ -173,7 +173,7 @@ trait OfferHistoryProjectorTrait
                 $domainMessage->getId(),
                 Log::createFromDomainMessage(
                     $domainMessage,
-                    "Afbeelding '{$mediaObjectId}' aangepast via UDB2",
+                    "Afbeelding '{$mediaObjectId->toString()}' aangepast via UDB2",
                     (string) $key
                 )
             );
@@ -245,7 +245,7 @@ trait OfferHistoryProjectorTrait
     {
         /* @var MainImageSelected $event */
         $event = $domainMessage->getPayload();
-        $mediaObjectId = $event->getImage()->getMediaObjectId()->toNative();
+        $mediaObjectId = $event->getImage()->getMediaObjectId()->toString();
 
         $this->writeHistory(
             $domainMessage->getId(),

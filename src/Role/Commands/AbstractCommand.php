@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use ValueObjects\Identity\UUID;
 
 abstract class AbstractCommand implements AuthorizableCommand
 {
@@ -24,7 +24,7 @@ abstract class AbstractCommand implements AuthorizableCommand
 
     public function getItemId(): string
     {
-        return (string) $this->getUuid();
+        return $this->getUuid()->toString();
     }
 
     public function getPermission(): Permission

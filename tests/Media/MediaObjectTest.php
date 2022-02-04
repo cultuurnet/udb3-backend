@@ -8,8 +8,8 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -36,7 +36,7 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
         $language = new Language('en');
 
         $this->scenario
-            ->withAggregateId($fileId->toNative())
+            ->withAggregateId($fileId->toString())
             ->when(
                 function () use ($fileId, $fileType, $description, $copyrightHolder, $location, $language) {
                     return MediaObject::create(

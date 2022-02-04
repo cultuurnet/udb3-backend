@@ -12,11 +12,11 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -58,11 +58,11 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         try {
             /** @var MediaObject $existingMediaObject */
             $existingMediaObject = $this->repository->load($id);
-            $this->logger->info('Trying to create media with id: ' . $id . ' but it already exists. Using existing Media Object!');
+            $this->logger->info('Trying to create media with id: ' . $id->toString() . ' but it already exists. Using existing Media Object!');
 
             return $existingMediaObject;
         } catch (AggregateNotFoundException $exception) {
-            $this->logger->info('No existing media with id: ' . $id . ' found. Creating a new Media Object!');
+            $this->logger->info('No existing media with id: ' . $id->toString() . ' found. Creating a new Media Object!');
         }
 
         $mediaObject = MediaObject::create(
@@ -103,7 +103,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $uploadImage->getLanguage()
         );
 
-        $jobInfo = ['file_id' => (string) $uploadImage->getFileId()];
+        $jobInfo = ['file_id' => $uploadImage->getFileId()->toString()];
         $this->logger->info('job_info', $jobInfo);
     }
 
@@ -111,10 +111,10 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
     {
         try {
             /** @var MediaObject $mediaObject */
-            $mediaObject = $this->repository->load((string) $fileId);
+            $mediaObject = $this->repository->load($fileId->toString());
         } catch (AggregateNotFoundException $e) {
             throw new MediaObjectNotFoundException(
-                sprintf("Media object with id '%s' not found", $fileId),
+                sprintf("Media object with id '%s' not found", $fileId->toString()),
                 0,
                 $e
             );

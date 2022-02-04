@@ -11,11 +11,11 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Uri\Http;
 use League\Uri\UriModifier;
 use Psr\Http\Message\UriInterface;
-use ValueObjects\Identity\UUID;
 use Ramsey\Uuid\Uuid as BaseUuid;
 use ValueObjects\Web\Url;
 
@@ -129,10 +129,10 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
     private function identify(Http $httpUri): UUID
     {
         if (isset($this->uuidRegex) && \preg_match('/' . $this->uuidRegex . '/', (string) $httpUri, $matches)) {
-            return UUID::fromNative($matches['uuid']);
+            return new UUID($matches['uuid']);
         }
 
         $namespace = BaseUuid::uuid5(BaseUuid::NAMESPACE_DNS, $httpUri->getHost());
-        return UUID::fromNative(BaseUuid::uuid5($namespace, (string) $httpUri)->toString());
+        return new UUID(BaseUuid::uuid5($namespace, (string) $httpUri)->toString());
     }
 }

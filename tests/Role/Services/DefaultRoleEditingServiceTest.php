@@ -9,6 +9,7 @@ use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
@@ -25,7 +26,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DefaultRoleEditingServiceTest extends TestCase
@@ -65,7 +65,7 @@ class DefaultRoleEditingServiceTest extends TestCase
         $this->commandBus = $this->createMock(CommandBus::class);
         $uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
-        $this->labelId = new UUID();
+        $this->labelId = new UUID('26bf50b2-1d46-4290-a6cd-4aab352b7328');
 
         $this->eventStore = new TraceableEventStore(new InMemoryEventStore());
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\Events;
 
 use Broadway\Serializer\Serializable;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 abstract class AbstractEvent implements Serializable
 {
@@ -31,6 +31,6 @@ abstract class AbstractEvent implements Serializable
      */
     public function serialize(): array
     {
-        return ['uuid' => $this->getUuid()->toNative()];
+        return ['uuid' => $this->getUuid()->toString()];
     }
 }

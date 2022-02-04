@@ -10,9 +10,7 @@ interface LabelRolesWriteRepositoryInterface
 {
     public function insertLabelRole(UUID $labelId, UUID $roleId);
 
-
     public function removeLabelRole(UUID $labelId, UUID $roleId);
-
 
     public function removeRole(UUID $roleId);
 }

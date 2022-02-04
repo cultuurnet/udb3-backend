@@ -12,9 +12,9 @@ use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -36,7 +36,7 @@ class ReadMediaRestControllerTest extends TestCase
         $mediaManager = $this->createMock(MediaManager::class);
         $mediaManager->expects($this->once())
             ->method('get')
-            ->with($id)
+            ->with(new UUID($id))
             ->willReturn(
                 MediaObject::create(
                     new UUID($id),

@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
@@ -86,7 +87,6 @@ use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Event extends Offer implements UpdateableWithCdbXmlInterface
@@ -465,7 +465,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     protected function createImageUpdatedEvent(
-        LegacyUUID $mediaObjectId,
+        UUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
     ): ImageUpdated {
