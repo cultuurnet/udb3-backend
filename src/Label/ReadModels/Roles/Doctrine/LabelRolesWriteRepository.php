@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesWriteRepositoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Doctrine\DBAL\Connection;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
@@ -38,8 +38,8 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         $this->connection->insert(
             $this->labelRolesTableName,
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toNative(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -50,8 +50,8 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         $this->connection->delete(
             $this->labelRolesTableName,
             [
-                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toNative(),
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                SchemaConfigurator::LABEL_ID_COLUMN => $labelId->toString(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
@@ -62,7 +62,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         $this->connection->delete(
             $this->labelRolesTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toNative(),
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }

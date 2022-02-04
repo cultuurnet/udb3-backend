@@ -8,10 +8,10 @@ use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Identity\UUID;
 
 class EditRestControllerTest extends TestCase
 {
@@ -32,7 +32,7 @@ class EditRestControllerTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('3b76d445-5302-4c6a-9194-94632bc4d91f');
 
         $this->writeService = $this->createMock(WriteServiceInterface::class);
 
@@ -62,7 +62,7 @@ class EditRestControllerTest extends TestCase
             ->willReturn($this->uuid);
 
         $expectedJson = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
         ];
 
         $jsonResponse = $this->editRestController->create($request);
@@ -84,7 +84,7 @@ class EditRestControllerTest extends TestCase
         $this->writeService->expects($this->once())
             ->method($method);
 
-        $response = $this->editRestController->patch($request, $this->uuid->toNative());
+        $response = $this->editRestController->patch($request, $this->uuid->toString());
 
         $this->assertEquals(204, $response->getStatusCode());
     }

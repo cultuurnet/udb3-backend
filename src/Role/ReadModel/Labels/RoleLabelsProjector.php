@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
-use ValueObjects\Identity\UUID as LegacyUUID;
 
 class RoleLabelsProjector extends RoleProjector
 {
@@ -49,10 +48,10 @@ class RoleLabelsProjector extends RoleProjector
 
         if ($document) {
             $labelDetails = $this->getLabelDetails($document);
-            $label = $this->labelJsonRepository->getByUuid(new LegacyUUID($labelAdded->getLabelId()->toString()));
+            $label = $this->labelJsonRepository->getByUuid($labelAdded->getLabelId());
 
             if ($label) {
-                $labelDetails[$label->getUuid()->toNative()] = $label;
+                $labelDetails[$label->getUuid()->toString()] = $label;
                 $document = $document->withAssocBody($labelDetails);
                 $this->repository->save($document);
             }
@@ -66,12 +65,10 @@ class RoleLabelsProjector extends RoleProjector
 
         if ($document) {
             $labelDetails = $this->getLabelDetails($document);
-            $label = $this->labelJsonRepository->getByUuid(
-                new LegacyUUID($labelRemoved->getLabelId()->toString())
-            );
+            $label = $this->labelJsonRepository->getByUuid($labelRemoved->getLabelId());
 
             if ($label) {
-                unset($labelDetails[$label->getUuid()->toNative()]);
+                unset($labelDetails[$label->getUuid()->toString()]);
                 $document = $document->withAssocBody($labelDetails);
                 $this->repository->save($document);
             }
@@ -81,7 +78,7 @@ class RoleLabelsProjector extends RoleProjector
 
     public function applyLabelDetailsProjectedToJSONLD(LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD)
     {
-        $labelId = $labelDetailsProjectedToJSONLD->getUuid()->toNative();
+        $labelId = $labelDetailsProjectedToJSONLD->getUuid()->toString();
         try {
             $document = $this->labelRolesRepository->fetch($labelId);
         } catch (DocumentDoesNotExist $e) {

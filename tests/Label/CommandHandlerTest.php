@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -68,12 +68,12 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
     public function setUp()
     {
-        $this->uuid = new UUID();
-        $this->extraUuid = new UUID();
+        $this->uuid = new UUID('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
+        $this->extraUuid = new UUID('04568db8-a137-44d8-a7eb-d7a00ae545bf');
         $this->name = new LabelName('labelName');
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
-        $this->parentUuid = new UUID();
+        $this->parentUuid = new UUID('f4e5608b-348d-4321-86f7-567891bf33b7');
 
         $this->created = new Created(
             $this->uuid,
@@ -112,7 +112,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_create()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([])
             ->when(new Create(
                 $this->uuid,
@@ -129,7 +129,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_create_copy()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([])
             ->when(new CreateCopy(
                 $this->uuid,
@@ -147,7 +147,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_make_visible_when_invisible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakeVisible($this->uuid))
             ->then([new MadeVisible($this->uuid, $this->name)]);
@@ -159,7 +159,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_does_not_handle_make_visible_when_already_visible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
             ->when(new MakeVisible($this->uuid))
             ->then([]);
@@ -171,7 +171,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_make_invisible_when_visible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
             ->when(new MakeInvisible($this->uuid))
             ->then([new MadeInvisible($this->uuid, $this->name)]);
@@ -183,7 +183,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_does_not_handle_make_invisible_when_already_invisible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakeInvisible($this->uuid))
             ->then([]);
@@ -195,7 +195,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_make_public_when_private()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakePublic($this->uuid))
             ->then([new MadePublic($this->uuid, $this->name)]);
@@ -207,7 +207,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_does_not_handle_make_public_when_already_public()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
             ->when(new MakePublic($this->uuid))
             ->then([]);
@@ -219,7 +219,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_handles_make_private_when_public()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
             ->when(new MakePrivate($this->uuid))
             ->then([new MadePrivate($this->uuid, $this->name)]);
@@ -231,7 +231,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function it_does_not_handle_make_private_when_already_private()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakePrivate($this->uuid))
             ->then([]);

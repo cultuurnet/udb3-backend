@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class RoleLabelsProjectorTest extends TestCase
@@ -196,35 +195,35 @@ class RoleLabelsProjectorTest extends TestCase
     public function it_updates_projections_with_label_details_on_label_details_projected_to_json_ld()
     {
         $labelProjected = new LabelDetailsProjectedToJSONLD(
-            new LegacyUUID('6ef7028c-a5e6-454d-8732-75cbdc481508')
+            new UUID('6ef7028c-a5e6-454d-8732-75cbdc481508')
         );
 
         $roleId = new UUID('7133b129-8ab9-44d5-b94d-1e9a849e9661');
 
         $domainMessage = $this->createDomainMessage(
-            new UUID($labelProjected->getUuid()->toNative()),
+            new UUID($labelProjected->getUuid()->toString()),
             $labelProjected
         );
 
         $jsonDocument = new JsonDocument(
-            $labelProjected->getUuid()->toNative(),
+            $labelProjected->getUuid()->toString(),
             json_encode([$roleId->toString() => $roleId->toString()])
         );
 
         $this->labelRolesRepository
             ->method('fetch')
-            ->with($labelProjected->getUuid())
+            ->with($labelProjected->getUuid()->toString())
             ->willReturn($jsonDocument);
 
-        $jsonDocument = $this->createJsonDocument($roleId, new UUID($labelProjected->getUuid()->toNative()));
+        $jsonDocument = $this->createJsonDocument($roleId, new UUID($labelProjected->getUuid()->toString()));
 
         $this->mockRoleLabelsFetch($roleId, $jsonDocument);
 
         $labelEntity = $this->createLabelEntity(
-            new UUID($labelProjected->getUuid()->toNative())
+            new UUID($labelProjected->getUuid()->toString())
         );
 
-        $this->mockLabelJsonGet(new UUID($labelProjected->getUuid()->toNative()), $labelEntity);
+        $this->mockLabelJsonGet(new UUID($labelProjected->getUuid()->toString()), $labelEntity);
 
 
         $this->roleLabelsRepository->expects($this->once())
@@ -239,7 +238,7 @@ class RoleLabelsProjectorTest extends TestCase
         Serializable $payload
     ): DomainMessage {
         return new DomainMessage(
-            $uuid,
+            $uuid->toString(),
             0,
             new Metadata(),
             $payload,
@@ -275,7 +274,7 @@ class RoleLabelsProjectorTest extends TestCase
     public function createLabelEntity(UUID $uuid)
     {
         return new Entity(
-            new LegacyUUID($uuid->toString()),
+            new UUID($uuid->toString()),
             new StringLiteral('labelName'),
             Visibility::getByName('INVISIBLE'),
             Privacy::getByName('PRIVACY_PRIVATE')
@@ -295,7 +294,7 @@ class RoleLabelsProjectorTest extends TestCase
     {
         $this->labelJsonRepository
             ->method('getByUuid')
-            ->with(new LegacyUUID($uuid->toString()))
+            ->with(new UUID($uuid->toString()))
             ->willReturn(
                 $entity
             );

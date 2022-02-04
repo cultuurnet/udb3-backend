@@ -22,12 +22,13 @@ use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\Identity\UUID;
+
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
@@ -71,7 +72,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_should_use_existing_visibility_for_existing_labels(): void
     {
         $this->mockedLabelReadModels['foo'] = new Entity(
-            new UUID(),
+            new UUID('9702eec8-badd-43be-b4d0-19b016ad6ecb'),
             new StringLiteral('foo'),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()

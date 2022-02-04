@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CopyCreatedTest extends CreatedTest
 {
@@ -22,7 +22,7 @@ class CopyCreatedTest extends CreatedTest
     {
         parent::setUp();
 
-        $this->parentUuid = new UUID();
+        $this->parentUuid = new UUID('5ae6d41e-5321-43e8-989d-a4e77864b397');
 
         $this->created = new CopyCreated(
             $this->uuid,
@@ -68,7 +68,7 @@ class CopyCreatedTest extends CreatedTest
     {
         $createdAsArray = parent::createdAsArray();
 
-        $createdAsArray[CopyCreated::PARENT_UUID] = $this->parentUuid;
+        $createdAsArray[CopyCreated::PARENT_UUID] = $this->parentUuid->toString();
 
         return $createdAsArray;
     }

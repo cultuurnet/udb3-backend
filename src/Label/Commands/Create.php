@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Label\Commands;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class Create extends AbstractCommand
 {

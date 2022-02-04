@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\Events;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class AbstractEventTest extends TestCase
 {
@@ -28,7 +28,7 @@ class AbstractEventTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('87b3452e-0b52-4802-a7f4-430ff3640536');
 
         $this->name = new LabelName('2dotstwice');
 
@@ -54,7 +54,7 @@ class AbstractEventTest extends TestCase
         $actualArray = $this->event->serialize();
 
         $expectedArray = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
             'name' => $this->name->toNative(),
         ];
 
