@@ -5226,12 +5226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "33fcce963de7a79b5d05a0a6ee8afa241ce3c22a"
+                "reference": "695a0475f9a85f56077afcb997483e2c7f61810d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/33fcce963de7a79b5d05a0a6ee8afa241ce3c22a",
-                "reference": "33fcce963de7a79b5d05a0a6ee8afa241ce3c22a",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/695a0475f9a85f56077afcb997483e2c7f61810d",
+                "reference": "695a0475f9a85f56077afcb997483e2c7f61810d",
                 "shasum": ""
             },
             "type": "library",
@@ -5250,7 +5250,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4363-validate-place-import-with-schema"
             },
-            "time": "2022-02-03T16:03:59+00:00"
+            "time": "2022-02-04T09:44:45+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
