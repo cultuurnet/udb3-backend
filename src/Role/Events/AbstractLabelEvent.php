@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 abstract class AbstractLabelEvent extends AbstractEvent
 {
@@ -38,6 +38,6 @@ abstract class AbstractLabelEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + [self::LABEL_ID => $this->getLabelId()->toNative()];
+        return parent::serialize() + [self::LABEL_ID => $this->getLabelId()->toString()];
     }
 }

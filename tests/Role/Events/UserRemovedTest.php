@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UserRemovedTest extends TestCase
@@ -27,7 +27,7 @@ class UserRemovedTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('510610a1-ffe0-4e10-a396-7d0cb28e0619');
 
         $this->userId = new StringLiteral('userId');
 
@@ -51,7 +51,7 @@ class UserRemovedTest extends TestCase
     public function it_can_deserialize()
     {
         $userRemovedAsArray = [
-            AbstractUserEvent::UUID => $this->uuid->toNative(),
+            AbstractUserEvent::UUID => $this->uuid->toString(),
             AbstractUserEvent::USER_ID => $this->userId->toNative(),
         ];
 

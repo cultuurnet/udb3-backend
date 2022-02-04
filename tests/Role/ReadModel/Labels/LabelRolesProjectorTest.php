@@ -12,13 +12,14 @@ use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 
 class LabelRolesProjectorTest extends TestCase
 {
@@ -47,18 +48,18 @@ class LabelRolesProjectorTest extends TestCase
     public function it_creates_projection_with_empty_list_of_roles_on_label_created_event()
     {
         $labelCreated = new LabelCreated(
-            new UUID(),
+            new LegacyUUID('32574fe8-e752-49dd-9dc1-6856372f5f2f'),
             new LabelName('labelName'),
             Visibility::getByName('INVISIBLE'),
             Privacy::getByName('PRIVACY_PRIVATE')
         );
 
         $domainMessage = $this->createDomainMessage(
-            $labelCreated->getUuid(),
+            new UUID($labelCreated->getUuid()->toNative()),
             $labelCreated
         );
 
-        $jsonDocument = $this->createEmptyJsonDocument($labelCreated->getUuid());
+        $jsonDocument = $this->createEmptyJsonDocument(new UUID($labelCreated->getUuid()->toNative()));
 
         $this->labelRolesRepository
             ->expects($this->once())
@@ -74,8 +75,8 @@ class LabelRolesProjectorTest extends TestCase
     public function it_updates_projection_with_role_id_on_label_added_event()
     {
         $labelAdded = new LabelAdded(
-            new UUID(),
-            new UUID()
+            new UUID('99ddb83f-5e5c-4204-8e6b-cb5c6ebb668d'),
+            new UUID('78d772c8-6c52-490f-b1b2-0948776dea8e')
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -108,8 +109,8 @@ class LabelRolesProjectorTest extends TestCase
     public function it_removes_role_id_from_projection_on_label_removed_event()
     {
         $labelRemoved = new LabelRemoved(
-            new UUID(),
-            new UUID()
+            new UUID('ba67ffc1-52a2-4065-817f-e0505c2736c0'),
+            new UUID('7bdb9166-c934-4c20-a9eb-c66e3db5c80a')
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -141,7 +142,7 @@ class LabelRolesProjectorTest extends TestCase
         Serializable $payload
     ): DomainMessage {
         return new DomainMessage(
-            $uuid,
+            $uuid->toString(),
             0,
             new Metadata(),
             $payload,
@@ -155,7 +156,7 @@ class LabelRolesProjectorTest extends TestCase
     private function createEmptyJsonDocument(UUID $uuid)
     {
         return new JsonDocument(
-            $uuid->toNative(),
+            $uuid->toString(),
             json_encode([])
         );
     }
@@ -166,8 +167,8 @@ class LabelRolesProjectorTest extends TestCase
     public function createJsonDocument(UUID $labelId, UUID $roleId)
     {
         return new JsonDocument(
-            $labelId->toNative(),
-            json_encode([$roleId->toNative() => $roleId->toNative()])
+            $labelId->toString(),
+            json_encode([$roleId->toString() => $roleId->toString()])
         );
     }
 
@@ -176,7 +177,7 @@ class LabelRolesProjectorTest extends TestCase
     {
         $this->labelRolesRepository
             ->method('fetch')
-            ->with($labelId)
+            ->with($labelId->toString())
             ->willReturn($jsonDocument);
     }
 }

@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
@@ -20,7 +21,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Identity\UUID;
+use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EditRoleRestControllerTest extends TestCase
@@ -67,8 +68,8 @@ class EditRoleRestControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->roleId = (new UUID())->toNative();
-        $this->labelId = (new UUID())->toNative();
+        $this->roleId = '5a359014-d022-48e4-98e2-173496e636fb';
+        $this->labelId = 'b426ab4f-2371-427b-b27c-4b6b7b283c2a';
 
         $this->editService = $this->createMock(RoleEditingServiceInterface::class);
         $this->commandBus = $this->createMock(CommandBus::class);
@@ -103,7 +104,7 @@ class EditRoleRestControllerTest extends TestCase
         $response = $this->controller->create($request);
 
         $this->assertEquals(201, $response->getStatusCode());
-        $this->assertEquals(['roleId' => $roleId->toNative()], json_decode($response->getContent(), true));
+        $this->assertEquals(['roleId' => $roleId->toString()], json_decode($response->getContent(), true));
     }
 
     /**
@@ -209,13 +210,13 @@ class EditRoleRestControllerTest extends TestCase
      */
     public function it_deletes_a_role()
     {
-        $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
+        $roleId = new UUID('d01e0e24-4a8e-11e6-beb8-9e71128cae77');
 
         $this->editService->expects($this->once())
             ->method('delete')
             ->with($roleId);
 
-        $response = $this->controller->delete($roleId);
+        $response = $this->controller->delete($roleId->toString());
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -255,7 +256,7 @@ class EditRoleRestControllerTest extends TestCase
         $labelName = 'foo';
 
         $label = new Entity(
-            new UUID($this->labelId),
+            new LegacyUUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -320,7 +321,7 @@ class EditRoleRestControllerTest extends TestCase
         $labelName = 'foo';
 
         $label = new Entity(
-            new UUID($this->labelId),
+            new LegacyUUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()

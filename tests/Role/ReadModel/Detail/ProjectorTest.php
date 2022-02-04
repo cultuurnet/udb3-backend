@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Detail;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\AbstractEvent;
@@ -22,7 +23,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
@@ -44,7 +44,7 @@ class ProjectorTest extends TestCase
     {
         parent::setUp();
 
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('49bd503f-0476-4b18-bc67-f48bf3ae8b57');
         $this->name = new StringLiteral('roleName');
 
         $this->query = new Query('city:Leuven');
@@ -69,10 +69,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T13:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
 
@@ -109,7 +109,7 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T13:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $this->projector->handle($domainMessage);
 
@@ -120,7 +120,7 @@ class ProjectorTest extends TestCase
         );
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $name->toNative();
         $json->permissions = [];
 
@@ -128,7 +128,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('fetch')
-            ->with($this->uuid->toNative())
+            ->with($this->uuid->toString())
             ->willReturn($this->initialDocument());
 
         $this->repository->expects($this->once())
@@ -170,7 +170,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('remove')
-            ->with($this->uuid->toNative());
+            ->with($this->uuid->toString());
 
         $this->projector->handle($deletedDomainMessage);
     }
@@ -191,10 +191,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T13:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();
@@ -205,7 +205,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('fetch')
-            ->with($this->uuid->toNative())
+            ->with($this->uuid->toString())
             ->willReturn($this->initialDocument());
 
         $this->repository->expects($this->once())
@@ -233,10 +233,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T13:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();
@@ -247,7 +247,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('fetch')
-            ->with($this->uuid->toNative())
+            ->with($this->uuid->toString())
             ->willReturn($this->documentWithConstraint(
                 $constraintUpdated->getQuery()
             ));
@@ -276,10 +276,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T13:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();
@@ -290,7 +290,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('fetch')
-            ->with($this->uuid->toNative())
+            ->with($this->uuid->toString())
             ->willReturn(
                 $this->documentWithEmptyConstraint()
             );
@@ -320,10 +320,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T13:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
 
@@ -369,10 +369,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T14:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = ['AANBOD_BEWERKEN'];
 
@@ -380,7 +380,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('fetch')
-            ->with($this->uuid->toNative())
+            ->with($this->uuid->toString())
             ->willReturn($this->initialDocument());
 
         $this->repository->expects($this->once())
@@ -427,10 +427,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T15:25:21+01:00')
         );
 
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
 
@@ -438,7 +438,7 @@ class ProjectorTest extends TestCase
 
         $this->repository->expects($this->once())
             ->method('fetch')
-            ->with($this->uuid->toNative())
+            ->with($this->uuid->toString())
             ->willReturn($this->documentWithPermission($permission));
 
         $this->repository->expects($this->once())
@@ -460,7 +460,7 @@ class ProjectorTest extends TestCase
         }
 
         return new DomainMessage(
-            $id,
+            $id->toString(),
             0,
             new Metadata(),
             $payload,
@@ -470,10 +470,10 @@ class ProjectorTest extends TestCase
 
     private function initialDocument(): JsonDocument
     {
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
 
@@ -482,10 +482,10 @@ class ProjectorTest extends TestCase
 
     private function documentWithPermission(Permission $permission): JsonDocument
     {
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = ['AANBOD_BEWERKEN'];
 
@@ -494,10 +494,10 @@ class ProjectorTest extends TestCase
 
     private function documentWithConstraint(?Query $query): JsonDocument
     {
-        $document = new JsonDocument($this->uuid->toNative());
+        $document = new JsonDocument($this->uuid->toString());
 
         $json = $document->getBody();
-        $json->uuid = $this->uuid->toNative();
+        $json->uuid = $this->uuid->toString();
         $json->name = $this->name->toNative();
         $json->permissions = [];
         $json->constraints = new \stdClass();

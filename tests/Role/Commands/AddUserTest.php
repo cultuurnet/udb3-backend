@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class AddUserTest extends TestCase
@@ -27,7 +27,7 @@ class AddUserTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('7ce4cb7e-af7c-4724-bfbe-d943ac2b949a');
 
         $this->userId = new StringLiteral('userId');
 

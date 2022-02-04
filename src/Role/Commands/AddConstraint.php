@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 
 class AddConstraint extends AbstractCommand

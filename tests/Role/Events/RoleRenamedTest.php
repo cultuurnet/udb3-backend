@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class RoleRenamedTest extends TestCase
@@ -27,7 +27,7 @@ class RoleRenamedTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('e97ed374-ca50-4d07-a893-637729341ab3');
 
         $this->name = new StringLiteral('roleName');
 
@@ -90,7 +90,7 @@ class RoleRenamedTest extends TestCase
     protected function createdAsArray()
     {
         return [
-            'uuid' => $this->roleRenamed->getUuid()->toNative(),
+            'uuid' => $this->roleRenamed->getUuid()->toString(),
             'name' => $this->roleRenamed->getName()->toNative(),
         ];
     }

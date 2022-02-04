@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class AbstractLabelEventTest extends TestCase
 {
@@ -27,8 +27,8 @@ class AbstractLabelEventTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
-        $this->labelId = new UUID();
+        $this->uuid = new UUID('1e99c6ab-6ff2-4611-96fa-eda8b8a78ae9');
+        $this->labelId = new UUID('d50852d1-5351-46bc-8221-238c2d47e3cf');
 
         $this->event = $this->getMockForAbstractClass(
             AbstractLabelEvent::class,
@@ -53,8 +53,8 @@ class AbstractLabelEventTest extends TestCase
         $actualArray = $this->event->serialize();
 
         $expectedArray = [
-            AbstractEvent::UUID => $this->uuid->toNative(),
-            AbstractLabelEvent::LABEL_ID => $this->labelId->toNative(),
+            AbstractEvent::UUID => $this->uuid->toString(),
+            AbstractLabelEvent::LABEL_ID => $this->labelId->toString(),
         ];
 
         $this->assertEquals($expectedArray, $actualArray);
@@ -66,8 +66,8 @@ class AbstractLabelEventTest extends TestCase
     public function it_can_deserialize()
     {
         $data = [
-             AbstractEvent::UUID => $this->uuid->toNative(),
-            AbstractLabelEvent::LABEL_ID => $this->labelId->toNative(),
+             AbstractEvent::UUID => $this->uuid->toString(),
+            AbstractLabelEvent::LABEL_ID => $this->labelId->toString(),
         ];
 
         $actualEvent = $this->event->deserialize($data);
