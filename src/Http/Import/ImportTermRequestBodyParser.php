@@ -32,8 +32,8 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
                         $category = $this->placeCategoryResolver->byId(new CategoryID($id));
 
                         if ($category) {
-                            $term->{'label'} = $category->getLabel()->toString();
-                            $term->{'domain'} = $category->getDomain()->toString();
+                            $term->label = $category->getLabel()->toString();
+                            $term->domain = $category->getDomain()->toString();
                         }
                     }
 
