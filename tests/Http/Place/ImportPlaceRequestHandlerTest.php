@@ -2142,7 +2142,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'urlLabel' => [
                     'nl' => 'publiq vzw',
                     'en' => '   ',
-                    'fr' => ''
+                    'fr' => '',
                 ],
             ],
         ];
