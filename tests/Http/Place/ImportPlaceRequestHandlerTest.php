@@ -2109,6 +2109,58 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertValidationErrors($place, $expectedErrors);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_bookingInfo_has_an_empty_urlLabel(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'bookingInfo' => [
+                'url' => 'https://www.publiq.be',
+                'urlLabel' => [
+                    'nl' => 'publiq vzw',
+                    'en' => '   ',
+                    'fr' => ''
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/urlLabel/fr',
+                'Minimum string length is 1, found 0'
+            ),
+            new SchemaError(
+                '/bookingInfo/urlLabel/en',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $place, array $expectedErrors): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
