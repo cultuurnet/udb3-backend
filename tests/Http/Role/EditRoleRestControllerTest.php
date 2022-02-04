@@ -68,8 +68,8 @@ class EditRoleRestControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->roleId = (new UUID('5a359014-d022-48e4-98e2-173496e636fb'))->toString();
-        $this->labelId = (new UUID('b426ab4f-2371-427b-b27c-4b6b7b283c2a'))->toString();
+        $this->roleId = '5a359014-d022-48e4-98e2-173496e636fb';
+        $this->labelId = 'b426ab4f-2371-427b-b27c-4b6b7b283c2a';
 
         $this->editService = $this->createMock(RoleEditingServiceInterface::class);
         $this->commandBus = $this->createMock(CommandBus::class);
