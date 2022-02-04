@@ -8,7 +8,6 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Ramsey\Uuid\UuidFactoryInterface;
 
 /**
@@ -43,7 +42,8 @@ class DomainMessageBuilder
 
     private UuidFactoryInterface $uuidFactory;
 
-    public function __construct(UuidFactoryInterface $uuidFactory) {
+    public function __construct(UuidFactoryInterface $uuidFactory)
+    {
         $this->uuidFactory = $uuidFactory;
     }
 
