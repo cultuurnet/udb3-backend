@@ -17,6 +17,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Identity\UUID as LegacyUUID;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
@@ -297,7 +298,9 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $privacy = $row[SchemaConfigurator::PRIVATE_COLUMN]
             ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC();
 
-        $parentUuid = new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]);
+        $parentUuid = $row[SchemaConfigurator::PARENT_UUID_COLUMN]
+            ? new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]) : null;
+
 
         $count = new Natural($row[SchemaConfigurator::COUNT_COLUMN]);
 
