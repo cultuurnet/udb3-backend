@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\UuidFactoryInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -48,13 +49,16 @@ class EventBusForwardingConsumerFactory
      */
     protected $consumerTag;
 
+    protected UuidFactoryInterface $uuidFactory;
+
     public function __construct(
         Natural $executionDelay,
         AMQPStreamConnection $connection,
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
         EventBus $eventBus,
-        StringLiteral $consumerTag
+        StringLiteral $consumerTag,
+        UuidFactoryInterface $uuidFactory
     ) {
         $this->executionDelay = $executionDelay;
         $this->connection = $connection;
@@ -62,6 +66,7 @@ class EventBusForwardingConsumerFactory
         $this->deserializerLocator = $deserializerLocator;
         $this->eventBus = $eventBus;
         $this->consumerTag = $consumerTag;
+        $this->uuidFactory = $uuidFactory;
     }
 
     public function create(
@@ -75,6 +80,7 @@ class EventBusForwardingConsumerFactory
             $this->consumerTag,
             $exchange,
             $queue,
+            $this->uuidFactory,
             $this->executionDelay->toNative()
         );
 

@@ -11,7 +11,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use ValueObjects\Identity\UUID;
+use Ramsey\Uuid\UuidFactoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
@@ -24,6 +24,8 @@ class EventBusForwardingConsumer extends AbstractConsumer
      */
     private $eventBus;
 
+    private UuidFactoryInterface $uuidFactory;
+
     public function __construct(
         AMQPStreamConnection $connection,
         EventBus $eventBus,
@@ -31,9 +33,11 @@ class EventBusForwardingConsumer extends AbstractConsumer
         StringLiteral $consumerTag,
         StringLiteral $exchangeName,
         StringLiteral $queueName,
+        UuidFactoryInterface $uuidFactory,
         int $delay = 0
     ) {
         $this->eventBus = $eventBus;
+        $this->uuidFactory = $uuidFactory;
 
         parent::__construct(
             $connection,
@@ -54,7 +58,7 @@ class EventBusForwardingConsumer extends AbstractConsumer
         // DomainMessage.
         if (!$deserializedMessage instanceof DomainMessage) {
             $deserializedMessage = new DomainMessage(
-                UUID::generateAsString(),
+                $this->uuidFactory->uuid4()->toString(),
                 0,
                 new Metadata($context),
                 $deserializedMessage,

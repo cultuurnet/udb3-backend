@@ -20,7 +20,7 @@ use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
+use Ramsey\Uuid\UuidFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -61,6 +61,7 @@ class ActorEventCdbXmlEnricherTest extends TestCase
         $this->enricher = new ActorEventCdbXmlEnricher(
             $this->eventBus,
             $this->httpClient,
+            new UuidFactory(),
             $this->xmlValidationService
         );
     }
@@ -220,7 +221,7 @@ class ActorEventCdbXmlEnricherTest extends TestCase
     {
         $this->enricher->handle(
             DomainMessage::recordNow(
-                UUID::generateAsString(),
+                '9a821cfa-c49a-4aac-827f-a04c750b4a5b',
                 0,
                 new Metadata(),
                 $payload

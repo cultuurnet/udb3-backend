@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
+use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -40,7 +41,8 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                     $deserializerLocator,
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['exchange']),
-                    new StringLiteral($app['config']['amqp']['consumers']['curators']['queue'])
+                    new StringLiteral($app['config']['amqp']['consumers']['curators']['queue']),
+                    new UuidFactory(),
                 );
 
                 $consumer->setLogger(LoggerFactory::create($app, LoggerName::forAmqpWorker('curators')));

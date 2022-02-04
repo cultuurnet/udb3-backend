@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
@@ -34,7 +35,6 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCommandFactory implements OfferCommandFactoryInterface
