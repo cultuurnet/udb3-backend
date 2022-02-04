@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsWriteRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Doctrine\DBAL\Connection;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryInterface
@@ -40,12 +40,12 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
 
             $connection->delete(
                 $this->userRoleTableName,
-                [SchemaConfigurator::ROLE_ID_COLUMN => (string)$roleId]
+                [SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString()]
             );
 
             $connection->delete(
                 $this->rolePermissionTableName,
-                [SchemaConfigurator::ROLE_ID_COLUMN => (string)$roleId]
+                [SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString()]
             );
 
             $connection->commit();
@@ -63,7 +63,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->connection->insert(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
                 SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
@@ -77,7 +77,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->connection->delete(
             $this->rolePermissionTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
                 SchemaConfigurator::PERMISSION_COLUMN => $permission->toString(),
             ]
         );
@@ -91,7 +91,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->connection->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
                 SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
             ]
         );
@@ -106,7 +106,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
             $this->userRoleTableName,
             [
                 SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
-                SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }

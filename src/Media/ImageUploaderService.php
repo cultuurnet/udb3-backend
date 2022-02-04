@@ -9,10 +9,10 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -74,7 +74,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $mimeType = MIMEType::fromNative($mimeTypeString);
 
         $fileId = new UUID($this->uuidGenerator->generate());
-        $fileName = $fileId . '.' . $file->guessExtension();
+        $fileName = $fileId->toString() . '.' . $file->guessExtension();
         $destination = $this->getUploadDirectory() . '/' . $fileName;
         $stream = fopen($file->getRealPath(), 'r+');
         $this->filesystem->writeStream($destination, $stream);

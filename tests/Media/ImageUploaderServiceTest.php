@@ -120,7 +120,7 @@ class ImageUploaderServiceTest extends TestCase
 
         $imageId = $this->uploader->upload($file, $description, $copyrightHolder, $language);
 
-        $this->assertEquals($generatedUuid, $imageId);
+        $this->assertEquals($generatedUuid, $imageId->toString());
     }
 
     /**
@@ -258,7 +258,7 @@ class ImageUploaderServiceTest extends TestCase
 
         $imageId = $uploader->upload($file, $description, $copyrightHolder, $language);
 
-        $this->assertEquals($generatedUuid, $imageId);
+        $this->assertEquals($generatedUuid, $imageId->toString());
     }
 
     /**

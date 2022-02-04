@@ -30,7 +30,7 @@ class Projector implements EventListener
         DomainMessage $domainMessage
     ): void {
         $this->repository->save(
-            $roleCreated->getUuid()->toNative(),
+            $roleCreated->getUuid()->toString(),
             $roleCreated->getName()->toNative()
         );
     }
@@ -40,7 +40,7 @@ class Projector implements EventListener
         DomainMessage $domainMessage
     ): void {
         $this->repository->updateName(
-            $roleRenamed->getUuid()->toNative(),
+            $roleRenamed->getUuid()->toString(),
             $roleRenamed->getName()->toNative()
         );
     }
@@ -49,13 +49,13 @@ class Projector implements EventListener
         RoleDeleted $roleDeleted,
         DomainMessage $domainMessage
     ): void {
-        $this->repository->remove($roleDeleted->getUuid()->toNative());
+        $this->repository->remove($roleDeleted->getUuid()->toString());
     }
 
     protected function applyConstraintAdded(ConstraintAdded $constraintAdded): void
     {
         $this->repository->updateConstraint(
-            $constraintAdded->getUuid(),
+            $constraintAdded->getUuid()->toString(),
             $constraintAdded->getQuery()
         );
     }
@@ -63,7 +63,7 @@ class Projector implements EventListener
     protected function applyConstraintUpdated(ConstraintUpdated $constraintUpdated): void
     {
         $this->repository->updateConstraint(
-            $constraintUpdated->getUuid(),
+            $constraintUpdated->getUuid()->toString(),
             $constraintUpdated->getQuery()
         );
     }
@@ -71,7 +71,7 @@ class Projector implements EventListener
     protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved): void
     {
         $this->repository->updateConstraint(
-            $constraintRemoved->getUuid()
+            $constraintRemoved->getUuid()->toString()
         );
     }
 }

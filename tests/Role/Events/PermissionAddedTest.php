@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class PermissionAddedTest extends TestCase
 {
@@ -27,7 +27,7 @@ class PermissionAddedTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('abb75a3f-92b3-4dbf-ba9a-d7e98e4f3655');
 
         $this->permission = Permission::aanbodBewerken();
 
@@ -54,7 +54,7 @@ class PermissionAddedTest extends TestCase
         $actualArray = $this->event->serialize();
 
         $expectedArray = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
             'permission' => $this->permission->toString(),
         ];
 
@@ -64,7 +64,7 @@ class PermissionAddedTest extends TestCase
     public function it_can_deserialize()
     {
         $data = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
             'permission' => $this->permission->toString(),
         ];
         $actualEvent = $this->event->deserialize($data);

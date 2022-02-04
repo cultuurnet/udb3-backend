@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\AddImage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
@@ -63,7 +62,7 @@ final class AddImageRequestHandlerTest extends TestCase
             ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
             ->willReturn(
                 MediaObject::create(
-                    new LegacyUUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
                     new StringLiteral('Uploaded image'),
                     new CopyrightHolder('madewithlove'),

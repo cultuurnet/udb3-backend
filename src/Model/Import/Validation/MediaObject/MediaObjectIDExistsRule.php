@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Rules\AbstractRule;
-use ValueObjects\Identity\UUID;
 
 class MediaObjectIDExistsRule extends AbstractRule
 {
@@ -45,7 +44,7 @@ class MediaObjectIDExistsRule extends AbstractRule
 
         try {
             $id = $this->mediaIdParser->fromUrl(new Url($input));
-            $this->mediaManager->get(new UUID($id->toString()));
+            $this->mediaManager->get($id);
         } catch (\Exception $e) {
             return false;
         }

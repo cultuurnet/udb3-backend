@@ -9,9 +9,9 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Web\Url;
 
 class ImagesImportedFromUDB2Test extends TestCase
@@ -23,7 +23,7 @@ class ImagesImportedFromUDB2Test extends TestCase
     {
         $images = ImageCollection::fromArray([
             new Image(
-                UUID::fromNative('91bb3d6b-090c-425a-ae4d-6ae0af41a32e'),
+                new UUID('91bb3d6b-090c-425a-ae4d-6ae0af41a32e'),
                 MIMEType::fromSubtype('jpeg'),
                 new Description('my best selfie'),
                 new CopyrightHolder('Dirkinator'),

@@ -11,10 +11,10 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Web\Url;
 
 class MediaImporterTest extends TestCase
@@ -58,7 +58,7 @@ class MediaImporterTest extends TestCase
             ->method('fromUdb2Item')
             ->willReturn(ImageCollection::fromArray([
                 new Image(
-                    UUID::fromNative('f26433f0-97ef-5c07-8ea9-ef00a64dcb59'),
+                    new UUID('f26433f0-97ef-5c07-8ea9-ef00a64dcb59'),
                     MIMEType::fromNative('image/jpeg'),
                     new Description('no description'),
                     new CopyrightHolder('Zelf gemaakt'),
@@ -71,7 +71,7 @@ class MediaImporterTest extends TestCase
             ->expects($this->once())
             ->method('create')
             ->with(
-                UUID::fromNative('f26433f0-97ef-5c07-8ea9-ef00a64dcb59'),
+                new UUID('f26433f0-97ef-5c07-8ea9-ef00a64dcb59'),
                 MIMEType::fromNative('image/jpeg'),
                 new Description('no description'),
                 new CopyrightHolder('Zelf gemaakt'),
