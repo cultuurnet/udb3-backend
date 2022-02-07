@@ -2594,6 +2594,76 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertValidationErrors($place, $expectedErrors);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_videos_has_invalid_values(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'videos' => [
+                [
+                    'id' => 'not an id',
+                    'url' => 'not a url',
+                    'language' => 'unsupported',
+                    'copyrightHolder' => '',
+                ],
+                [
+                    'id' => 'c03a3e8a-0346-4d32-b2ac-4aedac49dc30',
+                    'url' => 'https://vimeo.com/98765432',
+                    'language' => 'nl',
+                    'copyrightHolder' => '   ',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos/0/id',
+                'The data must match the \'uuid\' format'
+            ),
+            new SchemaError(
+                '/videos/0/url',
+                'The data must match the \'uri\' format'
+            ),
+            new SchemaError(
+                '/videos/0/language',
+                'The data should match one item from enum'
+            ),
+            new SchemaError(
+                '/videos/0/copyrightHolder',
+                'Minimum string length is 3, found 0'
+            ),
+            new SchemaError(
+                '/videos/1/copyrightHolder',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $place, array $expectedErrors): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
