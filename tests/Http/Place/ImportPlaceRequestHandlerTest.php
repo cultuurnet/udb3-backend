@@ -2457,6 +2457,59 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_mediaObject_has_an_empty_description_or_copyright(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.be/media/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    'description' => '',
+                    'copyrightHolder' => '   ',
+                    'inLanguage' => 'nl',
+                    'contentUrl' => 'http://io.uitdatabank.be/media/5cdacc0b-a96b-4613-81e0-1748c179432f.jpeg',
+                    'thumbnailUrl' => 'http://io.uitdatabank.be/media/5cdacc0b-a96b-4613-81e0-1748c179432f.jpeg',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/description',
+                'Minimum string length is 1, found 0'
+            ),
+            new SchemaError(
+                '/mediaObject/0/copyrightHolder',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_mediaObject_has_an_invalid_type(): void
     {
         $place = [
