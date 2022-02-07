@@ -1035,12 +1035,14 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 '1',
                 '',
                 '   ',
+                str_repeat('0123456789', 30),
             ],
             'hiddenLabels' => [
                 'bar',
                 '1',
                 '',
                 '   ',
+                str_repeat('0123456789', 30),
             ],
         ];
 
@@ -1054,8 +1056,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'Minimum string length is 2, found 0'
             ),
             new SchemaError(
-                '/labels/3',
-                'The string should match pattern: ^[A-Za-z0-9-_]+'
+                '/labels/4',
+                'Maximum string length is 255, found 300'
             ),
             new SchemaError(
                 '/hiddenLabels/1',
@@ -1066,8 +1068,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'Minimum string length is 2, found 0'
             ),
             new SchemaError(
-                '/hiddenLabels/3',
-                'The string should match pattern: ^[A-Za-z0-9-_]+'
+                '/hiddenLabels/4',
+                'Maximum string length is 255, found 300'
             ),
         ];
 
