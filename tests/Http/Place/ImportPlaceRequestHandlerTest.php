@@ -1006,6 +1006,77 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_labels_have_invalid_values(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'labels' => [
+                'foo',
+                '1',
+                '',
+                '   ',
+            ],
+            'hiddenLabels' => [
+                'bar',
+                '1',
+                '',
+                '   ',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/labels/1',
+                'Minimum string length is 2, found 1'
+            ),
+            new SchemaError(
+                '/labels/2',
+                'Minimum string length is 2, found 0'
+            ),
+            new SchemaError(
+                '/labels/3',
+                'The string should match pattern: ^[A-Za-z0-9-_]+'
+            ),
+            new SchemaError(
+                '/hiddenLabels/1',
+                'Minimum string length is 2, found 1'
+            ),
+            new SchemaError(
+                '/hiddenLabels/2',
+                'Minimum string length is 2, found 0'
+            ),
+            new SchemaError(
+                '/hiddenLabels/3',
+                'The string should match pattern: ^[A-Za-z0-9-_]+'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+    
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_hiddenLabels_is_set_but_contains_something_different_than_a_string(): void
     {
         $place = [
