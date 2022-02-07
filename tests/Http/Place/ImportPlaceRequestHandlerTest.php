@@ -1073,7 +1073,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertValidationErrors($place, $expectedErrors);
     }
-    
+
     /**
      * @test
      */
