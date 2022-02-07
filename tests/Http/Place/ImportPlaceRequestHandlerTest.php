@@ -841,6 +841,49 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_on_empty_address_fields(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => '',
+                    'postalCode' => '   ',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/address/nl/postalCode',
+                'The string should match pattern: \S'
+            ),
+            new SchemaError(
+                '/address/nl/streetAddress',
+                'Minimum string length is 1, found 0'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_labels_is_set_but_not_an_array(): void
     {
         $place = [
