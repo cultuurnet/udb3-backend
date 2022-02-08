@@ -87,6 +87,10 @@ class UrlTest extends TestCase
                 'https://www.domain.fr/%C3%A9cole',
             ],
             [
+                'https://www.domain.fr/école?q=ôpérà',
+                'https://www.domain.fr/%C3%A9cole?q=%C3%B4p%C3%A9r%C3%A0',
+            ],
+            [
                 'https://www.domain.fr/%C3%A9cole',
                 'https://www.domain.fr/%C3%A9cole',
             ],
@@ -98,6 +102,14 @@ class UrlTest extends TestCase
                 'http://www.domain.es/dónde-está-la-biblioteca',
                 'http://www.domain.es/d%C3%B3nde-est%C3%A1-la-biblioteca',
             ],
+            [
+                'http://www.query.com/?a[]=[]&a[]=\'2\'',
+                'http://www.query.com/?a[]=[]&a[]=\'2\'',
+            ],
+            [
+                'http://www.query.com/#123',
+                'http://www.query.com/#123',
+            ]
         ];
     }
 }

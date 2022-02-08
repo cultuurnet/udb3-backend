@@ -34,8 +34,17 @@ class Url
         // Take into account already encoded urls by first decoding them.
         $value = urldecode($value);
 
-        // Encode the url but revert forward slash / and colon :
+        // Encode the url but revert various semantic characters.
         $value = urlencode($value);
-        return str_replace(['%2F', '%3A'], ['/', ':'], $value);
+
+        // Revert meaningful characters.
+        $entities = ['%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D'];
+        $replacements = ['!', '*', '\'', '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '%', '#', '[', ']'];
+
+        return str_replace(
+            $entities,
+            $replacements,
+            $value
+        );
     }
 }
