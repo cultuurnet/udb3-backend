@@ -475,7 +475,17 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // Labels which are inside the internal state but not inside imported labels.
         // For each deleted label fire a LabelDeleted event.
         foreach ($this->labels->toArray() as $label) {
-            if (!$importLabelsCollection->contains($label) && !$keepLabelsCollection->contains($label)) {
+            $labelName = $label->getName()->toString();
+            $importLabelNames = array_map(
+                fn (Label $label) => $label->getName()->toString(),
+                $importLabelsCollection->toArray()
+            );
+            $keepLabelNames = array_map(
+                fn (Label $label) => $label->getName()->toString(),
+                $keepLabelsCollection->toArray()
+            );
+
+            if (!in_array($labelName, $importLabelNames, true) && !in_array($labelName, $keepLabelNames, true)) {
                 $this->apply(new LabelRemoved($this->actorId, $label->getName()->toString(), $label->isVisible()));
             }
         }
