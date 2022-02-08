@@ -97,7 +97,7 @@ class UrlTest extends TestCase
             [
                 'http://www.domain.es/dónde-está-la-biblioteca',
                 'http://www.domain.es/d%C3%B3nde-est%C3%A1-la-biblioteca',
-            ]
+            ],
         ];
     }
 }
