@@ -23,7 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 /**
  * Base test  case class for testing common Offer JSON-LD projector

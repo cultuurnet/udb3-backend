@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Organizer\Organizer;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionObject;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 /**
  * Provides a trait to test commands that are applicable for all UDB3 offer types

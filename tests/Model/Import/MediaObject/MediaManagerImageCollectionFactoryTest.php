@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url as Udb3Url;
 
 class MediaManagerImageCollectionFactoryTest extends TestCase
 {

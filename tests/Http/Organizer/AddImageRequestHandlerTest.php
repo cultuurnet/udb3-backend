@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Organizer\Commands\AddImage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 final class AddImageRequestHandlerTest extends TestCase
 {

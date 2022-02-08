@@ -60,7 +60,6 @@ use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Exception;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class OfferTest extends AggregateRootScenarioTestCase
 {

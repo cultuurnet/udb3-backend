@@ -16,7 +16,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class MediaObjectsExistValidatorTest extends TestCase
 {

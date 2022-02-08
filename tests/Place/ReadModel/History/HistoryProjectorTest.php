@@ -85,7 +85,6 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class HistoryProjectorTest extends TestCase
 {

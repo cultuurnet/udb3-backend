@@ -54,7 +54,6 @@ use DateTimeInterface;
 use RuntimeException;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class EventTest extends AggregateRootScenarioTestCase
 {

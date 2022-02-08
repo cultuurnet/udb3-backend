@@ -86,7 +86,6 @@ use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class HistoryProjectorTest extends TestCase
 {

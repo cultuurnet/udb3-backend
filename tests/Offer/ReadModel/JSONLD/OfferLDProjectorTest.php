@@ -69,7 +69,6 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class OfferLDProjectorTest extends TestCase
 {

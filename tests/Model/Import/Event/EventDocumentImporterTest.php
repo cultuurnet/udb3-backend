@@ -72,7 +72,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ValueObjects\Money\Currency;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class EventDocumentImporterTest extends TestCase
 {
