@@ -86,7 +86,6 @@ use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class HistoryProjectorTest extends TestCase
 {
@@ -813,7 +812,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Url('https://io.uitdatabank.be/media/test.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -851,7 +850,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Url('https://io.uitdatabank.be/media/test.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -923,7 +922,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Url('https://io.uitdatabank.be/media/test1.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -932,7 +931,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Url('https://io.uitdatabank.be/media/test2.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -980,7 +979,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Url('https://io.uitdatabank.be/media/test1.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -989,7 +988,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Url('https://io.uitdatabank.be/media/test2.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -1199,7 +1198,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Url('https://io.uitdatabank.be/media/test.jpg'),
             new LegacyLanguage('en')
         );
 

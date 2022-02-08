@@ -12,10 +12,10 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
-use ValueObjects\Web\Url;
 
 class MediaObjectSerializerTest extends TestCase
 {
@@ -45,7 +45,7 @@ class MediaObjectSerializerTest extends TestCase
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
@@ -79,7 +79,7 @@ class MediaObjectSerializerTest extends TestCase
             new MIMEType('application/octet-stream'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
@@ -113,7 +113,7 @@ class MediaObjectSerializerTest extends TestCase
             new MIMEType('application/octet-stream'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
-            Url::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
 
@@ -147,7 +147,7 @@ class MediaObjectSerializerTest extends TestCase
             new MIMEType('video/avi'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
 
