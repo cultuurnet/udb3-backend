@@ -6,9 +6,10 @@ namespace CultuurNet\UDB3\UDB2\Actor\Events;
 
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\HasCdbXmlTrait;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreated;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class ActorCreatedEnrichedWithCdbXml extends ActorCreated implements CdbXmlContainerInterface
 {

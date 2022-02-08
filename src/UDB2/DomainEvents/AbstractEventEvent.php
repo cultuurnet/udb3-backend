@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 abstract class AbstractEventEvent implements Serializable
 {
@@ -51,7 +51,7 @@ abstract class AbstractEventEvent implements Serializable
                 new StringLiteral($data['time'])
             ),
             new StringLiteral($data['author']),
-            Url::fromNative($data['url'])
+            new Url($data['url'])
         );
     }
 }
