@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -32,7 +33,6 @@ use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -53,7 +53,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelRepository->method('getByUuid')
-            ->with('86c5b0f4-a5da-4a81-815f-3839634c212c')
+            ->with(new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'))
             ->willReturn(
                 new Entity(
                     new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'),

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemOperator;
 use org\bovigo\vfs\content\LargeFileContent;
@@ -14,7 +15,6 @@ use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -101,7 +101,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory . '/' . $this->fileId . '.png';
+        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.png';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator
@@ -239,7 +239,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory . '/' . $this->fileId . '.jpg';
+        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.jpg';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator

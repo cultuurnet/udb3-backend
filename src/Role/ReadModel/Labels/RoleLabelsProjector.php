@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
-use ValueObjects\Identity\UUID;
 
 class RoleLabelsProjector extends RoleProjector
 {
@@ -51,7 +51,7 @@ class RoleLabelsProjector extends RoleProjector
             $label = $this->labelJsonRepository->getByUuid($labelAdded->getLabelId());
 
             if ($label) {
-                $labelDetails[$label->getUuid()->toNative()] = $label;
+                $labelDetails[$label->getUuid()->toString()] = $label;
                 $document = $document->withAssocBody($labelDetails);
                 $this->repository->save($document);
             }
@@ -68,7 +68,7 @@ class RoleLabelsProjector extends RoleProjector
             $label = $this->labelJsonRepository->getByUuid($labelRemoved->getLabelId());
 
             if ($label) {
-                unset($labelDetails[$label->getUuid()->toNative()]);
+                unset($labelDetails[$label->getUuid()->toString()]);
                 $document = $document->withAssocBody($labelDetails);
                 $this->repository->save($document);
             }
@@ -78,7 +78,7 @@ class RoleLabelsProjector extends RoleProjector
 
     public function applyLabelDetailsProjectedToJSONLD(LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD)
     {
-        $labelId = $labelDetailsProjectedToJSONLD->getUuid()->toNative();
+        $labelId = $labelDetailsProjectedToJSONLD->getUuid()->toString();
         try {
             $document = $this->labelRolesRepository->fetch($labelId);
         } catch (DocumentDoesNotExist $e) {
@@ -109,13 +109,13 @@ class RoleLabelsProjector extends RoleProjector
 
     public function applyRoleDeleted(RoleDeleted $roleDeleted)
     {
-        $this->repository->remove($roleDeleted->getUuid());
+        $this->repository->remove($roleDeleted->getUuid()->toString());
     }
 
     private function getDocument(UUID $uuid): ?JsonDocument
     {
         try {
-            return $this->repository->fetch($uuid->toNative());
+            return $this->repository->fetch($uuid->toString());
         } catch (DocumentDoesNotExist $e) {
             return null;
         }
@@ -135,7 +135,7 @@ class RoleLabelsProjector extends RoleProjector
     private function createNewDocument(UUID $uuid)
     {
         $document = new JsonDocument(
-            $uuid->toNative(),
+            $uuid->toString(),
             json_encode([])
         );
         return $document;

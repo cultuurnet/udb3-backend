@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -53,7 +54,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 final class OrganizerLDProjectorTest extends TestCase
 {
@@ -452,7 +452,7 @@ final class OrganizerLDProjectorTest extends TestCase
                     MIMEType::fromSubtype('jpeg'),
                     new StringLiteral('Uploaded image'),
                     new CopyrightHolder('publiq'),
-                    Url::fromNative('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
                     new Language('nl')
                 )
             );
@@ -488,7 +488,7 @@ final class OrganizerLDProjectorTest extends TestCase
                     MIMEType::fromSubtype('png'),
                     new StringLiteral('Extra image'),
                     new CopyrightHolder('madewithlove'),
-                    Url::fromNative('https://images.uitdatabank.be/dd45e5a1-f70c-48d7-83e5-dde9226c1dd6.png'),
+                    new Url('https://images.uitdatabank.be/dd45e5a1-f70c-48d7-83e5-dde9226c1dd6.png'),
                     new Language('en')
                 )
             );
@@ -524,7 +524,7 @@ final class OrganizerLDProjectorTest extends TestCase
                     MIMEType::fromSubtype('jpeg'),
                     new StringLiteral('Image Description'),
                     new CopyrightHolder('madewithlove'),
-                    Url::fromNative('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
                     new Language('en')
                 )
             );

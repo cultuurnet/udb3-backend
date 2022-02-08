@@ -777,7 +777,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
 
         if (isset($mainImage)) {
-            $offerLd->image = (string) $mainImage->getSourceLocation();
+            $offerLd->image = $mainImage->getSourceLocation()->toString();
         }
     }
 

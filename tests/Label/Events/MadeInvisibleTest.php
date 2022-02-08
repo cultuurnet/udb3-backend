@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\Events;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class MadeInvisibleTestAbstract extends AbstractExtendsTest
 {
@@ -24,7 +24,7 @@ class MadeInvisibleTestAbstract extends AbstractExtendsTest
     {
         return MadeInvisible::deserialize(
             [
-                'uuid' => $this->uuid->toNative(),
+                'uuid' => $this->uuid->toString(),
                 'name' => $this->name->toNative(),
             ]
         );

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class AbstractCommandTest extends TestCase
 {
@@ -20,7 +20,7 @@ class AbstractCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('3f946ee2-1637-4499-ba2d-4f0fdac69c0f');
 
         $this->abstractCommand = $this->getMockForAbstractClass(
             AbstractCommand::class,
@@ -42,7 +42,7 @@ class AbstractCommandTest extends TestCase
     public function it_has_an_item_id(): void
     {
         $this->assertEquals(
-            $this->uuid->toNative(),
+            $this->uuid->toString(),
             $this->abstractCommand->getItemId()
         );
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class LabelDetailsProjectedToJSONLDTest extends TestCase
 {
@@ -21,7 +21,7 @@ class LabelDetailsProjectedToJSONLDTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('3960ff99-ceab-4b44-aa51-dc7a187b77e0');
 
         $this->labelDetailsProjectedToJSONLD = new LabelDetailsProjectedToJSONLD(
             $this->uuid
@@ -44,7 +44,7 @@ class LabelDetailsProjectedToJSONLDTest extends TestCase
      */
     public function it_can_deserialize()
     {
-        $asArray = ['uuid' => $this->uuid->toNative()];
+        $asArray = ['uuid' => $this->uuid->toString()];
 
         $this->assertEquals(
             $this->labelDetailsProjectedToJSONLD,
@@ -57,7 +57,7 @@ class LabelDetailsProjectedToJSONLDTest extends TestCase
      */
     public function it_can_serialize()
     {
-        $expectedArray = ['uuid' => $this->uuid->toNative()];
+        $expectedArray = ['uuid' => $this->uuid->toString()];
 
         $this->assertEquals(
             $expectedArray,

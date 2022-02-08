@@ -19,11 +19,11 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Commands\AddImage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 final class AddImageRequestHandlerTest extends TestCase
 {
@@ -66,7 +66,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     MIMEType::fromSubtype('jpeg'),
                     new StringLiteral('Uploaded image'),
                     new CopyrightHolder('madewithlove'),
-                    Url::fromNative('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
                     new LegacyLanguage('nl')
                 )
             );

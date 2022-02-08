@@ -14,9 +14,9 @@ use CultuurNet\UDB3\Label\Commands\MakeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class WriteServiceTest extends TestCase
 {
@@ -47,7 +47,7 @@ class WriteServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('91a6cfb3-f556-48cd-91ef-b0675b827728');
 
         $this->create = new Create(
             $this->uuid,
@@ -60,7 +60,7 @@ class WriteServiceTest extends TestCase
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->uuidGenerator->method('generate')
-            ->willReturn($this->create->getUuid()->toNative());
+            ->willReturn($this->create->getUuid()->toString());
 
         $this->writeService = new WriteService(
             $this->commandBus,

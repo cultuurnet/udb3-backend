@@ -36,6 +36,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use Http\Adapter\Guzzle6\Client as ClientAdapter;
 use Monolog\Handler\StreamHandler;
+use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -91,7 +92,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $logger,
                     $app['udb2_deserializer_locator'],
                     $app['event_bus'],
-                    new StringLiteral($app['config']['amqp']['consumer_tag'])
+                    new StringLiteral($app['config']['amqp']['consumer_tag']),
+                    new UuidFactory()
                 );
             }
         );
@@ -180,6 +182,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $enricher = new EventCdbXmlEnricher(
                     $app['event_bus'],
                     $app['cdbxml_enricher_http_client_adapter'],
+                    new UuidFactory(),
                     $app['event_cdbxml_enricher_xml_validation_service']
                 );
 
@@ -194,6 +197,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $enricher = new ActorEventCdbXmlEnricher(
                     $app['event_bus'],
                     $app['cdbxml_enricher_http_client_adapter'],
+                    new UuidFactory(),
                     $app['actor_cdbxml_enricher_xml_validation_service']
                 );
 

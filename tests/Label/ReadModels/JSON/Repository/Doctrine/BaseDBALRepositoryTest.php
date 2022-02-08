@@ -8,8 +8,8 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -57,13 +57,13 @@ abstract class BaseDBALRepositoryTest extends TestCase
     protected function entityToValues(Entity $entity)
     {
         return [
-            $entity->getUuid()->toNative(),
+            $entity->getUuid()->toString(),
             $entity->getName()->toNative(),
             $entity->getVisibility() === Visibility::VISIBLE()
                 ? true : false,
             $entity->getPrivacy() === Privacy::PRIVACY_PRIVATE()
                 ? true : false,
-            $entity->getParentUuid()->toNative(),
+            $entity->getParentUuid()->toString(),
             $entity->getCount()->toNative(),
         ];
     }

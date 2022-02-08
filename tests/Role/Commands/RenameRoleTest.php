@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class RenameRoleTest extends TestCase
@@ -27,7 +27,7 @@ class RenameRoleTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('45264080-03ba-4ae7-87ee-0865a1ed0ae2');
 
         $this->name = new StringLiteral('newRoleName');
 

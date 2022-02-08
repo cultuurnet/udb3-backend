@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Events\PermissionAdded;
 use CultuurNet\UDB3\Role\Events\PermissionRemoved;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
@@ -16,7 +17,6 @@ use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsProjectorTest extends TestCase
@@ -44,7 +44,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_remove_role_on_role_deleted_event(): void
     {
-        $roleDeleted = new RoleDeleted(new UUID());
+        $roleDeleted = new RoleDeleted(new UUID('bd7175de-f72f-49fd-9c40-2dc12cea985d'));
         $domainMessage = $this->createDomainMessage($roleDeleted);
 
         $this->userPermissionsWriteRepository->expects($this->once())
@@ -59,7 +59,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_add_user_role_on_user_added_event(): void
     {
-        $userAdded = new UserAdded(new UUID(), new StringLiteral('userId'));
+        $userAdded = new UserAdded(new UUID('ae51b740-9d8b-4868-ae15-ecbb2649b8e1'), new StringLiteral('userId'));
         $domainMessage = $this->createDomainMessage($userAdded);
 
         $this->userPermissionsWriteRepository->expects($this->once())
@@ -74,7 +74,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_remove_user_role_on_user_removed_event(): void
     {
-        $userRemoved = new UserRemoved(new UUID(), new StringLiteral('userId'));
+        $userRemoved = new UserRemoved(new UUID('b3154dd0-3109-4133-9f81-29703e64c803'), new StringLiteral('userId'));
         $domainMessage = $this->createDomainMessage($userRemoved);
 
         $this->userPermissionsWriteRepository->expects($this->once())
@@ -89,7 +89,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_add_role_permission_on_permission_added_event(): void
     {
-        $permissionAdded = new PermissionAdded(new UUID(), Permission::aanbodModereren());
+        $permissionAdded = new PermissionAdded(new UUID('e4d01227-741f-4cb0-9f77-08f1e9700081'), Permission::aanbodModereren());
         $domainMessage = $this->createDomainMessage($permissionAdded);
 
         $this->userPermissionsWriteRepository->expects($this->once())
@@ -104,7 +104,7 @@ class UserPermissionsProjectorTest extends TestCase
      */
     public function it_calls_remove_role_permission_on_permission_removed_event(): void
     {
-        $permissionRemoved = new PermissionRemoved(new UUID(), Permission::aanbodModereren());
+        $permissionRemoved = new PermissionRemoved(new UUID('323de7ef-0430-4782-884a-9453417a6a90'), Permission::aanbodModereren());
         $domainMessage = $this->createDomainMessage($permissionRemoved);
 
         $this->userPermissionsWriteRepository->expects($this->once())

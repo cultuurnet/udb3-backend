@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class PermissionRemovedTest extends TestCase
 {
@@ -18,7 +18,7 @@ class PermissionRemovedTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('7efe1b01-5a99-48e7-b94a-cd473400563c');
 
         $this->permission = Permission::aanbodBewerken();
 
@@ -45,7 +45,7 @@ class PermissionRemovedTest extends TestCase
         $actualArray = $this->event->serialize();
 
         $expectedArray = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
             'permission' => $this->permission->toString(),
         ];
 
@@ -55,7 +55,7 @@ class PermissionRemovedTest extends TestCase
     public function it_can_deserialize(): void
     {
         $data = [
-            'uuid' => $this->uuid->toNative(),
+            'uuid' => $this->uuid->toString(),
             'permission' => $this->permission->toString(),
         ];
         $actualEvent = $this->event->deserialize($data);

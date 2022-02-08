@@ -8,7 +8,8 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
-use ValueObjects\Identity\UUID;
+use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidFactoryInterface;
 
 /**
  * Helper class for building domain messages, to be used in automated tests.
@@ -39,6 +40,17 @@ class DomainMessageBuilder
      * @var null|bool
      */
     private $forReplay;
+
+    private UuidFactoryInterface $uuidFactory;
+
+    public function __construct(UuidFactoryInterface $uuidFactory = null)
+    {
+        if ($uuidFactory === null) {
+            $uuidFactory = new UuidFactory();
+        }
+
+        $this->uuidFactory = $uuidFactory;
+    }
 
     public function setId(string $id): self
     {
@@ -85,13 +97,13 @@ class DomainMessageBuilder
         $finalMetaData = $finalMetaData->merge(
             new Metadata(
                 [
-                    'user_id' => $this->userId ?? UUID::generateAsString(),
+                    'user_id' => $this->userId ?? $this->uuidFactory->uuid4()->toString(),
                 ]
             )
         );
 
         $message =  new DomainMessage(
-            $this->id ?? UUID::generateAsString(),
+            $this->id ?? $this->uuidFactory->uuid4()->toString(),
             $this->playhead ?? 1,
             $finalMetaData,
             $payload,

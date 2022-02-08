@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CommandHandler extends AbstractCommandHandler
 {
@@ -91,7 +91,7 @@ class CommandHandler extends AbstractCommandHandler
     private function load(UUID $uuid): Label
     {
         /** @var Label $label */
-        $label =  $this->repository->load($uuid);
+        $label =  $this->repository->load($uuid->toString());
 
         return $label;
     }

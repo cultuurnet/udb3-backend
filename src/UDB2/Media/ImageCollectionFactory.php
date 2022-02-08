@@ -13,11 +13,11 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use League\Uri\Http;
 use League\Uri\UriModifier;
 use Psr\Http\Message\UriInterface;
 use Ramsey\Uuid\Uuid as BaseUuid;
-use ValueObjects\Web\Url;
 
 class ImageCollectionFactory implements ImageCollectionFactoryInterface
 {
@@ -99,7 +99,7 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
                     empty($fileType) ? MIMEType::fromSubtype('octet-stream') : MIMEType::fromSubtype($fileType),
                     empty($udb2Description) ? $fallbackDescription : new Description($udb2Description),
                     empty($udb2Copyright) ? $fallbackCopyright : new CopyrightHolder($udb2Copyright),
-                    Url::fromNative((string) $normalizedUri),
+                    new Url((string) $normalizedUri),
                     $language
                 );
 

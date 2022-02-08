@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -55,7 +55,7 @@ class EntityTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('17d17095-a628-4cfe-98c2-3306bb6af450');
 
         $this->name = new StringLiteral('labelName');
 
@@ -63,7 +63,7 @@ class EntityTest extends TestCase
 
         $this->privacy = Privacy::PRIVACY_PRIVATE();
 
-        $this->parentUuid = new UUID();
+        $this->parentUuid = new UUID('17ee8501-0168-4469-ba37-458a6a526466');
 
         $this->count = new Natural(666);
 
@@ -158,7 +158,7 @@ class EntityTest extends TestCase
     {
         $json = json_encode($this->entity);
 
-        $expectedJson = '{"uuid":"' . $this->uuid->toNative()
+        $expectedJson = '{"uuid":"' . $this->uuid->toString()
             . '","name":"' . $this->name->toNative()
             . '","visibility":"' . $this->visibilty->toNative()
             . '","privacy":"' . $this->privacy->toNative() . '"}';

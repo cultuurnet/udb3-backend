@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 class RelocateEventToCanonicalPlaceTest extends TestCase
 {
@@ -55,8 +54,8 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
      */
     public function it_will_not_relocate_events_when_they_already_use_a_canonical_place(): void
     {
-        $eventId = Uuid::generateAsString();
-        $locationId = new LocationId(Uuid::generateAsString());
+        $eventId = '0317e74b-62fd-45c7-a5c2-cb5ffacac042';
+        $locationId = new LocationId('facccc5f-beac-496d-9cde-09c65608144b');
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn(null);
         $place->method('getAggregateRootId')->willReturn($locationId->toNative());
@@ -82,9 +81,9 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
      */
     public function it_will_relocate_event_when_it_was_created_for_a_duplicate_place(): void
     {
-        $eventId = Uuid::generateAsString();
-        $locationId = new LocationId(Uuid::generateAsString());
-        $canonicalPlaceId = Uuid::generateAsString();
+        $eventId = '6e5fde00-7320-4601-a5da-811e387d9cfd';
+        $locationId = new LocationId('4fc598b7-fba1-4f86-80cb-093b82112085');
+        $canonicalPlaceId = 'fbe65c44-1925-4b6e-9ae7-f5491718f997';
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
         $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);
@@ -115,9 +114,9 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
      */
     public function it_will_relocate_event_when_its_location_was_updated_to_a_duplicate_place(): void
     {
-        $eventId = Uuid::generateAsString();
-        $locationId = new LocationId(Uuid::generateAsString());
-        $canonicalPlaceId = Uuid::generateAsString();
+        $eventId = 'cc70de68-c08f-44b4-b78c-5d9330d14eba';
+        $locationId = new LocationId('1c82a6b7-f3ff-4a8a-adfa-a918cb490949');
+        $canonicalPlaceId = '17ce529d-bf7c-4ae4-9cac-365add2ea4c8';
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
         $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);
@@ -137,7 +136,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
     {
         $this->processManager->handle(
             DomainMessage::recordNow(
-                UUID::generateAsString(),
+                'cf9088ea-548c-45d9-9b00-73fc04e08e71',
                 0,
                 Metadata::deserialize([]),
                 $event
