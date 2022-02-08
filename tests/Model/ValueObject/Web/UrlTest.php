@@ -109,7 +109,7 @@ class UrlTest extends TestCase
             [
                 'http://www.query.com/#123',
                 'http://www.query.com/#123',
-            ]
+            ],
         ];
     }
 }
