@@ -754,8 +754,8 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
         $duplicatePlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
-        $duplicateOfDuplicate1 = \ValueObjects\Identity\UUID::generateAsString();
-        $duplicateOfDuplicate2 = \ValueObjects\Identity\UUID::generateAsString();
+        $duplicateOfDuplicate1 = '1e15b874-2f08-4fd9-899e-b0cb14291ecf';
+        $duplicateOfDuplicate2 = '45fe650b-4be4-4246-8f5c-0a0398e724a4';
         $duplicatesOfDuplicate = [$duplicateOfDuplicate1, $duplicateOfDuplicate2];
         $this->scenario
             ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')

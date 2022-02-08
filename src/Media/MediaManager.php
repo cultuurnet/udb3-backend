@@ -14,11 +14,11 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, MediaManagerInterface
 {
@@ -99,7 +99,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $uploadImage->getMimeType(),
             $uploadImage->getDescription(),
             $uploadImage->getCopyrightHolder(),
-            Url::fromNative($destinationIri),
+            new Url($destinationIri),
             $uploadImage->getLanguage()
         );
 

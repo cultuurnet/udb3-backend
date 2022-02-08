@@ -16,6 +16,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\UuidFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventBusForwardingConsumerTest extends TestCase
@@ -105,6 +106,7 @@ class EventBusForwardingConsumerTest extends TestCase
             $this->consumerTag,
             $this->exchangeName,
             $this->queueName,
+            new UuidFactory(),
             $this->delay
         );
 
@@ -129,7 +131,8 @@ class EventBusForwardingConsumerTest extends TestCase
             $this->deserializerLocator,
             $this->consumerTag,
             $this->exchangeName,
-            $this->queueName
+            $this->queueName,
+            new UuidFactory()
         );
 
         $expectedConnection = $this->connection;

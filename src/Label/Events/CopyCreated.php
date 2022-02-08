@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Label\Events;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class CopyCreated extends Created
 {
@@ -49,7 +49,7 @@ final class CopyCreated extends Created
     public function serialize(): array
     {
         return parent::serialize() + [
-            self::PARENT_UUID => $this->getParentUuid()->toNative(),
+            self::PARENT_UUID => $this->getParentUuid()->toString(),
         ];
     }
 }

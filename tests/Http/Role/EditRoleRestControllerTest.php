@@ -21,7 +21,6 @@ use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EditRoleRestControllerTest extends TestCase
@@ -256,7 +255,7 @@ class EditRoleRestControllerTest extends TestCase
         $labelName = 'foo';
 
         $label = new Entity(
-            new LegacyUUID($this->labelId),
+            new UUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -321,7 +320,7 @@ class EditRoleRestControllerTest extends TestCase
         $labelName = 'foo';
 
         $label = new Entity(
-            new LegacyUUID($this->labelId),
+            new UUID($this->labelId),
             new StringLiteral($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()

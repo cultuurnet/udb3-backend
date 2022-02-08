@@ -71,9 +71,7 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ValueObjects\Identity\UUID as LegacyUUID;
 use ValueObjects\Money\Currency;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class EventDocumentImporterTest extends TestCase
 {
@@ -484,7 +482,7 @@ class EventDocumentImporterTest extends TestCase
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Example description'),
                     new CopyrightHolder('Bob'),
-                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
+                    new Url('https://io.uitdatabank.be/images/6984df33-62b4-4c94-ba2d-59d4a87d17dd.png'),
                     new LegacyLanguage('en')
                 ),
                 new Image(
@@ -492,7 +490,7 @@ class EventDocumentImporterTest extends TestCase
                     MIMEType::fromSubtype('png'),
                     new ImageDescription('Voorbeeld beschrijving'),
                     new CopyrightHolder('Bob'),
-                    LegacyUrl::fromNative('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
+                    new Url('https://io.uitdatabank.be/images/ff29632f-c277-4e27-bb97-3fdb14e90279.png'),
                     new LegacyLanguage('nl')
                 ),
             ]
@@ -652,7 +650,7 @@ class EventDocumentImporterTest extends TestCase
      */
     public function it_should_force_audience_type_to_education_for_dummy_place(): void
     {
-        $dummyPlaceId = LegacyUUID::generateAsString();
+        $dummyPlaceId = 'a3a25ddb-7607-442b-baea-dfc91a9d6e6d';
         LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
         $document = $this->getEventDocument();
         $body = $document->getBody();

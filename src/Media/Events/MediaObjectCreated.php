@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 final class MediaObjectCreated implements Serializable
 {
@@ -97,7 +97,7 @@ final class MediaObjectCreated implements Serializable
             'mime_type' => $this->getMimeType()->toNative(),
             'description' => $this->getDescription()->toNative(),
             'copyright_holder' => $this->getCopyrightHolder()->toString(),
-            'source_location' => (string) $this->getSourceLocation(),
+            'source_location' => $this->getSourceLocation()->toString(),
             'language' => (string) $this->getLanguage(),
         ];
     }
@@ -116,7 +116,7 @@ final class MediaObjectCreated implements Serializable
             new MIMEType($data['mime_type']),
             new StringLiteral($data['description']),
             new CopyrightHolder($copyrightHolderData),
-            Url::fromNative($data['source_location']),
+            new Url($data['source_location']),
             array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl')
         );
     }

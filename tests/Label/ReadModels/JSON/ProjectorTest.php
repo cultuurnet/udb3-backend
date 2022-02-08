@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
@@ -30,7 +31,6 @@ use CultuurNet\UDB3\Place\Events\LabelAdded as LabelAddedToPlace;
 use CultuurNet\UDB3\Place\Events\LabelRemoved as LabelRemovedFromPlace;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
@@ -67,7 +67,7 @@ class ProjectorTest extends TestCase
             $this->labelName,
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE(),
-            new UUID()
+            new UUID('e7dd8377-b697-4ba1-a688-164daaf961b5')
         );
 
         $uuidMap = [
@@ -365,7 +365,7 @@ class ProjectorTest extends TestCase
     private function createDomainMessage(UUID $id, $payload): DomainMessage
     {
         return new DomainMessage(
-            $id->toNative(),
+            $id->toString(),
             0,
             new Metadata(),
             $payload,

@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use ValueObjects\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class Image implements Serializable
 {
@@ -104,7 +104,7 @@ final class Image implements Serializable
             new MIMEType($data['mime_type']),
             new Description($data['description']),
             new CopyrightHolder($copyrightHolderData),
-            Url::fromNative($data['source_location']),
+            new Url($data['source_location']),
             array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl')
         );
     }
@@ -116,7 +116,7 @@ final class Image implements Serializable
             'mime_type' => (string) $this->getMimeType(),
             'description' => (string) $this->getDescription(),
             'copyright_holder' => $this->getCopyrightHolder()->toString(),
-            'source_location' => (string) $this->getSourceLocation(),
+            'source_location' => $this->getSourceLocation()->toString(),
             'language' => (string) $this->getLanguage(),
         ];
     }

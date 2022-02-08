@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -19,7 +20,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class OfferRestBaseControllerTest extends TestCase
 {
@@ -160,7 +160,7 @@ class OfferRestBaseControllerTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new Description('description'),
             new CopyrightHolder('copyrightholder'),
-            Url::fromNative('https://url.com/image.jpeg'),
+            new Url('https://url.com/image.jpeg'),
             new Language('nl')
         );
 

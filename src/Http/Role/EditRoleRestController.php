@@ -230,7 +230,7 @@ class EditRoleRestController
                 new StringLiteral($labelIdentifier)
             );
 
-            return is_null($entity) ? null : new UUID($entity->getUuid()->toNative());
+            return is_null($entity) ? null : new UUID($entity->getUuid()->toString());
         }
     }
 }

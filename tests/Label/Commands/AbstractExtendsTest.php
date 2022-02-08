@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Commands;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
 
 abstract class AbstractExtendsTest extends TestCase
 {
@@ -21,7 +21,7 @@ abstract class AbstractExtendsTest extends TestCase
 
     protected function setUp()
     {
-        $this->uuid = new UUID();
+        $this->uuid = new UUID('cab65670-ae30-41ec-b30d-2416232ec785');
 
         $this->command = $this->createCommand($this->uuid);
     }

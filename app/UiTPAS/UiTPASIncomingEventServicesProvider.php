@@ -13,6 +13,7 @@ use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
+use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\Number\Natural;
@@ -43,7 +44,8 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                     LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas')),
                     $app['uitpas_deserializer_locator'],
                     $app['event_bus'],
-                    new StringLiteral($app['config']['amqp']['consumer_tag'])
+                    new StringLiteral($app['config']['amqp']['consumer_tag']),
+                    new UuidFactory()
                 );
             }
         );

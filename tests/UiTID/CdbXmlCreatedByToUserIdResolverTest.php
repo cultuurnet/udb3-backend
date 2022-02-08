@@ -10,7 +10,6 @@ use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CdbXmlCreatedByToUserIdResolverTest extends TestCase
@@ -63,11 +62,8 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
             ->with(
                 'The provided createdByIdentifier acf1c0f-30d-3ef-e7b-cd4b7676206 is not a UUID.',
                 [
-                    'exception' => new InvalidNativeArgumentException(
-                        $createdBy,
-                        [
-                            'UUID string',
-                        ]
+                    'exception' => new \InvalidArgumentException(
+                        $createdBy . ' is not a valid uuid.'
                     ),
                 ]
             );

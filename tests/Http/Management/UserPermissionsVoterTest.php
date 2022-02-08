@@ -10,7 +10,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use ValueObjects\Identity\UUID;
 
 class UserPermissionsVoterTest extends TestCase
 {
@@ -37,7 +36,7 @@ class UserPermissionsVoterTest extends TestCase
      */
     public function it_should_grant_access_to_a_user_with_all_the_required_permissions(): void
     {
-        $userId = UUID::generateAsString();
+        $userId = 'df8e224b-d8cf-4911-9157-bd439ee85e5f';
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
@@ -60,7 +59,7 @@ class UserPermissionsVoterTest extends TestCase
      */
     public function it_grants_access_to_a_user_with_all_the_required_permissions_and_one_not_supported(): void
     {
-        $userId = UUID::generateAsString();
+        $userId = '1dad2d3a-eb85-4cc2-9f2f-86ca4c8e5dff';
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
@@ -88,7 +87,7 @@ class UserPermissionsVoterTest extends TestCase
      */
     public function it_denies_access_to_a_user_with_missing_required_permissions(): void
     {
-        $userId = UUID::generateAsString();
+        $userId = '03575347-4eb2-4c3f-b57b-ac7bfee905cc';
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [
@@ -113,7 +112,7 @@ class UserPermissionsVoterTest extends TestCase
      */
     public function it_should_deny_access_to_a_user_without_all_the_required_permissions(): void
     {
-        $userId = UUID::generateAsString();
+        $userId = 'cfc2ebb8-b1d0-48ec-86b0-546e5a9f7c4f';
         $userToken = $this->createMockToken($userId);
         $request = $this->createMock(Request::class);
         $grantedPermissions = [

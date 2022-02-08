@@ -17,6 +17,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\UuidFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class NewsArticleProcessManagerTest extends TestCase
@@ -79,7 +80,8 @@ final class NewsArticleProcessManagerTest extends TestCase
             $deserializerLocator,
             new StringLiteral('test_consumer_tag'),
             new StringLiteral('test_exchange'),
-            new StringLiteral('test_queue')
+            new StringLiteral('test_queue'),
+            new UuidFactory()
         );
 
         $this->messageDeliveryInfo = [

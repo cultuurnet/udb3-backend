@@ -11,10 +11,10 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -56,7 +56,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
             ->from($this->getTableName()->toNative())
             ->where($whereId)
-            ->setParameters([$uuid]);
+            ->setParameters([$uuid->toString()]);
 
         return $this->getResult($queryBuilder);
     }
@@ -297,7 +297,9 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $privacy = $row[SchemaConfigurator::PRIVATE_COLUMN]
             ? Privacy::PRIVACY_PRIVATE() : Privacy::PRIVACY_PUBLIC();
 
-        $parentUuid = new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]);
+        $parentUuid = $row[SchemaConfigurator::PARENT_UUID_COLUMN]
+            ? new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]) : null;
+
 
         $count = new Natural($row[SchemaConfigurator::COUNT_COLUMN]);
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Commands;
 
-use ValueObjects\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CreateCopyTest extends CreateTest
 {
@@ -22,7 +22,7 @@ class CreateCopyTest extends CreateTest
     {
         parent::setUp();
 
-        $this->parentUuid = new UUID();
+        $this->parentUuid = new UUID('f020fb41-fc0e-4706-bddb-f25674bc3953');
 
         $this->create = new CreateCopy(
             $this->uuid,

@@ -10,10 +10,10 @@ use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\Identity\UUID;
 
 class EditRestController
 {
@@ -37,7 +37,7 @@ class EditRestController
             Privacy::fromNative($bodyAsArray['privacy'])
         );
 
-        return new JsonResponse(['uuid' => $uuid->toNative()], 201);
+        return new JsonResponse(['uuid' => $uuid->toString()], 201);
     }
 
     public function patch(Request $request, string $id): Response
