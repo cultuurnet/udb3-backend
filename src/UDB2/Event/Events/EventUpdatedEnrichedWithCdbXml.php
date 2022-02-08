@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use DateTimeImmutable;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class EventUpdatedEnrichedWithCdbXml extends EventUpdated implements CdbXmlContainerInterface
 {

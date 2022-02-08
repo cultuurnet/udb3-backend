@@ -27,7 +27,6 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\UuidFactoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url as LegacyUrl;
 use XMLReader;
 
 /**
