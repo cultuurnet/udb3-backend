@@ -7,12 +7,13 @@ namespace CultuurNet\UDB3\Offer\Commands;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class AddLabelToMultipleJSONDeserializerTest extends TestCase
 {
@@ -27,7 +28,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
             ->willReturnCallback(
                 function (StringLiteral $id) {
                     return new IriOfferIdentifier(
-                        Url::fromNative("http://du.de/event/{$id}"),
+                        new Url("http://du.de/event/{$id}"),
                         $id->toNative(),
                         OfferType::event()
                     );
@@ -50,21 +51,21 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
             (new OfferIdentifierCollection())
                 ->with(
                     new IriOfferIdentifier(
-                        Url::fromNative('http://du.de/event/1'),
+                        new Url('http://du.de/event/1'),
                         '1',
                         OfferType::event()
                     )
                 )
                 ->with(
                     new IriOfferIdentifier(
-                        Url::fromNative('http://du.de/event/2'),
+                        new Url('http://du.de/event/2'),
                         '2',
                         OfferType::event()
                     )
                 )
                 ->with(
                     new IriOfferIdentifier(
-                        Url::fromNative('http://du.de/event/3'),
+                        new Url('http://du.de/event/3'),
                         '3',
                         OfferType::event()
                     )

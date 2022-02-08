@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToQuery;
@@ -13,7 +14,7 @@ use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class BulkLabelCommandHandlerTest extends TestCase
 {
@@ -70,12 +71,12 @@ class BulkLabelCommandHandlerTest extends TestCase
 
         $this->offerIdentifiers = [
             1 => new IriOfferIdentifier(
-                Url::fromNative('http://du.de/event/1'),
+                new Url('http://du.de/event/1'),
                 '1',
                 OfferType::event()
             ),
             2 => new IriOfferIdentifier(
-                Url::fromNative('http://du.de/place/2'),
+                new Url('http://du.de/place/2'),
                 '2',
                 OfferType::place()
             ),
