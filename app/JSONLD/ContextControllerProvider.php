@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\JSONLD;
 
 use CultuurNet\UDB3\Http\JSONLD\ContextController;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ContextControllerProvider implements ControllerProviderInterface
 {
@@ -27,7 +27,7 @@ class ContextControllerProvider implements ControllerProviderInterface
                 $controller = new ContextController($contextDirectory);
 
                 if (isset($app['config']['url']) && $app['config']['url'] !== ContextController::DEFAULT_BASE_PATH) {
-                    $basePath = Url::fromNative($app['config']['url']);
+                    $basePath = new Url($app['config']['url']);
                     return $controller->withCustomBasePath($basePath);
                 } else {
                     return $controller;
