@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class WebsiteNormalizerTest extends TestCase
 {
