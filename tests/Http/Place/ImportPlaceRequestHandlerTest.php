@@ -709,6 +709,69 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_calendarType_is_periodic_and_an_openingHour_misses_required_fields(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday'],
+                    'opens' => '08:00',
+                ],
+                [
+                    'dayOfWeek' => ['monday', 'tuesday'],
+                    'closes' => '16:00',
+                ],
+                [
+                    'opens' => '08:00',
+                    'closes' => '16:00',
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/openingHours/0',
+                'The required properties (closes) are missing'
+            ),
+            new SchemaError(
+                '/openingHours/1',
+                'The required properties (opens) are missing'
+            ),
+            new SchemaError(
+                '/openingHours/2',
+                'The required properties (dayOfWeek) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_terms_is_empty(): void
     {
         $place = [
