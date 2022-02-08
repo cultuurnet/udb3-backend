@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\JSONLD;
 
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ContextControllerTest extends TestCase
 {
@@ -46,7 +46,7 @@ class ContextControllerTest extends TestCase
      */
     public function it_should_update_the_domain_reference_when_a_custom_base_path_is_set()
     {
-        $path = Url::fromNative('https://du.de');
+        $path = new Url('https://du.de');
         $controllerWithCustomBasePath = $this->controller->withCustomBasePath($path);
 
         $contextResponse = $controllerWithCustomBasePath->get('event');
@@ -63,7 +63,7 @@ class ContextControllerTest extends TestCase
      */
     public function it_accepts_custom_base_paths_with_a_trailing_slash()
     {
-        $path = Url::fromNative('https://du.de/');
+        $path = new Url('https://du.de/');
         $controllerWithCustomBasePath = $this->controller->withCustomBasePath($path);
 
         $contextResponse = $controllerWithCustomBasePath->get('event');

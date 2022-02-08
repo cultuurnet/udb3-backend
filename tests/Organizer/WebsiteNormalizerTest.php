@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class WebsiteNormalizerTest extends TestCase
 {
@@ -19,7 +20,7 @@ class WebsiteNormalizerTest extends TestCase
     ): void {
         $websiteNormalizer = new WebsiteNormalizer();
 
-        $this->assertEquals($expected, $websiteNormalizer->normalizeUrl(Url::fromNative($given)));
+        $this->assertEquals($expected, $websiteNormalizer->normalizeUrl(new Url($given)));
     }
 
     public function organizerWebsiteUrlProvider(): array
