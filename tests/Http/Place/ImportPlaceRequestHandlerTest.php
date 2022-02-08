@@ -304,7 +304,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         MIMEType::fromSubtype('jpeg'),
                         new Description('Feest in de Hel'),
                         new CopyrightHolder('De Hel'),
-                        LegacyUrl::fromNative('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
+                        new Url('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
                         new LegacyLanguage('nl')
                     ))
             );
@@ -401,7 +401,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                             MIMEType::fromSubtype('jpeg'),
                             new Description('Feest in de Hel'),
                             new CopyrightHolder('De Hel'),
-                            LegacyUrl::fromNative('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
+                            new Url('https://io.uitdatabank.be/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.jpeg'),
                             new LegacyLanguage('nl')
                         ))
                 ),

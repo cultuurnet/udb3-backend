@@ -11,8 +11,9 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class ImagesImportedFromUDB2Test extends TestCase
 {
@@ -27,7 +28,7 @@ class ImagesImportedFromUDB2Test extends TestCase
                 MIMEType::fromSubtype('jpeg'),
                 new Description('my best selfie'),
                 new CopyrightHolder('Dirkinator'),
-                Url::fromNative('http://du.de/media/dsc_00001.jpg'),
+                new Url('http://du.de/media/dsc_00001.jpg'),
                 new Language('en')
             ),
         ]);

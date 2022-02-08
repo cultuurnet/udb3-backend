@@ -813,7 +813,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Url('https://io.uitdatabank.be/media/test.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -851,7 +851,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Url('https://io.uitdatabank.be/media/test.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -923,7 +923,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Url('https://io.uitdatabank.be/media/test1.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -932,7 +932,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Url('https://io.uitdatabank.be/media/test2.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -980,7 +980,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Url('https://io.uitdatabank.be/media/test1.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -989,7 +989,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Url('https://io.uitdatabank.be/media/test2.jpg'),
             new LegacyLanguage('en')
         );
 
@@ -1199,7 +1199,7 @@ class HistoryProjectorTest extends TestCase
             MIMEType::fromSubtype('jpeg'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
             new CopyrightHolder('copyright holder'),
-            LegacyUrl::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Url('https://io.uitdatabank.be/media/test.jpg'),
             new LegacyLanguage('en')
         );
 

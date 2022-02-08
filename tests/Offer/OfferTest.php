@@ -86,7 +86,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/gif'),
             new Description('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
-            LegacyUrl::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
+            new Url('http://foo.bar/media/my_favorite_giphy_gif.gif'),
             new LegacyLanguage('en')
         );
     }
@@ -409,7 +409,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            new Url('http://foo.bar/media/my_best_selfie.gif'),
             new LegacyLanguage('en')
         );
         $image = $this->image;
@@ -448,7 +448,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            new Url('http://foo.bar/media/my_best_selfie.gif'),
             new LegacyLanguage('en')
         );
 
@@ -619,7 +619,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/gif'),
             new Description('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
-            LegacyUrl::fromNative('http://foo.bar/media/my_best_selfie.gif'),
+            new Url('http://foo.bar/media/my_best_selfie.gif'),
             new LegacyLanguage('en')
         );
         $newerImage = new Image(
@@ -627,7 +627,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
-            LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
+            new Url('http://foo.bar/media/pic.jpeg'),
             new LegacyLanguage('en')
         );
         $originalMainImage = $this->image;
@@ -698,7 +698,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpeg'),
             new Description('pic'),
             new CopyrightHolder('Henk'),
-            LegacyUrl::fromNative('http://foo.bar/media/pic.jpeg'),
+            new Url('http://foo.bar/media/pic.jpeg'),
             new LegacyLanguage('en')
         );
 
@@ -1870,7 +1870,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpg'),
             new Description('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
-            LegacyUrl::fromNative('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
+            new Url('http://foo.bar/media/mijn_favoriete_wallpaper_<3.jpg'),
             new LegacyLanguage('nl')
         );
 
@@ -1880,7 +1880,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new MIMEType('image/jpg'),
                 new Description('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
-                LegacyUrl::fromNative('http://foo.bar/media/episch_panorama.jpg'),
+                new Url('http://foo.bar/media/episch_panorama.jpg'),
                 new LegacyLanguage('nl')
             ),
         ]);
@@ -1935,7 +1935,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),
-            LegacyUrl::fromNative('http://foo.bar/media/my_pic.jpg'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
             new LegacyLanguage('en')
         );
 
