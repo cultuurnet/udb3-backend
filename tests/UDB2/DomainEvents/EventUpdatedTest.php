@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class EventUpdatedTest extends TestCase
 {
@@ -19,7 +20,7 @@ class EventUpdatedTest extends TestCase
             new StringLiteral(''),
             new \DateTimeImmutable(),
             new StringLiteral(''),
-            Url::fromNative('http://foo.bar/event/foo')
+            new Url('http://foo.bar/event/foo')
         );
     }
 
@@ -33,7 +34,7 @@ class EventUpdatedTest extends TestCase
             new StringLiteral('123'),
             $time,
             new StringLiteral('me@example.com'),
-            Url::fromNative('http://foo.bar/event/foo')
+            new Url('http://foo.bar/event/foo')
         );
     }
 
@@ -62,7 +63,7 @@ class EventUpdatedTest extends TestCase
         $eventUpdated = $this->createEventUpdated();
 
         $this->assertEquals(
-            Url::fromNative('http://foo.bar/event/foo'),
+            new Url('http://foo.bar/event/foo'),
             $eventUpdated->getUrl()
         );
     }

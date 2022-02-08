@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Url as LegacyUrl;
 
 class EventCreatedJSONDeserializerTest extends TestCase
 {
@@ -126,7 +127,7 @@ class EventCreatedJSONDeserializerTest extends TestCase
         );
 
         $this->assertEquals(
-            Url::fromNative('http://foo.bar/event/foo'),
+            new Url('http://foo.bar/event/foo'),
             $eventCreated->getUrl()
         );
 
