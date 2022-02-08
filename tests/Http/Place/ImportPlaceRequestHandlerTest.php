@@ -622,6 +622,45 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_calendarType_is_periodic_and_required_fields_are_missing(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'periodic',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/',
+                'The required properties (startDate, endDate) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_calendarType_has_an_unknown_value(): void
     {
         $place = [
