@@ -39,6 +39,7 @@ class Url
 
         // Revert meaningful characters.
         // Taken from https://developers.google.com/maps/url-encoding#special-characters
+        // Based on https://datatracker.ietf.org/doc/html/rfc3986#section-2.2
         $entities = ['%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D'];
         $replacements = ['!', '*', '\'', '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '%', '#', '[', ']'];
 
