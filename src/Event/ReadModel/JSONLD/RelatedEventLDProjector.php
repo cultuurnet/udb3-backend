@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use ValueObjects\Web\Url as LegacyUrl;
 
 final class RelatedEventLDProjector implements EventListener
 {

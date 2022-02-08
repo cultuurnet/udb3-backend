@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class BulkLabelCommandHandlerTest extends TestCase
 {

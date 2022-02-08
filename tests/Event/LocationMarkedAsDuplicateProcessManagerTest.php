@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class LocationMarkedAsDuplicateProcessManagerTest extends TestCase
 {

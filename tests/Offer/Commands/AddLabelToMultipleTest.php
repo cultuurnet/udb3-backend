@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class AddLabelToMultipleTest extends TestCase
 {

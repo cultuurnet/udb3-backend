@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class IriOfferIdentifier implements \JsonSerializable, \Serializable
 {

@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use ValueObjects\Web\Url as LegacyUrl;
 
 class IriOfferIdentifierFactoryTest extends TestCase
 {
