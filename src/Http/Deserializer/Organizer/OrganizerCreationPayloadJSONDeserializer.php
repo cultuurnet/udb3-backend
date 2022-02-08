@@ -8,9 +8,9 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 /**
  * @deprecated
@@ -52,7 +52,7 @@ class OrganizerCreationPayloadJSONDeserializer extends JSONDeserializer
         $data = parent::deserialize($data);
         $this->validator->validate($data);
 
-        $url = Url::fromNative($data['website']);
+        $url = new Url($data['website']);
         $address = null;
         $contactPoint = null;
 

@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use InvalidArgumentException;
-use ValueObjects\Web\Url;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintService
 {
@@ -48,6 +48,6 @@ class WebsiteUniqueConstraintService implements UniqueConstraintService
         /* @var OrganizerCreatedWithUniqueWebsite|WebsiteUpdated $payload */
         $payload = $domainMessage->getPayload();
 
-        return $this->websiteNormalizer->normalizeUrl(Url::fromNative($payload->getWebsite()));
+        return $this->websiteNormalizer->normalizeUrl(new Url($payload->getWebsite()));
     }
 }
