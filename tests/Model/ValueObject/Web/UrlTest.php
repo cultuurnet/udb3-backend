@@ -119,9 +119,9 @@ class UrlTest extends TestCase
      */
     public function it_should_retrieve_a_domain(): void
     {
-        $with_domain = new Url('https://www.publiq.be/');
+        $url = new Url('https://www.publiq.be/');
 
-        $this->assertEquals('www.publiq.be', $with_domain->getDomain());
+        $this->assertEquals('www.publiq.be', $url->getDomain());
     }
 
     /**
@@ -146,6 +146,16 @@ class UrlTest extends TestCase
 
         $this->assertEquals('/articles', $withPath->getPath());
         $this->assertNull($withoutPath->getPath());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_retrieve_an_extending_path(): void
+    {
+        $url = new Url('https://www.publiq.be/articles/winter/februari#intro');
+
+        $this->assertEquals('/articles/winter/februari', $url->getPath());
     }
 
     /**
