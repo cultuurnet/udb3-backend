@@ -6,24 +6,22 @@ namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use ValueObjects\Web\PortNumber;
-use ValueObjects\Web\Url as LegacyUrl;
 
 final class WebsiteNormalizer
 {
     public function normalizeUrl(Url $url): string
     {
-        $legacyUrl = LegacyUrl::fromNative($url->toString());
-        $domain = $legacyUrl->getDomain()->toNative();
+        $domain = $url->getDomain();
         if (strpos($domain, 'www.') === 0) {
             $domain = substr($domain, strlen('www.'));
         }
 
-        $port = $legacyUrl->getPort() instanceof PortNumber ? ':' . $legacyUrl->getPort()->toNative() : '';
+        $port = $url->getPort() ? ':' . $url->getPort() : '';
 
-        $queryString = $legacyUrl->getQueryString()->toNative();
-        $fragment = $legacyUrl->getFragmentIdentifier()->toNative();
+        $queryString = $url->getQueryString() ? '?' . $url->getQueryString() : '';
+        $fragment = $url->getFragmentIdentifier() ? '#' . $url->getFragmentIdentifier() : '';
 
-        $path = rtrim($legacyUrl->getPath()->toNative(), '/');
+        $path = rtrim($url->getPath() ?: '', '/');
         if ($path === '' && ($queryString !== '' || $fragment !== '')) {
             $path = '/';
         }
