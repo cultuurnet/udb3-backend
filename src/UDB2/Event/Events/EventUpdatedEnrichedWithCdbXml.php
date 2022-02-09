@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\UDB2\Event\Events;
 
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\HasCdbXmlTrait;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use DateTimeImmutable;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class EventUpdatedEnrichedWithCdbXml extends EventUpdated implements CdbXmlContainerInterface
 {

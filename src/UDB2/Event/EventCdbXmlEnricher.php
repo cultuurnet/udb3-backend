@@ -12,6 +12,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\EventListener;
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use CultuurNet\UDB3\UDB2\Event\Events\EventCreatedEnrichedWithCdbXml;
@@ -26,7 +27,6 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\UuidFactoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 use XMLReader;
 
 /**
@@ -135,11 +135,11 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
      */
     private function internalSendRequest(Url $url)
     {
-        $this->logger->debug('retrieving cdbxml from ' . (string) $url);
+        $this->logger->debug('retrieving cdbxml from ' . $url->toString());
 
         $request = new Request(
             'GET',
-            (string) $url,
+            $url->toString(),
             [
                 'Accept' => 'application/xml',
             ]
@@ -159,7 +159,7 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
             );
 
             throw new EventNotFoundException(
-                'Unable to retrieve event from ' . (string) $url
+                'Unable to retrieve event from ' . $url->toString()
             );
         }
 
