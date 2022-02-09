@@ -123,6 +123,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $placeId),
             $this->importPreProcessingRequestBodyParser,
             new CalendarValidationRequestBodyParser(),
+            new BookingInfoValidationRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();

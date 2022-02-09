@@ -3034,6 +3034,49 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_bookingInfo_has_an_availabilityEnds_before_availabilityStarts(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'bookingInfo' => [
+                'availabilityStarts' => '2028-05-17T22:00:00+00:00',
+                'availabilityEnds' => '2020-05-17T22:00:00+00:00',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                'bookingInfo/availabilityEnds',
+                'availabilityEnds should not be before availabilityStarts'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_mediaObject_is_missing_a_required_property(): void
     {
         $place = [
