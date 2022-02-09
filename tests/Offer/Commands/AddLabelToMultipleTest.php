@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class AddLabelToMultipleTest extends TestCase
 {
@@ -33,17 +33,17 @@ class AddLabelToMultipleTest extends TestCase
         $this->offerIdentifiers = OfferIdentifierCollection::fromArray(
             [
                 new IriOfferIdentifier(
-                    Url::fromNative('http://du.de/event/1'),
+                    new Url('http://du.de/event/1'),
                     '1',
                     OfferType::event()
                 ),
                 new IriOfferIdentifier(
-                    Url::fromNative('http://du.de/event/2'),
+                    new Url('http://du.de/event/2'),
                     '2',
                     OfferType::event()
                 ),
                 new IriOfferIdentifier(
-                    Url::fromNative('http://du.de/event/3'),
+                    new Url('http://du.de/event/3'),
                     '3',
                     OfferType::event()
                 ),

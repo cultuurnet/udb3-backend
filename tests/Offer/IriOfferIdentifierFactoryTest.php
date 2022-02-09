@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use ValueObjects\Web\Url;
 
 class IriOfferIdentifierFactoryTest extends TestCase
 {
@@ -37,7 +37,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
         $this->expectException(RuntimeException::class);
 
         $this->iriOfferIdentifierFactory->fromIri(
-            Url::fromNative('https://du.de/sweet')
+            new Url('https://du.de/sweet')
         );
     }
 
@@ -49,7 +49,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
         $this->expectException(RuntimeException::class);
 
         $this->iriOfferIdentifierFactory->fromIri(
-            Url::fromNative('https://culudb-silex.dev:8080/kwiet/foo-bar')
+            new Url('https://culudb-silex.dev:8080/kwiet/foo-bar')
         );
     }
 
@@ -66,7 +66,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
         $this->expectExceptionMessage('Regular expression pattern should capture group named "offertype"');
 
         $iriOfferIdentifierFactory->fromIri(
-            Url::fromNative('https://foo.bar/place/foo-bar')
+            new Url('https://foo.bar/place/foo-bar')
         );
     }
 
@@ -83,7 +83,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
         $this->expectExceptionMessage('Regular expression pattern should capture group named "offerid"');
 
         $iriOfferIdentifierFactory->fromIri(
-            Url::fromNative('https://foo.bar/place/foo-bar')
+            new Url('https://foo.bar/place/foo-bar')
         );
     }
 
@@ -93,11 +93,11 @@ class IriOfferIdentifierFactoryTest extends TestCase
     public function it_returns_a_correct_iri_offer_identifier_when_url_is_valid()
     {
         $iriOfferIdentifier = $this->iriOfferIdentifierFactory->fromIri(
-            Url::fromNative('https://foo.bar/place/1234')
+            new Url('https://foo.bar/place/1234')
         );
 
         $expectedIriOfferIdentifier = new IriOfferIdentifier(
-            Url::fromNative('https://foo.bar/place/1234'),
+            new Url('https://foo.bar/place/1234'),
             '1234',
             OfferType::place()
         );
