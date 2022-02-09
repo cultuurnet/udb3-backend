@@ -26,4 +26,29 @@ class Url
 
         $this->setValue($value);
     }
+
+    public function getDomain(): string
+    {
+        return parse_url($this->toString(), PHP_URL_HOST);
+    }
+
+    public function getFragmentIdentifier(): ?string
+    {
+        return parse_url($this->toString(), PHP_URL_FRAGMENT);
+    }
+
+    public function getPath(): ?string
+    {
+        return parse_url($this->toString(), PHP_URL_PATH);
+    }
+
+    public function getPort(): ?int
+    {
+        return parse_url($this->toString(), PHP_URL_PORT);
+    }
+
+    public function getQueryString(): ?string
+    {
+        return parse_url($this->toString(), PHP_URL_QUERY);
+    }
 }
