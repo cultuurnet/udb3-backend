@@ -69,10 +69,6 @@ class WebsiteNormalizerTest extends TestCase
                 'https://www.decorridor.be/trailing-slash/',
                 'decorridor.be/trailing-slash',
             ],
-            'ftp://www.decorridor.be/trailing-slash/?query=true#fragment' => [
-                'ftp://www.decorridor.be/trailing-slash/?query=true#fragment',
-                'decorridor.be/trailing-slash?query=true#fragment',
-            ],
             'https://www.decorridor.be/?query=true' => [
                 'https://www.decorridor.be/?query=true',
                 'decorridor.be/?query=true',
