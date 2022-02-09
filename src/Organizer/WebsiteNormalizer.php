@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use ValueObjects\Web\PortNumber;
 
 final class WebsiteNormalizer
 {

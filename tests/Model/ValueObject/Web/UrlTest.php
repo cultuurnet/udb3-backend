@@ -81,7 +81,8 @@ class UrlTest extends TestCase
     /**
      * @test
      */
-    public function it_should_retrieve_a_domain(): void {
+    public function it_should_retrieve_a_domain(): void
+    {
         $with_domain = new Url('https://www.publiq.be/');
 
         $this->assertEquals('www.publiq.be', $with_domain->getDomain());
@@ -90,7 +91,8 @@ class UrlTest extends TestCase
     /**
      * @test
      */
-    public function it_should_retrieve_a_fragment_identifier(): void {
+    public function it_should_retrieve_a_fragment_identifier(): void
+    {
         $withFragmentIdentifier = new Url('https://www.publiq.be/articles#intro');
         $withoutFragmentIdentifier = new Url('https://www.publiq.be/');
 
@@ -101,7 +103,8 @@ class UrlTest extends TestCase
     /**
      * @test
      */
-    public function it_should_retrieve_a_path(): void {
+    public function it_should_retrieve_a_path(): void
+    {
         $withPath = new Url('https://www.publiq.be/articles#intro');
         $withoutPath = new Url('https://www.publiq.be');
 
@@ -112,7 +115,8 @@ class UrlTest extends TestCase
     /**
      * @test
      */
-    public function it_should_retrieve_a_port(): void {
+    public function it_should_retrieve_a_port(): void
+    {
         $withPort = new Url('https://www.publiq.be:4430');
         $withoutPort = new Url('https://www.publiq.be');
 
@@ -123,7 +127,8 @@ class UrlTest extends TestCase
     /**
      * @test
      */
-    public function it_should_retrieve_a_query_string(): void {
+    public function it_should_retrieve_a_query_string(): void
+    {
         $withQueryString = new Url('https://www.publiq.be?article=15&style=light');
         $withoutQueryString = new Url('https://www.publiq.be');
 
