@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use RuntimeException;
-use ValueObjects\Web\Url;
 
 class IriOfferIdentifierFactory implements IriOfferIdentifierFactoryInterface
 {
@@ -38,7 +38,7 @@ class IriOfferIdentifierFactory implements IriOfferIdentifierFactoryInterface
     {
         $match = @preg_match(
             '@^' . $this->regex . '$@',
-            (string)$iri,
+            $iri->toString(),
             $matches
         );
 
