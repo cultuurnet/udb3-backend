@@ -21,6 +21,11 @@ class LabelName extends StringLiteral
             $value = trim($value);
         }
 
+        if (!is_string($value)) {
+            throw new \InvalidArgumentException(
+                "Type for argument $value should by string."
+            );
+        }
         parent::__construct($value);
 
         if (false !== strpos($value, ';')) {
