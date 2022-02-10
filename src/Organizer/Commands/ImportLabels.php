@@ -16,43 +16,17 @@ final class ImportLabels implements AuthorizableCommand
 
     private Labels $labels;
 
-    private Labels $labelsToKeepIfAlreadyOnOrganizer;
-
     public function __construct(
         string $organizerId,
         Labels $label
     ) {
         $this->organizerId = $organizerId;
         $this->labels = $label;
-        $this->labelsToKeepIfAlreadyOnOrganizer = new Labels();
-    }
-
-    public function withLabelsToKeepIfAlreadyOnOrganizer(Labels $labels): self
-    {
-        $c = clone $this;
-        $c->labelsToKeepIfAlreadyOnOrganizer = $labels;
-        return $c;
-    }
-
-    public function getLabelsToKeepIfAlreadyOnOrganizer(): Labels
-    {
-        return $this->labelsToKeepIfAlreadyOnOrganizer;
     }
 
     public function getLabels(): Labels
     {
-        $labelNamesToKeep = array_map(
-            function (Label $label) {
-                return $label->getName();
-            },
-            $this->labelsToKeepIfAlreadyOnOrganizer->toArray()
-        );
-
-        return $this->labels->filter(
-            function (Label $label) use ($labelNamesToKeep) {
-                return !in_array($label->getName(), $labelNamesToKeep);
-            }
-        );
+        return $this->labels;
     }
 
     public function getItemId(): string
