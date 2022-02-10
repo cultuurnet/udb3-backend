@@ -121,24 +121,21 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_throws_when_trying_to_add_a_private_label(): void
+    public function it_does_not_add_a_private_label_if_not_allowed(): void
     {
         $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
 
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::labelNotAllowed('not_allowed'),
-            fn () => $this->scenario
-                ->withAggregateId($id)
-                ->given(
-                    [
-                        $this->organizerCreated($id),
-                    ]
-                )
-                ->when(
-                    (new ImportLabels($id, new Labels(new Label(new LabelName('not_allowed')))))
-                )
-                ->then([])
-        );
+        $this->scenario
+            ->withAggregateId($id)
+            ->given(
+                [
+                    $this->organizerCreated($id),
+                ]
+            )
+            ->when(
+                (new ImportLabels($id, new Labels(new Label(new LabelName('not_allowed')))))
+            )
+            ->then([]);
     }
 
     /**

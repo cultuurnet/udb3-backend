@@ -82,6 +82,10 @@ final class ImportLabelsHandler implements CommandHandler
             }
         }
 
+        // Loop over the labels that are to be added and check if the user can use them or not. If they cannot use them
+        // just remove them from the list to import, because at this point we cannot return an error response anymore
+        // because the imports are handled async. Normally the AuthorizedCommandBus should have already returned an
+        // error response for this, but if not make sure we don't add them.
         $labelNamesToImport = $labelsToImport->toArrayOfStringNames();
         $labelNamesOnOrganizer = $labelsOnOrganizer->toArrayOfStringNames();
         $labelNamesNotOnOrganizer = array_diff($labelNamesToImport, $labelNamesOnOrganizer);
@@ -91,7 +95,9 @@ final class ImportLabelsHandler implements CommandHandler
                 new StringLiteral($labelName)
             );
             if (!$canUseLabel) {
-                throw ApiProblem::labelNotAllowed($labelName);
+                $labelsToImport = $labelsToImport->filter(
+                    fn (Label $label) => $label->getName()->toString() !== $labelName
+                );
             }
         }
 
