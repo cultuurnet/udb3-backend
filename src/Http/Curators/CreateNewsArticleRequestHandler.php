@@ -37,6 +37,7 @@ final class CreateNewsArticleRequestHandler implements RequestHandlerInterface
         $uuid = new UUID($this->uuidGenerator->generate());
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new UrlEncodingRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::NEWS_ARTICLE_POST),
             new DenormalizingRequestBodyParser(
                 new NewsArticleDenormalizer($uuid),
