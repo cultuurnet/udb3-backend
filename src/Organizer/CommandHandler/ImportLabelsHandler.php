@@ -49,7 +49,7 @@ final class ImportLabelsHandler implements CommandHandler
 
         $labelsToImport = $command->getLabels();
         $labelNamesToImport = array_map(
-            fn(Label $label) => $label->getName()->toString(),
+            fn (Label $label) => $label->getName()->toString(),
             $labelsToImport->toArray()
         );
 
