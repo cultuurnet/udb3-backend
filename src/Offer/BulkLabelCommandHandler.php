@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToQuery;
@@ -45,7 +47,7 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
         $query = $addLabelToQuery->getQuery();
 
         foreach ($this->resultsGenerator->search($query) as $result) {
-            /* @var IriOfferIdentifier $result */
+            /* @var ItemIdentifier $result */
             $this->label(
                 $result,
                 $label,
@@ -63,7 +65,11 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
 
         foreach ($offerIdentifiers as $offerIdentifier) {
             $this->label(
-                $offerIdentifier,
+                new ItemIdentifier(
+                    $offerIdentifier->getIri(),
+                    $offerIdentifier->getId(),
+                    new ItemType(strtolower($offerIdentifier->getType()->toString()))
+                ),
                 $label,
                 AddLabelToMultiple::class
             );
@@ -71,7 +77,7 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
     }
 
     private function label(
-        IriOfferIdentifier $offerIdentifier,
+        ItemIdentifier $offerIdentifier,
         Label $label,
         string $originalCommandName = null
     ): void {
@@ -81,7 +87,7 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
             );
         } catch (\Exception $e) {
             $logContext = [
-                'iri' => $offerIdentifier->getIri()->toString(),
+                'iri' => $offerIdentifier->getUrl()->toString(),
                 'command' => $originalCommandName,
                 'exception' => get_class($e),
                 'message' => $e->getMessage(),
