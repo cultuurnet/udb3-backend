@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsPermissionRepository;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
@@ -21,17 +22,20 @@ final class ImportLabelsHandler implements CommandHandler
     private OrganizerRepository $organizerRepository;
     private LabelServiceInterface $labelService;
     private LabelsPermissionRepository $labelsPermissionRepository;
+    private LockedLabelRepository $lockedLabelRepository;
     private string $currentUserId;
 
     public function __construct(
         OrganizerRepository $organizerRepository,
         LabelServiceInterface $labelService,
         LabelsPermissionRepository $labelsPermissionRepository,
+        LockedLabelRepository $lockedLabelRepository,
         string $currentUserId
     ) {
         $this->organizerRepository = $organizerRepository;
         $this->labelService = $labelService;
         $this->labelsPermissionRepository = $labelsPermissionRepository;
+        $this->lockedLabelRepository = $lockedLabelRepository;
         $this->currentUserId = $currentUserId;
     }
 
@@ -55,7 +59,7 @@ final class ImportLabelsHandler implements CommandHandler
             $labelsOnOrganizer->toArray()
         );
 
-        $labelsToKeepOnOrganizer = $command->getLabelsToKeepIfAlreadyOnOrganizer();
+        $labelsToKeepOnOrganizer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
 
         // Fix visibility that is sometimes incorrect on the labels to keep according to the command. This otherwise
         // breaks comparisons in logic down the line.
@@ -65,7 +69,6 @@ final class ImportLabelsHandler implements CommandHandler
                     $readModel = $this->labelsPermissionRepository->getByName(
                         new StringLiteral($label->getName()->toString())
                     );
-
                     $visible = !$readModel || $readModel->getVisibility()->sameValueAs(Visibility::VISIBLE());
                     return new Label($label->getName(), $visible);
                 },
