@@ -43,6 +43,22 @@ final class ImportLabelsHandler implements CommandHandler
         $organizer = $this->organizerRepository->load($command->getItemId());
 
         $labelsOnOrganizer = $organizer->getLabels()->toArray();
+        $labelsToKeepOnOrganizer = $command->getLabelsToKeepIfAlreadyOnOrganizer();
+
+        /** @var Label $labelOnOrganizer */
+        foreach ($labelsOnOrganizer as $labelOnOrganizer) {
+            $canUseLabel = $this->labelsPermissionRepository->canUseLabel(
+                new StringLiteral($this->currentUserId),
+                new StringLiteral($labelOnOrganizer->getName()->toString())
+            );
+            if (!$canUseLabel) {
+                // Do not remove labels that are not included in the import and the user does not have permission to
+                // use them. Because the user also does not have permission to remove them then. Just keep them but
+                // don't throw an exception, because it can be an importer who did not fetch the latest labels from
+                // the organizer in UDB before sending their data.
+                $labelsToKeepOnOrganizer = $labelsToKeepOnOrganizer->with($labelOnOrganizer);
+            }
+        }
 
         $labelNamesOnOrganizer = array_map(
             fn (Label $label) => $label->getName()->toString(),
