@@ -99,6 +99,7 @@ final class ImportLabelsHandler implements CommandHandler
             }
         }
 
+        // Make sure every label that will get added has an existing Label aggregate.
         /** @var Label $importLabel */
         foreach ($labelsToImport as $importLabel) {
             $this->labelService->createLabelAggregateIfNew(
