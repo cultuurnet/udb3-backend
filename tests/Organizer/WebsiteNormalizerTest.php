@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class WebsiteNormalizerTest extends TestCase
 {
@@ -19,7 +19,7 @@ class WebsiteNormalizerTest extends TestCase
     ): void {
         $websiteNormalizer = new WebsiteNormalizer();
 
-        $this->assertEquals($expected, $websiteNormalizer->normalizeUrl(Url::fromNative($given)));
+        $this->assertEquals($expected, $websiteNormalizer->normalizeUrl(new Url($given)));
     }
 
     public function organizerWebsiteUrlProvider(): array
@@ -68,10 +68,6 @@ class WebsiteNormalizerTest extends TestCase
             'https://www.decorridor.be/trailing-slash/' => [
                 'https://www.decorridor.be/trailing-slash/',
                 'decorridor.be/trailing-slash',
-            ],
-            'ftp://www.decorridor.be/trailing-slash/?query=true#fragment' => [
-                'ftp://www.decorridor.be/trailing-slash/?query=true#fragment',
-                'decorridor.be/trailing-slash?query=true#fragment',
             ],
             'https://www.decorridor.be/?query=true' => [
                 'https://www.decorridor.be/?query=true',

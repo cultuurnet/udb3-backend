@@ -10,10 +10,10 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
-use ValueObjects\Web\Url;
 
 class OrganizerCreationPayloadTest extends TestCase
 {
@@ -51,7 +51,7 @@ class OrganizerCreationPayloadTest extends TestCase
     {
         $this->mainLanguage = new Language('en');
 
-        $this->website = Url::fromNative('http://www.domain.be');
+        $this->website = new Url('http://www.domain.be');
 
         $this->title = new Title('Het Depot');
 

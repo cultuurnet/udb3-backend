@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use Psr\Http\Message\RequestInterface;
-use ValueObjects\Web\PortNumber;
 
 class PortReplacer implements RequestTransformerInterface
 {
@@ -25,7 +25,7 @@ class PortReplacer implements RequestTransformerInterface
     public function transform(RequestInterface $request)
     {
         return $request->withUri(
-            $request->getUri()->withPort($this->port->toNative())
+            $request->getUri()->withPort($this->port->toInteger())
         );
     }
 }

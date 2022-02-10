@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -14,7 +15,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use ValueObjects\Web\Url;
 
 class UpdateUniqueOrganizers extends Command
 {
@@ -73,7 +73,7 @@ class UpdateUniqueOrganizers extends Command
 
                 $updated = $this->updateOrganizer(
                     $organizerUuid,
-                    $this->websiteNormalizer->normalizeUrl(Url::fromNative($organizerUrl))
+                    $this->websiteNormalizer->normalizeUrl(new Url($organizerUrl))
                 );
                 if ($updated) {
                     $messages[] = 'Added/updated organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid;
