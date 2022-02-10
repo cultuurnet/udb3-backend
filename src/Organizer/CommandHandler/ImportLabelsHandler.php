@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsPermissionRepository;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use ValueObjects\StringLiteral\StringLiteral;
