@@ -41,8 +41,35 @@ final class ImportLabelsHandler implements CommandHandler
 
         $organizer = $this->organizerRepository->load($command->getItemId());
 
-        $labelsOnOrganizer = $organizer->getLabels()->toArray();
+        $labelsToImport = $command->getLabels();
+        $labelNamesToImport = array_map(
+            fn(Label $label) => $label->getName()->toString(),
+            $labelsToImport->toArray()
+        );
+
+        $labelsOnOrganizer = $organizer->getLabels();
+        $labelNamesOnOrganizer = array_map(
+            fn (Label $label) => $label->getName()->toString(),
+            $labelsOnOrganizer->toArray()
+        );
+
         $labelsToKeepOnOrganizer = $command->getLabelsToKeepIfAlreadyOnOrganizer();
+
+        // Fix visibility that is sometimes incorrect on the labels to keep according to the command. This otherwise
+        // breaks comparisons in logic down the line.
+        $labelsToKeepOnOrganizer = new Labels(
+            ...array_map(
+                function (Label $label): Label {
+                    $readModel = $this->labelsPermissionRepository->getByName(
+                        new StringLiteral($label->getName()->toString())
+                    );
+
+                    $visible = !$readModel || $readModel->getVisibility()->sameValueAs(Visibility::VISIBLE());
+                    return new Label($label->getName(), $visible);
+                },
+                $labelsToKeepOnOrganizer
+            )
+        );
 
         /** @var Label $labelOnOrganizer */
         foreach ($labelsOnOrganizer as $labelOnOrganizer) {
@@ -50,7 +77,7 @@ final class ImportLabelsHandler implements CommandHandler
                 new StringLiteral($this->currentUserId),
                 new StringLiteral($labelOnOrganizer->getName()->toString())
             );
-            if (!$canUseLabel) {
+            if (!$canUseLabel && !$labelsToKeepOnOrganizer->contains($labelOnOrganizer)) {
                 // Always keep labels that are not included in the import and the user does not have permission to
                 // remove them. Just keep them but don't throw an exception, because it can be an importer who did not
                 // fetch the latest labels from the organizer in UDB before sending their data and they didn't mean to
@@ -59,18 +86,7 @@ final class ImportLabelsHandler implements CommandHandler
             }
         }
 
-        $labelNamesOnOrganizer = array_map(
-            fn (Label $label) => $label->getName()->toString(),
-            $labelsOnOrganizer
-        );
-
-        $labelNamesNotOnOrganizer = array_diff(
-            array_map(
-                fn (StringLiteral $labelName) => $labelName->toNative(),
-                $command->getLabelNames()
-            ),
-            $labelNamesOnOrganizer
-        );
+        $labelNamesNotOnOrganizer = array_diff($labelNamesToImport, $labelNamesOnOrganizer);
 
         foreach ($labelNamesNotOnOrganizer as $labelName) {
             $canUseLabel = $this->labelsPermissionRepository->canUseLabel(
@@ -90,7 +106,7 @@ final class ImportLabelsHandler implements CommandHandler
             );
         }
 
-        $organizer->importLabels($command->getLabels(), $labelsToKeepOnOrganizer);
+        $organizer->importLabels($labelsToImport, $labelsToKeepOnOrganizer);
         $this->organizerRepository->save($organizer);
     }
 }
