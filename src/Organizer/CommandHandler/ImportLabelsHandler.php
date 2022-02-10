@@ -68,6 +68,9 @@ final class ImportLabelsHandler implements CommandHandler
             )
         );
 
+        // Always keep labels that the user has no permission to remove, whether they are included in the import or not.
+        // Do not throw an exception but just keep them, because the user might not have had up-to-date JSON from UDB
+        // with the extra labels when they sent their import.
         /** @var Label $labelOnOrganizer */
         foreach ($labelsOnOrganizer as $labelOnOrganizer) {
             $canUseLabel = $this->labelsPermissionRepository->canUseLabel(
@@ -75,10 +78,6 @@ final class ImportLabelsHandler implements CommandHandler
                 new StringLiteral($labelOnOrganizer->getName()->toString())
             );
             if (!$canUseLabel && !$labelsToKeepOnOrganizer->contains($labelOnOrganizer)) {
-                // Always keep labels that are not included in the import and the user does not have permission to
-                // remove them. Just keep them but don't throw an exception, because it can be an importer who did not
-                // fetch the latest labels from the organizer in UDB before sending their data and they didn't mean to
-                // remove these.
                 $labelsToKeepOnOrganizer = $labelsToKeepOnOrganizer->with($labelOnOrganizer);
             }
         }
