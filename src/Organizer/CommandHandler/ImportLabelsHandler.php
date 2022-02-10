@@ -48,9 +48,7 @@ final class ImportLabelsHandler implements CommandHandler
         $organizer = $this->organizerRepository->load($command->getItemId());
 
         $labelsToImport = $command->getLabels();
-
         $labelsOnOrganizer = $organizer->getLabels();
-
         $labelsToKeepOnOrganizer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
 
         // Fix visibility that is sometimes incorrect on locked labels. This otherwise breaks comparisons in logic down
