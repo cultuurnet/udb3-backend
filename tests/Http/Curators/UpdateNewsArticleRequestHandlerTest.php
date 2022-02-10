@@ -102,7 +102,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_updates_a_news_article_and_returns_jsonld_if_present_in_accept_header(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $updateNewsArticleRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/ld+json')
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
             ->withJsonBodyFromArray([
@@ -136,7 +136,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->method('update')
             ->with($newsArticle);
 
-        $response = $this->updateNewsArticleRequestHandler->handle($createOrganizerRequest);
+        $response = $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest);
 
         $this->assertEquals(
             Json::encode([
@@ -161,7 +161,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_updates_a_news_article_and_returns_json_if_specifically_requested(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $updateNewsArticleRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/json')
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
             ->withJsonBodyFromArray([
@@ -195,7 +195,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->method('update')
             ->with($newsArticle);
 
-        $response = $this->updateNewsArticleRequestHandler->handle($createOrganizerRequest);
+        $response = $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest);
 
         $this->assertEquals(
             Json::encode([
@@ -217,7 +217,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_throws_when_news_article_not_found(): void
     {
-        $updateOrganizerRequest = $this->psr7RequestBuilder
+        $updateNewsArticleRequest = $this->psr7RequestBuilder
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
             ->build('UPDATE');
 
@@ -227,7 +227,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::newsArticleNotFound('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
-            fn () => $this->updateNewsArticleRequestHandler->handle($updateOrganizerRequest)
+            fn () => $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest)
         );
     }
 }
