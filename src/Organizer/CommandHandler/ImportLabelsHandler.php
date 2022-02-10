@@ -99,7 +99,7 @@ final class ImportLabelsHandler implements CommandHandler
         }
 
         /** @var Label $importLabel */
-        foreach ($command->getLabels() as $importLabel) {
+        foreach ($labelsToImport as $importLabel) {
             $this->labelService->createLabelAggregateIfNew(
                 new LegacyLabelName($importLabel->getName()->toString()),
                 $importLabel->isVisible()
