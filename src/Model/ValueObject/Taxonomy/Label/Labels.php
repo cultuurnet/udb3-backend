@@ -27,4 +27,12 @@ class Labels extends Collection
 
         parent::__construct(...$labels);
     }
+
+    public function toArrayOfStringNames(): array
+    {
+        return array_map(
+            fn (Label $label) => $label->getName()->toString(),
+            $this->toArray()
+        );
+    }
 }

@@ -48,16 +48,8 @@ final class ImportLabelsHandler implements CommandHandler
         $organizer = $this->organizerRepository->load($command->getItemId());
 
         $labelsToImport = $command->getLabels();
-        $labelNamesToImport = array_map(
-            fn (Label $label) => $label->getName()->toString(),
-            $labelsToImport->toArray()
-        );
 
         $labelsOnOrganizer = $organizer->getLabels();
-        $labelNamesOnOrganizer = array_map(
-            fn (Label $label) => $label->getName()->toString(),
-            $labelsOnOrganizer->toArray()
-        );
 
         $labelsToKeepOnOrganizer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
 
@@ -91,8 +83,9 @@ final class ImportLabelsHandler implements CommandHandler
             }
         }
 
+        $labelNamesToImport = $labelsToImport->toArrayOfStringNames();
+        $labelNamesOnOrganizer = $labelsOnOrganizer->toArrayOfStringNames();
         $labelNamesNotOnOrganizer = array_diff($labelNamesToImport, $labelNamesOnOrganizer);
-
         foreach ($labelNamesNotOnOrganizer as $labelName) {
             $canUseLabel = $this->labelsPermissionRepository->canUseLabel(
                 new StringLiteral($this->currentUserId),
