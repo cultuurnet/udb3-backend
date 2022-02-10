@@ -8,9 +8,9 @@ use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsPermissionRepository;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as Udb3ModelLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -67,15 +67,15 @@ final class ImportLabelsHandler implements CommandHandler
             }
         }
 
-        /** @var Udb3ModelLabel $importLabel */
+        /** @var Label $importLabel */
         foreach ($command->getLabels() as $importLabel) {
             $this->labelService->createLabelAggregateIfNew(
-                new LabelName($importLabel->getName()->toString()),
+                new LegacyLabelName($importLabel->getName()->toString()),
                 $importLabel->isVisible()
             );
         }
 
-        $organizer->importLabels($command->getLabels(), $command->getLabelsToKeepIfAlreadyOnOrganizer());
+        $organizer->importLabels($command->getLabels(), $labelsToKeepOnOrganizer);
         $this->organizerRepository->save($organizer);
     }
 }
