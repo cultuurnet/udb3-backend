@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\PortNumber;
 
 class PortReplacerTest extends TestCase
 {
@@ -31,7 +31,7 @@ class PortReplacerTest extends TestCase
         );
 
         $this->portReplacer = new PortReplacer(
-            new PortNumber(self::REPLACED_PORT)
+            new PortNumber((int) self::REPLACED_PORT)
         );
     }
 

@@ -166,7 +166,7 @@ class UrlTest extends TestCase
         $withPort = new Url('https://www.publiq.be:4430');
         $withoutPort = new Url('https://www.publiq.be');
 
-        $this->assertEquals(4430, $withPort->getPort());
+        $this->assertEquals(new PortNumber(4430), $withPort->getPort());
         $this->assertNull($withoutPort->getPort());
     }
 

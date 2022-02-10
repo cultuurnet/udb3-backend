@@ -65,9 +65,10 @@ class Url
         return parse_url($this->toString(), PHP_URL_PATH);
     }
 
-    public function getPort(): ?int
+    public function getPort(): ?PortNumber
     {
-        return parse_url($this->toString(), PHP_URL_PORT);
+        $portNumber = parse_url($this->toString(), PHP_URL_PORT);
+        return $portNumber ? new PortNumber($portNumber) : null;
     }
 
     public function getQueryString(): ?string

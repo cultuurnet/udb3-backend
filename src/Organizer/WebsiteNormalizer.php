@@ -15,7 +15,7 @@ final class WebsiteNormalizer
             $domain = substr($domain, strlen('www.'));
         }
 
-        $port = $url->getPort() ? ':' . $url->getPort() : '';
+        $port = $url->getPort() ? ':' . $url->getPort()->toInteger() : '';
 
         $queryString = $url->getQueryString() ? '?' . $url->getQueryString() : '';
         $fragment = $url->getFragmentIdentifier() ? '#' . $url->getFragmentIdentifier() : '';

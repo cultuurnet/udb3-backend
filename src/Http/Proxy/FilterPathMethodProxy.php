@@ -14,11 +14,11 @@ use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
+use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\PortNumber;
 
 class FilterPathMethodProxy extends Proxy
 {
