@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsPermissionRepository;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
