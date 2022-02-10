@@ -102,7 +102,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_updates_a_news_article_and_returns_jsonld_if_present_in_accept_header(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $updateNewsArticleRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/ld+json')
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
             ->withJsonBodyFromArray([
@@ -136,7 +136,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->method('update')
             ->with($newsArticle);
 
-        $response = $this->updateNewsArticleRequestHandler->handle($createOrganizerRequest);
+        $response = $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest);
 
         $this->assertEquals(
             Json::encode([
@@ -161,7 +161,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_updates_a_news_article_and_returns_json_if_specifically_requested(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $updateNewsArticleRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/json')
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
             ->withJsonBodyFromArray([
@@ -195,7 +195,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->method('update')
             ->with($newsArticle);
 
-        $response = $this->updateNewsArticleRequestHandler->handle($createOrganizerRequest);
+        $response = $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest);
 
         $this->assertEquals(
             Json::encode([
@@ -215,9 +215,67 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_updates_a_news_article_with_an_url_that_should_have_been_encoded(): void
+    {
+        $updateNewsArticleRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
+            ->withJsonBodyFromArray([
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/blog/api-reward',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+            ])
+            ->build('PUT');
+
+        $newsArticle = new NewsArticle(
+            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            'publiq wint API award',
+            new Language('nl'),
+            'Op 10 januari 2020 wint publiq de API award',
+            '17284745-7bcf-461a-aad0-d3ad54880e75',
+            'BILL',
+            new Url('https://www.publiq.be/blog/api-reward'),
+            new Url('https://www.bill.be/img/favicon.png')
+        );
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('getById')
+            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->willReturn($newsArticle);
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('update')
+            ->with($newsArticle);
+
+        $response = $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest);
+
+        $this->assertEquals(
+            Json::encode([
+                '@context' => '/contexts/NewsArticle',
+                '@id' => '/news-articles/6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                '@type' => 'https://schema.org/NewsArticle',
+                'id' => '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/blog/api-reward',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_news_article_not_found(): void
     {
-        $updateOrganizerRequest = $this->psr7RequestBuilder
+        $updateNewsArticleRequest = $this->psr7RequestBuilder
             ->withRouteParameter('articleId', '6c583739-a848-41ab-b8a3-8f7dab6f8ee1')
             ->build('UPDATE');
 
@@ -227,7 +285,7 @@ class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::newsArticleNotFound('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
-            fn () => $this->updateNewsArticleRequestHandler->handle($updateOrganizerRequest)
+            fn () => $this->updateNewsArticleRequestHandler->handle($updateNewsArticleRequest)
         );
     }
 }
