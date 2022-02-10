@@ -43,15 +43,18 @@ final class ImportLabelsHandler implements CommandHandler
         $organizer = $this->organizerRepository->load($command->getItemId());
 
         $labelsOnOrganizer = $organizer->getLabels()->toArray();
+
+        $labelNamesOnOrganizer = array_map(
+            fn (Label $label) => $label->getName()->toString(),
+            $labelsOnOrganizer
+        );
+
         $labelNamesNotOnOrganizer = array_diff(
             array_map(
                 fn (StringLiteral $labelName) => $labelName->toNative(),
                 $command->getLabelNames()
             ),
-            array_map(
-                fn (Label $label) => $label->getName()->toString(),
-                $labelsOnOrganizer
-            )
+            $labelNamesOnOrganizer
         );
 
         foreach ($labelNamesNotOnOrganizer as $labelName) {
