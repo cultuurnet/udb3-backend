@@ -61,8 +61,8 @@ final class ImportLabelsHandler implements CommandHandler
 
         $labelsToKeepOnOrganizer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
 
-        // Fix visibility that is sometimes incorrect on the labels to keep according to the command. This otherwise
-        // breaks comparisons in logic down the line.
+        // Fix visibility that is sometimes incorrect on locked labels. This otherwise breaks comparisons in logic down
+        // the line.
         $labelsToKeepOnOrganizer = new Labels(
             ...array_map(
                 function (Label $label): Label {
