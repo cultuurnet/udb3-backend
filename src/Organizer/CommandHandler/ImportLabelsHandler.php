@@ -51,10 +51,10 @@ final class ImportLabelsHandler implements CommandHandler
                 new StringLiteral($labelOnOrganizer->getName()->toString())
             );
             if (!$canUseLabel) {
-                // Do not remove labels that are not included in the import and the user does not have permission to
-                // use them. Because the user also does not have permission to remove them then. Just keep them but
-                // don't throw an exception, because it can be an importer who did not fetch the latest labels from
-                // the organizer in UDB before sending their data.
+                // Always keep labels that are not included in the import and the user does not have permission to
+                // remove them. Just keep them but don't throw an exception, because it can be an importer who did not
+                // fetch the latest labels from the organizer in UDB before sending their data and they didn't mean to
+                // remove these.
                 $labelsToKeepOnOrganizer = $labelsToKeepOnOrganizer->with($labelOnOrganizer);
             }
         }
