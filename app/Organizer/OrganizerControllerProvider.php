@@ -77,7 +77,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             fn (Application $app) => new ImportOrganizerRequestHandler(
                 $app['organizer_repository'],
                 $app['imports_command_bus'],
-                $app['labels.labels_locked_for_import_repository'],
                 $app['uuid_generator'],
                 $app['organizer_iri_generator'],
                 new CombinedRequestBodyParser(
