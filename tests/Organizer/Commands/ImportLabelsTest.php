@@ -73,10 +73,10 @@ class ImportLabelsTest extends TestCase
     /**
      * @test
      */
-    public function it_has_permission_aanbod_bewerken(): void
+    public function it_has_permission_organisaties_bewerken(): void
     {
         $this->assertEquals(
-            Permission::aanbodBewerken(),
+            Permission::organisatiesBewerken(),
             $this->importLabels->getPermission()
         );
     }
