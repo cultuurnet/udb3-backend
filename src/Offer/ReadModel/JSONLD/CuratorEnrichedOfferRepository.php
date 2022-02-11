@@ -63,6 +63,10 @@ final class CuratorEnrichedOfferRepository extends DocumentRepositoryDecorator
             $hiddenLabels[] = $this->curatorLabels[$curator];
         }
 
+        // Remove any duplicate labels. Because some old articles have as publisher "UiT" or "UiTinVlaanderen", while
+        // newer ones have "UiT in Vlaanderen". Same with Vlieg labels. This can cause duplicate curator labels.
+        $hiddenLabels = array_values(array_unique($hiddenLabels));
+
         // Make sure to not add an empty list of hiddenLabels.
         if (count($hiddenLabels) > 0) {
             $json['hiddenLabels'] = $hiddenLabels;
