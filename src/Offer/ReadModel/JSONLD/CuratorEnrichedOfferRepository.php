@@ -52,6 +52,9 @@ final class CuratorEnrichedOfferRepository extends DocumentRepositoryDecorator
         // Apply curator labels based on the publishers of the news articles.
         // This should also solve issues with the old code where deletes or updates of news articles were not handled.
         foreach ($curators as $curator) {
+            if (!isset($this->curatorLabels[$curator])) {
+                continue;
+            }
             $hiddenLabels[] = $this->curatorLabels[$curator];
         }
 
