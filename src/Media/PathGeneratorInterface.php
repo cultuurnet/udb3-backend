@@ -15,5 +15,5 @@ interface PathGeneratorInterface
      *
      * @return string
      */
-    public function path(UUID $fileId, StringLiteral $extension);
+    public function path(UUID $fileId, string $extension);
 }

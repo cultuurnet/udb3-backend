@@ -34,17 +34,14 @@ class UploadImage
      */
     protected $mimeType;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $filePath;
+    protected string $filePath;
 
     public function __construct(
         UUID $fileId,
         MIMEType $mimeType,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder,
-        StringLiteral$filePath,
+        string $filePath,
         Language $language
     ) {
         $this->fileId = $fileId;
@@ -80,7 +77,7 @@ class UploadImage
         return $this->mimeType;
     }
 
-    public function getFilePath(): StringLiteral
+    public function getFilePath(): string
     {
         return $this->filePath;
     }
