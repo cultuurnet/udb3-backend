@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Media\Properties;
 
-use ValueObjects\Exception\InvalidNativeArgumentException;
+use InvalidArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
 use function is_string;
 
@@ -20,7 +20,7 @@ final class MIMEType extends StringLiteral
     public static function fromSubtype(string $subtypeString): MIMEType
     {
         if (!is_string($subtypeString)) {
-            throw new InvalidNativeArgumentException($subtypeString, ['string']);
+            throw new InvalidArgumentException($subtypeString, ['string']);
         }
 
         $typeSupported = array_key_exists($subtypeString, self::$supportedSubtypes);

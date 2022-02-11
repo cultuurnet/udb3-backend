@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\PriceInfo;
 
-use ValueObjects\Exception\InvalidNativeArgumentException;
+use InvalidArgumentException;
 use ValueObjects\Number\Natural;
 
 /**
@@ -22,7 +22,7 @@ class Price extends Natural
     public static function fromFloat($value)
     {
         if (!is_float($value)) {
-            throw new InvalidNativeArgumentException($value, ['float']);
+            throw new InvalidArgumentException($value, ['float']);
         }
 
         $precision = 0;

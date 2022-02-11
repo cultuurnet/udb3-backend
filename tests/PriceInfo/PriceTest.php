@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\PriceInfo;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 
 class PriceTest extends TestCase
 {
@@ -17,7 +17,7 @@ class PriceTest extends TestCase
         new Price(0);
         new Price(1050);
 
-        $this->expectException(InvalidNativeArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new Price(-1);
     }

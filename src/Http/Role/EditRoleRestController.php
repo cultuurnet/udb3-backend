@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EditRoleRestController
@@ -159,7 +158,7 @@ class EditRoleRestController
 
         try {
             $roleUuid = new UUID($roleId);
-        } catch (InvalidNativeArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
 
@@ -178,7 +177,7 @@ class EditRoleRestController
 
         try {
             $roleUuid = new UUID($roleId);
-        } catch (InvalidNativeArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
 
@@ -191,7 +190,7 @@ class EditRoleRestController
     {
         try {
             $roleUuid = new UUID($roleId);
-        } catch (InvalidNativeArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
 
@@ -208,7 +207,7 @@ class EditRoleRestController
     {
         try {
             $roleUuid = new UUID($roleId);
-        } catch (InvalidNativeArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException('Required field roleId is not a valid uuid.');
         }
 
