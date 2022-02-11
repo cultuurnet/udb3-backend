@@ -8,7 +8,6 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
-use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerReferenceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AgeRangeDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
@@ -105,10 +104,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         }
 
         if (!$organizerReferenceDenormalizer) {
-            $organizerReferenceDenormalizer = new OrganizerReferenceDenormalizer(
-                new OrganizerIDParser(),
-                new OrganizerDenormalizer()
-            );
+            $organizerReferenceDenormalizer = new OrganizerReferenceDenormalizer(new OrganizerIDParser());
         }
 
         if (!$ageRangeDenormalizer) {
