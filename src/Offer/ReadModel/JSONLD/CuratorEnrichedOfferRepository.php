@@ -10,21 +10,25 @@ use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use Psr\Log\LoggerInterface;
 
 final class CuratorEnrichedOfferRepository extends DocumentRepositoryDecorator
 {
     private NewsArticleRepository $newsArticleRepository;
+    private LoggerInterface $logger;
 
     private array $curatorLabels;
 
     public function __construct(
         DocumentRepository $documentRepository,
         NewsArticleRepository $newsArticleRepository,
+        LoggerInterface $logger,
         array $curatorLabels
     ) {
         parent::__construct($documentRepository);
 
         $this->newsArticleRepository = $newsArticleRepository;
+        $this->logger = $logger;
         // The keys of the curator labels has mixed casing.
         // To work around this every key and every curator get converted to lower case.
         $this->curatorLabels = array_change_key_case($curatorLabels, CASE_LOWER);
@@ -53,6 +57,7 @@ final class CuratorEnrichedOfferRepository extends DocumentRepositoryDecorator
         // This should also solve issues with the old code where deletes or updates of news articles were not handled.
         foreach ($curators as $curator) {
             if (!isset($this->curatorLabels[$curator])) {
+                $this->logger->error('Curator label for "' . $curator . '" missing in config!');
                 continue;
             }
             $hiddenLabels[] = $this->curatorLabels[$curator];
