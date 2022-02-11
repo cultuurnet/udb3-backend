@@ -86,7 +86,7 @@ class ImageUploaderService implements ImageUploaderInterface
                 $mimeType,
                 $description,
                 $copyrightHolder,
-                new StringLiteral($destination),
+                $destination,
                 $language
             )
         );

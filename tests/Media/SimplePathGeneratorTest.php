@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class SimplePathGeneratorTest extends TestCase
 {
@@ -17,7 +16,7 @@ class SimplePathGeneratorTest extends TestCase
     {
         $generator = new SimplePathGenerator();
         $fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
-        $extension = new StringLiteral('png');
+        $extension = 'png';
         $expectedPath = 'de305d54-75b4-431b-adb2-eb6b9e546014.png';
 
         $path = $generator->path($fileId, $extension);
