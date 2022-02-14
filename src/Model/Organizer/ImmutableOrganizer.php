@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -22,6 +23,8 @@ class ImmutableOrganizer implements Organizer
     private TranslatedTitle $name;
 
     private ?Url $url;
+
+    private ?TranslatedDescription $description = null;
 
     private ?TranslatedAddress $address = null;
 
@@ -84,6 +87,18 @@ class ImmutableOrganizer implements Organizer
     {
         $c = clone $this;
         $c->url = $url;
+        return $c;
+    }
+
+    public function getDescription(): ?TranslatedDescription
+    {
+        return $this->description;
+    }
+
+    public function withDescription(TranslatedDescription $description): ImmutableOrganizer
+    {
+        $c = clone $this;
+        $c->description = $description;
         return $c;
     }
 
