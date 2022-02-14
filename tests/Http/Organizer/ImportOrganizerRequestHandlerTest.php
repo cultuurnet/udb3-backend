@@ -34,9 +34,9 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
@@ -100,7 +100,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $expectedCommands = [
             new UpdateContactPoint($organizerId, new ContactPoint()),
-            new RemoveDescription($organizerId),
+            new DeleteDescription($organizerId, new Language('nl')),
+            new DeleteDescription($organizerId, new Language('fr')),
+            new DeleteDescription($organizerId, new Language('de')),
+            new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
         ];
@@ -294,7 +297,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $expectedCommands = [
             new UpdateContactPoint($organizerId, new ContactPoint()),
-            new RemoveDescription($organizerId),
+            new DeleteDescription($organizerId, new Language('nl')),
+            new DeleteDescription($organizerId, new Language('fr')),
+            new DeleteDescription($organizerId, new Language('de')),
+            new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
         ];
@@ -365,7 +371,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new Urls(new Url('https://www.publiq.be'))
                 )
             ),
-            new RemoveDescription($id),
+            new DeleteDescription($id, new Language('nl')),
+            new DeleteDescription($id, new Language('fr')),
+            new DeleteDescription($id, new Language('de')),
+            new DeleteDescription($id, new Language('en')),
             new UpdateAddress(
                 $id,
                 new Address(
