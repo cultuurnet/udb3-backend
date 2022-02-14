@@ -16,7 +16,6 @@ use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
@@ -39,7 +38,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
         $app['uitpas_event_bus_forwarding_consumer_factory'] = $app->share(
             function (Application $app) {
                 return new EventBusForwardingConsumerFactory(
-                    new Natural(0),
+                    0,
                     $app['amqp.connection'],
                     LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas')),
                     $app['uitpas_deserializer_locator'],

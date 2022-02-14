@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactoryInterface;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventBusForwardingConsumerFactory
@@ -19,10 +18,8 @@ class EventBusForwardingConsumerFactory
      * race condition with the UDB3 worker. Modifications initiated by
      * commands in the UDB3 queue worker need to finish before their
      * counterpart UDB2 update is processed.
-     *
-     * @var Natural
      */
-    protected $executionDelay;
+    protected int $executionDelay;
 
     /**
      * @var AMQPStreamConnection
@@ -52,7 +49,7 @@ class EventBusForwardingConsumerFactory
     protected UuidFactoryInterface $uuidFactory;
 
     public function __construct(
-        Natural $executionDelay,
+        int $executionDelay,
         AMQPStreamConnection $connection,
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
@@ -81,7 +78,7 @@ class EventBusForwardingConsumerFactory
             $exchange,
             $queue,
             $this->uuidFactory,
-            $this->executionDelay->toNative()
+            $this->executionDelay
         );
 
         $eventBusForwardingConsumer->setLogger($this->logger);
