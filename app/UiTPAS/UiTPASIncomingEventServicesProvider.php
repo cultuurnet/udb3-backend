@@ -20,7 +20,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['uitpas_deserializer_locator'] = $app->share(
             function () {
@@ -85,7 +85,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
