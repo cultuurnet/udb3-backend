@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
+use CultuurNet\UDB3\Organizer\Commands\RemoveDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
@@ -99,6 +100,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $expectedCommands = [
             new UpdateContactPoint($organizerId, new ContactPoint()),
+            new RemoveDescription($organizerId),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
         ];
@@ -292,6 +294,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $expectedCommands = [
             new UpdateContactPoint($organizerId, new ContactPoint()),
+            new RemoveDescription($organizerId),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
         ];
@@ -362,6 +365,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new Urls(new Url('https://www.publiq.be'))
                 )
             ),
+            new RemoveDescription($id),
             new UpdateAddress(
                 $id,
                 new Address(

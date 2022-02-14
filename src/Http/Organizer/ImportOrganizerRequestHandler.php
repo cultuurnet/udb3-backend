@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
+use CultuurNet\UDB3\Organizer\Commands\RemoveDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
@@ -130,6 +131,8 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
                     $language
                 );
             }
+        } else {
+            $commands[] = new RemoveDescription($organizerId);
         }
 
         $address = $data->getAddress();
