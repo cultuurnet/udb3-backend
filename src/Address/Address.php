@@ -49,11 +49,6 @@ final class Address implements Serializable, JsonLdSerializableInterface
         $this->countryCode = $countryCode;
     }
 
-    public function getCountry(): Country
-    {
-        return Country::fromNative($this->countryCode);
-    }
-
     public function getCountryCode(): CountryCode
     {
         return $this->countryCode;
