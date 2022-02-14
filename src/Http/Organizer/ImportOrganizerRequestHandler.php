@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
+use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer as OrganizerAggregate;
@@ -119,6 +120,17 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         }
 
         $commands[] = new UpdateContactPoint($organizerId, $data->getContactPoint());
+
+        $description = $data->getDescription();
+        if ($description) {
+            foreach ($description->getLanguages() as $language) {
+                $commands[] = new UpdateDescription(
+                    $organizerId,
+                    $description->getTranslation($language),
+                    $language
+                );
+            }
+        }
 
         $address = $data->getAddress();
         if ($address) {
