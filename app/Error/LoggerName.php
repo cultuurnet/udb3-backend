@@ -45,6 +45,11 @@ final class LoggerName
         return new self('web');
     }
 
+    public static function forConfig(): self
+    {
+        return new self('config');
+    }
+
     public static function forAmqpWorker(string $workerName, ?string $suffix = null): self
     {
         $fileName = 'amqp.' . $workerName;

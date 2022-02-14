@@ -31,6 +31,8 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepositor
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Term\TermRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -80,6 +82,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                 $repository = new CuratorEnrichedOfferRepository(
                     $repository,
                     $app[NewsArticleRepository::class],
+                    LoggerFactory::create($app, LoggerName::forConfig()),
                     $app['config']['curator_labels']
                 );
 
