@@ -57,7 +57,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             $address->getStreetAddress()->toNative(),
             $address->getPostalCode()->toNative(),
             $address->getLocality()->toNative(),
-            $address->getCountry()->getCode()->toNative(),
+            $address->getCountryCode()->toString(),
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
             ['http://www.google.be']
@@ -99,7 +99,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             $address->getStreetAddress()->toNative(),
             $address->getPostalCode()->toNative(),
             $address->getLocality()->toNative(),
-            $address->getCountry()->getCode()->toNative(),
+            $address->getCountryCode()->toString(),
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
             ['http://www.google.be']
@@ -148,7 +148,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             $address->getStreetAddress()->toNative(),
             $address->getPostalCode()->toNative(),
             $address->getLocality()->toNative(),
-            $address->getCountry()->getCode()->toNative(),
+            $address->getCountryCode()->toString(),
             ['050/123'],
             ['test@test.be', 'test2@test.be'],
             ['http://www.google.be'],
