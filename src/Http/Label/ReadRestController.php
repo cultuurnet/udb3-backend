@@ -16,21 +16,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ReadRestController
+final class ReadRestController
 {
-    /**
-     * @var ReadServiceInterface
-     */
-    private $readService;
+    private ReadServiceInterface $readService;
 
-    /**
-     * @var QueryFactoryInterface
-     */
-    private $queryFactory;
+    private QueryFactoryInterface $queryFactory;
 
-    /**
-     * ReadRestController constructor.
-     */
     public function __construct(
         ReadServiceInterface $readService,
         QueryFactoryInterface $queryFactory
@@ -39,12 +30,7 @@ class ReadRestController
         $this->queryFactory = $queryFactory;
     }
 
-    /**
-     * @param string $id
-     *  The uuid or unique name of a label.
-     * @return JsonResponse
-     */
-    public function get($id)
+    public function get(string $id): JsonResponse
     {
         try {
             $entity = $this->readService->getByUuid(new UUID($id));
