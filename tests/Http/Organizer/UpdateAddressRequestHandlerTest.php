@@ -259,4 +259,41 @@ class UpdateAddressRequestHandlerTest extends TestCase
             fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_requires_non_whitespace_characters(): void
+    {
+        $updateAddressRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withRouteParameter('language', 'nl')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "      ",
+                    "postalCode": "      ",
+                    "addressLocality": "      ",
+                    "addressCountry": "BE"
+                }'
+            )
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/streetAddress',
+                    'The string should match pattern: \S'
+                ),
+                new SchemaError(
+                    '/postalCode',
+                    'The string should match pattern: \S'
+                ),
+                new SchemaError(
+                    '/addressLocality',
+                    'The string should match pattern: \S'
+                )
+            ),
+            fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
+        );
+    }
 }

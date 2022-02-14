@@ -265,4 +265,26 @@ class UpdateContactPointRequestHandlerTest extends TestCase
             fn () => $this->updateContactPointRequestHandler->handle($updateUrlRequest)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_phone_with_at_least_one_non_whitespace_character(): void
+    {
+        $updateUrlRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withBodyFromString(
+                '{
+                    "phone": ["     "]
+                }'
+            )
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/phone/0', 'The string should match pattern: \S')
+            ),
+            fn () => $this->updateContactPointRequestHandler->handle($updateUrlRequest)
+        );
+    }
 }
