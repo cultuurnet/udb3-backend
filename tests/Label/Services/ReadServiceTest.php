@@ -23,9 +23,7 @@ final class ReadServiceTest extends TestCase
 
     private ReadServiceInterface $readService;
 
-    /**
-     * @var Entity
-     */
+
     private Entity $entity;
 
     private Query $query;
