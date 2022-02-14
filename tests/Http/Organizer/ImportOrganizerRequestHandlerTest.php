@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -37,6 +38,7 @@ use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
+use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -132,6 +134,12 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $given = $this->getOrganizerData() +
             [
+                'description' => [
+                    'nl' => 'Dutch description',
+                    'fr' => 'French description',
+                    'de' => 'German description',
+                    'en' => 'English description',
+                ],
                 'address' => [
                     'nl' => [
                         'streetAddress' => 'Henegouwenkaai 41-43',
@@ -176,6 +184,26 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new EmailAddresses(new EmailAddress('mock@publiq.be')),
                     new Urls(new Url('https://www.publiq.be'))
                 )
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('Dutch description'),
+                new Language('nl')
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('French description'),
+                new Language('fr')
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('German description'),
+                new Language('de')
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('English description'),
+                new Language('en')
             ),
             new UpdateAddress(
                 $id,
