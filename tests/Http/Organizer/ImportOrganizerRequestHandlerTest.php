@@ -782,7 +782,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                             'language' => 'en',
                             'description' => '        ',
                             'copyrightHolder' => '      ',
-                        ]
+                        ],
                     ],
                 ],
                 'schemaErrors' => [
