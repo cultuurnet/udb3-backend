@@ -144,7 +144,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_a_valid_code_for_country(): void
+    public function it_requires_a_country_code_with_max_two_characters(): void
     {
         $updateAddressRequest = $this->psr7RequestBuilder
             ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
@@ -155,6 +155,35 @@ class UpdateAddressRequestHandlerTest extends TestCase
                     "postalCode": "1000",
                     "addressLocality": "Brussel",
                     "addressCountry": "BE-nl"
+                }'
+            )
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/addressCountry',
+                    'Maximum string length is 2, found 5'
+                )
+            ),
+            fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_country_code_with_only_letters(): void
+    {
+        $updateAddressRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withRouteParameter('language', 'nl')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "Nieuwstraat 3",
+                    "postalCode": "1000",
+                    "addressLocality": "Brussel",
+                    "addressCountry": "12"
                 }'
             )
             ->build('PUT');
