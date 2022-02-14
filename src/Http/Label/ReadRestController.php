@@ -82,11 +82,7 @@ class ReadRestController
         array $entities,
         int $totalEntities
     ): PagedCollectionResponse {
-        $limit = 0;
-
-        if ($query->getLimit()) {
-            $limit = $query->getLimit()->toNative();
-        }
+        $limit = $query->getLimit() ?? 0;
 
         return new PagedCollectionResponse(
             $limit,

@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALReadRepositoryTest extends BaseDBALRepositoryTest
@@ -270,7 +269,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $search = new Query(
             new StringLiteral('label'),
             null,
-            new Natural(5)
+            5
         );
 
         $entities = $this->dbalReadRepository->search($search);
@@ -288,8 +287,8 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $search = new Query(
             new StringLiteral('label'),
             null,
-            new Natural(4),
-            new Natural(3)
+            4,
+            3
         );
 
         $entities = $this->dbalReadRepository->search($search);
@@ -308,7 +307,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new StringLiteral('label'),
             null,
             null,
-            new Natural(3)
+            3
         );
 
         $entities = $this->dbalReadRepository->search($search);

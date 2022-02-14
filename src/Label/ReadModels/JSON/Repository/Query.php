@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Query
@@ -19,15 +18,9 @@ class Query
      */
     private $userId;
 
-    /**
-     * @var Natural
-     */
-    private $offset;
+    private ?int $offset;
 
-    /**
-     * @var Natural
-     */
-    private $limit;
+    private ?int $limit;
 
     /**
      * Query constructor.
@@ -35,8 +28,8 @@ class Query
     public function __construct(
         StringLiteral $value,
         StringLiteral $userId = null,
-        Natural $offset = null,
-        Natural $limit = null
+        ?int $offset = null,
+        ?int $limit = null
     ) {
         $this->value = $value;
         $this->userId = $userId;
@@ -60,18 +53,12 @@ class Query
         return $this->userId;
     }
 
-    /**
-     * @return Natural|null
-     */
-    public function getOffset()
+    public function getOffset(): ?int
     {
         return $this->offset;
     }
 
-    /**
-     * @return Natural|null
-     */
-    public function getLimit()
+    public function getLimit(): ?int
     {
         return $this->limit;
     }

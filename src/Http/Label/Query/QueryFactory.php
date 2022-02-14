@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Label\Query;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryFactory implements QueryFactoryInterface
@@ -35,11 +34,9 @@ class QueryFactory implements QueryFactoryInterface
 
         $userId = $this->userId ? new StringLiteral($this->userId) : null;
 
-        $offset = $request->query->get(self::START, null) !== null
-            ? new Natural($request->query->get(self::START)) : null;
+        $offset = (int) $request->query->get(self::START);
 
-        $limit = $request->query->get(self::LIMIT, null) !== null
-            ? new Natural($request->query->get(self::LIMIT)) : null;
+        $limit = (int) $request->query->get(self::LIMIT);
 
         return new Query(
             $value,

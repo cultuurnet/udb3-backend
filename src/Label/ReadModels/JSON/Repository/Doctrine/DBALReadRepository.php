@@ -130,12 +130,12 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
 
         if ($query->getOffset()) {
             $queryBuilder
-                ->setFirstResult($query->getOffset()->toNative());
+                ->setFirstResult($query->getOffset());
         }
 
         if ($query->getLimit()) {
             $queryBuilder
-                ->setMaxResults($query->getLimit()->toNative());
+                ->setMaxResults($query->getLimit());
         }
 
         return $this->getResults($queryBuilder);

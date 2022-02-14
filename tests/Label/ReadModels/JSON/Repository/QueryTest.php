@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryTest extends TestCase
@@ -25,8 +24,8 @@ class QueryTest extends TestCase
         $this->query = new Query(
             new StringLiteral(self::NAME),
             new StringLiteral(self::USER_ID),
-            new Natural(self::OFFSET),
-            new Natural(self::LIMIT)
+            self::OFFSET,
+            self::LIMIT
         );
     }
 
@@ -58,7 +57,7 @@ class QueryTest extends TestCase
     public function it_stores_an_offset()
     {
         $this->assertEquals(
-            new Natural(self::OFFSET),
+            self::OFFSET,
             $this->query->getOffset()
         );
     }
@@ -69,7 +68,7 @@ class QueryTest extends TestCase
     public function it_stores_an_limit()
     {
         $this->assertEquals(
-            new Natural(self::LIMIT),
+            self::LIMIT,
             $this->query->getLimit()
         );
     }
