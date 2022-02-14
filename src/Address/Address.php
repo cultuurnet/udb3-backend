@@ -75,7 +75,7 @@ final class Address implements Serializable, JsonLdSerializableInterface
           'streetAddress' => $this->streetAddress->toNative(),
           'postalCode' => $this->postalCode->toNative(),
           'addressLocality' => $this->locality->toNative(),
-          'addressCountry' => $this->countryCode,
+          'addressCountry' => $this->countryCode->toString(),
         ];
     }
 
@@ -92,7 +92,7 @@ final class Address implements Serializable, JsonLdSerializableInterface
     public function toJsonLd(): array
     {
         return [
-            'addressCountry' => $this->countryCode,
+            'addressCountry' => $this->countryCode->toString(),
             'addressLocality' => $this->locality->toNative(),
             'postalCode' => $this->postalCode->toNative(),
             'streetAddress' => $this->streetAddress->toNative(),
