@@ -137,4 +137,27 @@ final class UpdateTitleRequestHandlerTest extends TestCase
             fn () => $this->updateTitleRequestHandler->handle($updateTitleRequest)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_name_with_at_least_one_non_whitespace_character(): void
+    {
+        $updateTitleRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('organizerId', 'a088f396-ac96-45c4-b6b2-e2b6afe8af07')
+            ->withRouteParameter('language', 'fr')
+            ->withBodyFromString(
+                '{
+                    "name": "    "
+                }'
+            )
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/name', 'The string should match pattern: \S')
+            ),
+            fn () => $this->updateTitleRequestHandler->handle($updateTitleRequest)
+        );
+    }
 }

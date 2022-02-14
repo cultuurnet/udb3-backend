@@ -101,6 +101,12 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
                     new SchemaError('/description', 'Minimum string length is 1, found 0')
                 ),
             ],
+            [
+                '{"description": "     "}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/description', 'The string should match pattern: \S')
+                ),
+            ],
         ];
     }
 }
