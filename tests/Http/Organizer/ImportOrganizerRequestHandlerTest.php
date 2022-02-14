@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -52,7 +51,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
     private MockObject $aggregateRepository;
     private TraceableCommandBus $commandBus;
-    private MockObject $lockedLabelRepository;
     private MockObject $uuidGenerator;
     private ImportOrganizerRequestHandler $importOrganizerRequestHandler;
 
@@ -60,13 +58,11 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     {
         $this->aggregateRepository = $this->createMock(Repository::class);
         $this->commandBus = new TraceableCommandBus();
-        $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
         $this->importOrganizerRequestHandler = new ImportOrganizerRequestHandler(
             $this->aggregateRepository,
             $this->commandBus,
-            $this->lockedLabelRepository,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $id) => 'https://mock.uitdatabank.be/organizers/' . $id),
             new CombinedRequestBodyParser()
@@ -162,7 +158,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
         $given['name']['fr'] = 'French name';
 
         $this->expectOrganizerExists($id);
-        $this->expectNoLockedLabels();
 
         $expectedCommands = [
             new UpdateTitle(
@@ -320,7 +315,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
         ];
 
         $this->expectOrganizerExists($id);
-        $this->expectNoLockedLabels();
 
         $expectedCommands = [
             new UpdateTitle(
@@ -723,8 +717,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             ->method('load')
             ->with($organizerId)
             ->willThrowException(new AggregateNotFoundException());
-
-        $this->expectNoLockedLabels();
     }
 
     private function expectCreateOrganizer(Organizer $expectedOrganizer): void
@@ -734,12 +726,5 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             ->with($this->callback(function (Organizer $organizer) use ($expectedOrganizer) {
                 return $expectedOrganizer->getAggregateRootId() === $organizer->getAggregateRootId();
             }));
-    }
-
-    private function expectNoLockedLabels(): void
-    {
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Labels());
     }
 }

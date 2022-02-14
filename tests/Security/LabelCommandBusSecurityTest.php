@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Security;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand as OfferAbstractLabelCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Mock\Commands\UpdateTitle;
 use CultuurNet\UDB3\Title;
@@ -78,25 +77,6 @@ class LabelCommandBusSecurityTest extends TestCase
         $allowed = $this->securityWithLabelPrivacy->isAuthorized($translateTitle);
 
         $this->assertTrue($allowed);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_is_authorized_when_label_security_command()
-    {
-        $labelSecurity = $this->getMockForAbstractClass(
-            OfferAbstractLabelCommand::class,
-            [
-                '6a475eb2-04dd-41e3-95d1-225a1cd511f1',
-                new Label('bibliotheekweek'),
-            ]
-        );
-
-        $this->labelReadRepository->expects($this->once())
-            ->method('canUseLabel');
-
-        $this->securityWithLabelPrivacy->isAuthorized($labelSecurity);
     }
 
     /**
