@@ -44,7 +44,6 @@ use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
 use Ramsey\Uuid\Uuid;
-use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 

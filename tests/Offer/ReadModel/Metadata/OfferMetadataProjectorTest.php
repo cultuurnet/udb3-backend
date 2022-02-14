@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class OfferMetadataProjectorTest extends TestCase
 {

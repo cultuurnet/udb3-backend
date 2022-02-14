@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Address;
 
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use ValueObjects\Geography\Country;
 
 class CultureFeedAddressFactory implements CultureFeedAddressFactoryInterface
 {

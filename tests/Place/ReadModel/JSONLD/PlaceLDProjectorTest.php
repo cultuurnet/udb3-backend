@@ -48,7 +48,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use stdClass;
-use ValueObjects\Geography\Country;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 {

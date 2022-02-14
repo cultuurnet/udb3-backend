@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use ValueObjects\Geography\Country;
 
 class CompositeDomainMessageEnricherTest extends TestCase
 {

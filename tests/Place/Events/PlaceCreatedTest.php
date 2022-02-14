@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class PlaceCreatedTest extends TestCase
 {

@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
 {

@@ -36,7 +36,6 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase

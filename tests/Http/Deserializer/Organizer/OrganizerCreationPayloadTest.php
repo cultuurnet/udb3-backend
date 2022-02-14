@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class OrganizerCreationPayloadTest extends TestCase
 {

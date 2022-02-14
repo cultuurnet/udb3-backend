@@ -8,8 +8,6 @@ use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3ModelAddress;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode as LegacyCountryCode;
 
 /**
  * @deprecated

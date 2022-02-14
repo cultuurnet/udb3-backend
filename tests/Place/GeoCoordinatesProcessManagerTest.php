@@ -29,7 +29,6 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Geography\Country;
 
 class GeoCoordinatesProcessManagerTest extends TestCase
 {

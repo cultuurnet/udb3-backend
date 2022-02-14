@@ -13,7 +13,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\LabelImporter;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use stdClass;
-use ValueObjects\Geography\Country;
 
 /**
  * Takes care of importing actors in the CdbXML format (UDB2) that represent

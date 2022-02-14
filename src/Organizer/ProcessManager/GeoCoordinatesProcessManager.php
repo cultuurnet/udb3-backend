@@ -23,8 +23,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode as LegacyCountryCode;
 
 class GeoCoordinatesProcessManager implements EventListener
 {

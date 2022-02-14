@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class DefaultPlaceEditingServiceTest extends TestCase
 {

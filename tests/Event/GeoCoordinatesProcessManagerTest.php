@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ValueObjects\Geography\Country;
 
 class GeoCoordinatesProcessManagerTest extends TestCase
 {

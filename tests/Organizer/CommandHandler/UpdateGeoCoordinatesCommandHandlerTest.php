@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\Geography\Country;
 
 class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
