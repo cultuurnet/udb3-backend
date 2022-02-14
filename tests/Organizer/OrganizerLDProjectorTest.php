@@ -53,7 +53,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\RecordedOn;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class OrganizerLDProjectorTest extends TestCase
