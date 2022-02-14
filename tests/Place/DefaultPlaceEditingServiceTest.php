@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
@@ -110,7 +111,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $street = new Street('Kerkstraat 69');
         $locality = new Locality('Leuven');
         $postalCode = new PostalCode('3000');
-        $country = Country::fromNative('BE');
+        $country = new CountryCode('BE');
 
         $placeId = 'generated-uuid';
         $mainLanguage = new Language('en');
@@ -156,7 +157,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $street = new Street('Kerkstraat 69');
         $locality = new Locality('Leuven');
         $postalCode = new PostalCode('3000');
-        $country = Country::fromNative('BE');
+        $country = new CountryCode('BE');
 
         $placeId = 'generated-uuid';
         $mainLanguage = new Language('en');
@@ -209,7 +210,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $street = new Street('Kerkstraat 69');
         $locality = new Locality('Leuven');
         $postalCode = new PostalCode('3000');
-        $country = Country::fromNative('BE');
+        $country = new CountryCode('BE');
         $placeId = 'generated-uuid';
         $mainLanguage = new Language('en');
         $title = new Title('Title');
@@ -259,7 +260,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
             new Street('Eenmeilaan 35'),
             new PostalCode('3010'),
             new Locality('Kessel-Lo'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
         $language = new Language('nl');
 

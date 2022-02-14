@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -169,7 +170,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
                     new Street('street'),
                     new PostalCode('3000'),
                     new Locality('Leuven'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 new Calendar(CalendarType::PERMANENT())
             ),

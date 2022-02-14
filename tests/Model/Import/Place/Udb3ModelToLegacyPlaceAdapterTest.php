@@ -96,7 +96,7 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
             new \CultuurNet\UDB3\Address\Street('Henegouwenkaai 41-43'),
             new \CultuurNet\UDB3\Address\PostalCode('1080'),
             new \CultuurNet\UDB3\Address\Locality('Brussel'),
-            new Country(\ValueObjects\Geography\CountryCode::fromNative('BE'))
+            new CountryCode('BE')
         );
         $actual = $this->adapter->getAddress();
         $this->assertEquals($expected, $actual);
@@ -112,13 +112,13 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
                 new \CultuurNet\UDB3\Address\Street('Quai du Hainaut 41-43'),
                 new \CultuurNet\UDB3\Address\PostalCode('1080'),
                 new \CultuurNet\UDB3\Address\Locality('Bruxelles'),
-                new Country(\ValueObjects\Geography\CountryCode::fromNative('BE'))
+                new CountryCode('BE')
             ),
             'en' => new \CultuurNet\UDB3\Address\Address(
                 new \CultuurNet\UDB3\Address\Street('Henegouwenkaai 41-43'),
                 new \CultuurNet\UDB3\Address\PostalCode('1080'),
                 new \CultuurNet\UDB3\Address\Locality('Brussels'),
-                new Country(\ValueObjects\Geography\CountryCode::fromNative('BE'))
+                new CountryCode('BE')
             ),
         ];
         $actual = $this->adapter->getAddressTranslations();

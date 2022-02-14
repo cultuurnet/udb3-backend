@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
@@ -110,7 +111,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                     new Street('Teststraat 1'),
                     new PostalCode('1000'),
                     new Locality('Bxl'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 new Language('fr')
             )
@@ -187,7 +188,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),
                             new Locality('Bxl'),
-                            Country::fromNative('BE')
+                            new CountryCode('BE')
                         ),
                         new Calendar(CalendarType::PERMANENT())
                     )
@@ -198,7 +199,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Teststraat 1'),
                         new PostalCode('1000'),
                         new Locality('Bxl'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -215,7 +216,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),
                             new Locality('Bxl'),
-                            Country::fromNative('BE')
+                            new CountryCode('BE')
                         ),
                         new Calendar(CalendarType::PERMANENT())
                     )
@@ -226,7 +227,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Teststraat 1'),
                         new PostalCode('1000'),
                         new Locality('Bxl'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -241,7 +242,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                             new Street('Teststraat 1'),
                             new PostalCode('1000'),
                             new Locality('Bxl'),
-                            Country::fromNative('BE')
+                            new CountryCode('BE')
                         )
                     )
                 ),
@@ -251,7 +252,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Teststraat 1'),
                         new PostalCode('1000'),
                         new Locality('Bxl'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -272,7 +273,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Jeugdlaan 2'),
                         new PostalCode('3900'),
                         new Locality('Overpelt'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -293,7 +294,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Jeugdlaan 2'),
                         new PostalCode('3900'),
                         new Locality('Overpelt'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -323,7 +324,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Jeugdlaan 2'),
                         new PostalCode('3900'),
                         new Locality('Overpelt'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -344,7 +345,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Jeugdlaan 2'),
                         new PostalCode('3900'),
                         new Locality('Overpelt'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -365,7 +366,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Jeugdlaan 2'),
                         new PostalCode('3900'),
                         new Locality('Overpelt'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],
@@ -386,7 +387,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                         new Street('Jeugdlaan 2'),
                         new PostalCode('3900'),
                         new Locality('Overpelt'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     )
                 ),
             ],

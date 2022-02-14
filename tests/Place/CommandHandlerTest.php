@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
@@ -59,7 +60,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             new Street('Kerkstraat 69'),
             new PostalCode('3000'),
             new Locality('Leuven'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
         $calendar = new Calendar(CalendarType::PERMANENT());
 
@@ -123,7 +124,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
                     new Street('Eenmeilaan 35'),
                     new PostalCode('3010'),
                     new Locality('Kessel-Lo'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
             ],
         ];
@@ -233,7 +234,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
                 new Street('Kerkstraat 69'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );

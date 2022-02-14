@@ -17,6 +17,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
@@ -67,7 +68,7 @@ class PlaceRepositoryTest extends TestCase
                 new Street('Kerkstraat 1'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );
@@ -85,7 +86,7 @@ class PlaceRepositoryTest extends TestCase
                 new Street('Kerkstraat 2'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );
@@ -100,7 +101,7 @@ class PlaceRepositoryTest extends TestCase
                     new Street('Kerkstraat 1'),
                     new PostalCode('3000'),
                     new Locality('Leuven'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 new Calendar(CalendarType::PERMANENT())
             ),
@@ -117,7 +118,7 @@ class PlaceRepositoryTest extends TestCase
                     new Street('Kerkstraat 2'),
                     new PostalCode('3000'),
                     new Locality('Leuven'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 new Calendar(CalendarType::PERMANENT())
             ),

@@ -12,12 +12,13 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
+use ValueObjects\Geography\CountryCode as LegacyCountryCode;
 
 class UpdateMajorInfoRequestHandlerTest extends TestCase
 {
@@ -64,7 +65,7 @@ class UpdateMajorInfoRequestHandlerTest extends TestCase
                     new Street('Bondgenotenlaan 1'),
                     new PostalCode('3000'),
                     new Locality('Leuven'),
-                    new Country(CountryCode::fromNative('BE'))
+                    new CountryCode('BE')
                 ),
                 new Calendar(CalendarType::PERMANENT())
             )],

@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 
@@ -24,7 +25,7 @@ class AddressUpdatedTest extends TestCase
                 new Street('Eenmeilaan 35'),
                 new PostalCode('3010'),
                 new Locality('Kessel-Lo'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             )
         );
 

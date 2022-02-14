@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -756,7 +757,7 @@ class HistoryProjectorTest extends TestCase
                 new Street('straat'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );
@@ -1038,7 +1039,7 @@ class HistoryProjectorTest extends TestCase
                 new Street('acmelane 12'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(
                 CalendarType::PERMANENT()
@@ -1127,7 +1128,7 @@ class HistoryProjectorTest extends TestCase
                 new Street('Straat 1'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             )
         );
     }
@@ -1140,7 +1141,7 @@ class HistoryProjectorTest extends TestCase
                 new Street('Street 1'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new LegacyLanguage('en')
         );

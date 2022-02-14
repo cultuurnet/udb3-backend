@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -79,7 +80,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
             new Locality('Bxl'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $eventImported = new EventImportedFromUDB2(
@@ -120,7 +121,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Street('Wetstraat 1 (foutief)'),
             new PostalCode('1000'),
             new Locality('Bxl'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $eventImported = new EventImportedFromUDB2(
@@ -169,7 +170,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
             new Locality('Bxl'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $eventCreated = new EventCreated(

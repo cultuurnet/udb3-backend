@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
+use ValueObjects\Geography\CountryCode as LegacyCountryCode;
 
 class AddressTest extends TestCase
 {
@@ -19,14 +20,14 @@ class AddressTest extends TestCase
             new Street('Martelarenlaan 1'),
             new PostalCode('3000'),
             new Locality('Leuven'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $addressBrussel = new Address(
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
             new Locality('Brussel'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $this->assertTrue($addressLeuven->sameAs(clone $addressLeuven));
@@ -42,14 +43,14 @@ class AddressTest extends TestCase
             new \CultuurNet\UDB3\Model\ValueObject\Geography\Street('Henegouwenkaai 41-43'),
             new \CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode('1080'),
             new \CultuurNet\UDB3\Model\ValueObject\Geography\Locality('Brussel'),
-            new \CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode('BE')
+            new CountryCode('BE')
         );
 
         $expected = new Address(
             new Street('Henegouwenkaai 41-43'),
             new PostalCode('1080'),
             new Locality('Brussel'),
-            new Country(CountryCode::fromNative('BE'))
+            new CountryCode('BE')
         );
 
         $actual = Address::fromUdb3ModelAddress($udb3ModelAddress);

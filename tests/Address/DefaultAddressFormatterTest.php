@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 
@@ -20,7 +21,7 @@ class DefaultAddressFormatterTest extends TestCase
             new Street('Martelarenlaan 1'),
             new PostalCode('3000'),
             new Locality('Leuven'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $expectedString = 'Martelarenlaan 1, 3000 Leuven, BE';

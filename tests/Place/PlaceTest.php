@@ -14,6 +14,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
@@ -264,7 +265,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             new Street('One May Street'),
             new PostalCode('3010'),
             new Locality('Kessel-High'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $this->scenario
@@ -298,7 +299,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             new Street('Eenmeilaan'),
             new PostalCode('3010'),
             new Locality('Kessel-Lo'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_same_address.xml');
@@ -482,13 +483,13 @@ class PlaceTest extends AggregateRootScenarioTestCase
                     new Street('Eenmeilaan'),
                     new PostalCode('3010'),
                     new Locality('Kessel-Lo'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 'updated' => new Address(
                     new Street('Eenmeilaan 35'),
                     new PostalCode('3010'),
                     new Locality('Kessel-Lo'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
             ],
         ];
@@ -827,7 +828,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             new Street('Eenmeilaan'),
             new PostalCode('3010'),
             new Locality('Kessel-Lo'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         return  new PlaceCreated(
