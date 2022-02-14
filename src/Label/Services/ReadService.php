@@ -48,10 +48,7 @@ class ReadService implements ReadServiceInterface
         return $this->readRepository->search($query);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function searchTotalLabels(Query $query)
+    public function searchTotalLabels(Query $query): int
     {
         return $this->readRepository->searchTotalLabels($query);
     }

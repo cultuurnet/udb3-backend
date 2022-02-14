@@ -141,10 +141,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         return $this->getResults($queryBuilder);
     }
 
-    /**
-     * @return Natural
-     */
-    public function searchTotalLabels(Query $query)
+    public function searchTotalLabels(Query $query): int
     {
         $queryBuilder = $this->createSearchQuery($query);
         $queryBuilder->select('COUNT(*)');
@@ -152,7 +149,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $statement = $queryBuilder->execute();
         $countArray = $statement->fetch(\PDO::FETCH_NUM);
 
-        return new Natural($countArray[0]);
+        return (int) $countArray[0];
     }
 
     /**

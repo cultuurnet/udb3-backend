@@ -154,7 +154,7 @@ class ReadRestControllerTest extends TestCase
 
         $readService->method('searchTotalLabels')
             ->with($this->query)
-            ->willReturn(new Natural(0));
+            ->willReturn(0);
 
         $readService->method('search')
             ->with($this->query)
@@ -204,7 +204,7 @@ class ReadRestControllerTest extends TestCase
     {
         $this->readService->method('searchTotalLabels')
             ->with($this->query)
-            ->willReturn(new Natural(2));
+            ->willReturn(2);
     }
 
     private function mockCreateQuery()

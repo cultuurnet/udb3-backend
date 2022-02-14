@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ReadServiceTest extends TestCase
@@ -112,7 +111,7 @@ class ReadServiceTest extends TestCase
 
         $totalLabels = $this->readService->searchTotalLabels($this->query);
 
-        $this->assertEquals(new Natural(10), $totalLabels);
+        $this->assertEquals(10, $totalLabels);
     }
 
     private function mockGetByUuid()
@@ -140,6 +139,6 @@ class ReadServiceTest extends TestCase
     {
         $this->readRepository->method('searchTotalLabels')
             ->with($this->query)
-            ->willReturn(new Natural(10));
+            ->willReturn(10);
     }
 }

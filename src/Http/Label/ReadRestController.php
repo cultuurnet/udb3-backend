@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ReadRestController
@@ -66,7 +65,7 @@ class ReadRestController
 
         $totalEntities = $this->readService->searchTotalLabels($query);
 
-        $entities = $totalEntities->toNative() > 0 ? $this->readService->search($query) : [];
+        $entities = $totalEntities > 0 ? $this->readService->search($query) : [];
 
         return $this->createPagedCollectionResponse(
             $query,
@@ -81,7 +80,7 @@ class ReadRestController
     private function createPagedCollectionResponse(
         Query $query,
         array $entities,
-        Natural $totalEntities
+        int $totalEntities
     ): PagedCollectionResponse {
         $limit = 0;
 
@@ -91,7 +90,7 @@ class ReadRestController
 
         return new PagedCollectionResponse(
             $limit,
-            $totalEntities->toNative(),
+            $totalEntities,
             $entities
         );
     }
