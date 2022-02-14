@@ -7,8 +7,9 @@ namespace CultuurNet\UDB3\Address;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3ModelAddress;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
+use ValueObjects\Geography\CountryCode as LegacyCountryCode;
 
 /**
  * @deprecated
@@ -17,7 +18,7 @@ use ValueObjects\Geography\CountryCode;
 final class Address implements Serializable, JsonLdSerializableInterface
 {
     /**
-     * @var string
+     * @var CountryCode
      */
     private $countryCode;
 
@@ -40,17 +41,22 @@ final class Address implements Serializable, JsonLdSerializableInterface
         Street $streetAddress,
         PostalCode $postalCode,
         Locality $locality,
-        Country $country
+        CountryCode $countryCode
     ) {
         $this->streetAddress = $streetAddress;
         $this->postalCode = $postalCode;
         $this->locality = $locality;
-        $this->countryCode = $country->getCode()->toNative();
+        $this->countryCode = $countryCode;
     }
 
     public function getCountry(): Country
     {
         return Country::fromNative($this->countryCode);
+    }
+
+    public function getCountryCode(): CountryCode
+    {
+        return $this->countryCode;
     }
 
     public function getLocality(): Locality
@@ -84,7 +90,7 @@ final class Address implements Serializable, JsonLdSerializableInterface
             new Street($data['streetAddress']),
             new PostalCode($data['postalCode']),
             new Locality($data['addressLocality']),
-            Country::fromNative($data['addressCountry'])
+            new CountryCode($data['addressCountry'])
         );
     }
 
@@ -109,7 +115,7 @@ final class Address implements Serializable, JsonLdSerializableInterface
             new Street($address->getStreet()->toString()),
             new PostalCode($address->getPostalCode()->toString()),
             new Locality($address->getLocality()->toString()),
-            new Country(CountryCode::fromNative($address->getCountryCode()->toString()))
+            new CountryCode($address->getCountryCode()->toString())
         );
     }
 }
