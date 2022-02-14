@@ -803,6 +803,19 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/description', 'A value in the mainLanguage (nl) is required.'),
                 ],
             ],
+            'description_empty_value' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'description' => [
+                        'nl' => '',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/description/nl', 'Minimum string length is 1, found 0'),
+                ],
+            ],
             'description_whitespace' => [
                 'given' => [
                     'mainLanguage' => 'nl',
