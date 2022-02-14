@@ -15,6 +15,7 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
     private const ORGANIZER_TRANSLATABLE_FIELDS = [
         '/name',
         '/address',
+        '/description',
     ];
 
     private array $translatableFields;

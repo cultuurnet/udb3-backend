@@ -790,6 +790,19 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/contactPoint/phone/0', 'The string should match pattern: \S'),
                 ],
             ],
+            'description_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'description' => [
+                        'fr' => 'Parlez-vous français?',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/description', 'A value in the mainLanguage (nl) is required.'),
+                ],
+            ],
             'description_whitespace' => [
                 'given' => [
                     'mainLanguage' => 'nl',
