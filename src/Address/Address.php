@@ -15,10 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
  */
 final class Address implements Serializable, JsonLdSerializableInterface
 {
-    /**
-     * @var CountryCode
-     */
-    private $countryCode;
+    private CountryCode $countryCode;
 
     /**
      * @var Locality
