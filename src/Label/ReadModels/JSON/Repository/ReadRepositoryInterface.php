@@ -9,25 +9,13 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface ReadRepositoryInterface
 {
-    /**
-     * @return Entity|null
-     */
-    public function getByUuid(UUID $uuid);
+    public function getByUuid(UUID $uuid): ?Entity;
 
-    /**
-     * @return Entity|null
-     */
-    public function getByName(StringLiteral $name);
+    public function getByName(StringLiteral $name): ?Entity;
 
-    /**
-     * @return bool
-     */
-    public function canUseLabel(StringLiteral $userId, StringLiteral $name);
+    public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool;
 
-    /**
-     * @return Entity[]|null
-     */
-    public function search(Query $query);
+    public function search(Query $query): ?array;
 
     public function searchTotalLabels(Query $query): int;
 }
