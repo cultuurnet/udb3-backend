@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Organizer\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -23,7 +24,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
+use ValueObjects\Geography\CountryCode as LegacyCountryCode;
 
 class GeoCoordinatesProcessManager implements EventListener
 {
@@ -65,7 +66,7 @@ class GeoCoordinatesProcessManager implements EventListener
                     new Street($event->getStreetAddress()),
                     new PostalCode($event->getPostalCode()),
                     new Locality($event->getLocality()),
-                    new Country(CountryCode::fromNative($event->getCountryCode()))
+                    new CountryCode($event->getCountryCode())
                 )
             )
         );
