@@ -58,7 +58,7 @@
     "predis/predis": "~1.0",
     "psr/http-server-middleware": "^1.0",
     "psr/log": "^1.0",
-    "publiq/stoplight-docs-uitdatabank": "dev-unreleased",
+    "publiq/stoplight-docs-uitdatabank": "dev-III-4580-whitespace-validation-organizers",
     "rase/socket.io-emitter": "0.6.1",
     "respect/validation": "~1.1",
     "sentry/sdk": "^2.2",
