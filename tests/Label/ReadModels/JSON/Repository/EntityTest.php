@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EntityTest extends TestCase
@@ -38,10 +37,7 @@ class EntityTest extends TestCase
      */
     private $parentUuid;
 
-    /**
-     * @var Natural
-     */
-    private $count;
+    private int $count;
 
     /**
      * @var Entity
@@ -65,7 +61,7 @@ class EntityTest extends TestCase
 
         $this->parentUuid = new UUID('17ee8501-0168-4469-ba37-458a6a526466');
 
-        $this->count = new Natural(666);
+        $this->count = 666;
 
         $this->entity = new Entity(
             $this->uuid,
@@ -143,10 +139,10 @@ class EntityTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_Default_count_of_natural_zero()
+    public function it_has_a_Default_count_of_zero()
     {
         $this->assertEquals(
-            new Natural(0),
+            0,
             $this->entityWithDefaults->getCount()
         );
     }

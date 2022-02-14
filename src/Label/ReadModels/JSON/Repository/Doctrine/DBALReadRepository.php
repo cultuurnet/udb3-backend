@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
@@ -298,7 +297,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ? new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]) : null;
 
 
-        $count = new Natural($row[SchemaConfigurator::COUNT_COLUMN]);
+        $count = (int) $row[SchemaConfigurator::COUNT_COLUMN];
 
         return new Entity(
             $uuid,
