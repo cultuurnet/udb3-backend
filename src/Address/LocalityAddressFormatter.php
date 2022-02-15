@@ -13,6 +13,6 @@ class LocalityAddressFormatter implements AddressFormatterInterface
     {
         return $address->getPostalCode() . ' ' .
             $address->getLocality() . ', ' .
-            $address->getCountry()->getCode();
+            $address->getCountryCode()->toString();
     }
 }

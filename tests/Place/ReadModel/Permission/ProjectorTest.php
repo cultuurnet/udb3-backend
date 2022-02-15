@@ -15,6 +15,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -22,7 +23,6 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
@@ -138,7 +138,7 @@ class ProjectorTest extends TestCase
                 new Street('Kerkstraat 69'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );

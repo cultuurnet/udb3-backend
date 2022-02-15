@@ -14,6 +14,6 @@ class DefaultAddressFormatter implements AddressFormatterInterface
         return $address->getStreetAddress() . ', ' .
             $address->getPostalCode() . ' ' .
             $address->getLocality() . ', ' .
-            $address->getCountry()->getCode();
+            $address->getCountryCode()->toString();
     }
 }

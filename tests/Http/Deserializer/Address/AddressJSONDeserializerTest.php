@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class AddressJSONDeserializerTest extends TestCase
@@ -70,7 +70,7 @@ class AddressJSONDeserializerTest extends TestCase
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
             new Locality('Brussel'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $actualAddress = $this->deserializer->deserialize($data);

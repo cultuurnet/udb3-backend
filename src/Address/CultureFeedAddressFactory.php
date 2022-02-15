@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
-use ValueObjects\Geography\Country;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 
 class CultureFeedAddressFactory implements CultureFeedAddressFactoryInterface
 {
@@ -37,7 +37,7 @@ class CultureFeedAddressFactory implements CultureFeedAddressFactoryInterface
             new Street($cdbAddress->getStreet() . ' ' . $cdbAddress->getHouseNumber()),
             new PostalCode($cdbAddress->getZip()),
             new Locality($cdbAddress->getCity()),
-            Country::fromNative($cdbAddress->getCountry())
+            new CountryCode($cdbAddress->getCountry())
         );
     }
 }

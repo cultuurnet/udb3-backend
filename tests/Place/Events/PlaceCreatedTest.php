@@ -12,12 +12,12 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class PlaceCreatedTest extends TestCase
 {
@@ -42,7 +42,7 @@ class PlaceCreatedTest extends TestCase
             new Street('Blubstraat 69'),
             new PostalCode('1000'),
             new Locality('Brussel'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $this->publicationDate = \DateTimeImmutable::createFromFormat(
@@ -174,7 +174,7 @@ class PlaceCreatedTest extends TestCase
                         new Street('De straat'),
                         new PostalCode('9620'),
                         new Locality('Zottegem'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     ),
                     new Calendar(
                         CalendarType::PERMANENT()
@@ -217,7 +217,7 @@ class PlaceCreatedTest extends TestCase
                         new Street('De straat'),
                         new PostalCode('9620'),
                         new Locality('Zottegem'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     ),
                     new Calendar(
                         CalendarType::PERMANENT()
@@ -260,7 +260,7 @@ class PlaceCreatedTest extends TestCase
                         new Street('De straat'),
                         new PostalCode('9620'),
                         new Locality('Zottegem'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     ),
                     new Calendar(
                         CalendarType::PERMANENT()

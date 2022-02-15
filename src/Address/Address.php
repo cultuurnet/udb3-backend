@@ -7,8 +7,7 @@ namespace CultuurNet\UDB3\Address;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3ModelAddress;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 
 /**
  * @deprecated
@@ -16,10 +15,7 @@ use ValueObjects\Geography\CountryCode;
  */
 final class Address implements Serializable, JsonLdSerializableInterface
 {
-    /**
-     * @var string
-     */
-    private $countryCode;
+    private CountryCode $countryCode;
 
     /**
      * @var Locality
@@ -40,17 +36,17 @@ final class Address implements Serializable, JsonLdSerializableInterface
         Street $streetAddress,
         PostalCode $postalCode,
         Locality $locality,
-        Country $country
+        CountryCode $countryCode
     ) {
         $this->streetAddress = $streetAddress;
         $this->postalCode = $postalCode;
         $this->locality = $locality;
-        $this->countryCode = $country->getCode()->toNative();
+        $this->countryCode = $countryCode;
     }
 
-    public function getCountry(): Country
+    public function getCountryCode(): CountryCode
     {
-        return Country::fromNative($this->countryCode);
+        return $this->countryCode;
     }
 
     public function getLocality(): Locality
@@ -74,7 +70,7 @@ final class Address implements Serializable, JsonLdSerializableInterface
           'streetAddress' => $this->streetAddress->toNative(),
           'postalCode' => $this->postalCode->toNative(),
           'addressLocality' => $this->locality->toNative(),
-          'addressCountry' => $this->countryCode,
+          'addressCountry' => $this->countryCode->toString(),
         ];
     }
 
@@ -84,14 +80,14 @@ final class Address implements Serializable, JsonLdSerializableInterface
             new Street($data['streetAddress']),
             new PostalCode($data['postalCode']),
             new Locality($data['addressLocality']),
-            Country::fromNative($data['addressCountry'])
+            new CountryCode($data['addressCountry'])
         );
     }
 
     public function toJsonLd(): array
     {
         return [
-            'addressCountry' => $this->countryCode,
+            'addressCountry' => $this->countryCode->toString(),
             'addressLocality' => $this->locality->toNative(),
             'postalCode' => $this->postalCode->toNative(),
             'streetAddress' => $this->streetAddress->toNative(),
@@ -109,7 +105,7 @@ final class Address implements Serializable, JsonLdSerializableInterface
             new Street($address->getStreet()->toString()),
             new PostalCode($address->getPostalCode()->toString()),
             new Locality($address->getLocality()->toString()),
-            new Country(CountryCode::fromNative($address->getCountryCode()->toString()))
+            new CountryCode($address->getCountryCode()->toString())
         );
     }
 }
