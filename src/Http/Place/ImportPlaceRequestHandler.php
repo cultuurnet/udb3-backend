@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\MainLanguageValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
@@ -126,6 +127,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             new CalendarValidationRequestBodyParser(),
             new BookingInfoValidationRequestBodyParser(),
             new PriceInfoValidationRequestBodyParser(),
+            MainLanguageValidatingRequestBodyParser::createForPlace(),
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
 

@@ -17,6 +17,10 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         '/address',
     ];
 
+    private const PLACE_TRANSLATABLE_FIELDS = [
+        '/name',
+    ];
+
     private array $translatableFields;
 
     /**
@@ -71,5 +75,10 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
     public static function createForOrganizer(): self
     {
         return new self(self::ORGANIZER_TRANSLATABLE_FIELDS);
+    }
+
+    public static function createForPlace(): self
+    {
+        return new self(self::PLACE_TRANSLATABLE_FIELDS);
     }
 }
