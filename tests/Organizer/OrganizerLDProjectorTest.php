@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -52,7 +53,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\RecordedOn;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class OrganizerLDProjectorTest extends TestCase
@@ -139,7 +139,7 @@ final class OrganizerLDProjectorTest extends TestCase
         $street = new Street('Kerkstraat 69');
         $locality = new Locality('Leuven');
         $postalCode = new PostalCode('3000');
-        $country = Country::fromNative('BE');
+        $country = new CountryCode('BE');
 
         $organizerCreated = new OrganizerCreated(
             $id,
@@ -162,7 +162,7 @@ final class OrganizerLDProjectorTest extends TestCase
 
         $jsonLD->address = [
             'nl' => [
-                'addressCountry' => $country->getCode()->toNative(),
+                'addressCountry' => $country->toString(),
                 'addressLocality' => $locality->toNative(),
                 'postalCode' => $postalCode->toNative(),
                 'streetAddress' => $street->toNative(),

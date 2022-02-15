@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -63,7 +64,6 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -336,7 +336,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new Street('Martelarenplein 1'),
                         new PostalCode('3000'),
                         new Locality('Leuven'),
-                        Country::fromNative('BE')
+                        new CountryCode('BE')
                     ),
                     new LegacyLanguage('nl')
                 ),

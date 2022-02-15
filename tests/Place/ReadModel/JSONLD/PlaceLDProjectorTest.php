@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
@@ -47,7 +48,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Title;
 use DateTimeInterface;
 use stdClass;
-use ValueObjects\Geography\Country;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 {
@@ -119,7 +119,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $street = new Street('Kerkstraat 69');
         $locality = new Locality('Leuven');
         $postalCode = new PostalCode('3000');
-        $country = Country::fromNative('BE');
+        $country = new CountryCode('BE');
 
         $this->address = new Address($street, $postalCode, $locality, $country);
     }
@@ -344,7 +344,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 new Street('Eenmeilaan 35'),
                 new PostalCode('3010'),
                 new Locality('Kessel-lo'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             )
         );
 
@@ -427,7 +427,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 new Street('Eenmeilaan 35'),
                 new PostalCode('3010'),
                 new Locality('Kessel-lo'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Language('fr')
         );
@@ -910,7 +910,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 new Street('Natieplein 2'),
                 new PostalCode('1000'),
                 new Locality('Brussel'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );

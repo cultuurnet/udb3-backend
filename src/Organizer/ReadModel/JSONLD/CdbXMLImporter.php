@@ -11,8 +11,8 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\LabelImporter;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use stdClass;
-use ValueObjects\Geography\Country;
 
 /**
  * Takes care of importing actors in the CdbXML format (UDB2) that represent
@@ -72,7 +72,7 @@ class CdbXMLImporter
                         new Street($physicalAddress->getStreet() . ' ' . $physicalAddress->getHouseNumber()),
                         new PostalCode($physicalAddress->getZip()),
                         new Locality($physicalAddress->getCity()),
-                        Country::fromNative($physicalAddress->getCountry())
+                        new CountryCode($physicalAddress->getCountry())
                     );
 
                     $jsonLD->address->{$jsonLD->mainLanguage} = $physicalAddress->toJsonLd();

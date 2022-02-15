@@ -18,12 +18,12 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Geography\Country;
 
 class EditPlaceRestControllerTest extends TestCase
 {
@@ -134,7 +134,7 @@ class EditPlaceRestControllerTest extends TestCase
                     new Street('acmelane 12'),
                     new PostalCode('3000'),
                     new Locality('Leuven'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 )
             )
             ->willReturn('A14DD1C8-0F9C-4633-B56A-A908F009AD94');
@@ -177,7 +177,7 @@ class EditPlaceRestControllerTest extends TestCase
                     new Street('acmelane 12'),
                     new PostalCode('3000'),
                     new Locality('Leuven'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 )
             )
             ->willReturn('A14DD1C8-0F9C-4633-B56A-A908F009AD94');
@@ -221,7 +221,7 @@ class EditPlaceRestControllerTest extends TestCase
                     new Street('Eenmeilaan 35'),
                     new PostalCode('3010'),
                     new Locality('Kessel-Lo'),
-                    Country::fromNative('BE')
+                    new CountryCode('BE')
                 ),
                 new Language($lang)
             );
