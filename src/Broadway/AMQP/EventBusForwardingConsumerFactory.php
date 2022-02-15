@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
+use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactoryInterface;
@@ -42,6 +43,10 @@ final class EventBusForwardingConsumerFactory
         StringLiteral $consumerTag,
         UuidFactoryInterface $uuidFactory
     ) {
+        if ($executionDelay < 0) {
+            throw new InvalidArgumentException('Execution delay should be zero or higher.');
+        }
+
         $this->executionDelay = $executionDelay;
         $this->connection = $connection;
         $this->logger = $logger;

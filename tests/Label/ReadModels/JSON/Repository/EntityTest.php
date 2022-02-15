@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -144,6 +145,23 @@ class EntityTest extends TestCase
         $this->assertEquals(
             0,
             $this->entityWithDefaults->getCount()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_positive_count(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Entity(
+            $this->uuid,
+            $this->name,
+            $this->visibilty,
+            $this->privacy,
+            $this->parentUuid,
+            -1
         );
     }
 
