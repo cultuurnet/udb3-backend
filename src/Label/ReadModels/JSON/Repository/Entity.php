@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use InvalidArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Entity implements \JsonSerializable
@@ -51,6 +52,10 @@ class Entity implements \JsonSerializable
         UUID $parentUuid = null,
         int $count = null
     ) {
+        if ($count < 0) {
+            throw new InvalidArgumentException('Count should be zero or higher.');
+        }
+
         $this->uuid = $uuid;
         $this->name = $name;
         $this->visibility = $visibility;
