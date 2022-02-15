@@ -516,7 +516,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
-                new ImportVideos($placeId, new VideoCollection())
+                new ImportVideos($placeId, new VideoCollection()),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -554,7 +554,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'calendarType' => 'permanent',
             'organizer' => [
-                'id' => '@id is missing'
+                'id' => '@id is missing',
             ],
             'terms' => [
                 [
