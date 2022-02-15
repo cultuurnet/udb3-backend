@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use Opis\JsonSchema\JsonPointer;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
+use stdClass;
 
 final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
 {
@@ -22,6 +23,7 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         '/description',
         '/address',
         '/bookingInfo/urlLabel',
+        '/priceInfo/[]/name',
     ];
 
     private array $translatableFields;
@@ -49,6 +51,8 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         $mainLanguage = $data->mainLanguage;
         $errors = [];
 
+        $this->replaceArrayPointers($data);
+
         foreach ($this->translatableFields as $translatableField) {
             $jsonPointer = JsonPointer::parse($translatableField);
             if (!$jsonPointer) {
@@ -73,6 +77,38 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         }
 
         return $request;
+    }
+
+    private function replaceArrayPointers(stdClass $data): void
+    {
+        $replacedTranslatableFields = [];
+
+        foreach ($this->translatableFields as $translatableField) {
+            $arrayPos = strpos($translatableField, '[');
+
+            if (!$arrayPos) {
+                $replacedTranslatableFields[] = $translatableField;
+                continue;
+            }
+
+            $jsonPointer = JsonPointer::parse(substr($translatableField, 0, $arrayPos - 1));
+
+            if (!$jsonPointer) {
+                throw new RuntimeException('Could not parse JSON pointer ' . $translatableField);
+            }
+
+            $fieldData = $jsonPointer->data($data);
+
+            if (!is_array($fieldData)) {
+                continue;
+            }
+
+            for ($index = 0, $indexMax = count($fieldData); $index < $indexMax; $index++) {
+                $replacedTranslatableFields[] = str_replace('[]', (string) $index, $translatableField);
+            }
+        }
+
+        $this->translatableFields = $replacedTranslatableFields;
     }
 
     public static function createForOrganizer(): self
