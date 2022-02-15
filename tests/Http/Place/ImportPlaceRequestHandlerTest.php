@@ -544,6 +544,47 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_organizer_id_is_missing(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'organizer' => [
+                'id' => '@id is missing'
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/organizer',
+                'The required properties (@id) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_mainLanguage_is_in_an_invalid_format(): void
     {
         $place = [
