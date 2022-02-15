@@ -31,6 +31,14 @@ class Query
         ?int $offset = null,
         ?int $limit = null
     ) {
+        if ($offset < 0) {
+            throw new \InvalidArgumentException('Offset should be zero or higher');
+        }
+
+        if ($limit < 0) {
+            throw new \InvalidArgumentException('Limit should be zero or higher');
+        }
+
         $this->value = $value;
         $this->userId = $userId;
         $this->offset = $offset;
