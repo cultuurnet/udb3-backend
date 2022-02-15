@@ -56,6 +56,7 @@ use CultuurNet\UDB3\Place\Commands\ImportImages;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
+use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Place;
@@ -424,6 +425,98 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         ),
                     )
                 ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_existing_place_with_organizer(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'name' => [
+                'nl' => 'In De Hel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Leuven',
+                    'postalCode' => '3000',
+                    'streetAddress' => 'Martelarenplein 1',
+                ],
+            ],
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.be/organizers/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+        ];
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load')
+            ->with($placeId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->lockedLabelRepository->expects($this->once())
+            ->method('getLockedLabelsForItem')
+            ->with($placeId)
+            ->willReturn(new Labels());
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('placeId', $placeId)
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('PUT');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(['id' => $placeId]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateTitle($placeId, new LegacyLanguage('nl'), new Title('In De Hel')),
+                new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
+                new UpdateAddress(
+                    $placeId,
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    ),
+                    new LegacyLanguage('nl')
+                ),
+                new UpdateCalendar(
+                    $placeId,
+                    new Calendar(CalendarType::PERMANENT())
+                ),
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new UpdateOrganizer(
+                    $placeId,
+                    '5cf42d51-3a4f-46f0-a8af-1cf672be8c84'
+                ),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection())
             ],
             $this->commandBus->getRecordedCommands()
         );
