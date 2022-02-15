@@ -9,8 +9,8 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -61,9 +61,9 @@ final class LocationMarkedAsDuplicateProcessManager implements EventListener, Lo
         $commands = [];
         $skipped = [];
 
-        /* @var IriOfferIdentifier $result */
+        /* @var ItemIdentifier $result */
         foreach ($results as $result) {
-            if (!$result->getType()->sameAs(OfferType::event())) {
+            if (!$result->getItemType()->sameAs(ItemType::event())) {
                 $skipped[] = $result->getId();
                 $this->logger->warning(
                     'Skipped result with id ' . $result->getId() . ' because it\'s not an event according to the @id parser.'

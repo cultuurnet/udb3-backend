@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -19,7 +20,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use ValueObjects\Web\Url;
 
 final class RelatedEventLDProjectorTest extends TestCase
 {
@@ -85,7 +85,7 @@ final class RelatedEventLDProjectorTest extends TestCase
         $secondEventID = '579';
 
         $placeID = '101214';
-        $placeIri = Url::fromNative('http://du.de/place/' . $placeID);
+        $placeIri = new Url('http://du.de/place/' . $placeID);
 
         $placeIdentifier = new IriOfferIdentifier(
             $placeIri,
@@ -184,7 +184,7 @@ final class RelatedEventLDProjectorTest extends TestCase
 
         $placeProjectedToJSONLD = new PlaceProjectedToJSONLD(
             $placeID,
-            (string)$placeIri
+            $placeIri->toString()
         );
 
         $this->projector->handle(

@@ -53,7 +53,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_creates_a_news_article_and_returns_jsonld_if_no_accept_header_is_given(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $createNewsArticleRequest = $this->psr7RequestBuilder
             ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
                 'inLanguage' => 'nl',
@@ -89,7 +89,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                 new Url('https://www.bill.be/img/favicon.png')
             ));
 
-        $response = $this->createNewsArticleRequestHandler->handle($createOrganizerRequest);
+        $response = $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest);
 
         $this->assertEquals(
             Json::encode([
@@ -114,7 +114,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_creates_a_news_article_and_returns_jsonld_if_specified_in_accept_header(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $createNewsArticleRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/ld+json')
             ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
@@ -151,7 +151,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                 new Url('https://www.bill.be/img/favicon.png')
             ));
 
-        $response = $this->createNewsArticleRequestHandler->handle($createOrganizerRequest);
+        $response = $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest);
 
         $this->assertEquals(
             Json::encode([
@@ -176,7 +176,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_creates_a_news_article_and_returns_json_if_specifically_requested_in_accept_header(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $createNewsArticleRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/json')
             ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
@@ -213,7 +213,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                 new Url('https://www.bill.be/img/favicon.png')
             ));
 
-        $response = $this->createNewsArticleRequestHandler->handle($createOrganizerRequest);
+        $response = $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest);
 
         $this->assertEquals(
             Json::encode([
@@ -233,9 +233,70 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_handles_creating_articles_with_urls_that_should_have_been_encoded(): void
+    {
+        $createNewsArticleRequest = $this->psr7RequestBuilder
+            ->withJsonBodyFromArray([
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/café',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+            ])
+            ->build('POST');
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new NewsArticleSearch(
+                    null,
+                    '17284745-7bcf-461a-aad0-d3ad54880e75',
+                    'https://www.publiq.be/caf%C3%A9'
+                )
+            )
+            ->willReturn(new NewsArticles());
+
+        $this->newsArticleRepository->expects($this->once())
+            ->method('create')
+            ->with(new NewsArticle(
+                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+                'publiq wint API award',
+                new Language('nl'),
+                'Op 10 januari 2020 wint publiq de API award',
+                '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'BILL',
+                new Url('https://www.publiq.be/caf%C3%A9'),
+                new Url('https://www.bill.be/img/favicon.png')
+            ));
+
+        $response = $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest);
+
+        $this->assertEquals(
+            Json::encode([
+                '@context' => '/contexts/NewsArticle',
+                '@id' => '/news-articles/6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                '@type' => 'https://schema.org/NewsArticle',
+                'id' => '6c583739-a848-41ab-b8a3-8f7dab6f8ee1',
+                'headline' => 'publiq wint API award',
+                'inLanguage' => 'nl',
+                'text' => 'Op 10 januari 2020 wint publiq de API award',
+                'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
+                'publisher' => 'BILL',
+                'url' => 'https://www.publiq.be/caf%C3%A9',
+                'publisherLogo' => 'https://www.bill.be/img/favicon.png',
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_a_news_article_with_the_same_url_and_about_already_exists(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $createNewsArticleRequest = $this->psr7RequestBuilder
             ->withHeader('accept', 'application/json')
             ->withJsonBodyFromArray([
                 'headline' => 'publiq wint API award',
@@ -280,7 +341,7 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
                 'A news article with the given url and about already exists. (d684fc46-b0ba-4b64-9584-5f61fb5c4963) '
                 . 'Do a GET /news-articles request with `url` and `about` parameters to find it programmatically.'
             ),
-            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
+            fn () => $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest)
         );
     }
 
@@ -289,12 +350,12 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_throws_on_empty_body(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $createNewsArticleRequest = $this->psr7RequestBuilder
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyMissing(),
-            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
+            fn () => $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest)
         );
     }
 
@@ -303,13 +364,13 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_throws_on_invalid_body_syntax(): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $createNewsArticleRequest = $this->psr7RequestBuilder
             ->withBodyFromString('{invalid}')
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidSyntax('JSON'),
-            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
+            fn () => $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest)
         );
     }
 
@@ -319,13 +380,13 @@ class CreateNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_throws_on_missing_properties(array $body, ApiProblem $apiProblem): void
     {
-        $createOrganizerRequest = $this->psr7RequestBuilder
+        $createNewsArticleRequest = $this->psr7RequestBuilder
             ->withJsonBodyFromArray($body)
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
             $apiProblem,
-            fn () => $this->createNewsArticleRequestHandler->handle($createOrganizerRequest)
+            fn () => $this->createNewsArticleRequestHandler->handle($createNewsArticleRequest)
         );
     }
 

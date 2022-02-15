@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Deserializer\NotWellFormedException;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class IriOfferIdentifierJSONDeserializerTest extends TestCase
 {
@@ -39,14 +39,14 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
         $json = new StringLiteral('{"@id":"http://du.de/event/1","@type":"Event"}');
 
         $expected = new IriOfferIdentifier(
-            Url::fromNative('http://du.de/event/1'),
+            new Url('http://du.de/event/1'),
             '1',
             OfferType::event()
         );
 
         $this->iriOfferIdentifierFactory->expects($this->once())
             ->method('fromIri')
-            ->with('http://du.de/event/1')
+            ->with(new Url('http://du.de/event/1'))
             ->willReturn($expected);
 
         $actual = $this->deserializer->deserialize($json);

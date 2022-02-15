@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -52,7 +51,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
     private MockObject $aggregateRepository;
     private TraceableCommandBus $commandBus;
-    private MockObject $lockedLabelRepository;
     private MockObject $uuidGenerator;
     private ImportOrganizerRequestHandler $importOrganizerRequestHandler;
 
@@ -60,13 +58,11 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     {
         $this->aggregateRepository = $this->createMock(Repository::class);
         $this->commandBus = new TraceableCommandBus();
-        $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
         $this->importOrganizerRequestHandler = new ImportOrganizerRequestHandler(
             $this->aggregateRepository,
             $this->commandBus,
-            $this->lockedLabelRepository,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $id) => 'https://mock.uitdatabank.be/organizers/' . $id),
             new CombinedRequestBodyParser()
@@ -162,7 +158,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
         $given['name']['fr'] = 'French name';
 
         $this->expectOrganizerExists($id);
-        $this->expectNoLockedLabels();
 
         $expectedCommands = [
             new UpdateTitle(
@@ -320,7 +315,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
         ];
 
         $this->expectOrganizerExists($id);
-        $this->expectNoLockedLabels();
 
         $expectedCommands = [
             new UpdateTitle(
@@ -485,11 +479,37 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             'name_empty' => [
                 'given' => [
                     'mainLanguage' => 'nl',
-                    'name' => ['nl' => ''],
+                    'name' => [
+                        'nl' => '',
+                        'fr' => '',
+                        'de' => '',
+                        'en' => '',
+                    ],
                     'url' => 'https://www.organizer.be',
                 ],
                 'schemaErrors' => [
                     new SchemaError('/name/nl', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/name/fr', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/name/de', 'Minimum string length is 1, found 0'),
+                    new SchemaError('/name/en', 'Minimum string length is 1, found 0'),
+                ],
+            ],
+            'name_whitespaces' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => [
+                        'nl' => '  ',
+                        'fr' => '  ',
+                        'de' => '  ',
+                        'en' => '  ',
+                    ],
+                    'url' => 'https://www.organizer.be',
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/name/nl', 'The string should match pattern: \S'),
+                    new SchemaError('/name/fr', 'The string should match pattern: \S'),
+                    new SchemaError('/name/de', 'The string should match pattern: \S'),
+                    new SchemaError('/name/en', 'The string should match pattern: \S'),
                 ],
             ],
             'address_invalid' => [
@@ -583,6 +603,53 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/address/en/streetAddress', 'Minimum string length is 1, found 0'),
                 ],
             ],
+            'address_properties_whitespace' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'address' => [
+                        'nl' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => '   ',
+                            'postalCode' => '   ',
+                            'streetAddress' => '   ',
+                        ],
+                        'fr' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => '   ',
+                            'postalCode' => '   ',
+                            'streetAddress' => '   ',
+                        ],
+                        'en' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => '   ',
+                            'postalCode' => '   ',
+                            'streetAddress' => '   ',
+                        ],
+                        'de' => [
+                            'addressCountry' => 'BE',
+                            'addressLocality' => '   ',
+                            'postalCode' => '   ',
+                            'streetAddress' => '   ',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/address/nl/addressLocality', 'The string should match pattern: \S'),
+                    new SchemaError('/address/nl/postalCode', 'The string should match pattern: \S'),
+                    new SchemaError('/address/nl/streetAddress', 'The string should match pattern: \S'),
+                    new SchemaError('/address/fr/addressLocality', 'The string should match pattern: \S'),
+                    new SchemaError('/address/fr/postalCode', 'The string should match pattern: \S'),
+                    new SchemaError('/address/fr/streetAddress', 'The string should match pattern: \S'),
+                    new SchemaError('/address/de/addressLocality', 'The string should match pattern: \S'),
+                    new SchemaError('/address/de/postalCode', 'The string should match pattern: \S'),
+                    new SchemaError('/address/de/streetAddress', 'The string should match pattern: \S'),
+                    new SchemaError('/address/en/addressLocality', 'The string should match pattern: \S'),
+                    new SchemaError('/address/en/postalCode', 'The string should match pattern: \S'),
+                    new SchemaError('/address/en/streetAddress', 'The string should match pattern: \S'),
+                ],
+            ],
             'address_countries_too_long' => [
                 'given' => [
                     'mainLanguage' => 'nl',
@@ -667,6 +734,62 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/contactPoint/url/0', 'The data must match the \'uri\' format'),
                 ],
             ],
+            'contactPoint_properties_whitespace' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'contactPoint' => (object) [
+                        'phone' => ['   '],
+                        'url' => [],
+                        'email' => [],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/contactPoint/phone/0', 'The string should match pattern: \S'),
+                ],
+            ],
+            'description_whitespace' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'description' => [
+                        'nl' => '   ',
+                        'fr' => '   ',
+                        'de' => '   ',
+                        'en' => '   ',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/description/nl', 'The string should match pattern: \S'),
+                    new SchemaError('/description/fr', 'The string should match pattern: \S'),
+                    new SchemaError('/description/de', 'The string should match pattern: \S'),
+                    new SchemaError('/description/en', 'The string should match pattern: \S'),
+                ],
+            ],
+            'images_properties_whitespace' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'images' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.be/images/546a90cd-a238-417b-aa98-1b6c50c1345c',
+                            'contentUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
+                            'thumbnailUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
+                            'id' => '08805a3c-ffe0-4c94-a1bc-453a6dd9d01f',
+                            'language' => 'en',
+                            'description' => '        ',
+                            'copyrightHolder' => '      ',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/images/0/description', 'The string should match pattern: \S'),
+                    new SchemaError('/images/0/copyrightHolder', 'The string should match pattern: \S'),
+                ],
+            ],
             'labels_invalid_type' => [
                 'given' => [
                     'mainLanguage' => 'nl',
@@ -723,8 +846,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             ->method('load')
             ->with($organizerId)
             ->willThrowException(new AggregateNotFoundException());
-
-        $this->expectNoLockedLabels();
     }
 
     private function expectCreateOrganizer(Organizer $expectedOrganizer): void
@@ -734,12 +855,5 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             ->with($this->callback(function (Organizer $organizer) use ($expectedOrganizer) {
                 return $expectedOrganizer->getAggregateRootId() === $organizer->getAggregateRootId();
             }));
-    }
-
-    private function expectNoLockedLabels(): void
-    {
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Labels());
     }
 }

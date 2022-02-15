@@ -17,6 +17,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 final class CuratorEnrichedOfferRepositoryTest extends TestCase
 {
@@ -34,6 +35,7 @@ final class CuratorEnrichedOfferRepositoryTest extends TestCase
         $this->curatorEnrichedOfferRepository = new CuratorEnrichedOfferRepository(
             new InMemoryDocumentRepository(),
             $this->newsArticleRepository,
+            new NullLogger(),
             [
                 'bill' => 'jongerenredactie',
                 'bruzz' => 'BRUZZ-redactioneel',

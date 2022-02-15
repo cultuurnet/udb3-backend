@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -48,7 +49,7 @@ class LabelCommandBusSecurity implements CommandBusSecurity
                 new StringLiteral($this->userId),
                 $labelName
             )) {
-                return false;
+                throw ApiProblem::labelNotAllowed($labelName->toNative());
             }
         }
         return true;

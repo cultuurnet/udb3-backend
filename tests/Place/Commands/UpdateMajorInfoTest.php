@@ -9,11 +9,11 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class UpdateMajorInfoTest extends TestCase
 {
@@ -32,7 +32,7 @@ class UpdateMajorInfoTest extends TestCase
                 new Street('Bondgenotenlaan'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );
@@ -50,7 +50,7 @@ class UpdateMajorInfoTest extends TestCase
             new Street('Bondgenotenlaan'),
             new PostalCode('3000'),
             new Locality('Leuven'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
         $expectedCalendar = new Calendar(CalendarType::PERMANENT());
 

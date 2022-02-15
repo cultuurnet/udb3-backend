@@ -8,13 +8,13 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 class ImportEventCdbXmlCommand extends AbstractCommand
 {
@@ -67,7 +67,7 @@ class ImportEventCdbXmlCommand extends AbstractCommand
             new StringLiteral($input->getArgument(self::ID)),
             new DateTimeImmutable(),
             new StringLiteral($this->systemUserId),
-            Url::fromNative($input->getArgument(self::URL))
+            new Url($input->getArgument(self::URL))
         );
 
         $domainMessage = (new DomainMessageBuilder())

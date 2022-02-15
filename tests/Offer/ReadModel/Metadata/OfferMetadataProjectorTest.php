@@ -19,12 +19,12 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class OfferMetadataProjectorTest extends TestCase
 {
@@ -221,7 +221,7 @@ class OfferMetadataProjectorTest extends TestCase
                 new Street('street'),
                 new PostalCode('3000'),
                 new Locality('Leuven'),
-                Country::fromNative('BE')
+                new CountryCode('BE')
             ),
             new Calendar(CalendarType::PERMANENT())
         );

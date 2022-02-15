@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Label\ValueObjects;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 
 class LabelNameTest extends TestCase
 {
@@ -16,7 +15,7 @@ class LabelNameTest extends TestCase
      */
     public function it_refuses_value_that_are_not_strings($value)
     {
-        $this->expectException(InvalidNativeArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new LabelName($value);
     }

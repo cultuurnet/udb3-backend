@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
@@ -41,7 +40,6 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 {
     private Repository $aggregateRepository;
     private CommandBus $commandBus;
-    private LockedLabelRepository $lockedLabelRepository;
     private UuidGeneratorInterface $uuidGenerator;
     private IriGeneratorInterface $iriGenerator;
     private RequestBodyParser $importPreProcessingRequestBodyParser;
@@ -49,14 +47,12 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
     public function __construct(
         Repository $aggregateRepository,
         CommandBus $commandBus,
-        LockedLabelRepository $lockedLabelRepository,
         UuidGeneratorInterface $uuidGenerator,
         IriGeneratorInterface $iriGenerator,
         RequestBodyParser $importPreProcessingRequestBodyParser
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->commandBus = $commandBus;
-        $this->lockedLabelRepository = $lockedLabelRepository;
         $this->uuidGenerator = $uuidGenerator;
         $this->iriGenerator = $iriGenerator;
         $this->importPreProcessingRequestBodyParser = $importPreProcessingRequestBodyParser;
@@ -143,9 +139,7 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateTitle($organizerId, $title, $language);
         }
 
-        $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($organizerId);
-        $commands[] = (new ImportLabels($organizerId, $data->getLabels()))
-            ->withLabelsToKeepIfAlreadyOnOrganizer($lockedLabels);
+        $commands[] = new ImportLabels($organizerId, $data->getLabels());
 
         $lastCommandId = null;
         foreach ($commands as $command) {

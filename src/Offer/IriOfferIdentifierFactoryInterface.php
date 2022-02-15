@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer;
 
-use ValueObjects\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 interface IriOfferIdentifierFactoryInterface
 {

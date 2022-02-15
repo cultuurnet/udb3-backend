@@ -22,12 +22,12 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\Geography\Country;
 
 class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -77,7 +77,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Street('Wetstraat 1'),
             new PostalCode('1000'),
             new Locality('Bxl'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $placeCreated = new PlaceCreated(
@@ -121,7 +121,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             new Street('Wetstraat 1 (foutief)'),
             new PostalCode('1000'),
             new Locality('Bxl'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $placeCreated = new PlaceCreated(

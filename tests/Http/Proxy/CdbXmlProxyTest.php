@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Proxy;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
+use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
@@ -13,7 +14,6 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\PortNumber;
 use Zend\Diactoros\Uri;
 
 class CdbXmlProxyTest extends TestCase

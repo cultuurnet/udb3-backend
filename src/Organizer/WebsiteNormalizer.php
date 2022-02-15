@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
-use ValueObjects\Web\PortNumber;
-use ValueObjects\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class WebsiteNormalizer
 {
     public function normalizeUrl(Url $url): string
     {
-        $domain = $url->getDomain()->toNative();
+        $domain = $url->getDomain();
         if (strpos($domain, 'www.') === 0) {
             $domain = substr($domain, strlen('www.'));
         }
 
-        $port = $url->getPort() instanceof PortNumber ? ':' . $url->getPort()->toNative() : '';
+        $port = $url->getPort() ? ':' . $url->getPort()->toInteger() : '';
 
-        $queryString = $url->getQueryString()->toNative();
-        $fragment = $url->getFragmentIdentifier()->toNative();
+        $queryString = $url->getQueryString() ? '?' . $url->getQueryString() : '';
+        $fragment = $url->getFragmentIdentifier() ? '#' . $url->getFragmentIdentifier() : '';
 
-        $path = rtrim($url->getPath()->toNative(), '/');
+        $path = rtrim($url->getPath() ?: '', '/');
         if ($path === '' && ($queryString !== '' || $fragment !== '')) {
             $path = '/';
         }

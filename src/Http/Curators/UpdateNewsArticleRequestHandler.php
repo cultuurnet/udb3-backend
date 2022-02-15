@@ -40,6 +40,7 @@ final class UpdateNewsArticleRequestHandler implements RequestHandlerInterface
         }
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
+            new UrlEncodingRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::NEWS_ARTICLE_POST),
             new DenormalizingRequestBodyParser(
                 new NewsArticleDenormalizer(new UUID($articleId)),

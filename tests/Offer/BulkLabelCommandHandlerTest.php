@@ -6,6 +6,9 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToQuery;
@@ -13,7 +16,6 @@ use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Web\Url;
 
 class BulkLabelCommandHandlerTest extends TestCase
 {
@@ -48,6 +50,11 @@ class BulkLabelCommandHandlerTest extends TestCase
     private $offerIdentifiers;
 
     /**
+     * @var ItemIdentifier[]
+     */
+    private $itemIdentifiers;
+
+    /**
      * @var CommandBus|MockObject
      */
     private $commandBus;
@@ -70,14 +77,27 @@ class BulkLabelCommandHandlerTest extends TestCase
 
         $this->offerIdentifiers = [
             1 => new IriOfferIdentifier(
-                Url::fromNative('http://du.de/event/1'),
+                new Url('http://du.de/event/1'),
                 '1',
                 OfferType::event()
             ),
             2 => new IriOfferIdentifier(
-                Url::fromNative('http://du.de/place/2'),
+                new Url('http://du.de/place/2'),
                 '2',
                 OfferType::place()
+            ),
+        ];
+
+        $this->itemIdentifiers = [
+            1 => new ItemIdentifier(
+                new Url('http://du.de/event/1'),
+                '1',
+                ItemType::event()
+            ),
+            2 => new ItemIdentifier(
+                new Url('http://du.de/place/2'),
+                '2',
+                ItemType::place()
             ),
         ];
     }
@@ -97,7 +117,7 @@ class BulkLabelCommandHandlerTest extends TestCase
             ->with($this->query)
             ->willReturnCallback(
                 function () {
-                    yield from $this->offerIdentifiers;
+                    yield from $this->itemIdentifiers;
                 }
             );
 

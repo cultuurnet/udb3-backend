@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address;
 
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Geography\Country;
 
 class CultureFeedAddressFactoryTest extends TestCase
 {
@@ -35,7 +35,7 @@ class CultureFeedAddressFactoryTest extends TestCase
             new Street('Jeugdlaan 2'),
             new PostalCode('3900'),
             new Locality('Overpelt'),
-            Country::fromNative('BE')
+            new CountryCode('BE')
         );
 
         $actualAddress = $this->factory->fromCdbAddress($cdbPhysicalAddress);

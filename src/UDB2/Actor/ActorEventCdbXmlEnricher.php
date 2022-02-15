@@ -11,6 +11,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\Actor\Events\ActorCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Actor\Events\ActorUpdatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreated;
@@ -25,7 +26,6 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\UuidFactoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 use XMLReader;
 
 /**
@@ -171,11 +171,11 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
      */
     private function internalSendRequest(Url $url)
     {
-        $this->logger->debug('retrieving cdbxml from ' . (string) $url);
+        $this->logger->debug('retrieving cdbxml from ' . $url->toString());
 
         $request = new Request(
             'GET',
-            (string) $url,
+            $url->toString(),
             [
                 'Accept' => 'application/xml',
             ]
@@ -195,7 +195,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
             );
 
             throw new ActorNotFoundException(
-                'Unable to retrieve actor from ' . (string) $url
+                'Unable to retrieve actor from ' . $url->toString()
             );
         }
 

@@ -9,14 +9,14 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Offer\IriOfferIdentifier;
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\Url;
 
 class LocationMarkedAsDuplicateProcessManagerTest extends TestCase
 {
@@ -82,20 +82,20 @@ class LocationMarkedAsDuplicateProcessManagerTest extends TestCase
             ->willReturnCallback(
                 function () {
                     yield from [
-                        new IriOfferIdentifier(
-                            Url::fromNative('http://www.uitdatabank.be/events/c393e98b-b33e-4948-b97a-3c48e3748398'),
+                        new ItemIdentifier(
+                            new Url('http://www.uitdatabank.be/events/c393e98b-b33e-4948-b97a-3c48e3748398'),
                             'c393e98b-b33e-4948-b97a-3c48e3748398',
-                            OfferType::event()
+                            ItemType::event()
                         ),
-                        new IriOfferIdentifier(
-                            Url::fromNative('http://www.uitdatabank.be/events/d8835de7-c84d-417b-a173-079401f29fde'),
+                        new ItemIdentifier(
+                            new Url('http://www.uitdatabank.be/events/d8835de7-c84d-417b-a173-079401f29fde'),
                             'd8835de7-c84d-417b-a173-079401f29fde',
-                            OfferType::event()
+                            ItemType::event()
                         ),
-                        new IriOfferIdentifier(
-                            Url::fromNative('http://www.uitdatabank.be/events/13ca4b6b-92b0-407d-b472-634dd0e654d0'),
+                        new ItemIdentifier(
+                            new Url('http://www.uitdatabank.be/events/13ca4b6b-92b0-407d-b472-634dd0e654d0'),
                             '13ca4b6b-92b0-407d-b472-634dd0e654d0',
-                            OfferType::event()
+                            ItemType::event()
                         ),
                     ];
                 }

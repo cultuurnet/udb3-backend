@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Offer;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Deserializer\NotWellFormedException;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\Url;
 
 /**
  * @deprecated
@@ -49,7 +49,7 @@ class IriOfferIdentifierJSONDeserializer implements DeserializerInterface
         }
 
         return $this->iriOfferIdentifierFactory->fromIri(
-            Url::fromNative($data['@id'])
+            new Url($data['@id'])
         );
     }
 }

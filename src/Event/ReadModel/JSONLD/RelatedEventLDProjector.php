@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\OrganizerService;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use ValueObjects\Web\Url;
 
 final class RelatedEventLDProjector implements EventListener
 {
@@ -67,7 +67,7 @@ final class RelatedEventLDProjector implements EventListener
         PlaceProjectedToJSONLD $placeProjectedToJSONLD
     ): void {
         $identifier = $this->iriOfferIdentifierFactory->fromIri(
-            Url::fromNative($placeProjectedToJSONLD->getIri())
+            new Url($placeProjectedToJSONLD->getIri())
         );
 
         $eventsLocatedAtPlace = $this->relationsRepository->getEventsLocatedAtPlace(

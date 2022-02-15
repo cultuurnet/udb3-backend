@@ -196,6 +196,18 @@ final class UpdateImagesRequestHandlerTest extends TestCase
                     new SchemaError('/0/copyrightHolder', 'Minimum string length is 3, found 0')
                 ),
             ],
+            [
+                '[{
+                    "id":"08805a3c-ffe0-4c94-a1bc-453a6dd9d01f",
+                    "language":"en",
+                    "description":"        ",
+                    "copyrightHolder":"      "
+                }]',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/0/copyrightHolder', 'The string should match pattern: \S'),
+                    new SchemaError('/0/description', 'The string should match pattern: \S')
+                ),
+            ],
         ];
     }
 }
