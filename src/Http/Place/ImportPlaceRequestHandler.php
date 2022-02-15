@@ -124,6 +124,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $this->importPreProcessingRequestBodyParser,
             new CalendarValidationRequestBodyParser(),
             new BookingInfoValidationRequestBodyParser(),
+            new PriceInfoValidationRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
