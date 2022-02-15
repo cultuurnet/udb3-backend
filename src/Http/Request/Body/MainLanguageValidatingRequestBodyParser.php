@@ -20,6 +20,7 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
     private const PLACE_TRANSLATABLE_FIELDS = [
         '/name',
         '/description',
+        '/address',
     ];
 
     private array $translatableFields;
