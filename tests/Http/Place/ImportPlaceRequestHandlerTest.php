@@ -2659,7 +2659,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'priceInfo' => [
                 [
-                    'category' => 'Kids',
+                    'category' => 'tariff',
                     'name' => [
                         'nl' => 'Kinderen',
                     ],
