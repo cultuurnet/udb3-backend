@@ -17,12 +17,6 @@ final class BookingInfoValidationRequestBodyParser implements RequestBodyParser
 
         $data = $request->getParsedBody();
 
-        if (!is_object($data)) {
-            // If the body data is not an object, there's nothing left to validate. Just re-throw the errors from the
-            // JSON schema validation.
-            throw ApiProblem::bodyInvalidData(...$errors);
-        }
-
         if (isset($data->bookingInfo)) {
             $errors = (new DateRangeValidator())->validate(
                 $data->bookingInfo,
