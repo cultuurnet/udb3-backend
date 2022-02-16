@@ -42,12 +42,9 @@ class Tariff implements Serializable
         return $this->name;
     }
 
-    /**
-     * @return Price
-     */
-    public function getPrice()
+    public function getPrice(): float
     {
-        return $this->money->getCurrency();
+        return (float) $this->money->getAmount() / 100;
     }
 
     public function getCurrency(): Currency

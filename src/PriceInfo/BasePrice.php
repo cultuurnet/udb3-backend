@@ -35,12 +35,10 @@ class BasePrice implements Serializable
         $this->money = $money;
     }
 
-    /**
-     * @return Price
-     */
-    public function getPrice()
+
+    public function getPrice(): float
     {
-        return $this->money->getAmount();
+        return (float) $this->money->getAmount() / 100;
     }
 
     public function getCurrency(): Currency

@@ -12,7 +12,9 @@ use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use ValueObjects\Money\Currency;
+use Money\Currency;
+use Money\Money;
+use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
@@ -64,14 +66,12 @@ class PriceInfoJSONDeserializer extends JSONDeserializer
         foreach ($data as $itemData) {
             if ($itemData['category'] == 'base') {
                 $basePrice = new BasePrice(
-                    Price::fromFloat((float) $itemData['price']),
-                    Currency::fromNative('EUR')
+                    new Money((int) $itemData['price'] * 100, new Currency('EUR'))
                 );
             } else {
                 $tariffs[] = new Tariff(
                     MultilingualString::deserialize($itemData['name']),
-                    Price::fromFloat((float) $itemData['price']),
-                    Currency::fromNative('EUR')
+                    new Money((int) $itemData['price'] * 100, new Currency('EUR'))
                 );
             }
         }

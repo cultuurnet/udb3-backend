@@ -16,7 +16,9 @@ use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use ValueObjects\Money\Currency;
+use Money\Currency;
+use Money\Money;
+use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CdbXMLItemBaseImporter
@@ -181,8 +183,7 @@ class CdbXMLItemBaseImporter
         }
 
         $basePrice = new BasePrice(
-            Price::fromFloat($basePrice),
-            Currency::fromNative('EUR')
+            new Money((int) $basePrice * 100, new Currency('EUR'))
         );
 
         /* @var Tariff[] $tariffs */
@@ -222,8 +223,7 @@ class CdbXMLItemBaseImporter
                 if (!isset($tariffs[$tariffIndex])) {
                     $tariff = new Tariff(
                         new MultilingualString(new Language($language), new StringLiteral((string) $tariffName)),
-                        Price::fromFloat($tariffPrice),
-                        Currency::fromNative('EUR')
+                        new Money((int) $tariffPrice * 100, new Currency('EUR'))
                     );
                 } else {
                     $tariff = $tariffs[$tariffIndex];
@@ -231,8 +231,7 @@ class CdbXMLItemBaseImporter
                     $name = $name->withTranslation(new Language($language), new StringLiteral((string) $tariffName));
                     $tariff = new Tariff(
                         $name,
-                        $tariff->getPrice(),
-                        $tariff->getCurrency()
+                        new Money((int) $tariff->getPrice() * 100, $tariff->getCurrency())
                     );
                 }
 
@@ -245,8 +244,8 @@ class CdbXMLItemBaseImporter
             [
                 'category' => 'base',
                 'name' => $this->basePriceTranslations,
-                'price' => $basePrice->getPrice()->toFloat(),
-                'priceCurrency' => $basePrice->getCurrency()->getCode()->toNative(),
+                'price' => $basePrice->getPrice(),
+                'priceCurrency' => $basePrice->getCurrency()->getName(),
             ],
         ];
 
@@ -254,8 +253,8 @@ class CdbXMLItemBaseImporter
             $jsonLD->priceInfo[] = [
                 'category' => 'tariff',
                 'name' => $tariff->getName()->serialize(),
-                'price' => $tariff->getPrice()->toFloat(),
-                'priceCurrency' => $tariff->getCurrency()->getCode()->toNative(),
+                'price' => $tariff->getPrice(),
+                'priceCurrency' => $tariff->getCurrency()->getName(),
             ];
         }
     }
