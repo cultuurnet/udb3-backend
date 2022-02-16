@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventBusForwardingConsumerFactory
+final class EventBusForwardingConsumerFactory
 {
     /**
      * Delay the consumption of UDB2 updates with some seconds to prevent a
@@ -20,34 +20,19 @@ class EventBusForwardingConsumerFactory
      * commands in the UDB3 queue worker need to finish before their
      * counterpart UDB2 update is processed.
      */
-    protected int $executionDelay;
+    private int $executionDelay;
 
-    /**
-     * @var AMQPStreamConnection
-     */
-    protected $connection;
+    private AMQPStreamConnection $connection;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var DeserializerLocatorInterface
-     */
-    protected $deserializerLocator;
+    private DeserializerLocatorInterface $deserializerLocator;
 
-    /**
-     * @var EventBus
-     */
-    protected $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $consumerTag;
+    private StringLiteral $consumerTag;
 
-    protected UuidFactoryInterface $uuidFactory;
+    private UuidFactoryInterface $uuidFactory;
 
     public function __construct(
         int $executionDelay,

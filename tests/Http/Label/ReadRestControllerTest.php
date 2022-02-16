@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Label;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
@@ -18,22 +19,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ReadRestControllerTest extends TestCase
+final class ReadRestControllerTest extends TestCase
 {
-    /**
-     * @var Entity
-     */
-    private $entity;
+    private Entity $entity;
 
-    /**
-     * @var Request
-     */
-    private $request;
+    private Request $request;
 
-    /**
-     * @var Query
-     */
-    private $query;
+    private Query $query;
 
     /**
      * @var ReadServiceInterface|MockObject
@@ -45,12 +37,9 @@ class ReadRestControllerTest extends TestCase
      */
     private $queryFactory;
 
-    /**
-     * @var ReadRestController
-     */
-    private $readRestController;
+    private ReadRestController $readRestController;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entity = new Entity(
             new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'),
@@ -90,7 +79,7 @@ class ReadRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_json_response_for_get_by_uuid()
+    public function it_returns_json_response_for_get_by_uuid(): void
     {
         $jsonResponse = $this->readRestController->get(
             $this->entity->getUuid()->toString()
@@ -106,7 +95,7 @@ class ReadRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_json_response_when_you_get_a_label_by_name()
+    public function it_should_return_a_json_response_when_you_get_a_label_by_name(): void
     {
         $this->readService
             ->expects($this->never())
@@ -126,7 +115,7 @@ class ReadRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_json_response_for_search()
+    public function it_returns_json_response_for_search(): void
     {
         $jsonResponse = $this->readRestController->search($this->request);
 
@@ -141,7 +130,7 @@ class ReadRestControllerTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expectedJson, json_decode((string) $jsonResponse->getBody(), true));
+        $this->assertEquals($expectedJson, Json::decodeAssociatively((string) $jsonResponse->getBody()));
     }
 
     /**
@@ -175,48 +164,45 @@ class ReadRestControllerTest extends TestCase
         ];
 
         $this->assertEquals(200, $jsonResponse->getStatusCode());
-        $this->assertEquals($expectedJson, json_decode((string) $jsonResponse->getBody(), true));
+        $this->assertEquals($expectedJson, Json::decodeAssociatively((string) $jsonResponse->getBody()));
     }
 
-    private function mockGetByUuid()
+    private function mockGetByUuid(): void
     {
         $this->readService->method('getByUuid')
             ->with($this->entity->getUuid())
             ->willReturn($this->entity);
     }
 
-    private function mockGetByName()
+    private function mockGetByName(): void
     {
         $this->readService->method('getByName')
             ->with($this->entity->getName()->toNative())
             ->willReturn($this->entity);
     }
 
-    private function mockSearch()
+    private function mockSearch(): void
     {
         $this->readService->method('search')
             ->with($this->query)
             ->willReturn([$this->entity, $this->entity]);
     }
 
-    private function mockSearchTotalLabels()
+    private function mockSearchTotalLabels(): void
     {
         $this->readService->method('searchTotalLabels')
             ->with($this->query)
             ->willReturn(2);
     }
 
-    private function mockCreateQuery()
+    private function mockCreateQuery(): void
     {
         $this->queryFactory->method('createFromRequest')
             ->with($this->request)
             ->willReturn($this->query);
     }
 
-    /**
-     * @return array
-     */
-    private function entityToArray(Entity $entity)
+    private function entityToArray(Entity $entity): array
     {
         return [
             'uuid' => $entity->getUuid()->toString(),

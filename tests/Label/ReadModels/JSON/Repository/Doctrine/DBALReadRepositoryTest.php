@@ -13,44 +13,23 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DBALReadRepositoryTest extends BaseDBALRepositoryTest
+final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 {
-    /**
-     * @var DBALReadRepository
-     */
-    private $dbalReadRepository;
+    private DBALReadRepository $dbalReadRepository;
 
-    /**
-     * @var Entity
-     */
-    private $entityByUuid;
+    private Entity $entityByUuid;
 
-    /**
-     * @var Entity
-     */
-    private $entityByName;
+    private Entity $entityByName;
 
-    /**
-     * @var Entity
-     */
-    private $entityPrivateAccess;
+    private Entity $entityPrivateAccess;
 
-    /**
-     * @var Entity
-     */
-    private $entityPrivateNoAccess;
+    private Entity $entityPrivateNoAccess;
 
-    /**
-     * @var StringLiteral
-     */
-    private $labelRolesTableName;
+    private StringLiteral $labelRolesTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRolesTableName;
+    private StringLiteral $userRolesTableName;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -129,7 +108,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_get_by_uuid()
+    public function it_can_get_by_uuid(): void
     {
         $entity = $this->dbalReadRepository->getByUuid(
             $this->entityByUuid->getUuid()
@@ -141,7 +120,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_returns_null_when_not_found_by_uuid()
+    public function it_returns_null_when_not_found_by_uuid(): void
     {
         $entity = $this->dbalReadRepository->getByUuid(
             new UUID('d8d9737f-c31e-4a5d-bc11-8780a23fdb24')
@@ -153,7 +132,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_get_by_name()
+    public function it_can_get_by_name(): void
     {
         $entity = $this->dbalReadRepository->getByName(
             $this->entityByName->getName()
@@ -165,7 +144,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_get_by_name_case_insensitive()
+    public function it_can_get_by_name_case_insensitive(): void
     {
         $entity = $this->dbalReadRepository->getByName(
             new StringLiteral('BosWandeling')
@@ -177,7 +156,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_does_not_get_on_part_of_name()
+    public function it_does_not_get_on_part_of_name(): void
     {
         $entity = $this->dbalReadRepository->getByName(
             new StringLiteral('oswand')
@@ -189,7 +168,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_returns_null_when_not_found_by_name()
+    public function it_returns_null_when_not_found_by_name(): void
     {
         $entity = $this->dbalReadRepository->getByName(
             new StringLiteral('familievoorstelling')
@@ -201,43 +180,43 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_search_on_exact_name()
+    public function it_can_search_on_exact_name(): void
     {
         $search = new Query(new StringLiteral('label1'));
 
         $entities = $this->dbalReadRepository->search($search);
 
-        $this->assertEquals(1, count($entities));
+        $this->assertCount(1, $entities);
     }
 
     /**
      * @test
      */
-    public function it_can_search_on_name_part()
+    public function it_can_search_on_name_part(): void
     {
         $search = new Query(new StringLiteral('labe'));
 
         $entities = $this->dbalReadRepository->search($search);
 
-        $this->assertEquals(10, count($entities));
+        $this->assertCount(10, $entities);
     }
 
     /**
      * @test
      */
-    public function it_can_search_on_name_case_insensitive()
+    public function it_can_search_on_name_case_insensitive(): void
     {
         $search = new Query(new StringLiteral('LAB'));
 
         $entities = $this->dbalReadRepository->search($search);
 
-        $this->assertEquals(10, count($entities));
+        $this->assertCount(10, $entities);
     }
 
     /**
      * @test
      */
-    public function it_can_filter_private_labels_for_user_with_missing_role()
+    public function it_can_filter_private_labels_for_user_with_missing_role(): void
     {
         $userId = new StringLiteral('70569052-37d5-4937-bf09-16c7a255c7d3');
         $this->seedRoles($userId);
@@ -264,7 +243,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_search_with_offset()
+    public function it_can_search_with_offset(): void
     {
         $search = new Query(
             new StringLiteral('label'),
@@ -274,7 +253,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $entities = $this->dbalReadRepository->search($search);
 
-        $this->assertEquals(5, count($entities));
+        $this->assertCount(5, $entities);
         $this->assertEquals('label5', $entities[0]->getName()->toNative());
         $this->assertEquals('label9', $entities[4]->getName()->toNative());
     }
@@ -282,7 +261,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_search_with_offset_and_limit()
+    public function it_can_search_with_offset_and_limit(): void
     {
         $search = new Query(
             new StringLiteral('label'),
@@ -293,7 +272,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $entities = $this->dbalReadRepository->search($search);
 
-        $this->assertEquals(3, count($entities));
+        $this->assertCount(3, $entities);
         $this->assertEquals('label4', $entities[0]->getName()->toNative());
         $this->assertEquals('label6', $entities[2]->getName()->toNative());
     }
@@ -301,7 +280,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_search_with_limit()
+    public function it_can_search_with_limit(): void
     {
         $search = new Query(
             new StringLiteral('label'),
@@ -312,7 +291,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $entities = $this->dbalReadRepository->search($search);
 
-        $this->assertEquals(3, count($entities));
+        $this->assertCount(3, $entities);
         $this->assertEquals('label0', $entities[0]->getName()->toNative());
         $this->assertEquals('label2', $entities[2]->getName()->toNative());
     }
@@ -320,7 +299,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_returns_null_when_nothing_matches_search()
+    public function it_returns_null_when_nothing_matches_search(): void
     {
         $search = new Query(new StringLiteral('nothing_please'));
 
@@ -332,7 +311,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_get_total_items_of_search()
+    public function it_can_get_total_items_of_search(): void
     {
         $search = new Query(new StringLiteral('lab'));
 
@@ -344,7 +323,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_returns_zero_for_total_items_when_search_did_match_nothing()
+    public function it_returns_zero_for_total_items_when_search_did_match_nothing(): void
     {
         $search = new Query(new StringLiteral('kroegentocht'));
 
@@ -356,7 +335,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function a_new_label_can_be_used()
+    public function a_new_label_can_be_used(): void
     {
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
             new StringLiteral('0092d9eb-7f91-4699-876a-21cc660925d4'),
@@ -367,7 +346,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function a_public_label_can_be_used()
+    public function a_public_label_can_be_used(): void
     {
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
             new StringLiteral('8d2f6739-7ba1-4c82-99f1-deca6cc79654'),
@@ -378,7 +357,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function a_user_needs_permission_on_private_label()
+    public function a_user_needs_permission_on_private_label(): void
     {
         $userId = new StringLiteral('a02f67cb-3227-439b-861b-6ec24de7f0d1');
         $this->seedRoles($userId);
@@ -397,7 +376,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function a_user_needs_permission_on_private_label_case_insensitive()
+    public function a_user_needs_permission_on_private_label_case_insensitive(): void
     {
         $userId = new StringLiteral('a02f67cb-3227-439b-861b-6ec24de7f0d1');
         $this->seedRoles($userId);
@@ -414,7 +393,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     }
 
 
-    private function insertLabelRole(UUID $labelId, UUID $roleId)
+    private function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->labelRolesTableName->toNative(),
@@ -426,7 +405,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     }
 
 
-    private function insertUserRole(StringLiteral $userId, UUID $roleId)
+    private function insertUserRole(StringLiteral $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->userRolesTableName->toNative(),
@@ -438,7 +417,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     }
 
 
-    private function seedRoles(StringLiteral $userId)
+    private function seedRoles(StringLiteral $userId): void
     {
         $roleId1 = new UUID('5d0842b4-4fd1-4bc2-8577-c06a5ac5000a');
         $roleId2 = new UUID('56a8b820-2262-4a17-a496-bfa07f7e49bb');

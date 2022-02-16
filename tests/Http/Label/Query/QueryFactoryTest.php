@@ -9,17 +9,14 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class QueryFactoryTest extends TestCase
+final class QueryFactoryTest extends TestCase
 {
     public const QUERY_VALUE = 'label';
     public const USER_ID_VALUE = 'userId';
     public const START_VALUE = 5;
     public const LIMIT_VALUE = 10;
 
-    /**
-     * @var QueryFactory
-     */
-    private $queryFactory;
+    private QueryFactory $queryFactory;
 
     protected function setUp(): void
     {

@@ -8,19 +8,16 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class QueryTest extends TestCase
+final class QueryTest extends TestCase
 {
     public const NAME = 'name';
     public const USER_ID = 'userId';
     public const OFFSET = 5;
     public const LIMIT = 10;
 
-    /**
-     * @var Query
-     */
-    private $query;
+    private Query $query;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->query = new Query(
             new StringLiteral(self::NAME),
@@ -33,7 +30,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_value()
+    public function it_stores_a_value(): void
     {
         $this->assertEquals(
             new StringLiteral(self::NAME),
@@ -44,7 +41,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_user_id()
+    public function it_stores_a_user_id(): void
     {
         $this->assertEquals(
             new StringLiteral(self::USER_ID),
@@ -55,7 +52,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_offset()
+    public function it_stores_an_offset(): void
     {
         $this->assertEquals(
             self::OFFSET,
@@ -66,7 +63,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_limit()
+    public function it_stores_an_limit(): void
     {
         $this->assertEquals(
             self::LIMIT,
@@ -77,7 +74,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_user_id_of_null()
+    public function it_has_a_default_user_id_of_null(): void
     {
         $query = new Query(new StringLiteral(self::NAME));
 
@@ -87,7 +84,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_offset_of_null()
+    public function it_has_a_default_offset_of_null(): void
     {
         $query = new Query(new StringLiteral(self::NAME));
 
@@ -112,7 +109,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_limit_of_null()
+    public function it_has_a_default_limit_of_null(): void
     {
         $query = new Query(new StringLiteral(self::NAME));
 

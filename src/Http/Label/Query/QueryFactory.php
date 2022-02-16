@@ -14,20 +14,14 @@ class QueryFactory implements QueryFactoryInterface
     public const START = 'start';
     public const LIMIT = 'limit';
 
-    /**
-     * @var ?string
-     */
-    private $userId;
+    private ?string $userId;
 
     public function __construct(?string $userId)
     {
         $this->userId = $userId;
     }
 
-    /**
-     * @return Query
-     */
-    public function createFromRequest(Request $request)
+    public function createFromRequest(Request $request): Query
     {
         $value = $request->query->get(self::QUERY) !== null
             ? new StringLiteral($request->query->get(self::QUERY)) : new StringLiteral('');

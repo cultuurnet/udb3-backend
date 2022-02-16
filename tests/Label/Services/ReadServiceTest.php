@@ -14,29 +14,21 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ReadServiceTest extends TestCase
+final class ReadServiceTest extends TestCase
 {
     /**
      * @var ReadRepositoryInterface|MockObject
      */
     private $readRepository;
 
-    /**
-     * @var ReadServiceInterface
-     */
-    private $readService;
+    private ReadServiceInterface $readService;
 
-    /**
-     * @var Entity
-     */
-    private $entity;
 
-    /**
-     * @var Query
-     */
-    private $query;
+    private Entity $entity;
 
-    protected function setUp()
+    private Query $query;
+
+    protected function setUp(): void
     {
         $this->entity = new Entity(
             new UUID('749bc3dd-9d9b-4b4f-b5ab-9cc03fc7f669'),
@@ -61,7 +53,7 @@ class ReadServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_label_entity_based_on_uuid()
+    public function it_can_get_label_entity_based_on_uuid(): void
     {
         $this->readRepository->expects($this->once())
             ->method('getByUuid')
@@ -75,7 +67,7 @@ class ReadServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_label_entity_by_name()
+    public function it_can_get_label_entity_by_name(): void
     {
         $this->readRepository->expects($this->once())
             ->method('getByName')
@@ -89,7 +81,7 @@ class ReadServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_label_based_on_query()
+    public function it_can_get_label_based_on_query(): void
     {
         $this->readRepository->expects($this->once())
             ->method('search')
@@ -103,7 +95,7 @@ class ReadServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_total_labels_count_based_on_query()
+    public function it_can_get_total_labels_count_based_on_query(): void
     {
         $this->readRepository->expects($this->once())
             ->method('searchTotalLabels')
@@ -114,28 +106,28 @@ class ReadServiceTest extends TestCase
         $this->assertEquals(10, $totalLabels);
     }
 
-    private function mockGetByUuid()
+    private function mockGetByUuid(): void
     {
         $this->readRepository->method('getByUuid')
             ->with($this->entity->getUuid())
             ->willReturn($this->entity);
     }
 
-    private function mockGetByName()
+    private function mockGetByName(): void
     {
         $this->readRepository->method('getByName')
             ->with($this->entity->getName())
             ->willReturn($this->entity);
     }
 
-    private function mockSearch()
+    private function mockSearch(): void
     {
         $this->readRepository->method('search')
             ->with($this->query)
             ->willReturn([$this->entity, $this->entity]);
     }
 
-    private function mockSearchTotalLabels()
+    private function mockSearchTotalLabels(): void
     {
         $this->readRepository->method('searchTotalLabels')
             ->with($this->query)

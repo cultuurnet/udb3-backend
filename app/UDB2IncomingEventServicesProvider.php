@@ -44,7 +44,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['udb2_deserializer_locator'] = $app->share(
             function () {
@@ -328,7 +328,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

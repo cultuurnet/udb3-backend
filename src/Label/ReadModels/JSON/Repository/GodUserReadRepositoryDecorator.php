@@ -7,18 +7,14 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
+final class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
 {
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $repository;
+    private ReadRepositoryInterface $repository;
 
     /**
      * @var string[]
      */
-    private $godUserIds;
-
+    private array $godUserIds;
 
     public function __construct(ReadRepositoryInterface $readRepository, array $godUserIds)
     {
@@ -26,26 +22,17 @@ class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
         $this->godUserIds = $godUserIds;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getByUuid(UUID $uuid)
+    public function getByUuid(UUID $uuid): ?Entity
     {
         return $this->repository->getByUuid($uuid);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getByName(StringLiteral $name)
+    public function getByName(StringLiteral $name): ?Entity
     {
         return $this->repository->getByName($name);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function canUseLabel(StringLiteral $userId, StringLiteral $name)
+    public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool
     {
         if (in_array($userId->toNative(), $this->godUserIds)) {
             // God users can use any label.
@@ -55,10 +42,7 @@ class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
         return $this->repository->canUseLabel($userId, $name);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function search(Query $query)
+    public function search(Query $query): ?array
     {
         return $this->repository->search($query);
     }

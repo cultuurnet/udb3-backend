@@ -17,21 +17,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
+final class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
-    /**
-     * @var StringLiteral
-     */
-    private $labelRolesTableName;
+    private StringLiteral $labelRolesTableName;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userRolesTableName;
+    private StringLiteral $userRolesTableName;
 
-    /**
-     * DBALReadRepository constructor.
-     */
     public function __construct(
         Connection $connection,
         StringLiteral $tableName,
@@ -44,10 +35,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $this->userRolesTableName = $userRolesTableName;
     }
 
-    /**
-     * @return Entity|null
-     */
-    public function getByUuid(UUID $uuid)
+    public function getByUuid(UUID $uuid): ?Entity
     {
         $aliases = $this->getAliases();
         $whereId = SchemaConfigurator::UUID_COLUMN . ' = ?';
@@ -60,10 +48,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         return $this->getResult($queryBuilder);
     }
 
-    /**
-     * @return Entity|null
-     */
-    public function getByName(StringLiteral $name)
+    public function getByName(StringLiteral $name): ?Entity
     {
         $aliases = $this->getAliases();
         $queryBuilder = $this->createQueryBuilder();
@@ -83,10 +68,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         return $this->getResult($queryBuilder);
     }
 
-    /**
-     * @return bool
-     */
-    public function canUseLabel(StringLiteral $userId, StringLiteral $name)
+    public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool
     {
         // A new label is always allowed.
         $label = $this->getByName($name);
@@ -119,7 +101,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     /**
      * @return Entity[]|null
      */
-    public function search(Query $query)
+    public function search(Query $query): ?array
     {
         $queryBuilder = $this->createSearchQuery($query);
 
@@ -151,10 +133,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         return (int) $countArray[0];
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    private function createSearchQuery(Query $query)
+    private function createSearchQuery(Query $query): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder();
         $like = $this->createLike($queryBuilder);
@@ -177,7 +156,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->in(
                             SchemaConfigurator::UUID_COLUMN,
-                            $this->createUserLabelsSubQuery($query)->getSQL()
+                            $this->createUserLabelsSubQuery()->getSQL()
                         ),
                         // It is possible to add an non private label to a role, this label can be used always.
                         $queryBuilder->expr()->eq(
@@ -195,10 +174,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         return $queryBuilder;
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    private function createUserLabelsSubQuery(Query $query)
+    private function createUserLabelsSubQuery(): QueryBuilder
     {
         return $this->createQueryBuilder()
             ->select('DISTINCT ' . LabelRolesSchemaConfigurator::LABEL_ID_COLUMN)
@@ -213,9 +189,9 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @return array
+     * @return string[]
      */
-    private function getAliases()
+    private function getAliases(): array
     {
         return [
             SchemaConfigurator::UUID_COLUMN,
@@ -227,10 +203,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function createLike(QueryBuilder $queryBuilder)
+    private function createLike(QueryBuilder $queryBuilder): string
     {
         return $queryBuilder->expr()->like(
             SchemaConfigurator::NAME_COLUMN,
@@ -238,18 +211,12 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         );
     }
 
-    /**
-     * @return string
-     */
-    private function createLikeParameter(Query $query)
+    private function createLikeParameter(Query $query): string
     {
         return '%' . $query->getValue()->toNative() . '%';
     }
 
-    /**
-     * @return Entity|null
-     */
-    private function getResult(QueryBuilder $queryBuilder)
+    private function getResult(QueryBuilder $queryBuilder): ?Entity
     {
         $entity = null;
 
@@ -265,7 +232,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     /**
      * @return Entity[]|null
      */
-    private function getResults(QueryBuilder $queryBuilder)
+    private function getResults(QueryBuilder $queryBuilder): ?array
     {
         $entities = null;
 
@@ -278,10 +245,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         return $entities;
     }
 
-    /**
-     * @return Entity
-     */
-    private function rowToEntity(array $row)
+    private function rowToEntity(array $row): Entity
     {
         $uuid = new UUID($row[SchemaConfigurator::UUID_COLUMN]);
 
