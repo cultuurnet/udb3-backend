@@ -4,74 +4,54 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class Query
+final class Query
 {
-    /**
-     * @var StringLiteral
-     */
-    private $value;
+    private StringLiteral $value;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private ?StringLiteral $userId;
 
-    /**
-     * @var Natural
-     */
-    private $offset;
+    private ?int $offset;
 
-    /**
-     * @var Natural
-     */
-    private $limit;
+    private ?int $limit;
 
-    /**
-     * Query constructor.
-     */
     public function __construct(
         StringLiteral $value,
         StringLiteral $userId = null,
-        Natural $offset = null,
-        Natural $limit = null
+        ?int $offset = null,
+        ?int $limit = null
     ) {
+        if ($offset < 0) {
+            throw new \InvalidArgumentException('Offset should be zero or higher');
+        }
+
+        if ($limit < 0) {
+            throw new \InvalidArgumentException('Limit should be zero or higher');
+        }
+
         $this->value = $value;
         $this->userId = $userId;
         $this->offset = $offset;
         $this->limit = $limit;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getValue()
+    public function getValue(): StringLiteral
     {
         return $this->value;
     }
 
-    /**
-     * @return StringLiteral|null
-     */
-    public function getUserId()
+    public function getUserId(): ?StringLiteral
     {
         return $this->userId;
     }
 
-    /**
-     * @return Natural|null
-     */
-    public function getOffset()
+    public function getOffset(): ?int
     {
         return $this->offset;
     }
 
-    /**
-     * @return Natural|null
-     */
-    public function getLimit()
+    public function getLimit(): ?int
     {
         return $this->limit;
     }

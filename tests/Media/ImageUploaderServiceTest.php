@@ -15,7 +15,6 @@ use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ImageUploaderServiceTest extends TestCase
@@ -180,7 +179,7 @@ class ImageUploaderServiceTest extends TestCase
             $this->commandBus,
             $this->filesystem,
             $this->directory,
-            new Natural(1000000)
+            1000000
         );
 
         $file = $this->getMockImage(1111111);
@@ -205,7 +204,7 @@ class ImageUploaderServiceTest extends TestCase
             $this->commandBus,
             $this->filesystem,
             $this->directory,
-            new Natural(1000000)
+            1000000
         );
 
         $file = $this->getMockImage(false);
@@ -232,7 +231,7 @@ class ImageUploaderServiceTest extends TestCase
             $this->commandBus,
             $this->filesystem,
             $this->directory,
-            new Natural(1000000)
+            1000000
         );
 
         $description = new StringLiteral('file description');
