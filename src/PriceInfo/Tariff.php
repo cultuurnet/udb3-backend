@@ -40,9 +40,9 @@ class Tariff implements Serializable
         return $this->name;
     }
 
-    public function getPrice(): float
+    public function getPrice(): Money
     {
-        return (float)($this->money->getAmount() / 100);
+        return $this->money;
     }
 
     public function getCurrency(): Currency
@@ -57,7 +57,7 @@ class Tariff implements Serializable
     {
         return [
             'name' => $this->name->serialize(),
-            'price' => $this->getPrice(),
+            'price' => $this->getPrice()->getAmount(),
             'currency' => $this->getCurrency()->getName(),
         ];
     }
@@ -66,7 +66,7 @@ class Tariff implements Serializable
     {
         return new Tariff(
             MultilingualString::deserialize($data['name']),
-            new Money((int)($data['price'] * 100), new Currency($data['currency']))
+            new Money((int) $data['price'], new Currency($data['currency']))
         );
     }
 

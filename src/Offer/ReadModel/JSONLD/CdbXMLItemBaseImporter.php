@@ -230,7 +230,7 @@ class CdbXMLItemBaseImporter
                     $name = $name->withTranslation(new Language($language), new StringLiteral((string) $tariffName));
                     $tariff = new Tariff(
                         $name,
-                        new Money((int)($tariff->getPrice() * 100), $tariff->getCurrency())
+                        $tariff->getPrice()
                     );
                 }
 
@@ -243,7 +243,7 @@ class CdbXMLItemBaseImporter
             [
                 'category' => 'base',
                 'name' => $this->basePriceTranslations,
-                'price' => $basePrice->getPrice(),
+                'price' => $basePrice->getPrice()->getAmount() / 100,
                 'priceCurrency' => $basePrice->getCurrency()->getName(),
             ],
         ];
@@ -252,7 +252,7 @@ class CdbXMLItemBaseImporter
             $jsonLD->priceInfo[] = [
                 'category' => 'tariff',
                 'name' => $tariff->getName()->serialize(),
-                'price' => $tariff->getPrice(),
+                'price' => $tariff->getPrice()->getAmount() / 100,
                 'priceCurrency' => $tariff->getCurrency()->getName(),
             ];
         }
