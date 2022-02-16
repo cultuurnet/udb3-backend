@@ -16,13 +16,9 @@ use Money\Money;
  */
 class Tariff implements Serializable
 {
-    /**
-     * @var MultilingualString
-     */
-    private $name;
+    private MultilingualString $name;
 
     private Money $money;
-
 
     public function __construct(
         MultilingualString $name,
@@ -32,10 +28,7 @@ class Tariff implements Serializable
         $this->money = $money;
     }
 
-    /**
-     * @return MultilingualString
-     */
-    public function getName()
+    public function getName(): MultilingualString
     {
         return $this->name;
     }
@@ -50,10 +43,7 @@ class Tariff implements Serializable
         return $this->money->getCurrency();
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return [
             'name' => $this->name->serialize(),

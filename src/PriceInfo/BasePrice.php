@@ -33,10 +33,7 @@ class BasePrice implements Serializable
         return $this->money->getCurrency();
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return [
             'price' => $this->getPrice()->getAmount(),
@@ -44,20 +41,14 @@ class BasePrice implements Serializable
         ];
     }
 
-    /**
-     * @return BasePrice
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): BasePrice
     {
         return new BasePrice(
             new Money((int) $data['price'], new Currency($data['currency']))
         );
     }
 
-    /**
-     * @return BasePrice
-     */
-    public static function fromUdb3ModelTariff(Udb3ModelTariff $tariff)
+    public static function fromUdb3ModelTariff(Udb3ModelTariff $tariff): BasePrice
     {
         return new BasePrice(
             $tariff->getPrice()

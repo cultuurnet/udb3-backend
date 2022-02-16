@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -189,9 +188,7 @@ class CdbXMLItemBaseImporter
         $tariffs = [];
         /** @var CultureFeed_Cdb_Data_Detail $detail */
         foreach ($details as $detail) {
-            $language = null;
             $price = null;
-            $description = null;
 
             $language = $detail->getLanguage();
 
