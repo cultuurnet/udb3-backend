@@ -4,36 +4,33 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class QueryTest extends TestCase
+final class QueryTest extends TestCase
 {
     public const NAME = 'name';
     public const USER_ID = 'userId';
     public const OFFSET = 5;
     public const LIMIT = 10;
 
-    /**
-     * @var Query
-     */
-    private $query;
+    private Query $query;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->query = new Query(
             new StringLiteral(self::NAME),
             new StringLiteral(self::USER_ID),
-            new Natural(self::OFFSET),
-            new Natural(self::LIMIT)
+            self::OFFSET,
+            self::LIMIT
         );
     }
 
     /**
      * @test
      */
-    public function it_stores_a_value()
+    public function it_stores_a_value(): void
     {
         $this->assertEquals(
             new StringLiteral(self::NAME),
@@ -44,7 +41,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_user_id()
+    public function it_stores_a_user_id(): void
     {
         $this->assertEquals(
             new StringLiteral(self::USER_ID),
@@ -55,10 +52,10 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_offset()
+    public function it_stores_an_offset(): void
     {
         $this->assertEquals(
-            new Natural(self::OFFSET),
+            self::OFFSET,
             $this->query->getOffset()
         );
     }
@@ -66,10 +63,10 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_an_limit()
+    public function it_stores_an_limit(): void
     {
         $this->assertEquals(
-            new Natural(self::LIMIT),
+            self::LIMIT,
             $this->query->getLimit()
         );
     }
@@ -77,7 +74,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_user_id_of_null()
+    public function it_has_a_default_user_id_of_null(): void
     {
         $query = new Query(new StringLiteral(self::NAME));
 
@@ -87,7 +84,7 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_offset_of_null()
+    public function it_has_a_default_offset_of_null(): void
     {
         $query = new Query(new StringLiteral(self::NAME));
 
@@ -97,10 +94,40 @@ class QueryTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_limit_of_null()
+    public function it_requires_a_positive_offset(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Query(
+            new StringLiteral(self::NAME),
+            new StringLiteral(self::USER_ID),
+            -1,
+            self::LIMIT
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_a_default_limit_of_null(): void
     {
         $query = new Query(new StringLiteral(self::NAME));
 
         $this->assertEquals(null, $query->getLimit());
+    }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_positive_limit(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Query(
+            new StringLiteral(self::NAME),
+            new StringLiteral(self::USER_ID),
+            self::OFFSET,
+            -1
+        );
     }
 }

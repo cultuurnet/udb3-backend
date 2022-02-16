@@ -14,24 +14,14 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ReadRestController
+final class ReadRestController
 {
-    /**
-     * @var ReadServiceInterface
-     */
-    private $readService;
+    private ReadServiceInterface $readService;
 
-    /**
-     * @var QueryFactoryInterface
-     */
-    private $queryFactory;
+    private QueryFactoryInterface $queryFactory;
 
-    /**
-     * ReadRestController constructor.
-     */
     public function __construct(
         ReadServiceInterface $readService,
         QueryFactoryInterface $queryFactory
@@ -40,12 +30,7 @@ class ReadRestController
         $this->queryFactory = $queryFactory;
     }
 
-    /**
-     * @param string $id
-     *  The uuid or unique name of a label.
-     * @return JsonResponse
-     */
-    public function get($id)
+    public function get(string $id): JsonResponse
     {
         try {
             $entity = $this->readService->getByUuid(new UUID($id));
@@ -66,7 +51,7 @@ class ReadRestController
 
         $totalEntities = $this->readService->searchTotalLabels($query);
 
-        $entities = $totalEntities->toNative() > 0 ? $this->readService->search($query) : [];
+        $entities = $totalEntities > 0 ? $this->readService->search($query) : [];
 
         return $this->createPagedCollectionResponse(
             $query,
@@ -81,17 +66,13 @@ class ReadRestController
     private function createPagedCollectionResponse(
         Query $query,
         array $entities,
-        Natural $totalEntities
+        int $totalEntities
     ): PagedCollectionResponse {
-        $limit = 0;
-
-        if ($query->getLimit()) {
-            $limit = $query->getLimit()->toNative();
-        }
+        $limit = $query->getLimit() ?? 0;
 
         return new PagedCollectionResponse(
             $limit,
-            $totalEntities->toNative(),
+            $totalEntities,
             $entities
         );
     }

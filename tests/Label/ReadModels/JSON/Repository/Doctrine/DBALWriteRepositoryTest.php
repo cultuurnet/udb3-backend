@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
@@ -231,7 +230,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
             new UUID('b0c2993b-8987-4c95-8723-57611ab68f3f'),
-            new Natural(666)
+            666
         );
 
         $this->saveEntity($expectedEntity);
@@ -243,7 +242,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertEquals(
-            new Natural(667),
+            667,
             $actualEntity->getCount()
         );
     }
@@ -259,7 +258,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
             new UUID('f12fc176-b66f-4c0c-a231-0c0f15499e0a'),
-            new Natural(666)
+            666
         );
 
         $this->saveEntity($expectedEntity);
@@ -271,7 +270,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertEquals(
-            new Natural(665),
+            665,
             $actualEntity->getCount()
         );
     }
@@ -287,7 +286,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
             new UUID('48cbbee1-e6d1-4f63-8800-a51e6f55a8d3'),
-            new Natural(0)
+            0
         );
 
         $this->saveEntity($expectedEntity);
@@ -299,7 +298,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertEquals(
-            new Natural(0),
+            0,
             $actualEntity->getCount()
         );
     }
