@@ -63,10 +63,7 @@ class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
         return $this->repository->search($query);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function searchTotalLabels(Query $query)
+    public function searchTotalLabels(Query $query): int
     {
         return $this->repository->searchTotalLabels($query);
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryTest extends TestCase
@@ -25,8 +25,8 @@ class QueryTest extends TestCase
         $this->query = new Query(
             new StringLiteral(self::NAME),
             new StringLiteral(self::USER_ID),
-            new Natural(self::OFFSET),
-            new Natural(self::LIMIT)
+            self::OFFSET,
+            self::LIMIT
         );
     }
 
@@ -58,7 +58,7 @@ class QueryTest extends TestCase
     public function it_stores_an_offset()
     {
         $this->assertEquals(
-            new Natural(self::OFFSET),
+            self::OFFSET,
             $this->query->getOffset()
         );
     }
@@ -69,7 +69,7 @@ class QueryTest extends TestCase
     public function it_stores_an_limit()
     {
         $this->assertEquals(
-            new Natural(self::LIMIT),
+            self::LIMIT,
             $this->query->getLimit()
         );
     }
@@ -97,10 +97,40 @@ class QueryTest extends TestCase
     /**
      * @test
      */
+    public function it_requires_a_positive_offset(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Query(
+            new StringLiteral(self::NAME),
+            new StringLiteral(self::USER_ID),
+            -1,
+            self::LIMIT
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_has_a_default_limit_of_null()
     {
         $query = new Query(new StringLiteral(self::NAME));
 
         $this->assertEquals(null, $query->getLimit());
+    }
+
+    /**
+     * @test
+     */
+    public function it_requires_a_positive_limit(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Query(
+            new StringLiteral(self::NAME),
+            new StringLiteral(self::USER_ID),
+            self::OFFSET,
+            -1
+        );
     }
 }

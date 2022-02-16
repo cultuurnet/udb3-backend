@@ -16,7 +16,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ReadRestControllerTest extends TestCase
@@ -69,8 +68,8 @@ class ReadRestControllerTest extends TestCase
         $this->query = new Query(
             new StringLiteral('label'),
             new StringLiteral('userId'),
-            new Natural(5),
-            new Natural(2)
+            5,
+            2
         );
 
         $this->readService = $this->createMock(ReadServiceInterface::class);
@@ -154,7 +153,7 @@ class ReadRestControllerTest extends TestCase
 
         $readService->method('searchTotalLabels')
             ->with($this->query)
-            ->willReturn(new Natural(0));
+            ->willReturn(0);
 
         $readService->method('search')
             ->with($this->query)
@@ -204,7 +203,7 @@ class ReadRestControllerTest extends TestCase
     {
         $this->readService->method('searchTotalLabels')
             ->with($this->query)
-            ->willReturn(new Natural(2));
+            ->willReturn(2);
     }
 
     private function mockCreateQuery()

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label\Services;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 interface ReadServiceInterface
@@ -27,8 +26,5 @@ interface ReadServiceInterface
      */
     public function search(Query $query);
 
-    /**
-     * @return Natural
-     */
-    public function searchTotalLabels(Query $query);
+    public function searchTotalLabels(Query $query): int;
 }

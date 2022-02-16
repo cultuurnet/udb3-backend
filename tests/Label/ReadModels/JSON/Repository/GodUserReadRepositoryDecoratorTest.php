@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class GodUserReadRepositoryDecoratorTest extends TestCase
@@ -129,8 +128,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
             ->method('searchTotalLabels')
             ->willReturnCallback(
                 function (Query $query) {
-                    $count = count($this->labels);
-                    return new Natural($count);
+                    return count($this->labels);
                 }
             );
 
@@ -206,7 +204,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     public function it_should_return_result_count_for_a_query_using_the_injected_repository()
     {
         $query = new Query(new StringLiteral('test'));
-        $expected = new Natural(count($this->labels));
+        $expected = count($this->labels);
         $actual = $this->repository->searchTotalLabels($query);
         $this->assertEquals($expected, $actual);
     }

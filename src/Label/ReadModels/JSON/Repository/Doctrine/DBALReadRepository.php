@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
@@ -130,21 +129,18 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
 
         if ($query->getOffset()) {
             $queryBuilder
-                ->setFirstResult($query->getOffset()->toNative());
+                ->setFirstResult($query->getOffset());
         }
 
         if ($query->getLimit()) {
             $queryBuilder
-                ->setMaxResults($query->getLimit()->toNative());
+                ->setMaxResults($query->getLimit());
         }
 
         return $this->getResults($queryBuilder);
     }
 
-    /**
-     * @return Natural
-     */
-    public function searchTotalLabels(Query $query)
+    public function searchTotalLabels(Query $query): int
     {
         $queryBuilder = $this->createSearchQuery($query);
         $queryBuilder->select('COUNT(*)');
@@ -152,7 +148,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $statement = $queryBuilder->execute();
         $countArray = $statement->fetch(\PDO::FETCH_NUM);
 
-        return new Natural($countArray[0]);
+        return (int) $countArray[0];
     }
 
     /**
@@ -301,7 +297,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ? new UUID($row[SchemaConfigurator::PARENT_UUID_COLUMN]) : null;
 
 
-        $count = new Natural($row[SchemaConfigurator::COUNT_COLUMN]);
+        $count = (int) $row[SchemaConfigurator::COUNT_COLUMN];
 
         return new Entity(
             $uuid,
