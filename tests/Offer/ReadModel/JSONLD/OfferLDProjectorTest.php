@@ -64,10 +64,12 @@ use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use ValueObjects\Money\Currency;
+use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferLDProjectorTest extends TestCase
@@ -445,8 +447,7 @@ class OfferLDProjectorTest extends TestCase
 
         $priceInfo = new PriceInfo(
             new BasePrice(
-                Price::fromFloat(10.5),
-                Currency::fromNative('EUR')
+                new Money(1050, new Currency('EUR'))
             )
         );
 
@@ -456,8 +457,7 @@ class OfferLDProjectorTest extends TestCase
                     new LegacyLanguage('nl'),
                     new StringLiteral('Werkloze dodo kwekers')
                 ),
-                new Price(0),
-                Currency::fromNative('EUR')
+                new Money(0, new Currency('EUR'))
             )
         );
 

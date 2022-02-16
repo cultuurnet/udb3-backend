@@ -62,9 +62,11 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency;
+use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
@@ -382,7 +384,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new UpdatePriceInfo(
                     $placeId,
                     new PriceInfo(
-                        new BasePrice(Price::fromFloat(10.5), Currency::fromNative('EUR'))
+                        new BasePrice(new Money(1050, new Currency('EUR')))
                     )
                 ),
                 new ImportLabels(

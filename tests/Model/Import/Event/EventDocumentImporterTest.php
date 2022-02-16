@@ -68,10 +68,12 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ValueObjects\Money\Currency;
+use ValueObjects\Money\Currency as LegacyCurrencuy;
 
 class EventDocumentImporterTest extends TestCase
 {
@@ -438,8 +440,7 @@ class EventDocumentImporterTest extends TestCase
                 $id,
                 new PriceInfo(
                     new BasePrice(
-                        new Price(1000),
-                        Currency::fromNative('EUR')
+                        new Money(1000, new Currency('EUR'))
                     )
                 )
             ),

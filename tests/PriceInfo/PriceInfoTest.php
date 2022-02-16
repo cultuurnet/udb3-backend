@@ -9,9 +9,10 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency;
+use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class PriceInfoTest extends TestCase
@@ -34,8 +35,7 @@ class PriceInfoTest extends TestCase
     public function setUp()
     {
         $this->basePrice = new BasePrice(
-            Price::fromFloat(10.5),
-            Currency::fromNative('EUR')
+            new Money(1050, new Currency('EUR'))
         );
 
         $this->tariffs = [
@@ -44,8 +44,7 @@ class PriceInfoTest extends TestCase
                     new Language('nl'),
                     new StringLiteral('Werkloze dodo kwekers')
                 ),
-                new Price(0),
-                Currency::fromNative('EUR')
+                new Money(0, new Currency('EUR'))
             ),
         ];
 
@@ -98,8 +97,7 @@ class PriceInfoTest extends TestCase
 
         $expected = new PriceInfo(
             new BasePrice(
-                new Price(1000),
-                Currency::fromNative('EUR')
+                new Money(1000, new Currency('EUR'))
             )
         );
 
@@ -134,8 +132,7 @@ class PriceInfoTest extends TestCase
 
         $expected = new PriceInfo(
             new BasePrice(
-                new Price(1000),
-                Currency::fromNative('EUR')
+                new Money(1000, new Currency('EUR'))
             )
         );
         $expected = $expected
@@ -145,8 +142,7 @@ class PriceInfoTest extends TestCase
                         new Language('nl'),
                         new StringLiteral('Senioren')
                     ),
-                    new Price(500),
-                    Currency::fromNative('EUR')
+                    new Money(500, new Currency('EUR'))
                 )
             );
 

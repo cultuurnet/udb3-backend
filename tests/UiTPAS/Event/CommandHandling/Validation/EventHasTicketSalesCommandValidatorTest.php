@@ -13,9 +13,11 @@ use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo as UpdatePlacePriceInfo;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Money\Currency;
+use ValueObjects\Money\Currency as LegacyCurrency;
 
 class EventHasTicketSalesCommandValidatorTest extends TestCase
 {
@@ -94,8 +96,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
             new PriceInfo(
                 new BasePrice(
-                    Price::fromFloat(14.99),
-                    Currency::fromNative('EUR')
+                    new Money(1499, new Currency('EUR'))
                 )
             )
         );
@@ -137,8 +138,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
             new PriceInfo(
                 new BasePrice(
-                    Price::fromFloat(14.99),
-                    Currency::fromNative('EUR')
+                    new Money(1499, new Currency('EUR'))
                 )
             )
         );
@@ -192,8 +192,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
             new PriceInfo(
                 new BasePrice(
-                    Price::fromFloat(14.99),
-                    Currency::fromNative('EUR')
+                    new Money(1499, new Currency('EUR'))
                 )
             )
         );

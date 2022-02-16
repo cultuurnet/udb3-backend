@@ -51,8 +51,10 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
+use Money\Currency;
+use Money\Money;
 use RuntimeException;
-use ValueObjects\Money\Currency;
+use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EventTest extends AggregateRootScenarioTestCase
@@ -393,8 +395,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $priceInfo = new PriceInfo(
             new BasePrice(
-                new Price(1000),
-                Currency::fromNative('EUR')
+                new Money(1000, new Currency('EUR'))
             )
         );
 

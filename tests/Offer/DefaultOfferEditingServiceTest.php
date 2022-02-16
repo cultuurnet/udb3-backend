@@ -21,9 +21,10 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency;
 
 class DefaultOfferEditingServiceTest extends TestCase
 {
@@ -150,8 +151,7 @@ class DefaultOfferEditingServiceTest extends TestCase
 
         $priceInfo = new PriceInfo(
             new BasePrice(
-                Price::fromFloat(10.5),
-                Currency::fromNative('EUR')
+                new Money(1050, new Currency('EUR'))
             )
         );
 

@@ -83,8 +83,10 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency;
+use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class HistoryProjectorTest extends TestCase
@@ -1334,8 +1336,7 @@ class HistoryProjectorTest extends TestCase
             self::EVENT_ID_1,
             new PriceInfo(
                 new BasePrice(
-                    Price::fromFloat(10.0),
-                    Currency::fromNative('EUR')
+                    new Money(1000, new Currency('EUR'))
                 )
             )
         );

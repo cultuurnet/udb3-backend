@@ -36,7 +36,8 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Money\Currency;
+use Money\Currency;
+use Money\Money;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -178,8 +179,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $priceInfo = new PriceInfo(
             new BasePrice(
-                Price::fromFloat(10.5),
-                Currency::fromNative('EUR')
+                new Money(1050, new Currency('EUR'))
             )
         );
 
