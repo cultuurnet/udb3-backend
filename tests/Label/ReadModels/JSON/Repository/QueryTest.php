@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class QueryTest extends TestCase
 {

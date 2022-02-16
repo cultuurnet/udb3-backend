@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Permissions;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 interface UserPermissionsWriteRepositoryInterface
 {

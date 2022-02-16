@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Cdb\Description;
 
 use CultuurNet\UDB3\StringFilter\StringFilterInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class MergedDescription extends StringLiteral
 {

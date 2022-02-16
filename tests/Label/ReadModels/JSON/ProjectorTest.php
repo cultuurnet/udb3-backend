@@ -31,7 +31,7 @@ use CultuurNet\UDB3\Place\Events\LabelAdded as LabelAddedToPlace;
 use CultuurNet\UDB3\Place\Events\LabelRemoved as LabelRemovedFromPlace;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {

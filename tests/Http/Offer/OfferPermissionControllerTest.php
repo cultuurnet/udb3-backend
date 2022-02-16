@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferPermissionControllerTest extends TestCase
 {

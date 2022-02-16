@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SavedSearches\Command;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

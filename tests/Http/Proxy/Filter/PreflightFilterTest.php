@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Proxy\Filter;
 use CultuurNet\UDB3\Http\Proxy\FilterPathRegex;
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class PreflightFilterTest extends TestCase
 {

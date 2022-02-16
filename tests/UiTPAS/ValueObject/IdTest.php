@@ -43,27 +43,4 @@ class IdTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         new Id('    ');
     }
-
-    /**
-     * @test
-     * @dataProvider emptyScalarValueDataProvider
-     *
-     */
-    public function it_should_throw_an_exception_for_a_casted_variable_that_evaluates_to_an_empty_string($emptyValue)
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        new Id($emptyValue);
-    }
-
-    /**
-     * @return array
-     */
-    public function emptyScalarValueDataProvider()
-    {
-        return [
-            ['id' => 0],
-            ['id' => null],
-            ['id' => false],
-        ];
-    }
 }

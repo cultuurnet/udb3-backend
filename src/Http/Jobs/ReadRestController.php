@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Jobs;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ReadRestController
 {

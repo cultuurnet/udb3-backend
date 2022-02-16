@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Projector implements EventListener
 {

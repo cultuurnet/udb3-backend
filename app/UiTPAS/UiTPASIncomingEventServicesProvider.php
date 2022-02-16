@@ -16,7 +16,7 @@ use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 {

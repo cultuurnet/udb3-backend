@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Jobs;
 
 use Resque_Job_Status;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ResqueJobStatusFactory implements JobsStatusFactoryInterface
 {

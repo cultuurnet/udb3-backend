@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ISO8601DateTimeDeserializer
 {

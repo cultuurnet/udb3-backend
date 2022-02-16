@@ -13,7 +13,7 @@ use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

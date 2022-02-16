@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Organizer\Events\LabelsImported;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
 {

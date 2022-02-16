@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 {

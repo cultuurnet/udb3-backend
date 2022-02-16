@@ -87,7 +87,7 @@ use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Event extends Offer implements UpdateableWithCdbXmlInterface
 {

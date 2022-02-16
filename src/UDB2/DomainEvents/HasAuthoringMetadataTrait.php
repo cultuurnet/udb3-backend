@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use DateTimeInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 trait HasAuthoringMetadataTrait
 {

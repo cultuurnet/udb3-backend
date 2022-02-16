@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

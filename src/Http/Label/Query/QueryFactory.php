@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Label\Query;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class QueryFactory implements QueryFactoryInterface
 {

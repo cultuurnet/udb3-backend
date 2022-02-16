@@ -18,7 +18,7 @@ use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Base class for offer reset callbacks.

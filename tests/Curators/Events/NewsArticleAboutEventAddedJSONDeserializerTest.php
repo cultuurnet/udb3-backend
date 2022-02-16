@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Curators\PublisherName;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
 {

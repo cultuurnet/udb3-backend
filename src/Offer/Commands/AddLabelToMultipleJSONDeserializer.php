@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

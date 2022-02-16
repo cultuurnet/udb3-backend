@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactoryInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class EventBusForwardingConsumerFactory
 {

@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
 use CultuurNet\UDB3\Role\Role;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class DefaultRoleEditingService implements RoleEditingServiceInterface
 {

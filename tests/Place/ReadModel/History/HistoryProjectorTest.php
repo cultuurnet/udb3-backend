@@ -84,7 +84,7 @@ use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class HistoryProjectorTest extends TestCase
 {

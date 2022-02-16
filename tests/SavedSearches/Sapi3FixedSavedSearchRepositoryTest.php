@@ -10,7 +10,7 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Sapi3FixedSavedSearchRepositoryTest extends TestCase
 {

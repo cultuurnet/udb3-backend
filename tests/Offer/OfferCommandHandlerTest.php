@@ -37,7 +37,7 @@ use CultuurNet\UDB3\Title;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 {

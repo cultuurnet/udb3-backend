@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Metadata;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferMetadataRepository extends AbstractDBALRepository
 {

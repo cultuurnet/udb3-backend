@@ -53,7 +53,7 @@ use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use RuntimeException;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventTest extends AggregateRootScenarioTestCase
 {

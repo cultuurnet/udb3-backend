@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Offer\ThemeResolverInterface;
 use CultuurNet\UDB3\Theme;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventThemeResolver implements ThemeResolverInterface
 {

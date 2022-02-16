@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\User;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 interface UserIdentityResolver
 {

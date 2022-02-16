@@ -40,7 +40,7 @@ use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {

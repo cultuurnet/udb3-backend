@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractDBALRepository
 {

@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class FilterPathMethodProxy extends Proxy
 {
