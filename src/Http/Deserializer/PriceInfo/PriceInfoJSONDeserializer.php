@@ -66,12 +66,12 @@ class PriceInfoJSONDeserializer extends JSONDeserializer
         foreach ($data as $itemData) {
             if ($itemData['category'] == 'base') {
                 $basePrice = new BasePrice(
-                    new Money((int) $itemData['price'] * 100, new Currency('EUR'))
+                    new Money((int) ($itemData['price'] * 100), new Currency('EUR'))
                 );
             } else {
                 $tariffs[] = new Tariff(
                     MultilingualString::deserialize($itemData['name']),
-                    new Money((int) $itemData['price'] * 100, new Currency('EUR'))
+                    new Money((int) ($itemData['price'] * 100), new Currency('EUR'))
                 );
             }
         }

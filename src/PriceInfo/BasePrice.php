@@ -38,7 +38,7 @@ class BasePrice implements Serializable
 
     public function getPrice(): float
     {
-        return (float) $this->money->getAmount() / 100;
+        return $this->money->getAmount() / 100;
     }
 
     public function getCurrency(): Currency
@@ -63,7 +63,7 @@ class BasePrice implements Serializable
     public static function deserialize(array $data)
     {
         return new BasePrice(
-            new Money($data['price'] * 100, new Currency($data['currency']))
+            new Money((int)($data['price'] * 100), new Currency($data['currency']))
         );
     }
 

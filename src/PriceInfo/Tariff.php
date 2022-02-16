@@ -68,7 +68,7 @@ class Tariff implements Serializable
     {
         return new Tariff(
             MultilingualString::deserialize($data['name']),
-            new Money($data['price'] * 100, new Currency($data['currency']))
+            new Money((int)($data['price'] * 100), new Currency($data['currency']))
         );
     }
 

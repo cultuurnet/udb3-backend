@@ -183,7 +183,7 @@ class CdbXMLItemBaseImporter
         }
 
         $basePrice = new BasePrice(
-            new Money((int) $basePrice * 100, new Currency('EUR'))
+            new Money((int) ($basePrice * 100), new Currency('EUR'))
         );
 
         /* @var Tariff[] $tariffs */
@@ -223,7 +223,7 @@ class CdbXMLItemBaseImporter
                 if (!isset($tariffs[$tariffIndex])) {
                     $tariff = new Tariff(
                         new MultilingualString(new Language($language), new StringLiteral((string) $tariffName)),
-                        new Money((int) $tariffPrice * 100, new Currency('EUR'))
+                        new Money((int)($tariffPrice * 100), new Currency('EUR'))
                     );
                 } else {
                     $tariff = $tariffs[$tariffIndex];
@@ -231,7 +231,7 @@ class CdbXMLItemBaseImporter
                     $name = $name->withTranslation(new Language($language), new StringLiteral((string) $tariffName));
                     $tariff = new Tariff(
                         $name,
-                        new Money((int) $tariff->getPrice() * 100, $tariff->getCurrency())
+                        new Money((int)($tariff->getPrice() * 100), $tariff->getCurrency())
                     );
                 }
 
