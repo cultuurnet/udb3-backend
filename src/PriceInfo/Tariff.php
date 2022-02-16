@@ -9,8 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
-use ValueObjects\Money\Currency as LegacyCurrency;
-use ValueObjects\Money\CurrencyCode as LegacyCurrencyCode;
 
 /**
  * @deprecated

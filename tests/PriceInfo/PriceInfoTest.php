@@ -12,7 +12,6 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency as LegacyCurrency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class PriceInfoTest extends TestCase
