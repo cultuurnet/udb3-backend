@@ -117,7 +117,7 @@ class Entity implements \JsonSerializable
         return [
             self::ID => $this->uuid->toString(),
             self::NAME => $this->name->toNative(),
-            self::VISIBILITY => $this->visibility->toNative(),
+            self::VISIBILITY => $this->visibility->toString(),
             self::PRIVACY => $this->privacy->toString(),
         ];
     }

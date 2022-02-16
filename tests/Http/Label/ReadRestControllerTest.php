@@ -207,7 +207,7 @@ final class ReadRestControllerTest extends TestCase
         return [
             'uuid' => $entity->getUuid()->toString(),
             'name' => $entity->getName()->toNative(),
-            'visibility' => $entity->getVisibility()->toNative(),
+            'visibility' => $entity->getVisibility()->toString(),
             'privacy' => $entity->getPrivacy()->toString(),
         ];
     }

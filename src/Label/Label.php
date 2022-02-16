@@ -95,14 +95,14 @@ class Label extends EventSourcedAggregateRoot
 
     public function makeVisible()
     {
-        if ($this->visibility !== Visibility::VISIBLE()) {
+        if (!$this->visibility->sameAs(Visibility::VISIBLE())) {
             $this->apply(new MadeVisible($this->uuid, $this->name));
         }
     }
 
     public function makeInvisible()
     {
-        if ($this->visibility !== Visibility::INVISIBLE()) {
+        if (!$this->visibility->sameAs(Visibility::INVISIBLE())) {
             $this->apply(new MadeInvisible($this->uuid, $this->name));
         }
     }

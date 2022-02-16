@@ -58,7 +58,7 @@ final class ImportLabelsHandler implements CommandHandler
                     $readModel = $this->labelsPermissionRepository->getByName(
                         new StringLiteral($label->getName()->toString())
                     );
-                    $visible = !$readModel || $readModel->getVisibility()->sameValueAs(Visibility::VISIBLE());
+                    $visible = !$readModel || $readModel->getVisibility()->sameAs(Visibility::VISIBLE());
                     return new Label($label->getName(), $visible);
                 },
                 $labelsToKeepOnOrganizer->toArray()

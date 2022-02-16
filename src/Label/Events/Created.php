@@ -54,7 +54,7 @@ class Created extends AbstractEvent
         return new self(
             new UUID($data[self::UUID]),
             new LabelName($data[self::NAME]),
-            Visibility::fromNative($data[self::VISIBILITY]),
+            new Visibility($data[self::VISIBILITY]),
             new Privacy($data[self::PRIVACY])
         );
     }
@@ -62,7 +62,7 @@ class Created extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            self::VISIBILITY => $this->getVisibility()->toNative(),
+            self::VISIBILITY => $this->getVisibility()->toString(),
             self::PRIVACY => $this->getPrivacy()->toString(),
         ];
     }

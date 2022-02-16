@@ -90,7 +90,7 @@ class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
             $label = $this->labelsRepository->getByName($udb3LabelRelation->getLabelName());
             $labelName = $label->getName()->toNative();
 
-            if ($label->getVisibility()->sameValueAs(Visibility::VISIBLE())) {
+            if ($label->getVisibility()->sameAs(Visibility::VISIBLE())) {
                 $data['labels'][] = $labelName;
             } else {
                 $data['hiddenLabels'][] = $labelName;

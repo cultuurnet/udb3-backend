@@ -174,7 +174,7 @@ class EntityTest extends TestCase
 
         $expectedJson = '{"uuid":"' . $this->uuid->toString()
             . '","name":"' . $this->name->toNative()
-            . '","visibility":"' . $this->visibilty->toNative()
+            . '","visibility":"' . $this->visibilty->toString()
             . '","privacy":"' . $this->privacy->toString() . '"}';
 
         $this->assertEquals($expectedJson, $json);

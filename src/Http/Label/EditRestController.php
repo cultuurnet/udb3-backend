@@ -33,7 +33,7 @@ class EditRestController
 
         $uuid = $this->writeService->create(
             new LabelName($bodyAsArray['name']),
-            Visibility::fromNative($bodyAsArray['visibility']),
+            new Visibility($bodyAsArray['visibility']),
             new Privacy($bodyAsArray['privacy'])
         );
 
