@@ -17,16 +17,6 @@ use ValueObjects\Money\CurrencyCode as LegacyCurrencyCode;
  */
 class BasePrice implements Serializable
 {
-    /**
-     * @var Price
-     */
-    private $price;
-
-    /**
-     * @var string
-     */
-    private $currencyCodeString;
-
     private Money $money;
 
     public function __construct(
