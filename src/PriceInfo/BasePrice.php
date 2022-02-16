@@ -52,7 +52,7 @@ class BasePrice implements Serializable
     public function serialize()
     {
         return [
-            'price' => $this->price->toNative(),
+            'price' => $this->getPrice(),
             'currency' => $this->getCurrency()->getName(),
         ];
     }
@@ -63,7 +63,7 @@ class BasePrice implements Serializable
     public static function deserialize(array $data)
     {
         return new BasePrice(
-            new Money((int) $data['price']*100, new Currency($data['currency']))
+            new Money($data['price'] * 100, new Currency($data['currency']))
         );
     }
 
