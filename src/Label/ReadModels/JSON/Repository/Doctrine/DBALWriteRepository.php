@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use ValueObjects\Number\Integer as IntegerValue;
 use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
@@ -85,16 +84,15 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     public function updateCountIncrement(UUID $uuid)
     {
         $this->executeCountUpdate(
-            new IntegerValue(+1),
+            1,
             $uuid
         );
     }
 
-
     public function updateCountDecrement(UUID $uuid)
     {
         $this->executeCountUpdate(
-            new IntegerValue(-1),
+            -1,
             $uuid
         );
     }
@@ -122,11 +120,11 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
 
 
     private function executeCountUpdate(
-        IntegerValue $value,
+        int $value,
         UUID $uuid
     ) {
-        $currentCount = $this->getCurrentCount($uuid)->toNative();
-        $newCount = $currentCount + $value->toNative();
+        $currentCount = $this->getCurrentCount($uuid);
+        $newCount = $currentCount + $value;
 
         $queryBuilder = $this->createQueryBuilder()
             ->update($this->getTableName()->toNative())
@@ -140,7 +138,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $queryBuilder->execute();
     }
 
-    private function getCurrentCount(UUID $uuid): IntegerValue
+    private function getCurrentCount(UUID $uuid): int
     {
         $queryBuilder = $this->createQueryBuilder()
             ->select([SchemaConfigurator::COUNT_COLUMN])
@@ -151,6 +149,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $statement = $queryBuilder->execute();
         $row = $statement->fetch(\PDO::FETCH_NUM);
 
-        return new IntegerValue($row[0]);
+        return (int) $row[0];
     }
 }
