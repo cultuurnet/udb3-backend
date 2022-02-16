@@ -44,7 +44,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -331,15 +330,13 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     {
         $expected = new \CultuurNet\UDB3\PriceInfo\PriceInfo(
             new BasePrice(
-                new Price(1500),
-                \ValueObjects\Money\Currency::fromNative('EUR')
+                new Money(1500, new Currency('EUR'))
             )
         );
         $expected = $expected->withExtraTariff(
             new \CultuurNet\UDB3\PriceInfo\Tariff(
                 new MultilingualString(new \CultuurNet\UDB3\Language('nl'), new StringLiteral('Senioren')),
-                new Price(1050),
-                \ValueObjects\Money\Currency::fromNative('EUR')
+                new Money(1050, new Currency('EUR'))
             )
         );
         $actual = $this->completeAdapter->getPriceInfo();

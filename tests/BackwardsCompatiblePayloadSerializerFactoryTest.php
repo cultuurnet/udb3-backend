@@ -26,14 +26,14 @@ use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
@@ -604,8 +604,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $expectedPriceInfo = new PriceInfo(
             new BasePrice(
-                new Price(1500),
-                Currency::fromNative('EUR')
+                new Money(1500, new Currency('EUR'))
             )
         );
 
@@ -616,8 +615,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                         new Language('nl'),
                         new StringLiteral('Senioren')
                     ),
-                    new Price(1000),
-                    Currency::fromNative('EUR')
+                    new Money(1000, new Currency('EUR'))
                 )
             )
             ->withExtraTariff(
@@ -626,8 +624,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                         new Language('nl'),
                         new StringLiteral('Studenten')
                     ),
-                    new Price(750),
-                    Currency::fromNative('EUR')
+                    new Money(750, new Currency('EUR'))
                 )
             );
 

@@ -38,13 +38,13 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
+use Money\Currency;
+use Money\Money;
 use Ramsey\Uuid\Uuid;
-use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class PlaceTest extends AggregateRootScenarioTestCase
@@ -186,8 +186,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
         $priceInfo = new PriceInfo(
             new BasePrice(
-                new Price(1000),
-                Currency::fromNative('EUR')
+                new Money(1000, new Currency('EUR'))
             )
         );
 

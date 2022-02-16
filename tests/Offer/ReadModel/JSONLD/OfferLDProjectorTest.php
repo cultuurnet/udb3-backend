@@ -53,7 +53,6 @@ use CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD\ItemLDProjector;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -64,10 +63,11 @@ use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferLDProjectorTest extends TestCase
@@ -445,8 +445,7 @@ class OfferLDProjectorTest extends TestCase
 
         $priceInfo = new PriceInfo(
             new BasePrice(
-                Price::fromFloat(10.5),
-                Currency::fromNative('EUR')
+                new Money(1050, new Currency('EUR'))
             )
         );
 
@@ -456,8 +455,7 @@ class OfferLDProjectorTest extends TestCase
                     new LegacyLanguage('nl'),
                     new StringLiteral('Werkloze dodo kwekers')
                 ),
-                new Price(0),
-                Currency::fromNative('EUR')
+                new Money(0, new Currency('EUR'))
             )
         );
 

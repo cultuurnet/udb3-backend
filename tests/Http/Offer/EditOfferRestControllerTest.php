@@ -16,17 +16,17 @@ use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EditOfferRestControllerTest extends TestCase
@@ -189,14 +189,12 @@ class EditOfferRestControllerTest extends TestCase
         $request = new Request([], [], [], [], [], [], $data);
 
         $expectedBasePrice = new BasePrice(
-            new Price(1500),
-            Currency::fromNative('EUR')
+            new Money(1500, new Currency('EUR'))
         );
 
         $expectedTariff = new Tariff(
             new MultilingualString(new Language('nl'), new StringLiteral('Werkloze dodo kwekers')),
-            new Price(0),
-            Currency::fromNative('EUR')
+            new Money(0, new Currency('EUR'))
         );
 
         $expectedPriceInfo = (new PriceInfo($expectedBasePrice))

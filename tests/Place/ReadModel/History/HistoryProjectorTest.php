@@ -76,14 +76,14 @@ use CultuurNet\UDB3\Place\Events\VideoAdded;
 use CultuurNet\UDB3\Place\Events\VideoDeleted;
 use CultuurNet\UDB3\Place\Events\VideoUpdated;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class HistoryProjectorTest extends TestCase
@@ -855,8 +855,7 @@ class HistoryProjectorTest extends TestCase
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new PriceInfo(
                 new BasePrice(
-                    Price::fromFloat(10.0),
-                    Currency::fromNative('EUR')
+                    new Money(1000, new Currency('EUR'))
                 )
             )
         );

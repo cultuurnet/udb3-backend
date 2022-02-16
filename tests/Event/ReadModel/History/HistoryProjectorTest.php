@@ -75,7 +75,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -83,8 +82,9 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class HistoryProjectorTest extends TestCase
@@ -1334,8 +1334,7 @@ class HistoryProjectorTest extends TestCase
             self::EVENT_ID_1,
             new PriceInfo(
                 new BasePrice(
-                    Price::fromFloat(10.0),
-                    Currency::fromNative('EUR')
+                    new Money(1000, new Currency('EUR'))
                 )
             )
         );
