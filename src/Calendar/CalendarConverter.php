@@ -133,7 +133,7 @@ class CalendarConverter implements CalendarConverterInterface
             foreach ($openingHours as $openingHour) {
                 // In CDB2 every day needs to be a seperate entry.
                 foreach ($openingHour->getDayOfWeekCollection()->getDaysOfWeek() as $day) {
-                    $openingTimesPerDay[$day->toNative()][] = new CultureFeed_Cdb_Data_Calendar_OpeningTime(
+                    $openingTimesPerDay[$day->toString()][] = new CultureFeed_Cdb_Data_Calendar_OpeningTime(
                         $openingHour->getOpens()->toNativeString() . ':00',
                         $openingHour->getCloses()->toNativeString() . ':00'
                     );

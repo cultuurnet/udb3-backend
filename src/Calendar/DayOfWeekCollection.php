@@ -40,7 +40,7 @@ class DayOfWeekCollection implements Serializable
             array_merge(
                 $this->daysOfWeek,
                 [
-                    $dayOfWeek->toNative(),
+                    $dayOfWeek->toString(),
                 ]
             )
         );
@@ -55,7 +55,7 @@ class DayOfWeekCollection implements Serializable
     {
         return array_map(
             function ($dayOfWeek) {
-                return DayOfWeek::fromNative($dayOfWeek);
+                return new DayOfWeek($dayOfWeek);
             },
             $this->daysOfWeek
         );
@@ -69,7 +69,7 @@ class DayOfWeekCollection implements Serializable
         return array_reduce(
             $data,
             function (DayOfWeekCollection $collection, $dayOfWeek) {
-                return $collection->addDayOfWeek(DayOfWeek::fromNative($dayOfWeek));
+                return $collection->addDayOfWeek(new DayOfWeek($dayOfWeek));
             },
             new DayOfWeekCollection()
         );

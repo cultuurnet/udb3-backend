@@ -42,11 +42,11 @@ class OpeningHourTest extends TestCase
         $this->closes = new OpeningTime(new Hour(17), new Minute(0));
 
         $this->dayOfWeekCollection = new DayOfWeekCollection(
-            DayOfWeek::fromNative('monday'),
-            DayOfWeek::fromNative('tuesday'),
-            DayOfWeek::fromNative('wednesday'),
-            DayOfWeek::fromNative('thursday'),
-            DayOfWeek::fromNative('friday')
+            new DayOfWeek('monday'),
+            new DayOfWeek('tuesday'),
+            new DayOfWeek('wednesday'),
+            new DayOfWeek('thursday'),
+            new DayOfWeek('friday')
         );
 
         $this->openingHourAsArray = [
