@@ -33,7 +33,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
                 $uuid->toString(),
                 $name->toNative(),
                 $visibility === Visibility::VISIBLE() ? 1 : 0,
-                $privacy === Privacy::PRIVACY_PRIVATE() ? 1 : 0,
+                $privacy->sameAs(Privacy::PRIVACY_PRIVATE()) ? 1 : 0,
                 $parentUuid ? $parentUuid->toString() : null,
             ]);
 

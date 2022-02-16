@@ -277,7 +277,7 @@ class RoleLabelsProjectorTest extends TestCase
             new UUID($uuid->toString()),
             new StringLiteral('labelName'),
             Visibility::getByName('INVISIBLE'),
-            Privacy::getByName('PRIVACY_PRIVATE')
+            new Privacy('private')
         );
     }
 
