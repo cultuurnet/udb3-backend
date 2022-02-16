@@ -6,8 +6,10 @@ namespace CultuurNet\UDB3\PriceInfo;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
-use ValueObjects\Money\Currency;
-use ValueObjects\Money\CurrencyCode;
+use Money\Currency;
+use Money\Money;
+use ValueObjects\Money\Currency as LegacyCurrency;
+use ValueObjects\Money\CurrencyCode as LegacyCurrencyCode;
 
 /**
  * @deprecated
@@ -25,13 +27,12 @@ class BasePrice implements Serializable
      */
     private $currencyCodeString;
 
+    private Money $money;
 
     public function __construct(
-        Price $price,
-        Currency $currency
+        Money $money
     ) {
-        $this->price = $price;
-        $this->currencyCodeString = $currency->getCode()->toNative();
+        $this->money = $money;
     }
 
     /**
@@ -39,15 +40,12 @@ class BasePrice implements Serializable
      */
     public function getPrice()
     {
-        return $this->price;
+        return $this->money->getAmount();
     }
 
-    /**
-     * @return Currency
-     */
-    public function getCurrency()
+    public function getCurrency(): Currency
     {
-        return Currency::fromNative($this->currencyCodeString);
+        return $this->money->getCurrency();
     }
 
     /**
@@ -57,7 +55,7 @@ class BasePrice implements Serializable
     {
         return [
             'price' => $this->price->toNative(),
-            'currency' => $this->currencyCodeString,
+            'currency' => $this->getCurrency()->getName(),
         ];
     }
 
@@ -67,8 +65,7 @@ class BasePrice implements Serializable
     public static function deserialize(array $data)
     {
         return new BasePrice(
-            new Price($data['price']),
-            Currency::fromNative($data['currency'])
+            new Money((int) $data['price']*100, new Currency($data['currency']))
         );
     }
 
@@ -78,8 +75,7 @@ class BasePrice implements Serializable
     public static function fromUdb3ModelTariff(Udb3ModelTariff $tariff)
     {
         return new BasePrice(
-            new Price($tariff->getPrice()->getAmount()),
-            new Currency(CurrencyCode::fromNative($tariff->getPrice()->getCurrency()->getName()))
+            $tariff->getPrice()
         );
     }
 }
