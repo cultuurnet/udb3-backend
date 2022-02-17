@@ -40,7 +40,7 @@ final class CopyCreated extends Created
         return new self(
             new UUID($data[self::UUID]),
             new LabelName($data[self::NAME]),
-            Visibility::fromNative($data[self::VISIBILITY]),
+            new Visibility($data[self::VISIBILITY]),
             new Privacy($data[self::PRIVACY]),
             new UUID($data[self::PARENT_UUID])
         );

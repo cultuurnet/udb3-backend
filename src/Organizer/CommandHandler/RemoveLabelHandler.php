@@ -36,7 +36,7 @@ final class RemoveLabelHandler implements CommandHandler
 
         $readModelLabelEntity = $this->labelRepository->getByName($labelName);
         if ($readModelLabelEntity) {
-            $visible = $readModelLabelEntity->getVisibility() === Visibility::VISIBLE();
+            $visible = $readModelLabelEntity->getVisibility()->sameAs(Visibility::VISIBLE());
         }
 
         $label = new Label(new LabelName($labelName->toNative()), $visible);

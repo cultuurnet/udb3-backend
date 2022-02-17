@@ -53,7 +53,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
 
                     $udb3Labels[] = new Label(
                         new LabelName($labelRelation->getLabelName()->toNative()),
-                        $label->getVisibility() === Visibility::VISIBLE()
+                        $label->getVisibility()->sameAs(Visibility::VISIBLE())
                     );
                 }
             }
