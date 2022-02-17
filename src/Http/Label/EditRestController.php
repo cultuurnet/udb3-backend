@@ -34,7 +34,7 @@ class EditRestController
         $uuid = $this->writeService->create(
             new LabelName($bodyAsArray['name']),
             Visibility::fromNative($bodyAsArray['visibility']),
-            Privacy::fromNative($bodyAsArray['privacy'])
+            new Privacy($bodyAsArray['privacy'])
         );
 
         return new JsonResponse(['uuid' => $uuid->toString()], 201);

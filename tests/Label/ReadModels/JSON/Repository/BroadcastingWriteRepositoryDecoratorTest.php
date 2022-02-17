@@ -48,7 +48,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
         $uuid = new UUID('eea246d1-4f50-4879-8f52-42867ed51670');
         $name = new StringLiteral('labelName');
         $visibility = Visibility::getByName('INVISIBLE');
-        $privacy = Privacy::getByName('PRIVACY_PRIVATE');
+        $privacy = new Privacy('private');
 
         $this->writeRepository
             ->expects($this->once())

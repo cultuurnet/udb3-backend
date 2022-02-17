@@ -50,7 +50,7 @@ class LabelRolesProjectorTest extends TestCase
             new UUID('32574fe8-e752-49dd-9dc1-6856372f5f2f'),
             new LabelName('labelName'),
             Visibility::getByName('INVISIBLE'),
-            Privacy::getByName('PRIVACY_PRIVATE')
+            new Privacy('private')
         );
 
         $domainMessage = $this->createDomainMessage(

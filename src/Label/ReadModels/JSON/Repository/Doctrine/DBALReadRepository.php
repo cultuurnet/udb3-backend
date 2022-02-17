@@ -77,7 +77,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         }
 
         // A public label is always allowed.
-        if ($label->getPrivacy() === Privacy::PRIVACY_PUBLIC()) {
+        if ($label->getPrivacy()->sameAs(Privacy::PRIVACY_PUBLIC())) {
             return true;
         }
 
