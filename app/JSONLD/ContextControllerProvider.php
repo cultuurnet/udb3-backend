@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ContextControllerProvider implements ControllerProviderInterface
 {

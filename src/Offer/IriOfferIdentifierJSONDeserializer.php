@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

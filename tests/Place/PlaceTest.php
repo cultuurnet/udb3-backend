@@ -45,7 +45,7 @@ use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class PlaceTest extends AggregateRootScenarioTestCase
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class PermissionVoterCommandBusSecurity implements CommandBusSecurity
 {

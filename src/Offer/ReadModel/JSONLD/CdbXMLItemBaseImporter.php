@@ -17,7 +17,7 @@ use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class CdbXMLItemBaseImporter
 {

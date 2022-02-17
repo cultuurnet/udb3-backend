@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\UDB2\Actor\Events;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ActorCreatedEnrichedWithCdbXmlTest extends TestCase
 {

@@ -19,7 +19,7 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferRestBaseControllerTest extends TestCase
 {

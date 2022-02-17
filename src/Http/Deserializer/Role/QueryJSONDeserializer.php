@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Role;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 
 /**

@@ -34,7 +34,7 @@ use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class LabelServiceProvider implements ServiceProviderInterface
 {

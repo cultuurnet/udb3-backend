@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\ValueObject;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

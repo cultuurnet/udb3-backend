@@ -8,7 +8,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class AbstractBookingInfoEventTest extends TestCase
 {

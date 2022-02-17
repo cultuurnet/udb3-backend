@@ -9,7 +9,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class DBALProductionRepository extends AbstractDBALRepository implements ProductionRepository
 {

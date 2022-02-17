@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\JSONLD;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ContextControllerTest extends TestCase
 {

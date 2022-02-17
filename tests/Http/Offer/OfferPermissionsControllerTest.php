@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\Assert\JsonEquals;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferPermissionsControllerTest extends TestCase
 {

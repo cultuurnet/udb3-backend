@@ -9,7 +9,7 @@ use Auth0\SDK\API\Management\Users;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Auth0UserIdentityResolverTest extends TestCase
 {

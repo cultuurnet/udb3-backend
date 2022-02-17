@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOwnerQuery
 {

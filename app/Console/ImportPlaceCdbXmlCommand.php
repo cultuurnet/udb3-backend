@@ -14,7 +14,7 @@ use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ImportPlaceCdbXmlCommand extends AbstractCommand
 {

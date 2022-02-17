@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\HasCdbXmlTrait;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdated;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ActorUpdatedEnrichedWithCdbXml extends ActorUpdated implements CdbXmlContainerInterface
 {

@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Language;
 
 interface OfferCommandFactoryInterface

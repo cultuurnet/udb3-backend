@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPAS\CardSystem;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class CardSystem
 {

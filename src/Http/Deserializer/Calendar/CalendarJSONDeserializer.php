@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

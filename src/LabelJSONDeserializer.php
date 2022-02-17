@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
-use ValueObjects\StringLiteral\StringLiteral;
 
 /**
  * @deprecated

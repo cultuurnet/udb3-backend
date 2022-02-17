@@ -50,7 +50,7 @@ use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Udb3ModelToLegacyOfferAdapterTest extends TestCase
 {

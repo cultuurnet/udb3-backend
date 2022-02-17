@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media\Properties;
 
 use InvalidArgumentException;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 use function is_string;
 
 final class MIMEType extends StringLiteral

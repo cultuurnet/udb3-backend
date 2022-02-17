@@ -34,7 +34,6 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 {

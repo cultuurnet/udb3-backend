@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInte
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionVoterTest extends TestCase
 {

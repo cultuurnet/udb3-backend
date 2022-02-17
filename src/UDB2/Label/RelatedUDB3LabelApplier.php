@@ -11,7 +11,7 @@ use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class RelatedUDB3LabelApplier implements LabelApplierInterface
 {

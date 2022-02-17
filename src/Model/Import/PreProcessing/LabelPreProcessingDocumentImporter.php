@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterfac
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated Use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser instead.

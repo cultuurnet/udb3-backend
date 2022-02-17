@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Organizer\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OrganizerPermissionServiceProvider implements ServiceProviderInterface
 {

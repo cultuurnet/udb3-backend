@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeJSONDeserializer;
 use CultuurNet\UDB3\Title;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

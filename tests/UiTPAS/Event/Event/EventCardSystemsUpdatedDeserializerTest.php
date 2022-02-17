@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventCardSystemsUpdatedDeserializerTest extends TestCase
 {

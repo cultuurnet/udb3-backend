@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class DescriptionJSONDeserializerTest extends TestCase
 {

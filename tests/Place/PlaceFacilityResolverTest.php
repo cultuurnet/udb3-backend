@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Facility;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class PlaceFacilityResolverTest extends TestCase
 {
