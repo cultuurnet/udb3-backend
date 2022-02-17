@@ -1616,6 +1616,51 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertValidationErrors($place, $expectedErrors);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_terms_has_more_than_one_event_types(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '1',
+                    'label' => 'foo',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '2',
+                    'label' => 'bar',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms',
+                'At most 1 array items must match schema'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
     /**
      * @test
      */
