@@ -6,25 +6,23 @@ namespace CultuurNet\UDB3\Http\Request\Body;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use Opis\JsonSchema\JsonPointer;
+use JsonPath\JsonObject;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
-use stdClass;
 
 final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
 {
     private const ORGANIZER_TRANSLATABLE_FIELDS = [
-        '/name',
-        '/address',
+        '$.name',
+        '$.address',
     ];
 
     private const PLACE_TRANSLATABLE_FIELDS = [
-        '/name',
-        '/description',
-        '/address',
-        '/bookingInfo/urlLabel',
-        '/priceInfo/[]/name',
-        '/status/reason',
+        '$.name',
+        '$.description',
+        '$.address',
+        '$.bookingInfo.urlLabel',
+        '$.priceInfo[*].name',
+        '$.status.reason',
     ];
 
     private array $translatableFields;
@@ -52,24 +50,35 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         $mainLanguage = $data->mainLanguage;
         $errors = [];
 
-        $this->replaceArrayPointers($data);
-
         foreach ($this->translatableFields as $translatableField) {
-            $jsonPointer = JsonPointer::parse($translatableField);
-            if (!$jsonPointer) {
-                throw new RuntimeException('Could not parse JSON pointer ' . $translatableField);
-            }
+            $jsonObject = new JsonObject($data, true);
+            $fieldData = $jsonObject->get($translatableField);
 
-            $fieldData = $jsonPointer->data($data);
-            if (!is_object($fieldData)) {
+            if (!$fieldData || !is_array($fieldData)) {
                 // Either the field is not required and not present, or it is required but not present but it will be
                 // handled by the JSON schema validation, or it is present but in an unexpected type which will also be
                 // handled by the JSON schema validation.
                 continue;
             }
 
-            if (!isset($fieldData->{$mainLanguage})) {
-                $errors[] = new SchemaError($translatableField, 'A value in the mainLanguage (' . $mainLanguage . ') is required.');
+            if (!str_contains($translatableField, '[*]')) {
+                if (!isset($fieldData[$mainLanguage])) {
+                    $errors[] = new SchemaError(
+                        $this->jsonPathToJsonPointer($translatableField),
+                        'A value in the mainLanguage (' . $mainLanguage . ') is required.'
+                    );
+                }
+
+                continue;
+            }
+
+            foreach ($fieldData as $fieldIndex => $fieldValue) {
+                if (!isset($fieldValue[$mainLanguage])) {
+                    $errors[] = new SchemaError(
+                        $this->jsonPathToJsonPointer($translatableField, $fieldIndex),
+                        'A value in the mainLanguage (' . $mainLanguage . ') is required.'
+                    );
+                }
             }
         }
 
@@ -80,36 +89,15 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         return $request;
     }
 
-    private function replaceArrayPointers(stdClass $data): void
+    private function jsonPathToJsonPointer(string $jsonPath, int $index = null): string
     {
-        $replacedTranslatableFields = [];
+        $jsonPointer = $jsonPath;
 
-        foreach ($this->translatableFields as $translatableField) {
-            $arrayPos = strpos($translatableField, '[');
-
-            if (!$arrayPos) {
-                $replacedTranslatableFields[] = $translatableField;
-                continue;
-            }
-
-            $jsonPointer = JsonPointer::parse(substr($translatableField, 0, $arrayPos - 1));
-
-            if (!$jsonPointer) {
-                throw new RuntimeException('Could not parse JSON pointer ' . $translatableField);
-            }
-
-            $fieldData = $jsonPointer->data($data);
-
-            if (!is_array($fieldData)) {
-                continue;
-            }
-
-            for ($index = 0, $indexMax = count($fieldData); $index < $indexMax; $index++) {
-                $replacedTranslatableFields[] = str_replace('[]', (string) $index, $translatableField);
-            }
+        if ($index !== null) {
+            $jsonPointer = str_replace('[*]', '/' . $index, $jsonPointer);
         }
 
-        $this->translatableFields = $replacedTranslatableFields;
+        return str_replace(['$', '.'], ['', '/'], $jsonPointer);
     }
 
     public static function createForOrganizer(): self
