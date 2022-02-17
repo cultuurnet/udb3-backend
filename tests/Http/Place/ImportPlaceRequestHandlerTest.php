@@ -2998,7 +2998,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/priceInfo',
-                'Exactly one base tariff expected'
+                'At least 1 array items must match schema'
             ),
         ];
 
@@ -3055,7 +3055,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/priceInfo',
-                'Exactly one base tariff expected'
+                'At most 1 array items must match schema'
             ),
         ];
 
