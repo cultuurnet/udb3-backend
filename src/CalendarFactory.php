@@ -218,7 +218,7 @@ class CalendarFactory implements CalendarFactoryInterface
                     $openingHour = new OpeningHour(
                         OpeningTime::fromNativeDateTime($opens),
                         $closes ? OpeningTime::fromNativeDateTime($closes) : OpeningTime::fromNativeDateTime($opens),
-                        new DayOfWeekCollection(DayOfWeek::fromNative($day->getDayName()))
+                        new DayOfWeekCollection(new DayOfWeek($day->getDayName()))
                     );
 
                     $openingHours = $this->addToOpeningHours($openingHour, ...$openingHours);

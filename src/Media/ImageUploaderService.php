@@ -13,8 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ImageUploaderService implements ImageUploaderInterface
 {
@@ -28,17 +27,21 @@ class ImageUploaderService implements ImageUploaderInterface
 
     /**
      *  The maximum file size in bytes.
-     *  There is no limit when the file size if null.
+     *  There is no limit when the file size is null.
      */
-    private ?Natural $maxFileSize;
+    private ?int $maxFileSize;
 
     public function __construct(
         UuidGeneratorInterface $uuidGenerator,
         CommandBus $commandBus,
         FilesystemOperator $filesystem,
         string $uploadDirectory,
-        Natural $maxFileSize = null
+        int $maxFileSize = null
     ) {
+        if ($maxFileSize < 0) {
+            throw new \InvalidArgumentException('Max file size should be 0 or bigger.');
+        }
+
         $this->uuidGenerator = $uuidGenerator;
         $this->commandBus = $commandBus;
         $this->filesystem = $filesystem;
@@ -103,7 +106,7 @@ class ImageUploaderService implements ImageUploaderInterface
             throw new \InvalidArgumentException('There is a maximum size and we could not determine the size of the uploaded image.');
         }
 
-        if ($this->maxFileSize && $fileSize > $this->maxFileSize->toNative()) {
+        if ($this->maxFileSize && $fileSize > $this->maxFileSize) {
             throw new FileSizeExceededException(
                 'The file size of the uploaded image is too big.'
             );

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SavedSearches\Command;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {

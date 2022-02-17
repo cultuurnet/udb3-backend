@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCase
 {

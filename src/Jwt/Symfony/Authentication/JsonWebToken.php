@@ -14,7 +14,7 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class JsonWebToken extends AbstractToken
 {

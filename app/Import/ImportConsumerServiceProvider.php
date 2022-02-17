@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Silex\Error\LoggerName;
 use GuzzleHttp\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ImportConsumerServiceProvider implements ServiceProviderInterface
 {

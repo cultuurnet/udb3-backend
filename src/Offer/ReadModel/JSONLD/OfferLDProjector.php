@@ -606,16 +606,16 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd->priceInfo[] = [
             'category' => 'base',
             'name' => $this->basePriceTranslations,
-            'price' => $basePrice->getPrice()->toFloat(),
-            'priceCurrency' => $basePrice->getCurrency()->getCode()->toNative(),
+            'price' => $basePrice->getPrice()->getAmount() / 100,
+            'priceCurrency' => $basePrice->getCurrency()->getName(),
         ];
 
         foreach ($priceInfoUpdated->getPriceInfo()->getTariffs() as $tariff) {
             $offerLd->priceInfo[] = [
                 'category' => 'tariff',
                 'name' => $tariff->getName()->serialize(),
-                'price' => $tariff->getPrice()->toFloat(),
-                'priceCurrency' => $tariff->getCurrency()->getCode()->toNative(),
+                'price' => $tariff->getPrice()->getAmount() / 100,
+                'priceCurrency' => $tariff->getCurrency()->getName(),
             ];
         }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 interface ReadRepositoryInterface
 {

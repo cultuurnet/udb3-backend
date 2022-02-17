@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigu
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use JsonSerializable;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class LabelRelation implements JsonSerializable
 {

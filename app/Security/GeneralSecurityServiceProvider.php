@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepos
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Provides general security services usable by other services.

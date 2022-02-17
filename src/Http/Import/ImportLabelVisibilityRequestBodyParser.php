@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use Psr\Http\Message\ServerRequestInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Manipulates the `labels` and `hiddenLabels` properties on JSON of events, places and organizers that need to be
@@ -74,7 +74,7 @@ final class ImportLabelVisibilityRequestBodyParser implements RequestBodyParser
             $label = $this->labelsRepository->getByName(new StringLiteral($importLabel));
             $visibility = $label ? $label->getVisibility() : Visibility::VISIBLE();
 
-            if ($visibility->sameValueAs(Visibility::VISIBLE())) {
+            if ($visibility->sameAs(Visibility::VISIBLE())) {
                 $json->labels[] = $importLabel;
             } else {
                 $json->hiddenLabels[] = $importLabel;

@@ -32,12 +32,12 @@ use CultuurNet\UDB3\Offer\Item\ItemRepository;
 use CultuurNet\UDB3\Offer\Mock\Commands\UpdateTitle as UpdateTitleOnSomethingElse;
 use CultuurNet\UDB3\Offer\Mock\Commands\UpdatePriceInfo as UpdatePriceInfoOnSomethingElse;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
-use ValueObjects\Money\Currency;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -97,8 +97,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->priceInfo = new PriceInfo(
             new BasePrice(
-                Price::fromFloat(10.5),
-                Currency::fromNative('EUR')
+                new Money(1050, new Currency('EUR'))
             )
         );
     }

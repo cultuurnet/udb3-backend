@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\Import\Command\Deserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\Import\Command\ImportOrganizerDocument;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ImportOrganizerDocumentDeserializerTest extends TestCase
 {

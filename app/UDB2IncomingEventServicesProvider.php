@@ -40,12 +40,11 @@ use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
-use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['udb2_deserializer_locator'] = $app->share(
             function () {
@@ -87,7 +86,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 return new EventBusForwardingConsumerFactory(
-                    new Natural(0),
+                    0,
                     $app['amqp.connection'],
                     $logger,
                     $app['udb2_deserializer_locator'],
@@ -329,7 +328,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

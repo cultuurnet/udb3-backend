@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
-use ValueObjects\StringLiteral\StringLiteral;
 
 /**
  * @deprecated

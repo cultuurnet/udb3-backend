@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, MediaManagerInterface
 {

@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\Security\CommandBusSecurity;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class AuthorizedCommandBus extends CommandBusDecoratorBase implements AuthorizedCommandBusInterface, LoggerAwareInterface, ContextAwareInterface
 {

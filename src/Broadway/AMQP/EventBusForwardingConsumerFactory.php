@@ -6,53 +6,36 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
+use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidFactoryInterface;
-use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
-class EventBusForwardingConsumerFactory
+final class EventBusForwardingConsumerFactory
 {
     /**
      * Delay the consumption of UDB2 updates with some seconds to prevent a
      * race condition with the UDB3 worker. Modifications initiated by
      * commands in the UDB3 queue worker need to finish before their
      * counterpart UDB2 update is processed.
-     *
-     * @var Natural
      */
-    protected $executionDelay;
+    private int $executionDelay;
 
-    /**
-     * @var AMQPStreamConnection
-     */
-    protected $connection;
+    private AMQPStreamConnection $connection;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var DeserializerLocatorInterface
-     */
-    protected $deserializerLocator;
+    private DeserializerLocatorInterface $deserializerLocator;
 
-    /**
-     * @var EventBus
-     */
-    protected $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $consumerTag;
+    private StringLiteral $consumerTag;
 
-    protected UuidFactoryInterface $uuidFactory;
+    private UuidFactoryInterface $uuidFactory;
 
     public function __construct(
-        Natural $executionDelay,
+        int $executionDelay,
         AMQPStreamConnection $connection,
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
@@ -60,6 +43,10 @@ class EventBusForwardingConsumerFactory
         StringLiteral $consumerTag,
         UuidFactoryInterface $uuidFactory
     ) {
+        if ($executionDelay < 0) {
+            throw new InvalidArgumentException('Execution delay should be zero or higher.');
+        }
+
         $this->executionDelay = $executionDelay;
         $this->connection = $connection;
         $this->logger = $logger;
@@ -81,7 +68,7 @@ class EventBusForwardingConsumerFactory
             $exchange,
             $queue,
             $this->uuidFactory,
-            $this->executionDelay->toNative()
+            $this->executionDelay
         );
 
         $eventBusForwardingConsumer->setLogger($this->logger);

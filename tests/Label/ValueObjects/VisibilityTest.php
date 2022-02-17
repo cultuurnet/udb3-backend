@@ -15,7 +15,7 @@ class VisibilityTest extends TestCase
     {
         $visibility = Visibility::VISIBLE();
 
-        $this->assertEquals($visibility, Visibility::VISIBLE);
+        $this->assertEquals($visibility->toString(), Visibility::VISIBLE);
     }
 
     /**
@@ -25,7 +25,7 @@ class VisibilityTest extends TestCase
     {
         $visibility = Visibility::INVISIBLE();
 
-        $this->assertEquals($visibility, Visibility::INVISIBLE);
+        $this->assertEquals($visibility->toString(), Visibility::INVISIBLE);
     }
 
     /**
@@ -33,12 +33,12 @@ class VisibilityTest extends TestCase
      */
     public function it_has_only_a_visible_and_invisible_option()
     {
-        $options = Visibility::getConstants();
+        $options = Visibility::getAllowedValues();
 
         $this->assertEquals(
             [
-                Visibility::VISIBLE()->getName() => Visibility::VISIBLE,
-                Visibility::INVISIBLE()->getName() => Visibility::INVISIBLE,
+                Visibility::VISIBLE,
+                Visibility::INVISIBLE,
             ],
             $options
         );

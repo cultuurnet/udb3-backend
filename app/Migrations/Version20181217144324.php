@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Version20181217144324 extends AbstractMigration
 {

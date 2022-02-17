@@ -7,20 +7,16 @@ namespace CultuurNet\UDB3\Http\Label\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
-class QueryFactoryTest extends TestCase
+final class QueryFactoryTest extends TestCase
 {
     public const QUERY_VALUE = 'label';
     public const USER_ID_VALUE = 'userId';
     public const START_VALUE = 5;
     public const LIMIT_VALUE = 10;
 
-    /**
-     * @var QueryFactory
-     */
-    private $queryFactory;
+    private QueryFactory $queryFactory;
 
     protected function setUp(): void
     {
@@ -43,8 +39,8 @@ class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             new StringLiteral(self::QUERY_VALUE),
             new StringLiteral(self::USER_ID_VALUE),
-            new Natural(self::START_VALUE),
-            new Natural(self::LIMIT_VALUE)
+            self::START_VALUE,
+            self::LIMIT_VALUE
         );
 
         $this->assertEquals($expectedQuery, $query);
@@ -66,7 +62,7 @@ class QueryFactoryTest extends TestCase
             new StringLiteral(self::QUERY_VALUE),
             new StringLiteral(self::USER_ID_VALUE),
             null,
-            new Natural(self::LIMIT_VALUE)
+            self::LIMIT_VALUE
         );
 
         $this->assertEquals($expectedQuery, $query);
@@ -87,7 +83,7 @@ class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             new StringLiteral(self::QUERY_VALUE),
             new StringLiteral(self::USER_ID_VALUE),
-            new Natural(self::START_VALUE),
+            self::START_VALUE,
             null
         );
 
@@ -131,8 +127,8 @@ class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             new StringLiteral(self::QUERY_VALUE),
             new StringLiteral(self::USER_ID_VALUE),
-            new Natural(0),
-            new Natural(0)
+            0,
+            0
         );
 
         $this->assertEquals($expectedQuery, $query);
@@ -156,8 +152,8 @@ class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             new StringLiteral(self::QUERY_VALUE),
             null,
-            new Natural(self::START_VALUE),
-            new Natural(self::LIMIT_VALUE)
+            self::START_VALUE,
+            self::LIMIT_VALUE
         );
 
         $this->assertEquals($expectedQuery, $query);

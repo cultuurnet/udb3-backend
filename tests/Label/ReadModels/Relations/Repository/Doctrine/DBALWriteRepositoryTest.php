@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 {

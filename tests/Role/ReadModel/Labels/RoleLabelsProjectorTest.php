@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class RoleLabelsProjectorTest extends TestCase
 {
@@ -276,8 +276,8 @@ class RoleLabelsProjectorTest extends TestCase
         return new Entity(
             new UUID($uuid->toString()),
             new StringLiteral('labelName'),
-            Visibility::getByName('INVISIBLE'),
-            Privacy::getByName('PRIVACY_PRIVATE')
+            new Visibility('invisible'),
+            new Privacy('private')
         );
     }
 

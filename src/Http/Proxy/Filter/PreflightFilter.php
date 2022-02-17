@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use CultuurNet\UDB3\Http\Proxy\FilterPathRegex;
 use Psr\Http\Message\RequestInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class PreflightFilter implements FilterInterface
 {

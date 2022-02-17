@@ -5,19 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
-use ValueObjects\Enum\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
  * @deprecated
  *   Use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day instead where possible.
- *
- * @method static DayOfWeek MONDAY()
- * @method static DayOfWeek TUESDAY()
- * @method static DayOfWeek WEDNESDAY()
- * @method static DayOfWeek THURSDAY()
- * @method static DayOfWeek FRIDAY()
- * @method static DayOfWeek SATURDAY()
- * @method static DayOfWeek SUNDAY()
  */
 final class DayOfWeek extends Enum
 {
@@ -29,8 +21,56 @@ final class DayOfWeek extends Enum
     public const SATURDAY = 'saturday';
     public const SUNDAY = 'sunday';
 
+    public static function getAllowedValues(): array
+    {
+        return [
+            self::MONDAY,
+            self::TUESDAY,
+            self::WEDNESDAY,
+            self::THURSDAY,
+            self::FRIDAY,
+            self::SATURDAY,
+            self::SUNDAY,
+        ];
+    }
+
+    public static function MONDAY(): DayOfWeek
+    {
+        return new DayOfWeek(self::MONDAY);
+    }
+
+    public static function TUESDAY(): DayOfWeek
+    {
+        return new DayOfWeek(self::TUESDAY);
+    }
+
+    public static function WEDNESDAY(): DayOfWeek
+    {
+        return new DayOfWeek(self::WEDNESDAY);
+    }
+
+    public static function THURSDAY(): DayOfWeek
+    {
+        return new DayOfWeek(self::THURSDAY);
+    }
+
+    public static function FRIDAY(): DayOfWeek
+    {
+        return new DayOfWeek(self::FRIDAY);
+    }
+
+    public static function SATURDAY(): DayOfWeek
+    {
+        return new DayOfWeek(self::SATURDAY);
+    }
+
+    public static function SUNDAY(): DayOfWeek
+    {
+        return new DayOfWeek(self::SUNDAY);
+    }
+
     public static function fromUdb3ModelDay(Day $day): DayOfWeek
     {
-        return self::fromNative($day->toString());
+        return new DayOfWeek($day->toString());
     }
 }

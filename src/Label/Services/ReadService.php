@@ -4,54 +4,37 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Services;
 
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
-class ReadService implements ReadServiceInterface
+final class ReadService implements ReadServiceInterface
 {
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $readRepository;
+    private ReadRepositoryInterface $readRepository;
 
-    /**
-     * ReadService constructor.
-     */
     public function __construct(ReadRepositoryInterface $readRepository)
     {
         $this->readRepository = $readRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getByUuid(UUID $uuid)
+    public function getByUuid(UUID $uuid): ?Entity
     {
         return $this->readRepository->getByUuid($uuid);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getByName(StringLiteral $identifier)
+    public function getByName(StringLiteral $identifier): ?Entity
     {
         return $this->readRepository->getByName($identifier);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function search(Query $query)
+    public function search(Query $query): ?array
     {
         return $this->readRepository->search($query);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function searchTotalLabels(Query $query)
+    public function searchTotalLabels(Query $query): int
     {
         return $this->readRepository->searchTotalLabels($query);
     }

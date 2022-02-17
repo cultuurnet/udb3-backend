@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\ContactPoint;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ContactPointJSONDeserializerTest extends TestCase
 {

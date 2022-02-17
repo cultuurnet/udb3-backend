@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class BroadcastingWriteRepositoryDecoratorTest extends TestCase
 {
@@ -47,8 +47,8 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     {
         $uuid = new UUID('eea246d1-4f50-4879-8f52-42867ed51670');
         $name = new StringLiteral('labelName');
-        $visibility = Visibility::getByName('INVISIBLE');
-        $privacy = Privacy::getByName('PRIVACY_PRIVATE');
+        $visibility = new Visibility('invisible');
+        $privacy = new Privacy('private');
 
         $this->writeRepository
             ->expects($this->once())

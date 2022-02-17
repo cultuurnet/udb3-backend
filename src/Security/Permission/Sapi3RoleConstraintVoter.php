@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
 use Psr\Http\Message\UriInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Sapi3RoleConstraintVoter implements PermissionVoter
 {

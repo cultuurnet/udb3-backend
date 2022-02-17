@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Curators\PublisherName;
 use InvalidArgumentException;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer
 {

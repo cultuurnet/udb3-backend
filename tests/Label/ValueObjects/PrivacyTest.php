@@ -15,7 +15,7 @@ class PrivacyTest extends TestCase
     {
         $privacy = Privacy::PRIVACY_PUBLIC();
 
-        $this->assertEquals($privacy, Privacy::PRIVACY_PUBLIC);
+        $this->assertEquals($privacy->toString(), Privacy::PRIVACY_PUBLIC);
     }
 
     /**
@@ -25,7 +25,7 @@ class PrivacyTest extends TestCase
     {
         $privacy = Privacy::PRIVACY_PRIVATE();
 
-        $this->assertEquals($privacy, Privacy::PRIVACY_PRIVATE);
+        $this->assertEquals($privacy->toString(), Privacy::PRIVACY_PRIVATE);
     }
 
     /**
@@ -33,12 +33,12 @@ class PrivacyTest extends TestCase
      */
     public function it_has_only_a_private_and_public_option()
     {
-        $options = Privacy::getConstants();
+        $options = Privacy::getAllowedValues();
 
         $this->assertEquals(
             [
-                Privacy::PRIVACY_PUBLIC()->getName() => Privacy::PRIVACY_PUBLIC,
-                Privacy::PRIVACY_PRIVATE()->getName() => Privacy::PRIVACY_PRIVATE,
+                Privacy::PRIVACY_PUBLIC,
+                Privacy::PRIVACY_PRIVATE,
             ],
             $options
         );

@@ -56,11 +56,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         array $timestamps = [],
         array $openingHours = []
     ) {
-        if (empty($timestamps) && ($type->is(CalendarType::SINGLE()) || $type->is(CalendarType::MULTIPLE()))) {
+        if (empty($timestamps) && ($type->sameAs(CalendarType::SINGLE()) || $type->sameAs(CalendarType::MULTIPLE()))) {
             throw new \UnexpectedValueException('A single or multiple calendar should have timestamps.');
         }
 
-        if (($startDate === null || $endDate === null) && $type->is(CalendarType::PERIODIC())) {
+        if (($startDate === null || $endDate === null) && $type->sameAs(CalendarType::PERIODIC())) {
             throw new \UnexpectedValueException('A period should have a start- and end-date.');
         }
 
@@ -76,7 +76,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             }
         }
 
-        $this->type = $type->toNative();
+        $this->type = $type->toString();
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->openingHours = $openingHours;
@@ -101,7 +101,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     private function guardUpdatingBookingAvailability(): void
     {
-        if ($this->getType()->sameValueAs(CalendarType::PERIODIC()) || $this->getType()->sameValueAs(CalendarType::PERMANENT())) {
+        if ($this->getType()->sameAs(CalendarType::PERIODIC()) || $this->getType()->sameAs(CalendarType::PERMANENT())) {
             throw CalendarTypeNotSupported::forCalendarType($this->getType());
         }
     }
@@ -143,7 +143,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public function getType(): CalendarType
     {
-        return CalendarType::fromNative($this->type);
+        return new CalendarType($this->type);
     }
 
     public function getStartDate(): ?DateTimeInterface
@@ -240,7 +240,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public static function deserialize(array $data): Calendar
     {
-        $calendarType = CalendarType::fromNative($data['type']);
+        $calendarType = new CalendarType($data['type']);
 
         $startDate = !empty($data['startDate']) ? self::deserializeDateTime($data['startDate']) : null;
         $endDate = !empty($data['endDate']) ? self::deserializeDateTime($data['endDate']) : null;
@@ -253,7 +253,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // Backwards compatibility for serialized single or multiple calendar types that are missing timestamps but do
         // have a start and end date.
         $defaultTimeStamps = [];
-        if ($calendarType->sameValueAs(CalendarType::SINGLE()) || $calendarType->sameValueAs(CalendarType::MULTIPLE())) {
+        if ($calendarType->sameAs(CalendarType::SINGLE()) || $calendarType->sameAs(CalendarType::MULTIPLE())) {
             $defaultTimeStamps = $startDate ? [new Timestamp($startDate, $endDate ?: $startDate)] : [];
         }
 
@@ -408,7 +408,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public static function fromUdb3ModelCalendar(Udb3ModelCalendar $udb3Calendar): Calendar
     {
-        $type = CalendarType::fromNative($udb3Calendar->getType()->toString());
+        $type = new CalendarType($udb3Calendar->getType()->toString());
 
         $startDate = null;
         $endDate = null;
@@ -445,7 +445,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             $udb3Calendar->getBookingAvailability()
         );
 
-        if ($type->sameValueAs(CalendarType::PERIODIC()) || $type->sameValueAs(CalendarType::PERMANENT())) {
+        if ($type->sameAs(CalendarType::PERIODIC()) || $type->sameAs(CalendarType::PERMANENT())) {
             // If there are no subEvents, set the top status and top bookingAvailability.
             $calendar->status = $topStatus;
             $calendar->bookingAvailability = $topBookingAvailability;

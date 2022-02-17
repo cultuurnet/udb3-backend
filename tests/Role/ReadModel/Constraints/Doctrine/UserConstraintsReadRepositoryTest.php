@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as Pe
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator as SearchSchemaConfigurator;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UserConstraintsReadRepositoryTest extends TestCase
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UnsubscribeFromSavedSearchTest extends TestCase
 {

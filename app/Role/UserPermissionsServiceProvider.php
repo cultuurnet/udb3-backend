@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsWriteRepo
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsProjector;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionsServiceProvider implements ServiceProviderInterface
 {

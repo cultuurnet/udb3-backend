@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class ImportLabelsHandler implements CommandHandler
 {
@@ -58,7 +58,7 @@ final class ImportLabelsHandler implements CommandHandler
                     $readModel = $this->labelsPermissionRepository->getByName(
                         new StringLiteral($label->getName()->toString())
                     );
-                    $visible = !$readModel || $readModel->getVisibility()->sameValueAs(Visibility::VISIBLE());
+                    $visible = !$readModel || $readModel->getVisibility()->sameAs(Visibility::VISIBLE());
                     return new Label($label->getName(), $visible);
                 },
                 $labelsToKeepOnOrganizer->toArray()

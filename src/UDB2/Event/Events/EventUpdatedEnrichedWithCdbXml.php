@@ -9,7 +9,7 @@ use CultuurNet\UDB3\HasCdbXmlTrait;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use DateTimeImmutable;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventUpdatedEnrichedWithCdbXml extends EventUpdated implements CdbXmlContainerInterface
 {
