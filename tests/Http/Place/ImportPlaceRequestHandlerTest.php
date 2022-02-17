@@ -1555,7 +1555,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'label' => 'foo',
-                    'domain' => 'bar',
+                    'domain' => 'eventtype',
                 ],
             ],
             'address' => [
