@@ -652,7 +652,7 @@ class EventLDProjector extends OfferLDProjector implements
 
     protected function isPeriodicCalendarWithoutWeekScheme(Calendar $calendar): bool
     {
-        return $calendar->getType() === CalendarType::PERIODIC()
+        return $calendar->getType()->sameAs(CalendarType::PERIODIC())
             && $calendar->getOpeningHours() === [];
     }
 }

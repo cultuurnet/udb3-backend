@@ -12,7 +12,7 @@ final class CalendarTypeNotSupported extends Exception
     public static function forCalendarType(CalendarType $calendarType): self
     {
         return new self(
-            'Updating booking availability on calendar type: "' . $calendarType->getName() . '" is not supported.'
+            'Updating booking availability on calendar type: "' . $calendarType->toString() . '" is not supported.'
             . ' Only single and multiple calendar types can be updated.'
         );
     }
