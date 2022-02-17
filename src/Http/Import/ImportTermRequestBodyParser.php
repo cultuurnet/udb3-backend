@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Import;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -12,11 +14,11 @@ use stdClass;
 
 final class ImportTermRequestBodyParser implements RequestBodyParser
 {
-    private CategoryResolverInterface $placeCategoryResolver;
+    private CategoryResolverInterface $categoryResolver;
 
-    public function __construct(CategoryResolverInterface $placeCategoryResolver)
+    public function __construct(CategoryResolverInterface $categoryResolver)
     {
-        $this->placeCategoryResolver = $placeCategoryResolver;
+        $this->categoryResolver = $categoryResolver;
     }
 
     public function parse(ServerRequestInterface $request): ServerRequestInterface
@@ -29,11 +31,19 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
                 function (stdClass $term) {
                     if (isset($term->id) && is_string($term->id)) {
                         $id = $term->id;
-                        $category = $this->placeCategoryResolver->byId(new CategoryID($id));
-
+                        $category = $this->categoryResolver->byId(new CategoryID($id));
                         if ($category) {
                             $term->label = $category->getLabel()->toString();
                             $term->domain = $category->getDomain()->toString();
+                        }
+
+                        if ($category === null && isset($term->domain) && $term->domain === 'eventtype') {
+                            throw ApiProblem::bodyInvalidData(
+                                new SchemaError(
+                                    '/terms',
+                                    'The term ' . $id . ' does not exist or is not supported'
+                                )
+                            );
                         }
                     }
 
