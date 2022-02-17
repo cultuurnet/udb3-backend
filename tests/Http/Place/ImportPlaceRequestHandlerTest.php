@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -70,6 +71,7 @@ use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
+use Ramsey\Uuid\UuidFactoryInterface;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
 {
@@ -78,6 +80,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     private MockObject $aggregateRepository;
 
     private MockObject $uuidGenerator;
+
+    private MockObject $uuidFactory;
 
     private TraceableCommandBus $commandBus;
 
@@ -97,6 +101,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     {
         $this->aggregateRepository = $this->createMock(Repository::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
@@ -107,7 +112,24 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
             $this->aggregateRepository,
             $this->uuidGenerator,
-            new PlaceDenormalizer(),
+            new PlaceDenormalizer(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                new VideoDenormalizer($this->uuidFactory)
+            ),
             new CombinedRequestBodyParser(),
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
@@ -283,7 +305,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     'copyrightHolder' => 'De Hel',
                 ],
                 [
-                    'id' => 'c03a3e8a-0346-4d32-b2ac-4aedac49dc30',
                     'url' => 'https://vimeo.com/98765432',
                     'language' => 'nl',
                 ],
@@ -318,6 +339,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->method('getLockedLabelsForItem')
             ->with($placeId)
             ->willReturn(new Labels());
+
+        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $this->uuidFactory->expects($this->once())
+            ->method('uuid4')
+            ->willReturn($videoId);
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('placeId', $placeId)
@@ -419,7 +445,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                             new Language('nl')
                         ))->withCopyrightHolder(new CopyrightHolder('De Hel')),
                         new Video(
-                            'c03a3e8a-0346-4d32-b2ac-4aedac49dc30',
+                            $videoId->toString(),
                             new Url('https://vimeo.com/98765432'),
                             new Language('nl')
                         ),
