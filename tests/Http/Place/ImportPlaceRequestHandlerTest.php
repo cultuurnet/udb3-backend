@@ -3302,6 +3302,9 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     'http://www.publiq.be',
                     'http://www.uitdatabank.be',
                 ],
+                'urlLabel' => [
+                    'nl' => 'booking info label'
+                ]
             ],
         ];
 
@@ -3344,6 +3347,9 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'bookingInfo' => [
                 'url' => 'info@publiq.be',
+                'urlLabel' => [
+                    'nl' => 'booking info label'
+                ]
             ],
         ];
 
