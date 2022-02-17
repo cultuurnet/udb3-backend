@@ -15,15 +15,15 @@ class DayOfWeekTest extends TestCase
     {
         $this->assertEquals(
             [
-                'MONDAY' => 'monday',
-                'TUESDAY' => 'tuesday',
-                'WEDNESDAY' => 'wednesday',
-                'THURSDAY' => 'thursday',
-                'FRIDAY' => 'friday',
-                'SATURDAY' => 'saturday',
-                'SUNDAY' => 'sunday',
+                'monday',
+                'tuesday',
+                'wednesday',
+                'thursday',
+                'friday',
+                'saturday',
+                'sunday',
             ],
-            DayOfWeek::getConstants()
+            DayOfWeek::getAllowedValues()
         );
     }
 }
