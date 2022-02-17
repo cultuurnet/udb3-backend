@@ -2302,6 +2302,51 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_status_reason_has_missing_main_language_translation(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'status' => [
+                'type' => 'Unavailable',
+                'reason' => [
+                    'en' => 'We zijn nog steeds gesloten.',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/status/reason',
+                'A value in the mainLanguage (nl) is required.'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_if_booking_availability_is_invalid(): void
     {
         $place = [

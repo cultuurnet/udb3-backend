@@ -24,6 +24,7 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         '/address',
         '/bookingInfo/urlLabel',
         '/priceInfo/[]/name',
+        '/status/reason',
     ];
 
     private array $translatableFields;
