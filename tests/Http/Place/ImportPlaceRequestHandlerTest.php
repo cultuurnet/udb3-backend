@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -34,6 +35,7 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
+use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
@@ -130,7 +132,9 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 null,
                 new VideoDenormalizer($this->uuidFactory)
             ),
-            new CombinedRequestBodyParser(),
+            new CombinedRequestBodyParser(
+                new ImportTermRequestBodyParser(new PlaceCategoryResolver())
+            ),
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
             $this->imageCollectionFactory,
@@ -1631,13 +1635,13 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
             'terms' => [
                 [
-                    'id' => '1',
-                    'label' => 'foo',
+                    'id' => '0.14.0.0.0',
+                    'label' => 'Monument',
                     'domain' => 'eventtype',
                 ],
                 [
-                    'id' => '2',
-                    'label' => 'bar',
+                    'id' => '0.15.0.0.0',
+                    'label' => 'Natuur, park of tuin',
                     'domain' => 'eventtype',
                 ],
             ],
@@ -1655,6 +1659,45 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/terms',
                 'At most 1 array items must match schema'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_terms_can_not_be_resolved_to_a_place(): void
+    {
+        $place = [
+            '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.7.0.0.0',
+                    'label' => 'Begeleide rondleiding',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms',
+                'The term 0.7.0.0.0 does not exist or is not supported'
             ),
         ];
 
