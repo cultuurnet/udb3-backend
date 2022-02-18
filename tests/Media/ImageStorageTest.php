@@ -38,16 +38,8 @@ class ImageStorageTest extends TestCase
     /**
      * @test
      */
-    public function it_can_store_an_image(): void
+    public function it_can_store_an_image_in_the_cloud(): void
     {
-        $this->localFilesystem
-            ->expects($this->once())
-            ->method('copy')
-            ->with(
-                '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                '/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
-            );
-
         $this->localFilesystem
             ->expects($this->once())
             ->method('readStream')
