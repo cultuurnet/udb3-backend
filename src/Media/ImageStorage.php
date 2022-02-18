@@ -28,18 +28,21 @@ class ImageStorage
 
     public function store(string $source, string $destination): void
     {
-        // Move to the local file system media directory
-        $this->localFilesystem->copy(
-            $source,
-            $this->mediaDirectory . '/' . $destination
-        );
-
-        // Upload to the S3 bucket
-        $this->s3FileSystem->writeStream(
-            $destination,
-            $this->localFilesystem->readStream($source),
-            [Config::OPTION_VISIBILITY => Visibility::PUBLIC]
-        );
+        try {
+            // Upload to the S3 bucket
+            $this->s3FileSystem->writeStream(
+                $destination,
+                $this->localFilesystem->readStream($source),
+                [Config::OPTION_VISIBILITY => Visibility::PUBLIC]
+            );
+        } catch (\Throwable $throwable) {
+            // Move to the local file system in case upload fails
+            $this->localFilesystem->copy(
+                $source,
+                $this->mediaDirectory . '/' . $destination
+            );
+            throw $throwable;
+        }
 
         $this->localFilesystem->delete($source);
     }
