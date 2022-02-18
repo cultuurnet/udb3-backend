@@ -82,6 +82,7 @@ class ImageStorageTest extends TestCase
             ->method('writeStream')
             ->willThrowException(new UnableToWriteFile());
 
+        $this->expectException(\Throwable::class);
         $this->localFilesystem
             ->expects($this->once())
             ->method('copy')
