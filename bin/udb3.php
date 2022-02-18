@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
+use CultuurNet\UDB3\Silex\Console\ReplaceNewsArticlePublisher;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
@@ -145,6 +146,8 @@ $consoleApp->add(new UpdateUniqueLabels($app['dbal_connection']));
 $consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection'], new WebsiteNormalizer()));
 
 $consoleApp->add(new ImportOfferAutoClassificationLabels($app['dbal_connection'], $app['event_command_bus']));
+
+$consoleApp->add(new ReplaceNewsArticlePublisher($app['dbal_connection']));
 
 try {
     $consoleApp->run();
