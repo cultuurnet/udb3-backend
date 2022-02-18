@@ -41,9 +41,9 @@ class ImageStorage
                 $source,
                 $this->mediaDirectory . '/' . $destination
             );
+            $this->localFilesystem->delete($source);
             throw $throwable;
         }
-
         $this->localFilesystem->delete($source);
     }
 }
