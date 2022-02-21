@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Import;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use PHPUnit\Framework\TestCase;
 
 final class ImportTermRequestBodyParserTest extends TestCase
 {
+    use AssertApiProblemTrait;
+
     private ImportTermRequestBodyParser $importTermRequestBodyParser;
 
     protected function setUp(): void
@@ -131,7 +136,7 @@ final class ImportTermRequestBodyParserTest extends TestCase
                         (object) [
                             'id' => 'Unknown id',
                             'label' => 'Openbare ruimte',
-                            'domain' => 'eventtype',
+                            'domain' => 'unkown domain',
                         ],
                     ],
                 ],
@@ -143,7 +148,7 @@ final class ImportTermRequestBodyParserTest extends TestCase
                         (object) [
                             'id' => 'Unknown id',
                             'label' => 'Openbare ruimte',
-                            'domain' => 'eventtype',
+                            'domain' => 'unkown domain',
                         ],
                     ],
                 ],
@@ -201,5 +206,38 @@ final class ImportTermRequestBodyParserTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_unsupported_term(): void
+    {
+        $terms = (object) [
+            'name' => (object) [
+                'nl' => 'Cafe Den Hemel',
+            ],
+            'terms' => [
+                (object) [
+                    'id' => '0.7.0.0.0',
+                    'label' => 'Begeleide rondleiding',
+                    'domain' => 'eventtype',
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withParsedBody($terms)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/terms',
+                    'The term 0.7.0.0.0 does not exist or is not supported'
+                )
+            ),
+            fn () => $this->importTermRequestBodyParser->parse($request)->getParsedBody()
+        );
     }
 }

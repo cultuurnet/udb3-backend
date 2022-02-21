@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dea889e52678442e1de734c76dee924f",
+    "content-hash": "ffa256157a7b9d4aa1ab0aa7b3a8f404",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -1579,6 +1579,58 @@
                 "php"
             ],
             "time": "2021-02-12T00:02:00+00:00"
+        },
+        {
+            "name": "galbar/jsonpath",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Galbar/JsonPath-PHP.git",
+                "reference": "eab3a7e97d1bcf23b77df87c5ada241789b17c79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Galbar/JsonPath-PHP/zipball/eab3a7e97d1bcf23b77df87c5ada241789b17c79",
+                "reference": "eab3a7e97d1bcf23b77df87c5ada241789b17c79",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "sami/sami": ">=3.3.0",
+                "satooshi/php-coveralls": ">=1.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JsonPath\\": "src/Galbar/JsonPath",
+                    "Utilities\\": "src/Galbar/Utilities"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alessio Linares",
+                    "email": "alessio@alessio.cc",
+                    "role": "Software Engineer"
+                }
+            ],
+            "description": "JSONPath implementation for querying and updating JSON objects",
+            "keywords": [
+                "json",
+                "jsonpath",
+                "path"
+            ],
+            "support": {
+                "issues": "https://github.com/Galbar/JsonPath-PHP/issues",
+                "source": "https://github.com/Galbar/JsonPath-PHP/tree/2.0"
+            },
+            "time": "2021-08-19T20:32:43+00:00"
         },
         {
             "name": "gridonic/princexml-php",
@@ -5011,12 +5063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "d579afc5db8e92ad0803375e51f2be12fae89c51"
+                "reference": "804b2b618aee4cc8ddadc451488d05f2df8a66be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/d579afc5db8e92ad0803375e51f2be12fae89c51",
-                "reference": "d579afc5db8e92ad0803375e51f2be12fae89c51",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/804b2b618aee4cc8ddadc451488d05f2df8a66be",
+                "reference": "804b2b618aee4cc8ddadc451488d05f2df8a66be",
                 "shasum": ""
             },
             "type": "library",
@@ -5033,9 +5085,9 @@
             "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
             "support": {
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
-                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/master"
+                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/unreleased"
             },
-            "time": "2022-02-14T14:37:50+00:00"
+            "time": "2022-02-21T07:00:18+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

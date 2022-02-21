@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
-use DateTimeImmutable;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class UpdateCalendarValidationRequestBodyParser implements RequestBodyParser
@@ -56,14 +55,14 @@ final class UpdateCalendarValidationRequestBodyParser implements RequestBodyPars
                 $errors = array_merge(
                     $errors,
                     (new DateRangeValidator())->validate($data),
-                    $this->validateOpeningHoursTimeRanges($data)
+                    (new OpeningHoursRangeValidator())->validate($data)
                 );
                 break;
 
             case 'permanent':
                 $errors = array_merge(
                     $errors,
-                    $this->validateOpeningHoursTimeRanges($data)
+                    (new OpeningHoursRangeValidator())->validate($data)
                 );
                 break;
 
@@ -96,34 +95,5 @@ final class UpdateCalendarValidationRequestBodyParser implements RequestBodyPars
             }
         }
         return array_merge(...$errors);
-    }
-
-    /**
-     * @return SchemaError[]
-     */
-    private function validateOpeningHoursTimeRanges(object $data): array
-    {
-        if (!isset($data->openingHours) || !is_array($data->openingHours)) {
-            // Error(s) will be reported by the Schema validation.
-            return [];
-        }
-
-        $errors = [];
-        foreach ($data->openingHours as $index => $openingHourData) {
-            if (!isset($openingHourData->opens, $openingHourData->closes) ||
-                !is_string($openingHourData->opens) ||
-                !is_string($openingHourData->closes)) {
-                // Error(s) will be reported by the Schema validation.
-                continue;
-            }
-
-            $opens = DateTimeImmutable::createFromFormat('H:i', $openingHourData->opens);
-            $closes = DateTimeImmutable::createFromFormat('H:i', $openingHourData->closes);
-
-            if ($opens !== false && $closes !== false && $opens > $closes) {
-                $errors[] = new SchemaError('/openingHours/' . $index . '/closes', 'closes should not be before opens');
-            }
-        }
-        return $errors;
     }
 }
