@@ -206,7 +206,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $placeId]),
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
             $response->getBody()->getContents()
         );
 
@@ -358,7 +362,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $placeId]),
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
             $response->getBody()->getContents()
         );
 
@@ -515,7 +523,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $placeId]),
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
             $response->getBody()->getContents()
         );
 

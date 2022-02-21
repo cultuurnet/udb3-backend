@@ -244,7 +244,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             }
         }
 
-        $responseBody = ['id' => $placeId];
+        $responseBody = [
+            'id' => $placeId,
+            'placeId' => $placeId,
+            'url' => $this->iriGenerator->iri($placeId),
+        ];
         if ($lastCommandId) {
             $responseBody['commandId'] = $lastCommandId;
         }
