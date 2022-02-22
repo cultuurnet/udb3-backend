@@ -918,12 +918,12 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_name_is_a_string(): void
+    public function it_should_throw_an_exception_if_name_not_a_string_or_array(): void
     {
         $place = [
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
-            'name' => 'Example name',
+            'name' => 123,
             'calendarType' => 'permanent',
             'location' => [
                 '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
@@ -948,7 +948,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/name',
-                'The data (string) must match the type: object'
+                'The data (integer) must match the type: object'
             ),
         ];
 
