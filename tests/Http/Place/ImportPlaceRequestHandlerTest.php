@@ -16,6 +16,10 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Calendar\DayOfWeek;
+use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
+use CultuurNet\UDB3\Calendar\OpeningHour;
+use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
@@ -39,6 +43,8 @@ use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -65,6 +71,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -72,7 +79,6 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 use Ramsey\Uuid\UuidFactoryInterface;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
@@ -115,7 +121,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->aggregateRepository,
             $this->uuidGenerator,
             new PlaceDenormalizer(
-                null,
                 null,
                 null,
                 null,
@@ -255,6 +260,16 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ],
             ],
             'calendarType' => 'permanent',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => [
+                        'saturday',
+                        'sunday',
+                    ],
+                    'opens' => '13:00',
+                    'closes' => '23:59',
+                ],
+            ],
             'mainLanguage' => 'nl',
             'status' => [
                 'type' => 'Unavailable',
@@ -386,7 +401,22 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    (new Calendar(CalendarType::PERMANENT()))
+                    (new Calendar(
+                        CalendarType::PERMANENT(),
+                        null,
+                        null,
+                        [],
+                        [
+                            new OpeningHour(
+                                new OpeningTime(new Hour(13), new Minute(00)),
+                                new OpeningTime(new Hour(23), new Minute(59)),
+                                new DayOfWeekCollection(
+                                    DayOfWeek::SATURDAY(),
+                                    DayOfWeek::SUNDAY()
+                                )
+                            ),
+                        ]
+                    ))
                         ->withStatus(
                             new Status(
                                 StatusType::unavailable(),
