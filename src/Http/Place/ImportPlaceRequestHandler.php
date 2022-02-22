@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Place\Place;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
@@ -122,6 +123,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         /** @var Place $place */
         $place = RequestBodyParserFactory::createBaseParser(
+            new LegacyPlaceRequestBodyParser(),
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $placeId),
             $this->importPreProcessingRequestBodyParser,
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),

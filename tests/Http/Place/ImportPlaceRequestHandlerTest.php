@@ -236,6 +236,94 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_imports_a_legacy_place(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'mainLanguage' => 'nl',
+            'name' => 'Cafe Den Hemel',
+            'type' => [
+                'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                'domain' => 'eventtype',
+                'label' => 'Cultuur- of ontmoetingscentrum',
+            ],
+            'address' => [
+                'addressCountry' => 'BE',
+                'addressLocality' => 'Scherpenheuvel-Zichem',
+                'postalCode' => '3271',
+                'streetAddress' => 'Hoornblaas 107',
+            ],
+            'calendar' => [
+                'calendarType' => 'periodic',
+                'startDate' => '2022-02-21T23:00:00+00:00',
+                'endDate' => '2028-02-22T22:59:00+00:00',
+                'openingHours' => [
+                    [
+                        'opens' => '10:00',
+                        'closes' => '20:00',
+                        'dayOfWeek' => [
+                            'monday',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    fn (Place $place) => $place->getAggregateRootId() === $placeId
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->lockedLabelRepository->expects($this->once())
+            ->method('getLockedLabelsForItem')
+            ->with($placeId)
+            ->willReturn(new Labels());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteCurrentOrganizer($placeId),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_updates_an_existing_place(): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
