@@ -135,6 +135,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 null,
                 null,
                 null,
+                null,
                 new VideoDenormalizer($this->uuidFactory)
             ),
             new CombinedRequestBodyParser(
