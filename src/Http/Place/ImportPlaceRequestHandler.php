@@ -160,7 +160,12 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             // publish the place after creating it.
             // Existing places should always keep their original status, so
             // only do this publish command for new places.
-            $placeAggregate->publish($publishDate);
+            // For now the trigger to do a publish is the imports path.
+            // In the future this needs to be fine-tuned with either default values
+            // or config for specific API partners.
+            if (\str_contains($request->getUri()->getPath(), 'imports')) {
+                $placeAggregate->publish($publishDate);
+            }
 
             // Places created by specific API partners should automatically be
             // approved.
