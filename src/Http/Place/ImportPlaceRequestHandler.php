@@ -163,7 +163,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             // For now the trigger to do a publish is the imports path.
             // In the future this needs to be fine-tuned with either default values
             // or config for specific API partners.
-            if (\str_contains($request->getUri()->getPath(), 'imports')) {
+            if (str_contains($request->getUri()->getPath(), 'imports')) {
                 $placeAggregate->publish($publishDate);
             }
 
@@ -171,6 +171,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             // approved.
             $consumer = $this->getConsumer($request);
             if ($consumer && $this->shouldApprove->satisfiedBy($consumer)) {
+                if (!str_contains($request->getUri()->getPath(), 'imports')) {
+                    $placeAggregate->publish($publishDate);
+                }
+
                 $placeAggregate->approve();
             }
 
