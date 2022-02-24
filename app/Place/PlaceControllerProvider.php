@@ -81,14 +81,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
             fn (Application $application) => new ImportPlaceRequestHandler(
                 $app['place_repository'],
                 $app['uuid_generator'],
-                new PlaceDenormalizer(
-                    new PlaceImportValidator(
-                        new PlaceIDParser(),
-                        $app['current_user_id'],
-                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
-                    )
-                ),
+                new PlaceDenormalizer(),
                 new CombinedRequestBodyParser(
                     new ImportLabelVisibilityRequestBodyParser(
                         $app[LabelServiceProvider::JSON_READ_REPOSITORY],
