@@ -11,8 +11,6 @@ use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
-use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceImportValidator;
-use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
@@ -68,11 +66,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                 return new EditPlaceRestController(
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
-                    $app['media_manager'],
-                    $app['place_iri_generator'],
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['should_auto_approve_new_offer']
+                    $app['media_manager']
                 );
             }
         );
