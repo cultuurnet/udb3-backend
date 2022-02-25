@@ -27,16 +27,19 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
+use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -97,6 +100,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $expectedCommands = [
             new UpdateContactPoint($organizerId, new ContactPoint()),
+            new DeleteDescription($organizerId, new Language('nl')),
+            new DeleteDescription($organizerId, new Language('fr')),
+            new DeleteDescription($organizerId, new Language('de')),
+            new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
         ];
@@ -132,6 +139,12 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $given = $this->getOrganizerData() +
             [
+                'description' => [
+                    'nl' => 'Dutch description',
+                    'fr' => 'French description',
+                    'de' => 'German description',
+                    'en' => 'English description',
+                ],
                 'address' => [
                     'nl' => [
                         'streetAddress' => 'Henegouwenkaai 41-43',
@@ -176,6 +189,26 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new EmailAddresses(new EmailAddress('mock@publiq.be')),
                     new Urls(new Url('https://www.publiq.be'))
                 )
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('Dutch description'),
+                new Language('nl')
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('French description'),
+                new Language('fr')
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('German description'),
+                new Language('de')
+            ),
+            new UpdateDescription(
+                $id,
+                new Description('English description'),
+                new Language('en')
             ),
             new UpdateAddress(
                 $id,
@@ -264,6 +297,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
 
         $expectedCommands = [
             new UpdateContactPoint($organizerId, new ContactPoint()),
+            new DeleteDescription($organizerId, new Language('nl')),
+            new DeleteDescription($organizerId, new Language('fr')),
+            new DeleteDescription($organizerId, new Language('de')),
+            new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
         ];
@@ -334,6 +371,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new Urls(new Url('https://www.publiq.be'))
                 )
             ),
+            new DeleteDescription($id, new Language('nl')),
+            new DeleteDescription($id, new Language('fr')),
+            new DeleteDescription($id, new Language('de')),
+            new DeleteDescription($id, new Language('en')),
             new UpdateAddress(
                 $id,
                 new Address(
@@ -747,6 +788,32 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                 ],
                 'schemaErrors' => [
                     new SchemaError('/contactPoint/phone/0', 'The string should match pattern: \S'),
+                ],
+            ],
+            'description_missing_value_for_mainLanguage' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'description' => [
+                        'fr' => 'Parlez-vous français?',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/description', 'A value in the mainLanguage (nl) is required.'),
+                ],
+            ],
+            'description_empty_value' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'description' => [
+                        'nl' => '',
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/description/nl', 'Minimum string length is 1, found 0'),
                 ],
             ],
             'description_whitespace' => [
