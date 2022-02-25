@@ -16,7 +16,7 @@ use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventProcessManagerTest extends TestCase
 {

@@ -9,8 +9,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface QueryFactoryInterface
 {
-    /**
-     * @return Query
-     */
-    public function createFromRequest(Request $request);
+    public function createFromRequest(Request $request): Query;
 }

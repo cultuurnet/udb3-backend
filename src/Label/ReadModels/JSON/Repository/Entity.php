@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
+use InvalidArgumentException;
+use CultuurNet\UDB3\StringLiteral;
 
 class Entity implements \JsonSerializable
 {
@@ -42,30 +42,26 @@ class Entity implements \JsonSerializable
      */
     private $parentUuid;
 
-    /**
-     * @var Natural
-     */
-    private $count;
+    private int $count;
 
-    /**
-     * LabelEntity constructor.
-     * @param UUID $parentUuid
-     * @param Natural $count
-     */
     public function __construct(
         UUID $uuid,
         StringLiteral $name,
         Visibility $visibility,
         Privacy $privacy,
         UUID $parentUuid = null,
-        Natural $count = null
+        int $count = null
     ) {
+        if ($count < 0) {
+            throw new InvalidArgumentException('Count should be zero or higher.');
+        }
+
         $this->uuid = $uuid;
         $this->name = $name;
         $this->visibility = $visibility;
         $this->privacy = $privacy;
         $this->parentUuid = $parentUuid;
-        $this->count = $count ? $count : new Natural(0);
+        $this->count = $count ?: 0;
     }
 
     /**
@@ -108,10 +104,7 @@ class Entity implements \JsonSerializable
         return $this->parentUuid;
     }
 
-    /**
-     * @return Natural
-     */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -124,8 +117,8 @@ class Entity implements \JsonSerializable
         return [
             self::ID => $this->uuid->toString(),
             self::NAME => $this->name->toNative(),
-            self::VISIBILITY => $this->visibility->toNative(),
-            self::PRIVACY => $this->privacy->toNative(),
+            self::VISIBILITY => $this->visibility->toString(),
+            self::PRIVACY => $this->privacy->toString(),
         ];
     }
 }

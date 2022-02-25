@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 trait CommandDeserializerControllerTrait
 {

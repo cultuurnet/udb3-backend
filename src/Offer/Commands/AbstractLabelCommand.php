@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractLabelCommand extends AbstractCommand implements AuthorizableLabelCommand
 {

@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsWriteRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionsWriteRepositoryTest extends TestCase
 {

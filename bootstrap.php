@@ -91,7 +91,7 @@ use Silex\Application;
 use Silex\Provider\Psr7ServiceProvider;
 use SocketIO\Emitter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
 
@@ -145,10 +145,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
-
-$app['local_domain'] = \ValueObjects\Web\Domain::specifyType(
-    parse_url($app['config']['url'])['host']
-);
 
 /**
  * CultureFeed services.
@@ -1057,15 +1053,11 @@ $app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
-    array(
+    [
         'media.upload_directory' => $app['config']['media']['upload_directory'],
         'media.media_directory' => $app['config']['media']['media_directory'],
-        'media.file_size_limit' => new \ValueObjects\Number\Natural(
-            isset($app['config']['media']['file_size_limit']) ?
-                $app['config']['media']['file_size_limit'] :
-                1000000
-        ),
-    )
+        'media.file_size_limit' => $app['config']['media']['file_size_limit'] ?? 1000000
+     ],
 );
 
 $app->register(new ImageStorageProvider());

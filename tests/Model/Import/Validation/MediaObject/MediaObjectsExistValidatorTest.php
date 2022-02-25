@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class MediaObjectsExistValidatorTest extends TestCase
 {

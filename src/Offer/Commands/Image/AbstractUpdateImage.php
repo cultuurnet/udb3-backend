@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer\Commands\Image;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractUpdateImage extends AbstractCommand
 {

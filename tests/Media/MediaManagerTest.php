@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class MediaManagerTest extends TestCase
 {

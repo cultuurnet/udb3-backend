@@ -10,7 +10,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerAwareTrait;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractConsumer implements ConsumerInterface
 {

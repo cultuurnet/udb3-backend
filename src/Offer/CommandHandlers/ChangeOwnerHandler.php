@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class ChangeOwnerHandler implements CommandHandler
 {

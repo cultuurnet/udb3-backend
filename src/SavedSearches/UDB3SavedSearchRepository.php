@@ -11,7 +11,7 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface as SavedSearchReadModelRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface as SavedSearchWriteModelRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterface, SavedSearchWriteModelRepositoryInterface
 {

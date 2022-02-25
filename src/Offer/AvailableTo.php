@@ -29,7 +29,7 @@ class AvailableTo
 
     public static function createFromCalendar(Calendar $calendar, EventType $eventType = null): AvailableTo
     {
-        if ($calendar->getType() === CalendarType::PERMANENT()) {
+        if ($calendar->getType()->sameAs(CalendarType::PERMANENT())) {
             // The fixed date for a permanent calendar type does not require time information.
             return new self(new \DateTime('2100-01-01T00:00:00Z'));
         }

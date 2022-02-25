@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterfac
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Rules\AbstractRule;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class LabelPermissionRule extends AbstractRule
 {

@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class AddLabelToMultipleJSONDeserializerTest extends TestCase
 {

@@ -29,7 +29,7 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OrganizerControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {

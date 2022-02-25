@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\UDB2\Event;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationError;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventXMLValidatorService implements XMLValidationServiceInterface
 {

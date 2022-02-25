@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\UDB2\Event;
 
 use CultuurNet\UDB3\UDB2\XML\XMLValidationError;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventXMLValidatorServiceTest extends TestCase
 {

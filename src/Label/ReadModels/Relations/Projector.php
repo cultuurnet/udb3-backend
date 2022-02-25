@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Projector extends AbstractProjector
 {

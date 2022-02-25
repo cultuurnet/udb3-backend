@@ -9,10 +9,9 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
-class GodUserReadRepositoryDecoratorTest extends TestCase
+final class GodUserReadRepositoryDecoratorTest extends TestCase
 {
     /**
      * @var ReadRepositoryInterface|MockObject
@@ -22,39 +21,21 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     /**
      * @var string[]
      */
-    private $godUserIds;
+    private array $godUserIds;
 
-    /**
-     * @var GodUserReadRepositoryDecorator
-     */
-    private $repository;
+    private GodUserReadRepositoryDecorator $repository;
 
-    /**
-     * @var StringLiteral
-     */
-    private $godUserId;
+    private StringLiteral $godUserId;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private StringLiteral $userId;
 
-    /**
-     * @var array
-     */
-    private $labels;
+    private array $labels;
 
-    /**
-     * @var StringLiteral
-     */
-    private $privateLabel;
+    private StringLiteral $privateLabel;
 
-    /**
-     * @var StringLiteral
-     */
-    private $publicLabel;
+    private StringLiteral $publicLabel;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->labels = [
             'c7a73397-a210-4126-8fa0-a9f822c2a356' => new Entity(
@@ -79,11 +60,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
                 function (UUID $uuid) {
                     $uuid = $uuid->toString();
 
-                    if (isset($this->labels[$uuid])) {
-                        return $this->labels[$uuid];
-                    }
-
-                    return null;
+                    return $this->labels[$uuid] ?? null;
                 }
             );
 
@@ -99,7 +76,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
                     );
 
                     $label = reset($labels);
-                    return $label ? $label : null;
+                    return $label ?: null;
                 }
             );
 
@@ -113,24 +90,19 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
                         return true;
                     }
 
-                    return $label->getPrivacy()->sameValueAs(Privacy::PRIVACY_PUBLIC());
+                    return $label->getPrivacy()->sameAs(Privacy::PRIVACY_PUBLIC());
                 }
             );
 
         $this->mockRepository->expects($this->any())
             ->method('search')
-            ->willReturnCallback(
-                function (Query $query) {
-                    return $this->labels;
-                }
-            );
+            ->willReturnCallback(fn () => $this->labels);
 
         $this->mockRepository->expects($this->any())
             ->method('searchTotalLabels')
             ->willReturnCallback(
                 function (Query $query) {
-                    $count = count($this->labels);
-                    return new Natural($count);
+                    return count($this->labels);
                 }
             );
 
@@ -152,7 +124,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_label_by_uuid_using_the_injected_repository()
+    public function it_should_return_a_label_by_uuid_using_the_injected_repository(): void
     {
         $uuid = new UUID('c7a73397-a210-4126-8fa0-a9f822c2a356');
         $expected = $this->labels['c7a73397-a210-4126-8fa0-a9f822c2a356'];
@@ -163,7 +135,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_label_by_name_using_the_injected_repository()
+    public function it_should_return_a_label_by_name_using_the_injected_repository(): void
     {
         $name = new StringLiteral('foo');
         $expected = $this->labels['c7a73397-a210-4126-8fa0-a9f822c2a356'];
@@ -174,7 +146,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_check_if_a_user_can_use_a_label_using_the_injected_repository()
+    public function it_should_check_if_a_user_can_use_a_label_using_the_injected_repository(): void
     {
         $this->assertTrue($this->repository->canUseLabel($this->userId, $this->publicLabel));
         $this->assertFalse($this->repository->canUseLabel($this->userId, $this->privateLabel));
@@ -183,7 +155,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_let_a_god_user_use_any_label()
+    public function it_should_let_a_god_user_use_any_label(): void
     {
         $this->assertTrue($this->repository->canUseLabel($this->godUserId, $this->publicLabel));
         $this->assertTrue($this->repository->canUseLabel($this->godUserId, $this->privateLabel));
@@ -192,7 +164,7 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_search_results_for_a_query_using_the_injected_repository()
+    public function it_should_return_search_results_for_a_query_using_the_injected_repository(): void
     {
         $query = new Query(new StringLiteral('test'));
         $expected = $this->labels;
@@ -203,10 +175,10 @@ class GodUserReadRepositoryDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_result_count_for_a_query_using_the_injected_repository()
+    public function it_should_return_result_count_for_a_query_using_the_injected_repository(): void
     {
         $query = new Query(new StringLiteral('test'));
-        $expected = new Natural(count($this->labels));
+        $expected = count($this->labels);
         $actual = $this->repository->searchTotalLabels($query);
         $this->assertEquals($expected, $actual);
     }

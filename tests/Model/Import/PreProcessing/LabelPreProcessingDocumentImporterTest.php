@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class LabelPreProcessingDocumentImporterTest extends TestCase
 {

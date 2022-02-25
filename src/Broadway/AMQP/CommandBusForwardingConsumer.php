@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Forwards messages coming in via AMQP to an event bus.

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventThemeResolverTest extends TestCase
 {

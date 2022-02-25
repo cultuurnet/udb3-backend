@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EditMediaRestController
 {

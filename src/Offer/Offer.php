@@ -74,7 +74,7 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
 {

@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UpdateMajorInfoRequestHandler implements RequestHandlerInterface
 {

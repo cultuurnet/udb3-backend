@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\User;
 
 use Auth0\SDK\API\Management;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class Auth0UserIdentityResolver implements UserIdentityResolver
 {

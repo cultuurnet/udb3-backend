@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\PriceInfo;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
-use ValueObjects\Money\Currency;
-use ValueObjects\Money\CurrencyCode;
+use Money\Currency;
+use Money\Money;
 
 /**
  * @deprecated
@@ -15,71 +15,43 @@ use ValueObjects\Money\CurrencyCode;
  */
 class BasePrice implements Serializable
 {
-    /**
-     * @var Price
-     */
-    private $price;
-
-    /**
-     * @var string
-     */
-    private $currencyCodeString;
-
+    private Money $money;
 
     public function __construct(
-        Price $price,
-        Currency $currency
+        Money $money
     ) {
-        $this->price = $price;
-        $this->currencyCodeString = $currency->getCode()->toNative();
+        $this->money = $money;
     }
 
-    /**
-     * @return Price
-     */
-    public function getPrice()
+    public function getPrice(): Money
     {
-        return $this->price;
+        return $this->money;
     }
 
-    /**
-     * @return Currency
-     */
-    public function getCurrency()
+    public function getCurrency(): Currency
     {
-        return Currency::fromNative($this->currencyCodeString);
+        return $this->money->getCurrency();
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return [
-            'price' => $this->price->toNative(),
-            'currency' => $this->currencyCodeString,
+            'price' => $this->getPrice()->getAmount(),
+            'currency' => $this->getCurrency()->getName(),
         ];
     }
 
-    /**
-     * @return BasePrice
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): BasePrice
     {
         return new BasePrice(
-            new Price($data['price']),
-            Currency::fromNative($data['currency'])
+            new Money((int) $data['price'], new Currency($data['currency']))
         );
     }
 
-    /**
-     * @return BasePrice
-     */
-    public static function fromUdb3ModelTariff(Udb3ModelTariff $tariff)
+    public static function fromUdb3ModelTariff(Udb3ModelTariff $tariff): BasePrice
     {
         return new BasePrice(
-            new Price($tariff->getPrice()->getAmount()),
-            new Currency(CurrencyCode::fromNative($tariff->getPrice()->getCurrency()->getName()))
+            $tariff->getPrice()
         );
     }
 }

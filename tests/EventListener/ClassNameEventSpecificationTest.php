@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use CultuurNet\UDB3\Offer\Item\Events\LabelRemoved;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ClassNameEventSpecificationTest extends TestCase
 {

@@ -10,7 +10,7 @@ use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UDB3SavedSearchesCommandHandlerTest extends TestCase
 {

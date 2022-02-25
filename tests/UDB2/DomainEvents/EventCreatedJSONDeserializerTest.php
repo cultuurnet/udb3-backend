@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class EventCreatedJSONDeserializerTest extends TestCase
 {

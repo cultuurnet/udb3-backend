@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 final class CuratorsServiceProvider implements ServiceProviderInterface
 {

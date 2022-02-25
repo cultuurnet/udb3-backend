@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class AndFilterTest extends TestCase
 {

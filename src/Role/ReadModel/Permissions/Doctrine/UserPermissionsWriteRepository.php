@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsWriteRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Doctrine\DBAL\Connection;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryInterface
 {

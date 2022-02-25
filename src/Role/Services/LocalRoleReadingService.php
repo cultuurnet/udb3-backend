@@ -10,7 +10,7 @@ use CultuurNet\UDB3\LocalEntityService;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class LocalRoleReadingService extends LocalEntityService implements RoleReadingServiceInterface
 {

@@ -12,7 +12,7 @@ use Psr\Log\LoggerAwareTrait;
 use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\EventDispatcher;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Command bus decorator for asynchronous processing with PHP-Resque.

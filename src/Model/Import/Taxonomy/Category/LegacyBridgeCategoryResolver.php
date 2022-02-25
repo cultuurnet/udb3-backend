@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\ThemeResolverInterface;
 use CultuurNet\UDB3\Offer\TypeResolverInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class LegacyBridgeCategoryResolver implements CategoryResolverInterface
 {

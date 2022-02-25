@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {

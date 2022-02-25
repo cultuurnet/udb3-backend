@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferPermissionController
 {

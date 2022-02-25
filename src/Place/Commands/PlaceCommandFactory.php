@@ -35,7 +35,7 @@ use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class PlaceCommandFactory implements OfferCommandFactoryInterface
 {

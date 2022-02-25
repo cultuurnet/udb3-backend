@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class ImportLabelsTest extends TestCase
 {

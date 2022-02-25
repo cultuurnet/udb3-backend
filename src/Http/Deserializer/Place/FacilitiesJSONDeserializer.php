@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

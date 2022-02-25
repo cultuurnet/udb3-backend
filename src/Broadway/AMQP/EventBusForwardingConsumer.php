@@ -12,7 +12,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Ramsey\Uuid\UuidFactoryInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Forwards messages coming in via AMQP to an event bus.

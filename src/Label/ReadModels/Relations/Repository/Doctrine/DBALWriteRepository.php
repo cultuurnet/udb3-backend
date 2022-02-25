@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterfa
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use Doctrine\DBAL\Query\QueryBuilder;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {

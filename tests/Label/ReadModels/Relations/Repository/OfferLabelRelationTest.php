@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class OfferLabelRelationTest extends TestCase
 {

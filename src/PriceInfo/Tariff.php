@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\PriceInfo;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use ValueObjects\Money\Currency;
-use ValueObjects\Money\CurrencyCode;
+use Money\Currency;
+use Money\Money;
 
 /**
  * @deprecated
@@ -16,89 +16,55 @@ use ValueObjects\Money\CurrencyCode;
  */
 class Tariff implements Serializable
 {
-    /**
-     * @var MultilingualString
-     */
-    private $name;
+    private MultilingualString $name;
 
-    /**
-     * @var Price
-     */
-    private $price;
-
-    /**
-     * @var string
-     */
-    private $currencyCodeString;
-
+    private Money $money;
 
     public function __construct(
         MultilingualString $name,
-        Price $price,
-        Currency $currency
+        Money $money
     ) {
         $this->name = $name;
-        $this->price = $price;
-        $this->currencyCodeString = $currency->getCode()->toNative();
+        $this->money = $money;
     }
 
-    /**
-     * @return MultilingualString
-     */
-    public function getName()
+    public function getName(): MultilingualString
     {
         return $this->name;
     }
 
-    /**
-     * @return Price
-     */
-    public function getPrice()
+    public function getPrice(): Money
     {
-        return $this->price;
+        return $this->money;
     }
 
-    /**
-     * @return Currency
-     */
-    public function getCurrency()
+    public function getCurrency(): Currency
     {
-        return Currency::fromNative($this->currencyCodeString);
+        return $this->money->getCurrency();
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return [
             'name' => $this->name->serialize(),
-            'price' => $this->price->toNative(),
-            'currency' => $this->currencyCodeString,
+            'price' => $this->getPrice()->getAmount(),
+            'currency' => $this->getCurrency()->getName(),
         ];
     }
 
-    /**
-     * @return Tariff
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): Tariff
     {
         return new Tariff(
             MultilingualString::deserialize($data['name']),
-            new Price($data['price']),
-            Currency::fromNative($data['currency'])
+            new Money((int) $data['price'], new Currency($data['currency']))
         );
     }
 
-    /**
-     * @return Tariff
-     */
-    public static function fromUdb3ModelTariff(Udb3ModelTariff $udb3ModelTariff)
+    public static function fromUdb3ModelTariff(Udb3ModelTariff $udb3ModelTariff): Tariff
     {
         return new Tariff(
             MultilingualString::fromUdb3ModelTranslatedValueObject($udb3ModelTariff->getName()),
-            new Price($udb3ModelTariff->getPrice()->getAmount()),
-            new Currency(CurrencyCode::fromNative($udb3ModelTariff->getPrice()->getCurrency()->getName()))
+            $udb3ModelTariff->getPrice()
         );
     }
 }

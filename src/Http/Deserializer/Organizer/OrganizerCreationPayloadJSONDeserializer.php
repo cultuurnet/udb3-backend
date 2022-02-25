@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Title;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated

@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 interface ImageUploaderInterface
 {

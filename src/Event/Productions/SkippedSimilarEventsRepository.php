@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class SkippedSimilarEventsRepository extends AbstractDBALRepository
 {

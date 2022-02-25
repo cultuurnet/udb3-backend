@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\ValueObject;
 
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class Id extends StringLiteral
 {

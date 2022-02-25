@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\StringLiteral;
 
 class UrlJSONDeserializerTest extends TestCase
 {
