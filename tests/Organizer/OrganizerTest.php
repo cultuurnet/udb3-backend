@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -374,6 +375,45 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new ContactPointUpdated($this->id, ['0444/444444']),
                     new ContactPointUpdated($this->id, ['0455/454545'], ['foo@bar.com']),
                     new ContactPointUpdated($this->id),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_broken_contactpoints(): void
+    {
+        $this->scenario
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                    new ContactPointUpdated(
+                        $this->id,
+                        [],
+                        ['broken@email'],
+                        ['htps://.broken-site']
+                    ),
+                ]
+            )
+            ->when(
+                function (Organizer $organizer) {
+                    $organizer->updateContactPoint(
+                        new ContactPoint(
+                            new TelephoneNumbers(),
+                            new EmailAddresses(
+                                new EmailAddress('fixed@email.be')
+                            ),
+                            new Urls(
+                                new Url('https://fixed-site.be')
+                            )
+                        )
+                    );
+                }
+            )
+            ->then(
+                [
+                    new ContactPointUpdated($this->id, [], ['fixed@email.be'], ['https://fixed-site.be'])
                 ]
             );
     }
