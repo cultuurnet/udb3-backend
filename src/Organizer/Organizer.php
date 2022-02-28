@@ -11,8 +11,6 @@ use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
-use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -28,10 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
@@ -78,7 +73,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
      */
     private ?array $addresses = null;
 
-    private ContactPoint $contactPoint;
+    private array $contactPoint;
 
     private Images $images;
 
@@ -99,7 +94,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // ContactPointUpdated events as soon as the organizer is updated
         // with a non-empty contact point. To enforce this we initialize the
         // aggregate state with an empty contact point.
-        $this->contactPoint = new ContactPoint();
+        $this->contactPoint = [
+            'phone' => [],
+            'email' => [],
+            'url' => [],
+        ];
         $this->images = new Images();
         $this->labels = new Labels();
         $this->workflowStatus = WorkflowStatus::ACTIVE();
@@ -260,7 +259,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     public function updateContactPoint(ContactPoint $contactPoint): void
     {
-        if (!$this->contactPoint->sameAs($contactPoint)) {
+        if (
+            $this->contactPoint['phone'] !== $contactPoint->getTelephoneNumbers()->toStringArray() ||
+            $this->contactPoint['email'] !== $contactPoint->getEmailAddresses()->toStringArray() ||
+            $this->contactPoint['url'] !== $contactPoint->getUrls()->toStringArray()
+        ) {
             $this->apply(
                 new ContactPointUpdated(
                     $this->actorId,
@@ -607,26 +610,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated): void
     {
-        $this->contactPoint = new ContactPoint(
-            new TelephoneNumbers(
-                ...array_map(
-                    fn (string $phone) => new TelephoneNumber($phone),
-                    $contactPointUpdated->getPhones()
-                )
-            ),
-            new EmailAddresses(
-                ...array_map(
-                    fn (string $email) => new EmailAddress($email),
-                    $contactPointUpdated->getEmails()
-                )
-            ),
-            new Urls(
-                ...array_map(
-                    fn (string $url) => new Url($url),
-                    $contactPointUpdated->getUrls()
-                )
-            )
-        );
+        $this->contactPoint = [
+            'phone' => $contactPointUpdated->getPhones(),
+            'email' => $contactPointUpdated->getEmails(),
+            'url' => $contactPointUpdated->getUrls(),
+        ];
     }
 
     protected function applyImageAdded(ImageAdded $imageAdded): void
