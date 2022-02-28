@@ -144,6 +144,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract public static function getOfferType(): OfferType;
 
+    public function getLabels(): LabelCollection
+    {
+        return $this->labels;
+    }
+
     public function changeOwner(string $newOwnerId): void
     {
         // Will always be true for the first call to changeOwner() since we have no way to know who the creator was
