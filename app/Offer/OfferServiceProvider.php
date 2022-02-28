@@ -155,7 +155,10 @@ class OfferServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ImportLabelsHandler(
                     $app[OfferRepository::class],
-                    $app['labels.constraint_aware_service']
+                    $app['labels.constraint_aware_service'],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app['labels.labels_locked_for_import_repository'],
+                    $app['current_user_id']
                 );
             }
         );
