@@ -34,6 +34,11 @@ final class ImportLabels extends AbstractCommand implements AuthorizableLabelCom
         $this->labelsToRemoveWhenOnOffer = new Labels();
     }
 
+    public function getLabels(): Labels
+    {
+        return $this->labels;
+    }
+
     public function withLabelsToKeepIfAlreadyOnOffer(Labels $labels): self
     {
         $c = clone $this;
