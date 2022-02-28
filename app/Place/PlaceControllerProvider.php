@@ -88,7 +88,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                 $app['place_iri_generator'],
                 $app['imports_command_bus'],
                 $app['import_image_collection_factory'],
-                $app['labels.labels_locked_for_import_repository'],
                 $app['should_auto_approve_new_offer'],
                 $app['auth.api_key_reader'],
                 $app['auth.consumer_repository']
