@@ -31,8 +31,8 @@ final class LegacyPlaceRequestBodyParser implements RequestBodyParser
             $data->terms = [
                 (object) [
                     'id' => $data->type->id,
-                    'label' => $data->type->id,
-                    'domain' => $data->type->id,
+                    'label' => $data->type->label,
+                    'domain' => $data->type->domain,
                 ],
             ];
         }
