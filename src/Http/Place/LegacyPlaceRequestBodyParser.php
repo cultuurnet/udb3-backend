@@ -70,7 +70,7 @@ final class LegacyPlaceRequestBodyParser implements RequestBodyParser
             if (isset($data->calendar->calendarType)) {
                 $data->calendarType = $data->calendar->calendarType;
             }
-            
+
             if (isset($data->calendar->startDate)) {
                 $data->startDate = $data->calendar->startDate;
             }
