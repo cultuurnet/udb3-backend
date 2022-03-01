@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\UDB3\Http\Import\ImportLabelVisibilityRequestBodyParser;
+use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
@@ -95,6 +96,9 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                     ),
                     new ImportTermRequestBodyParser(
                         new PlaceCategoryResolver()
+                    ),
+                    new ImportPriceInfoRequestBodyParser(
+                        $app['config']['base_price_translations']
                     )
                 ),
                 $app['place_iri_generator'],
