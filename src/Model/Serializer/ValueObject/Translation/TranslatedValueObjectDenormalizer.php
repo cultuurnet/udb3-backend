@@ -20,7 +20,7 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
         if (!$this->supportsDenormalization($data, $class, $format)) {
             $selfClass = get_class($this);
             $selfClass = explode('\\', $selfClass);
-            $selfClass = $selfClass[0];
+            $selfClass = array_pop($selfClass);
             throw new UnsupportedException("{$selfClass} does not support {$class}.");
         }
 

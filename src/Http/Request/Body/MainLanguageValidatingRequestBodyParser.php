@@ -14,6 +14,7 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
     private const ORGANIZER_TRANSLATABLE_FIELDS = [
         '$.name',
         '$.address',
+        '$.description',
     ];
 
     private const PLACE_TRANSLATABLE_FIELDS = [
@@ -28,7 +29,7 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
     private array $translatableFields;
 
     /**
-     * Translatable fields, as JSON pointers so we can use nesting if/when necessary.
+     * Translatable fields, as JSON paths so we can use nesting if/when necessary.
      */
     private function __construct(array $translatableFields)
     {
