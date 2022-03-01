@@ -4,19 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Place\CreatePlaceJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,34 +27,9 @@ class EditPlaceRestController extends OfferRestBaseController
     private $eventRelationsRepository;
 
     /**
-     * @var IriGeneratorInterface
-     */
-    private $iriGenerator;
-
-    /**
-     * @var CreatePlaceJSONDeserializer
-     */
-    private $createPlaceJSONDeserializer;
-
-    /**
      * @var AddressJSONDeserializer
      */
     private $addressDeserializer;
-
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var ConsumerReadRepositoryInterface
-     */
-    private $consumerReadRepository;
-
-    /**
-     * @var ConsumerSpecificationInterface
-     */
-    private $shouldApprove;
 
     /**
      * Constructs a RestController.
@@ -69,21 +38,12 @@ class EditPlaceRestController extends OfferRestBaseController
     public function __construct(
         PlaceEditingServiceInterface $placeEditor,
         RepositoryInterface $eventRelationsRepository,
-        MediaManagerInterface $mediaManager,
-        IriGeneratorInterface $iriGenerator,
-        ApiKeyReaderInterface $apiKeyReader,
-        ConsumerReadRepositoryInterface $consumerReadRepository,
-        ConsumerSpecificationInterface $shouldApprove
+        MediaManagerInterface $mediaManager
     ) {
         parent::__construct($placeEditor, $mediaManager);
         $this->eventRelationsRepository = $eventRelationsRepository;
-        $this->iriGenerator = $iriGenerator;
 
-        $this->apiKeyReader = $apiKeyReader;
-        $this->consumerReadRepository = $consumerReadRepository;
-        $this->shouldApprove = $shouldApprove;
 
-        $this->createPlaceJSONDeserializer = new CreatePlaceJSONDeserializer();
         $this->addressDeserializer = new AddressJSONDeserializer();
     }
 
@@ -92,45 +52,6 @@ class EditPlaceRestController extends OfferRestBaseController
         $response = new BinaryFileResponse('/udb3/api/1.0/place.jsonld');
         $response->headers->set('Content-Type', 'application/ld+json');
         return $response;
-    }
-
-    public function createPlace(Request $request): JsonResponse
-    {
-        $createPlace = $this->createPlaceJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $apiKey = $this->apiKeyReader->read(
-            (new DiactorosFactory())->createRequest($request)
-        );
-
-        $consumer = null;
-        if ($apiKey) {
-            $consumer = $this->consumerReadRepository->getConsumer($apiKey);
-        }
-
-        $approve = false;
-        if ($consumer) {
-            $approve = $this->shouldApprove->satisfiedBy($consumer);
-        }
-
-        $createMethod = $approve ? 'createApprovedPlace' : 'createPlace';
-
-        $placeId = $this->editor->$createMethod(
-            $createPlace->getMainLanguage(),
-            $createPlace->getTitle(),
-            $createPlace->getType(),
-            $createPlace->getAddress(),
-            $createPlace->getCalendar()
-        );
-
-        return new JsonResponse(
-            [
-                'placeId' => $placeId,
-                'url' => $this->iriGenerator->iri($placeId),
-            ],
-            201
-        );
     }
 
     public function updateAddress(Request $request, string $cdbid, string $lang): Response

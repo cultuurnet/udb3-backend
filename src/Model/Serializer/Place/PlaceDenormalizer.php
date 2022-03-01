@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
-use CultuurNet\UDB3\Model\Validation\Place\PlaceValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -20,17 +19,11 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use Respect\Validation\Validator;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class PlaceDenormalizer extends OfferDenormalizer
 {
-    /**
-     * @var Validator
-     */
-    private $placeValidator;
-
     /**
      * @var DenormalizerInterface
      */
@@ -42,7 +35,6 @@ class PlaceDenormalizer extends OfferDenormalizer
     private $geoCoordinatesDenormalizer;
 
     public function __construct(
-        Validator $placeValidator = null,
         UUIDParser $placeIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
@@ -59,10 +51,6 @@ class PlaceDenormalizer extends OfferDenormalizer
         DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
         VideoDenormalizer $videoDenormalizer = null
     ) {
-        if (!$placeValidator) {
-            $placeValidator = new PlaceValidator();
-        }
-
         if (!$placeIDParser) {
             $placeIDParser = new PlaceIDParser();
         }
@@ -75,7 +63,6 @@ class PlaceDenormalizer extends OfferDenormalizer
             $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
         }
 
-        $this->placeValidator = $placeValidator;
         $this->addressDenormalizer = $addressDenormalizer;
         $this->geoCoordinatesDenormalizer = $geoCoordinatesDenormalizer;
 
@@ -134,8 +121,6 @@ class PlaceDenormalizer extends OfferDenormalizer
         if (!is_array($data)) {
             throw new UnsupportedException('Place data should be an associative array.');
         }
-
-        $this->placeValidator->assert($data);
 
         /* @var ImmutablePlace $offer */
         $offer = $this->denormalizeOffer($data);

@@ -5,43 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Title;
 
 interface PlaceEditingServiceInterface
 {
-    /**
-     * Create a new place.
-     *
-     *
-     * @return string $eventId
-     */
-    public function createPlace(
-        Language $mainLanguage,
-        Title $title,
-        EventType $eventType,
-        Address $address,
-        Calendar $calendar
-    );
-
-    /**
-     * @return string $eventId
-     */
-    public function createApprovedPlace(
-        Language $mainLanguage,
-        Title $title,
-        EventType $eventType,
-        Address $address,
-        Calendar $calendar
-    );
-
     /**
      * @param string $id
      */
