@@ -31,7 +31,7 @@ final class LegacyPlaceRequestBodyParser implements RequestBodyParser
             $terms = [
                 'id' => $data->type->id,
             ];
-            
+
             if (isset($data->type->label)) {
                 $terms['label'] = $data->type->label;
             }
@@ -67,8 +67,10 @@ final class LegacyPlaceRequestBodyParser implements RequestBodyParser
         }
 
         if (isset($data->calendar) && $data->calendar instanceof stdClass) {
-            $data->calendarType = $data->calendar->calendarType;
-
+            if (isset($data->calendar->calendarType)) {
+                $data->calendarType = $data->calendar->calendarType;
+            }
+            
             if (isset($data->calendar->startDate)) {
                 $data->startDate = $data->calendar->startDate;
             }
