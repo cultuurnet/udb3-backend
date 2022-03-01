@@ -27,10 +27,8 @@ final class LegacyPlaceRequestBodyParser implements RequestBodyParser
             ];
         }
 
-        if (isset($data->type) && $data->type instanceof stdClass) {
-            $terms = [
-                'id' => $data->type->id,
-            ];
+        if (isset($data->type, $data->type->id) && $data->type instanceof stdClass) {
+            $terms['id'] = $data->type->id;
 
             if (isset($data->type->label)) {
                 $terms['label'] = $data->type->label;
