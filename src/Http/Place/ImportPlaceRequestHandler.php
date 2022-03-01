@@ -161,8 +161,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             // Existing places should always keep their original status, so
             // only do this publish command for new places.
             // For now the trigger to do a publish is the imports path.
-            // In the future this needs to be fine-tuned with either default values
-            // or config for specific API partners.
+            // In the future this needs to be fine-tuned, see https://jira.uitdatabank.be/browse/III-4609
             if (str_contains($request->getUri()->getPath(), 'imports')) {
                 $placeAggregate->publish($publishDate);
             }
