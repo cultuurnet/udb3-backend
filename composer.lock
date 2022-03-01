@@ -5063,12 +5063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "cf0e0eb3dd090f5c6773b1009240c7ad79f7ea7e"
+                "reference": "02af61cb163480e280faa8f2f2da26d1d91740be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/cf0e0eb3dd090f5c6773b1009240c7ad79f7ea7e",
-                "reference": "cf0e0eb3dd090f5c6773b1009240c7ad79f7ea7e",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/02af61cb163480e280faa8f2f2da26d1d91740be",
+                "reference": "02af61cb163480e280faa8f2f2da26d1d91740be",
                 "shasum": ""
             },
             "type": "library",
@@ -5087,7 +5087,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/III-4595-models-for-properties"
             },
-            "time": "2022-02-24T14:53:25+00:00"
+            "time": "2022-03-01T09:55:06+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
