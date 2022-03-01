@@ -66,6 +66,51 @@ final class DeleteDescriptionHandlerTest extends CommandHandlerScenarioTestCase
                     ),
                 ],
             ],
+            'Delete only description' => [
+                [
+                    $this->organizerCreated(),
+                    new DescriptionUpdated(
+                        '5e360b25-fd85-4dac-acf4-0571e0b57dce',
+                        'Beschrijving NL',
+                        'nl'
+                    ),
+                ],
+                new DeleteDescription(
+                    '5e360b25-fd85-4dac-acf4-0571e0b57dce',
+                    new Language('nl')
+                ),
+                [
+                    new DescriptionDeleted(
+                        '5e360b25-fd85-4dac-acf4-0571e0b57dce',
+                        'nl'
+                    ),
+                ],
+            ],
+            'Delete the first description' => [
+                [
+                    $this->organizerCreated(),
+                    new DescriptionUpdated(
+                        '5e360b25-fd85-4dac-acf4-0571e0b57dce',
+                        'Beschrijving NL',
+                        'nl'
+                    ),
+                    new DescriptionUpdated(
+                        '5e360b25-fd85-4dac-acf4-0571e0b57dce',
+                        'Description EN',
+                        'en'
+                    ),
+                ],
+                new DeleteDescription(
+                    '5e360b25-fd85-4dac-acf4-0571e0b57dce',
+                    new Language('nl')
+                ),
+                [
+                    new DescriptionDeleted(
+                        '5e360b25-fd85-4dac-acf4-0571e0b57dce',
+                        'nl'
+                    ),
+                ],
+            ],
             'Delete the last description' => [
                 [
                     $this->organizerCreated(),

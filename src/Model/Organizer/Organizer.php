@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -22,6 +23,8 @@ interface Organizer
     public function getName(): TranslatedTitle;
 
     public function getUrl(): ?Url;
+
+    public function getDescription(): ?TranslatedDescription;
 
     public function getAddress(): ?TranslatedAddress;
 
