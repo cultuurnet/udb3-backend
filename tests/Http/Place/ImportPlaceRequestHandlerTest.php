@@ -4193,7 +4193,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ),
             new SchemaError(
                 '/videos/0/copyrightHolder',
-                'Minimum string length is 3, found 0'
+                'Minimum string length is 2, found 0'
             ),
             new SchemaError(
                 '/videos/1/copyrightHolder',
