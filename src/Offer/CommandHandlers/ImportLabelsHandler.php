@@ -52,6 +52,8 @@ final class ImportLabelsHandler implements CommandHandler
         $offer = $this->offerRepository->load($command->getItemId());
 
         $labelsToImport = $command->getLabels();
+        $labelsToImport = $this->fixVisibility($labelsToImport);
+
         $labelsOnOffer = new Labels();
         foreach ($offer->getLabels()->asArray() as $labelOnOffer) {
             $labelsOnOffer = $labelsOnOffer->with(
@@ -66,18 +68,7 @@ final class ImportLabelsHandler implements CommandHandler
 
         // Fix visibility that is sometimes incorrect on locked labels. This otherwise breaks comparisons in logic down
         // the line.
-        $labelsToKeepOnOffer = new Labels(
-            ...array_map(
-                function (Label $label): Label {
-                    $readModel = $this->labelsPermissionRepository->getByName(
-                        new StringLiteral($label->getName()->toString())
-                    );
-                    $visible = !$readModel || $readModel->getVisibility()->sameAs(Visibility::VISIBLE());
-                    return new Label($label->getName(), $visible);
-                },
-                $labelsToKeepOnOffer->toArray()
-            )
-        );
+        $labelsToKeepOnOffer = $this->fixVisibility($labelsToKeepOnOffer);
 
         // Always keep labels that the user has no permission to remove, whether they are included in the import or not.
         // Do not throw an exception but just keep them, because the user might not have had up-to-date JSON from UDB
