@@ -126,4 +126,20 @@ final class ImportLabelsHandler implements CommandHandler
 
         $this->offerRepository->save($offer);
     }
+
+    private function fixVisibility(Labels $labels): Labels
+    {
+        return new Labels(
+            ...array_map(
+                function (Label $label): Label {
+                    $readModel = $this->labelsPermissionRepository->getByName(
+                        new StringLiteral($label->getName()->toString())
+                    );
+                    $visible = !$readModel || $readModel->getVisibility()->sameAs(Visibility::VISIBLE());
+                    return new Label($label->getName(), $visible);
+                },
+                $labels->toArray()
+            )
+        );
+    }
 }
