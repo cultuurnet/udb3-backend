@@ -18,10 +18,14 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\Privacy;
+use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as Udb3ModelsLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as Udb3ModelsLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels as Udb3ModelsLabels;
@@ -38,13 +42,15 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
 
     private MockObject $lockedLabelRepository;
 
+    private MockObject $labelPermissionRepository;
+
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): ImportLabelsHandler
     {
         $this->labelService = $this->createMock(LabelServiceInterface::class);
         $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
 
-        $labelPermissionRepository = $this->createMock(ReadRepositoryInterface::class);
-        $labelPermissionRepository->expects($this->any())
+        $this->labelPermissionRepository = $this->createMock(ReadRepositoryInterface::class);
+        $this->labelPermissionRepository->expects($this->any())
             ->method('canUseLabel')
             ->willReturnCallback(
                 function (StringLiteral $userId, StringLiteral $labelName) {
@@ -58,7 +64,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 new PlaceRepository($eventStore, $eventBus)
             ),
             $this->labelService,
-            $labelPermissionRepository,
+            $this->labelPermissionRepository,
             $this->lockedLabelRepository,
             'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
         );
@@ -76,6 +82,19 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
             ->with(new LabelName('bar'), false);
+
+        $this->labelPermissionRepository->expects($this->any())
+            ->method('getByName')
+            ->willReturnCallback(
+                function (StringLiteral $labelName) {
+                    return new Entity(
+                        new UUID(\Ramsey\Uuid\Uuid::uuid4()->toString()),
+                        $labelName,
+                        $labelName->toNative() !== 'bar' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
+                        Privacy::PRIVACY_PUBLIC()
+                    );
+                }
+            );
 
         $id = '39007d2d-acec-438d-a687-f2d8400d4c1e';
 
