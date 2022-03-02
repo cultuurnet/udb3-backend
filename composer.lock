@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffa256157a7b9d4aa1ab0aa7b3a8f404",
+    "content-hash": "c2d0f987c9db0b6eb03a2e841f6d7a8f",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5059,16 +5059,16 @@
         },
         {
             "name": "publiq/stoplight-docs-uitdatabank",
-            "version": "dev-unreleased",
+            "version": "dev-feature/III-4369-refactor-place-post",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "804b2b618aee4cc8ddadc451488d05f2df8a66be"
+                "reference": "b4f9626302c370ba522698b6478c6bf4a3a45e06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/804b2b618aee4cc8ddadc451488d05f2df8a66be",
-                "reference": "804b2b618aee4cc8ddadc451488d05f2df8a66be",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/b4f9626302c370ba522698b6478c6bf4a3a45e06",
+                "reference": "b4f9626302c370ba522698b6478c6bf4a3a45e06",
                 "shasum": ""
             },
             "type": "library",
@@ -5085,9 +5085,9 @@
             "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
             "support": {
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
-                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/unreleased"
+                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4369-refactor-place-post"
             },
-            "time": "2022-02-21T07:00:18+00:00"
+            "time": "2022-02-21T11:55:56+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

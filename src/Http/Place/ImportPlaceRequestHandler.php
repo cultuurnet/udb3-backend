@@ -122,6 +122,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         /** @var Place $place */
         $place = RequestBodyParserFactory::createBaseParser(
+            new LegacyPlaceRequestBodyParser(),
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $placeId),
             $this->importPreProcessingRequestBodyParser,
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),
@@ -159,12 +160,20 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             // publish the place after creating it.
             // Existing places should always keep their original status, so
             // only do this publish command for new places.
-            $placeAggregate->publish($publishDate);
+            // For now the trigger to do a publish is the imports path.
+            // In the future this needs to be fine-tuned, see https://jira.uitdatabank.be/browse/III-4609
+            if (str_contains($request->getUri()->getPath(), 'imports')) {
+                $placeAggregate->publish($publishDate);
+            }
 
             // Places created by specific API partners should automatically be
             // approved.
             $consumer = $this->getConsumer($request);
             if ($consumer && $this->shouldApprove->satisfiedBy($consumer)) {
+                if (!str_contains($request->getUri()->getPath(), 'imports')) {
+                    $placeAggregate->publish($publishDate);
+                }
+
                 $placeAggregate->approve();
             }
 
@@ -244,7 +253,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             }
         }
 
-        $responseBody = ['id' => $placeId];
+        $responseBody = [
+            'id' => $placeId,
+            'placeId' => $placeId,
+            'url' => $this->iriGenerator->iri($placeId),
+        ];
         if ($lastCommandId) {
             $responseBody['commandId'] = $lastCommandId;
         }

@@ -11,8 +11,6 @@ use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
-use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceImportValidator;
-use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
@@ -27,7 +25,8 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/', 'place_editing_controller:createPlace');
+        $controllers->post('/', ImportPlaceRequestHandler::class);
+        $controllers->put('/{placeId}', ImportPlaceRequestHandler::class);
 
         $controllers->put('/{cdbid}/address/{lang}/', 'place_editing_controller:updateAddress');
         $controllers->put('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');
@@ -67,11 +66,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                 return new EditPlaceRestController(
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
-                    $app['media_manager'],
-                    $app['place_iri_generator'],
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['should_auto_approve_new_offer']
+                    $app['media_manager']
                 );
             }
         );
@@ -80,14 +75,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
             fn (Application $application) => new ImportPlaceRequestHandler(
                 $app['place_repository'],
                 $app['uuid_generator'],
-                new PlaceDenormalizer(
-                    new PlaceImportValidator(
-                        new PlaceIDParser(),
-                        $app['current_user_id'],
-                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
-                    )
-                ),
+                new PlaceDenormalizer(),
                 new CombinedRequestBodyParser(
                     new ImportLabelVisibilityRequestBodyParser(
                         $app[LabelServiceProvider::JSON_READ_REPOSITORY],

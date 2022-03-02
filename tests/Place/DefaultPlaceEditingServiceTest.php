@@ -14,20 +14,12 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
-use CultuurNet\UDB3\Place\Events\Moderation\Approved;
-use CultuurNet\UDB3\Place\Events\Moderation\Published;
-use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Title;
-use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -99,153 +91,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
             $this->readRepository,
             $this->commandFactory,
             $this->writeRepository
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_create_a_new_place()
-    {
-        $street = new Street('Kerkstraat 69');
-        $locality = new Locality('Leuven');
-        $postalCode = new PostalCode('3000');
-        $country = new CountryCode('BE');
-
-        $placeId = 'generated-uuid';
-        $mainLanguage = new Language('en');
-        $title = new Title('Title');
-        $eventType = new EventType('0.50.4.0.0', 'concert');
-        $address = new Address($street, $postalCode, $locality, $country);
-        $calendar = new Calendar(CalendarType::PERMANENT());
-
-        $this->uuidGenerator->expects($this->once())
-            ->method('generate')
-            ->willReturn('generated-uuid');
-
-        $this->eventStore->trace();
-
-        $this->placeEditingService->createPlace(
-            $mainLanguage,
-            $title,
-            $eventType,
-            $address,
-            $calendar
-        );
-
-        $this->assertEquals(
-            [
-                new PlaceCreated(
-                    $placeId,
-                    $mainLanguage,
-                    $title,
-                    $eventType,
-                    $address,
-                    $calendar
-                ),
-            ],
-            $this->eventStore->getEvents()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_be_able_to_create_a_new_place_and_approve_it_immediately()
-    {
-        $street = new Street('Kerkstraat 69');
-        $locality = new Locality('Leuven');
-        $postalCode = new PostalCode('3000');
-        $country = new CountryCode('BE');
-
-        $placeId = 'generated-uuid';
-        $mainLanguage = new Language('en');
-        $title = new Title('Title');
-        $eventType = new EventType('0.50.4.0.0', 'concert');
-        $address = new Address($street, $postalCode, $locality, $country);
-        $calendar = new Calendar(CalendarType::PERMANENT());
-
-        $publicationDate = new \DateTimeImmutable();
-        $service = $this->placeEditingService->withFixedPublicationDateForNewOffers($publicationDate);
-
-        $this->uuidGenerator->expects($this->once())
-            ->method('generate')
-            ->willReturn('generated-uuid');
-
-        $this->eventStore->trace();
-
-        $service->createApprovedPlace(
-            $mainLanguage,
-            $title,
-            $eventType,
-            $address,
-            $calendar
-        );
-
-        $this->assertEquals(
-            [
-                new PlaceCreated(
-                    $placeId,
-                    $mainLanguage,
-                    $title,
-                    $eventType,
-                    $address,
-                    $calendar
-                ),
-                new Published($placeId, $publicationDate),
-                new Approved($placeId),
-            ],
-            $this->eventStore->getEvents()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_create_a_new_place_with_a_fixed_publication_date()
-    {
-        $publicationDate = \DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, '2016-08-01T00:00:00+0200');
-
-        $street = new Street('Kerkstraat 69');
-        $locality = new Locality('Leuven');
-        $postalCode = new PostalCode('3000');
-        $country = new CountryCode('BE');
-        $placeId = 'generated-uuid';
-        $mainLanguage = new Language('en');
-        $title = new Title('Title');
-        $eventType = new EventType('0.50.4.0.0', 'concert');
-        $address = new Address($street, $postalCode, $locality, $country);
-        $calendar = new Calendar(CalendarType::PERMANENT());
-
-        $this->uuidGenerator->expects($this->once())
-          ->method('generate')
-          ->willReturn('generated-uuid');
-
-        $this->eventStore->trace();
-
-        $editingService = $this->placeEditingService->withFixedPublicationDateForNewOffers($publicationDate);
-
-        $editingService->createPlace(
-            $mainLanguage,
-            $title,
-            $eventType,
-            $address,
-            $calendar
-        );
-
-        $this->assertEquals(
-            [
-                new PlaceCreated(
-                    $placeId,
-                    $mainLanguage,
-                    $title,
-                    $eventType,
-                    $address,
-                    $calendar,
-                    $publicationDate
-                ),
-            ],
-            $this->eventStore->getEvents()
         );
     }
 
