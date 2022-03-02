@@ -601,26 +601,6 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventIdExists($id);
         $this->expectNoImages();
 
-        $lockedLabels = new Labels(
-            new Label(new LabelName('locked1')),
-            new Label(new LabelName('locked2'))
-        );
-        $unlockedLabels = new Labels(
-            new Label(new LabelName('foo'), true),
-            new Label(new LabelName('bar'), true),
-            new Label(new LabelName('lorem'), false),
-            new Label(new LabelName('ipsum'), false)
-        );
-        $this->lockedLabelRepository->expects($this->once())
-            ->method('getLockedLabelsForItem')
-            ->with($id)
-            ->willReturn($lockedLabels);
-
-        $this->lockedLabelRepository->expects($this->once())
-            ->method('getUnlockedLabelsForItem')
-            ->with($id)
-            ->willReturn($unlockedLabels);
-
         $this->commandBus->record();
 
         $this->importer->import($document);
@@ -628,18 +608,15 @@ class EventDocumentImporterTest extends TestCase
         $recordedCommands = $this->commandBus->getRecordedCommands();
 
         $this->assertContainsObject(
-            (
-                new ImportLabels(
-                    $this->getEventId(),
-                    new Labels(
-                        new Label(new LabelName('foo'), true),
-                        new Label(new LabelName('bar'), true),
-                        new Label(new LabelName('lorem'), false),
-                        new Label(new LabelName('ipsum'), false)
-                    )
+            new ImportLabels(
+                $this->getEventId(),
+                new Labels(
+                    new Label(new LabelName('foo'), true),
+                    new Label(new LabelName('bar'), true),
+                    new Label(new LabelName('lorem'), false),
+                    new Label(new LabelName('ipsum'), false)
                 )
-            )->withLabelsToKeepIfAlreadyOnOffer($lockedLabels)
-                ->withLabelsToRemoveWhenOnOffer($unlockedLabels),
+            ),
             $recordedCommands
         );
     }
