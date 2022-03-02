@@ -23,10 +23,13 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
+use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer as OrganizerAggregate;
@@ -119,6 +122,26 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         }
 
         $commands[] = new UpdateContactPoint($organizerId, $data->getContactPoint());
+
+        $description = $data->getDescription();
+        $descriptionCommands = [
+            'nl' => new DeleteDescription($organizerId, new Language('nl')),
+            'fr' => new DeleteDescription($organizerId, new Language('fr')),
+            'de' => new DeleteDescription($organizerId, new Language('de')),
+            'en' => new DeleteDescription($organizerId, new Language('en')),
+        ];
+        if ($description) {
+            foreach ($description->getLanguages() as $language) {
+                $descriptionCommands[$language->getCode()] = new UpdateDescription(
+                    $organizerId,
+                    $description->getTranslation($language),
+                    $language
+                );
+            }
+        }
+        foreach ($descriptionCommands as $descriptionCommand) {
+            $commands[] = $descriptionCommand;
+        }
 
         $address = $data->getAddress();
         if ($address) {

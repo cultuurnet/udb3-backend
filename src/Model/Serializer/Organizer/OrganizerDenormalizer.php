@@ -12,11 +12,13 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalize
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedDescriptionDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -29,6 +31,8 @@ class OrganizerDenormalizer implements DenormalizerInterface
 
     private DenormalizerInterface $titleDenormalizer;
 
+    private DenormalizerInterface $descriptionDenormalizer;
+
     private DenormalizerInterface $addressDenormalizer;
 
     private DenormalizerInterface $labelsDenormalizer;
@@ -40,6 +44,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
     public function __construct(
         UUIDParser $organizerIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
+        DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,
         DenormalizerInterface $labelsDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
@@ -51,6 +56,10 @@ class OrganizerDenormalizer implements DenormalizerInterface
 
         if (!$titleDenormalizer) {
             $titleDenormalizer = new TranslatedTitleDenormalizer();
+        }
+
+        if (!$descriptionDenormalizer) {
+            $descriptionDenormalizer = new TranslatedDescriptionDenormalizer();
         }
 
         if (!$addressDenormalizer) {
@@ -71,6 +80,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
 
         $this->organizerIDParser = $organizerIDParser;
         $this->titleDenormalizer = $titleDenormalizer;
+        $this->descriptionDenormalizer = $descriptionDenormalizer;
         $this->addressDenormalizer = $addressDenormalizer;
         $this->labelsDenormalizer = $labelsDenormalizer;
         $this->contactPointDenormalizer = $contactPointDenormalizer;
@@ -116,11 +126,22 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $url
         );
 
+        $organizer = $this->denormalizeDescription($data, $organizer);
         $organizer = $this->denormalizeAddress($data, $organizer);
         $organizer = $this->denormalizeLabels($data, $organizer);
         $organizer = $this->denormalizeContactPoint($data, $organizer);
         $organizer = $this->denormalizeGeoCoordinates($data, $organizer);
 
+        return $organizer;
+    }
+
+    private function denormalizeDescription(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
+    {
+        if (isset($data['description'])) {
+            /* @var TranslatedDescription $description */
+            $description = $this->descriptionDenormalizer->denormalize($data['description'], TranslatedDescription::class);
+            $organizer = $organizer->withDescription($description);
+        }
         return $organizer;
     }
 

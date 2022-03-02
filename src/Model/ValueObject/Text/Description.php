@@ -6,20 +6,17 @@ namespace CultuurNet\UDB3\Model\ValueObject\Text;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-/**
- * @todo Trim as well?
- */
 class Description
 {
     use IsString;
     use IsNotEmpty;
+    use Trims;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
+        $value = $this->trim($value);
         $this->guardNotEmpty($value);
         $this->setValue($value);
     }
