@@ -16,6 +16,10 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Calendar\DayOfWeek;
+use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
+use CultuurNet\UDB3\Calendar\OpeningHour;
+use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
@@ -40,6 +44,8 @@ use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -66,6 +72,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
@@ -73,7 +80,6 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 use Ramsey\Uuid\UuidFactoryInterface;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
@@ -116,7 +122,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->aggregateRepository,
             $this->uuidGenerator,
             new PlaceDenormalizer(
-                null,
                 null,
                 null,
                 null,
@@ -215,7 +220,99 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $placeId]),
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteCurrentOrganizer($placeId),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_a_legacy_place(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'mainLanguage' => 'nl',
+            'name' => 'Cafe Den Hemel',
+            'type' => [
+                'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                'domain' => 'eventtype',
+                'label' => 'Cultuur- of ontmoetingscentrum',
+            ],
+            'address' => [
+                'addressCountry' => 'BE',
+                'addressLocality' => 'Scherpenheuvel-Zichem',
+                'postalCode' => '3271',
+                'streetAddress' => 'Hoornblaas 107',
+            ],
+            'calendar' => [
+                'calendarType' => 'periodic',
+                'startDate' => '2022-02-21T23:00:00+00:00',
+                'endDate' => '2028-02-22T22:59:00+00:00',
+                'openingHours' => [
+                    [
+                        'opens' => '10:00',
+                        'closes' => '20:00',
+                        'dayOfWeek' => [
+                            'monday',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    fn (Place $place) => $place->getAggregateRootId() === $placeId
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->lockedLabelRepository->expects($this->once())
+            ->method('getLockedLabelsForItem')
+            ->with($placeId)
+            ->willReturn(new Labels());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
             $response->getBody()->getContents()
         );
 
@@ -260,6 +357,16 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ],
             ],
             'calendarType' => 'permanent',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => [
+                        'saturday',
+                        'sunday',
+                    ],
+                    'opens' => '13:00',
+                    'closes' => '23:59',
+                ],
+            ],
             'mainLanguage' => 'nl',
             'status' => [
                 'type' => 'Unavailable',
@@ -367,7 +474,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $placeId]),
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
             $response->getBody()->getContents()
         );
 
@@ -387,7 +498,22 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateCalendar(
                     $placeId,
-                    (new Calendar(CalendarType::PERMANENT()))
+                    (new Calendar(
+                        CalendarType::PERMANENT(),
+                        null,
+                        null,
+                        [],
+                        [
+                            new OpeningHour(
+                                new OpeningTime(new Hour(13), new Minute(00)),
+                                new OpeningTime(new Hour(23), new Minute(59)),
+                                new DayOfWeekCollection(
+                                    DayOfWeek::SATURDAY(),
+                                    DayOfWeek::SUNDAY()
+                                )
+                            ),
+                        ]
+                    ))
                         ->withStatus(
                             new Status(
                                 StatusType::unavailable(),
@@ -524,7 +650,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
-            Json::encode(['id' => $placeId]),
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
             $response->getBody()->getContents()
         );
 
@@ -797,12 +927,12 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_name_is_a_string(): void
+    public function it_should_throw_an_exception_if_name_not_a_string_or_array(): void
     {
         $place = [
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
-            'name' => 'Example name',
+            'name' => 123,
             'calendarType' => 'permanent',
             'location' => [
                 '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
@@ -827,7 +957,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/name',
-                'The data (string) must match the type: object'
+                'The data (integer) must match the type: object'
             ),
         ];
 

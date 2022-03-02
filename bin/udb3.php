@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Silex\Console\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
-use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
 use CultuurNet\UDB3\Silex\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
@@ -104,7 +103,6 @@ $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'],
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
-$consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(
     new DispatchMarkedAsDuplicateEventCommand(

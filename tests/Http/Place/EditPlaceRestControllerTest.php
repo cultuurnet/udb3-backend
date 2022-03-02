@@ -9,18 +9,15 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
-use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,11 +50,6 @@ class EditPlaceRestControllerTest extends TestCase
     private $iriGenerator;
 
     /**
-     * @var QueryParameterApiKeyReader
-     */
-    private $apiKeyReader;
-
-    /**
      * @var InMemoryConsumerRepository
      */
     private $consumerRepository;
@@ -83,7 +75,6 @@ class EditPlaceRestControllerTest extends TestCase
         $this->relationsRepository  = $this->createMock(RepositoryInterface::class);
         $this->mediaManager  = $this->createMock(MediaManagerInterface::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
-        $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
         $this->consumerRepository = new InMemoryConsumerRepository();
         $this->shouldApprove = $this->createMock(ConsumerSpecificationInterface::class);
 
@@ -99,11 +90,7 @@ class EditPlaceRestControllerTest extends TestCase
         $this->placeRestController = new EditPlaceRestController(
             $this->placeEditingService,
             $this->relationsRepository,
-            $this->mediaManager,
-            $this->iriGenerator,
-            $this->apiKeyReader,
-            $this->consumerRepository,
-            $this->shouldApprove
+            $this->mediaManager
         );
 
         $this->iriGenerator
@@ -114,84 +101,6 @@ class EditPlaceRestControllerTest extends TestCase
                     return 'http://du.de/place/' . $placeId;
                 }
             );
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_respond_with_the_location_of_the_new_offer_when_creating_a_place()
-    {
-        $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $this->getMajorInfoJson());
-
-        $this->placeEditingService
-            ->expects($this->once())
-            ->method('createPlace')
-            ->with(
-                new Language('en'),
-                new Title('foo'),
-                new EventType('1.8.2', 'PARTY!'),
-                new Address(
-                    new Street('acmelane 12'),
-                    new PostalCode('3000'),
-                    new Locality('Leuven'),
-                    new CountryCode('BE')
-                )
-            )
-            ->willReturn('A14DD1C8-0F9C-4633-B56A-A908F009AD94');
-
-        $response = $this->placeRestController->createPlace($request);
-
-        $expectedResponseContent = json_encode(
-            [
-                'placeId' => 'A14DD1C8-0F9C-4633-B56A-A908F009AD94',
-                'url' => 'http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94',
-            ]
-        );
-
-        $this->assertEquals($expectedResponseContent, $response->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_create_an_approved_place_for_privileged_consumers()
-    {
-        $request = Request::create(
-            'www.uitdatabank.dev',
-            'GET',
-            ['apiKey' => $this->apiKey->toString()],
-            [],
-            [],
-            [],
-            $this->getMajorInfoJson()
-        );
-
-        $this->placeEditingService
-            ->expects($this->once())
-            ->method('createApprovedPlace')
-            ->with(
-                new Language('en'),
-                new Title('foo'),
-                new EventType('1.8.2', 'PARTY!'),
-                new Address(
-                    new Street('acmelane 12'),
-                    new PostalCode('3000'),
-                    new Locality('Leuven'),
-                    new CountryCode('BE')
-                )
-            )
-            ->willReturn('A14DD1C8-0F9C-4633-B56A-A908F009AD94');
-
-        $response = $this->placeRestController->createPlace($request);
-
-        $expectedResponseContent = json_encode(
-            [
-                'placeId' => 'A14DD1C8-0F9C-4633-B56A-A908F009AD94',
-                'url' => 'http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94',
-            ]
-        );
-
-        $this->assertEquals($expectedResponseContent, $response->getContent());
     }
 
     /**
@@ -229,31 +138,5 @@ class EditPlaceRestControllerTest extends TestCase
         $response = $this->placeRestController->updateAddress($request, $placeId, $lang);
 
         $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @return string
-     */
-    private function getMajorInfoJson()
-    {
-        return json_encode(
-            [
-                'mainLanguage' => 'en',
-                'name' => 'foo',
-                'type' => [
-                    'id' => '1.8.2',
-                    'label' => 'PARTY!',
-                ],
-                'address' => [
-                    'streetAddress' => 'acmelane 12',
-                    'postalCode' => '3000',
-                    'addressLocality' => 'Leuven',
-                    'addressCountry' => 'BE',
-                ],
-                'calendar' => [
-                    'type' => 'permanent',
-                ],
-            ]
-        );
     }
 }
