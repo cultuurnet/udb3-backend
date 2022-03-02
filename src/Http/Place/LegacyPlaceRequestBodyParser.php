@@ -27,13 +27,19 @@ final class LegacyPlaceRequestBodyParser implements RequestBodyParser
             ];
         }
 
-        if (isset($data->type) && $data->type instanceof stdClass) {
+        if (isset($data->type, $data->type->id) && $data->type instanceof stdClass) {
+            $terms['id'] = $data->type->id;
+
+            if (isset($data->type->label)) {
+                $terms['label'] = $data->type->label;
+            }
+
+            if (isset($data->type->domain)) {
+                $terms['domain'] = $data->type->domain;
+            }
+
             $data->terms = [
-                (object) [
-                    'id' => $data->type->id,
-                    'label' => $data->type->id,
-                    'domain' => $data->type->id,
-                ],
+                (object) $terms,
             ];
         }
 
@@ -59,7 +65,9 @@ final class LegacyPlaceRequestBodyParser implements RequestBodyParser
         }
 
         if (isset($data->calendar) && $data->calendar instanceof stdClass) {
-            $data->calendarType = $data->calendar->calendarType;
+            if (isset($data->calendar->calendarType)) {
+                $data->calendarType = $data->calendar->calendarType;
+            }
 
             if (isset($data->calendar->startDate)) {
                 $data->startDate = $data->calendar->startDate;
