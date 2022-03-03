@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Import;
 
-use CultuurNet\UDB3\Http\Import\ImportRestController;
+use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use Silex\Application;
@@ -19,25 +19,13 @@ class ImportControllerProvider implements ControllerProviderInterface
 {
     public const PATH = '/imports';
 
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
-        $app['event_import_controller'] = $app->share(
-            function (Application $app) {
-                return new ImportRestController(
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['event_importer'],
-                    $app['uuid_generator'],
-                    $app['event_iri_generator']
-                );
-            }
-        );
-
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/events/', 'event_import_controller:importWithoutId');
-        $controllers->put('/events/{cdbid}/', 'event_import_controller:importWithId');
+        $controllers->post('/events/', ImportEventRequestHandler::class);
+        $controllers->put('/events/{eventId}/', ImportEventRequestHandler::class);
 
         $controllers->post('/places/', ImportPlaceRequestHandler::class);
         $controllers->put('/places/{placeId}/', ImportPlaceRequestHandler::class);
