@@ -134,7 +134,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (streetAddress, postalCode, addressLocality, addressCountry) are missing'
+                    'The required properties (addressCountry, addressLocality, postalCode, streetAddress) are missing'
                 )
             ),
             fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
@@ -192,7 +192,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/addressCountry',
-                    'The string should match pattern: ^[A-Z]{2}$'
+                    'The string should match pattern: ^[A-Z][A-Z]$'
                 )
             ),
             fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
@@ -244,7 +244,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/streetAddress',
+                    '/addressLocality',
                     'Minimum string length is 1, found 0'
                 ),
                 new SchemaError(
@@ -252,7 +252,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
                     'Minimum string length is 1, found 0'
                 ),
                 new SchemaError(
-                    '/addressLocality',
+                    '/streetAddress',
                     'Minimum string length is 1, found 0'
                 )
             ),
@@ -281,7 +281,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/streetAddress',
+                    '/addressLocality',
                     'The string should match pattern: \S'
                 ),
                 new SchemaError(
@@ -289,7 +289,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
                     'The string should match pattern: \S'
                 ),
                 new SchemaError(
-                    '/addressLocality',
+                    '/streetAddress',
                     'The string should match pattern: \S'
                 )
             ),
