@@ -54,16 +54,28 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Mocked event',
+                'nl' => 'Pannekoeken voor het goede doel',
             ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ]
+            ],
+            'calendarType' => 'permanent',
         ];
 
         $expected = [
             '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Mocked event',
+                'nl' => 'Pannekoeken voor het goede doel',
             ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ]
+            ],
+            'calendarType' => 'permanent',
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -101,16 +113,28 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Mocked event',
+                'nl' => 'Pannekoeken voor het goede doel',
             ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ]
+            ],
+            'calendarType' => 'permanent',
         ];
 
         $expected = [
             '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Mocked event',
+                'nl' => 'Pannekoeken voor het goede doel',
             ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ]
+            ],
+            'calendarType' => 'permanent',
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -148,16 +172,28 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Mocked event',
+                'nl' => 'Pannekoeken voor het goede doel',
             ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ]
+            ],
+            'calendarType' => 'permanent',
         ];
 
         $expected = [
             '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Mocked event',
+                'nl' => 'Pannekoeken voor het goede doel',
             ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ]
+            ],
+            'calendarType' => 'permanent',
         ];
 
         $request = (new Psr7RequestBuilder())
