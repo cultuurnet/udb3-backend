@@ -8,6 +8,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
@@ -212,6 +213,43 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::resourceIdAlreadyInUse($eventId),
+            fn () => $this->importEventRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_a_required_property_is_missing(): void
+    {
+        $event = [
+            'foo' => 'bar',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/',
+                'The required properties (mainLanguage, name, terms, calendarType) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    private function assertValidationErrors(array $event, array $expectedErrors): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($event)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(...$expectedErrors),
             fn () => $this->importEventRequestHandler->handle($request)
         );
     }
