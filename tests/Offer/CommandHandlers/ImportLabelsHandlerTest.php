@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as Udb3ModelsLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as Udb3ModelsLabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels as Udb3ModelsLabels;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -164,14 +165,10 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_should_not_replace_private_labels_that_are_already_on_the_offer(): void
+    public function it_should_not_remove_private_labels_that_are_already_on_the_offer_via_import(): void
     {
         $this->labelService->expects($this->never())
             ->method('createLabelAggregateIfNew');
-
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Udb3ModelsLabels(new Udb3ModelsLabel(new Udb3ModelsLabelName('private'))));
 
         $id = '39007d2d-acec-438d-a687-f2d8400d4c1e';
 
@@ -180,32 +177,36 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new Label('not_private')),
-                    new LabelAdded($id, new Label('private')),
+                    new LabelsImported(
+                        $id,
+                        new Labels(
+                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('not_allowed')
+                            ),
+                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('allowed')
+                            )
+                        )
+                    ),
+                    new LabelAdded($id, new Label('not_allowed')),
+                    new LabelAdded($id, new Label('allowed')),
                 ]
             )
             ->when(
                 new ImportLabels($id, new Udb3ModelsLabels())
             )
-            ->then([new LabelRemoved($id, new Label('not_private'))]);
+            ->then([new LabelRemoved($id, new Label('allowed'))]);
     }
 
     /**
      * @test
      */
-    public function it_should_not_remove_labels_if_not_explicitly_instructed_to(): void
+    public function it_should_not_remove_labels_that_were_not_imported_before(): void
     {
         $this->labelService->expects($this->never())
             ->method('createLabelAggregateIfNew');
 
         $id = '39007d2d-acec-438d-a687-f2d8400d4c1e';
-
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Udb3ModelsLabels(
-                new Udb3ModelsLabel(new Udb3ModelsLabelName('label 1')),
-                new Udb3ModelsLabel(new Udb3ModelsLabelName('label 2'))
-            ));
 
         $this->scenario
             ->withAggregateId($id)

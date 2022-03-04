@@ -128,6 +128,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private ?string $ownerId = null;
 
+    /**
+     * @var string[]
+     */
+    private array $importedLabelNames = [];
+
     public function __construct()
     {
         $this->titles = [];
@@ -279,6 +284,13 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $keepLabelsCollection = new LabelCollection(
             array_map($convertLabelClass, $labelsToKeepIfAlreadyOnOffer->toArray())
         );
+
+        // Add non-imported labels that are already on the offer as labels to keep
+        foreach ($this->labels->asArray() as $label) {
+            if (!in_array($label->getName()->toNative(), $this->importedLabelNames, true)) {
+                $keepLabelsCollection = $keepLabelsCollection->with($label);
+            }
+        }
 
         // What are the added labels?
         // Labels which are not inside the internal state but inside the imported labels
@@ -507,6 +519,20 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
                 $labelRemoved->isLabelVisible()
             )
         );
+
+        $this->importedLabelNames = array_filter(
+            $this->importedLabelNames,
+            fn (string $importedLabelName) => $importedLabelName !== $labelRemoved->getLabelName()
+        );
+    }
+
+    protected function applyLabelsImported(AbstractLabelsImported $labelsImported): void
+    {
+        foreach ($labelsImported->getLabels()->toArrayOfStringNames() as $importedLabelName) {
+            if (!in_array($importedLabelName, $this->importedLabelNames, true)) {
+                $this->importedLabelNames[] = $importedLabelName;
+            }
+        }
     }
 
     protected function applyTypeUpdated(AbstractTypeUpdated $themeUpdated): void
