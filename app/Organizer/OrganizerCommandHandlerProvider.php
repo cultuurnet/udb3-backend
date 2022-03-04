@@ -62,7 +62,6 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
                     $app['organizer_repository'],
                     $app['labels.constraint_aware_service'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app['labels.labels_locked_for_import_repository'],
                     $app['current_user_id']
                 );
             }

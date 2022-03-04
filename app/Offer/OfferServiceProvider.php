@@ -157,7 +157,6 @@ class OfferServiceProvider implements ServiceProviderInterface
                     $app[OfferRepository::class],
                     $app['labels.constraint_aware_service'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app['labels.labels_locked_for_import_repository'],
                     $app['current_user_id']
                 );
             }

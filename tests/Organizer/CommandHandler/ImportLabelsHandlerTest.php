@@ -52,7 +52,6 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ),
             $this->labelService,
             $labelPermissionRepository,
-            $this->lockedLabelRepository,
             'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
         );
     }

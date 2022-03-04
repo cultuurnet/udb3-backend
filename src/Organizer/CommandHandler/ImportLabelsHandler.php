@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsPermissionRepository;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
@@ -21,20 +20,17 @@ final class ImportLabelsHandler implements CommandHandler
     private OrganizerRepository $organizerRepository;
     private LabelServiceInterface $labelService;
     private LabelsPermissionRepository $labelsPermissionRepository;
-    private LockedLabelRepository $lockedLabelRepository;
     private string $currentUserId;
 
     public function __construct(
         OrganizerRepository $organizerRepository,
         LabelServiceInterface $labelService,
         LabelsPermissionRepository $labelsPermissionRepository,
-        LockedLabelRepository $lockedLabelRepository,
         string $currentUserId
     ) {
         $this->organizerRepository = $organizerRepository;
         $this->labelService = $labelService;
         $this->labelsPermissionRepository = $labelsPermissionRepository;
-        $this->lockedLabelRepository = $lockedLabelRepository;
         $this->currentUserId = $currentUserId;
     }
 
