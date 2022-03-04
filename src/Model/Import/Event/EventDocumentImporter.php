@@ -191,11 +191,7 @@ class EventDocumentImporter implements DocumentImporterInterface
 
         $commands[] = new ImportVideos($id, $import->getVideos());
 
-        $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);
-        $unlockedLabels = $this->lockedLabelRepository->getUnlockedLabelsForItem($id);
-        $commands[] = (new ImportLabels($id, $import->getLabels()))
-            ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels)
-            ->withLabelsToRemoveWhenOnOffer($unlockedLabels);
+        $commands[] = new ImportLabels($id, $import->getLabels());
 
         // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
         // which might cause race conditions if we're still dispatching other commands here as well.

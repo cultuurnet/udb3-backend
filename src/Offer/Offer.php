@@ -144,6 +144,22 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract public static function getOfferType(): OfferType;
 
+    public function getLabels(): Labels
+    {
+        $labels = new Labels();
+
+        foreach ($this->labels->asArray() as $label) {
+            $labels = $labels->with(
+                new Label(
+                    new LabelName($label->getName()->toNative()),
+                    $label->isVisible()
+                )
+            );
+        }
+
+        return $labels;
+    }
+
     public function changeOwner(string $newOwnerId): void
     {
         // Will always be true for the first call to changeOwner() since we have no way to know who the creator was
@@ -244,7 +260,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer, Labels $labelsToRemoveWhenOnOffer): void
+    public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer): void
     {
         $convertLabelClass = function (Label $label) {
             return new LegacyLabel(
@@ -261,11 +277,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // Convert the labels to keep if already applied.
         $keepLabelsCollection = new LabelCollection(
             array_map($convertLabelClass, $labelsToKeepIfAlreadyOnOffer->toArray())
-        );
-
-        // Convert the labels to remove when on offer.
-        $removeLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labelsToRemoveWhenOnOffer->toArray())
         );
 
         // What are the added labels?
@@ -300,7 +311,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // Labels which are inside the internal state but not inside imported labels or labels to keep.
         // For each deleted label fire a LabelDeleted event.
         foreach ($this->labels->asArray() as $label) {
-            if (!$importLabelsCollection->contains($label) && !$keepLabelsCollection->contains($label) && $removeLabelsCollection->contains($label)) {
+            $labelName = $label->getName()->toNative();
+            $importLabelNames = array_map(
+                fn (LegacyLabel $label) => $label->getName()->toNative(),
+                $importLabelsCollection->asArray()
+            );
+            $keepLabelNames = array_map(
+                fn (LegacyLabel $label) => $label->getName()->toNative(),
+                $keepLabelsCollection->asArray()
+            );
+
+            if (!in_array($labelName, $importLabelNames, true) && !in_array($labelName, $keepLabelNames, true)) {
                 $this->apply($this->createLabelRemovedEvent($label));
             }
         }

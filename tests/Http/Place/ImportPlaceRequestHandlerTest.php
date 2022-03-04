@@ -41,7 +41,6 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -96,8 +95,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
     private MockObject $imageCollectionFactory;
 
-    private MockObject $lockedLabelRepository;
-
     private MockObject $consumerSpecification;
 
     private MockObject $apiReader;
@@ -113,7 +110,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
-        $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
         $this->consumerSpecification = $this->createMock(ConsumerSpecificationInterface::class);
         $this->apiReader = $this->createMock(ApiKeyReaderInterface::class);
         $this->consumerRepository = $this->createMock(ConsumerReadRepositoryInterface::class);
@@ -152,7 +148,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
             $this->imageCollectionFactory,
-            $this->lockedLabelRepository,
             $this->consumerSpecification,
             $this->apiReader,
             $this->consumerRepository
@@ -206,11 +201,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->imageCollectionFactory->expects($this->once())
             ->method('fromMediaObjectReferences')
             ->willReturn(new ImageCollection());
-
-        $this->lockedLabelRepository->expects($this->once())
-            ->method('getLockedLabelsForItem')
-            ->with($placeId)
-            ->willReturn(new Labels());
 
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($givenPlace)
@@ -294,11 +284,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->imageCollectionFactory->expects($this->once())
             ->method('fromMediaObjectReferences')
             ->willReturn(new ImageCollection());
-
-        $this->lockedLabelRepository->expects($this->once())
-            ->method('getLockedLabelsForItem')
-            ->with($placeId)
-            ->willReturn(new Labels());
 
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($givenPlace)
@@ -454,11 +439,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         new LegacyLanguage('nl')
                     ))
             );
-
-        $this->lockedLabelRepository->expects($this->once())
-            ->method('getLockedLabelsForItem')
-            ->with($placeId)
-            ->willReturn(new Labels());
 
         $videoId = \Ramsey\Uuid\Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
@@ -635,11 +615,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->imageCollectionFactory->expects($this->once())
             ->method('fromMediaObjectReferences')
             ->willReturn(new ImageCollection());
-
-        $this->lockedLabelRepository->expects($this->once())
-            ->method('getLockedLabelsForItem')
-            ->with($placeId)
-            ->willReturn(new Labels());
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('placeId', $placeId)

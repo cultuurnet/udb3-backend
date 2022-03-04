@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -69,8 +68,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private ConsumerSpecificationInterface $shouldApprove;
 
-    private LockedLabelRepository $lockedLabelRepository;
-
     private ApiKeyReaderInterface $apiKeyReader;
 
     private ConsumerReadRepositoryInterface $consumerReadRepository;
@@ -83,7 +80,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         IriGeneratorInterface $iriGenerator,
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
-        LockedLabelRepository $lockedLabelRepository,
         ConsumerSpecificationInterface $shouldApprove,
         ApiKeyReaderInterface $apiKeyReader,
         ConsumerReadRepositoryInterface $consumerReadRepository
@@ -95,7 +91,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->iriGenerator = $iriGenerator;
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
-        $this->lockedLabelRepository = $lockedLabelRepository;
         $this->shouldApprove = $shouldApprove;
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
@@ -235,9 +230,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateAddress($placeId, $address, $language);
         }
 
-        $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($placeId);
-        $commands[] = (new ImportLabels($placeId, $place->getLabels()))
-            ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels);
+        $commands[] = new ImportLabels($placeId, $place->getLabels());
 
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($place->getMediaObjectReferences());
         $commands[] = new ImportImages($placeId, $images);

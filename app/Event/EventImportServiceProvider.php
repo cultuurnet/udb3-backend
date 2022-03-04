@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
-use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Import\Event\EventDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\PreProcessing\LabelPreProcessingDocumentImporter;
@@ -27,13 +26,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
         $app['event_denormalizer'] = $app->share(
             function (Application $app) {
                 return new EventDenormalizer(
-                    new EventImportValidator(
-                        $app['place_jsonld_repository'],
-                        new EventIDParser(),
-                        $app['current_user_id'],
-                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
-                    )
+                    new EventImportValidator($app['place_jsonld_repository'])
                 );
             }
         );

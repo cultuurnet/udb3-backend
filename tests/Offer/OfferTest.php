@@ -337,26 +337,19 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = '9538e4b6-2b8c-404c-93dc-e0dccf8eb175';
 
         $labels = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('new_label_1'),
                 true
             ),
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('existing_label_1'),
                 true
             )
         );
 
         $labelsToKeepIfApplied = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+            new Label(
                 new LabelName('existing_label_3'),
-                true
-            )
-        );
-
-        $labelsToRemoveWhenOnOffer = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                new LabelName('existing_label_2'),
                 true
             )
         );
@@ -369,16 +362,16 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new LabelAdded($itemId, new LegacyLabel('existing_label_3')),
             ])
             ->when(
-                function (Item $item) use ($labels, $labelsToKeepIfApplied, $labelsToRemoveWhenOnOffer) {
-                    $item->importLabels($labels, $labelsToKeepIfApplied, $labelsToRemoveWhenOnOffer);
-                    $item->importLabels($labels, $labelsToKeepIfApplied, $labelsToRemoveWhenOnOffer);
+                function (Item $item) use ($labels, $labelsToKeepIfApplied) {
+                    $item->importLabels($labels, $labelsToKeepIfApplied);
+                    $item->importLabels($labels, $labelsToKeepIfApplied);
                 }
             )
             ->then([
                 new LabelsImported(
                     $itemId,
                     new Labels(
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
+                        new Label(
                             new LabelName('new_label_1'),
                             true
                         )
