@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\RelationshipModelLockedLabelRepository;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
@@ -139,14 +138,6 @@ class LabelServiceProvider implements ServiceProviderInterface
                 return new RelationsReadRepository(
                     $app['dbal_connection'],
                     new StringLiteral(self::RELATIONS_TABLE)
-                );
-            }
-        );
-
-        $app['labels.labels_locked_for_import_repository'] = $app->share(
-            function (Application $app) {
-                return new RelationshipModelLockedLabelRepository(
-                    $app[self::RELATIONS_READ_REPOSITORY]
                 );
             }
         );
