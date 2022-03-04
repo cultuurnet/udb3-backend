@@ -51,23 +51,12 @@ final class ImportLabelsHandler implements CommandHandler
 
         $offer = $this->offerRepository->load($command->getItemId());
 
-        $labelsToImport = $command->getLabels();
-        $labelsToImport = $this->fixVisibility($labelsToImport);
-
-        $labelsOnOffer = new Labels();
-        foreach ($offer->getLabels()->asArray() as $labelOnOffer) {
-            $labelsOnOffer = $labelsOnOffer->with(
-                new Label(
-                    new LabelName($labelOnOffer->getName()->toNative()),
-                    $labelOnOffer->isVisible()
-                )
-            );
-        }
-
-        $labelsToKeepOnOffer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
+        $labelsToImport = $this->fixVisibility($command->getLabels());
+        $labelsOnOffer = $offer->getLabels();
 
         // Fix visibility that is sometimes incorrect on locked labels. This otherwise breaks comparisons in logic down
         // the line.
+        $labelsToKeepOnOffer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
         $labelsToKeepOnOffer = $this->fixVisibility($labelsToKeepOnOffer);
 
         // Always keep labels that the user has no permission to remove, whether they are included in the import or not.
