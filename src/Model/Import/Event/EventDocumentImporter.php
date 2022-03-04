@@ -28,7 +28,6 @@ use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -53,8 +52,6 @@ class EventDocumentImporter implements DocumentImporterInterface
 
     private ConsumerSpecificationInterface $shouldApprove;
 
-    private LockedLabelRepository $lockedLabelRepository;
-
     private LoggerInterface $logger;
 
     public function __construct(
@@ -63,7 +60,6 @@ class EventDocumentImporter implements DocumentImporterInterface
         ImageCollectionFactory $imageCollectionFactory,
         CommandBus $commandBus,
         ConsumerSpecificationInterface $shouldApprove,
-        LockedLabelRepository $lockedLabelRepository,
         LoggerInterface $logger
     ) {
         $this->aggregateRepository = $aggregateRepository;
@@ -71,7 +67,6 @@ class EventDocumentImporter implements DocumentImporterInterface
         $this->imageCollectionFactory = $imageCollectionFactory;
         $this->commandBus = $commandBus;
         $this->shouldApprove = $shouldApprove;
-        $this->lockedLabelRepository = $lockedLabelRepository;
         $this->logger = $logger;
     }
 
