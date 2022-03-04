@@ -161,9 +161,6 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_should_not_remove_private_labels_that_are_already_on_the_offer_via_import(): void
     {
-        $this->labelService->expects($this->never())
-            ->method('createLabelAggregateIfNew');
-
         $id = '39007d2d-acec-438d-a687-f2d8400d4c1e';
 
         $this->scenario

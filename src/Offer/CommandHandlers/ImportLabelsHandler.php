@@ -46,8 +46,7 @@ final class ImportLabelsHandler implements CommandHandler
         $offer = $this->offerRepository->load($command->getItemId());
 
         $labelsToImport = $this->fixVisibility($command->getLabels());
-        $labelsOnOffer = $offer->getLabels();
-        $labelsToKeepOnOffer = new Labels();
+        $labelsOnOffer = $this->fixVisibility($offer->getLabels());
 
         // Always keep labels that the user has no permission to remove, whether they are included in the import or not.
         // Do not throw an exception but just keep them, because the user might not have had up-to-date JSON from UDB
@@ -59,8 +58,8 @@ final class ImportLabelsHandler implements CommandHandler
                 new StringLiteral($this->currentUserId),
                 new StringLiteral($labelName)
             );
-            if (!$canUseLabel && !in_array($labelName, $labelsToKeepOnOffer->toArrayOfStringNames(), true)) {
-                $labelsToKeepOnOffer = $labelsToKeepOnOffer->with($labelOnOffer);
+            if (!$canUseLabel && !$labelsToImport->contains($labelOnOffer)) {
+                $labelsToImport = $labelsToImport->with($labelOnOffer);
             }
         }
 
@@ -93,7 +92,7 @@ final class ImportLabelsHandler implements CommandHandler
             );
         }
 
-        $offer->importLabels($labelsToImport, $labelsToKeepOnOffer);
+        $offer->importLabels($labelsToImport);
 
         $this->offerRepository->save($offer);
     }

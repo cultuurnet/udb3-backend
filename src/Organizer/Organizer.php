@@ -428,15 +428,10 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOrganizer): void
+    public function importLabels(Labels $importLabelsCollection): void
     {
-        // Convert the imported labels to label collection.
-        $importLabelsCollection = $labels;
-
-        // Convert the labels to keep if already applied.
-        $keepLabelsCollection = $labelsToKeepIfAlreadyOnOrganizer;
-
-        // Add non-imported labels that are already on the offer as labels to keep
+        // Always keep non-imported labels that are already on the organizer.
+        $keepLabelsCollection = new Labels();
         /** @var Label $label */
         foreach ($this->labels->toArray() as $label) {
             if (!$keepLabelsCollection->contains($label) && !in_array($label->getName()->toString(), $this->importedLabelNames, true)) {

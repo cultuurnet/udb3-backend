@@ -266,7 +266,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer): void
+    public function importLabels(Labels $labels): void
     {
         $convertLabelClass = function (Label $label) {
             return new LegacyLabel(
@@ -280,12 +280,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             array_map($convertLabelClass, $labels->toArray())
         );
 
-        // Convert the labels to keep if already applied.
-        $keepLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labelsToKeepIfAlreadyOnOffer->toArray())
-        );
-
-        // Add non-imported labels that are already on the offer as labels to keep
+        // Always keep non-imported labels that are already on the offer
+        $keepLabelsCollection = new LabelCollection();
         foreach ($this->labels->asArray() as $label) {
             if (!in_array($label->getName()->toNative(), $this->importedLabelNames, true)) {
                 $keepLabelsCollection = $keepLabelsCollection->with($label);
