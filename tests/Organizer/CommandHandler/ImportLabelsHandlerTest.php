@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -29,7 +28,6 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     use AssertApiProblemTrait;
 
     private MockObject $labelService;
-    private MockObject $lockedLabelRepository;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): ImportLabelsHandler
     {
@@ -43,7 +41,6 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             );
 
         $this->labelService = $this->createMock(LabelServiceInterface::class);
-        $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
 
         return new ImportLabelsHandler(
             new OrganizerRepository(

@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Label\ValueObjects\LabelName as DeprecatedLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -40,14 +39,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
 {
     private MockObject $labelService;
 
-    private MockObject $lockedLabelRepository;
-
     private MockObject $labelPermissionRepository;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): ImportLabelsHandler
     {
         $this->labelService = $this->createMock(LabelServiceInterface::class);
-        $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
 
         $this->labelPermissionRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelPermissionRepository->expects($this->any())
