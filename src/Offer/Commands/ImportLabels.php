@@ -6,72 +6,21 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use CultuurNet\UDB3\StringLiteral;
 
-final class ImportLabels extends AbstractCommand implements AuthorizableLabelCommand
+final class ImportLabels extends AbstractCommand
 {
-    /**
-     * @var Labels
-     */
-    private $labels;
-
-    /**
-     * @var Labels
-     */
-    private $labelsToKeepIfAlreadyOnOffer;
-
-    /**
-     * @var Labels
-     */
-    private $labelsToRemoveWhenOnOffer;
+    private Labels $labels;
 
     public function __construct(string $itemId, Labels $labels)
     {
         parent::__construct($itemId);
         $this->labels = $labels;
-        $this->labelsToKeepIfAlreadyOnOffer = new Labels();
-        $this->labelsToRemoveWhenOnOffer = new Labels();
     }
 
-    public function withLabelsToKeepIfAlreadyOnOffer(Labels $labels): self
+    public function getLabels(): Labels
     {
-        $c = clone $this;
-        $c->labelsToKeepIfAlreadyOnOffer = $labels;
-        return $c;
-    }
-
-    public function getLabelsToKeepIfAlreadyOnOffer(): Labels
-    {
-        return $this->labelsToKeepIfAlreadyOnOffer;
-    }
-
-    public function withLabelsToRemoveWhenOnOffer(Labels $labels): self
-    {
-        $c = clone $this;
-        $c->labelsToRemoveWhenOnOffer = $labels;
-        return $c;
-    }
-
-    public function getLabelsToRemoveWhenOnOffer(): Labels
-    {
-        return $this->labelsToRemoveWhenOnOffer;
-    }
-
-    public function getLabelsToImport(): Labels
-    {
-        $labelNamesToKeep = array_map(
-            function (Label $label) {
-                return $label->getName();
-            },
-            $this->labelsToKeepIfAlreadyOnOffer->toArray()
-        );
-
-        return $this->labels->filter(
-            function (Label $label) use ($labelNamesToKeep) {
-                return !in_array($label->getName(), $labelNamesToKeep);
-            }
-        );
+        return $this->labels;
     }
 
     public function getLabelNames(): array
@@ -80,7 +29,7 @@ final class ImportLabels extends AbstractCommand implements AuthorizableLabelCom
             function (Label $label) {
                 return new StringLiteral($label->getName()->toString());
             },
-            $this->getLabelsToImport()->toArray()
+            $this->getLabels()->toArray()
         );
     }
 }

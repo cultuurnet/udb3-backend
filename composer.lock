@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2d0f987c9db0b6eb03a2e841f6d7a8f",
+    "content-hash": "ead51eb7afdfea2f824a40e0587fafdc",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5059,16 +5059,16 @@
         },
         {
             "name": "publiq/stoplight-docs-uitdatabank",
-            "version": "dev-feature/III-4369-refactor-place-post",
+            "version": "dev-III-4595-models-for-properties",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "b4f9626302c370ba522698b6478c6bf4a3a45e06"
+                "reference": "6579c45a3bf592081365e0fef2d0e239dfa0b06b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/b4f9626302c370ba522698b6478c6bf4a3a45e06",
-                "reference": "b4f9626302c370ba522698b6478c6bf4a3a45e06",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/6579c45a3bf592081365e0fef2d0e239dfa0b06b",
+                "reference": "6579c45a3bf592081365e0fef2d0e239dfa0b06b",
                 "shasum": ""
             },
             "type": "library",
@@ -5085,9 +5085,9 @@
             "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
             "support": {
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
-                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4369-refactor-place-post"
+                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/III-4595-models-for-properties"
             },
-            "time": "2022-02-21T11:55:56+00:00"
+            "time": "2022-03-02T12:42:25+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
