@@ -546,6 +546,77 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertValidationErrors($event, $expectedErrors);
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_dayOfWeek_is_malformed(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => 'monday',
+                    'opens' => '08:00',
+                    'closes' => '16:00',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/openingHours/0/dayOfWeek',
+                'The data (string) must match the type: array'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_dayOfWeek_has_unknown_value(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday', 'wed'],
+                    'opens' => '08:00',
+                    'closes' => '16:00',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/openingHours/0/dayOfWeek/2',
+                'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
