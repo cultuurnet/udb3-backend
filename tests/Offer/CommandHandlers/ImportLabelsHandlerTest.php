@@ -174,11 +174,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                     new LabelsImported(
                         $id,
                         new Labels(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('not_allowed')
+                            new Label(
+                                new LabelName('not_allowed')
                             ),
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('allowed')
+                            new Label(
+                                new LabelName('allowed')
                             )
                         )
                     ),
