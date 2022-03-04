@@ -192,6 +192,14 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             ->given(
                 [
                     $this->organizerCreatedWithUniqueWebsite,
+                    new LabelsImported(
+                        $this->id,
+                        new Labels(
+                            new Label(new LabelName('existing_label_1')),
+                            new Label(new LabelName('existing_label_2')),
+                            new Label(new LabelName('existing_label_3')),
+                        )  
+                    ),
                     new LabelAdded($this->id, 'existing_label_1'),
                     new LabelAdded($this->id, 'existing_label_2'),
                     new LabelAdded($this->id, 'existing_label_3'),

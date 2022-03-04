@@ -62,8 +62,6 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_label_imports(): void
     {
-        $this->expectNoLockedLabels();
-
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
             ->with(new LegacyLabelName('foo'), true);
@@ -144,8 +142,6 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
 
-        $this->expectNoLockedLabels();
-
         $this->scenario
             ->withAggregateId($id)
             ->given(
@@ -179,14 +175,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_will_not_replace_private_labels_that_are_already_on_the_organizer(): void
+    public function it_will_not_remove_private_labels_that_are_already_on_the_organizer(): void
     {
-        $this->labelService
-            ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('existing_private'), true);
-
-        $this->expectLockedLabels(new Labels(new Label(new LabelName('existing_private'))));
-
         $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
 
         $this->scenario
@@ -194,8 +184,9 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->organizerCreated($id),
+                    new LabelAdded($id, 'not_allowed'),
+                    new LabelsImported($id, new Labels(new Label(new LabelName('existing_to_be_removed')))),
                     new LabelAdded($id, 'existing_to_be_removed'),
-                    new LabelAdded($id, 'existing_private'),
                 ]
             )
             ->when(
@@ -204,6 +195,42 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->then(
                 [
                     new LabelRemoved($id, 'existing_to_be_removed'),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_remove_labels_that_were_not_imported_before(): void
+    {
+        $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
+
+        $this->scenario
+            ->withAggregateId($id)
+            ->given(
+                [
+                    $this->organizerCreated($id),
+                    new LabelAdded($id, 'added_via_ui_1'),
+                    new LabelsImported(
+                        $id,
+                        new Labels(
+                            new Label(new LabelName('imported_1')),
+                            new Label(new LabelName('imported_2')),
+                        )
+                    ),
+                    new LabelAdded($id, 'imported_1'),
+                    new LabelAdded($id, 'imported_2'),
+                    new LabelAdded($id, 'added_via_ui_2'),
+                ]
+            )
+            ->when(
+                new ImportLabels($id, new Labels())
+            )
+            ->then(
+                [
+                    new LabelRemoved($id, 'imported_1'),
+                    new LabelRemoved($id, 'imported_2'),
                 ]
             );
     }
@@ -221,19 +248,5 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ['email'],
             ['url']
         );
-    }
-
-    private function expectNoLockedLabels(): void
-    {
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Labels());
-    }
-
-    private function expectLockedLabels(Labels $lockedLabels): void
-    {
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn($lockedLabels);
     }
 }

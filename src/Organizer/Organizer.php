@@ -83,6 +83,11 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     private WorkflowStatus $workflowStatus;
 
+    /**
+     * @var string[]
+     */
+    private array $importedLabelNames = [];
+
     public function getAggregateRootId(): string
     {
         return $this->actorId;
@@ -431,6 +436,14 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // Convert the labels to keep if already applied.
         $keepLabelsCollection = $labelsToKeepIfAlreadyOnOrganizer;
 
+        // Add non-imported labels that are already on the offer as labels to keep
+        /** @var Label $label */
+        foreach ($this->labels->toArray() as $label) {
+            if (!$keepLabelsCollection->contains($label) && !in_array($label->getName()->toString(), $this->importedLabelNames, true)) {
+                $keepLabelsCollection = $keepLabelsCollection->with($label);
+            }
+        }
+
         // What are the added labels?
         // Labels which are not inside the internal state but inside the imported labels
         $addedLabels = new Labels();
@@ -675,6 +688,20 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->labels = $this->labels->filter(
             fn (Label $label) => $label->getName()->toString() !== $labelRemoved->getLabelName()
         );
+
+        $this->importedLabelNames = array_filter(
+            $this->importedLabelNames,
+            fn (string $importedLabelName) => $importedLabelName !== $labelRemoved->getLabelName()
+        );
+    }
+
+    protected function applyLabelsImported(LabelsImported $labelsImported): void
+    {
+        foreach ($labelsImported->getLabels()->toArrayOfStringNames() as $importedLabelName) {
+            if (!in_array($importedLabelName, $this->importedLabelNames, true)) {
+                $this->importedLabelNames[] = $importedLabelName;
+            }
+        }
     }
 
     protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): void
