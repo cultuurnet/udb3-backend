@@ -60,7 +60,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                ]
+                ],
             ],
             'calendarType' => 'permanent',
         ];
@@ -74,7 +74,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                ]
+                ],
             ],
             'calendarType' => 'permanent',
         ];
@@ -119,7 +119,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                ]
+                ],
             ],
             'calendarType' => 'permanent',
         ];
@@ -133,7 +133,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                ]
+                ],
             ],
             'calendarType' => 'permanent',
         ];
@@ -178,7 +178,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                ]
+                ],
             ],
             'calendarType' => 'permanent',
         ];
@@ -192,7 +192,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                ]
+                ],
             ],
             'calendarType' => 'permanent',
         ];
@@ -249,7 +249,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                ]
+                ],
             ],
             'calendarType' => 'permanent',
         ];
