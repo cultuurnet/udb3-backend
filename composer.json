@@ -59,7 +59,7 @@
     "predis/predis": "~1.0",
     "psr/http-server-middleware": "^1.0",
     "psr/log": "^1.0",
-    "publiq/stoplight-docs-uitdatabank": "dev-III-4595-models-for-properties",
+    "publiq/stoplight-docs-uitdatabank": "dev-feature/III-4362-event-schema-validation",
     "ramsey/uuid": "^3.2.0",
     "rase/socket.io-emitter": "0.6.1",
     "respect/validation": "~1.1",
