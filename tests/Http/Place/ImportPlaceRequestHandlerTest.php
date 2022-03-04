@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -134,7 +135,15 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new VideoDenormalizer($this->uuidFactory)
             ),
             new CombinedRequestBodyParser(
-                new ImportTermRequestBodyParser(new PlaceCategoryResolver())
+                new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
+                new ImportPriceInfoRequestBodyParser(
+                    [
+                        'nl' => 'Basistarief',
+                        'fr' => 'Tarif de base',
+                        'en' => 'Base tariff',
+                        'de' => 'Basisrate',
+                    ]
+                )
             ),
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
@@ -3180,6 +3189,57 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_priceInfo_tariff_has_no_name(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'price' => 8,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/priceInfo/1',
+                'The required properties (name) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_priceInfo_has_empty_names(): void
     {
         $place = [
@@ -3215,16 +3275,26 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     'price' => 10,
                     'priceCurrency' => 'EUR',
                 ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Senioren',
+                        'fr' => '',
+                        'en' => '   ',
+                    ],
+                    'price' => 8,
+                    'priceCurrency' => 'EUR',
+                ],
             ],
         ];
 
         $expectedErrors = [
             new SchemaError(
-                '/priceInfo/0/name/fr',
+                '/priceInfo/1/name/fr',
                 'Minimum string length is 1, found 0'
             ),
             new SchemaError(
-                '/priceInfo/0/name/en',
+                '/priceInfo/1/name/en',
                 'The string should match pattern: \S'
             ),
         ];
@@ -3386,10 +3456,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         ];
 
         $expectedErrors = [
-            new SchemaError(
-                '/priceInfo/0/name',
-                'A value in the mainLanguage (nl) is required.'
-            ),
             new SchemaError(
                 '/priceInfo/1/name',
                 'A value in the mainLanguage (nl) is required.'
@@ -4232,7 +4298,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ),
             new SchemaError(
                 '/videos/0/copyrightHolder',
-                'Minimum string length is 3, found 0'
+                'Minimum string length is 2, found 0'
             ),
             new SchemaError(
                 '/videos/1/copyrightHolder',
