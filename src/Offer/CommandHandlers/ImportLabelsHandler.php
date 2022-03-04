@@ -53,21 +53,19 @@ final class ImportLabelsHandler implements CommandHandler
         $labelsToImport = $this->fixVisibility($command->getLabels());
         $labelsOnOffer = $offer->getLabels();
 
-        // Fix visibility that is sometimes incorrect on locked labels. This otherwise breaks comparisons in logic down
-        // the line.
         $labelsToKeepOnOffer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
-        $labelsToKeepOnOffer = $this->fixVisibility($labelsToKeepOnOffer);
 
         // Always keep labels that the user has no permission to remove, whether they are included in the import or not.
         // Do not throw an exception but just keep them, because the user might not have had up-to-date JSON from UDB
         // with the extra labels when they sent their import.
         /** @var Label $labelOnOffer */
         foreach ($labelsOnOffer as $labelOnOffer) {
+            $labelName = $labelOnOffer->getName()->toString();
             $canUseLabel = $this->labelsPermissionRepository->canUseLabel(
                 new StringLiteral($this->currentUserId),
-                new StringLiteral($labelOnOffer->getName()->toString())
+                new StringLiteral($labelName)
             );
-            if (!$canUseLabel && !$labelsToKeepOnOffer->contains($labelOnOffer)) {
+            if (!$canUseLabel && !in_array($labelName, $labelsToKeepOnOffer->toArrayOfStringNames(), true)) {
                 $labelsToKeepOnOffer = $labelsToKeepOnOffer->with($labelOnOffer);
             }
         }
