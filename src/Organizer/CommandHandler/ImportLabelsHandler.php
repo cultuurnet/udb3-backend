@@ -46,23 +46,10 @@ final class ImportLabelsHandler implements CommandHandler
 
         $organizer = $this->organizerRepository->load($command->getItemId());
 
-        $labelsToImport = $command->getLabels();
+        $labelsToImport = $this->fixVisibility($command->getLabels());
         $labelsOnOrganizer = $organizer->getLabels();
-        $labelsToKeepOnOrganizer = $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId());
-
-        // Fix visibility that is sometimes incorrect on locked labels. This otherwise breaks comparisons in logic down
-        // the line.
-        $labelsToKeepOnOrganizer = new Labels(
-            ...array_map(
-                function (Label $label): Label {
-                    $readModel = $this->labelsPermissionRepository->getByName(
-                        new StringLiteral($label->getName()->toString())
-                    );
-                    $visible = !$readModel || $readModel->getVisibility()->sameAs(Visibility::VISIBLE());
-                    return new Label($label->getName(), $visible);
-                },
-                $labelsToKeepOnOrganizer->toArray()
-            )
+        $labelsToKeepOnOrganizer = $this->fixVisibility(
+            $this->lockedLabelRepository->getLockedLabelsForItem($command->getItemId())
         );
 
         // Always keep labels that the user has no permission to remove, whether they are included in the import or not.
@@ -109,5 +96,21 @@ final class ImportLabelsHandler implements CommandHandler
 
         $organizer->importLabels($labelsToImport, $labelsToKeepOnOrganizer);
         $this->organizerRepository->save($organizer);
+    }
+
+    private function fixVisibility(Labels $labels): Labels
+    {
+        return new Labels(
+            ...array_map(
+                function (Label $label): Label {
+                    $readModel = $this->labelsPermissionRepository->getByName(
+                        new StringLiteral($label->getName()->toString())
+                    );
+                    $visible = !$readModel || $readModel->getVisibility()->sameAs(Visibility::VISIBLE());
+                    return new Label($label->getName(), $visible);
+                },
+                $labels->toArray()
+            )
+        );
     }
 }
