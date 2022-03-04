@@ -407,6 +407,145 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertValidationErrors($event, $expectedErrors);
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_openingHours_misses_required_fields(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday'],
+                    'opens' => '08:00',
+                ],
+                [
+                    'dayOfWeek' => ['monday', 'tuesday'],
+                    'closes' => '16:00',
+                ],
+                [
+                    'opens' => '08:00',
+                    'closes' => '16:00',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/openingHours/0',
+                'The required properties (closes) are missing'
+            ),
+            new SchemaError(
+                '/openingHours/1',
+                'The required properties (opens) are missing'
+            ),
+            new SchemaError(
+                '/openingHours/2',
+                'The required properties (dayOfWeek) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_openingHours_have_invalid_format(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday'],
+                    'opens' => '08:00',
+                ],
+                [
+                    'dayOfWeek' => ['monday', 'tuesday'],
+                    'closes' => '16:00',
+                ],
+                [
+                    'opens' => '08:00',
+                    'closes' => '16:00',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/openingHours/0',
+                'The required properties (closes) are missing'
+            ),
+            new SchemaError(
+                '/openingHours/1',
+                'The required properties (opens) are missing'
+            ),
+            new SchemaError(
+                '/openingHours/2',
+                'The required properties (dayOfWeek) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_openingHours_are_malformed(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday'],
+                    'opens' => '08h00',
+                    'closes' => '16h00',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/openingHours/0/opens',
+                'The string should match pattern: ^\d?\d:\d\d$'
+            ),
+            new SchemaError(
+                '/openingHours/0/closes',
+                'The string should match pattern: ^\d?\d:\d\d$'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
