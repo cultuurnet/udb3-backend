@@ -797,6 +797,100 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_labels_and_hiddenLabels_have_wrong_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'labels' => 'foo,bar',
+            'hiddenLabels' => 'foo,bar',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/labels',
+                'The data (string) must match the type: array'
+            ),
+            new SchemaError(
+                '/hiddenLabels',
+                'The data (string) must match the type: array'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_labels_and_hiddenLabels_are_not_strings(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'labels' => [
+                1,
+                true,
+                '',
+                '   ',
+            ],
+            'hiddenLabels' => [
+                1,
+                true,
+                '',
+                '   ',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/labels/0',
+                'The data (integer) must match the type: string'
+            ),
+            new SchemaError(
+                '/labels/1',
+                'The data (boolean) must match the type: string'
+            ),
+            new SchemaError(
+                '/labels/2',
+                'Minimum string length is 2, found 0'
+            ),
+            new SchemaError(
+                '/hiddenLabels/0',
+                'The data (integer) must match the type: string'
+            ),
+            new SchemaError(
+                '/hiddenLabels/1',
+                'The data (boolean) must match the type: string'
+            ),
+            new SchemaError(
+                '/hiddenLabels/2',
+                'Minimum string length is 2, found 0'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
