@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\MainLanguageValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
@@ -53,6 +54,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new ImportTermRequestBodyParser(new EventCategoryResolver()),
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
+            MainLanguageValidatingRequestBodyParser::createForPlace(),
             new AssociativeArrayRequestBodyParser()
         )->parse($request)->getParsedBody();
 
