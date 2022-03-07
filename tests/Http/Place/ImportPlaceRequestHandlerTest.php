@@ -1699,7 +1699,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_terms_has_no_event_types(): void
+    public function it_should_throw_an_exception_if_terms_id_is_not_known(): void
     {
         $place = [
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
