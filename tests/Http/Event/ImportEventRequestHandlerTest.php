@@ -852,12 +852,14 @@ final class ImportEventRequestHandlerTest extends TestCase
                 true,
                 '',
                 '   ',
+                ' d',
             ],
             'hiddenLabels' => [
                 1,
                 true,
                 '',
                 '   ',
+                ' d',
             ],
         ];
 
