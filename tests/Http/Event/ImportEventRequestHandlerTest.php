@@ -1290,6 +1290,183 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_if_contactPoint_has_invalid_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'contactPoint' => '02 551 18 70',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/contactPoint',
+                'The data (string) must match the type: object'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_contactPoint_has_invalid_phone(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                    '   ',
+                    '',
+                    123,
+                ],
+                'email' => [],
+                'url' => [],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/contactPoint/phone/1',
+                'The string should match pattern: \S'
+            ),
+            new SchemaError(
+                '/contactPoint/phone/2',
+                'Minimum string length is 1, found 0'
+            ),
+            new SchemaError(
+                '/contactPoint/phone/3',
+                'The data (integer) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_contactPoint_has_invalid_email(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'contactPoint' => [
+                'phone' => [],
+                'email' => [
+                    'info@publiq.be',
+                    '   ',
+                    '',
+                    'publiq.be',
+                    123,
+                ],
+                'url' => [],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/contactPoint/email/1',
+                'The data must match the \'email\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/email/2',
+                'The data must match the \'email\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/email/3',
+                'The data must match the \'email\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/email/4',
+                'The data (integer) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_contactPoint_has_invalid_url(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'contactPoint' => [
+                'phone' => [],
+                'email' => [],
+                'url' => [
+                    'https://www.publiq.be',
+                    '   ',
+                    '',
+                    'www.uitdatabank.be',
+                    123,
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/contactPoint/url/1',
+                'The data must match the \'uri\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/url/2',
+                'The data must match the \'uri\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/url/3',
+                'The data must match the \'uri\' format'
+            ),
+            new SchemaError(
+                '/contactPoint/url/4',
+                'The data (integer) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
