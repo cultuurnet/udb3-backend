@@ -1755,6 +1755,400 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_wrong_phone_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'phone' => 123,
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/phone',
+                'The data (integer) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_empty_phone(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'phone' => '   ',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/phone',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_wrong_email_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'email' => 123,
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/email',
+                'The data (integer) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_empty_email(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'email' => '   ',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/email',
+                'The data must match the \'email\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_invalid_email(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'email' => '@publiq.be',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/email',
+                'The data must match the \'email\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_wrong_url_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'url' => 123,
+                'urlLabel' => [
+                    'nl' => 'booking info label',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/url',
+                'The data (integer) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_empty_url(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'url' => '   ',
+                'urlLabel' => [
+                    'nl' => 'booking info label',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/url',
+                'The data must match the \'uri\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_invalid_url(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'url' => 'www.publiq.be',
+                'urlLabel' => [
+                    'nl' => 'booking info label',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/url',
+                'The data must match the \'uri\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_empty_urlLabel(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'url' => 'https://www.publiq.be',
+                'urlLabel' => [
+                    'nl' => 'publiq vzw',
+                    'en' => '   ',
+                    'fr' => '',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/urlLabel/fr',
+                'Minimum string length is 1, found 0'
+            ),
+            new SchemaError(
+                '/bookingInfo/urlLabel/en',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_missing_urlLabel(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'url' => 'https://www.publiq.be',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo',
+                '\'urlLabel\' property is required by \'url\' property'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_invalid_urlLabel(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'url' => 'https://www.publiq.be',
+                'urlLabel' => 'Publiq vzw',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/urlLabel',
+                'The data (string) must match the type: object'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_no_urlLabel_in_main_language(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'url' => 'https://www.publiq.be',
+                'urlLabel' => [
+                    'en' => 'publiq vzw',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/urlLabel',
+                'A value in the mainLanguage (nl) is required.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
