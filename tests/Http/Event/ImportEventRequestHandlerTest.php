@@ -74,6 +74,8 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
                 ],
             ],
             'calendarType' => 'permanent',
@@ -133,6 +135,8 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
                 ],
             ],
             'calendarType' => 'permanent',
@@ -192,6 +196,8 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
                 ],
             ],
             'calendarType' => 'permanent',
@@ -611,6 +617,180 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/openingHours/0/dayOfWeek/2',
                 'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_terms_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms',
+                'Array should have at least 1 items, 0 found'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_terms_is_missing_an_id(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'label' => 'foo',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms/0',
+                'The required properties (id) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_terms_id_is_not_a_string(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => 1,
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms/0/id',
+                'The data (integer) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_terms_id_is_not_known(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1',
+                    'label' => 'foo',
+                    'domain' => 'facilities',
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms',
+                'At least 1 array items must match schema'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_terms_has_more_then_one_event_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '0.5.0.0.0',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms',
+                'At most 1 array items must match schema'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_terms_can_not_be_resolved_to_an_event(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.14.0.0.0',
+                    'label' => 'Monument',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms',
+                'The term 0.14.0.0.0 does not exist or is not supported'
             ),
         ];
 

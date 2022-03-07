@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -17,6 +18,7 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -48,6 +50,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         /** @var array $data */
         $data = RequestBodyParserFactory::createBaseParser(
+            new ImportTermRequestBodyParser(new EventCategoryResolver()),
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new AssociativeArrayRequestBodyParser()
