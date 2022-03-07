@@ -226,7 +226,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_a_required_property_is_missing(): void
+    public function it_throws_if_a_required_property_is_missing(): void
     {
         $event = [
             'foo' => 'bar',
@@ -245,7 +245,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_main_language_has_wrong_value(): void
+    public function it_throws_if_main_language_has_wrong_value(): void
     {
         $event = [
             'mainLanguage' => 'foo',
@@ -273,7 +273,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_main_language_has_wrong_type(): void
+    public function it_throws_if_main_language_has_wrong_type(): void
     {
         $event = [
             'mainLanguage' => [
@@ -303,7 +303,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_name_has_no_entries(): void
+    public function it_throws_if_name_has_no_entries(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -329,7 +329,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_name_entry_is_empty(): void
+    public function it_throws_if_name_entry_is_empty(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -363,7 +363,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_name_has_invalid_format(): void
+    public function it_throws_if_name_has_invalid_format(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -389,7 +389,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_calendarType_has_invalid_format(): void
+    public function it_throws_if_calendarType_has_invalid_format(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -417,7 +417,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_openingHours_misses_required_fields(): void
+    public function it_throws_if_openingHours_misses_required_fields(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -467,7 +467,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_openingHours_have_invalid_format(): void
+    public function it_throws_if_openingHours_have_invalid_format(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -517,7 +517,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_openingHours_are_malformed(): void
+    public function it_throws_if_openingHours_are_malformed(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -556,7 +556,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_dayOfWeek_is_malformed(): void
+    public function it_throws_if_dayOfWeek_is_malformed(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -591,7 +591,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_dayOfWeek_has_unknown_value(): void
+    public function it_throws_if_dayOfWeek_has_unknown_value(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -626,7 +626,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_terms_is_empty(): void
+    public function it_throws_if_terms_is_empty(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -650,7 +650,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_terms_is_missing_an_id(): void
+    public function it_throws_if_terms_is_missing_an_id(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -679,7 +679,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_terms_id_is_not_a_string(): void
+    public function it_throws_if_terms_id_is_not_a_string(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -707,7 +707,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_terms_id_is_not_known(): void
+    public function it_throws_if_terms_id_is_not_known(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -737,7 +737,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_terms_has_more_then_one_event_type(): void
+    public function it_throws_if_terms_has_more_then_one_event_type(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -770,7 +770,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_terms_can_not_be_resolved_to_an_event(): void
+    public function it_throws_if_terms_can_not_be_resolved_to_an_event(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -800,7 +800,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_labels_and_hiddenLabels_have_wrong_type(): void
+    public function it_throws_if_labels_and_hiddenLabels_have_wrong_type(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -834,7 +834,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_labels_and_hiddenLabels_are_not_strings(): void
+    public function it_throws_if_labels_and_hiddenLabels_are_not_strings(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -896,7 +896,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_description_has_no_entries(): void
+    public function it_throws_if_description_has_no_entries(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -925,7 +925,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_description_is_a_string(): void
+    public function it_throws_if_description_is_a_string(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -954,7 +954,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_description_is_missing_main_language(): void
+    public function it_throws_if_description_is_missing_main_language(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -985,7 +985,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_status_has_wrong_format(): void
+    public function it_throws_if_status_has_wrong_format(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1014,7 +1014,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_status_reason_is_empty(): void
+    public function it_throws_if_status_reason_is_empty(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1054,7 +1054,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_status_has_no_main_language(): void
+    public function it_throws_if_status_has_no_main_language(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1088,7 +1088,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_bookingAvailability_has_wrong_format(): void
+    public function it_throws_if_bookingAvailability_has_wrong_format(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1117,7 +1117,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_bookingAvailability_has_invalid_value(): void
+    public function it_throws_if_bookingAvailability_has_invalid_value(): void
     {
         $event = [
             'mainLanguage' => 'nl',
