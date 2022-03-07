@@ -8,6 +8,7 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
@@ -47,9 +48,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 $eventStore,
                 $eventBus
             ),
-            $this->labelService,
-            $labelPermissionRepository,
-            'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
+            new LabelImportPreProcessor(
+                $this->labelService,
+                $labelPermissionRepository,
+                'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
+            )
         );
     }
 

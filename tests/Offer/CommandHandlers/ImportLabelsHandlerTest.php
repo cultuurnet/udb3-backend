@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label as DeprecatedLabel;
+use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -59,9 +60,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventRepository($eventStore, $eventBus),
                 new PlaceRepository($eventStore, $eventBus)
             ),
-            $this->labelService,
-            $this->labelPermissionRepository,
-            'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
+            new LabelImportPreProcessor(
+                $this->labelService,
+                $this->labelPermissionRepository,
+                'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
+            )
         );
     }
 
