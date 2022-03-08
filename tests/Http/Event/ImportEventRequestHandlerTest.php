@@ -3174,6 +3174,241 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_if_videos_has_wrong_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'videos' => 'wrong',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos',
+                'The data (string) must match the type: array'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_videos_have_missing_properties(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'videos' => [
+                [
+                    'key' => 'value',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos/0',
+                'The required properties (url, language) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_videos_url_is_invalid(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'videos' => [
+                [
+                    'url' => 'https://www.youtube.com/123',
+                    'language' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos/0/url',
+                'The string should match pattern: ^http(s?):\/\/(www\.)?((youtube\.com\/watch\?v=([^\/#&?]*))|(vimeo\.com\/([^\/#&?]*))|(youtu\.be\/([^\/#&?]*)))'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_videos_language_is_not_supported(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'videos' => [
+                [
+                    'url' => 'https://www.youtube.com/watch?v=123',
+                    'language' => 'es',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos/0/language',
+                'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_videos_copyrightHolder_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'videos' => [
+                [
+                    'url' => 'https://www.youtube.com/watch?v=123',
+                    'language' => 'nl',
+                    'copyrightHolder' => '   ',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos/0/copyrightHolder',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_videos_copyrightHolder_is_too_short(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'videos' => [
+                [
+                    'url' => 'https://www.youtube.com/watch?v=123',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'a',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos/0/copyrightHolder',
+                'Minimum string length is 2, found 1'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_videos_copyrightHolder_is_too_long(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'videos' => [
+                [
+                    'url' => 'https://www.youtube.com/watch?v=123',
+                    'language' => 'nl',
+                    'copyrightHolder' => str_repeat('abdce', 50) . 'f',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/videos/0/copyrightHolder',
+                'Maximum string length is 250, found 251'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
