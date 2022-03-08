@@ -394,7 +394,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'en' => 'All you can eat pancakes'
+                'en' => 'All you can eat pancakes',
             ],
             'terms' => [
                 [
