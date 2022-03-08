@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Silex\Authentication;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
@@ -110,9 +110,9 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     (string) $app['auth.api_key.group_id']
                 );
 
-                /* @var ConsumerReadRepositoryInterface $consumerRepository */
+                /* @var ConsumerReadRepository $consumerRepository */
                 $consumerRepository = $app['auth.consumer_repository'];
-                /** @var ConsumerInterface $consumer */
+                /** @var Consumer $consumer */
                 $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
 
                 if (!$permissionCheck->satisfiedBy($consumer)) {

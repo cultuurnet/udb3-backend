@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\PreProcessing;
 
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
@@ -37,7 +37,7 @@ class TermPreProcessingDocumentImporter implements DocumentImporterInterface
     /**
      * Pre-processes the JSON to polyfill missing term properties if possible.
      */
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): ?string
+    public function import(DecodedDocument $decodedDocument, Consumer $consumer = null): ?string
     {
         $data = $decodedDocument->getBody();
 

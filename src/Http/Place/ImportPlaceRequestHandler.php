@@ -8,10 +8,10 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -68,11 +68,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private ImageCollectionFactory $imageCollectionFactory;
 
-    private ConsumerSpecificationInterface $shouldApprove;
+    private ConsumerSpecification $shouldApprove;
 
-    private ApiKeyReaderInterface $apiKeyReader;
+    private ApiKeyReader $apiKeyReader;
 
-    private ConsumerReadRepositoryInterface $consumerReadRepository;
+    private ConsumerReadRepository $consumerReadRepository;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -82,9 +82,9 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         IriGeneratorInterface $iriGenerator,
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
-        ConsumerSpecificationInterface $shouldApprove,
-        ApiKeyReaderInterface $apiKeyReader,
-        ConsumerReadRepositoryInterface $consumerReadRepository
+        ConsumerSpecification $shouldApprove,
+        ApiKeyReader $apiKeyReader,
+        ConsumerReadRepository $consumerReadRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -265,7 +265,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         return new JsonResponse($responseBody, $responseStatus);
     }
 
-    private function getConsumer(ServerRequestInterface $request): ?ConsumerInterface
+    private function getConsumer(ServerRequestInterface $request): ?Consumer
     {
         $apiKey = $this->apiKeyReader->read($request);
 

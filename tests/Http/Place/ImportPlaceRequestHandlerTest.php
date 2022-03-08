@@ -12,9 +12,9 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
@@ -113,9 +113,9 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
-        $this->consumerSpecification = $this->createMock(ConsumerSpecificationInterface::class);
-        $this->apiReader = $this->createMock(ApiKeyReaderInterface::class);
-        $this->consumerRepository = $this->createMock(ConsumerReadRepositoryInterface::class);
+        $this->consumerSpecification = $this->createMock(ConsumerSpecification::class);
+        $this->apiReader = $this->createMock(ApiKeyReader::class);
+        $this->consumerRepository = $this->createMock(ConsumerReadRepository::class);
 
         $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
             $this->aggregateRepository,

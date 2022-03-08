@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -60,12 +60,12 @@ class EditEventRestControllerTest extends TestCase
     private $apiKey;
 
     /**
-     * @var ConsumerInterface|MockObject
+     * @var Consumer|MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|MockObject
+     * @var ConsumerSpecification|MockObject
      */
     private $shouldApprove;
 
@@ -76,10 +76,10 @@ class EditEventRestControllerTest extends TestCase
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
         $this->consumerRepository = new InMemoryConsumerRepository();
-        $this->shouldApprove = $this->createMock(ConsumerSpecificationInterface::class);
+        $this->shouldApprove = $this->createMock(ConsumerSpecification::class);
 
         $this->apiKey = new ApiKey('f5278146-3133-48b8-ace4-7e3f0a49328a');
-        $this->consumer = $this->createMock(ConsumerInterface::class);
+        $this->consumer = $this->createMock(Consumer::class);
         $this->consumerRepository->setConsumer($this->apiKey, $this->consumer);
 
         $this->shouldApprove->expects($this->any())

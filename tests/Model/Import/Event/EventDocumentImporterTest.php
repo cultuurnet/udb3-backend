@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Model\Import\Event;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
@@ -87,12 +87,12 @@ class EventDocumentImporterTest extends TestCase
     private TraceableCommandBus $commandBus;
 
     /**
-     * @var ConsumerInterface|MockObject
+     * @var Consumer|MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|MockObject
+     * @var ConsumerSpecification|MockObject
      */
     private $shouldApprove;
 
@@ -103,8 +103,8 @@ class EventDocumentImporterTest extends TestCase
         $this->repository = $this->createMock(Repository::class);
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $this->commandBus = new TraceableCommandBus();
-        $this->consumer = $this->createMock(ConsumerInterface::class);
-        $this->shouldApprove = $this->createMock(ConsumerSpecificationInterface::class);
+        $this->consumer = $this->createMock(Consumer::class);
+        $this->shouldApprove = $this->createMock(ConsumerSpecification::class);
 
         $eventDocumentImporter = new EventDocumentImporter(
             $this->repository,
