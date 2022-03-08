@@ -2745,12 +2745,8 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/bookingInfo/availabilityStarts',
-                'The data must match the \'date-time\' format'
-            ),
-            new SchemaError(
-                '/bookingInfo/availabilityEnds',
-                'The data must match the \'date-time\' format'
+                'bookingInfo/availabilityEnds',
+                'availabilityEnds should not be before availabilityStarts'
             ),
         ];
 
