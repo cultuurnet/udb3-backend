@@ -687,7 +687,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/subEvent/0',
-                'The required properties (id, startDate, endDate, status, bookingAvailability) are missing'
+                'The required properties (startDate, endDate) are missing'
             ),
         ];
 
@@ -828,7 +828,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/subEvent/0',
-                'The required properties (id, startDate, endDate, status, bookingAvailability) are missing'
+                'The required properties (startDate, endDate) are missing'
             ),
         ];
 
