@@ -389,6 +389,67 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_ignores_invalid_languages_inside_name(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+                'es' => 'Invalid language',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expected = [
+            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+                'es' => 'Invalid language',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->documentImporter->expects($this->once())
+            ->method('import')
+            ->with(new DecodedDocument($eventId, $expected))
+            ->willReturn($commandId);
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'commandId' => $commandId,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_calendarType_has_invalid_format(): void
     {
         $event = [
