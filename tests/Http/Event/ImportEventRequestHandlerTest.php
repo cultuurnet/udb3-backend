@@ -2753,6 +2753,399 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_is_has_wrong_format(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => 'wrong type',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject',
+                'The data (string) must match the type: array'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_has_no_items(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject',
+                'Array should have at least 1 items, 0 found'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_is_missing_a_required_property(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    'key' => 'value',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0',
+                'The required properties (@id, description, copyrightHolder, inLanguage) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_has_wrong_url_format(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                    'contentUrl' => 'www.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f.jpeg',
+                    'thumbnailUrl' => 'ftp://www.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f.jpeg',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/contentUrl',
+                'The data must match the \'uri\' format'
+            ),
+            new SchemaError(
+                '/mediaObject/0/thumbnailUrl',
+                'The string should match pattern: ^http[s]?:\/\/'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_has_invalid_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:invalid',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/%40type',
+                'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_description_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => '   ',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/description',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_copyrightHolder_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => '   ',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/copyrightHolder',
+                'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_copyrightHolder_is_too_short(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => '1',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/copyrightHolder',
+                'Minimum string length is 2, found 1'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_copyrightHolder_is_too_long(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => str_repeat('abcde', 50) . 'f',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/copyrightHolder',
+                'Maximum string length is 250, found 251'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_language_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => '   ',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/inLanguage',
+                'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_language_is_unknown(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'es',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/inLanguage',
+                'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
