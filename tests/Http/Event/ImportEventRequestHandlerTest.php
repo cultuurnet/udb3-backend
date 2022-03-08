@@ -1339,6 +1339,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '   ',
                 ' d',
                 str_repeat('abcde', 51) . 'f',
+                'a;a',
             ],
             'hiddenLabels' => [
                 1,
@@ -1347,6 +1348,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '   ',
                 ' d',
                 str_repeat('abcde', 51) . 'f',
+                'a;a',
             ],
         ];
 
@@ -1368,6 +1370,10 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'Maximum string length is 255, found 256'
             ),
             new SchemaError(
+                '/labels/6',
+                'The string should match pattern: ^[^;]{2,255}$'
+            ),
+            new SchemaError(
                 '/hiddenLabels/0',
                 'The data (integer) must match the type: string'
             ),
@@ -1382,6 +1388,10 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/hiddenLabels/5',
                 'Maximum string length is 255, found 256'
+            ),
+            new SchemaError(
+                '/hiddenLabels/6',
+                'The string should match pattern: ^[^;]{2,255}$'
             ),
         ];
 
