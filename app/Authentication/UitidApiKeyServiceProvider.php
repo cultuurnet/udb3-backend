@@ -51,10 +51,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
         $app['auth.api_key_authenticator'] = $app->share(
             function (Application $app) {
-                return new CultureFeedApiKeyAuthenticator(
-                    $app['culturefeed'],
-                    $app['auth.consumer_repository']
-                );
+                return new CultureFeedApiKeyAuthenticator($app['auth.consumer_repository']);
             }
         );
 
