@@ -104,7 +104,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $placeId = $this->uuidGenerator->generate();
         $responseStatus = StatusCodeInterface::STATUS_CREATED;
-        $placeAggregate = null;
         $placeExists = false;
 
         if ($routeParameters->hasPlaceId()) {
@@ -112,8 +111,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $responseStatus = StatusCodeInterface::STATUS_OK;
 
             try {
-                /** @var \CultuurNet\UDB3\Place\Place $aggregate */
-                $placeAggregate = $this->aggregateRepository->load($placeId);
+                $this->aggregateRepository->load($placeId);
                 $placeExists = true;
             } catch (AggregateNotFoundException $e) {
             }
