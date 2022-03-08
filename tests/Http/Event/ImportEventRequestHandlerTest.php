@@ -662,6 +662,41 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_calendarType_is_single_and_subEvent_has_missing_fields(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'single',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    'key' => 'value',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/subEvent/0',
+                'The required properties (id, startDate, endDate, status, bookingAvailability) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_calendarType_is_multiple_and_required_fields_are_missing(): void
     {
         $event = [
@@ -759,6 +794,41 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/endDate',
                 'endDate should not be before startDate'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_calendarType_is_multiple_and_subEvent_has_missing_fields(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    'key' => 'value',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/subEvent/0',
+                'The required properties (id, startDate, endDate, status, bookingAvailability) are missing'
             ),
         ];
 
