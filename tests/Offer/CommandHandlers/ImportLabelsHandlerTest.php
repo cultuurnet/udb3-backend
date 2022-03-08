@@ -16,12 +16,12 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label as DeprecatedLabel;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as DeprecatedLabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
@@ -75,11 +75,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
-            ->with(new DeprecatedLabelName('foo'), true);
+            ->with(new LegacyLabelName('foo'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new DeprecatedLabelName('bar'), false);
+            ->with(new LegacyLabelName('bar'), false);
 
         $this->labelPermissionRepository->expects($this->any())
             ->method('getByName')
@@ -129,8 +129,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                             )
                         )
                     ),
-                    new LabelAdded($id, new DeprecatedLabel('foo', true)),
-                    new LabelAdded($id, new DeprecatedLabel('bar', false)),
+                    new LabelAdded($id, new LegacyLabel('foo', true)),
+                    new LabelAdded($id, new LegacyLabel('bar', false)),
                 ]
             );
     }
@@ -182,14 +182,14 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                             )
                         )
                     ),
-                    new LabelAdded($id, new DeprecatedLabel('not_allowed')),
-                    new LabelAdded($id, new DeprecatedLabel('allowed')),
+                    new LabelAdded($id, new LegacyLabel('not_allowed')),
+                    new LabelAdded($id, new LegacyLabel('allowed')),
                 ]
             )
             ->when(
                 new ImportLabels($id, new Labels())
             )
-            ->then([new LabelRemoved($id, new DeprecatedLabel('allowed'))]);
+            ->then([new LabelRemoved($id, new LegacyLabel('allowed'))]);
     }
 
     /**
@@ -207,8 +207,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new DeprecatedLabel('label 1')),
-                    new LabelAdded($id, new DeprecatedLabel('label 2')),
+                    new LabelAdded($id, new LegacyLabel('label 1')),
+                    new LabelAdded($id, new LegacyLabel('label 2')),
                 ]
             )
             ->when(new ImportLabels($id, new Labels()))
