@@ -2685,6 +2685,78 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_has_invalid_availabilityStarts_or_availabilityEnds(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'availabilityStarts' => '01/01/2018',
+                'availabilityEnds' => '2018-01-02',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/availabilityStarts',
+                'The data must match the \'date-time\' format'
+            ),
+            new SchemaError(
+                '/bookingInfo/availabilityEnds',
+                'The data must match the \'date-time\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingInfo_availabilityEnds_is_before_availabilityStarts(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'bookingInfo' => [
+                'availabilityStarts' => '2005-12-31T01:02:03+00:00',
+                'availabilityEnds' => '2005-12-30T01:02:03+00:00',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingInfo/availabilityStarts',
+                'The data must match the \'date-time\' format'
+            ),
+            new SchemaError(
+                '/bookingInfo/availabilityEnds',
+                'The data must match the \'date-time\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
