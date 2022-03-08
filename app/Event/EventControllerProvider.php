@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
+use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
@@ -75,6 +76,14 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                     $app['should_auto_approve_new_offer']
                 );
             }
+        );
+
+        $app[ImportEventRequestHandler::class] = $app->share(
+            fn (Application $app) => new ImportEventRequestHandler(
+                $app['event_importer'],
+                $app['uuid_generator'],
+                $app['event_iri_generator']
+            )
         );
 
         $app[UpdateLocationRequestHandler::class] = $app->share(
