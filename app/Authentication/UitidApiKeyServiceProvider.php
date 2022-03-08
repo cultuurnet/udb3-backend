@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
@@ -42,7 +43,9 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
         $app['auth.consumer_repository'] = $app->share(
             function (Application $app) {
-                return new InMemoryConsumerRepository();
+                return new InMemoryConsumerRepository(
+                    new CultureFeedConsumerReadRepository($app['culturefeed'], true)
+                );
             }
         );
 
