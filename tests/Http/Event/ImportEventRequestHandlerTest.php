@@ -389,6 +389,34 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_name_has_missing_main_language(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'en' => 'All you can eat pancakes'
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/name',
+                'A value in the mainLanguage (nl) is required.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_ignores_invalid_languages_inside_name(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
