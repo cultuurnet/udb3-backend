@@ -1653,6 +1653,37 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_organizer_id_is_invalid(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.dev/e78befcb-d337-4646-a721-407f69f0ce22',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/organizer/%40id',
+                'The string should match pattern: ^http[s]?:\/\/.+?\/organizer[s]?\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\/]?'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_typicalAgeRange_has_wrong_type(): void
     {
         $event = [
