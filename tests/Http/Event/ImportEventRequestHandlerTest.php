@@ -167,6 +167,163 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_a_new_event_with_all_properties(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Nederlandse naam',
+                'fr' => 'Nom français',
+                'de' => 'Deutscher Name',
+                'en' => 'English name',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'single',
+            'startDate' => '2021-05-17T22:00:00+00:00',
+            'endDate' => '2021-05-17T22:00:00+00:00',
+            'status' => [
+                'type' => 'Available',
+                'reason' => [
+                    'nl' => 'Nederlandse reden',
+                    'fr' => 'Raison français',
+                    'de' => 'Deutscher Grund',
+                    'en' => 'English reason',
+                ],
+            ],
+            'subEvent' => [
+                [
+                    'id' => 0,
+                    'startDate' => '2021-05-17T22:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'status' => [
+                        'type' => 'Available',
+                        'reason' => [
+                            'nl' => 'Nederlandse reden',
+                            'fr' => 'Raison français',
+                            'de' => 'Deutscher Grund',
+                            'en' => 'English reason',
+                        ],
+                    ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
+                ],
+            ],
+            'availableFrom' => '2021-05-17T22:00:00+00:00',
+            'availableTo' => '2021-05-17T22:00:00+00:00',
+            'workflowStatus' => 'DRAFT',
+            'audience' => [
+                'audienceType' => 'everyone',
+            ],
+            'typicalAgeRange' => '6-12',
+            'description' => [
+                'nl' => 'Nederlandse beschrijving',
+                'fr' => 'Description français',
+                'de' => 'Deutscher Beschreibung',
+                'en' => 'English description',
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'price' => 10.5,
+                    'priceCurrency' => 'EUR',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                        'fr' => 'Tarif de base',
+                        'de' => 'Base tariff',
+                        'en' => 'Basisrate',
+                    ],
+                ],
+            ],
+            'contactPoint' => [
+                'phone' => [
+                    'string',
+                ],
+                'email' => [
+                    'info@example.com',
+                ],
+                'url' => [
+                    'https://www.example.com',
+                ],
+            ],
+            'bookingInfo' => [
+                'phone' => 'string',
+                'email' => 'info@example.com',
+                'url' => 'https://www.example.com',
+                'urlLabel' => [
+                    'nl' => 'Nederlandse beschrijving',
+                    'fr' => 'Description français',
+                    'de' => 'Deutscher Beschreibung',
+                    'en' => 'English description',
+                ],
+                'availabilityStarts' => '2021-05-17T22:00:00+00:00',
+                'availabilityEnds' => '2021-05-17T22:00:00+00:00',
+            ],
+            'mediaObject' => [
+                [
+                    '@id' => 'https://io.uitdatabank.be/event/85b04295-479c-40f5-b3dd-469dfb4387b3',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'https://io-test.uitdatabank.be/images/example.png',
+                    'thumbnailUrl' => 'https://io-test.uitdatabank.be/images/example.png',
+                    'description' => 'string',
+                    'copyrightHolder' => 'string',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+            'image' => 'https://io-test.uitdatabank.be/images/example.png',
+            'labels' => [
+                'label1',
+            ],
+            'hiddenLabels' => [
+                'label2',
+            ],
+        ];
+
+        $expected = $given;
+        $expected['terms'] = [
+            [
+                'id' => '1.50.0.0.0',
+                'label' => 'Eten en drinken',
+                'domain' => 'eventtype',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->documentImporter->expects($this->once())
+            ->method('import')
+            ->with(new DecodedDocument($eventId, $expected))
+            ->willReturn($commandId);
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'commandId' => $commandId,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_existing_id_is_used(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
