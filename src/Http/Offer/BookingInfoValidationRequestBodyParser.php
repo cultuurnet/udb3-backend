@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Http\Place;
+namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Offer\DateRangeValidator;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use Psr\Http\Message\ServerRequestInterface;
+use function CultuurNet\UDB3\Http\Place\count;
 
 final class BookingInfoValidationRequestBodyParser implements RequestBodyParser
 {
