@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
@@ -102,6 +103,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $placeId = $this->uuidGenerator->generate();
         $responseStatus = StatusCodeInterface::STATUS_CREATED;
+        $placeAggregate = null;
         $placeExists = false;
 
         if ($routeParameters->hasPlaceId()) {
@@ -109,7 +111,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $responseStatus = StatusCodeInterface::STATUS_OK;
 
             try {
-                $this->aggregateRepository->load($placeId);
+                /** @var \CultuurNet\UDB3\Place\Place $aggregate */
+                $placeAggregate = $this->aggregateRepository->load($placeId);
                 $placeExists = true;
             } catch (AggregateNotFoundException $e) {
             }
@@ -136,6 +139,15 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $calendar = $placeAdapter->getCalendar();
         $publishDate = $placeAdapter->getAvailableFrom(new DateTimeImmutable());
 
+        // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
+        // If the request URL contains "imports", overwrite the workflowStatus to READY_FOR_VALIDATION to ensure
+        // backward compatibility with existing integrations that use those deprecated imports paths without a
+        // workflowStatus, and who expect the workflowStatus to automatically be READY_FOR_VALIDATION or APPROVED.
+        $workflowStatus = $place->getWorkflowStatus();
+        if (str_contains($request->getUri()->getPath(), 'imports')) {
+            $workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
+        }
+
         $commands = [];
         if (!$placeExists) {
             $placeAggregate = PlaceAggregate::create(
@@ -148,16 +160,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $publishDate
             );
 
-            // New places created via the import API should always be set to
-            // ready_for_validation.
-            // The publish date in PLaceCreated does not seem to trigger a
-            // wfStatus "ready_for_validation" on the json-ld so we manually
-            // publish the place after creating it.
-            // Existing places should always keep their original status, so
-            // only do this publish command for new places.
-            // For now the trigger to do a publish is the imports path.
-            // In the future this needs to be fine-tuned, see https://jira.uitdatabank.be/browse/III-4609
-            if (str_contains($request->getUri()->getPath(), 'imports')) {
+            if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
                 $placeAggregate->publish($publishDate);
             }
 
