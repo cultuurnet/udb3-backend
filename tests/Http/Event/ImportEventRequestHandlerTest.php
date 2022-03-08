@@ -1319,7 +1319,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_labels_and_hiddenLabels_are_not_strings(): void
+    public function it_throws_if_labels_and_hiddenLabels_have_wrong_format(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1338,6 +1338,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '',
                 '   ',
                 ' d',
+                str_repeat('abcde', 51) . 'f',
             ],
             'hiddenLabels' => [
                 1,
@@ -1345,6 +1346,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '',
                 '   ',
                 ' d',
+                str_repeat('abcde', 51) . 'f',
             ],
         ];
 
@@ -1362,6 +1364,10 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'Minimum string length is 2, found 0'
             ),
             new SchemaError(
+                '/labels/5',
+                'Maximum string length is 255, found 256'
+            ),
+            new SchemaError(
                 '/hiddenLabels/0',
                 'The data (integer) must match the type: string'
             ),
@@ -1372,6 +1378,10 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/hiddenLabels/2',
                 'Minimum string length is 2, found 0'
+            ),
+            new SchemaError(
+                '/hiddenLabels/5',
+                'Maximum string length is 255, found 256'
             ),
         ];
 
