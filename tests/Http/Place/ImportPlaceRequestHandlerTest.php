@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Place;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use Broadway\Domain\DomainMessage;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
@@ -62,12 +63,14 @@ use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
+use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
+use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -195,6 +198,91 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->with(
                 $this->callback(
                     fn (Place $place) => $place->getAggregateRootId() === $placeId
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteCurrentOrganizer($placeId),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_a_new_place_and_publishes_it_if_workflowStatus_ready_for_validation(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'name' => [
+                'nl' => 'Cafe Den Hemel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Scherpenheuvel-Zichem',
+                    'postalCode' => '3271',
+                    'streetAddress' => 'Hoornblaas 107',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+            'workflowStatus' => 'READY_FOR_VALIDATION',
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    function (Place $place) use ($placeId): bool {
+                        foreach ($place->getUncommittedEvents()->getIterator() as $domainMessage) {
+                            $event = $domainMessage->getPayload();
+                            if ($event instanceof Published && $event->getItemId() === $placeId) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
                 )
             );
 
@@ -657,6 +745,94 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     $placeId,
                     '5cf42d51-3a4f-46f0-a8af-1cf672be8c84'
                 ),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_publishes_an_existing_place_if_workflowStatus_is_ready_for_validation(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'name' => [
+                'nl' => 'In De Hel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Leuven',
+                    'postalCode' => '3000',
+                    'streetAddress' => 'Martelarenplein 1',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+            'availableFrom' => '2024-01-01T16:00:00+01:00',
+            'workflowStatus' => 'READY_FOR_VALIDATION',
+        ];
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load')
+            ->with($placeId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('placeId', $placeId)
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('PUT');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new Publish($placeId, new DateTimeImmutable('2024-01-01T16:00:00+01:00')),
+                new UpdateTitle($placeId, new LegacyLanguage('nl'), new Title('In De Hel')),
+                new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
+                new UpdateAddress(
+                    $placeId,
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    ),
+                    new LegacyLanguage('nl')
+                ),
+                new UpdateCalendar(
+                    $placeId,
+                    new Calendar(CalendarType::PERMANENT())
+                ),
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
