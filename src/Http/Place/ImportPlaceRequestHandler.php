@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
+use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
@@ -177,6 +178,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
             $this->aggregateRepository->save($placeAggregate);
         } else {
+            if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
+                $commands[] = new Publish($placeId, $publishDate);
+            }
+
             $commands[] = new UpdateTitle(
                 $placeId,
                 $mainLanguage,
