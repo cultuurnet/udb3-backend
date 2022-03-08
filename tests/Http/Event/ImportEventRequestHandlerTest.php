@@ -1221,6 +1221,70 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_audienceType_has_wrong_format(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'audience' => 'everyone',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/audience',
+                'The data (string) must match the type: object'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_audienceType_has_unknown_value(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'audience' => [
+                'audienceType' => 'foo',
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/audience/audienceType',
+                'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_labels_and_hiddenLabels_have_wrong_type(): void
     {
         $event = [
