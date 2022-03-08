@@ -38,6 +38,7 @@ final class CalendarValidationRequestBodyParser implements RequestBodyParser
                 break;
 
             case 'single':
+            case 'multiple':
                 $errors = array_merge(
                     $errors,
                     (new DateRangeValidator())->validate($data),
