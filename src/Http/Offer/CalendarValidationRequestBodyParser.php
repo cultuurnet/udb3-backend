@@ -37,6 +37,13 @@ final class CalendarValidationRequestBodyParser implements RequestBodyParser
                 );
                 break;
 
+            case 'single':
+                $errors = array_merge(
+                    $errors,
+                    (new DateRangeValidator())->validate($data),
+                );
+                break;
+
             default:
                 break;
         }
