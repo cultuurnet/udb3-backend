@@ -8,6 +8,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -54,6 +55,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new ImportTermRequestBodyParser(new EventCategoryResolver()),
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
+            new CalendarValidationRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForPlace(),
             new AssociativeArrayRequestBodyParser()
         )->parse($request)->getParsedBody();

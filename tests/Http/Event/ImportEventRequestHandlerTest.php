@@ -478,6 +478,97 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_calendarType_is_periodic_and_dates_are_missing(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/',
+                'The required properties (startDate, endDate) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_calendarType_is_periodic_and_dates_are_malformed(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '12/01/2018',
+            'endDate' => '13/01/2018',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/startDate',
+                'The data must match the \'date-time\' format'
+            ),
+            new SchemaError(
+                '/endDate',
+                'The data must match the \'date-time\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_calendarType_is_periodic_and_endDate_before_startDate(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '2018-03-05T13:44:09+01:00',
+            'endDate' => '2018-02-28T13:44:09+01:00',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/endDate',
+                'endDate should not be before startDate'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+    /**
+     * @test
+     */
     public function it_throws_if_openingHours_misses_required_fields(): void
     {
         $event = [
