@@ -39,7 +39,6 @@ use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -97,11 +96,6 @@ class EventDocumentImporterTest extends TestCase
      */
     private $shouldApprove;
 
-    /**
-     * @var LockedLabelRepository|MockObject
-     */
-    private $lockedLabelRepository;
-
     private DocumentImporterInterface $importer;
 
     public function setUp(): void
@@ -111,7 +105,6 @@ class EventDocumentImporterTest extends TestCase
         $this->commandBus = new TraceableCommandBus();
         $this->consumer = $this->createMock(ConsumerInterface::class);
         $this->shouldApprove = $this->createMock(ConsumerSpecificationInterface::class);
-        $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
 
         $eventDocumentImporter = new EventDocumentImporter(
             $this->repository,
@@ -119,7 +112,6 @@ class EventDocumentImporterTest extends TestCase
             $this->imageCollectionFactory,
             $this->commandBus,
             $this->shouldApprove,
-            $this->lockedLabelRepository,
             new NullLogger()
         );
 
@@ -166,8 +158,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventDoesNotExist($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
         $this->expectCreateEvent($event);
 
         $this->commandBus->record();
@@ -230,8 +220,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventDoesNotExist($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
         $this->expectCreateEvent($event);
 
         $this->commandBus->record();
@@ -266,8 +254,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -326,8 +312,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -361,8 +345,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -389,8 +371,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -424,8 +404,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -471,8 +449,6 @@ class EventDocumentImporterTest extends TestCase
         $id = $document->getId();
 
         $this->expectEventIdExists($id);
-        $this->expectNoLockedLabels();
-        $this->expectNoUnlockedLabels();
 
         $expectedImages = ImageCollection::fromArray(
             [
@@ -554,7 +530,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
 
         $this->importer->import($document);
 
@@ -637,7 +612,6 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoImages();
-        $this->expectNoLockedLabels();
 
         $this->commandBus->record();
 
@@ -762,20 +736,6 @@ class EventDocumentImporterTest extends TestCase
         $this->imageCollectionFactory->expects($this->any())
             ->method('fromMediaObjectReferences')
             ->willReturn(new ImageCollection());
-    }
-
-    private function expectNoLockedLabels(): void
-    {
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Labels());
-    }
-
-    private function expectNoUnlockedLabels(): void
-    {
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getUnlockedLabelsForItem')
-            ->willReturn(new Labels());
     }
 
     private function assertContainsObject($needle, array $haystack): void

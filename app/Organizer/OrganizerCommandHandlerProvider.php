@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
+use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
@@ -60,10 +61,11 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ImportLabelsHandler(
                     $app['organizer_repository'],
-                    $app['labels.constraint_aware_service'],
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app['labels.labels_locked_for_import_repository'],
-                    $app['current_user_id']
+                    new LabelImportPreProcessor(
+                        $app['labels.constraint_aware_service'],
+                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                        $app['current_user_id']
+                    )
                 );
             }
         );

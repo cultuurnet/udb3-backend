@@ -16,19 +16,19 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as Udb3ModelsLabel;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as Udb3ModelsLabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels as Udb3ModelsLabels;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
@@ -40,14 +40,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
 {
     private MockObject $labelService;
 
-    private MockObject $lockedLabelRepository;
-
     private MockObject $labelPermissionRepository;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): ImportLabelsHandler
     {
         $this->labelService = $this->createMock(LabelServiceInterface::class);
-        $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
 
         $this->labelPermissionRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelPermissionRepository->expects($this->any())
@@ -63,10 +60,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 new EventRepository($eventStore, $eventBus),
                 new PlaceRepository($eventStore, $eventBus)
             ),
-            $this->labelService,
-            $this->labelPermissionRepository,
-            $this->lockedLabelRepository,
-            'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
+            new LabelImportPreProcessor(
+                $this->labelService,
+                $this->labelPermissionRepository,
+                'b4ac44f4-31d0-4dcd-968e-c01538f117d8'
+            )
         );
     }
 
@@ -77,11 +75,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'), true);
+            ->with(new LegacyLabelName('foo'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('bar'), false);
+            ->with(new LegacyLabelName('bar'), false);
 
         $this->labelPermissionRepository->expects($this->any())
             ->method('getByName')
@@ -104,13 +102,13 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new ImportLabels(
                     $id,
-                    new Udb3ModelsLabels(
-                        new Udb3ModelsLabel(
-                            new Udb3ModelsLabelName('foo'),
+                    new Labels(
+                        new Label(
+                            new LabelName('foo'),
                             true
                         ),
-                        new Udb3ModelsLabel(
-                            new Udb3ModelsLabelName('bar'),
+                        new Label(
+                            new LabelName('bar'),
                             false
                         )
                     )
@@ -120,19 +118,19 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new LabelsImported(
                         $id,
-                        new Udb3ModelsLabels(
-                            new Udb3ModelsLabel(
-                                new Udb3ModelsLabelName('foo'),
+                        new Labels(
+                            new Label(
+                                new LabelName('foo'),
                                 true
                             ),
-                            new Udb3ModelsLabel(
-                                new Udb3ModelsLabelName('bar'),
+                            new Label(
+                                new LabelName('bar'),
                                 false
                             )
                         )
                     ),
-                    new LabelAdded($id, new Label('foo', true)),
-                    new LabelAdded($id, new Label('bar', false)),
+                    new LabelAdded($id, new LegacyLabel('foo', true)),
+                    new LabelAdded($id, new LegacyLabel('bar', false)),
                 ]
             );
     }
@@ -154,7 +152,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 (new ImportLabels(
                     $id,
-                    new Udb3ModelsLabels(new Udb3ModelsLabel(new Udb3ModelsLabelName('not_allowed')))
+                    new Labels(new Label(new LabelName('not_allowed')))
                 )
                 )
             )
@@ -164,15 +162,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_should_not_replace_private_labels_that_are_already_on_the_offer(): void
+    public function it_should_not_remove_private_labels_that_are_already_on_the_offer_via_import(): void
     {
-        $this->labelService->expects($this->never())
-            ->method('createLabelAggregateIfNew');
-
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Udb3ModelsLabels(new Udb3ModelsLabel(new Udb3ModelsLabelName('private'))));
-
         $id = '39007d2d-acec-438d-a687-f2d8400d4c1e';
 
         $this->scenario
@@ -180,43 +171,47 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new Label('not_private')),
-                    new LabelAdded($id, new Label('private')),
+                    new LabelsImported(
+                        $id,
+                        new Labels(
+                            new Label(
+                                new LabelName('not_allowed')
+                            ),
+                            new Label(
+                                new LabelName('allowed')
+                            )
+                        )
+                    ),
+                    new LabelAdded($id, new LegacyLabel('not_allowed')),
+                    new LabelAdded($id, new LegacyLabel('allowed')),
                 ]
             )
             ->when(
-                new ImportLabels($id, new Udb3ModelsLabels())
+                new ImportLabels($id, new Labels())
             )
-            ->then([new LabelRemoved($id, new Label('not_private'))]);
+            ->then([new LabelRemoved($id, new LegacyLabel('allowed'))]);
     }
 
     /**
      * @test
      */
-    public function it_should_not_remove_labels_if_not_explicitly_instructed_to(): void
+    public function it_should_not_remove_labels_that_were_not_imported_before(): void
     {
         $this->labelService->expects($this->never())
             ->method('createLabelAggregateIfNew');
 
         $id = '39007d2d-acec-438d-a687-f2d8400d4c1e';
 
-        $this->lockedLabelRepository->expects($this->any())
-            ->method('getLockedLabelsForItem')
-            ->willReturn(new Udb3ModelsLabels(
-                new Udb3ModelsLabel(new Udb3ModelsLabelName('label 1')),
-                new Udb3ModelsLabel(new Udb3ModelsLabelName('label 2'))
-            ));
-
         $this->scenario
             ->withAggregateId($id)
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new Label('label 1')),
-                    new LabelAdded($id, new Label('label 2')),
+                    new LabelAdded($id, new LegacyLabel('label 1')),
+                    new LabelAdded($id, new LegacyLabel('label 2')),
                 ]
             )
-            ->when(new ImportLabels($id, new Udb3ModelsLabels()))
+            ->when(new ImportLabels($id, new Labels()))
             ->then([]);
     }
 
