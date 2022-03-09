@@ -42,7 +42,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
         );
 
         $app['auth.consumer_repository'] = $app->share(
-            function (Application $app) {
+            function (Application $app): ConsumerReadRepository {
                 return new InMemoryConsumerRepository(
                     new CultureFeedConsumerReadRepository($app['culturefeed'], true)
                 );
