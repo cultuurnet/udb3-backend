@@ -9,6 +9,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -41,7 +42,15 @@ final class ImportEventRequestHandlerTest extends TestCase
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
             new CombinedRequestBodyParser(
-                new ImportTermRequestBodyParser(new EventCategoryResolver())
+                new ImportTermRequestBodyParser(new EventCategoryResolver()),
+                new ImportPriceInfoRequestBodyParser(
+                    [
+                        'nl' => 'Basistarief',
+                        'fr' => 'Tarif de base',
+                        'en' => 'Base tariff',
+                        'de' => 'Basisrate',
+                    ]
+                )
             )
         );
     }
@@ -248,8 +257,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                     'name' => [
                         'nl' => 'Basistarief',
                         'fr' => 'Tarif de base',
-                        'de' => 'Base tariff',
-                        'en' => 'Basisrate',
+                        'en' => 'Base tariff',
+                        'de' => 'Basisrate',
                     ],
                 ],
             ],
@@ -2389,8 +2398,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                     'category' => 'base',
                     'name' => [
                         'nl' => 'Basistarief',
-                        'fr' => '',
-                        'en' => '   ',
                     ],
                     'price' => 10,
                     'priceCurrency' => 'EUR',
@@ -2409,14 +2416,6 @@ final class ImportEventRequestHandlerTest extends TestCase
         ];
 
         $expectedErrors = [
-            new SchemaError(
-                '/priceInfo/0/name/fr',
-                'Minimum string length is 1, found 0'
-            ),
-            new SchemaError(
-                '/priceInfo/0/name/en',
-                'The string should match pattern: \S'
-            ),
             new SchemaError(
                 '/priceInfo/1/name/fr',
                 'Minimum string length is 1, found 0'
@@ -2552,16 +2551,97 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/priceInfo/0/name',
-                'A value in the mainLanguage (nl) is required.'
-            ),
-            new SchemaError(
                 '/priceInfo/1/name',
                 'A value in the mainLanguage (nl) is required.'
             ),
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_overrides_base_tariff_names(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'price' => 10.5,
+                    'priceCurrency' => 'EUR',
+                    'name' => [
+                        'de' => 'Something German',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'price' => 10.5,
+                    'priceCurrency' => 'EUR',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                        'fr' => 'Tarif de base',
+                        'en' => 'Base tariff',
+                        'de' => 'Basisrate',
+                    ],
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->documentImporter->expects($this->once())
+            ->method('import')
+            ->with(new DecodedDocument($eventId, $expected))
+            ->willReturn($commandId);
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'commandId' => $commandId,
+            ]),
+            $response->getBody()->getContents()
+        );
     }
 
     /**

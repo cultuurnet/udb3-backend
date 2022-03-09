@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
+use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
@@ -87,7 +88,8 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                 $app['uuid_generator'],
                 $app['event_iri_generator'],
                 new CombinedRequestBodyParser(
-                    new ImportTermRequestBodyParser(new EventCategoryResolver())
+                    new ImportTermRequestBodyParser(new EventCategoryResolver()),
+                    new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations'])
                 )
             )
         );
