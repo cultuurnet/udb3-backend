@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
@@ -25,6 +26,7 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
+use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
@@ -54,6 +56,18 @@ class OfferServiceProvider implements ServiceProviderInterface
                 return new OfferMetadataProjector(
                     $app[OfferMetadataRepository::class],
                     $app['config']['api_key_consumers']
+                );
+            }
+        );
+
+        $app[AutoApproveForUiTIDv1ApiKeysProcessManager::class] = $app->share(
+            function (Application $app) {
+                return new ReplayFilteringEventListener(
+                    new AutoApproveForUiTIDv1ApiKeysProcessManager(
+                        $app[OfferRepository::class],
+                        $app['auth.consumer_repository'],
+                        $app['should_auto_approve_new_offer']
+                    )
                 );
             }
         );
