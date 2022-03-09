@@ -1648,12 +1648,20 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'Minimum string length is 2, found 0'
             ),
             new SchemaError(
+                '/labels/3',
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
+            ),
+            new SchemaError(
+                '/labels/4',
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
+            ),
+            new SchemaError(
                 '/labels/5',
                 'Maximum string length is 255, found 256'
             ),
             new SchemaError(
                 '/labels/6',
-                'The string should match pattern: ^[^;]{2,255}$'
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
             ),
             new SchemaError(
                 '/hiddenLabels/0',
@@ -1668,12 +1676,20 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'Minimum string length is 2, found 0'
             ),
             new SchemaError(
+                '/hiddenLabels/3',
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
+            ),
+            new SchemaError(
+                '/hiddenLabels/4',
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
+            ),
+            new SchemaError(
                 '/hiddenLabels/5',
                 'Maximum string length is 255, found 256'
             ),
             new SchemaError(
                 '/hiddenLabels/6',
-                'The string should match pattern: ^[^;]{2,255}$'
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
             ),
         ];
 

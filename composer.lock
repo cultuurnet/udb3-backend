@@ -5063,12 +5063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "406357666e8cdb4f08366fced89b8223453719b0"
+                "reference": "d821c69e2dc970eb5fa655aad5ff3450409eee12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/406357666e8cdb4f08366fced89b8223453719b0",
-                "reference": "406357666e8cdb4f08366fced89b8223453719b0",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/d821c69e2dc970eb5fa655aad5ff3450409eee12",
+                "reference": "d821c69e2dc970eb5fa655aad5ff3450409eee12",
                 "shasum": ""
             },
             "type": "library",
@@ -5087,7 +5087,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4362-event-schema-validation"
             },
-            "time": "2022-03-08T13:02:08+00:00"
+            "time": "2022-03-09T13:54:24+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

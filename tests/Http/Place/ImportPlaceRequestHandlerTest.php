@@ -2181,6 +2181,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'Minimum string length is 2, found 0'
             ),
             new SchemaError(
+                '/labels/3',
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
+            ),
+            new SchemaError(
                 '/labels/4',
                 'Maximum string length is 255, found 300'
             ),
@@ -2191,6 +2195,10 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/hiddenLabels/2',
                 'Minimum string length is 2, found 0'
+            ),
+            new SchemaError(
+                '/hiddenLabels/3',
+                'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'
             ),
             new SchemaError(
                 '/hiddenLabels/4',
