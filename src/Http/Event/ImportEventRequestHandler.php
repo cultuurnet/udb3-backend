@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
@@ -15,13 +14,13 @@ use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\MainLanguageValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
-use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -33,15 +32,18 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
     private DocumentImporterInterface $documentImporter;
     private UuidGeneratorInterface $uuidGenerator;
     private IriGeneratorInterface $iriGenerator;
+    private RequestBodyParser $combinedRequestBodyParser;
 
     public function __construct(
         DocumentImporterInterface $documentImporter,
         UuidGeneratorInterface $uuidGenerator,
-        IriGeneratorInterface $iriGenerator
+        IriGeneratorInterface $iriGenerator,
+        RequestBodyParser $combinedRequestBodyParser
     ) {
         $this->documentImporter = $documentImporter;
         $this->uuidGenerator = $uuidGenerator;
         $this->iriGenerator = $iriGenerator;
+        $this->combinedRequestBodyParser = $combinedRequestBodyParser;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -53,7 +55,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         /** @var array $data */
         $data = RequestBodyParserFactory::createBaseParser(
-            new ImportTermRequestBodyParser(new EventCategoryResolver()),
+            $this->combinedRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new CalendarValidationRequestBodyParser(),

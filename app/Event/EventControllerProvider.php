@@ -13,6 +13,9 @@ use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
+use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -82,7 +85,10 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
             fn (Application $app) => new ImportEventRequestHandler(
                 $app['event_importer'],
                 $app['uuid_generator'],
-                $app['event_iri_generator']
+                $app['event_iri_generator'],
+                new CombinedRequestBodyParser(
+                    new ImportTermRequestBodyParser(new EventCategoryResolver())
+                )
             )
         );
 
