@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Place;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use Broadway\Domain\DomainMessage;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
