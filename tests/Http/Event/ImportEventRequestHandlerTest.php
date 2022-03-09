@@ -3416,6 +3416,120 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_image_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+            'image' => '   ',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/image',
+                'The data must match the \'uri\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_image_is_invalid_url(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+            'image' => 'io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f.png',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/image',
+                'The data must match the \'uri\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_image_has_wrong_protocol(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+            'image' => 'ftp://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f.png',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/image',
+                'The string should match pattern: ^http[s]?:\/\/'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_videos_has_wrong_type(): void
     {
         $event = [
