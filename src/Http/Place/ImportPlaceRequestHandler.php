@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
@@ -242,6 +243,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $commands[] = new ImportImages($placeId, $images);
 
         $commands[] = new ImportVideos($placeId, $place->getVideos());
+
+        if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
+            $commands[] = new DeleteOffer($placeId);
+        }
 
         $lastCommandId = null;
         foreach ($commands as $command) {

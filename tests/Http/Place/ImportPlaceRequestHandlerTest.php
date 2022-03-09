@@ -55,6 +55,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
@@ -314,6 +315,86 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_a_new_place_and_deletes_it_if_workflowStatus_deleted(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'name' => [
+                'nl' => 'Cafe Den Hemel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Scherpenheuvel-Zichem',
+                    'postalCode' => '3271',
+                    'streetAddress' => 'Hoornblaas 107',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+            'workflowStatus' => 'DELETED',
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    function (Place $place) use ($placeId): bool {
+                        return $place->getAggregateRootId() === $placeId;
+                    }
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteCurrentOrganizer($placeId),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+                new DeleteOffer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -836,6 +917,93 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_an_existing_place_if_workflowStatus_is_deleted(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'name' => [
+                'nl' => 'In De Hel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Leuven',
+                    'postalCode' => '3000',
+                    'streetAddress' => 'Martelarenplein 1',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+            'workflowStatus' => 'DELETED',
+        ];
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load')
+            ->with($placeId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('placeId', $placeId)
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('PUT');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateTitle($placeId, new LegacyLanguage('nl'), new Title('In De Hel')),
+                new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
+                new UpdateAddress(
+                    $placeId,
+                    new Address(
+                        new Street('Martelarenplein 1'),
+                        new PostalCode('3000'),
+                        new Locality('Leuven'),
+                        new CountryCode('BE')
+                    ),
+                    new LegacyLanguage('nl')
+                ),
+                new UpdateCalendar(
+                    $placeId,
+                    new Calendar(CalendarType::PERMANENT())
+                ),
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteCurrentOrganizer($placeId),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+                new DeleteOffer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
