@@ -35,32 +35,19 @@ final class LegacyOrganizerRequestBodyParser implements RequestBodyParser
         }
         $data = clone $data;
 
+        $convertedContactPoint = [];
         if (isset($data->contact) && is_array($data->contact)) {
-            foreach ($data->contact as $contactEntry) {
-                if (!isset($contactEntry->type, $contactEntry->value)) {
-                    continue;
+            foreach ($data->contact as $contactPoint) {
+                if (!isset($convertedContactPoint[$contactPoint->type])) {
+                    $convertedContactPoint[$contactPoint->type] = [];
                 }
 
-                switch ($contactEntry->type) {
-                    case 'phone':
-                        $phones[] = $contactEntry->value;
-                        break;
-
-                    case 'email':
-                        $emails[] = $contactEntry->value;
-                        break;
-
-                    case 'url':
-                        $urls[] = $contactEntry->value;
-                        break;
-                }
+                $convertedContactPoint[$contactPoint->type][] = $contactPoint->value;
             }
+        }
 
-            $data->contactPoint = (object) [
-                'phone' => $phones ?? [],
-                'email' => $emails ?? [],
-                'url' => $urls ?? [],
-            ];
+        if (count($convertedContactPoint) > 0) {
+            $data->contactPoint = (object) $convertedContactPoint;
         }
 
         return $request->withParsedBody($data);
