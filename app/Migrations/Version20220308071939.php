@@ -16,10 +16,7 @@ class Version20220308071939 extends AbstractMigration
 
         $table->addColumn('cluster_id', Type::BIGINT)->setNotnull(true);
         $table->addColumn('place_uuid', Type::GUID)->setLength(36)->setNotnull(true);
-        $table->addColumn('number_of_events', Type::BIGINT)->setNotnull(true);
-        $table->addColumn('wfstatus', Type::TEXT)->setNotnull(true);
         $table->addColumn('is_canonical', Type::BOOLEAN)->setNotnull(true);
-        $table->addColumn('is_museumpas', Type::BOOLEAN)->setNotnull(true);
     }
 
     public function down(Schema $schema): void
