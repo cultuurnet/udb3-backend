@@ -54,6 +54,18 @@ final class LegacyUpdateCalendarRequestBodyParser implements RequestBodyParser
             ];
         }
 
+        // Add a subevent when people create Periodic events without timeSpans (III-4572)
+        $calendarType = $data->calendarType ?? null;
+        if (($calendarType === 'periodic') && isset($data->startDate, $data->endDate) && (!isset($data->subEvent) || empty($data->subEvent))) {
+
+            $data->subEvent = [
+                (object) [
+                    'startDate' => $data->startDate,
+                    'endDate' => $data->endDate,
+                ],
+            ];
+        }
+
         return $request->withParsedBody($data);
     }
 }
