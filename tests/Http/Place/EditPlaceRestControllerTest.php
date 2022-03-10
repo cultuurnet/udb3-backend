@@ -9,9 +9,9 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
@@ -60,12 +60,12 @@ class EditPlaceRestControllerTest extends TestCase
     private $apiKey;
 
     /**
-     * @var ConsumerInterface|MockObject
+     * @var Consumer|MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|MockObject
+     * @var ConsumerSpecification|MockObject
      */
     private $shouldApprove;
 
@@ -76,10 +76,10 @@ class EditPlaceRestControllerTest extends TestCase
         $this->mediaManager  = $this->createMock(MediaManagerInterface::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->consumerRepository = new InMemoryConsumerRepository();
-        $this->shouldApprove = $this->createMock(ConsumerSpecificationInterface::class);
+        $this->shouldApprove = $this->createMock(ConsumerSpecification::class);
 
         $this->apiKey = new ApiKey('f5278146-3133-48b8-ace4-7e3f0a49328a');
-        $this->consumer = $this->createMock(ConsumerInterface::class);
+        $this->consumer = $this->createMock(Consumer::class);
         $this->consumerRepository->setConsumer($this->apiKey, $this->consumer);
 
         $this->shouldApprove->expects($this->any())

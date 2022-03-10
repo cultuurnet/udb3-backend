@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\CommandHandling;
 
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ final class ContextFactory
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
         ?Request $request = null,
-        ?ConsumerInterface $consumer = null
+        ?Consumer $consumer = null
     ): Metadata {
         $contextValues = [];
 

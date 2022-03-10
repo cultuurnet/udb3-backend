@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ead51eb7afdfea2f824a40e0587fafdc",
+    "content-hash": "a65c4ad0048589214ce6dda7e4295045",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -840,19 +840,20 @@
         },
         {
             "name": "cultuurnet/udb3-api-guard",
-            "version": "v4.0",
+            "version": "v5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9"
+                "reference": "cd33bc120ed1a11d5c3a69b4aba6f7c90eca1823"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/713d831b03ae379d6dadc4976043c9afbebbb3f9",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/cd33bc120ed1a11d5c3a69b4aba6f7c90eca1823",
+                "reference": "cd33bc120ed1a11d5c3a69b4aba6f7c90eca1823",
                 "shasum": ""
             },
             "require": {
+                "php": ">=7.4",
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
@@ -886,7 +887,11 @@
                     "email": "info@2publiq.be"
                 }
             ],
-            "time": "2021-03-05T11:49:45+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/udb3-api-guard/issues",
+                "source": "https://github.com/cultuurnet/udb3-api-guard/tree/v5.0"
+            },
+            "time": "2022-03-09T12:58:13+00:00"
         },
         {
             "name": "danielstjules/stringy",

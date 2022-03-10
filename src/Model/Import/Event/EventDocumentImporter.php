@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Model\Import\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -50,7 +50,7 @@ class EventDocumentImporter implements DocumentImporterInterface
 
     private CommandBus $commandBus;
 
-    private ConsumerSpecificationInterface $shouldApprove;
+    private ConsumerSpecification $shouldApprove;
 
     private LoggerInterface $logger;
 
@@ -59,7 +59,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         DenormalizerInterface $eventDenormalizer,
         ImageCollectionFactory $imageCollectionFactory,
         CommandBus $commandBus,
-        ConsumerSpecificationInterface $shouldApprove,
+        ConsumerSpecification $shouldApprove,
         LoggerInterface $logger
     ) {
         $this->aggregateRepository = $aggregateRepository;
@@ -70,7 +70,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         $this->logger = $logger;
     }
 
-    public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null): ?string
+    public function import(DecodedDocument $decodedDocument, Consumer $consumer = null): ?string
     {
         $id = $decodedDocument->getId();
 
