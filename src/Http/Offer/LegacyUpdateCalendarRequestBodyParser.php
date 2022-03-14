@@ -22,26 +22,7 @@ final class LegacyUpdateCalendarRequestBodyParser implements RequestBodyParser
         }
         $data = clone $data;
 
-        // Rename timeSpans to subEvent
-        if (isset($data->timeSpans) && is_array($data->timeSpans) && !isset($data->subEvent)) {
-            $data->subEvent = array_map(
-                function ($timeSpan) {
-                    // Rename start to startDate
-                    if ($timeSpan instanceof stdClass && isset($timeSpan->start)) {
-                        $timeSpan->startDate = $timeSpan->start;
-                        unset($timeSpan->start);
-                    }
-                    // Rename end to endDate
-                    if ($timeSpan instanceof stdClass && isset($timeSpan->end)) {
-                        $timeSpan->endDate = $timeSpan->end;
-                        unset($timeSpan->end);
-                    }
-                    return $timeSpan;
-                },
-                $data->timeSpans
-            );
-            unset($data->timeSpans);
-        }
+        $data = (new LegacyTimeSpansParser())->parse($data);
 
         // Convert startDate and endDate on calendarType single to subEvent
         $calendarType = $data->calendarType ?? null;
