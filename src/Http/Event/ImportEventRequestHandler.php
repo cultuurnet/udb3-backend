@@ -55,6 +55,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         /** @var array $data */
         $data = RequestBodyParserFactory::createBaseParser(
+            new LegacyEventRequestBodyParser(),
             $this->combinedRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
