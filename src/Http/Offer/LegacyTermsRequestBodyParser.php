@@ -33,6 +33,8 @@ final class LegacyTermsRequestBodyParser implements RequestBodyParser
             $data->terms = [
                 (object) $terms,
             ];
+
+            unset($data->type);
         }
 
         return $request->withParsedBody($data);

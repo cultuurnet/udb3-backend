@@ -48,6 +48,8 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
             if (isset($data->calendar->openingHours)) {
                 $data->openingHours = $data->calendar->openingHours;
             }
+
+            unset($data->calendar);
         }
 
         return $request->withParsedBody($data);
