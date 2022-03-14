@@ -354,6 +354,342 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_a_new_event_from_legacy_format_with_permanent_calendar(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Pannekoeken voor het goede doel',
+            'type' => [
+                'id' => '1.50.0.0.0',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendar' => [
+                'calendarType' => 'permanent',
+                'openingHours' => [
+                    [
+                        'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                        'opens' => '08:00',
+                        'closes' => '17:00',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                    'opens' => '08:00',
+                    'closes' => '17:00',
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->documentImporter->expects($this->once())
+            ->method('import')
+            ->with(new DecodedDocument($eventId, $expected))
+            ->willReturn($commandId);
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'commandId' => $commandId,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_new_event_from_legacy_format_with_periodic_calendar(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Pannekoeken voor het goede doel',
+            'type' => [
+                'id' => '1.50.0.0.0',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendar' => [
+                'calendarType' => 'periodic',
+                'startDate' => '2018-05-05T18:00:00.000Z',
+                'endDate' => '2022-05-05T21:00:00.000Z',
+                'openingHours' => [
+                    [
+                        'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                        'opens' => '08:00',
+                        'closes' => '17:00',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '2018-05-05T18:00:00.000Z',
+            'endDate' => '2022-05-05T21:00:00.000Z',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                    'opens' => '08:00',
+                    'closes' => '17:00',
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->documentImporter->expects($this->once())
+            ->method('import')
+            ->with(new DecodedDocument($eventId, $expected))
+            ->willReturn($commandId);
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'commandId' => $commandId,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_new_event_from_legacy_format_with_single_calendar(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Pannekoeken voor het goede doel',
+            'type' => [
+                'id' => '1.50.0.0.0',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendar' => [
+                'calendarType' => 'single',
+                'startDate' => '2018-05-05T18:00:00.000Z',
+                'endDate' => '2022-05-05T21:00:00.000Z',
+                'timeSpans' => [
+                    [
+                        'start' => '2018-05-05T18:00:00.000Z',
+                        'end' => '2022-05-05T21:00:00.000Z',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'single',
+            'startDate' => '2018-05-05T18:00:00.000Z',
+            'endDate' => '2022-05-05T21:00:00.000Z',
+            'subEvent' => [
+                [
+                    'startDate' => '2018-05-05T18:00:00.000Z',
+                    'endDate' => '2022-05-05T21:00:00.000Z',
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->documentImporter->expects($this->once())
+            ->method('import')
+            ->with(new DecodedDocument($eventId, $expected))
+            ->willReturn($commandId);
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'commandId' => $commandId,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_new_event_from_legacy_format_with_multiple_calendar(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Pannekoeken voor het goede doel',
+            'type' => [
+                'id' => '1.50.0.0.0',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendar' => [
+                'calendarType' => 'multiple',
+                'startDate' => '2018-05-05T18:00:00.000Z',
+                'endDate' => '2022-05-05T21:00:00.000Z',
+                'timeSpans' => [
+                    [
+                        'start' => '2018-05-05T18:00:00.000Z',
+                        'end' => '2020-05-05T21:00:00.000Z',
+                    ],
+                    [
+                        'start' => '2020-05-05T18:00:00.000Z',
+                        'end' => '2022-05-05T21:00:00.000Z',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                    'label' => 'Eten en drinken',
+                    'domain' => 'eventtype',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-05-05T18:00:00.000Z',
+            'endDate' => '2022-05-05T21:00:00.000Z',
+            'subEvent' => [
+                [
+                    'startDate' => '2018-05-05T18:00:00.000Z',
+                    'endDate' => '2020-05-05T21:00:00.000Z',
+                ],
+                [
+                    'startDate' => '2020-05-05T18:00:00.000Z',
+                    'endDate' => '2022-05-05T21:00:00.000Z',
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->documentImporter->expects($this->once())
+            ->method('import')
+            ->with(new DecodedDocument($eventId, $expected))
+            ->willReturn($commandId);
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'commandId' => $commandId,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_existing_id_is_used(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
