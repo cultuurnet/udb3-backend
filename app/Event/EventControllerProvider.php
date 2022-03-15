@@ -87,6 +87,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                 $app['event_importer'],
                 $app['uuid_generator'],
                 $app['event_iri_generator'],
+                $app['place_iri_generator'],
                 new CombinedRequestBodyParser(
                     new ImportTermRequestBodyParser(new EventCategoryResolver()),
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations'])

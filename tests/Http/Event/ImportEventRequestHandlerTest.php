@@ -41,6 +41,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             $this->documentImporter,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
+            new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/places/' . $eventId),
             new CombinedRequestBodyParser(
                 new ImportTermRequestBodyParser(new EventCategoryResolver()),
                 new ImportPriceInfoRequestBodyParser(
@@ -370,7 +371,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '1.50.0.0.0',
             ],
             'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendar' => [
                 'calendarType' => 'permanent',
@@ -399,6 +400,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             'location' => [
                 '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -450,7 +452,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '1.50.0.0.0',
             ],
             'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendar' => [
                 'calendarType' => 'periodic',
@@ -481,6 +483,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             'location' => [
                 '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-05-05T18:00:00.000Z',
@@ -534,7 +537,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '1.50.0.0.0',
             ],
             'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendar' => [
                 'calendarType' => 'single',
@@ -564,6 +567,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             'location' => [
                 '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'single',
             'startDate' => '2018-05-05T18:00:00.000Z',
@@ -616,7 +620,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '1.50.0.0.0',
             ],
             'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendar' => [
                 'calendarType' => 'multiple',
@@ -650,6 +654,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             'location' => [
                 '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-05-05T18:00:00.000Z',
