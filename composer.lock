@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0541ee6f1b6f229fdc9d95f55a9813bf",
+    "content-hash": "3f0186a93c9a2af710e301859607ff40",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -840,19 +840,20 @@
         },
         {
             "name": "cultuurnet/udb3-api-guard",
-            "version": "v4.0",
+            "version": "v5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9"
+                "reference": "cd33bc120ed1a11d5c3a69b4aba6f7c90eca1823"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/713d831b03ae379d6dadc4976043c9afbebbb3f9",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/cd33bc120ed1a11d5c3a69b4aba6f7c90eca1823",
+                "reference": "cd33bc120ed1a11d5c3a69b4aba6f7c90eca1823",
                 "shasum": ""
             },
             "require": {
+                "php": ">=7.4",
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
@@ -886,7 +887,11 @@
                     "email": "info@2publiq.be"
                 }
             ],
-            "time": "2021-03-05T11:49:45+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/udb3-api-guard/issues",
+                "source": "https://github.com/cultuurnet/udb3-api-guard/tree/v5.0"
+            },
+            "time": "2022-03-09T12:58:13+00:00"
         },
         {
             "name": "danielstjules/stringy",
@@ -5063,12 +5068,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "3f6e5869ef3fc83053c54279e483edaa853fa7da"
+                "reference": "817c52ebc15ad3e92840ac3df311467de64c1a4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/3f6e5869ef3fc83053c54279e483edaa853fa7da",
-                "reference": "3f6e5869ef3fc83053c54279e483edaa853fa7da",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/817c52ebc15ad3e92840ac3df311467de64c1a4e",
+                "reference": "817c52ebc15ad3e92840ac3df311467de64c1a4e",
                 "shasum": ""
             },
             "type": "library",
@@ -5087,7 +5092,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4362-event-schema-validation"
             },
-            "time": "2022-03-09T15:53:01+00:00"
+            "time": "2022-03-15T12:18:32+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

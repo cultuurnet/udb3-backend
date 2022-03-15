@@ -8,10 +8,10 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -28,6 +28,8 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
@@ -35,6 +37,7 @@ use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
+use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
@@ -67,11 +70,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private ImageCollectionFactory $imageCollectionFactory;
 
-    private ConsumerSpecificationInterface $shouldApprove;
+    private ConsumerSpecification $shouldApprove;
 
-    private ApiKeyReaderInterface $apiKeyReader;
+    private ApiKeyReader $apiKeyReader;
 
-    private ConsumerReadRepositoryInterface $consumerReadRepository;
+    private ConsumerReadRepository $consumerReadRepository;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -81,9 +84,9 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         IriGeneratorInterface $iriGenerator,
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
-        ConsumerSpecificationInterface $shouldApprove,
-        ApiKeyReaderInterface $apiKeyReader,
-        ConsumerReadRepositoryInterface $consumerReadRepository
+        ConsumerSpecification $shouldApprove,
+        ApiKeyReader $apiKeyReader,
+        ConsumerReadRepository $consumerReadRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -137,6 +140,15 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $calendar = $placeAdapter->getCalendar();
         $publishDate = $placeAdapter->getAvailableFrom(new DateTimeImmutable());
 
+        // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
+        // If the request URL contains "imports", overwrite the workflowStatus to READY_FOR_VALIDATION to ensure
+        // backward compatibility with existing integrations that use those deprecated imports paths without a
+        // workflowStatus, and who expect the workflowStatus to automatically be READY_FOR_VALIDATION or APPROVED.
+        $workflowStatus = $place->getWorkflowStatus();
+        if (str_contains($request->getUri()->getPath(), 'imports')) {
+            $workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
+        }
+
         $commands = [];
         if (!$placeExists) {
             $placeAggregate = PlaceAggregate::create(
@@ -149,16 +161,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $publishDate
             );
 
-            // New places created via the import API should always be set to
-            // ready_for_validation.
-            // The publish date in PLaceCreated does not seem to trigger a
-            // wfStatus "ready_for_validation" on the json-ld so we manually
-            // publish the place after creating it.
-            // Existing places should always keep their original status, so
-            // only do this publish command for new places.
-            // For now the trigger to do a publish is the imports path.
-            // In the future this needs to be fine-tuned, see https://jira.uitdatabank.be/browse/III-4609
-            if (str_contains($request->getUri()->getPath(), 'imports')) {
+            if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
                 $placeAggregate->publish($publishDate);
             }
 
@@ -175,6 +178,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
             $this->aggregateRepository->save($placeAggregate);
         } else {
+            if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
+                $commands[] = new Publish($placeId, $publishDate);
+            }
+
             $commands[] = new UpdateTitle(
                 $placeId,
                 $mainLanguage,
@@ -238,6 +245,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportVideos($placeId, $place->getVideos());
 
+        if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
+            $commands[] = new DeleteOffer($placeId);
+        }
+
         $lastCommandId = null;
         foreach ($commands as $command) {
             /** @var string|null $commandId */
@@ -258,7 +269,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         return new JsonResponse($responseBody, $responseStatus);
     }
 
-    private function getConsumer(ServerRequestInterface $request): ?ConsumerInterface
+    private function getConsumer(ServerRequestInterface $request): ?Consumer
     {
         $apiKey = $this->apiKeyReader->read($request);
 

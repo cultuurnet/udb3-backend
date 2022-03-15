@@ -176,31 +176,28 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             )
         );
 
-        $keepIfApplied = new Labels(
-            new Label(
-                new LabelName('existing_label_3'),
-                true
-            ),
-            new Label(
-                new LabelName('non_existing_label_1'),
-                true
-            )
-        );
-
         $this->scenario
             ->withAggregateId($this->id)
             ->given(
                 [
                     $this->organizerCreatedWithUniqueWebsite,
+                    new LabelsImported(
+                        $this->id,
+                        new Labels(
+                            new Label(new LabelName('existing_label_1')),
+                            new Label(new LabelName('existing_label_2')),
+                            new Label(new LabelName('existing_label_3')),
+                        )
+                    ),
                     new LabelAdded($this->id, 'existing_label_1'),
                     new LabelAdded($this->id, 'existing_label_2'),
                     new LabelAdded($this->id, 'existing_label_3'),
                 ]
             )
             ->when(
-                function (Organizer $organizer) use ($labels, $keepIfApplied) {
-                    $organizer->importLabels($labels, $keepIfApplied);
-                    $organizer->importLabels($labels, $keepIfApplied);
+                function (Organizer $organizer) use ($labels) {
+                    $organizer->importLabels($labels);
+                    $organizer->importLabels($labels);
                 }
             )
             ->then(
@@ -216,6 +213,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                     new LabelAdded($this->id, 'new_label_1'),
                     new LabelRemoved($this->id, 'existing_label_2'),
+                    new LabelRemoved($this->id, 'existing_label_3'),
                 ]
             );
     }

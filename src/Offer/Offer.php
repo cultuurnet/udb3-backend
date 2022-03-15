@@ -128,6 +128,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private ?string $ownerId = null;
 
+    /**
+     * @var string[]
+     */
+    private array $importedLabelNames = [];
+
     public function __construct()
     {
         $this->titles = [];
@@ -148,6 +153,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $labels = new Labels();
 
+        // Convert deprecated LabelCollection to Labels VO
         foreach ($this->labels->asArray() as $label) {
             $labels = $labels->with(
                 new Label(
@@ -260,7 +266,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOffer): void
+    public function importLabels(Labels $labels): void
     {
         $convertLabelClass = function (Label $label) {
             return new LegacyLabel(
@@ -274,10 +280,13 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             array_map($convertLabelClass, $labels->toArray())
         );
 
-        // Convert the labels to keep if already applied.
-        $keepLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labelsToKeepIfAlreadyOnOffer->toArray())
-        );
+        // Always keep non-imported labels that are already on the offer
+        $keepLabelsCollection = new LabelCollection();
+        foreach ($this->labels->asArray() as $label) {
+            if (!in_array($label->getName()->toNative(), $this->importedLabelNames, true)) {
+                $keepLabelsCollection = $keepLabelsCollection->with($label);
+            }
+        }
 
         // What are the added labels?
         // Labels which are not inside the internal state but inside the imported labels
@@ -506,6 +515,20 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
                 $labelRemoved->isLabelVisible()
             )
         );
+
+        $this->importedLabelNames = array_filter(
+            $this->importedLabelNames,
+            fn (string $importedLabelName) => $importedLabelName !== $labelRemoved->getLabelName()
+        );
+    }
+
+    protected function applyLabelsImported(AbstractLabelsImported $labelsImported): void
+    {
+        foreach ($labelsImported->getLabels()->toArrayOfStringNames() as $importedLabelName) {
+            if (!in_array($importedLabelName, $this->importedLabelNames, true)) {
+                $this->importedLabelNames[] = $importedLabelName;
+            }
+        }
     }
 
     protected function applyTypeUpdated(AbstractTypeUpdated $themeUpdated): void

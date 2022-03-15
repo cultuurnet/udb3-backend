@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -45,20 +45,9 @@ class EditEventRestController extends OfferRestBaseController
      */
     protected $calendarDeserializer;
 
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var ConsumerReadRepositoryInterface
-     */
-    private $consumerReadRepository;
-
-    /**
-     * @var ConsumerSpecificationInterface
-     */
-    private $shouldApprove;
+    private ApiKeyReader $apiKeyReader;
+    private ConsumerReadRepository $consumerReadRepository;
+    private ConsumerSpecification $shouldApprove;
 
     /**
      * Constructs a RestController.
@@ -70,9 +59,9 @@ class EditEventRestController extends OfferRestBaseController
         EventEditingServiceInterface $eventEditor,
         MediaManagerInterface $mediaManager,
         IriGeneratorInterface $iriGenerator,
-        ApiKeyReaderInterface $apiKeyReader,
-        ConsumerReadRepositoryInterface $consumerReadRepository,
-        ConsumerSpecificationInterface $shouldApprove
+        ApiKeyReader $apiKeyReader,
+        ConsumerReadRepository $consumerReadRepository,
+        ConsumerSpecification $shouldApprove
     ) {
         parent::__construct($eventEditor, $mediaManager);
         $this->iriGenerator = $iriGenerator;

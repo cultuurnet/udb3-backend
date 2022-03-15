@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
@@ -463,6 +464,7 @@ $app['event_bus'] = function ($app) {
             'curators_news_article_process_manager',
             LocationMarkedAsDuplicateProcessManager::class,
             RelocateEventToCanonicalPlace::class,
+            AutoApproveForUiTIDv1ApiKeysProcessManager::class,
         ];
 
         $initialSubscribersCount = count($subscribers);
