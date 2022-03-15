@@ -30,6 +30,8 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
+        $controllers->post('/', ImportEventRequestHandler::class);
+
         $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
@@ -37,8 +39,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->delete('/{eventId}/theme/', DeleteThemeRequestHandler::class);
         $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
         $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
-
-        $controllers->post('/', 'event_editing_controller:createEvent');
 
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
