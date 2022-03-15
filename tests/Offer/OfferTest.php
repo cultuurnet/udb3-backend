@@ -342,14 +342,11 @@ class OfferTest extends AggregateRootScenarioTestCase
                 true
             ),
             new Label(
-                new LabelName('existing_label_1'),
+                new LabelName('existing_label_1_added_via_ui_and_also_in_new_import'),
                 true
-            )
-        );
-
-        $labelsToKeepIfApplied = new Labels(
+            ),
             new Label(
-                new LabelName('existing_label_3'),
+                new LabelName('existing_label_3_added_via_import_and_also_in_new_import'),
                 true
             )
         );
@@ -357,14 +354,22 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
-                new LabelAdded($itemId, new LegacyLabel('existing_label_1')),
-                new LabelAdded($itemId, new LegacyLabel('existing_label_2')),
-                new LabelAdded($itemId, new LegacyLabel('existing_label_3')),
+                new LabelAdded($itemId, new LegacyLabel('existing_label_1_added_via_ui_and_also_in_new_import')),
+                new LabelAdded($itemId, new LegacyLabel('existing_label_2_added_via_ui')),
+                new LabelsImported(
+                    $itemId,
+                    new Labels(
+                        new Label(new LabelName('existing_label_3_added_via_import_and_also_in_new_import')),
+                        new Label(new LabelName('existing_label_4_added_via_import'))
+                    )
+                ),
+                new LabelAdded($itemId, new LegacyLabel('existing_label_3_added_via_import_and_also_in_new_import')),
+                new LabelAdded($itemId, new LegacyLabel('existing_label_4_added_via_import')),
             ])
             ->when(
-                function (Item $item) use ($labels, $labelsToKeepIfApplied) {
-                    $item->importLabels($labels, $labelsToKeepIfApplied);
-                    $item->importLabels($labels, $labelsToKeepIfApplied);
+                function (Item $item) use ($labels) {
+                    $item->importLabels($labels);
+                    $item->importLabels($labels);
                 }
             )
             ->then([
@@ -378,7 +383,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     )
                 ),
                 new LabelAdded($itemId, new LegacyLabel('new_label_1')),
-                new LabelRemoved($itemId, new LegacyLabel('existing_label_2')),
+                new LabelRemoved($itemId, new LegacyLabel('existing_label_4_added_via_import')),
             ]);
     }
 
