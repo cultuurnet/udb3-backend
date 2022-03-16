@@ -1215,6 +1215,8 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             Json::encode([
                 'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
                 'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
@@ -3393,6 +3395,8 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             Json::encode([
                 'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
                 'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
