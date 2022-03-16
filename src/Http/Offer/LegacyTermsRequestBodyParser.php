@@ -30,9 +30,7 @@ final class LegacyTermsRequestBodyParser implements RequestBodyParser
                 $terms['domain'] = $data->type->domain;
             }
 
-            $data->terms = [
-                (object) $terms,
-            ];
+            $data->terms[] = (object) $terms;
 
             unset($data->type);
         }

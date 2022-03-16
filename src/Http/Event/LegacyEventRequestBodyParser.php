@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\UDB3\Http\Offer\LegacyCalendarRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\LegacyTermsRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\LegacyThemeRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\LegacyNameRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
@@ -25,6 +26,7 @@ final class LegacyEventRequestBodyParser implements RequestBodyParser
         $this->parser = new CombinedRequestBodyParser(
             new LegacyNameRequestBodyParser(),
             new LegacyTermsRequestBodyParser(),
+            new LegacyThemeRequestBodyParser(),
             new LegacyCalendarRequestBodyParser()
         );
     }

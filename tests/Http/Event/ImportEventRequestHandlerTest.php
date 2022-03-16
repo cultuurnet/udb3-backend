@@ -374,7 +374,11 @@ final class ImportEventRequestHandlerTest extends TestCase
             'mainLanguage' => 'nl',
             'name' => 'Pannekoeken voor het goede doel',
             'type' => [
-                'id' => '1.50.0.0.0',
+                'id' => '0.5.0.0.0',
+            ],
+            'theme' => [
+                'id' => '0.52.0.0.0',
+                'label' => 'Circus',
             ],
             'location' => [
                 'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
@@ -399,9 +403,14 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             'terms' => [
                 [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
+                    'id' => '0.5.0.0.0',
+                    'label' => 'Festival',
                     'domain' => 'eventtype',
+                ],
+                [
+                    'id' => '0.52.0.0.0',
+                    'label' => 'Circus',
+                    'domain' => 'theme',
                 ],
             ],
             'location' => [
