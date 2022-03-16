@@ -52,6 +52,23 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
             unset($data->calendar);
         }
 
+        // Some calendars of type single or multiple don't pass the startDate ane endDate/
+        // Those values can be calculated from the subEvent array
+        if (!isset($data->startDate, $data->endDate) && isset($data->subEvent)) {
+            $data->startDate = $data->subEvent[0]->startDate;
+            $data->endDate = $data->subEvent[0]->endDate;
+
+            foreach ($data->subEvent as $subEvent) {
+                if ($subEvent->startDate < $data->startDate) {
+                    $data->startDate = $subEvent->startDate;
+                }
+
+                if ($subEvent->endDate > $data->endDate) {
+                    $data->endDate = $subEvent->startDate;
+                }
+            }
+        }
+
         return $request->withParsedBody($data);
     }
 }
