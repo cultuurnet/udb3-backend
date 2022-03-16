@@ -584,8 +584,8 @@ final class ImportEventRequestHandlerTest extends TestCase
             'endDate' => '2022-05-05T21:00:00.000Z',
             'subEvent' => [
                 [
-                    'startDate' => '2018-05-05T18:00:00.000Z',
-                    'endDate' => '2022-05-05T21:00:00.000Z',
+                    'startDate' => '2018-05-05T18:00:00+00:00',
+                    'endDate' => '2022-05-05T21:00:00+00:00',
                 ],
             ],
         ];
@@ -673,12 +673,12 @@ final class ImportEventRequestHandlerTest extends TestCase
             'endDate' => '2022-05-05T21:00:00.000Z',
             'subEvent' => [
                 [
-                    'startDate' => '2018-05-05T18:00:00.000Z',
-                    'endDate' => '2020-05-05T21:00:00.000Z',
+                    'startDate' => '2018-05-05T18:00:00+00:00',
+                    'endDate' => '2020-05-05T21:00:00+00:00',
                 ],
                 [
-                    'startDate' => '2020-05-05T18:00:00.000Z',
-                    'endDate' => '2022-05-05T21:00:00.000Z',
+                    'startDate' => '2020-05-05T18:00:00+00:00',
+                    'endDate' => '2022-05-05T21:00:00+00:00',
                 ],
             ],
         ];
@@ -756,12 +756,12 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'single',
-            'startDate' => '2018-05-05T18:00:00.000Z',
-            'endDate' => '2022-05-05T21:00:00.000Z',
+            'startDate' => '2018-05-05T18:00:00+00:00',
+            'endDate' => '2022-05-05T21:00:00+00:00',
             'subEvent' => [
                 [
-                    'startDate' => '2018-05-05T18:00:00.000Z',
-                    'endDate' => '2022-05-05T21:00:00.000Z',
+                    'startDate' => '2018-05-05T18:00:00+00:00',
+                    'endDate' => '2022-05-05T21:00:00+00:00',
                 ],
             ],
         ];
@@ -843,16 +843,16 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'multiple',
-            'startDate' => '2018-05-05T18:00:00.000Z',
-            'endDate' => '2022-05-05T21:00:00.000Z',
+            'startDate' => '2018-05-05T18:00:00+00:00',
+            'endDate' => '2022-05-05T21:00:00+00:00',
             'subEvent' => [
                 [
-                    'startDate' => '2018-05-05T18:00:00.000Z',
-                    'endDate' => '2020-05-05T21:00:00.000Z',
+                    'startDate' => '2018-05-05T18:00:00+00:00',
+                    'endDate' => '2020-05-05T21:00:00+00:00',
                 ],
                 [
-                    'startDate' => '2020-05-05T18:00:00.000Z',
-                    'endDate' => '2022-05-05T21:00:00.000Z',
+                    'startDate' => '2020-05-05T18:00:00+00:00',
+                    'endDate' => '2022-05-05T21:00:00+00:00',
                 ],
             ],
         ];
