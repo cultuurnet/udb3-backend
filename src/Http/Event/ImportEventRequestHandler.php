@@ -79,7 +79,11 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             throw $exception;
         }
 
-        $responseBody = ['id' => $eventId];
+        $responseBody = [
+            'id' => $eventId,
+            'eventId' => $eventId,
+            'url' => $this->eventIriGenerator->iri($eventId),
+        ];
         if ($commandId) {
             $responseBody['commandId'] = $commandId;
         }
