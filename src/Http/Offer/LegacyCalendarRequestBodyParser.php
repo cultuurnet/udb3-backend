@@ -64,7 +64,7 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
                 }
 
                 if ($subEvent->endDate > $data->endDate) {
-                    $data->endDate = $subEvent->startDate;
+                    $data->endDate = $subEvent->endDate;
                 }
             }
         }
