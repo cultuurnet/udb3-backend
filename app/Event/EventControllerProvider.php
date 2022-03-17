@@ -31,6 +31,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', ImportEventRequestHandler::class);
+        $controllers->put('/{eventId}/', ImportEventRequestHandler::class);
 
         $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
