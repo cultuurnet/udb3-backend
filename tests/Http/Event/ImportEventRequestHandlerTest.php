@@ -827,7 +827,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_calendarType_is_single_and_dates_are_missing(): void
+    public function it_throws_if_calendarType_is_single_and_subEvent_is_missing(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -848,7 +848,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/',
-                'The required properties (startDate, endDate) are missing'
+                'The required properties (subEvent) are missing'
             ),
         ];
 
@@ -913,6 +913,12 @@ final class ImportEventRequestHandlerTest extends TestCase
             'calendarType' => 'single',
             'startDate' => '2018-03-05T13:44:09+01:00',
             'endDate' => '2018-02-28T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    'startDate' => '2018-02-28T13:44:09+01:00',
+                    'endDate' => '2018-03-05T13:44:09+01:00',
+                ],
+            ],
         ];
 
         $expectedErrors = [
@@ -1005,7 +1011,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_calendarType_is_multiple_and_required_fields_are_missing(): void
+    public function it_throws_if_calendarType_is_multiple_and_subEvent_is_missing(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1026,7 +1032,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/',
-                'The required properties (startDate, endDate, subEvent) are missing'
+                'The required properties (subEvent) are missing'
             ),
         ];
 
