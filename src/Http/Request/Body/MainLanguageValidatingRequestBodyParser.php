@@ -26,6 +26,14 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
         '$.status.reason',
     ];
 
+    private const EVENT_TRANSLATABLE_FIELDS = [
+        '$.name',
+        '$.description',
+        '$.bookingInfo.urlLabel',
+        '$.priceInfo[*].name',
+        '$.status.reason',
+    ];
+
     private array $translatableFields;
 
     /**
@@ -109,5 +117,10 @@ final class MainLanguageValidatingRequestBodyParser implements RequestBodyParser
     public static function createForPlace(): self
     {
         return new self(self::PLACE_TRANSLATABLE_FIELDS);
+    }
+
+    public static function createForEvent(): self
+    {
+        return new self(self::EVENT_TRANSLATABLE_FIELDS);
     }
 }

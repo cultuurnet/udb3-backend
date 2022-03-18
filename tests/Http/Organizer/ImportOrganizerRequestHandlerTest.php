@@ -881,7 +881,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                 'schemaErrors' => [
                     new SchemaError('/labels/0', 'Minimum string length is 2, found 0'),
                     new SchemaError('/labels/1', 'Maximum string length is 255, found 668'),
-                    new SchemaError('/hiddenLabels/0', 'The string should match pattern: ^[^;]{2,255}$'),
+                    new SchemaError('/hiddenLabels/0', 'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'),
                 ],
             ],
         ];

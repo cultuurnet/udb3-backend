@@ -12,6 +12,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
+use CultuurNet\UDB3\Http\Offer\BookingInfoValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;

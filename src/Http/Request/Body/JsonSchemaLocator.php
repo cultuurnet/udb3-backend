@@ -15,6 +15,7 @@ final class JsonSchemaLocator
 {
     private static ?string $schemaDirectory;
 
+    public const EVENT = 'event.json';
     public const EVENT_AUDIENCE = 'event-audience.json';
     public const EVENT_AVAILABLE_FROM_PUT = 'event-availableFrom-put.json';
     public const EVENT_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
