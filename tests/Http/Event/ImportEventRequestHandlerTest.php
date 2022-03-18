@@ -41,8 +41,10 @@ final class ImportEventRequestHandlerTest extends TestCase
             $this->documentImporter,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
-            new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/places/' . $eventId),
             new CombinedRequestBodyParser(
+                new LegacyEventRequestBodyParser(
+                    new CallableIriGenerator(fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId)
+                ),
                 new ImportTermRequestBodyParser(new EventCategoryResolver()),
                 new ImportPriceInfoRequestBodyParser(
                     [
