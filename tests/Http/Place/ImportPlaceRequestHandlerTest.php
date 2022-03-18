@@ -138,6 +138,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new VideoDenormalizer($this->uuidFactory)
             ),
             new CombinedRequestBodyParser(
+                new LegacyPlaceRequestBodyParser(),
                 new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
                 new ImportPriceInfoRequestBodyParser(
                     [
