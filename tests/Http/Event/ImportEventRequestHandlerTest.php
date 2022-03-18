@@ -41,8 +41,10 @@ final class ImportEventRequestHandlerTest extends TestCase
             $this->documentImporter,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
-            new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/places/' . $eventId),
             new CombinedRequestBodyParser(
+                new LegacyEventRequestBodyParser(
+                    new CallableIriGenerator(fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId)
+                ),
                 new ImportTermRequestBodyParser(new EventCategoryResolver()),
                 new ImportPriceInfoRequestBodyParser(
                     [
@@ -765,8 +767,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'single',
-            'startDate' => '2018-05-05T18:00:00+00:00',
-            'endDate' => '2022-05-05T21:00:00+00:00',
             'subEvent' => [
                 [
                     'startDate' => '2018-05-05T18:00:00+00:00',
@@ -852,8 +852,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'multiple',
-            'startDate' => '2018-05-05T18:00:00+00:00',
-            'endDate' => '2022-05-05T21:00:00+00:00',
             'subEvent' => [
                 [
                     'startDate' => '2018-05-05T18:00:00+00:00',
@@ -1367,7 +1365,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_calendarType_is_single_and_dates_are_missing(): void
+    public function it_throws_if_calendarType_is_single_and_subEvent_is_missing(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1388,7 +1386,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/',
-                'The required properties (startDate, endDate) are missing'
+                'The required properties (subEvent) are missing'
             ),
         ];
 
@@ -1453,6 +1451,12 @@ final class ImportEventRequestHandlerTest extends TestCase
             'calendarType' => 'single',
             'startDate' => '2018-03-05T13:44:09+01:00',
             'endDate' => '2018-02-28T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    'startDate' => '2018-02-28T13:44:09+01:00',
+                    'endDate' => '2018-03-05T13:44:09+01:00',
+                ],
+            ],
         ];
 
         $expectedErrors = [
@@ -1545,7 +1549,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_calendarType_is_multiple_and_required_fields_are_missing(): void
+    public function it_throws_if_calendarType_is_multiple_and_subEvent_is_missing(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -1566,7 +1570,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/',
-                'The required properties (startDate, endDate, subEvent) are missing'
+                'The required properties (subEvent) are missing'
             ),
         ];
 

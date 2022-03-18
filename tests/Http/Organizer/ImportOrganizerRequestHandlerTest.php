@@ -68,7 +68,9 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             $this->commandBus,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $id) => 'https://mock.uitdatabank.be/organizers/' . $id),
-            new CombinedRequestBodyParser()
+            new CombinedRequestBodyParser(
+                new LegacyOrganizerRequestBodyParser()
+            )
         );
 
         $this->commandBus->record();

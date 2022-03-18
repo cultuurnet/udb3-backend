@@ -39,7 +39,7 @@ final class CalendarValidationRequestBodyParser implements RequestBodyParser
 
             case 'single':
             case 'multiple':
-                if (isset($data->subEvent)) {
+                if (isset($data->subEvent) && is_array($data->subEvent)) {
                     $dateRangeValidator = new DateRangeValidator();
                     foreach ($data->subEvent as $key => $subEvent) {
                         if (is_object($subEvent)) {

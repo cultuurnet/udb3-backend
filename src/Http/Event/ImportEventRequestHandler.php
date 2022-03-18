@@ -32,20 +32,17 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
     private DocumentImporterInterface $documentImporter;
     private UuidGeneratorInterface $uuidGenerator;
     private IriGeneratorInterface $eventIriGenerator;
-    private IriGeneratorInterface $placeIriGenerator;
     private RequestBodyParser $combinedRequestBodyParser;
 
     public function __construct(
         DocumentImporterInterface $documentImporter,
         UuidGeneratorInterface $uuidGenerator,
         IriGeneratorInterface $eventIriGenerator,
-        IriGeneratorInterface $placeIriGenerator,
         RequestBodyParser $combinedRequestBodyParser
     ) {
         $this->documentImporter = $documentImporter;
         $this->uuidGenerator = $uuidGenerator;
         $this->eventIriGenerator = $eventIriGenerator;
-        $this->placeIriGenerator = $placeIriGenerator;
         $this->combinedRequestBodyParser = $combinedRequestBodyParser;
     }
 
@@ -58,7 +55,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         /** @var array $data */
         $data = RequestBodyParserFactory::createBaseParser(
-            new LegacyEventRequestBodyParser($this->placeIriGenerator),
             $this->combinedRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->eventIriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),

@@ -81,9 +81,8 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 
         /** @var Organizer $data */
         $data = RequestBodyParserFactory::createBaseParser(
-            new LegacyOrganizerRequestBodyParser(),
-            new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $organizerId),
             $this->importPreProcessingRequestBodyParser,
+            new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $organizerId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER),
             MainLanguageValidatingRequestBodyParser::createForOrganizer(),
             new DenormalizingRequestBodyParser(new OrganizerDenormalizer(), Organizer::class)

@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
@@ -77,7 +78,9 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
                 $app['imports_command_bus'],
                 $app['uuid_generator'],
                 $app['organizer_iri_generator'],
-                new CombinedRequestBodyParser()
+                new CombinedRequestBodyParser(
+                    new LegacyOrganizerRequestBodyParser()
+                )
             )
         );
 
