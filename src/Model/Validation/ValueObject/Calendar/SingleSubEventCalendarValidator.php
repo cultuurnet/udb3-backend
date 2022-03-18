@@ -24,8 +24,8 @@ class SingleSubEventCalendarValidator extends Validator
             new When(
                 new Key('calendarType', new Equals('single'), true),
                 (new AllOf(
-                    new Key('startDate', new Date(DateTimeInterface::ATOM), true),
-                    new Key('endDate', new Date(DateTimeInterface::ATOM), true),
+                    new Key('startDate', new Date(DateTimeInterface::ATOM), false),
+                    new Key('endDate', new Date(DateTimeInterface::ATOM), false),
                     new When(
                         new AllOf(
                             new Key('startDate', new Date(DateTimeInterface::ATOM)),
