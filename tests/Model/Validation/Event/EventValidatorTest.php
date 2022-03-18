@@ -49,25 +49,6 @@ class EventValidatorTest extends ValidatorTestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_a_required_property_is_missing()
-    {
-        $event = [];
-
-        $expectedErrors = [
-            'Key @id must be present',
-            'Key mainLanguage must be present',
-            'Key name must be present',
-            'Key terms must be present',
-            'Key calendarType must be present',
-            'Key location must be present',
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_throw_an_exception_if_id_is_in_an_invalid_format()
     {
         $event = [
@@ -1312,101 +1293,6 @@ class EventValidatorTest extends ValidatorTestCase
             'dayOfWeek must be equal to "friday"',
             'dayOfWeek must be equal to "saturday"',
             'dayOfWeek must be equal to "sunday"',
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_if_both_location_id_and_address_are_missing()
-    {
-        $event = [
-            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Example name',
-            ],
-            'calendarType' => 'permanent',
-            'location' => [
-                'foo' => 'bar',
-            ],
-            'terms' => [
-                [
-                    'id' => '0.50.1.0.0',
-                ],
-            ],
-        ];
-
-        // @codingStandardsIgnoreStart
-        $expectedErrors = [
-            'At least one of these rules must pass for location',
-            'Key location @id must be present',
-            'Key location address must be present',
-        ];
-        // @codingStandardsIgnoreEnd
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_if_location_id_is_in_an_invalid_format()
-    {
-        $event = [
-            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Example name',
-            ],
-            'calendarType' => 'permanent',
-            'location' => [
-                '@id' => '9a344f43-1174-4149-ad9a-3e2e92565e35',
-            ],
-            'terms' => [
-                [
-                    'id' => '0.50.1.0.0',
-                ],
-            ],
-        ];
-
-        // @codingStandardsIgnoreStart
-        $expectedErrors = [
-            'All of the required rules must pass for location @id',
-            'location @id must be a URL',
-            'location @id must validate against "/\\\/place[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"',
-        ];
-        // @codingStandardsIgnoreEnd
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_if_location_address_has_no_entries()
-    {
-        $event = [
-            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Example name',
-            ],
-            'calendarType' => 'permanent',
-            'location' => [
-                'address' => [],
-            ],
-            'terms' => [
-                [
-                    'id' => '0.50.1.0.0',
-                ],
-            ],
-        ];
-
-        $expectedErrors = [
-            'location address must have a length greater than 1',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);

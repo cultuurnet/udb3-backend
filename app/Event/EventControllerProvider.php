@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
+use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
@@ -30,6 +31,8 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
+        $controllers->post('/', ImportEventRequestHandler::class);
+
         $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
@@ -37,8 +40,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->delete('/{eventId}/theme/', DeleteThemeRequestHandler::class);
         $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
         $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
-
-        $controllers->post('/', 'event_editing_controller:createEvent');
 
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
@@ -88,6 +89,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                 $app['uuid_generator'],
                 $app['event_iri_generator'],
                 new CombinedRequestBodyParser(
+                    new LegacyEventRequestBodyParser($app['place_iri_generator']),
                     new ImportTermRequestBodyParser(new EventCategoryResolver()),
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations'])
                 )

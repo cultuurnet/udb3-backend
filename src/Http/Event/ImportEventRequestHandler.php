@@ -31,18 +31,18 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 {
     private DocumentImporterInterface $documentImporter;
     private UuidGeneratorInterface $uuidGenerator;
-    private IriGeneratorInterface $iriGenerator;
+    private IriGeneratorInterface $eventIriGenerator;
     private RequestBodyParser $combinedRequestBodyParser;
 
     public function __construct(
         DocumentImporterInterface $documentImporter,
         UuidGeneratorInterface $uuidGenerator,
-        IriGeneratorInterface $iriGenerator,
+        IriGeneratorInterface $eventIriGenerator,
         RequestBodyParser $combinedRequestBodyParser
     ) {
         $this->documentImporter = $documentImporter;
         $this->uuidGenerator = $uuidGenerator;
-        $this->iriGenerator = $iriGenerator;
+        $this->eventIriGenerator = $eventIriGenerator;
         $this->combinedRequestBodyParser = $combinedRequestBodyParser;
     }
 
@@ -56,7 +56,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         /** @var array $data */
         $data = RequestBodyParserFactory::createBaseParser(
             $this->combinedRequestBodyParser,
-            new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $eventId),
+            new IdPropertyPolyfillRequestBodyParser($this->eventIriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new CalendarValidationRequestBodyParser(),
             new BookingInfoValidationRequestBodyParser(),
@@ -75,7 +75,11 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             throw $exception;
         }
 
-        $responseBody = ['id' => $eventId];
+        $responseBody = [
+            'id' => $eventId,
+            'eventId' => $eventId,
+            'url' => $this->eventIriGenerator->iri($eventId),
+        ];
         if ($commandId) {
             $responseBody['commandId'] = $commandId;
         }
