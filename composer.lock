@@ -5068,12 +5068,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "191631e232ff730ef3feaa490832ea84a8565d99"
+                "reference": "ebbeb0393e62c1be1cb2221bfa2db97a2e0bd72a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/191631e232ff730ef3feaa490832ea84a8565d99",
-                "reference": "191631e232ff730ef3feaa490832ea84a8565d99",
+                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/ebbeb0393e62c1be1cb2221bfa2db97a2e0bd72a",
+                "reference": "ebbeb0393e62c1be1cb2221bfa2db97a2e0bd72a",
                 "shasum": ""
             },
             "type": "library",
@@ -5092,7 +5092,7 @@
                 "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
                 "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/feature/III-4368-refactor-post-event"
             },
-            "time": "2022-03-15T14:08:55+00:00"
+            "time": "2022-03-18T10:27:01+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
