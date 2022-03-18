@@ -35,7 +35,8 @@ final class LegacyEventRequestBodyParser implements RequestBodyParser
     {
         $data = $this->parser->parse($request)->getParsedBody();
 
-        if (is_object($data) && isset($data->location) && !isset($data->location->{'@id'})) {
+        if (is_object($data) && isset($data->location) &&
+            is_string($data->location->id) && !isset($data->location->{'@id'})) {
             $data->location->{'@id'} = $this->placeIriGenerator->iri($data->location->id);
         }
 
