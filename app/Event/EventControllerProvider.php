@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
+use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -89,7 +90,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                 $app['event_repository'],
                 $app['uuid_generator'],
                 $app['event_iri_generator'],
-                $app['event_denormalizer'],
+                new EventDenormalizer(),
                 new CombinedRequestBodyParser(
                     new LegacyEventRequestBodyParser($app['place_iri_generator']),
                     new ImportTermRequestBodyParser(new EventCategoryResolver()),
