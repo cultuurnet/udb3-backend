@@ -108,7 +108,6 @@ class EventDenormalizerTest extends TestCase
             null,
             null,
             null,
-            null,
             new VideoDenormalizer($this->uuidFactory)
         );
     }

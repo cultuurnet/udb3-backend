@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
-use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -20,24 +19,17 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use Respect\Validation\Validator;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EventDenormalizer extends OfferDenormalizer
 {
     /**
-     * @var Validator
-     */
-    private $eventValidator;
-
-    /**
      * @var DenormalizerInterface
      */
     private $placeReferenceDenormalizer;
 
     public function __construct(
-        Validator $eventValidator = null,
         UUIDParser $eventIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
@@ -53,10 +45,6 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
         DenormalizerInterface $videoDenormalizer = null
     ) {
-        if (!$eventValidator) {
-            $eventValidator = new EventValidator();
-        }
-
         if (!$eventIDParser) {
             $eventIDParser = new EventIDParser();
         }
@@ -68,7 +56,6 @@ class EventDenormalizer extends OfferDenormalizer
             );
         }
 
-        $this->eventValidator = $eventValidator;
         $this->placeReferenceDenormalizer = $placeReferenceDenormalizer;
 
         parent::__construct(
@@ -123,8 +110,6 @@ class EventDenormalizer extends OfferDenormalizer
         if (!is_array($data)) {
             throw new UnsupportedException('Event data should be an associative array.');
         }
-
-        $this->eventValidator->assert($data);
 
         /* @var ImmutableEvent $offer */
         $offer = $this->denormalizeOffer($data);
