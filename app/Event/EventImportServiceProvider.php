@@ -25,9 +25,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
     {
         $app['event_denormalizer'] = $app->share(
             function (Application $app) {
-                return new EventDenormalizer(
-                    new EventImportValidator($app['place_jsonld_repository'])
-                );
+                return new EventDenormalizer();
             }
         );
 
