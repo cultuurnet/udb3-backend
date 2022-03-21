@@ -30,9 +30,7 @@ class EventEditingServiceProvider implements ServiceProviderInterface
                     $app['event_command_bus'],
                     new Version4Generator(),
                     $app['event_jsonld_repository'],
-                    new EventCommandFactory(),
-                    $app['event_repository'],
-                    $app['place_repository']
+                    new EventCommandFactory()
                 );
             }
         );

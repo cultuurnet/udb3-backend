@@ -4,23 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
-use CultuurNet\UDB3\Http\Deserializer\Event\CreateEventJSONDeserializer;
-use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use CultuurNet\UDB3\StringLiteral;
 
 class EditEventRestController extends OfferRestBaseController
 {
@@ -36,18 +24,9 @@ class EditEventRestController extends OfferRestBaseController
     protected $iriGenerator;
 
     /**
-     * @var CreateEventJSONDeserializer
-     */
-    protected $createEventJSONDeserializer;
-
-    /**
      * @var CalendarJSONDeserializer
      */
     protected $calendarDeserializer;
-
-    private ApiKeyReader $apiKeyReader;
-    private ConsumerReadRepository $consumerReadRepository;
-    private ConsumerSpecification $shouldApprove;
 
     /**
      * Constructs a RestController.
@@ -57,67 +36,8 @@ class EditEventRestController extends OfferRestBaseController
      */
     public function __construct(
         EventEditingServiceInterface $eventEditor,
-        MediaManagerInterface $mediaManager,
-        IriGeneratorInterface $iriGenerator,
-        ApiKeyReader $apiKeyReader,
-        ConsumerReadRepository $consumerReadRepository,
-        ConsumerSpecification $shouldApprove
+        MediaManagerInterface $mediaManager
     ) {
         parent::__construct($eventEditor, $mediaManager);
-        $this->iriGenerator = $iriGenerator;
-
-        $this->apiKeyReader = $apiKeyReader;
-        $this->consumerReadRepository = $consumerReadRepository;
-        $this->shouldApprove = $shouldApprove;
-
-        $this->createEventJSONDeserializer = new CreateEventJSONDeserializer();
-        $this->calendarDeserializer = new CalendarJSONDeserializer(
-            new CalendarJSONParser(),
-            new CalendarForEventDataValidator()
-        );
-    }
-
-    public function createEvent(Request $request): JsonResponse
-    {
-        $createEvent = $this->createEventJSONDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $apiKey = $this->apiKeyReader->read(
-            (new DiactorosFactory())->createRequest($request)
-        );
-
-        $consumer = null;
-        if ($apiKey) {
-            $consumer = $this->consumerReadRepository->getConsumer($apiKey);
-        }
-
-        $approve = false;
-        if ($consumer) {
-            $approve = $this->shouldApprove->satisfiedBy($consumer);
-        }
-
-        $createMethod = $approve ? 'createApprovedEvent' : 'createEvent';
-
-        try {
-            $eventId = $this->editor->$createMethod(
-                $createEvent->getMainLanguage(),
-                $createEvent->getTitle(),
-                $createEvent->getType(),
-                $createEvent->getLocation(),
-                $createEvent->getCalendar(),
-                $createEvent->getTheme()
-            );
-        } catch (LocationNotFound $exception) {
-            throw new BadRequestHttpException('Invalid location id');
-        }
-
-        return new JsonResponse(
-            [
-                'eventId' => $eventId,
-                'url' => $this->iriGenerator->iri($eventId),
-            ],
-            201
-        );
     }
 }
