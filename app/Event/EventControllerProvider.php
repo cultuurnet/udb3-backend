@@ -86,14 +86,20 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[ImportEventRequestHandler::class] = $app->share(
             fn (Application $app) => new ImportEventRequestHandler(
-                $app['event_importer'],
+                $app['event_repository'],
                 $app['uuid_generator'],
                 $app['event_iri_generator'],
+                $app['event_denormalizer'],
                 new CombinedRequestBodyParser(
                     new LegacyEventRequestBodyParser($app['place_iri_generator']),
                     new ImportTermRequestBodyParser(new EventCategoryResolver()),
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations'])
-                )
+                ),
+                $app['imports_command_bus'],
+                $app['import_image_collection_factory'],
+                $app['should_auto_approve_new_offer'],
+                $app['auth.api_key_reader'],
+                $app['auth.consumer_repository']
             )
         );
 
