@@ -257,37 +257,6 @@ class EventValidatorTest extends ValidatorTestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_calendarType_is_single_and_required_fields_are_missing()
-    {
-        $event = [
-            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Example name',
-            ],
-            'calendarType' => 'single',
-            'location' => [
-                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
-            ],
-            'terms' => [
-                [
-                    'id' => '0.50.1.0.0',
-                ],
-            ],
-        ];
-
-        $expectedErrors = [
-            'These rules must pass for calendarType single',
-            'Key startDate must be present',
-            'Key endDate must be present',
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_throw_an_exception_if_calendarType_is_single_and_startDate_or_endDate_is_malformed()
     {
         $event = [
@@ -426,38 +395,6 @@ class EventValidatorTest extends ValidatorTestCase
 
         $expectedErrors = [
             'calendarType single should have exactly one subEvent',
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_if_calendarType_is_multiple_and_required_fields_are_missing()
-    {
-        $event = [
-            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Example name',
-            ],
-            'calendarType' => 'multiple',
-            'location' => [
-                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
-            ],
-            'terms' => [
-                [
-                    'id' => '0.50.1.0.0',
-                ],
-            ],
-        ];
-
-        $expectedErrors = [
-            'These rules must pass for calendarType multiple',
-            'Key startDate must be present',
-            'Key endDate must be present',
-            'Key subEvent must be present',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
