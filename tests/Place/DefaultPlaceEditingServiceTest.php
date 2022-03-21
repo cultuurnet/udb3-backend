@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\CommandHandling\CommandBus;
-use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
-use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
@@ -51,11 +49,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
     protected $readRepository;
 
     /**
-     * @var Repository|MockObject
-     */
-    protected $writeRepository;
-
-    /**
      * @var TraceableEventStore
      */
     protected $eventStore;
@@ -75,10 +68,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $this->eventStore = new TraceableEventStore(
             new InMemoryEventStore()
         );
-        $this->writeRepository = new PlaceRepository(
-            $this->eventStore,
-            new SimpleEventBus()
-        );
 
         $this->readRepository->expects($this->any())
             ->method('fetch')
@@ -89,8 +78,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
             $this->commandBus,
             $this->uuidGenerator,
             $this->readRepository,
-            $this->commandFactory,
-            $this->writeRepository
+            $this->commandFactory
         );
     }
 
