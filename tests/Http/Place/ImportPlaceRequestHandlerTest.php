@@ -11,9 +11,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
@@ -98,12 +95,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
     private MockObject $imageCollectionFactory;
 
-    private MockObject $consumerSpecification;
-
-    private MockObject $apiReader;
-
-    private MockObject $consumerRepository;
-
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
     protected function setUp(): void
@@ -113,9 +104,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
-        $this->consumerSpecification = $this->createMock(ConsumerSpecification::class);
-        $this->apiReader = $this->createMock(ApiKeyReader::class);
-        $this->consumerRepository = $this->createMock(ConsumerReadRepository::class);
 
         $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
             $this->aggregateRepository,
@@ -151,10 +139,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ),
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
-            $this->imageCollectionFactory,
-            $this->consumerSpecification,
-            $this->apiReader,
-            $this->consumerRepository
+            $this->imageCollectionFactory
         );
 
         $this->commandBus->record();
