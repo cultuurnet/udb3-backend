@@ -187,11 +187,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -256,11 +256,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -328,11 +328,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -546,7 +546,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                     new LegacyLanguage('nl'),
                     new LegacyDescription('Nederlandse beschrijving')
                 ),
-                new DeleteCurrentOrganizer($eventId),
                 new UpdateTypicalAgeRange($eventId, '6-12'),
                 new UpdatePriceInfo(
                     $eventId,
@@ -582,6 +581,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         ))->withCopyrightHolder(new CopyrightHolder('publiq vzw')),
                     )
                 ),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -654,11 +654,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -729,11 +729,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -803,11 +803,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -881,11 +881,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -953,11 +953,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1029,11 +1029,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -1305,12 +1305,12 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new UpdateTitle($eventId, new LegacyLanguage('es'), new Title('Invalid language')),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -3178,11 +3178,11 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint([], ['info@publiq.be'], [])),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -3548,7 +3548,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
-                new DeleteCurrentOrganizer($eventId),
                 new DeleteTypicalAgeRange($eventId),
                 new UpdatePriceInfo(
                     $eventId,
@@ -3559,6 +3558,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
         );

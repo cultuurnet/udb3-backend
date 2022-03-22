@@ -200,15 +200,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateDescription($eventId, $mainLanguage, $description);
         }
 
-        // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
-        // which might cause race conditions if we're still dispatching other commands here as well.
-        $organizerId = $eventAdapter->getOrganizerId();
-        if ($organizerId) {
-            $commands[] = new UpdateOrganizer($eventId, $organizerId);
-        } else {
-            $commands[] = new DeleteCurrentOrganizer($eventId);
-        }
-
         $ageRange = $eventAdapter->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($eventId, $ageRange);
@@ -237,6 +228,15 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $commands[] = new ImportImages($eventId, $images);
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
+
+        // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
+        // which might cause race conditions if we're still dispatching other commands here as well.
+        $organizerId = $eventAdapter->getOrganizerId();
+        if ($organizerId) {
+            $commands[] = new UpdateOrganizer($eventId, $organizerId);
+        } else {
+            $commands[] = new DeleteCurrentOrganizer($eventId);
+        }
 
         $lastCommandId = null;
         foreach ($commands as $command) {
