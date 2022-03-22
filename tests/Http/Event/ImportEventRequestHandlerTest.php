@@ -3151,6 +3151,16 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray($event)
             ->build('PUT');
 
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
         $response = $this->importEventRequestHandler->handle($request);
 
         $this->assertEquals(201, $response->getStatusCode());
@@ -3161,6 +3171,20 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint([], ['info@publiq.be'], [])),
+                new DeleteCurrentOrganizer($eventId),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
