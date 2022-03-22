@@ -3034,6 +3034,53 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_event_with_contactPoint_that_has_missing_properties(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'contactPoint' => [
+                'email' => ['info@publiq.be'],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($event)
+            ->build('PUT');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_priceInfo_has_invalid_tariff(): void
     {
         $event = [

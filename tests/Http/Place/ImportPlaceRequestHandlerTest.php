@@ -3520,6 +3520,86 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_a_place_if_contactPoint_has_missing_properties(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'contactPoint' => [
+                'email' => ['info@publiq.be'],
+            ],
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    fn (Place $place) => $place->getAggregateRootId() === $placeId
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($place)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint([], ['info@publiq.be'], [])),
+                new DeleteCurrentOrganizer($placeId),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_priceInfo_has_an_invalid_tariff(): void
     {
         $place = [
