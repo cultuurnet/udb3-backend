@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
+use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -75,25 +76,27 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
             function (Application $app) {
                 return new EditEventRestController(
                     $app['event_editor'],
-                    $app['media_manager'],
-                    $app['event_iri_generator'],
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['should_auto_approve_new_offer']
+                    $app['media_manager']
                 );
             }
         );
 
         $app[ImportEventRequestHandler::class] = $app->share(
             fn (Application $app) => new ImportEventRequestHandler(
-                $app['event_importer'],
+                $app['event_repository'],
                 $app['uuid_generator'],
                 $app['event_iri_generator'],
+                new EventDenormalizer(),
                 new CombinedRequestBodyParser(
                     new LegacyEventRequestBodyParser($app['place_iri_generator']),
                     new ImportTermRequestBodyParser(new EventCategoryResolver()),
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations'])
-                )
+                ),
+                $app['imports_command_bus'],
+                $app['import_image_collection_factory'],
+                $app['should_auto_approve_new_offer'],
+                $app['auth.api_key_reader'],
+                $app['auth.consumer_repository']
             )
         );
 

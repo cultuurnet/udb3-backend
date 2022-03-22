@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
-use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\StringLiteral;
 
 interface EventEditingServiceInterface
@@ -82,30 +78,4 @@ interface EventEditingServiceInterface
      * @param string $id
      */
     public function removeImage($id, Image $image);
-
-    /**
-     * @param Theme|null $theme
-     *
-     * @return string $eventId
-     */
-    public function createEvent(
-        Language $mainLanguage,
-        Title $title,
-        EventType $eventType,
-        LocationId $location,
-        Calendar $calendar,
-        $theme = null
-    );
-
-    /**
-     * @return string $eventId
-     */
-    public function createApprovedEvent(
-        Language $mainLanguage,
-        Title $title,
-        EventType $eventType,
-        LocationId $location,
-        Calendar $calendar,
-        Theme $theme = null
-    );
 }

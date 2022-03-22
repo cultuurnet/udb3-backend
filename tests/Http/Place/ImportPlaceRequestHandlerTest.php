@@ -226,11 +226,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             [
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -311,11 +311,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             [
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -390,12 +390,12 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             [
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
                 new DeleteOffer($placeId),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -474,11 +474,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             [
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -697,7 +697,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         ['https://www.dehel.be']
                     )
                 ),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new UpdatePriceInfo(
                     $placeId,
@@ -739,6 +738,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         ),
                     )
                 ),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -822,14 +822,14 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
-                new UpdateOrganizer(
-                    $placeId,
-                    '5cf42d51-3a4f-46f0-a8af-1cf672be8c84'
-                ),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+                new UpdateOrganizer(
+                    $placeId,
+                    '5cf42d51-3a4f-46f0-a8af-1cf672be8c84'
+                ),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -913,11 +913,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -999,12 +999,12 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ),
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint()),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
                 new DeleteOffer($placeId),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -3587,11 +3587,11 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             [
                 new UpdateBookingInfo($placeId, new BookingInfo()),
                 new UpdateContactPoint($placeId, new ContactPoint([], ['info@publiq.be'], [])),
-                new DeleteCurrentOrganizer($placeId),
                 new DeleteTypicalAgeRange($placeId),
                 new ImportLabels($placeId, new Labels()),
                 new ImportImages($placeId, new ImageCollection()),
                 new ImportVideos($placeId, new VideoCollection()),
+                new DeleteCurrentOrganizer($placeId),
             ],
             $this->commandBus->getRecordedCommands()
         );

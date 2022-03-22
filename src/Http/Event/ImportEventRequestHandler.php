@@ -4,12 +4,32 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
+use Broadway\CommandHandling\CommandBus;
+use Broadway\Repository\AggregateNotFoundException;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
+use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
+use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
+use CultuurNet\UDB3\Event\Commands\ImportImages;
+use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
+use CultuurNet\UDB3\Event\Commands\UpdateAudience;
+use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
+use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
+use CultuurNet\UDB3\Event\Commands\UpdateDescription;
+use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
+use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Event\Commands\UpdateTheme;
+use CultuurNet\UDB3\Event\Commands\UpdateTitle;
+use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
+use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
-use CultuurNet\UDB3\Http\Request\Body\AssociativeArrayRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -19,31 +39,58 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Model\Import\DecodedDocument;
-use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\Event\Event;
+use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
+use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Offer\Commands\ImportLabels;
+use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
+use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportEventRequestHandler implements RequestHandlerInterface
 {
-    private DocumentImporterInterface $documentImporter;
+    private Repository $aggregateRepository;
     private UuidGeneratorInterface $uuidGenerator;
     private IriGeneratorInterface $eventIriGenerator;
+    private DenormalizerInterface $eventDenormalizer;
     private RequestBodyParser $combinedRequestBodyParser;
+    private CommandBus $commandBus;
+    private ImageCollectionFactory $imageCollectionFactory;
+    private ConsumerSpecification $shouldApprove;
+    private ApiKeyReader $apiKeyReader;
+    private ConsumerReadRepository $consumerReadRepository;
 
     public function __construct(
-        DocumentImporterInterface $documentImporter,
+        Repository $aggregateRepository,
         UuidGeneratorInterface $uuidGenerator,
         IriGeneratorInterface $eventIriGenerator,
-        RequestBodyParser $combinedRequestBodyParser
+        DenormalizerInterface $eventDenormalizer,
+        RequestBodyParser $combinedRequestBodyParser,
+        CommandBus $commandBus,
+        ImageCollectionFactory $imageCollectionFactory,
+        ConsumerSpecification $shouldApprove,
+        ApiKeyReader $apiKeyReader,
+        ConsumerReadRepository $consumerReadRepository
     ) {
-        $this->documentImporter = $documentImporter;
+        $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
         $this->eventIriGenerator = $eventIriGenerator;
+        $this->eventDenormalizer = $eventDenormalizer;
         $this->combinedRequestBodyParser = $combinedRequestBodyParser;
+        $this->commandBus = $commandBus;
+        $this->imageCollectionFactory = $imageCollectionFactory;
+        $this->shouldApprove = $shouldApprove;
+        $this->apiKeyReader = $apiKeyReader;
+        $this->consumerReadRepository =$consumerReadRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -52,27 +99,152 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $eventId = $routeParameters->hasEventId() ? $routeParameters->getEventId() : $this->uuidGenerator->generate();
         $responseStatus = $routeParameters->hasEventId() ? StatusCodeInterface::STATUS_OK : StatusCodeInterface::STATUS_CREATED;
+        $eventExists = false;
 
-        /** @var array $data */
-        $data = RequestBodyParserFactory::createBaseParser(
+        if ($routeParameters->hasEventId()) {
+            try {
+                $this->aggregateRepository->load($eventId);
+                $eventExists = true;
+            } catch (AggregateNotFoundException $e) {
+            }
+        }
+
+        /** @var Event $event */
+        $event = RequestBodyParserFactory::createBaseParser(
             $this->combinedRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->eventIriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new CalendarValidationRequestBodyParser(),
             new BookingInfoValidationRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForPlace(),
-            new AssociativeArrayRequestBodyParser()
+            new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();
 
-        $document = new DecodedDocument($eventId, $data);
+        $eventAdapter = new Udb3ModelToLegacyEventAdapter($event);
 
-        try {
-            $commandId = $this->documentImporter->import($document);
-        } catch (DBALEventStoreException $exception) {
-            if ($exception->getPrevious() instanceof UniqueConstraintViolationException) {
-                throw ApiProblem::resourceIdAlreadyInUse($eventId);
+        $mainLanguage = $eventAdapter->getMainLanguage();
+        $title = $eventAdapter->getTitle();
+        $type = $eventAdapter->getType();
+        $location = $eventAdapter->getLocation();
+        $calendar = $eventAdapter->getCalendar();
+        $theme = $eventAdapter->getTheme();
+        $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
+
+        // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
+        // If the request URL contains "imports", overwrite the workflowStatus to READY_FOR_VALIDATION to ensure
+        // backward compatibility with existing integrations that use those deprecated imports paths without a
+        // workflowStatus, and who expect the workflowStatus to automatically be READY_FOR_VALIDATION or APPROVED.
+        $workflowStatus = $event->getWorkflowStatus();
+        if (str_contains($request->getUri()->getPath(), 'imports')) {
+            $workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
+        }
+
+        $commands = [];
+        if (!$eventExists) {
+            $eventAggregate = EventAggregate::create(
+                $eventId,
+                $mainLanguage,
+                $title,
+                $type,
+                $location,
+                $calendar,
+                $theme,
+                $publishDate
+            );
+
+            if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
+                $eventAggregate->publish($publishDate);
             }
-            throw $exception;
+
+            // Events created by specific API partners should automatically be approved.
+            $consumer = $this->getConsumer($request);
+            if ($consumer && $this->shouldApprove->satisfiedBy($consumer)) {
+                if (!str_contains($request->getUri()->getPath(), 'imports')) {
+                    $eventAggregate->publish($publishDate);
+                }
+
+                $eventAggregate->approve();
+            }
+
+            $this->aggregateRepository->save($eventAggregate);
+        } else {
+            if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
+                $commands[] = new Publish($eventId, $publishDate);
+            }
+
+            $commands[] = new UpdateTitle($eventId, $mainLanguage, $title);
+            $commands[] = new UpdateType($eventId, $type->getId());
+            $commands[] = new UpdateLocation($eventId, $location);
+            $commands[] = new UpdateCalendar($eventId, $calendar);
+
+            if ($theme) {
+                $commands[] = new UpdateTheme($eventId, $theme->getId());
+            }
+        }
+
+        if ($location->isDummyPlaceForEducation()) {
+            $audienceType = AudienceType::education();
+        } else {
+            $audienceType = $event->getAudienceType();
+        }
+        $commands[] = new UpdateAudience($eventId, $audienceType);
+
+        $bookingInfo = $eventAdapter->getBookingInfo();
+        $commands[] = new UpdateBookingInfo($eventId, $bookingInfo);
+
+        $contactPoint = $eventAdapter->getContactPoint();
+        $commands[] = new UpdateContactPoint($eventId, $contactPoint);
+
+        $description = $eventAdapter->getDescription();
+        if ($description) {
+            $commands[] = new UpdateDescription($eventId, $mainLanguage, $description);
+        }
+
+        $ageRange = $eventAdapter->getAgeRange();
+        if ($ageRange) {
+            $commands[] = new UpdateTypicalAgeRange($eventId, $ageRange);
+        } else {
+            $commands[] = new DeleteTypicalAgeRange($eventId);
+        }
+
+        $priceInfo = $eventAdapter->getPriceInfo();
+        if ($priceInfo) {
+            $commands[] = new UpdatePriceInfo($eventId, $priceInfo);
+        }
+
+        foreach ($eventAdapter->getTitleTranslations() as $language => $title) {
+            $language = new Language($language);
+            $commands[] = new UpdateTitle($eventId, $language, $title);
+        }
+
+        foreach ($eventAdapter->getDescriptionTranslations() as $language => $description) {
+            $language = new Language($language);
+            $commands[] = new UpdateDescription($eventId, $language, $description);
+        }
+
+        $commands[] = new ImportLabels($eventId, $event->getLabels());
+
+        $images = $this->imageCollectionFactory->fromMediaObjectReferences($event->getMediaObjectReferences());
+        $commands[] = new ImportImages($eventId, $images);
+
+        $commands[] = new ImportVideos($eventId, $event->getVideos());
+
+        // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
+        // which might cause race conditions if we're still dispatching other commands here as well.
+        $organizerId = $eventAdapter->getOrganizerId();
+        if ($organizerId) {
+            $commands[] = new UpdateOrganizer($eventId, $organizerId);
+        } else {
+            $commands[] = new DeleteCurrentOrganizer($eventId);
+        }
+
+        $lastCommandId = null;
+        foreach ($commands as $command) {
+            /** @var string|null $commandId */
+            $commandId = $this->commandBus->dispatch($command);
+            if ($commandId) {
+                $lastCommandId = $commandId;
+            }
         }
 
         $responseBody = [
@@ -80,9 +252,20 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             'eventId' => $eventId,
             'url' => $this->eventIriGenerator->iri($eventId),
         ];
-        if ($commandId) {
-            $responseBody['commandId'] = $commandId;
+        if ($lastCommandId) {
+            $responseBody['commandId'] = $lastCommandId;
         }
         return new JsonResponse($responseBody, $responseStatus);
+    }
+
+    private function getConsumer(ServerRequestInterface $request): ?Consumer
+    {
+        $apiKey = $this->apiKeyReader->read($request);
+
+        if ($apiKey === null) {
+            return null;
+        }
+
+        return $this->consumerReadRepository->getConsumer($apiKey);
     }
 }

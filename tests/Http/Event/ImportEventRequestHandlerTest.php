@@ -4,8 +4,30 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use Broadway\Repository\AggregateNotFoundException;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
+use CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Description as LegacyDescription;
+use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
+use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
+use CultuurNet\UDB3\Event\Commands\ImportImages;
+use CultuurNet\UDB3\Event\Commands\UpdateAudience;
+use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
+use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
+use CultuurNet\UDB3\Event\Commands\UpdateDescription;
+use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Event\Commands\UpdateTitle;
+use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -15,10 +37,36 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\Import\DecodedDocument;
-use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
+use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
+use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Offer\Commands\ImportLabels;
+use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateType;
+use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
+use CultuurNet\UDB3\PriceInfo\BasePrice;
+use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\ValueObject\MultilingualString;
+use DateTimeImmutable;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -26,21 +74,37 @@ final class ImportEventRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private MockObject $documentImporter;
+    private MockObject $aggregateRepository;
 
     private MockObject $uuidGenerator;
+
+    private TraceableCommandBus $commandBus;
+
+    private MockObject $imageCollectionFactory;
+
+    private MockObject $consumerSpecification;
+
+    private MockObject $apiReader;
+
+    private MockObject $consumerRepository;
 
     private ImportEventRequestHandler $importEventRequestHandler;
 
     protected function setUp(): void
     {
-        $this->documentImporter = $this->createMock(DocumentImporterInterface::class);
+        $this->aggregateRepository = $this->createMock(Repository::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $this->commandBus = new TraceableCommandBus();
+        $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
+        $this->consumerSpecification = $this->createMock(ConsumerSpecification::class);
+        $this->apiReader = $this->createMock(ApiKeyReader::class);
+        $this->consumerRepository = $this->createMock(ConsumerReadRepository::class);
 
         $this->importEventRequestHandler = new ImportEventRequestHandler(
-            $this->documentImporter,
+            $this->aggregateRepository,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
+            new EventDenormalizer(),
             new CombinedRequestBodyParser(
                 new LegacyEventRequestBodyParser(
                     new CallableIriGenerator(fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId)
@@ -54,8 +118,15 @@ final class ImportEventRequestHandlerTest extends TestCase
                         'de' => 'Basisrate',
                     ]
                 )
-            )
+            ),
+            $this->commandBus,
+            $this->imageCollectionFactory,
+            $this->consumerSpecification,
+            $this->apiReader,
+            $this->consumerRepository
         );
+
+        $this->commandBus->record();
     }
 
     /**
@@ -64,7 +135,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_without_id(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -86,33 +156,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-        ];
-
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -122,9 +178,22 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -134,7 +203,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_with_id(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->never())
             ->method('generate');
@@ -155,8 +223,60 @@ final class ImportEventRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_event_with_given_id(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->never())
+            ->method('generate');
+
+        $given = [
             'mainLanguage' => 'nl',
             'name' => [
                 'nl' => 'Pannekoeken voor het goede doel',
@@ -164,8 +284,6 @@ final class ImportEventRequestHandlerTest extends TestCase
             'terms' => [
                 [
                     'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
                 ],
             ],
             'location' => [
@@ -179,10 +297,15 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -192,19 +315,35 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannekoeken voor het goede doel')),
+                new UpdateType($eventId, '1.50.0.0.0'),
+                new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
+                new UpdateCalendar($eventId, new Calendar(CalendarType::PERMANENT())),
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_a_new_event_with_all_properties(): void
+    public function it_creates_a_new_event_without_id_but_with_all_properties(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -215,8 +354,6 @@ final class ImportEventRequestHandlerTest extends TestCase
             'mainLanguage' => 'nl',
             'name' => [
                 'nl' => 'Nederlandse naam',
-                'fr' => 'Nom français',
-                'de' => 'Deutscher Name',
                 'en' => 'English name',
             ],
             'terms' => [
@@ -267,8 +404,6 @@ final class ImportEventRequestHandlerTest extends TestCase
             'typicalAgeRange' => '6-12',
             'description' => [
                 'nl' => 'Nederlandse beschrijving',
-                'fr' => 'Description français',
-                'de' => 'Deutscher Beschreibung',
                 'en' => 'English description',
             ],
             'priceInfo' => [
@@ -278,62 +413,61 @@ final class ImportEventRequestHandlerTest extends TestCase
                     'priceCurrency' => 'EUR',
                     'name' => [
                         'nl' => 'Basistarief',
-                        'fr' => 'Tarif de base',
                         'en' => 'Base tariff',
-                        'de' => 'Basisrate',
                     ],
                 ],
             ],
             'contactPoint' => [
                 'phone' => [
-                    'string',
+                    '016 12 34 56',
+                    '0497 11 22 33',
                 ],
                 'email' => [
-                    'info@example.com',
+                    'info@publiq.be',
+                    'contact@publiq.be',
                 ],
                 'url' => [
-                    'https://www.example.com',
+                    'https://www.publiq.be',
+                    'https://www.publiq.com',
                 ],
             ],
             'bookingInfo' => [
-                'phone' => 'string',
-                'email' => 'info@example.com',
-                'url' => 'https://www.example.com',
+                'phone' => '016 12 34 56',
+                'email' => 'info@publiq.be',
+                'url' => 'https://www.publiq.be',
                 'urlLabel' => [
-                    'nl' => 'Nederlandse beschrijving',
-                    'fr' => 'Description français',
-                    'de' => 'Deutscher Beschreibung',
-                    'en' => 'English description',
+                    'nl' => 'Nederlandse label',
+                    'en' => 'English label',
                 ],
                 'availabilityStarts' => '2021-05-17T22:00:00+00:00',
-                'availabilityEnds' => '2021-05-17T22:00:00+00:00',
+                'availabilityEnds' => '2021-05-21T22:00:00+00:00',
             ],
             'mediaObject' => [
                 [
-                    '@id' => 'https://io.uitdatabank.be/event/85b04295-479c-40f5-b3dd-469dfb4387b3',
+                    '@id' => 'https://io.uitdatabank.dev/images/85b04295-479c-40f5-b3dd-469dfb4387b3',
                     '@type' => 'schema:ImageObject',
-                    'contentUrl' => 'https://io-test.uitdatabank.be/images/example.png',
-                    'thumbnailUrl' => 'https://io-test.uitdatabank.be/images/example.png',
-                    'description' => 'string',
-                    'copyrightHolder' => 'string',
+                    'contentUrl' => 'https://io.uitdatabank.dev/images/pannekoeken.png',
+                    'thumbnailUrl' => 'https://io.uitdatabank.dev/images/pannekoeken.png',
+                    'description' => 'Een stapel pannekoeken',
+                    'copyrightHolder' => '© publiq vzw',
                     'inLanguage' => 'nl',
                 ],
             ],
-            'image' => 'https://io-test.uitdatabank.be/images/example.png',
+            'image' => 'https://io.uitdatabank.dev/images/pannekoeken.png',
+            'videos' => [
+                [
+                    'id' => 'b504cf44-9ab8-4641-9934-38d1cc67242c',
+                    'url' => 'https://www.youtube.com/watch?v=cEItmb_a20D',
+                    'embedUrl' => 'https://www.youtube.com/embed/cEItmb_a20D',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'publiq vzw',
+                ],
+            ],
             'labels' => [
-                'label1',
+                'visible_label',
             ],
             'hiddenLabels' => [
-                'label2',
-            ],
-        ];
-
-        $expected = $given;
-        $expected['terms'] = [
-            [
-                'id' => '1.50.0.0.0',
-                'label' => 'Eten en drinken',
-                'domain' => 'eventtype',
+                'hidden_label',
             ],
         ];
 
@@ -341,10 +475,27 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $imageCollection = (new ImageCollection())
+            ->with(
+                new Image(
+                    new UUID('85b04295-479c-40f5-b3dd-469dfb4387b3'),
+                    MIMEType::fromSubtype('png'),
+                    new Description('Een stapel pannekoeken'),
+                    new CopyrightHolder('© publiq vzw'),
+                    new Url('https://io.uitdatabank.dev/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.png'),
+                    new LegacyLanguage('nl')
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn($imageCollection);
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -354,9 +505,85 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo(
+                    $eventId,
+                    new BookingInfo(
+                        'https://www.publiq.be',
+                        (new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('Nederlandse label')))
+                            ->withTranslation(new LegacyLanguage('en'), new StringLiteral('English label')),
+                        '016 12 34 56',
+                        'info@publiq.be',
+                        new DateTimeImmutable('2021-05-17T22:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-21T22:00:00+00:00')
+                    )
+                ),
+                new UpdateContactPoint(
+                    $eventId,
+                    new ContactPoint(
+                        [
+                            '016 12 34 56',
+                            '0497 11 22 33',
+                        ],
+                        [
+                            'info@publiq.be',
+                            'contact@publiq.be',
+                        ],
+                        [
+                            'https://www.publiq.be',
+                            'https://www.publiq.com',
+                        ]
+                    )
+                ),
+                new UpdateDescription(
+                    $eventId,
+                    new LegacyLanguage('nl'),
+                    new LegacyDescription('Nederlandse beschrijving')
+                ),
+                new UpdateTypicalAgeRange($eventId, '6-12'),
+                new UpdatePriceInfo(
+                    $eventId,
+                    new PriceInfo(
+                        new BasePrice(new Money(1050, new Currency('EUR')))
+                    )
+                ),
+                new UpdateTitle(
+                    $eventId,
+                    new LegacyLanguage('en'),
+                    new Title('English name')
+                ),
+                new UpdateDescription(
+                    $eventId,
+                    new LegacyLanguage('en'),
+                    new LegacyDescription('English description')
+                ),
+                new ImportLabels(
+                    $eventId,
+                    new Labels(
+                        new Label(new LabelName('visible_label'), true),
+                        new Label(new LabelName('hidden_label'), false)
+                    )
+                ),
+                new ImportImages($eventId, $imageCollection),
+                new ImportVideos(
+                    $eventId,
+                    new VideoCollection(
+                        (new Video(
+                            'b504cf44-9ab8-4641-9934-38d1cc67242c',
+                            new Url('https://www.youtube.com/watch?v=cEItmb_a20D'),
+                            new Language('nl')
+                        ))->withCopyrightHolder(new CopyrightHolder('publiq vzw')),
+                    )
+                ),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -366,7 +593,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_from_legacy_format_with_permanent_calendar(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -397,46 +623,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '0.5.0.0.0',
-                    'label' => 'Festival',
-                    'domain' => 'eventtype',
-                ],
-                [
-                    'id' => '0.52.0.0.0',
-                    'label' => 'Circus',
-                    'domain' => 'theme',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-            'openingHours' => [
-                [
-                    'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
-                    'opens' => '08:00',
-                    'closes' => '17:00',
-                ],
-            ],
-        ];
-
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -446,9 +645,22 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -458,7 +670,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_from_legacy_format_with_periodic_calendar(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -487,43 +698,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'periodic',
-            'startDate' => '2018-05-05T18:00:00+00:00',
-            'endDate' => '2022-05-05T21:00:00+00:00',
-            'openingHours' => [
-                [
-                    'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
-                    'opens' => '08:00',
-                    'closes' => '17:00',
-                ],
-            ],
-        ];
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
-
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -533,9 +720,22 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -545,7 +745,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_from_legacy_format_with_single_calendar(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -573,42 +772,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'single',
-            'startDate' => '2018-05-05T18:00:00+00:00',
-            'endDate' => '2022-05-05T21:00:00+00:00',
-            'subEvent' => [
-                [
-                    'startDate' => '2018-05-05T18:00:00+00:00',
-                    'endDate' => '2022-05-05T21:00:00+00:00',
-                ],
-            ],
-        ];
-
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -618,9 +794,22 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -630,7 +819,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_from_legacy_format_with_multiple_calendar(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -662,46 +850,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'multiple',
-            'startDate' => '2018-05-05T18:00:00+00:00',
-            'endDate' => '2022-05-05T21:00:00+00:00',
-            'subEvent' => [
-                [
-                    'startDate' => '2018-05-05T18:00:00+00:00',
-                    'endDate' => '2020-05-05T21:00:00+00:00',
-                ],
-                [
-                    'startDate' => '2020-05-05T18:00:00+00:00',
-                    'endDate' => '2022-05-05T21:00:00+00:00',
-                ],
-            ],
-        ];
-
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -711,9 +872,22 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -723,7 +897,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_from_legacy_format_with_single_calendar_and_no_start_or_end_date(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -749,40 +922,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'single',
-            'subEvent' => [
-                [
-                    'startDate' => '2018-05-05T18:00:00+00:00',
-                    'endDate' => '2022-05-05T21:00:00+00:00',
-                ],
-            ],
-        ];
-
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -792,9 +944,22 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -804,7 +969,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_creates_a_new_event_from_legacy_format_with_multiple_calendar_and_no_start_or_end_date(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -834,44 +998,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'multiple',
-            'subEvent' => [
-                [
-                    'startDate' => '2018-05-05T18:00:00+00:00',
-                    'endDate' => '2020-05-05T21:00:00+00:00',
-                ],
-                [
-                    'startDate' => '2020-05-05T18:00:00+00:00',
-                    'endDate' => '2022-05-05T21:00:00+00:00',
-                ],
-            ],
-        ];
-
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
 
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -881,74 +1020,22 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
         );
-    }
 
-    /**
-     * @test
-     */
-    public function it_throws_when_existing_id_is_used(): void
-    {
-        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-
-        $this->uuidGenerator->expects($this->never())
-            ->method('generate');
-
-        $given = [
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
             ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-        ];
-
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-        ];
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('eventId', $eventId)
-            ->withJsonBodyFromArray($given)
-            ->build('PUT');
-
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willThrowException(
-                DBALEventStoreException::create(
-                    $this->createMock(UniqueConstraintViolationException::class)
-                )
-            );
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::resourceIdAlreadyInUse($eventId),
-            fn () => $this->importEventRequestHandler->handle($request)
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -1167,7 +1254,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_ignores_invalid_languages_inside_name(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $given = [
             'mainLanguage' => 'nl',
@@ -1186,35 +1272,21 @@ final class ImportEventRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-                'es' => 'Invalid language',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-        ];
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
             ->withJsonBodyFromArray($given)
             ->build('PUT');
-
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -1224,9 +1296,23 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new UpdateTitle($eventId, new LegacyLanguage('es'), new Title('Invalid language')),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -3065,6 +3151,16 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray($event)
             ->build('PUT');
 
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
         $response = $this->importEventRequestHandler->handle($request);
 
         $this->assertEquals(201, $response->getStatusCode());
@@ -3075,6 +3171,20 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint([], ['info@publiq.be'], [])),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
@@ -3376,7 +3486,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_overrides_base_tariff_names(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $commandId = '473bcc52-58ad-4677-a1f2-23ff6d421512';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -3408,46 +3517,19 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
         ];
 
-        $expected = [
-            '@id' => 'https://io.uitdatabank.dev/events/' . $eventId,
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                    'label' => 'Eten en drinken',
-                    'domain' => 'eventtype',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-            'priceInfo' => [
-                [
-                    'category' => 'base',
-                    'price' => 10.5,
-                    'priceCurrency' => 'EUR',
-                    'name' => [
-                        'nl' => 'Basistarief',
-                        'fr' => 'Tarif de base',
-                        'en' => 'Base tariff',
-                        'de' => 'Basisrate',
-                    ],
-                ],
-            ],
-        ];
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
 
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray($given)
             ->build('PUT');
-
-        $this->documentImporter->expects($this->once())
-            ->method('import')
-            ->with(new DecodedDocument($eventId, $expected))
-            ->willReturn($commandId);
 
         $response = $this->importEventRequestHandler->handle($request);
 
@@ -3457,9 +3539,28 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
-                'commandId' => $commandId,
             ]),
             $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new UpdatePriceInfo(
+                    $eventId,
+                    new PriceInfo(
+                        new BasePrice(new Money(1050, new Currency('EUR')))
+                    )
+                ),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
         );
     }
 
