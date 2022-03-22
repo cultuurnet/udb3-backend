@@ -8,10 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -65,9 +61,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
     private RequestBodyParser $combinedRequestBodyParser;
     private CommandBus $commandBus;
     private ImageCollectionFactory $imageCollectionFactory;
-    private ConsumerSpecification $shouldApprove;
-    private ApiKeyReader $apiKeyReader;
-    private ConsumerReadRepository $consumerReadRepository;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -76,10 +69,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         DenormalizerInterface $eventDenormalizer,
         RequestBodyParser $combinedRequestBodyParser,
         CommandBus $commandBus,
-        ImageCollectionFactory $imageCollectionFactory,
-        ConsumerSpecification $shouldApprove,
-        ApiKeyReader $apiKeyReader,
-        ConsumerReadRepository $consumerReadRepository
+        ImageCollectionFactory $imageCollectionFactory
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -88,9 +78,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $this->combinedRequestBodyParser = $combinedRequestBodyParser;
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
-        $this->shouldApprove = $shouldApprove;
-        $this->apiKeyReader = $apiKeyReader;
-        $this->consumerReadRepository =$consumerReadRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -154,16 +141,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
             if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
                 $eventAggregate->publish($publishDate);
-            }
-
-            // Events created by specific API partners should automatically be approved.
-            $consumer = $this->getConsumer($request);
-            if ($consumer && $this->shouldApprove->satisfiedBy($consumer)) {
-                if (!str_contains($request->getUri()->getPath(), 'imports')) {
-                    $eventAggregate->publish($publishDate);
-                }
-
-                $eventAggregate->approve();
             }
 
             $this->aggregateRepository->save($eventAggregate);
@@ -256,16 +233,5 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $responseBody['commandId'] = $lastCommandId;
         }
         return new JsonResponse($responseBody, $responseStatus);
-    }
-
-    private function getConsumer(ServerRequestInterface $request): ?Consumer
-    {
-        $apiKey = $this->apiKeyReader->read($request);
-
-        if ($apiKey === null) {
-            return null;
-        }
-
-        return $this->consumerReadRepository->getConsumer($apiKey);
     }
 }

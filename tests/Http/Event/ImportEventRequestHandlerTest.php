@@ -8,9 +8,6 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
@@ -82,12 +79,6 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     private MockObject $imageCollectionFactory;
 
-    private MockObject $consumerSpecification;
-
-    private MockObject $apiReader;
-
-    private MockObject $consumerRepository;
-
     private ImportEventRequestHandler $importEventRequestHandler;
 
     protected function setUp(): void
@@ -96,9 +87,6 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
-        $this->consumerSpecification = $this->createMock(ConsumerSpecification::class);
-        $this->apiReader = $this->createMock(ApiKeyReader::class);
-        $this->consumerRepository = $this->createMock(ConsumerReadRepository::class);
 
         $this->importEventRequestHandler = new ImportEventRequestHandler(
             $this->aggregateRepository,
@@ -120,10 +108,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 )
             ),
             $this->commandBus,
-            $this->imageCollectionFactory,
-            $this->consumerSpecification,
-            $this->apiReader,
-            $this->consumerRepository
+            $this->imageCollectionFactory
         );
 
         $this->commandBus->record();
