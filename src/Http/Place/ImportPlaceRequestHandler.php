@@ -203,13 +203,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateDescription($placeId, $mainLanguage, $description);
         }
 
-        $organizerId = $placeAdapter->getOrganizerId();
-        if ($organizerId) {
-            $commands[] = new UpdateOrganizer($placeId, $organizerId);
-        } else {
-            $commands[] = new DeleteCurrentOrganizer($placeId);
-        }
-
         $ageRange = $placeAdapter->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($placeId, $ageRange);
@@ -246,6 +239,13 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
             $commands[] = new DeleteOffer($placeId);
+        }
+
+        $organizerId = $placeAdapter->getOrganizerId();
+        if ($organizerId) {
+            $commands[] = new UpdateOrganizer($placeId, $organizerId);
+        } else {
+            $commands[] = new DeleteCurrentOrganizer($placeId);
         }
 
         $lastCommandId = null;
