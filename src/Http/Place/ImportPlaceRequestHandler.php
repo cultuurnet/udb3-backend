@@ -8,10 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -70,12 +66,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private ImageCollectionFactory $imageCollectionFactory;
 
-    private ConsumerSpecification $shouldApprove;
-
-    private ApiKeyReader $apiKeyReader;
-
-    private ConsumerReadRepository $consumerReadRepository;
-
     public function __construct(
         Repository $aggregateRepository,
         UuidGeneratorInterface $uuidGenerator,
@@ -83,10 +73,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         RequestBodyParser $importPreProcessingRequestBodyParser,
         IriGeneratorInterface $iriGenerator,
         CommandBus $commandBus,
-        ImageCollectionFactory $imageCollectionFactory,
-        ConsumerSpecification $shouldApprove,
-        ApiKeyReader $apiKeyReader,
-        ConsumerReadRepository $consumerReadRepository
+        ImageCollectionFactory $imageCollectionFactory
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -95,9 +82,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->iriGenerator = $iriGenerator;
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
-        $this->shouldApprove = $shouldApprove;
-        $this->apiKeyReader = $apiKeyReader;
-        $this->consumerReadRepository = $consumerReadRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -162,17 +146,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
             if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
                 $placeAggregate->publish($publishDate);
-            }
-
-            // Places created by specific API partners should automatically be
-            // approved.
-            $consumer = $this->getConsumer($request);
-            if ($consumer && $this->shouldApprove->satisfiedBy($consumer)) {
-                if (!str_contains($request->getUri()->getPath(), 'imports')) {
-                    $placeAggregate->publish($publishDate);
-                }
-
-                $placeAggregate->approve();
             }
 
             $this->aggregateRepository->save($placeAggregate);
@@ -266,16 +239,5 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $responseBody['commandId'] = $lastCommandId;
         }
         return new JsonResponse($responseBody, $responseStatus);
-    }
-
-    private function getConsumer(ServerRequestInterface $request): ?Consumer
-    {
-        $apiKey = $this->apiKeyReader->read($request);
-
-        if ($apiKey === null) {
-            return null;
-        }
-
-        return $this->consumerReadRepository->getConsumer($apiKey);
     }
 }
