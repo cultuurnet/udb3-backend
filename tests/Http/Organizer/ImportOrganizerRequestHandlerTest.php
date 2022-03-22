@@ -272,6 +272,71 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_imports_an_organizer_with_missing_contactPoint_fields(): void
+    {
+        $id = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $given = $this->getOrganizerData() +
+            [
+                'contactPoint' => [
+                    'email' => ['mock@publiq.be'],
+                ],
+            ];
+
+        $this->expectOrganizerExists($id);
+
+        $expectedCommands = [
+            new UpdateTitle(
+                $id,
+                new Title('Mock organizer'),
+                new Language('nl')
+            ),
+            new UpdateWebsite(
+                $id,
+                new Url('https://www.mock-organizer.be')
+            ),
+            new UpdateContactPoint(
+                $id,
+                new ContactPoint(
+                    new TelephoneNumbers(),
+                    new EmailAddresses(new EmailAddress('mock@publiq.be')),
+                    new Urls()
+                )
+            ),
+            new DeleteDescription($id, new Language('nl')),
+            new DeleteDescription($id, new Language('fr')),
+            new DeleteDescription($id, new Language('de')),
+            new DeleteDescription($id, new Language('en')),
+            new RemoveAddress($id),
+            new ImportLabels($id, new Labels()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', $id)
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(
+                [
+                    'id' => $id,
+                    'organizerId' => $id,
+                    'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
+                ]
+            ),
+            $response->getBody()->getContents()
+        );
+        $this->assertEquals($expectedCommands, $actualCommands);
+    }
+
+    /**
+     * @test
+     */
     public function it_imports_an_organizer_from_legacy_schema_with_only_required_properties(): void
     {
         $organizerId = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
@@ -730,17 +795,6 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/address/fr/addressCountry', 'Maximum string length is 2, found 3'),
                     new SchemaError('/address/de/addressCountry', 'Maximum string length is 2, found 3'),
                     new SchemaError('/address/en/addressCountry', 'Maximum string length is 2, found 3'),
-                ],
-            ],
-            'contactPoint_properties_missing' => [
-                'given' => [
-                    'mainLanguage' => 'nl',
-                    'name' => ['nl' => 'Test'],
-                    'url' => 'https://www.organizer.be',
-                    'contactPoint' => (object) [],
-                ],
-                'schemaErrors' => [
-                    new SchemaError('/contactPoint', 'The required properties (phone, email, url) are missing'),
                 ],
             ],
             'contactPoint_properties_invalid' => [
