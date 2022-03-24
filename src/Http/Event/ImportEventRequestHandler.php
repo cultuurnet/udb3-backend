@@ -41,6 +41,7 @@ use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
@@ -205,6 +206,10 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $commands[] = new ImportImages($eventId, $images);
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
+
+        if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
+            $commands[] = new DeleteOffer($eventId);
+        }
 
         // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
         // which might cause race conditions if we're still dispatching other commands here as well.
