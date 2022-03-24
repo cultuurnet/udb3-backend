@@ -50,6 +50,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportEventRequestHandler implements RequestHandlerInterface
@@ -222,6 +223,10 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             if ($commandId) {
                 $lastCommandId = $commandId;
             }
+        }
+
+        if ($lastCommandId === null) {
+            $lastCommandId = Uuid::NIL;
         }
 
         $responseBody = [
