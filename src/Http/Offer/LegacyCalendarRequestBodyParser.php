@@ -22,7 +22,9 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
         $data = clone $data;
 
         if (isset($data->calendar) && $data->calendar instanceof stdClass) {
-            if (isset($data->calendar->timeSpans)) {
+            if (isset($data->calendar->timeSpans) &&
+                is_array($data->calendar->timeSpans) &&
+                count($data->calendar->timeSpans) > 0) {
                 $calendar = (new LegacyTimeSpansParser())->parse($data->calendar);
                 $data->subEvent = $calendar->subEvent;
             }
