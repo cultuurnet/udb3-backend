@@ -92,7 +92,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                     new ImportTermRequestBodyParser(new EventCategoryResolver()),
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations'])
                 ),
-                $app['imports_command_bus'],
+                $app['event_command_bus'],
                 $app['import_image_collection_factory']
             )
         );

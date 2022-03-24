@@ -75,7 +75,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $app[ImportOrganizerRequestHandler::class] = $app->share(
             fn (Application $app) => new ImportOrganizerRequestHandler(
                 $app['organizer_repository'],
-                $app['imports_command_bus'],
+                $app['event_command_bus'],
                 $app['uuid_generator'],
                 $app['organizer_iri_generator'],
                 new CombinedRequestBodyParser(
