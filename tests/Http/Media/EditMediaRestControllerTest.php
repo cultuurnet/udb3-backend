@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Media;
 
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,7 +30,10 @@ class EditMediaRestControllerTest extends TestCase
     {
         $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
 
-        $this->controller = new EditMediaRestController($this->imageUploader);
+        $this->controller = new EditMediaRestController(
+            $this->imageUploader,
+            new CallableIriGenerator(fn (string $item) => 'https://io.uitdatabank.dev/images/' . $item)
+        );
     }
 
     /**
@@ -136,6 +140,7 @@ class EditMediaRestControllerTest extends TestCase
         $response = $this->controller->upload($uploadRequest);
 
         $expectedResponseContent = json_encode([
+            '@id' => 'https://io.uitdatabank.dev/images/' . $imageId->toString(),
             'imageId' => $imageId->toString(),
         ]);
 
