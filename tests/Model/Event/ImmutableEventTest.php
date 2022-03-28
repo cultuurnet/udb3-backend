@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Event;
 
-use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -15,12 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
-use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
-use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -156,28 +149,7 @@ class ImmutableEventTest extends TestCase
      */
     private function getPlaceReference()
     {
-        $title = new TranslatedTitle(
-            $this->getMainLanguage(),
-            new Title('N/A')
-        );
-
-        $address = new TranslatedAddress(
-            $this->getMainLanguage(),
-            new Address(
-                new Street('Henegouwenkaai 41-43'),
-                new PostalCode('1080'),
-                new Locality('Brussel'),
-                new CountryCode('BE')
-            )
-        );
-
-        $dummyLocation = ImmutablePlace::createDummyLocation(
-            $this->getMainLanguage(),
-            $title,
-            $address
-        );
-
-        return PlaceReference::createWithEmbeddedPlace($dummyLocation);
+        return PlaceReference::createWithPlaceId(new UUID('23f94284-550c-4fdd-8b66-8b0e2393283c'));
     }
 
     /**
