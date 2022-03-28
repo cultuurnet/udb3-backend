@@ -27,7 +27,6 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
 
         // Attempt to add label and/or domain to terms, or fix them if they're incorrect.
         if (isset($json->terms) && is_array($json->terms)) {
-
             $json->terms = array_map(
                 function (stdClass $term, int $index) {
                     if (isset($term->id) && is_string($term->id)) {
