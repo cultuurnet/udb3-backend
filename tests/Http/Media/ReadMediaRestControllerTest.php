@@ -72,6 +72,7 @@ class ReadMediaRestControllerTest extends TestCase
             Json::encode([
                 '@id' => 'https://io.uitdatabank.be/images/5624b810-c340-40a4-8f38-0393eca59bfe',
                 '@type' => 'schema:ImageObject',
+                'id' => '5624b810-c340-40a4-8f38-0393eca59bfe',
                 'contentUrl' => 'https://images.uitdatabank.be/123/5624b810-c340-40a4-8f38-0393eca59bfe.jpg',
                 'thumbnailUrl' => 'https://images.uitdatabank.be/123/5624b810-c340-40a4-8f38-0393eca59bfe.jpg',
                 'description' => 'UDB2 image',

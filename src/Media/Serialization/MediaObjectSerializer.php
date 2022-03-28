@@ -36,6 +36,7 @@ class MediaObjectSerializer
         return  [
             '@id' => $this->iriGenerator->iri($mediaObject->getMediaObjectId()->toString()),
             '@type' => $type,
+            'id' => $mediaObject->getMediaObjectId()->toString(),
             'contentUrl' => $mediaObject->getSourceLocation()->toString(),
             'thumbnailUrl' => $mediaObject->getSourceLocation()->toString(),
             'description' => (string) $mediaObject->getDescription(),

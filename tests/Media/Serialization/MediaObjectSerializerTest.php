@@ -57,6 +57,7 @@ class MediaObjectSerializerTest extends TestCase
         $expectedJsonld = [
             '@id' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014',
             '@type' => 'schema:ImageObject',
+            'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
             'thumbnailUrl' => 'http://foo.bar/media/my_pic.jpg',
             'contentUrl' => 'http://foo.bar/media/my_pic.jpg',
             'description' => 'my pic',
@@ -91,6 +92,7 @@ class MediaObjectSerializerTest extends TestCase
         $expectedJsonld = [
             '@id' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014',
             '@type' => 'schema:mediaObject',
+            'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
             'thumbnailUrl' => 'http://foo.bar/media/my_pic.jpg',
             'contentUrl' => 'http://foo.bar/media/my_pic.jpg',
             'description' => 'my pic',
@@ -125,6 +127,7 @@ class MediaObjectSerializerTest extends TestCase
         $expectedJsonld = [
             '@id' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014',
             '@type' => 'schema:ImageObject',
+            'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
             'thumbnailUrl' => 'http://foo.bar/media/my_pic.jpg',
             'contentUrl' => 'http://foo.bar/media/my_pic.jpg',
             'description' => 'my pic',

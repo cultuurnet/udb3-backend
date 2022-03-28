@@ -517,6 +517,7 @@ class OfferLDProjectorTest extends TestCase
             (object) [
                 '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
                 '@type' => 'schema:ImageObject',
+                'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
                 'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'description' => 'The Gleaners',
@@ -1685,6 +1686,7 @@ class OfferLDProjectorTest extends TestCase
             (object) [
                 '@id' => 'http://example.com/entity/ED5B9B25-8C16-48E5-9899-27BB2D110C57',
                 '@type' => 'schema:ImageObject',
+                'id' => 'ED5B9B25-8C16-48E5-9899-27BB2D110C57',
                 'contentUrl' => 'http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg',
                 'thumbnailUrl' => 'http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg',
                 'description' => 'epische panorama foto',
@@ -1694,6 +1696,7 @@ class OfferLDProjectorTest extends TestCase
             (object) [
                 '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
                 '@type' => 'schema:ImageObject',
+                'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
                 'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'description' => 'The Gleaners',
@@ -1709,6 +1712,7 @@ class OfferLDProjectorTest extends TestCase
                     (object) [
                         '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
                         '@type' => 'schema:ImageObject',
+                        'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'description' => 'The Gleaners',
@@ -1756,6 +1760,7 @@ class OfferLDProjectorTest extends TestCase
                     (object)[
                         '@type' => 'schema:ImageObject',
                         '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
                         'contentUrl' => 'http://foo.bar/media/my_pic.jpg',
                         'thumbnailUrl' => 'http://foo.bar/media/my_pic.jpg',
                         'description' => 'my pic',
@@ -1765,6 +1770,7 @@ class OfferLDProjectorTest extends TestCase
                     (object)[
                         '@type' => 'schema:ImageObject',
                         '@id' => 'http://example.com/entity/e56e8eb6-dcd7-47e7-8106-8a149f1d241b',
+                        'id' => 'e56e8eb6-dcd7-47e7-8106-8a149f1d241b',
                         'contentUrl' => 'http://foo.bar/media/img_182.jpg',
                         'thumbnailUrl' => 'http://foo.bar/media/img_182.jpg',
                         'description' => 'my favorite selfie',
