@@ -27,6 +27,79 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_polyfill_a_mediaObject_id_based_on_the_id_url_if_not_set(): void
+    {
+        $this
+            ->given(
+                [
+                    'mediaObject' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/b01d92c0-5e53-4341-9625-c2264325d8c6',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                            'id' => '29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                        ],
+                        'invalid',
+                        [
+                            '@id_missing' => true,
+                        ],
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'mediaObject' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/b01d92c0-5e53-4341-9625-c2264325d8c6',
+                            'id' => 'b01d92c0-5e53-4341-9625-c2264325d8c6',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                            'id' => '29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                        ],
+                        'invalid',
+                        [
+                            '@id_missing' => true,
+                        ],
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_add_mediaObject_if_not_set(): void
+    {
+        $this
+            ->given(
+                []
+            )
+            ->assertReturnedDocumentDoesNotContainKey('mediaObject');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_ignore_invalid_mediaObject_type(): void
+    {
+        $this
+            ->given(
+                [
+                    'mediaObject' => 'invalid!'
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'mediaObject' => 'invalid!'
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_polyfill_a_default_status_if_not_set(): void
     {
         $this

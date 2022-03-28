@@ -23,6 +23,7 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
     {
         return $jsonDocument->applyAssoc(
             function (array $json) {
+                $json = $this->polyfillMediaObjectId($json);
                 $json = $this->polyfillStatus($json);
                 $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventProperties($json);
@@ -30,6 +31,28 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
                 return $this->polyfillEmbeddedPlaceBookingAvailability($json);
             }
         );
+    }
+
+    private function polyfillMediaObjectId(array $json): array
+    {
+        if (!isset($json['mediaObject']) || !is_array($json['mediaObject'])) {
+            return $json;
+        }
+
+        $json['mediaObject'] = array_map(
+            function ($mediaObject) {
+                if (!is_array($mediaObject) || isset($mediaObject['id']) || !isset($mediaObject['@id'])) {
+                    return $mediaObject;
+                }
+                $urlParts = explode('/', $mediaObject['@id']);
+                $id = array_pop($urlParts);
+                $mediaObject['id'] = $id;
+                return $mediaObject;
+            },
+            $json['mediaObject']
+        );
+
+        return $json;
     }
 
     private function polyfillStatus(array $json): array
