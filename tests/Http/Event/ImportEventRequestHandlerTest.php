@@ -163,6 +163,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -232,6 +233,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -300,6 +302,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -490,6 +493,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -630,6 +634,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -705,6 +710,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -779,6 +785,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -857,6 +864,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -929,6 +937,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -1005,6 +1014,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -1281,6 +1291,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -3154,6 +3165,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -3524,6 +3536,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'id' => $eventId,
                 'eventId' => $eventId,
                 'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
