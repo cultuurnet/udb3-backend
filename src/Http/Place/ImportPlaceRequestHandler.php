@@ -48,6 +48,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportPlaceRequestHandler implements RequestHandlerInterface
@@ -228,6 +229,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             if ($commandId) {
                 $lastCommandId = $commandId;
             }
+        }
+
+        if ($lastCommandId === null) {
+            $lastCommandId = Uuid::NIL;
         }
 
         $responseBody = [

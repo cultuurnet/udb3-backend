@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Request\Body\LegacyNameRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use stdClass;
 
 final class LegacyEventRequestBodyParser implements RequestBodyParser
 {
@@ -35,8 +36,17 @@ final class LegacyEventRequestBodyParser implements RequestBodyParser
     {
         $data = $this->parser->parse($request)->getParsedBody();
 
-        if (is_object($data) && isset($data->location) && !isset($data->location->{'@id'}) && is_string($data->location->id)) {
-            $data->location->{'@id'} = $this->placeIriGenerator->iri($data->location->id);
+        if (is_object($data) && isset($data->location) && !isset($data->location->{'@id'})) {
+            if (is_object($data->location) && is_string($data->location->id)) {
+                $data->location->{'@id'} = $this->placeIriGenerator->iri($data->location->id);
+            }
+
+            // Added to handle the angular UI which passes the location as a string.
+            if (is_string($data->location)) {
+                $locationId = $data->location;
+                $data->location = new stdClass();
+                $data->location->{'@id'} = $this->placeIriGenerator->iri($locationId);
+            }
         }
 
         return $request->withParsedBody($data);

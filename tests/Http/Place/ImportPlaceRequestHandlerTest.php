@@ -203,6 +203,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -288,6 +289,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -367,6 +369,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -451,6 +454,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -612,6 +616,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -783,6 +788,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -873,6 +879,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -960,6 +967,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );
@@ -2139,7 +2147,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/terms',
+                '/terms/0/id',
                 'The term 0.7.0.0.0 does not exist or is not supported'
             ),
         ];
@@ -3564,6 +3572,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
             ]),
             $response->getBody()->getContents()
         );

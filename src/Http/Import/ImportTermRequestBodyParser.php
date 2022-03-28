@@ -28,7 +28,7 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
         // Attempt to add label and/or domain to terms, or fix them if they're incorrect.
         if (isset($json->terms) && is_array($json->terms)) {
             $json->terms = array_map(
-                function (stdClass $term) {
+                function (stdClass $term, int $index) {
                     if (isset($term->id) && is_string($term->id)) {
                         $id = $term->id;
                         $category = $this->categoryResolver->byId(new CategoryID($id));
@@ -40,7 +40,7 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
                         if ($category === null && isset($term->domain) && $term->domain === 'eventtype') {
                             throw ApiProblem::bodyInvalidData(
                                 new SchemaError(
-                                    '/terms',
+                                    '/terms/' . $index . '/id',
                                     'The term ' . $id . ' does not exist or is not supported'
                                 )
                             );
@@ -49,7 +49,8 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
 
                     return $term;
                 },
-                $json->terms
+                $json->terms,
+                array_keys($json->terms)
             );
         }
 

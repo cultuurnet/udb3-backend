@@ -38,6 +38,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ramsey\Uuid\Uuid;
 
 final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 {
@@ -172,6 +173,10 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             if ($commandId) {
                 $lastCommandId = $commandId;
             }
+        }
+
+        if ($lastCommandId === null) {
+            $lastCommandId = Uuid::NIL;
         }
 
         $responseBody = [
