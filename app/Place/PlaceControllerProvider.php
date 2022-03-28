@@ -82,7 +82,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations'])
                 ),
                 $app['place_iri_generator'],
-                $app['event_command_bus'],
+                $app['imports_command_bus'],
                 $app['import_image_collection_factory']
             )
         );
