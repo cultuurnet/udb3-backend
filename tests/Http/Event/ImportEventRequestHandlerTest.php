@@ -2367,7 +2367,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/terms',
+                '/terms/0/id',
                 'The term 0.14.0.0.0 does not exist or is not supported'
             ),
         ];
