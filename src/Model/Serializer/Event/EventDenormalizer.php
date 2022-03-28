@@ -23,10 +23,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EventDenormalizer extends OfferDenormalizer
 {
-    /**
-     * @var DenormalizerInterface
-     */
-    private $placeReferenceDenormalizer;
+    private DenormalizerInterface $placeReferenceDenormalizer;
 
     public function __construct(
         UUIDParser $eventIDParser = null,
@@ -94,10 +91,7 @@ class EventDenormalizer extends OfferDenormalizer
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): ImmutableEvent
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("EventDenormalizer does not support {$class}.");
@@ -109,15 +103,10 @@ class EventDenormalizer extends OfferDenormalizer
 
         /* @var ImmutableEvent $offer */
         $offer = $this->denormalizeOffer($data);
-        $offer = $this->denormalizeAudienceType($data, $offer);
-
-        return $offer;
+        return $this->denormalizeAudienceType($data, $offer);
     }
 
-    /**
-     * @return ImmutableEvent
-     */
-    private function denormalizeAudienceType(array $data, ImmutableEvent $event)
+    private function denormalizeAudienceType(array $data, ImmutableEvent $event): ImmutableEvent
     {
         if (isset($data['audience']['audienceType'])) {
             $audienceType = new AudienceType((string) $data['audience']['audienceType']);
@@ -127,10 +116,7 @@ class EventDenormalizer extends OfferDenormalizer
         return $event;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ImmutableEvent::class || $type === Event::class;
     }

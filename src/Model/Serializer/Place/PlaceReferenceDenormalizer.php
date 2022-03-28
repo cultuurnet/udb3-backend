@@ -36,7 +36,7 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
         return PlaceReference::createWithPlaceId($placeId);
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === PlaceReference::class;
     }
