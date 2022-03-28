@@ -87,12 +87,12 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
         $this
             ->given(
                 [
-                    'mediaObject' => 'invalid!'
+                    'mediaObject' => 'invalid!',
                 ]
             )
             ->assertReturnedDocumentContains(
                 [
-                    'mediaObject' => 'invalid!'
+                    'mediaObject' => 'invalid!',
                 ]
             );
     }
