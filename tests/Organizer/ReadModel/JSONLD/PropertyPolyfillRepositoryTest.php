@@ -59,6 +59,54 @@ final class PropertyPolyfillRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_polyfill_an_image_inLanguage_if_not_set_but_language_is_set(): void
+    {
+        $this
+            ->given(
+                [
+                    'images' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/b01d92c0-5e53-4341-9625-c2264325d8c6',
+                            '@type' => 'schema:ImageObject',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                            '@type' => 'schema:ImageObject',
+                            'language' => 'fr',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                            '@type' => 'schema:ImageObject',
+                            'inLanguage' => 'de',
+                        ],
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'images' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/b01d92c0-5e53-4341-9625-c2264325d8c6',
+                            '@type' => 'schema:ImageObject',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                            '@type' => 'schema:ImageObject',
+                            'inLanguage' => 'fr',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/29a88d72-2ec0-48ea-aa1c-5c083deea0c8',
+                            '@type' => 'schema:ImageObject',
+                            'inLanguage' => 'de',
+                        ],
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_not_add_images_if_not_set(): void
     {
         $this

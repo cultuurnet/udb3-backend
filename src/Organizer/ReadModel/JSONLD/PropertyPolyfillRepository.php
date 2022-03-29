@@ -21,6 +21,7 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
         return $jsonDocument->applyAssoc(
             function (array $json) {
                 $json = $this->polyfillImageType($json);
+                $json = $this->polyfillImageInLanguage($json);
                 return $json;
             }
         );
@@ -36,6 +37,26 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
             function ($image) {
                 if (is_array($image) && !isset($image['@type'])) {
                     $image['@type'] = 'schema:ImageObject';
+                }
+                return $image;
+            },
+            $json['images']
+        );
+
+        return $json;
+    }
+
+    private function polyfillImageInLanguage(array $json): array
+    {
+        if (!isset($json['images']) || !is_array($json['images'])) {
+            return $json;
+        }
+
+        $json['images'] = array_map(
+            function ($image) {
+                if (is_array($image) && !isset($image['inLanguage']) && isset($image['language'])) {
+                    $image['inLanguage'] = $image['language'];
+                    unset($image['language']);
                 }
                 return $image;
             },
