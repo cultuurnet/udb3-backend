@@ -2973,6 +2973,38 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_typicalAgeRange_to_value_is_smaller(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'typicalAgeRange' => '12-8',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/typicalAgeRange',
+                '"From" age should not be greater than the "to" age.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_workflowStatus_has_unknown_value(): void
     {
         $event = [

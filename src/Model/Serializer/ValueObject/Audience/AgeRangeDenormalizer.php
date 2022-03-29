@@ -11,10 +11,24 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class AgeRangeDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): AgeRange
+    {
+        $parts = $this->getParts($data, $class, $format);
+
+        return new AgeRange($parts['from'], $parts['to']);
+    }
+
+    public function denormalizeFrom($data, $class, $format = null): ?Age
+    {
+        return $this->getParts($data, $class, $format)['from'];
+    }
+
+    public function denormalizeTo($data, $class, $format = null): ?Age
+    {
+        return $this->getParts($data, $class, $format)['to'];
+    }
+
+    private function getParts($data, $class, $format): array
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("AgeRangeDenormalizer does not support {$class}.");
@@ -30,13 +44,16 @@ class AgeRangeDenormalizer implements DenormalizerInterface
         $from = empty($from) ? new Age(0) : new Age((int) $from);
         $to = empty($to) ? null : new Age((int) $to);
 
-        return new AgeRange($from, $to);
+        return [
+            'from' => $from,
+            'to' => $to,
+        ];
     }
 
     /**
      * @inheritdoc
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === AgeRange::class;
     }

@@ -6,17 +6,10 @@ namespace CultuurNet\UDB3\Model\Import\Event;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
-use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
-use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
-use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -43,29 +36,8 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
                 ->withTranslation(new Language('fr'), new Title('Titre example'))
                 ->withTranslation(new Language('en'), new Title('Example title')),
             new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithEmbeddedPlace(
-                new ImmutablePlace(
-                    new UUID('6ba87a6b-efea-4467-9e87-458d145384d9'),
-                    new Language('nl'),
-                    new TranslatedTitle(new Language('nl'), new Title('Voorbeeld titel')),
-                    new PermanentCalendar(new OpeningHours()),
-                    new TranslatedAddress(
-                        new Language('nl'),
-                        new Address(
-                            new Street('Henegouwenkaai 41-43'),
-                            new PostalCode('1080'),
-                            new Locality('Brussel'),
-                            new CountryCode('BE')
-                        )
-                    ),
-                    new Categories(
-                        new Category(
-                            new CategoryID('0.14.0.0.0'),
-                            new CategoryLabel('Monument'),
-                            new CategoryDomain('eventtype')
-                        )
-                    )
-                )
+            PlaceReference::createWithPlaceId(
+                new UUID('6ba87a6b-efea-4467-9e87-458d145384d9'),
             ),
             new Categories(
                 new Category(

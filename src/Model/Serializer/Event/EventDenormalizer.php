@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -24,10 +23,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EventDenormalizer extends OfferDenormalizer
 {
-    /**
-     * @var DenormalizerInterface
-     */
-    private $placeReferenceDenormalizer;
+    private DenormalizerInterface $placeReferenceDenormalizer;
 
     public function __construct(
         UUIDParser $eventIDParser = null,
@@ -50,10 +46,7 @@ class EventDenormalizer extends OfferDenormalizer
         }
 
         if (!$placeReferenceDenormalizer) {
-            $placeReferenceDenormalizer = new PlaceReferenceDenormalizer(
-                new PlaceIDParser(),
-                new PlaceDenormalizer()
-            );
+            $placeReferenceDenormalizer = new PlaceReferenceDenormalizer(new PlaceIDParser());
         }
 
         $this->placeReferenceDenormalizer = $placeReferenceDenormalizer;
@@ -98,10 +91,7 @@ class EventDenormalizer extends OfferDenormalizer
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): ImmutableEvent
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("EventDenormalizer does not support {$class}.");
@@ -113,15 +103,10 @@ class EventDenormalizer extends OfferDenormalizer
 
         /* @var ImmutableEvent $offer */
         $offer = $this->denormalizeOffer($data);
-        $offer = $this->denormalizeAudienceType($data, $offer);
-
-        return $offer;
+        return $this->denormalizeAudienceType($data, $offer);
     }
 
-    /**
-     * @return ImmutableEvent
-     */
-    private function denormalizeAudienceType(array $data, ImmutableEvent $event)
+    private function denormalizeAudienceType(array $data, ImmutableEvent $event): ImmutableEvent
     {
         if (isset($data['audience']['audienceType'])) {
             $audienceType = new AudienceType((string) $data['audience']['audienceType']);
@@ -131,10 +116,7 @@ class EventDenormalizer extends OfferDenormalizer
         return $event;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ImmutableEvent::class || $type === Event::class;
     }

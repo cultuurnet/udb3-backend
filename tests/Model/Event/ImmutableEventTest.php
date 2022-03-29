@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Event;
 
-use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -15,12 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
-use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
-use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -37,7 +30,7 @@ class ImmutableEventTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_list_of_categories_is_empty()
+    public function it_should_throw_an_exception_if_the_list_of_categories_is_empty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Categories should not be empty (eventtype required).');
@@ -55,7 +48,7 @@ class ImmutableEventTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_place_reference()
+    public function it_should_return_the_injected_place_reference(): void
     {
         $placeReference = $this->getPlaceReference();
         $event = $this->getEvent();
@@ -66,7 +59,7 @@ class ImmutableEventTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_place_reference()
+    public function it_should_return_a_copy_with_an_updated_place_reference(): void
     {
         $placeReference = $this->getPlaceReference();
 
@@ -84,7 +77,7 @@ class ImmutableEventTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_everyone_as_the_default_audience()
+    public function it_should_return_everyone_as_the_default_audience(): void
     {
         $event = $this->getEvent();
         $expected = AudienceType::everyone();
@@ -94,7 +87,7 @@ class ImmutableEventTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_audience()
+    public function it_should_return_a_copy_with_an_updated_audience(): void
     {
         $audience = AudienceType::everyone();
         $updatedAudience = AudienceType::members();
@@ -107,26 +100,17 @@ class ImmutableEventTest extends TestCase
         $this->assertTrue($updatedEvent->getAudienceType()->sameAs($updatedAudience));
     }
 
-    /**
-     * @return UUID
-     */
-    private function getId()
+    private function getId(): UUID
     {
         return new UUID('aadcee95-6180-4924-a8eb-ed829d4957a2');
     }
 
-    /**
-     * @return Language
-     */
-    private function getMainLanguage()
+    private function getMainLanguage(): Language
     {
         return new Language('nl');
     }
 
-    /**
-     * @return TranslatedTitle
-     */
-    private function getTitle()
+    private function getTitle(): TranslatedTitle
     {
         return new TranslatedTitle(
             $this->getMainLanguage(),
@@ -134,10 +118,7 @@ class ImmutableEventTest extends TestCase
         );
     }
 
-    /**
-     * @return Calendar
-     */
-    private function getCalendar()
+    private function getCalendar(): Calendar
     {
         return new SingleSubEventCalendar(
             new SubEvent(
@@ -151,39 +132,12 @@ class ImmutableEventTest extends TestCase
         );
     }
 
-    /**
-     * @return PlaceReference
-     */
-    private function getPlaceReference()
+    private function getPlaceReference(): PlaceReference
     {
-        $title = new TranslatedTitle(
-            $this->getMainLanguage(),
-            new Title('N/A')
-        );
-
-        $address = new TranslatedAddress(
-            $this->getMainLanguage(),
-            new Address(
-                new Street('Henegouwenkaai 41-43'),
-                new PostalCode('1080'),
-                new Locality('Brussel'),
-                new CountryCode('BE')
-            )
-        );
-
-        $dummyLocation = ImmutablePlace::createDummyLocation(
-            $this->getMainLanguage(),
-            $title,
-            $address
-        );
-
-        return PlaceReference::createWithEmbeddedPlace($dummyLocation);
+        return PlaceReference::createWithPlaceId(new UUID('23f94284-550c-4fdd-8b66-8b0e2393283c'));
     }
 
-    /**
-     * @return Categories
-     */
-    private function getTerms()
+    private function getTerms(): Categories
     {
         return new Categories(
             new Category(
@@ -194,10 +148,7 @@ class ImmutableEventTest extends TestCase
         );
     }
 
-    /**
-     * @return ImmutableEvent
-     */
-    private function getEvent()
+    private function getEvent(): ImmutableEvent
     {
         return new ImmutableEvent(
             $this->getId(),

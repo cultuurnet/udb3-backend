@@ -103,6 +103,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $this->combinedRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->eventIriGenerator, $eventId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
+            new AgeRangeValidatingRequestBodyParser(),
             new CalendarValidationRequestBodyParser(),
             new BookingInfoValidationRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForPlace(),
