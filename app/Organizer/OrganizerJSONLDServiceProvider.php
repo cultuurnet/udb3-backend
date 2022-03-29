@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\OrganizerLDProjector;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory;
-use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
+use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
@@ -50,7 +50,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
         $app['organizer_jsonld_repository'] = $app->share(
             function ($app) {
                 $repository = new CacheDocumentRepository($app['organizer_jsonld_cache']);
-                $repository = new NewPropertyPolyfillOfferRepository($repository);
+                $repository = new PropertyPolyfillRepository($repository);
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
