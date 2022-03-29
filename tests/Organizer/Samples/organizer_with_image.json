@@ -26,9 +26,9 @@
       "id": "03789a2f-5063-4062-b7cb-95a0a2280d92",
       "contentUrl": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",
       "thumbnailUrl": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",
-      "language": "nl",
       "description": "Beschrijving van de afbeelding",
-      "copyrightHolder": "publiq"
+      "copyrightHolder": "publiq",
+      "inLanguage": "nl"
     }
   ],
   "mainImage": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",

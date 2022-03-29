@@ -36,9 +36,9 @@ final class ImageNormalizer implements NormalizerInterface
             'id' => $image->getId()->toString(),
             'contentUrl' => $mediaObject->getSourceLocation()->toString(),
             'thumbnailUrl' => $mediaObject->getSourceLocation()->toString(),
-            'language' => $image->getLanguage()->toString(),
             'description' => $image->getDescription()->toString(),
             'copyrightHolder' => $image->getCopyrightHolder()->toString(),
+            'inLanguage' => $image->getLanguage()->toString(),
         ];
     }
 
