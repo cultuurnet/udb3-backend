@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Media;
 
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -13,14 +14,13 @@ use CultuurNet\UDB3\StringLiteral;
 
 class EditMediaRestController
 {
-    /**
-     * @var ImageUploaderInterface
-     */
-    private $imageUploader;
+    private ImageUploaderInterface $imageUploader;
+    private IriGeneratorInterface $iriGenerator;
 
-    public function __construct(ImageUploaderInterface $imageUploader)
+    public function __construct(ImageUploaderInterface $imageUploader, IriGeneratorInterface $iriGenerator)
     {
         $this->imageUploader = $imageUploader;
+        $this->iriGenerator = $iriGenerator;
     }
 
     public function upload(Request $request): JsonResponse
@@ -56,6 +56,7 @@ class EditMediaRestController
 
         return new JsonResponse(
             [
+                '@id' => $this->iriGenerator->iri($imageId->toString()),
                 'imageId' => $imageId->toString(),
             ],
             201

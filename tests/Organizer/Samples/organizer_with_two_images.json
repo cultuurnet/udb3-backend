@@ -22,21 +22,23 @@
   "images": [
     {
       "@id": "http://example.com/entity/03789a2f-5063-4062-b7cb-95a0a2280d92",
+      "@type": "schema:ImageObject",
       "id": "03789a2f-5063-4062-b7cb-95a0a2280d92",
       "contentUrl": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",
       "thumbnailUrl": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",
-      "language": "nl",
       "description": "Beschrijving van de afbeelding",
-      "copyrightHolder": "publiq"
+      "copyrightHolder": "publiq",
+      "inLanguage": "nl"
     },
     {
       "@id": "http://example.com/entity/dd45e5a1-f70c-48d7-83e5-dde9226c1dd6",
+      "@type": "schema:ImageObject",
       "id": "dd45e5a1-f70c-48d7-83e5-dde9226c1dd6",
       "contentUrl": "https://images.uitdatabank.be/dd45e5a1-f70c-48d7-83e5-dde9226c1dd6.png",
       "thumbnailUrl": "https://images.uitdatabank.be/dd45e5a1-f70c-48d7-83e5-dde9226c1dd6.png",
-      "language": "en",
       "description": "Extra image",
-      "copyrightHolder": "madewithlove"
+      "copyrightHolder": "madewithlove",
+      "inLanguage": "en"
     }
   ],
   "mainImage": "https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg",

@@ -4544,46 +4544,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_mediaObject_has_invalid_type(): void
-    {
-        $event = [
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-            'mediaObject' => [
-                [
-                    '@id' => 'http://io.uitdatabank.dev/images/5cdacc0b-a96b-4613-81e0-1748c179432f',
-                    '@type' => 'schema:invalid',
-                    'description' => 'Example description',
-                    'copyrightHolder' => 'Example copyright holder',
-                    'inLanguage' => 'nl',
-                ],
-            ],
-        ];
-
-        $expectedErrors = [
-            new SchemaError(
-                '/mediaObject/0/%40type',
-                'The data should match one item from enum'
-            ),
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
     public function it_throws_if_mediaObject_description_is_empty(): void
     {
         $event = [

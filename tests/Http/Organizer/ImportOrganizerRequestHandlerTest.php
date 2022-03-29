@@ -907,7 +907,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                             'contentUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
                             'thumbnailUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
                             'id' => '08805a3c-ffe0-4c94-a1bc-453a6dd9d01f',
-                            'language' => 'en',
+                            'inLanguage' => 'en',
                             'description' => '        ',
                             'copyrightHolder' => '      ',
                         ],

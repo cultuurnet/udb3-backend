@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\OrganizerLDProjector;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory;
+use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
@@ -38,14 +39,6 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['real_organizer_jsonld_repository'] = $app->share(
-            function ($app) {
-                return new CacheDocumentRepository(
-                    $app['organizer_jsonld_cache']
-                );
-            }
-        );
-
         $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
             function ($app) {
                 return new EventFactory(
@@ -56,8 +49,11 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
 
         $app['organizer_jsonld_repository'] = $app->share(
             function ($app) {
+                $repository = new CacheDocumentRepository($app['organizer_jsonld_cache']);
+                $repository = new PropertyPolyfillRepository($repository);
+
                 return new BroadcastingDocumentRepositoryDecorator(
-                    $app['real_organizer_jsonld_repository'],
+                    $repository,
                     $app['event_bus'],
                     $app[self::JSONLD_PROJECTED_EVENT_FACTORY]
                 );
