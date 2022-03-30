@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
@@ -23,16 +24,20 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
     private StringLiteral $userRolesTableName;
 
+    private ExcludedLabelsRepository $excludedLabelsRepository;
+
     public function __construct(
         Connection $connection,
         StringLiteral $tableName,
         StringLiteral $labelRolesTableName,
-        StringLiteral $userRolesTableName
+        StringLiteral $userRolesTableName,
+        ExcludedLabelsRepository $excludedLabelsRepository
     ) {
         parent::__construct($connection, $tableName);
 
         $this->labelRolesTableName = $labelRolesTableName;
         $this->userRolesTableName = $userRolesTableName;
+        $this->excludedLabelsRepository = $excludedLabelsRepository;
     }
 
     public function getByUuid(UUID $uuid): ?Entity
@@ -269,7 +274,13 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             $visibility,
             $privacy,
             $parentUuid,
-            $count
+            $count,
+            $this->isExcluded($uuid)
         );
+    }
+
+    private function isExcluded(UUID $uuid): bool
+    {
+        return \in_array($uuid->toString(), $this->excludedLabelsRepository->getAll(), true);
     }
 }

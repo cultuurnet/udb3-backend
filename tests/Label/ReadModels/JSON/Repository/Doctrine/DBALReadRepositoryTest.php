@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Yaml\YamlExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -24,6 +25,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     private Entity $entityPrivateAccess;
 
     private Entity $entityPrivateNoAccess;
+
+    private Entity $excluded;
 
     private StringLiteral $labelRolesTableName;
 
@@ -54,7 +57,13 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->getConnection(),
             $this->getTableName(),
             $this->labelRolesTableName,
-            $this->userRolesTableName
+            $this->userRolesTableName,
+            new YamlExcludedLabelsRepository(
+                [
+                    '67dcd2a0-5301-4747-a956-3741420efd52',
+                    '5d6efb46-835c-413f-a62b-fa764c68a33f',
+                ]
+            )
         );
 
         $this->entityByUuid = new Entity(
@@ -92,6 +101,17 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new UUID('23c7e1ae-a908-49a0-b328-ec4c7719d789')
         );
         $this->saveEntity($this->entityPrivateNoAccess);
+
+        $this->excluded = new Entity(
+            new UUID('67dcd2a0-5301-4747-a956-3741420efd52'),
+            new StringLiteral('excluded'),
+            Visibility::VISIBLE(),
+            Privacy::PRIVACY_PUBLIC(),
+            new UUID('23c7e1ae-a908-49a0-b328-ec4c7719d789'),
+            2,
+            true
+        );
+        $this->saveEntity($this->excluded);
 
         for ($i = 0; $i < 10; $i++) {
             $entity = new Entity(
@@ -392,6 +412,17 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         ));
     }
 
+    /**
+     * @test
+     */
+    public function it_takes_into_account_excluded(): void
+    {
+        $excludedLabel = $this->dbalReadRepository->getByName(new StringLiteral('excluded'));
+        $this->assertEquals(
+            $this->excluded,
+            $excludedLabel
+        );
+    }
 
     private function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
