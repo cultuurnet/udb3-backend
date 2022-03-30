@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Yaml;
+namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ExcludedLabelsRepository;
-
-final class YamlExcludedLabelsRepository implements ExcludedLabelsRepository
+final class InMemoryExcludedLabelsRepository implements ExcludedLabelsRepository
 {
     /**
      * @var string[]

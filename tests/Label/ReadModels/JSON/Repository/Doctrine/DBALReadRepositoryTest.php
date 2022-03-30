@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Yaml\YamlExcludedLabelsRepository;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\InMemoryExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -58,7 +58,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             $this->getTableName(),
             $this->labelRolesTableName,
             $this->userRolesTableName,
-            new YamlExcludedLabelsRepository(
+            new InMemoryExcludedLabelsRepository(
                 [
                     '67dcd2a0-5301-4747-a956-3741420efd52',
                     '5d6efb46-835c-413f-a62b-fa764c68a33f',
