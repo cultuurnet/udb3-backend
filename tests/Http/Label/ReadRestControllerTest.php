@@ -209,6 +209,7 @@ final class ReadRestControllerTest extends TestCase
             'name' => $entity->getName()->toNative(),
             'visibility' => $entity->getVisibility()->toString(),
             'privacy' => $entity->getPrivacy()->toString(),
+            'excluded' => $entity->isExcluded(),
         ];
     }
 }
