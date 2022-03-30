@@ -16,6 +16,7 @@ class Entity implements \JsonSerializable
     public const NAME = 'name';
     public const VISIBILITY = 'visibility';
     public const PRIVACY = 'privacy';
+    public const EXCLUDED = 'excluded';
 
     /**
      * @var UUID
@@ -44,13 +45,16 @@ class Entity implements \JsonSerializable
 
     private int $count;
 
+    private bool $excluded;
+
     public function __construct(
         UUID $uuid,
         StringLiteral $name,
         Visibility $visibility,
         Privacy $privacy,
         UUID $parentUuid = null,
-        int $count = null
+        int $count = null,
+        bool $excluded = false
     ) {
         if ($count < 0) {
             throw new InvalidArgumentException('Count should be zero or higher.');
@@ -62,6 +66,7 @@ class Entity implements \JsonSerializable
         $this->privacy = $privacy;
         $this->parentUuid = $parentUuid;
         $this->count = $count ?: 0;
+        $this->excluded = $excluded;
     }
 
     /**
@@ -109,6 +114,11 @@ class Entity implements \JsonSerializable
         return $this->count;
     }
 
+    public function isExcluded(): bool
+    {
+        return $this->excluded;
+    }
+
     /**
      * @inheritdoc
      */
@@ -119,6 +129,7 @@ class Entity implements \JsonSerializable
             self::NAME => $this->name->toNative(),
             self::VISIBILITY => $this->visibility->toString(),
             self::PRIVACY => $this->privacy->toString(),
+            self::EXCLUDED => $this->excluded,
         ];
     }
 }
