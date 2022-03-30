@@ -40,6 +40,8 @@ class EntityTest extends TestCase
 
     private int $count;
 
+    private bool $excluded;
+
     /**
      * @var Entity
      */
@@ -64,13 +66,16 @@ class EntityTest extends TestCase
 
         $this->count = 666;
 
+        $this->excluded = true;
+
         $this->entity = new Entity(
             $this->uuid,
             $this->name,
             $this->visibilty,
             $this->privacy,
             $this->parentUuid,
-            $this->count
+            $this->count,
+            $this->excluded
         );
 
         $this->entityWithDefaults = new Entity(
@@ -132,6 +137,14 @@ class EntityTest extends TestCase
     /**
      * @test
      */
+    public function it_stores_excluded(): void
+    {
+        $this->assertEquals($this->excluded, $this->entity->isExcluded());
+    }
+
+    /**
+     * @test
+     */
     public function it_has_a_default_parent_uuid_of_null()
     {
         $this->assertEquals(null, $this->entityWithDefaults->getParentUuid());
@@ -146,6 +159,14 @@ class EntityTest extends TestCase
             0,
             $this->entityWithDefaults->getCount()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_a_default_excluded()
+    {
+        $this->assertFalse($this->entityWithDefaults->isExcluded());
     }
 
     /**
@@ -175,7 +196,9 @@ class EntityTest extends TestCase
         $expectedJson = '{"uuid":"' . $this->uuid->toString()
             . '","name":"' . $this->name->toNative()
             . '","visibility":"' . $this->visibilty->toString()
-            . '","privacy":"' . $this->privacy->toString() . '"}';
+            . '","privacy":"' . $this->privacy->toString()
+            . '","excluded":true}';
+
 
         $this->assertEquals($expectedJson, $json);
     }

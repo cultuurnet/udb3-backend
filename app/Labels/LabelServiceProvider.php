@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Labels;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
+use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\ConstraintAwareLabelService;
 use CultuurNet\UDB3\Label\Events\LabelNameUniqueConstraintService;
@@ -17,6 +18,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\GodUserReadRepositoryDecorator;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\InMemoryExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
@@ -28,12 +30,12 @@ use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use CultuurNet\UDB3\StringLiteral;
+use Symfony\Component\Yaml\Yaml;
 
 class LabelServiceProvider implements ServiceProviderInterface
 {
@@ -100,12 +102,16 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
+                $labels = file_exists(__DIR__ . '/../../excluded_labels.yml') ?
+                    Yaml::Parse(file_get_contents(__DIR__ . '/../../excluded_labels.yml')) : [];
+
                 return new GodUserReadRepositoryDecorator(
                     new JsonReadRepository(
                         $app['dbal_connection'],
                         new StringLiteral(self::JSON_TABLE),
                         new StringLiteral(self::LABEL_ROLES_TABLE),
-                        new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE)
+                        new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
+                        new InMemoryExcludedLabelsRepository($labels)
                     ),
                     $app['config']['user_permissions']['allow_all']
                 );
