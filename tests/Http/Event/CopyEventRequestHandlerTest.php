@@ -149,6 +149,17 @@ class CopyEventRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'periodic_deprecated_empty_timeSpans' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'timeSpans' => [],
+                ],
+                'expected_command' => new CopyEvent(
+                    self::ORIGINAL_EVENT_ID,
+                    self::NEW_EVENT_ID,
+                    new PermanentCalendar(new OpeningHours())
+                ),
+            ],
             'single_startDate_and_endDate_instead_of_subEvent' => [
                 'data' => (object) [
                     'calendarType' => 'single',
