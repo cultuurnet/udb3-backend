@@ -197,6 +197,47 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
+    public function it_handles_new_events_with_an_incorrect_place_type(): void
+    {
+        $eventId = '1';
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('en'),
+            new Title('some representative title'),
+            new EventType('0.14.0.0.0', 'Monument'),
+            new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
+            new Calendar(
+                CalendarType::PERIODIC(),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00')
+            ),
+            null
+        );
+
+        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD->terms = [
+            (object)[
+                'id' => '0.14.0.0.0',
+                'label' => 'Monument',
+                'domain' => 'eventtype',
+            ],
+        ];
+
+        $this->mockPlaceService();
+
+        $body = $this->project(
+            $eventCreated,
+            $eventId,
+            new Metadata(),
+            DateTime::fromString('2015-01-20T13:25:21+01:00')
+        );
+
+        $this->assertEquals($jsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_new_events_with_theme(): void
     {
         $eventId = '1';
