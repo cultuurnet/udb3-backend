@@ -69,6 +69,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -95,6 +96,8 @@ class EventLDProjector extends OfferLDProjector implements
     protected CdbXMLImporter $cdbXMLImporter;
 
     private EventTypeResolver $eventTypeResolver;
+
+    private PlaceTypeResolver $placeTypeResolver;
 
     /**
      * @param string[] $basePriceTranslations
@@ -127,6 +130,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
+        $this->placeTypeResolver = new PlaceTypeResolver();
     }
 
     protected function newDocument(string $id): JsonDocument
@@ -316,7 +320,15 @@ class EventLDProjector extends OfferLDProjector implements
         foreach ($eventJsonLD->terms as $term) {
             if ($term->domain === 'eventtype') {
                 $typeId = new StringLiteral($term->id);
-                $eventType = $this->eventTypeResolver->byId($typeId);
+                // This is a workaround to allow copies of events that
+                // have a placeType instead of an eventType.
+                // These events could also be cleaned up in the future
+                // @see https://jira.uitdatabank.be/browse/III-3926
+                try {
+                    $eventType = $this->eventTypeResolver->byId($typeId);
+                } catch (\Exception $exception) {
+                    $eventType = $this->placeTypeResolver->byId($typeId);
+                }
             }
         }
 
