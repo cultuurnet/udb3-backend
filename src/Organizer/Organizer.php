@@ -340,6 +340,42 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
+    public function importImages(Images $images): void
+    {
+        $currentImages = $this->images->toArray();
+        $importImages = $images->toArray();
+
+        $compareImages = static function (Image $a, Image $b) {
+            $idA = $a->getId()->toString();
+            $idB = $b->getId()->toString();
+            return strcmp($idA, $idB);
+        };
+
+        /* @var Image[] $addedImages */
+        $addedImages = array_udiff($importImages, $currentImages, $compareImages);
+
+        /* @var Image[] $updatedImages */
+        $updatedImages = array_uintersect($importImages, $currentImages, $compareImages);
+
+        /* @var Image[] $removedImages */
+        $removedImages = array_udiff($currentImages, $importImages, $compareImages);
+
+        foreach ($addedImages as $addedImage) {
+            $this->addImage($addedImage);
+        }
+        foreach ($updatedImages as $updatedImage) {
+            $this->updateImage(
+                $updatedImage->getId(),
+                $updatedImage->getLanguage(),
+                $updatedImage->getDescription(),
+                $updatedImage->getCopyrightHolder()
+            );
+        }
+        foreach ($removedImages as $removedImage) {
+            $this->removeImage($removedImage->getId());
+        }
+    }
+
     public function updateMainImage(UUID $imageId): void
     {
         if ($this->needsUpdateMainImage($imageId)) {
