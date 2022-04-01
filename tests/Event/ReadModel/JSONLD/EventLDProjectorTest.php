@@ -197,6 +197,60 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
+    public function it_handles_copied_events_with_an_incorrect_place_type(): void
+    {
+        $eventId = '1';
+        $eventCreated = new EventCreated(
+            $eventId,
+            new Language('en'),
+            new Title('some representative title'),
+            new EventType('0.14.0.0.0', 'Monument'),
+            new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
+            new Calendar(
+                CalendarType::PERIODIC(),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00')
+            ),
+            null
+        );
+
+        $this->project($eventCreated, $eventId);
+
+        $this->project(
+            new Published($eventId, new \DateTime()),
+            $eventId
+        );
+
+        $newEventId = '2';
+        $eventCopied = new EventCopied(
+            $newEventId,
+            $eventId,
+            new Calendar(
+                CalendarType::PERIODIC(),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00'),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00')
+            )
+        );
+
+        $recordedOn = '2022-01-20T13:25:21+01:00';
+
+        $jsonLD = json_decode(file_get_contents(__DIR__ . '/copied_event_with_place_type.json'));
+        $jsonLD->created = $recordedOn;
+        $jsonLD->modified = $recordedOn;
+
+        $body = $this->project(
+            $eventCopied,
+            $newEventId,
+            new Metadata(),
+            DateTime::fromString($recordedOn)
+        );
+
+        $this->assertEquals($jsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_new_events_with_theme(): void
     {
         $eventId = '1';
