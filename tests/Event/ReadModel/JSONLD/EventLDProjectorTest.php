@@ -197,11 +197,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_handles_new_events_with_an_incorrect_place_type(): void
+    public function it_handles_copied_events_with_an_incorrect_place_type(): void
     {
         $eventId = '1';
         $eventCreated = new EventCreated(
-            '1',
+            $eventId,
             new Language('en'),
             new Title('some representative title'),
             new EventType('0.14.0.0.0', 'Monument'),
@@ -214,22 +214,34 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             null
         );
 
-        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
-        $jsonLD->terms = [
-            (object)[
-                'id' => '0.14.0.0.0',
-                'label' => 'Monument',
-                'domain' => 'eventtype',
-            ],
-        ];
+        $this->project($eventCreated, $eventId);
 
-        $this->mockPlaceService();
+        $this->project(
+            new Published($eventId, new \DateTime()),
+            $eventId
+        );
+
+        $newEventId = '2';
+        $eventCopied = new EventCopied(
+            $newEventId,
+            $eventId,
+            new Calendar(
+                CalendarType::PERIODIC(),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00'),
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00'))
+        );
+
+        $recordedOn = '2022-01-20T13:25:21+01:00';
+
+        $jsonLD = json_decode(file_get_contents(__DIR__ . '/copied_event_with_place_type.json'));
+        $jsonLD->created = $recordedOn;
+        $jsonLD->modified = $recordedOn;
 
         $body = $this->project(
-            $eventCreated,
-            $eventId,
+            $eventCopied,
+            $newEventId,
             new Metadata(),
-            DateTime::fromString('2015-01-20T13:25:21+01:00')
+            DateTime::fromString($recordedOn)
         );
 
         $this->assertEquals($jsonLD, $body);
