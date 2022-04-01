@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -35,6 +36,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
+use CultuurNet\UDB3\Organizer\Commands\ImportImages;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
@@ -108,6 +110,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
+            new ImportImages($organizerId, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -245,6 +248,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new Label(new LabelName('bar'), false),
                 )
             ),
+            new ImportImages($id, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -311,6 +315,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($id, new Language('en')),
             new RemoveAddress($id),
             new ImportLabels($id, new Labels()),
+            new ImportImages($id, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -373,6 +378,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
+            new ImportImages($organizerId, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -457,6 +463,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                 new Language('nl')
             ),
             new ImportLabels($id, new Labels()),
+            new ImportImages($id, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())

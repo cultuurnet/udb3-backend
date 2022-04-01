@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
+use CultuurNet\UDB3\Organizer\Commands\ImportImages;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
@@ -163,6 +164,7 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         }
 
         $commands[] = new ImportLabels($organizerId, $data->getLabels());
+        $commands[] = new ImportImages($organizerId, $data->getImages());
 
         $lastCommandId = null;
         foreach ($commands as $command) {
