@@ -169,7 +169,11 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             // It's not possible to catch the UniqueConstraintException that UpdateWebsite can cause here, since the
             // commands are handled async.
             /** @var string|null $commandId */
-            $commandId = $this->commandBus->dispatch($command);
+            try {
+                $commandId = $this->commandBus->dispatch($command);
+            } catch (UniqueConstraintException $e) {
+                throw ApiProblem::duplicateUrl($url->toString(), $e->getDuplicateValue());
+            }
             if ($commandId) {
                 $lastCommandId = $commandId;
             }
