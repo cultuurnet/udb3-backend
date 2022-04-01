@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use Silex\Application;
@@ -79,7 +80,11 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
                 $app['uuid_generator'],
                 $app['organizer_iri_generator'],
                 new CombinedRequestBodyParser(
-                    new LegacyOrganizerRequestBodyParser()
+                    new LegacyOrganizerRequestBodyParser(),
+                    ImagesPropertyPolyfillRequestBodyParser::createForOrganizers(
+                        $app['media_object_iri_generator'],
+                        $app['media_object_repository']
+                    )
                 )
             )
         );
