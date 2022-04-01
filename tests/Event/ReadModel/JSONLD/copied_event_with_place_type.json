@@ -1,0 +1,37 @@
+{
+  "@id": "http://example.com/entity/2",
+  "@context": "/contexts/event",
+  "mainLanguage": "en",
+  "name": {
+    "en": "some representative title"
+  },
+  "location": {
+    "@type": "Place"
+  },
+  "calendarType": "periodic",
+  "startDate": "2022-01-26T13:25:21+01:00",
+  "availableTo": "2022-01-26T13:25:21+01:00",
+  "sameAs": [
+    "http://www.uitinvlaanderen.be/agenda/e/some-representative-title/1"
+  ],
+  "terms": [
+    {
+      "id": "0.14.0.0.0",
+      "label": "Monument",
+      "domain": "eventtype"
+    }
+  ],
+  "workflowStatus": "DRAFT",
+  "audience": {
+    "audienceType": "everyone"
+  },
+  "endDate": "2022-01-26T13:25:21+01:00",
+  "languages": ["en"],
+  "completedLanguages": ["en"],
+  "status": {
+    "type": "Available"
+  },
+  "bookingAvailability": {
+    "type": "Available"
+  }
+}
