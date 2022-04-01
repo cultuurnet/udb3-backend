@@ -4462,7 +4462,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_mediaObject_is_missing_a_required_property(): void
+    public function it_throws_if_mediaObject_is_missing_id(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -4488,7 +4488,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/mediaObject/0',
-                'The required properties (@id, description, copyrightHolder, inLanguage) are missing'
+                'The required properties (@id) are missing'
             ),
         ];
 

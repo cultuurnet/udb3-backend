@@ -4473,7 +4473,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_mediaObject_is_missing_a_required_property(): void
+    public function it_should_throw_an_exception_if_mediaObject_is_missing_id(): void
     {
         $place = [
             '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
@@ -4507,7 +4507,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/mediaObject/0',
-                'The required properties (@id, description, copyrightHolder, inLanguage) are missing'
+                'The required properties (@id) are missing'
             ),
         ];
 
