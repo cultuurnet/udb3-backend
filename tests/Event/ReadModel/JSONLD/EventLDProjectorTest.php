@@ -228,7 +228,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             new Calendar(
                 CalendarType::PERIODIC(),
                 \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00'),
-                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00'))
+                \DateTime::createFromFormat(DateTimeInterface::ATOM, '2022-01-26T13:25:21+01:00')
+            )
         );
 
         $recordedOn = '2022-01-20T13:25:21+01:00';
