@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use Closure;
 use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\SpecificationInterface;
 use CultuurNet\UDB3\Broadway\AMQP\Message\AMQPMessageFactoryInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -36,17 +37,21 @@ class AMQPPublisher implements EventListener
      */
     private $messageFactory;
 
+    private Closure $determineRoutingKey;
+
     public function __construct(
         AMQPChannel $channel,
         string $exchange,
         SpecificationInterface $domainMessageSpecification,
-        AMQPMessageFactoryInterface $messageFactory
+        AMQPMessageFactoryInterface $messageFactory,
+        ?Closure $determineRoutingKey = null
     ) {
         $this->channel = $channel;
         $this->exchange = $exchange;
         $this->domainMessageSpecification = $domainMessageSpecification;
         $this->messageFactory = $messageFactory;
         $this->logger = new NullLogger();
+        $this->determineRoutingKey = $determineRoutingKey ?? static fn () => '';
     }
 
     /**
@@ -72,7 +77,8 @@ class AMQPPublisher implements EventListener
 
         $this->channel->basic_publish(
             $this->messageFactory->createAMQPMessage($domainMessage),
-            $this->exchange
+            $this->exchange,
+            ($this->determineRoutingKey)()
         );
     }
 }

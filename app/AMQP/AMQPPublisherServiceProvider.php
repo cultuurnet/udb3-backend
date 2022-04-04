@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypeLookup;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypePropertiesFactory;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CorrelationIdPropertiesFactory;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\DeliveryModePropertiesFactory;
+use CultuurNet\UDB3\Silex\ApiName;
 use PhpAmqpLib\Message\AMQPMessage;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -74,7 +75,8 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
                     $channel,
                     $app['amqp.publisher.exchange_name'],
                     $app['amqp.publisher.specification'],
-                    $app['amqp.publisher.message_factory']
+                    $app['amqp.publisher.message_factory'],
+                    fn () => $app['api_name'] === ApiName::CLI ? 'cli' : 'api'
                 );
             }
         );
