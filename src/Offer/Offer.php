@@ -653,7 +653,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
                 $this->createImageUpdatedEvent(
                     $updatedImage->getMediaObjectId(),
                     $updatedImage->getDescription(),
-                    $updatedImage->getCopyrightHolder()
+                    $updatedImage->getCopyrightHolder(),
+                    $updatedImage->getLanguage()->getCode()
                 )
             );
         }
@@ -1061,7 +1062,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createImageUpdatedEvent(
         UUID $uuid,
         StringLiteral $description,
-        CopyrightHolder $copyrightHolder
+        CopyrightHolder $copyrightHolder,
+        string $language
     ): AbstractImageUpdated;
 
     abstract protected function createMainImageSelectedEvent(Image $image): AbstractMainImageSelected;
