@@ -44,6 +44,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 /** @var \Silex\Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
+$app['api_name'] = ApiName::CLI;
 
 $app->register(new CliErrorHandlerProvider());
 
@@ -70,8 +71,6 @@ $app['impersonator']->impersonate(
         ]
     )
 );
-
-$app['api_name'] = ApiName::CLI;
 
 $consoleApp->add(
     (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))
