@@ -9,11 +9,9 @@ use Broadway\EventDispatcher\CallableEventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
-use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 final class MetadataServiceProvider implements ServiceProviderInterface
 {
@@ -66,14 +64,6 @@ final class MetadataServiceProvider implements ServiceProviderInterface
 
                 return $dispatcher;
             }
-        );
-
-        $app->before(
-            function (Request $request, Application $app) {
-                // If we're handling requests, the API used is usually the JSON-LD API.
-                $app['api_name'] = ApiName::JSONLD;
-            },
-            Application::LATE_EVENT
         );
     }
 
