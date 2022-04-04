@@ -60,9 +60,8 @@ use PHPUnit\Framework\TestCase;
 
 class ImportOrganizerRequestHandlerTest extends TestCase
 {
-    private const EXISTING_IMAGE_ID = '6b547d1e-a2d9-493c-a8e6-d8eb35984390';
-
     use AssertApiProblemTrait;
+    private const EXISTING_IMAGE_ID = '6b547d1e-a2d9-493c-a8e6-d8eb35984390';
 
     private MockObject $aggregateRepository;
     private TraceableCommandBus $commandBus;
@@ -434,7 +433,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                         'id' => '5ab13b22-a913-4c8e-aa3b-a32279a771da',
                         'copyrightHolder' => 'overwritten!',
                         'inLanguage' => 'en',
-                    ]
+                    ],
                 ],
             ];
 
