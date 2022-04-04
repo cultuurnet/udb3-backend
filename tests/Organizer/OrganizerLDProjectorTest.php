@@ -573,13 +573,21 @@ final class OrganizerLDProjectorTest extends TestCase
         $this->mockGet($organizerId, 'organizer_with_two_images.json');
 
         $domainMessage = $this->createDomainMessage(
+            new MainImageUpdated(
+                $organizerId,
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
+            )
+        );
+        $this->projector->handle($domainMessage);
+
+        $domainMessage = $this->createDomainMessage(
             new ImageRemoved(
                 $organizerId,
-                '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
             )
         );
 
-        $this->expectSave($organizerId, 'organizer_with_main_image_removed.json');
+        $this->expectSave($organizerId, 'organizer_with_one_image.json');
 
         $this->projector->handle($domainMessage);
     }
