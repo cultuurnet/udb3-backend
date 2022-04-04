@@ -1063,7 +1063,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         UUID $uuid,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder,
-        string $language
+        ?string $language = null
     ): AbstractImageUpdated;
 
     abstract protected function createMainImageSelectedEvent(Image $image): AbstractMainImageSelected;

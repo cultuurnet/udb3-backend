@@ -124,7 +124,7 @@ class Item extends Offer
         UUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder,
-        string $language
+        ?string $language = null
     ): ImageUpdated {
         return new ImageUpdated(
             $this->id,

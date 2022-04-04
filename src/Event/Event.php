@@ -468,7 +468,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         UUID $mediaObjectId,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder,
-        string $language
+        ?string $language = null
     ): ImageUpdated {
         return new ImageUpdated(
             $this->eventId,
