@@ -98,7 +98,7 @@ date_default_timezone_set('Europe/Brussels');
 
 $app = new Application();
 
-$app['api_name'] = ApiName::UNKNOWN;
+$app['api_name'] = $app['api_name'] ?? ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation = __DIR__;
