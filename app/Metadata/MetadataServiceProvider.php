@@ -11,7 +11,6 @@ use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
-use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,11 +72,6 @@ final class MetadataServiceProvider implements ServiceProviderInterface
             function (Request $request, Application $app) {
                 // If we're handling requests, the API used is usually the JSON-LD API.
                 $app['api_name'] = ApiName::JSONLD;
-
-                // Except if we're handling requests under the /imports/ path, then we're dealing with the JSON-LD imports API.
-                if (strpos($request->getRequestUri(), ImportControllerProvider::PATH) === 0) {
-                    $app['api_name'] = ApiName::JSONLD_IMPORTS;
-                }
             },
             Application::LATE_EVENT
         );
