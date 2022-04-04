@@ -378,7 +378,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             if ($mediaObjectMatches) {
                 $mediaObject->description = (string) $imageUpdated->getDescription();
                 $mediaObject->copyrightHolder = $imageUpdated->getCopyrightHolder()->toString();
-                $mediaObject->inLanguage = $imageUpdated->getLanguage();
+                if ($imageUpdated->getLanguage()) {
+                    $mediaObject->inLanguage = $imageUpdated->getLanguage();
+                }
 
                 $updatedMediaObjects[] = $mediaObject;
             }
