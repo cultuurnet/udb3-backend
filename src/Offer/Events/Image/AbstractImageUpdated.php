@@ -66,12 +66,15 @@ abstract class AbstractImageUpdated extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() +  [
+        $data = parent::serialize() +  [
             'media_object_id' => $this->mediaObjectId->toString(),
             'description' => (string) $this->description,
             'copyright_holder' => $this->copyrightHolder->toString(),
-            'language' => $this->language,
         ];
+        if ($this->language) {
+            $data['language'] = $this->language;
+        }
+        return $data;
     }
 
     public static function deserialize(array $data): AbstractImageUpdated
