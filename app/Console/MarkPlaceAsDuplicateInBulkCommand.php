@@ -33,7 +33,7 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
     {
         $this->setName('place:mark-as-duplicate-bulk');
         $this->setDescription('Marks multiple Places as duplicate of another one, implicitly making that a canonical');
-      }
+    }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -53,7 +53,6 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
             $canonicalId = $this->getCanonicalId($placeIds);
             // END TODO
             foreach ($duplicateIds as $duplicateId) {
-
                 try {
                     $this->commandBus->dispatch(
                         new MarkAsDuplicate(
