@@ -282,7 +282,8 @@ trait OfferCommandHandlerTestTrait
                 $itemId,
                 $image->getMediaObjectId(),
                 $image->getDescription(),
-                $image->getCopyrightHolder()
+                $image->getCopyrightHolder(),
+                $image->getLanguage()
             );
         };
 
