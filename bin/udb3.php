@@ -42,6 +42,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+const API_NAME = ApiName::CLI;
+
 /** @var \Silex\Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
@@ -70,8 +72,6 @@ $app['impersonator']->impersonate(
         ]
     )
 );
-
-$app['api_name'] = ApiName::CLI;
 
 $consoleApp->add(
     (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))
