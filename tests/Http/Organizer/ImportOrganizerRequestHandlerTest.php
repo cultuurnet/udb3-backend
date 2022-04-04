@@ -67,7 +67,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     private TraceableCommandBus $commandBus;
     private MockObject $uuidGenerator;
     private ImportOrganizerRequestHandler $importOrganizerRequestHandler;
-    private MediaObjectRepository $mediaObjectRepository;
+    private MockObject $mediaObjectRepository;
 
     private array $mediaObjects;
 
