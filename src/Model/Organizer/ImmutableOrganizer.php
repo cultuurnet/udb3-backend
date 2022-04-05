@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -34,6 +35,8 @@ class ImmutableOrganizer implements Organizer
 
     private ContactPoint $contactPoint;
 
+    private Images $images;
+
     /**
      * @param Url|null $url
      *  When creating a new organizer a url is required.
@@ -53,6 +56,7 @@ class ImmutableOrganizer implements Organizer
 
         $this->labels = new Labels();
         $this->contactPoint = new ContactPoint();
+        $this->images = new Images();
     }
 
     public function getId(): UUID
@@ -161,6 +165,18 @@ class ImmutableOrganizer implements Organizer
     {
         $c = clone $this;
         $c->contactPoint = $contactPoint;
+        return $c;
+    }
+
+    public function getImages(): Images
+    {
+        return $this->images;
+    }
+
+    public function withImages(Images $images): ImmutableOrganizer
+    {
+        $c = clone $this;
+        $c->images = $images;
         return $c;
     }
 }

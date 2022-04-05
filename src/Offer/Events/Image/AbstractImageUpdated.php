@@ -23,18 +23,26 @@ abstract class AbstractImageUpdated extends AbstractEvent
      */
     protected $copyrightHolder;
 
+    /**
+     * Nullable because this was missing in the past, so we don't have historical data for this.
+     * Also we cannot default it to `nl`, because an image could have been added in another language and that language
+     * needs to be respected.
+     */
+    private ?string $language;
+
     final public function __construct(
         string $itemId,
         UUID $mediaObjectId,
         StringLiteral $description,
-        CopyrightHolder $copyrightHolder
+        CopyrightHolder $copyrightHolder,
+        ?string $language = null
     ) {
         parent::__construct($itemId);
         $this->mediaObjectId = $mediaObjectId;
         $this->description = $description;
         $this->copyrightHolder = $copyrightHolder;
+        $this->language = $language;
     }
-
 
     public function getMediaObjectId(): UUID
     {
@@ -51,13 +59,22 @@ abstract class AbstractImageUpdated extends AbstractEvent
         return $this->copyrightHolder;
     }
 
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
     public function serialize(): array
     {
-        return parent::serialize() +  [
+        $data = parent::serialize() +  [
             'media_object_id' => $this->mediaObjectId->toString(),
             'description' => (string) $this->description,
             'copyright_holder' => $this->copyrightHolder->toString(),
         ];
+        if ($this->language) {
+            $data['language'] = $this->language;
+        }
+        return $data;
     }
 
     public static function deserialize(array $data): AbstractImageUpdated
@@ -66,7 +83,8 @@ abstract class AbstractImageUpdated extends AbstractEvent
             $data['item_id'],
             new UUID($data['media_object_id']),
             new StringLiteral($data['description']),
-            new CopyrightHolder($data['copyright_holder'])
+            new CopyrightHolder($data['copyright_holder']),
+            $data['language'] ?? null
         );
     }
 }

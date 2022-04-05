@@ -110,6 +110,11 @@ final class ApiProblem extends Exception
         return $this->schemaErrors;
     }
 
+    public function appendSchemaErrors(SchemaError ...$schemaErrors): void
+    {
+        $this->schemaErrors = array_merge($this->schemaErrors, $schemaErrors);
+    }
+
     /**
      * @deprecated
      *   Remove once all usages of this are removed

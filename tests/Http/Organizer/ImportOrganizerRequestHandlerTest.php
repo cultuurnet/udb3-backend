@@ -13,9 +13,13 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Language as LegacyLanguage;
+use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -24,6 +28,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -35,6 +43,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Organizer\Commands\DeleteDescription;
+use CultuurNet\UDB3\Organizer\Commands\ImportImages;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
@@ -44,6 +53,7 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Organizer;
 use CultuurNet\UDB3\Organizer\Organizer as OrganizerAggregate;
+use CultuurNet\UDB3\StringLiteral;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -51,17 +61,22 @@ use PHPUnit\Framework\TestCase;
 class ImportOrganizerRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
+    private const EXISTING_IMAGE_ID = '6b547d1e-a2d9-493c-a8e6-d8eb35984390';
 
     private MockObject $aggregateRepository;
     private TraceableCommandBus $commandBus;
     private MockObject $uuidGenerator;
     private ImportOrganizerRequestHandler $importOrganizerRequestHandler;
+    private MockObject $mediaObjectRepository;
+
+    private array $mediaObjects;
 
     protected function setUp(): void
     {
         $this->aggregateRepository = $this->createMock(Repository::class);
         $this->commandBus = new TraceableCommandBus();
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $this->mediaObjectRepository = $this->createMock(MediaObjectRepository::class);
 
         $this->importOrganizerRequestHandler = new ImportOrganizerRequestHandler(
             $this->aggregateRepository,
@@ -69,11 +84,47 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $id) => 'https://mock.uitdatabank.be/organizers/' . $id),
             new CombinedRequestBodyParser(
-                new LegacyOrganizerRequestBodyParser()
+                new LegacyOrganizerRequestBodyParser(),
+                ImagesPropertyPolyfillRequestBodyParser::createForOrganizers(
+                    new CallableIriGenerator(fn (string $id) => 'https://io.uitdatabank.dev/images/' . $id),
+                    $this->mediaObjectRepository
+                )
             )
         );
 
+        $this->mediaObjectRepository->expects($this->any())
+            ->method('load')
+            ->willReturnCallback(
+                function (string $id): MediaObject {
+                    if (!isset($this->mediaObjects[$id])) {
+                        throw new AggregateNotFoundException();
+                    }
+                    return $this->mediaObjects[$id];
+                }
+            );
+
+        $this->mockMediaObject(self::EXISTING_IMAGE_ID, 'I exist', 'John Doe', 'en');
+
         $this->commandBus->record();
+    }
+
+    private function mockMediaObject(string $id, string $description, string $copyrightHolder, string $language): void
+    {
+        $mediaObject = $this->createMock(MediaObject::class);
+
+        $mediaObject
+            ->method('getDescription')
+            ->willReturn(new StringLiteral($description));
+
+        $mediaObject
+            ->method('getCopyrightHolder')
+            ->willReturn(new CopyrightHolder($copyrightHolder));
+
+        $mediaObject
+            ->method('getLanguage')
+            ->willReturn(new LegacyLanguage($language));
+
+        $this->mediaObjects[$id] = $mediaObject;
     }
 
     /**
@@ -108,6 +159,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
+            new ImportImages($organizerId, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -245,6 +297,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new Label(new LabelName('bar'), false),
                 )
             ),
+            new ImportImages($id, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -311,6 +364,121 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($id, new Language('en')),
             new RemoveAddress($id),
             new ImportLabels($id, new Labels()),
+            new ImportImages($id, new Images()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', $id)
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(
+                [
+                    'id' => $id,
+                    'organizerId' => $id,
+                    'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
+                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                ]
+            ),
+            $response->getBody()->getContents()
+        );
+        $this->assertEquals($expectedCommands, $actualCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_imports_an_organizer_with_images(): void
+    {
+        $id = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $this->mockMediaObject(
+            '1a11c93c-3fd6-4d59-abb9-e8df724a3894',
+            'beschrijving1',
+            'copyrightholder1',
+            'nl'
+        );
+
+        $this->mockMediaObject(
+            '67171a6a-031d-4040-88aa-556e85165e33',
+            'beschrijving2',
+            'copyrightholder2',
+            'nl'
+        );
+
+        $this->mockMediaObject(
+            '5ab13b22-a913-4c8e-aa3b-a32279a771da',
+            'beschrijving3',
+            'copyrightholder3',
+            'nl'
+        );
+
+        $given = $this->getOrganizerData() +
+            [
+                'images' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.dev/images/1a11c93c-3fd6-4d59-abb9-e8df724a3894',
+                    ],
+                    [
+                        'id' => '67171a6a-031d-4040-88aa-556e85165e33',
+                        'description' => 'overwritten!',
+                    ],
+                    [
+                        'id' => '5ab13b22-a913-4c8e-aa3b-a32279a771da',
+                        'copyrightHolder' => 'overwritten!',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+            ];
+
+        $this->expectOrganizerExists($id);
+
+        $expectedCommands = [
+            new UpdateTitle(
+                $id,
+                new Title('Mock organizer'),
+                new Language('nl')
+            ),
+            new UpdateWebsite(
+                $id,
+                new Url('https://www.mock-organizer.be')
+            ),
+            new UpdateContactPoint($id, new ContactPoint(new TelephoneNumbers(), new EmailAddresses(), new Urls())),
+            new DeleteDescription($id, new Language('nl')),
+            new DeleteDescription($id, new Language('fr')),
+            new DeleteDescription($id, new Language('de')),
+            new DeleteDescription($id, new Language('en')),
+            new RemoveAddress($id),
+            new ImportLabels($id, new Labels()),
+            new ImportImages(
+                $id,
+                new Images(
+                    new Image(
+                        new UUID('1a11c93c-3fd6-4d59-abb9-e8df724a3894'),
+                        new Language('nl'),
+                        new Description('beschrijving1'),
+                        new CopyrightHolder('copyrightholder1')
+                    ),
+                    new Image(
+                        new UUID('67171a6a-031d-4040-88aa-556e85165e33'),
+                        new Language('nl'),
+                        new Description('overwritten!'),
+                        new CopyrightHolder('copyrightholder2')
+                    ),
+                    new Image(
+                        new UUID('5ab13b22-a913-4c8e-aa3b-a32279a771da'),
+                        new Language('en'),
+                        new Description('beschrijving3'),
+                        new CopyrightHolder('overwritten!')
+                    )
+                )
+            ),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -373,6 +541,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new DeleteDescription($organizerId, new Language('en')),
             new RemoveAddress($organizerId),
             new ImportLabels($organizerId, new Labels()),
+            new ImportImages($organizerId, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -457,6 +626,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                 new Language('nl')
             ),
             new ImportLabels($id, new Labels()),
+            new ImportImages($id, new Images()),
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -896,6 +1066,56 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/description/en', 'The string should match pattern: \S'),
                 ],
             ],
+            'images_missing_id' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'images' => [
+                        [
+                            'contentUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
+                            'thumbnailUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
+                            'inLanguage' => 'en',
+                            'description' => 'Bla',
+                            'copyrightHolder' => 'foo',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/images/0', 'The required properties (@id) are missing'),
+                ],
+            ],
+            'images_do_not_exist' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'images' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/2a079b5f-e84d-4152-96a9-2e41631f5ca3',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/invalid',
+                        ],
+                        [
+                            '@id' => 'https://www.google.com',
+                        ],
+                        [
+                            'id' => '115b61c4-1cdd-46c4-8006-9099725a6211',
+                        ],
+                        [
+                            'id' => 'invalid',
+                        ],
+                    ],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/images/0/@id', 'Image with @id "https://io.uitdatabank.dev/images/2a079b5f-e84d-4152-96a9-2e41631f5ca3" (id "2a079b5f-e84d-4152-96a9-2e41631f5ca3") does not exist.'),
+                    new SchemaError('/images/1/@id', 'Image with @id "https://io.uitdatabank.dev/images/invalid" does not exist.'),
+                    new SchemaError('/images/2/@id', 'Image with @id "https://www.google.com" does not exist.'),
+                    new SchemaError('/images/3/@id', 'Image with @id "https://io.uitdatabank.dev/images/115b61c4-1cdd-46c4-8006-9099725a6211" (id "115b61c4-1cdd-46c4-8006-9099725a6211") does not exist.'),
+                    new SchemaError('/images/4/@id', 'Image with @id "https://io.uitdatabank.dev/images/invalid" does not exist.'),
+                ],
+            ],
             'images_properties_whitespace' => [
                 'given' => [
                     'mainLanguage' => 'nl',
@@ -903,10 +1123,10 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'url' => 'https://www.organizer.be',
                     'images' => [
                         [
-                            '@id' => 'https://io.uitdatabank.be/images/546a90cd-a238-417b-aa98-1b6c50c1345c',
-                            'contentUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
-                            'thumbnailUrl' => 'https://images.uitdatabank.be/546a90cd-a238-417b-aa98-1b6c50c1345c.jpeg',
-                            'id' => '08805a3c-ffe0-4c94-a1bc-453a6dd9d01f',
+                            '@id' => 'https://io.uitdatabank.be/images/' . self::EXISTING_IMAGE_ID,
+                            'contentUrl' => 'https://images.uitdatabank.be/' . self::EXISTING_IMAGE_ID . '.jpeg',
+                            'thumbnailUrl' => 'https://images.uitdatabank.be/' . self::EXISTING_IMAGE_ID . '.jpeg',
+                            'id' => self::EXISTING_IMAGE_ID,
                             'inLanguage' => 'en',
                             'description' => '        ',
                             'copyrightHolder' => '      ',

@@ -123,13 +123,15 @@ class Item extends Offer
     protected function createImageUpdatedEvent(
         UUID $mediaObjectId,
         StringLiteral $description,
-        CopyrightHolder $copyrightHolder
+        CopyrightHolder $copyrightHolder,
+        ?string $language = null
     ): ImageUpdated {
         return new ImageUpdated(
             $this->id,
             $mediaObjectId,
             $description,
-            $copyrightHolder
+            $copyrightHolder,
+            $language
         );
     }
 

@@ -11,12 +11,14 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImagesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedDescriptionDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -41,6 +43,8 @@ class OrganizerDenormalizer implements DenormalizerInterface
 
     private DenormalizerInterface $geoCoordinatesDenormalizer;
 
+    private DenormalizerInterface $imagesDenormalizer;
+
     public function __construct(
         UUIDParser $organizerIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
@@ -48,7 +52,8 @@ class OrganizerDenormalizer implements DenormalizerInterface
         DenormalizerInterface $addressDenormalizer = null,
         DenormalizerInterface $labelsDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
-        DenormalizerInterface $geoCoordinatesDenormalizer = null
+        DenormalizerInterface $geoCoordinatesDenormalizer = null,
+        DenormalizerInterface $imagesDenormalizer = null
     ) {
         if (!$organizerIDParser) {
             $organizerIDParser = new OrganizerIDParser();
@@ -78,6 +83,10 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
         }
 
+        if (!$imagesDenormalizer) {
+            $imagesDenormalizer = new ImagesDenormalizer();
+        }
+
         $this->organizerIDParser = $organizerIDParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->descriptionDenormalizer = $descriptionDenormalizer;
@@ -85,6 +94,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         $this->labelsDenormalizer = $labelsDenormalizer;
         $this->contactPointDenormalizer = $contactPointDenormalizer;
         $this->geoCoordinatesDenormalizer = $geoCoordinatesDenormalizer;
+        $this->imagesDenormalizer = $imagesDenormalizer;
     }
 
     /**
@@ -131,6 +141,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         $organizer = $this->denormalizeLabels($data, $organizer);
         $organizer = $this->denormalizeContactPoint($data, $organizer);
         $organizer = $this->denormalizeGeoCoordinates($data, $organizer);
+        $organizer = $this->denormalizeImages($data, $organizer);
 
         return $organizer;
     }
@@ -188,6 +199,15 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $organizer = $organizer->withContactPoint($contactPoint);
         }
 
+        return $organizer;
+    }
+
+    private function denormalizeImages(array $data, ImmutableOrganizer $organizer): ImmutableOrganizer
+    {
+        if (isset($data['images'])) {
+            $images = $this->imagesDenormalizer->denormalize($data['images'], Images::class);
+            $organizer = $organizer->withImages($images);
+        }
         return $organizer;
     }
 
