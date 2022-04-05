@@ -595,6 +595,26 @@ final class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_removing_main_image_with_different_urls(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_two_images_with_different_urls.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageRemoved(
+                $organizerId,
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_one_image_with_different_urls.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_removing_last_image(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
