@@ -26,16 +26,16 @@ final class ImagesPropertyPolyfillRequestBodyParser implements RequestBodyParser
     private const PLACES = 'mediaObject';
     private const ORGANIZERS = 'images';
 
-    private string $propertyName;
+    private string $imagesPropertyName;
     private IriGeneratorInterface $iriGenerator;
     private MediaObjectRepository $mediaObjectRepository;
 
     private function __construct(
-        string $propertyName,
+        string $imagesPropertyName,
         IriGeneratorInterface $imagesIriGenerator,
         MediaObjectRepository $mediaObjectRepository
     ) {
-        $this->propertyName = $propertyName;
+        $this->imagesPropertyName = $imagesPropertyName;
         $this->iriGenerator = $imagesIriGenerator;
         $this->mediaObjectRepository = $mediaObjectRepository;
     }
@@ -72,7 +72,7 @@ final class ImagesPropertyPolyfillRequestBodyParser implements RequestBodyParser
             return $request;
         }
 
-        $propertyName = $this->propertyName;
+        $propertyName = $this->imagesPropertyName;
         if (!isset($data->$propertyName) || !is_array($data->$propertyName)) {
             return $request;
         }
@@ -131,7 +131,7 @@ final class ImagesPropertyPolyfillRequestBodyParser implements RequestBodyParser
         } catch (InvalidArgumentException $e) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/' . $this->propertyName . '/' . $index . '/@id',
+                    '/' . $this->imagesPropertyName . '/' . $index . '/@id',
                     sprintf('Image with @id "%s" does not exist.', $imageIdUrl->toString())
                 )
             );
@@ -146,7 +146,7 @@ final class ImagesPropertyPolyfillRequestBodyParser implements RequestBodyParser
         } catch (AggregateNotFoundException $e) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/' . $this->propertyName . '/' . $index . '/@id',
+                    '/' . $this->imagesPropertyName . '/' . $index . '/@id',
                     sprintf(
                         'Image with @id "%s" (id "%s") does not exist.',
                         $imageIdUrl->toString(),
