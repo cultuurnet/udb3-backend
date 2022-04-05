@@ -467,7 +467,7 @@ final class OrganizerLDProjectorTest extends TestCase
             )
         );
 
-        $this->expectSave($organizerId, 'organizer_with_image.json');
+        $this->expectSave($organizerId, 'organizer_with_one_image.json');
 
         $this->projector->handle($domainMessage);
     }
@@ -478,7 +478,7 @@ final class OrganizerLDProjectorTest extends TestCase
     public function it_handles_adding_an_extra_image(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $this->mockGet($organizerId, 'organizer_with_image.json');
+        $this->mockGet($organizerId, 'organizer_with_one_image.json');
 
         $this->imageRepository->method('load')
             ->with('dd45e5a1-f70c-48d7-83e5-dde9226c1dd6')
@@ -514,7 +514,7 @@ final class OrganizerLDProjectorTest extends TestCase
     public function it_handles_updating_an_image(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $this->mockGet($organizerId, 'organizer_with_image.json');
+        $this->mockGet($organizerId, 'organizer_with_one_image.json');
 
         $this->imageRepository->method('load')
             ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
@@ -559,7 +559,35 @@ final class OrganizerLDProjectorTest extends TestCase
             )
         );
 
-        $this->expectSave($organizerId, 'organizer_with_image.json');
+        $this->expectSave($organizerId, 'organizer_with_one_image.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_removing_main_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_two_images.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new MainImageUpdated(
+                $organizerId,
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
+            )
+        );
+        $this->projector->handle($domainMessage);
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageRemoved(
+                $organizerId,
+                'dd45e5a1-f70c-48d7-83e5-dde9226c1dd6',
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_one_image.json');
 
         $this->projector->handle($domainMessage);
     }
@@ -570,7 +598,7 @@ final class OrganizerLDProjectorTest extends TestCase
     public function it_handles_removing_last_image(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $this->mockGet($organizerId, 'organizer_with_image.json');
+        $this->mockGet($organizerId, 'organizer_with_one_image.json');
 
         $domainMessage = $this->createDomainMessage(
             new ImageRemoved(
