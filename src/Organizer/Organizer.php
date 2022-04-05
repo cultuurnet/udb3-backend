@@ -345,11 +345,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $currentImages = $this->images->toArray();
         $importImages = $images->toArray();
 
-        $compareImages = static function (Image $a, Image $b) {
-            $idA = $a->getId()->toString();
-            $idB = $b->getId()->toString();
-            return strcmp($idA, $idB);
-        };
+        $compareImages = static fn (Image $a, Image $b) => strcmp($a->getId()->toString(), $b->getId()->toString());
 
         /* @var Image[] $addedImages */
         $addedImages = array_udiff($importImages, $currentImages, $compareImages);
