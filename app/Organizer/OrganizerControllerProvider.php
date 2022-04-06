@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
@@ -81,6 +82,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
                 $app['organizer_iri_generator'],
                 new CombinedRequestBodyParser(
                     new LegacyOrganizerRequestBodyParser(),
+                    RemoveEmptyArraysRequestBodyParser::createForOrganizers(),
                     ImagesPropertyPolyfillRequestBodyParser::createForOrganizers(
                         $app['media_object_iri_generator'],
                         $app['media_object_repository']

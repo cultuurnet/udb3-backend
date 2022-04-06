@@ -12,6 +12,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -85,6 +86,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn (string $id) => 'https://mock.uitdatabank.be/organizers/' . $id),
             new CombinedRequestBodyParser(
                 new LegacyOrganizerRequestBodyParser(),
+                RemoveEmptyArraysRequestBodyParser::createForOrganizers(),
                 ImagesPropertyPolyfillRequestBodyParser::createForOrganizers(
                     new CallableIriGenerator(fn (string $id) => 'https://io.uitdatabank.dev/images/' . $id),
                     $this->mediaObjectRepository
@@ -139,6 +141,68 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             ->willReturn($organizerId);
 
         $given = $this->getOrganizerData();
+
+        $this->expectOrganizerDoesNotExist($organizerId);
+
+        $this->expectCreateOrganizer(
+            OrganizerAggregate::create(
+                $organizerId,
+                new Language('nl'),
+                new Url('https://www.mock-organizer.be'),
+                new Title('Mock organizer')
+            )
+        );
+
+        $expectedCommands = [
+            new UpdateContactPoint($organizerId, new ContactPoint()),
+            new DeleteDescription($organizerId, new Language('nl')),
+            new DeleteDescription($organizerId, new Language('fr')),
+            new DeleteDescription($organizerId, new Language('de')),
+            new DeleteDescription($organizerId, new Language('en')),
+            new RemoveAddress($organizerId),
+            new ImportLabels($organizerId, new Labels()),
+            new ImportImages($organizerId, new Images()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('POST');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode(
+                [
+                    'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
+                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                ]
+            ),
+            $response->getBody()->getContents()
+        );
+        $this->assertEquals($expectedCommands, $actualCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_empty_list_properties(): void
+    {
+        $organizerId = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($organizerId);
+
+        $given = $this->getOrganizerData() + [
+            'labels' => [],
+            'hiddenLabels' => [],
+            'images' => [],
+        ];
 
         $this->expectOrganizerDoesNotExist($organizerId);
 
