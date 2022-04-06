@@ -476,6 +476,76 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_imports_a_legacy_place_with_missing_calendar(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'mainLanguage' => 'nl',
+            'name' => 'Cafe Den Hemel',
+            'type' => [
+                'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                'domain' => 'eventtype',
+                'label' => 'Cultuur- of ontmoetingscentrum',
+            ],
+            'address' => [
+                'addressCountry' => 'BE',
+                'addressLocality' => 'Scherpenheuvel-Zichem',
+                'postalCode' => '3271',
+                'streetAddress' => 'Hoornblaas 107',
+            ],
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    fn (Place $place) => $place->getAggregateRootId() === $placeId
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+                new DeleteCurrentOrganizer($placeId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_updates_an_existing_place(): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
@@ -1015,7 +1085,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/',
-                'The required properties (mainLanguage, name, terms, calendarType, address) are missing'
+                'The required properties (mainLanguage, name, terms, address) are missing'
             ),
         ];
 

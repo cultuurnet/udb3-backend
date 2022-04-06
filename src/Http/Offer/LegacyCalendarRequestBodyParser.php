@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use DateTime;
 use DateTimeInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -54,11 +55,32 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
             unset($data->calendar);
         }
 
+        if (!isset($data->calendarType)) {
+            $data->calendarType = $this->getCalendarType($data)->toString();
+        }
+
         return $request->withParsedBody($data);
     }
 
     private function formatDateTime(string $dateTime): string
     {
         return (new DateTime($dateTime))->format(DateTimeInterface::ATOM);
+    }
+
+    private function getCalendarType(stdClass $data): CalendarType
+    {
+        if (isset($data->subEvent) && count($data->subEvent) > 1) {
+            return CalendarType::multiple();
+        }
+
+        if (isset($data->subEvent) && count($data->subEvent) === 1) {
+            return CalendarType::single();
+        }
+
+        if (isset($data->startDate, $data->endDate)) {
+            return CalendarType::periodic();
+        }
+
+        return CalendarType::permanent();
     }
 }
