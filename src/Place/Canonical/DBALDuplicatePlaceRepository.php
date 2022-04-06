@@ -50,11 +50,16 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function getCanonical(array $placeIds): string
     {
-        if (count($this->checkMuseumPass($placeIds)) === 1) {
+        $museumpasCheck = $this->checkMuseumPass($placeIds);
+        if (count($museumpasCheck) === 1) {
             return $this->checkMuseumPass($placeIds)[0];
         }
 
-        // Temp
+        $eventsCheck = $this->checkEvents($placeIds);
+        if (count($eventsCheck) === 1) {
+            return $this->checkEvents($placeIds)[0];
+        }
+
         return $placeIds[1];
     }
 
