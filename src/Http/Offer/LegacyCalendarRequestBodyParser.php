@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use DateTime;
 use DateTimeInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -52,6 +53,10 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
             }
 
             unset($data->calendar);
+        }
+
+        if (!isset($data->calendar) && !isset($data->calendarType)) {
+            $data->calendarType = CalendarType::permanent()->toString();
         }
 
         return $request->withParsedBody($data);
