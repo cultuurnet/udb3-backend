@@ -105,7 +105,13 @@ $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[Organi
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
-$consoleApp->add(new MarkPlaceAsDuplicateInBulkCommand($app['event_command_bus'], $app['dbal_connection'], $app[LocationMarkedAsDuplicateProcessManager::class]));
+$consoleApp->add(
+    new MarkPlaceAsDuplicateInBulkCommand(
+        $app['event_command_bus'],
+        $app[LocationMarkedAsDuplicateProcessManager::class],
+        $app['duplicate_place_repository']
+    )
+);
 $consoleApp->add(
     new DispatchMarkedAsDuplicateEventCommand(
         $app['event_command_bus'],
