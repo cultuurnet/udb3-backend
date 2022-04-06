@@ -227,7 +227,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_empty_list_properties(): void
+    public function it_ignores_empty_list_properties_and_null_values(): void
     {
         $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
 
@@ -253,11 +253,16 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
             'mainLanguage' => 'nl',
             'labels' => [],
-            'hiddenLabels' => [],
+            'hiddenLabels' => [null],
             'mediaObject' => [],
             'priceInfo' => [],
             'openingHours' => [],
             'videos' => [],
+            'contactPoint' => [
+                'email' => [null],
+                'phone' => null,
+            ],
+            'bookingInfo' => null,
         ];
 
         $this->uuidGenerator->expects($this->once())

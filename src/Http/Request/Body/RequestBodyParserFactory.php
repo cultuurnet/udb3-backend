@@ -17,6 +17,7 @@ final class RequestBodyParserFactory
     {
         return new CombinedRequestBodyParser(
             new JsonRequestBodyParser(),
+            new RemoveNullPropertiesRequestBodyParser(),
             ...$customParsers
         );
     }

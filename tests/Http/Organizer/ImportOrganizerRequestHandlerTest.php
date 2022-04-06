@@ -190,7 +190,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_empty_list_properties(): void
+    public function it_ignores_empty_list_properties_and_null_values(): void
     {
         $organizerId = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
 
@@ -199,9 +199,12 @@ class ImportOrganizerRequestHandlerTest extends TestCase
             ->willReturn($organizerId);
 
         $given = $this->getOrganizerData() + [
-            'labels' => [],
-            'hiddenLabels' => [],
+            'labels' => [null],
+            'hiddenLabels' => null,
             'images' => [],
+            'contactPoint' => (object) [
+                'phone' => null,
+            ],
         ];
 
         $this->expectOrganizerDoesNotExist($organizerId);

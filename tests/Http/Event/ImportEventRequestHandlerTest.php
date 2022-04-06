@@ -189,7 +189,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_empty_list_properties(): void
+    public function it_ignores_empty_list_properties_and_null_values(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
 
@@ -213,10 +213,15 @@ final class ImportEventRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
             'labels' => [],
             'hiddenLabels' => [],
-            'mediaObject' => [],
+            'mediaObject' => [null],
             'priceInfo' => [],
             'openingHours' => [],
             'videos' => [],
+            'contactPoint' => [
+                'email' => [null],
+                'phone' => null,
+            ],
+            'bookingInfo' => null,
         ];
 
         $request = (new Psr7RequestBuilder())
