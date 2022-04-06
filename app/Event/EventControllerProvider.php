@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
+use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
@@ -90,6 +91,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                 new EventDenormalizer(),
                 new CombinedRequestBodyParser(
                     new LegacyEventRequestBodyParser($app['place_iri_generator']),
+                    RemoveEmptyArraysRequestBodyParser::createForEvents(),
                     new ImportTermRequestBodyParser(new EventCategoryResolver()),
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations']),
                     ImagesPropertyPolyfillRequestBodyParser::createForEvents(

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
+use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Place\LegacyPlaceRequestBodyParser;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
@@ -79,6 +80,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                 new PlaceDenormalizer(),
                 new CombinedRequestBodyParser(
                     new LegacyPlaceRequestBodyParser(),
+                    RemoveEmptyArraysRequestBodyParser::createForPlaces(),
                     new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
                     new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations']),
                     ImagesPropertyPolyfillRequestBodyParser::createForPlaces(

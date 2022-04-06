@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
+use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -98,6 +99,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new LegacyEventRequestBodyParser(
                     new CallableIriGenerator(fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId)
                 ),
+                RemoveEmptyArraysRequestBodyParser::createForEvents(),
                 new ImportTermRequestBodyParser(new EventCategoryResolver()),
                 new ImportPriceInfoRequestBodyParser(
                     [
@@ -140,6 +142,86 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'permanent',
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_empty_list_properties_and_null_values(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'labels' => [],
+            'hiddenLabels' => [],
+            'mediaObject' => [null],
+            'priceInfo' => [],
+            'openingHours' => [],
+            'videos' => [],
+            'contactPoint' => [
+                'email' => [null],
+                'phone' => null,
+            ],
+            'bookingInfo' => null,
         ];
 
         $request = (new Psr7RequestBuilder())
@@ -4489,38 +4571,6 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/mediaObject',
                 'The data (string) must match the type: array'
-            ),
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_if_mediaObject_has_no_items(): void
-    {
-        $event = [
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-            'mediaObject' => [],
-        ];
-
-        $expectedErrors = [
-            new SchemaError(
-                '/mediaObject',
-                'Array should have at least 1 items, 0 found'
             ),
         ];
 

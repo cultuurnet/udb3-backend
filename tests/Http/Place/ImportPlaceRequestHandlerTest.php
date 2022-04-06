@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
+use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -127,6 +128,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ),
             new CombinedRequestBodyParser(
                 new LegacyPlaceRequestBodyParser(),
+                RemoveEmptyArraysRequestBodyParser::createForPlaces(),
                 new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
                 new ImportPriceInfoRequestBodyParser(
                     [
@@ -173,6 +175,94 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'calendarType' => 'permanent',
             'mainLanguage' => 'nl',
+        ];
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($placeId);
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(
+                    fn (Place $place) => $place->getAggregateRootId() === $placeId
+                )
+            );
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($givenPlace)
+            ->build('POST');
+
+        $response = $this->importPlaceRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $placeId,
+                'placeId' => $placeId,
+                'url' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateBookingInfo($placeId, new BookingInfo()),
+                new UpdateContactPoint($placeId, new ContactPoint()),
+                new DeleteTypicalAgeRange($placeId),
+                new ImportLabels($placeId, new Labels()),
+                new ImportImages($placeId, new ImageCollection()),
+                new ImportVideos($placeId, new VideoCollection()),
+                new DeleteCurrentOrganizer($placeId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_empty_list_properties_and_null_values(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $givenPlace = [
+            'name' => [
+                'nl' => 'Cafe Den Hemel',
+            ],
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Scherpenheuvel-Zichem',
+                    'postalCode' => '3271',
+                    'streetAddress' => 'Hoornblaas 107',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'mainLanguage' => 'nl',
+            'labels' => [],
+            'hiddenLabels' => [null],
+            'mediaObject' => [],
+            'priceInfo' => [],
+            'openingHours' => [],
+            'videos' => [],
+            'contactPoint' => [
+                'email' => [null],
+                'phone' => null,
+            ],
+            'bookingInfo' => null,
         ];
 
         $this->uuidGenerator->expects($this->once())
