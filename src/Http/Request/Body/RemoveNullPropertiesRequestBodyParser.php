@@ -31,7 +31,7 @@ final class RemoveNullPropertiesRequestBodyParser implements RequestBodyParser
     private function removeNullPropertiesFromObject(stdClass $data): stdClass
     {
         $newData = new stdClass();
-        foreach ($data as $property => $value) {
+        foreach ((array) $data as $property => $value) {
             if ($value instanceof stdClass) {
                 $value = $this->removeNullPropertiesFromObject($value);
             }
