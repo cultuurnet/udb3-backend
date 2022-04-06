@@ -8,31 +8,41 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
 {
     private EventListener $processManager;
 
-    private Connection $connection;
+    private DuplicatePlaceRepository $duplicatePlaceRepository;
 
-    public function __construct(CommandBus $commandBus, Connection $connection, EventListener $processManager)
-    {
+    public function __construct(
+        CommandBus $commandBus,
+        EventListener $processManager,
+        DuplicatePlaceRepository $duplicatePlaceRepository
+    ) {
         parent::__construct($commandBus);
-        $this->connection = $connection;
         $this->processManager = $processManager;
+        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
     }
 
     public function configure(): void
     {
         $this->setName('place:mark-as-duplicate-bulk');
-        $this->setDescription('Marks multiple Places as duplicate of another one, implicitly making that a canonical');
+        $this->setDescription('Marks multiple Places as duplicate of another one, implicitly making that one canonical');
+        $this->addOption(
+            'force',
+            null,
+            InputOption::VALUE_NONE,
+            'Skip confirmation.'
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -44,14 +54,17 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
             $this->processManager->setLogger($logger);
         }
 
-        $clusterIds = $this->getClusterIds();
+        $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
         foreach ($clusterIds as $clusterId) {
-            $placeIds = $this->getPlaceIds($clusterId);
-            // TODO
-            $duplicateIds = $this->getDuplicates($placeIds);
-            $canonicalId = $this->getCanonicalId($placeIds);
-            // END TODO
+            $placeCluster = $this->duplicatePlaceRepository->getCluster($clusterId);
+            $canonicalId = $this->duplicatePlaceRepository->getCanonical($placeCluster->getPlacesIds());
+            $duplicateIds = array_diff($placeCluster->getPlacesIds(), [$canonicalId]);
+
+            if (!$this->askConfirmation($input, $output, count($duplicateIds))) {
+                return 0;
+            }
+
             foreach ($duplicateIds as $duplicateId) {
                 try {
                     $this->commandBus->dispatch(
@@ -70,33 +83,21 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
         return 0;
     }
 
-    private function getClusterIds(): array
+    private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
     {
-        return $this->connection->createQueryBuilder()
-            ->select('DISTINCT cluster_id')
-            ->from('duplicate_places')
-            ->execute()
-            ->fetchAll(FetchMode::COLUMN);
-    }
+        if ($input->getOption('force')) {
+            return true;
+        }
 
-    private function getPlaceIds(int $clusterId): array
-    {
-        return $this->connection->createQueryBuilder()
-            ->select('place_uuid')
-            ->from('duplicate_places')
-            ->where('cluster_id = :clusterId')
-            ->setParameter(':clusterId', $clusterId)
-            ->execute()
-            ->fetchAll(FetchMode::COLUMN);
-    }
-
-    private function getDuplicates(array $placeIds): array
-    {
-        return [];
-    }
-
-    private function getCanonicalId(array $placeIds): string
-    {
-        return '';
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion(
+                    "This action will mark {$count} places as duplicate, continue? [y/N] ",
+                    true
+                )
+            );
     }
 }
