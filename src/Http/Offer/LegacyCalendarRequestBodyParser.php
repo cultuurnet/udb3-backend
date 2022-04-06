@@ -55,8 +55,8 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
             unset($data->calendar);
         }
 
-        if (!isset($data->calendar) && !isset($data->calendarType)) {
-            $data->calendarType = CalendarType::permanent()->toString();
+        if (!isset($data->calendarType)) {
+            $data->calendarType = $this->getCalendarType($data)->toString();
         }
 
         return $request->withParsedBody($data);
@@ -65,5 +65,22 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
     private function formatDateTime(string $dateTime): string
     {
         return (new DateTime($dateTime))->format(DateTimeInterface::ATOM);
+    }
+
+    private function getCalendarType(stdClass $data): CalendarType
+    {
+        if (isset($data->subEvent) && count($data->subEvent) > 1) {
+            return CalendarType::multiple();
+        }
+
+        if (isset($data->subEvent) && count($data->subEvent) === 1) {
+            return CalendarType::single();
+        }
+
+        if (isset($data->startDate, $data->endDate)) {
+            return CalendarType::periodic();
+        }
+
+        return CalendarType::permanent();
     }
 }
