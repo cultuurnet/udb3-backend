@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
@@ -714,6 +715,16 @@ $app['place_service'] = $app->share(
             $app['place_repository'],
             $app['place_relations_repository'],
             $app['place_iri_generator']
+        );
+    }
+);
+
+$app['duplicate_place_repository'] = $app->share(
+    function ($app) {
+        return new DBALDuplicatePlaceRepository(
+            $app['dbal_connection'],
+            $app['config']['museumpas'],
+            $app['event_relations_repository']
         );
     }
 );
