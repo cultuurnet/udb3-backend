@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Import;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
-use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
-use JsonPath\JsonObject;
 use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 
