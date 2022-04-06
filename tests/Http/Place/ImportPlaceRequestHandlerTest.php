@@ -1085,7 +1085,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/',
-                'The required properties (mainLanguage, name, terms, calendarType, address) are missing'
+                'The required properties (mainLanguage, name, terms, address) are missing'
             ),
         ];
 

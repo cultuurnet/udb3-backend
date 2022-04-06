@@ -1340,7 +1340,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/',
-                'The required properties (mainLanguage, name, terms, location, calendarType) are missing'
+                'The required properties (mainLanguage, name, terms, location) are missing'
             ),
         ];
 
