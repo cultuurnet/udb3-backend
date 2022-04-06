@@ -805,6 +805,74 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_a_new_event_from_legacy_format_with_missing_calendar(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => 'Pannekoeken voor het goede doel',
+            'type' => [
+                'id' => '0.5.0.0.0',
+            ],
+            'theme' => [
+                'id' => '0.52.0.0.0',
+                'label' => 'Circus',
+            ],
+            'location' => [
+                'id' => '5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_creates_a_new_event_from_legacy_format_with_permanent_calendar(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
