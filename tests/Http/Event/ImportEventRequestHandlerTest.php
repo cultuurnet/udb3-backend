@@ -1994,11 +1994,11 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/startDate',
+                '/subEvent/0/startDate',
                 'The data must match the \'date-time\' format'
             ),
             new SchemaError(
-                '/endDate',
+                '/subEvent/0/endDate',
                 'The data must match the \'date-time\' format'
             ),
         ];
