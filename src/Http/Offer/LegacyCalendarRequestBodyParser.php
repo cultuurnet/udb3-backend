@@ -59,6 +59,19 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
             $data->calendarType = $this->getCalendarType($data)->toString();
         }
 
+        if (!isset($data->subEvent) &&
+            isset($data->calendarType, $data->startDate, $data->endDate) &&
+            $data->calendarType === CalendarType::single()->toString()) {
+            $data->subEvent = [
+                (object) [
+                    'startDate' => $data->startDate,
+                    'endDate' => $data->endDate,
+                ]
+            ];
+
+            unset($data->startDate, $data->endDate);
+        }
+
         return $request->withParsedBody($data);
     }
 
