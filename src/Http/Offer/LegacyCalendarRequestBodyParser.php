@@ -66,7 +66,7 @@ final class LegacyCalendarRequestBodyParser implements RequestBodyParser
                 (object) [
                     'startDate' => $data->startDate,
                     'endDate' => $data->endDate,
-                ]
+                ],
             ];
 
             unset($data->startDate, $data->endDate);
