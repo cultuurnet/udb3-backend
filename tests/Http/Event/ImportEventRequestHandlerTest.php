@@ -1460,6 +1460,81 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_a_new_event_from_single_calendar_with_missing_subEvent(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'single',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        try {
+            $response = $this->importEventRequestHandler->handle($request);
+        } catch (ApiProblem $apiProblem) {
+            \var_dump($apiProblem->getSchemaErrors());
+        }
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_a_required_property_is_missing(): void
     {
         $event = [
