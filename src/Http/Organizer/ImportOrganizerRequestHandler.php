@@ -65,10 +65,12 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $usingOldImportsPath = str_contains($request->getUri()->getPath(), 'imports');
+
         $routeParameters = new RouteParameters($request);
 
         $organizerId = $this->uuidGenerator->generate();
-        $responseStatus = StatusCodeInterface::STATUS_CREATED;
+        $responseStatus = $usingOldImportsPath ? StatusCodeInterface::STATUS_OK : StatusCodeInterface::STATUS_CREATED;
         if ($routeParameters->hasOrganizerId()) {
             $organizerId = $routeParameters->getOrganizerId();
             $responseStatus = StatusCodeInterface::STATUS_OK;

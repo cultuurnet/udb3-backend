@@ -84,10 +84,12 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $usingOldImportsPath = str_contains($request->getUri()->getPath(), 'imports');
+
         $routeParameters = new RouteParameters($request);
 
         $eventId = $routeParameters->hasEventId() ? $routeParameters->getEventId() : $this->uuidGenerator->generate();
-        $responseStatus = $routeParameters->hasEventId() ? StatusCodeInterface::STATUS_OK : StatusCodeInterface::STATUS_CREATED;
+        $responseStatus = $routeParameters->hasEventId() || $usingOldImportsPath ? StatusCodeInterface::STATUS_OK : StatusCodeInterface::STATUS_CREATED;
         $eventExists = false;
 
         if ($routeParameters->hasEventId()) {
@@ -125,7 +127,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         // backward compatibility with existing integrations that use those deprecated imports paths without a
         // workflowStatus, and who expect the workflowStatus to automatically be READY_FOR_VALIDATION or APPROVED.
         $workflowStatus = $event->getWorkflowStatus();
-        if (str_contains($request->getUri()->getPath(), 'imports')) {
+        if ($usingOldImportsPath) {
             $workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
         }
 

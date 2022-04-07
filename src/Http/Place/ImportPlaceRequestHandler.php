@@ -87,10 +87,12 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $usingOldImportsPath = str_contains($request->getUri()->getPath(), 'imports');
+
         $routeParameters = new RouteParameters($request);
 
         $placeId = $this->uuidGenerator->generate();
-        $responseStatus = StatusCodeInterface::STATUS_CREATED;
+        $responseStatus = $usingOldImportsPath ? StatusCodeInterface::STATUS_OK : StatusCodeInterface::STATUS_CREATED;
         $placeExists = false;
 
         if ($routeParameters->hasPlaceId()) {
@@ -129,7 +131,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         // backward compatibility with existing integrations that use those deprecated imports paths without a
         // workflowStatus, and who expect the workflowStatus to automatically be READY_FOR_VALIDATION or APPROVED.
         $workflowStatus = $place->getWorkflowStatus();
-        if (str_contains($request->getUri()->getPath(), 'imports')) {
+        if ($usingOldImportsPath) {
             $workflowStatus = WorkflowStatus::READY_FOR_VALIDATION();
         }
 

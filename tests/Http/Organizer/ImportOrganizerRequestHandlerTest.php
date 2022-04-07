@@ -190,6 +190,53 @@ class ImportOrganizerRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_200_OK_instead_of_201_Created_for_new_organizers_if_using_old_imports_path(): void
+    {
+        $organizerId = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($organizerId);
+
+        $given = $this->getOrganizerData();
+
+        $this->expectOrganizerDoesNotExist($organizerId);
+
+        $this->expectCreateOrganizer(
+            OrganizerAggregate::create(
+                $organizerId,
+                new Language('nl'),
+                new Url('https://www.mock-organizer.be'),
+                new Title('Mock organizer')
+            )
+        );
+
+        $expectedCommands = [
+            new UpdateContactPoint($organizerId, new ContactPoint()),
+            new DeleteDescription($organizerId, new Language('nl')),
+            new DeleteDescription($organizerId, new Language('fr')),
+            new DeleteDescription($organizerId, new Language('de')),
+            new DeleteDescription($organizerId, new Language('en')),
+            new RemoveAddress($organizerId),
+            new ImportLabels($organizerId, new Labels()),
+            new ImportImages($organizerId, new Images()),
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/imports/organizers')
+            ->withJsonBodyFromArray($given)
+            ->build('POST');
+
+        $response = $this->importOrganizerRequestHandler->handle($request);
+
+        $actualCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
     public function it_ignores_empty_list_properties_and_null_values(): void
     {
         $organizerId = '5829cdfb-21b1-4494-86da-f2dbd7c8d69c';
