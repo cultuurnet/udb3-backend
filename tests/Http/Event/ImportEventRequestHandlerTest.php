@@ -269,6 +269,53 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_200_OK_instead_of_201_Created_for_new_events_if_using_old_imports_path(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannekoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/imports/events')
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
     public function it_creates_a_new_event_with_id(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
