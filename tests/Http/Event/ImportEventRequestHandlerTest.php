@@ -1500,11 +1500,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->aggregateRepository->expects($this->once())
             ->method('save');
 
-        try {
-            $response = $this->importEventRequestHandler->handle($request);
-        } catch (ApiProblem $apiProblem) {
-            \var_dump($apiProblem->getSchemaErrors());
-        }
+        $response = $this->importEventRequestHandler->handle($request);
 
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertEquals(
