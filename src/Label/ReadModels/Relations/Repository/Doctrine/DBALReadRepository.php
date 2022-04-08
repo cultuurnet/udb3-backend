@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\StringLiteral;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
@@ -31,6 +32,26 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             $labelRelation = LabelRelation::fromRelationalData($row);
             yield $labelRelation;
         }
+    }
+
+    public function getLabelRelationsAsString(LabelName $labelName, RelationType $type): array
+    {
+        $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
+
+        $queryBuilder = $this->createQueryBuilder()->select(SchemaConfigurator::RELATION_ID)
+            ->from($this->getTableName()->toNative())
+            ->where($whereLabelName)
+
+            ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
+            ->setParameters([$labelName->toNative(), $type->toString()]);
+
+        $statement = $queryBuilder->execute();
+
+        $labelRelations = [];
+        while ($row = $statement->fetch(\PDO::FETCH_COLUMN)) {
+            $labelRelations[] = $row;
+        }
+        return $labelRelations;
     }
 
     /**
