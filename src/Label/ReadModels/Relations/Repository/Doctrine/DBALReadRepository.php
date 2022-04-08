@@ -38,20 +38,12 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     {
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
 
-        $queryBuilder = $this->createQueryBuilder()->select(SchemaConfigurator::RELATION_ID)
+        return $this->createQueryBuilder()->select(SchemaConfigurator::RELATION_ID)
             ->from($this->getTableName()->toNative())
             ->where($whereLabelName)
-
             ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
-            ->setParameters([$labelName->toNative(), $type->toString()]);
-
-        $statement = $queryBuilder->execute();
-
-        $labelRelations = [];
-        while ($row = $statement->fetch(\PDO::FETCH_COLUMN)) {
-            $labelRelations[] = $row;
-        }
-        return $labelRelations;
+            ->setParameters([$labelName->toNative(), $type->toString()])
+        ->execute()->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     /**

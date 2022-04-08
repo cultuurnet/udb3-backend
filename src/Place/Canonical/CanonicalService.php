@@ -24,24 +24,26 @@ class CanonicalService
         string $museumpasLabel,
         RepositoryInterface $eventRelationsRepository,
         ReadRepositoryInterface $labelRelationsRepository,
-        DocumentRepository $documentRepository
+        DocumentRepository $documentRepository = null
     ) {
         $this->museumpasLabel = $museumpasLabel;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->labelRelationsRepository = $labelRelationsRepository;
-        $this->documentRepository = $documentRepository;
+        if ($documentRepository != null) {
+            $this->documentRepository = $documentRepository;
+        }
     }
 
     public function getCanonical(array $placeIds): string
     {
         $placesWithMuseumpas = $this->getPlacesWithMuseumPasInCluster($placeIds);
         if (count($placesWithMuseumpas) === 1) {
-            return $placesWithMuseumpas[0];
+            return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
         if (count($placesWithMostEvents) === 1) {
-            return $placesWithMostEvents[0];
+            return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
         }
 
         return $this->getOldestPlace($placeIds);
@@ -70,7 +72,7 @@ class CanonicalService
         }
 
         krsort($eventCountsWithPlaceId);
-        return $eventCountsWithPlaceId[0];
+        return $eventCountsWithPlaceId[array_key_first($eventCountsWithPlaceId)];
     }
 
     private function getOldestPlace(array $placeIds): string
