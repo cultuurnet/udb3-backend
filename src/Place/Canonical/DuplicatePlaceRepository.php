@@ -9,6 +9,4 @@ interface DuplicatePlaceRepository
     public function getClusterIds(): array;
 
     public function getCluster(int $clusterId): PlaceCluster;
-
-    public function getCanonical(array $placeIds): string;
 }
