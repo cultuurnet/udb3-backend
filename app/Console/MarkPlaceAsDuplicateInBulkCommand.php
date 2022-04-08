@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
+use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
 use Psr\Log\LoggerAwareInterface;
@@ -23,14 +24,18 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
 
     private DuplicatePlaceRepository $duplicatePlaceRepository;
 
+    private CanonicalService $canonicalService;
+
     public function __construct(
         CommandBus $commandBus,
         EventListener $processManager,
-        DuplicatePlaceRepository $duplicatePlaceRepository
+        DuplicatePlaceRepository $duplicatePlaceRepository,
+        CanonicalService $canonicalService
     ) {
         parent::__construct($commandBus);
         $this->processManager = $processManager;
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
+        $this->canonicalService = $canonicalService;
     }
 
     public function configure(): void
@@ -58,7 +63,7 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
 
         foreach ($clusterIds as $clusterId) {
             $placeCluster = $this->duplicatePlaceRepository->getCluster($clusterId);
-            $canonicalId = $this->duplicatePlaceRepository->getCanonical($placeCluster->getPlacesIds());
+            $canonicalId = $this->canonicalService->getCanonical($placeCluster->getPlacesIds());
             $duplicateIds = array_diff($placeCluster->getPlacesIds(), [$canonicalId]);
 
             if (!$this->askConfirmation($input, $output, count($duplicateIds))) {
