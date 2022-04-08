@@ -14,7 +14,7 @@ class AnyOfVoter implements PermissionVoter
      */
     private $voters;
 
-    private ?bool $isAllowed = null;
+    private array $cache = [];
 
     /**
      * @param PermissionVoter[] ...$voters
@@ -29,18 +29,19 @@ class AnyOfVoter implements PermissionVoter
         StringLiteral $itemId,
         StringLiteral $userId
     ): bool {
-        if ($this->isAllowed !== null) {
-            return $this->isAllowed;
+        $cacheKey = $itemId->toNative() . $userId->toNative();
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
         }
 
         foreach ($this->voters as $voter) {
             if ($voter->isAllowed($permission, $itemId, $userId)) {
-                $this->isAllowed = true;
+                $this->cache[$cacheKey] = true;
                 return true;
             }
         }
 
-        $this->isAllowed = false;
+        $this->cache[$cacheKey] = false;
         return false;
     }
 }
