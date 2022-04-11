@@ -24,14 +24,12 @@ class CanonicalService
         string $museumpasLabel,
         RepositoryInterface $eventRelationsRepository,
         ReadRepositoryInterface $labelRelationsRepository,
-        DocumentRepository $documentRepository = null
+        DocumentRepository $documentRepository
     ) {
         $this->museumpasLabel = $museumpasLabel;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->labelRelationsRepository = $labelRelationsRepository;
-        if ($documentRepository != null) {
-            $this->documentRepository = $documentRepository;
-        }
+        $this->documentRepository = $documentRepository;
     }
 
     public function getCanonical(array $placeIds): string
@@ -79,11 +77,11 @@ class CanonicalService
     {
         $placesByCreationDate = [];
         foreach ($placeIds as $placeId) {
-            $jsonDocument = $this->documentRepository->fetch($placeId, true);
+            $jsonDocument = $this->documentRepository->fetch($placeId);
             $body = $jsonDocument->getBody();
             $placesByCreationDate[$placeId] = $body->created;
         }
         asort($placesByCreationDate);
-        return $placesByCreationDate[0];
+        return $placesByCreationDate[array_key_first($placesByCreationDate)];
     }
 }
