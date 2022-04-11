@@ -109,7 +109,8 @@ $consoleApp->add(
     new MarkPlaceAsDuplicateInBulkCommand(
         $app['event_command_bus'],
         $app[LocationMarkedAsDuplicateProcessManager::class],
-        $app['duplicate_place_repository']
+        $app['duplicate_place_repository'],
+        $app['canonical_service']
     )
 );
 $consoleApp->add(
