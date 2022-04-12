@@ -78,7 +78,7 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
                             $canonicalId
                         )
                     );
-                    $logger->info('Successfully marked place as duplicate');
+                    $logger->info('Successfully marked place' . $duplicateId . ' as duplicate of' . $canonicalId);
                 } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
                     $logger->error($e->getMessage());
                     return 1;
