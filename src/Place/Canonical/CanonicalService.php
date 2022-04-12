@@ -81,7 +81,8 @@ class CanonicalService
             $body = $jsonDocument->getBody();
             $placesByCreationDate[$placeId] = $body->created;
         }
+
         asort($placesByCreationDate);
-        return $placesByCreationDate[array_key_first($placesByCreationDate)];
+        return array_key_first($placesByCreationDate);
     }
 }
