@@ -17,7 +17,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
+class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
 {
     private EventListener $processManager;
 

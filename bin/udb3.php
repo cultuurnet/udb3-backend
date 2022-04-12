@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Silex\Console\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
-use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateInBulkCommand;
+use CultuurNet\UDB3\Silex\Console\MarkPlacesAsDuplicateFromTableCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
@@ -106,7 +106,7 @@ $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['e
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(
-    new MarkPlaceAsDuplicateInBulkCommand(
+    new MarkPlacesAsDuplicateFromTableCommand(
         $app['event_command_bus'],
         $app[LocationMarkedAsDuplicateProcessManager::class],
         $app['duplicate_place_repository'],
