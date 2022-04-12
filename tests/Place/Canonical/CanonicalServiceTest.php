@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -91,7 +92,7 @@ class CanonicalServiceTest extends TestCase
             $placeId = '4b4ca084-b78e-474f-b868-6f9df2d20df' . $i;
             $jsonDocument = new JsonDocument(
                 $placeId,
-                json_encode((object) ['@id' => $placeId, 'created' => '2018-12-0' . $i . 'T19:40:58+00:00'])
+                Json::encode(['@id' => $placeId, 'created' => '2018-12-0' . $i . 'T19:40:58+00:00'])
             );
             $documentRepository->save($jsonDocument);
         }
@@ -99,7 +100,7 @@ class CanonicalServiceTest extends TestCase
         $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
         $oldestJsonDocument = new JsonDocument(
             $this->oldestPlaceId,
-            json_encode((object) ['@id' => $this->oldestPlaceId, 'created' => '2017-12-09T19:40:58+00:00'])
+            Json::encode(['@id' => $this->oldestPlaceId, 'created' => '2017-12-09T19:40:58+00:00'])
         );
         $documentRepository->save($oldestJsonDocument);
 
