@@ -38,7 +38,7 @@ class CanonicalServiceTest extends TestCase
         $this->getConnection()->insert(
             'labels_relations',
             [
-                'labelName' => 'MuseumPassmusees',
+                'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
                 'relationId'=> '526605d3-7cc4-4607-97a4-065896253f42',
                 'imported' => '0',
@@ -48,7 +48,7 @@ class CanonicalServiceTest extends TestCase
         $this->getConnection()->insert(
             'labels_relations',
             [
-                'labelName' => 'MuseumPassmusees',
+                'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
                 'relationId'=> '901e23fe-b393-4cc6-9307-8e3e3f2ea77f',
                 'imported' => '0',
@@ -110,7 +110,7 @@ class CanonicalServiceTest extends TestCase
         $this->documentRepository->save($newestJsonDocument);
 
         $this->canonicalService = new CanonicalService(
-            'MuseumPassmusees',
+            'museumPASSmusees',
             new DBALRepository(
                 $this->getConnection()
             ),
