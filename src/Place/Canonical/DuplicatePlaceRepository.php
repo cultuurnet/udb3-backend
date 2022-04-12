@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 interface DuplicatePlaceRepository
 {
     /**
-     * @return string[]
+     * @return int[]
      */
     public function getClusterIds(): array;
 
