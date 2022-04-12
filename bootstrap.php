@@ -18,6 +18,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
@@ -733,7 +734,7 @@ $app['canonical_service'] = $app->share(
         return new CanonicalService(
             $app['config']['museumpas'],
             $app['event_relations_repository'],
-            new RelationsReadRepository(
+            new DBALReadRepository(
                 $app['dbal_connection'],
                 new StringLiteral('labels_relations')
             ),
