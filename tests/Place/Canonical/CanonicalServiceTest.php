@@ -28,12 +28,12 @@ class CanonicalServiceTest extends TestCase
     public function setUp(): void
     {
         $documentRepository = new InMemoryDocumentRepository();
-        $labels_relations = new Table('labels_relations');
-        $labels_relations->addColumn('labelName', Type::STRING)->setLength(255);
-        $labels_relations->addColumn('relationType', Type::STRING)->setLength(255);
-        $labels_relations->addColumn('relationId', Type::BIGINT)->setNotnull(true);
-        $labels_relations->addColumn('imported', Type::SMALLINT)->setNotnull(true)->setNotnull(0);
-        $this->createTable($labels_relations);
+        $labelsRelations = new Table('labels_relations');
+        $labelsRelations->addColumn('labelName', Type::STRING)->setLength(255);
+        $labelsRelations->addColumn('relationType', Type::STRING)->setLength(255);
+        $labelsRelations->addColumn('relationId', Type::BIGINT)->setNotnull(true);
+        $labelsRelations->addColumn('imported', Type::SMALLINT)->setNotnull(true)->setNotnull(0);
+        $this->createTable($labelsRelations);
 
         $this->getConnection()->insert(
             'labels_relations',
@@ -55,11 +55,11 @@ class CanonicalServiceTest extends TestCase
             ]
         );
 
-        $event_relations = new Table('event_relations');
-        $event_relations->addColumn('event', Type::STRING)->setLength(36)->setNotnull(true);
-        $event_relations->addColumn('organizer', Type::STRING)->setLength(36)->setNotnull(true);
-        $event_relations->addColumn('place', Type::STRING)->setLength(36)->setNotnull(true);
-        $this->createTable($event_relations);
+        $eventRelations = new Table('event_relations');
+        $eventRelations->addColumn('event', Type::STRING)->setLength(36)->setNotnull(true);
+        $eventRelations->addColumn('organizer', Type::STRING)->setLength(36)->setNotnull(true);
+        $eventRelations->addColumn('place', Type::STRING)->setLength(36)->setNotnull(true);
+        $this->createTable($eventRelations);
 
         $this->getConnection()->insert(
             'event_relations',
