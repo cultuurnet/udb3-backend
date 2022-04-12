@@ -34,7 +34,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         }
     }
 
-    public function getLabelRelationsAsString(LabelName $labelName, RelationType $type): array
+    public function getLabelRelationsForType(LabelName $labelName, RelationType $type): array
     {
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
 

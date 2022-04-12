@@ -18,7 +18,7 @@ interface ReadRepositoryInterface
     /**
      * @return string[]
      */
-    public function getLabelRelationsAsString(LabelName $labelName, RelationType $relationType): array;
+    public function getLabelRelationsForType(LabelName $labelName, RelationType $relationType): array;
 
     /**
      * @return LabelRelation[]

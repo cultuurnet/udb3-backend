@@ -49,7 +49,7 @@ class CanonicalService
 
     private function getPlacesWithMuseumPasInCluster(array $placeIds): array
     {
-        $result = $this->labelRelationsRepository->getLabelRelationsAsString(
+        $result = $this->labelRelationsRepository->getLabelRelationsForType(
             new LabelName($this->museumpasLabel),
             RelationType::place()
         );
