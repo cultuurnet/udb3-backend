@@ -94,6 +94,26 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->assertEmpty($labelRelations);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_return_offers_by_label_for_type(): void
+    {
+        $labelRelationsForType = $this->readRepository->getLabelRelationsForType(
+            new LabelName('cultuurnet'),
+            RelationType::place()
+        );
+
+        $this->assertEquals(
+            [
+                '298A39A1-8D1E-4F5D-B05E-811B6459EA36',
+                '99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'
+            ],
+            $labelRelationsForType
+        );
+
+    }
+
     private function saveOfferLabelRelations(): void
     {
         $this->labelName = new LabelName('2dotstwice');
@@ -126,9 +146,17 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             false
         );
 
+        $relation5 = new LabelRelation(
+            new LabelName('cultuurnet'),
+            RelationType::event(),
+            new StringLiteral('e3d79147-7a2a-4c0c-ae34-2fcea72f8b5c'),
+            false
+        );
+
         $this->saveLabelRelation($this->relation1);
         $this->saveLabelRelation($this->relation2);
         $this->saveLabelRelation($relation3);
         $this->saveLabelRelation($this->relation4);
+        $this->saveLabelRelation($relation5);
     }
 }
