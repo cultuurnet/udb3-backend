@@ -6,6 +6,9 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 interface DuplicatePlaceRepository
 {
+    /**
+     * @return string[]
+     */
     public function getClusterIds(): array;
 
     public function getCluster(int $clusterId): PlaceCluster;
