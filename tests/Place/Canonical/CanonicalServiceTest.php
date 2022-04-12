@@ -8,11 +8,11 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CanonicalServiceTest extends TestCase
@@ -21,18 +21,13 @@ class CanonicalServiceTest extends TestCase
 
     private DBALDuplicatePlaceRepository $duplicatePlaceRepository;
 
-    /**
-     * @var DocumentRepository|MockObject
-     */
-    private $documentRepository;
+    private DocumentRepository $documentRepository;
 
     private CanonicalService $canonicalService;
 
     public function setUp(): void
     {
-        $this->documentRepository = $this->createMock(
-            DocumentRepository::class
-        );
+        $this->documentRepository = new InMemoryDocumentRepository();
         $labels_relations = new Table('labels_relations');
         $labels_relations->addColumn('labelName', Type::STRING)->setLength(255);
         $labels_relations->addColumn('relationType', Type::STRING)->setLength(255);
@@ -98,21 +93,21 @@ class CanonicalServiceTest extends TestCase
             $oldestPlaceId,
             json_encode((object) ['@id' => $oldestPlaceId, 'created' => '2017-12-09T19:40:58+00:00'])
         );
-        $this->documentRepository->method('fetch')->with($oldestPlaceId)->willReturn($oldestJsonDocument);
+        $this->documentRepository->save($oldestJsonDocument);
 
         $middlePlaceId = '4b4ca084-b78e-474f-b868-6f9df2d20df7';
         $middleJsonDocument = new JsonDocument(
             $middlePlaceId,
             json_encode((object) ['@id' => $middlePlaceId, 'created' => '2019-12-09T19:40:58+00:00'])
         );
-        $this->documentRepository->method('fetch')->with($middlePlaceId)->willReturn($middleJsonDocument);
+        $this->documentRepository->save($middleJsonDocument);
 
         $newestPlaceId = '9c3ed0a7-b0e6-4e8d-996f-786231d31816';
         $newestJsonDocument = new JsonDocument(
             $newestPlaceId,
             json_encode((object) ['@id' => $newestPlaceId, 'created' => '2021-12-09T19:40:58+00:00'])
         );
-        $this->documentRepository->method('fetch')->with($newestPlaceId)->willReturn($newestJsonDocument);
+        $this->documentRepository->save($newestJsonDocument);
 
         $this->canonicalService = new CanonicalService(
             'MuseumPassmusees',
