@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
-use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -55,11 +54,7 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $dryRun = (boolean) $input->getOption('dry-run');
-
-        if ($this->processManager instanceof LoggerAwareInterface) {
-            $this->processManager->setLogger($logger);
-        }
+        $dryRun = (bool) $input->getOption('dry-run');
 
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
