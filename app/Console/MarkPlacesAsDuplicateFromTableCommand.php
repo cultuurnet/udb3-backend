@@ -40,7 +40,7 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
     public function configure(): void
     {
         $this->setName('place:mark-as-duplicate-bulk');
-        $this->setDescription('Marks multiple Places as duplicate of another one, implicitly making that one canonical');
+        $this->setDescription('Marks multiple Places as duplicate of another one, based on the autofilled table');
         $this->addOption(
             'force',
             null,
