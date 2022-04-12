@@ -20,11 +20,13 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        return $queryBuilder
+        $result = $queryBuilder
             ->select('DISTINCT cluster_id')
             ->from('duplicate_places')
             ->execute()
             ->fetchAll(PDO::FETCH_COLUMN);
+
+        return array_map('intval', $result);
     }
 
     public function getCluster(int $clusterId): array
