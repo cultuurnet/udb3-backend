@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place\Canonical;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
@@ -21,13 +20,13 @@ class CanonicalServiceTest extends TestCase
 
     private DBALDuplicatePlaceRepository $duplicatePlaceRepository;
 
-    private DocumentRepository $documentRepository;
-
     private CanonicalService $canonicalService;
+
+    private string $oldestPlaceId;
 
     public function setUp(): void
     {
-        $this->documentRepository = new InMemoryDocumentRepository();
+        $documentRepository = new InMemoryDocumentRepository();
         $labels_relations = new Table('labels_relations');
         $labels_relations->addColumn('labelName', Type::STRING)->setLength(255);
         $labels_relations->addColumn('relationType', Type::STRING)->setLength(255);
@@ -88,26 +87,21 @@ class CanonicalServiceTest extends TestCase
 
         $this->duplicatePlaceRepository = new DBALDuplicatePlaceRepository($this->getConnection());
 
-        $oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
+        for ($i = 0; $i < 10; $i++) {
+            $placeId = '4b4ca084-b78e-474f-b868-6f9df2d20df' . $i;
+            $jsonDocument = new JsonDocument(
+                $placeId,
+                json_encode((object) ['@id' => $placeId, 'created' => '2018-12-0' . $i . 'T19:40:58+00:00'])
+            );
+            $documentRepository->save($jsonDocument);
+        }
+
+        $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
         $oldestJsonDocument = new JsonDocument(
-            $oldestPlaceId,
-            json_encode((object) ['@id' => $oldestPlaceId, 'created' => '2017-12-09T19:40:58+00:00'])
+            $this->oldestPlaceId,
+            json_encode((object) ['@id' => $this->oldestPlaceId, 'created' => '2017-12-09T19:40:58+00:00'])
         );
-        $this->documentRepository->save($oldestJsonDocument);
-
-        $middlePlaceId = '4b4ca084-b78e-474f-b868-6f9df2d20df7';
-        $middleJsonDocument = new JsonDocument(
-            $middlePlaceId,
-            json_encode((object) ['@id' => $middlePlaceId, 'created' => '2019-12-09T19:40:58+00:00'])
-        );
-        $this->documentRepository->save($middleJsonDocument);
-
-        $newestPlaceId = '9c3ed0a7-b0e6-4e8d-996f-786231d31816';
-        $newestJsonDocument = new JsonDocument(
-            $newestPlaceId,
-            json_encode((object) ['@id' => $newestPlaceId, 'created' => '2021-12-09T19:40:58+00:00'])
-        );
-        $this->documentRepository->save($newestJsonDocument);
+        $documentRepository->save($oldestJsonDocument);
 
         $this->canonicalService = new CanonicalService(
             'museumPASSmusees',
@@ -118,7 +112,7 @@ class CanonicalServiceTest extends TestCase
                 $this->getConnection(),
                 new StringLiteral('labels_relations')
             ),
-            $this->documentRepository
+            $documentRepository
         );
     }
 
@@ -160,14 +154,25 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_oldest_place_if_equel_nr_of_events(): void
     {
+        $cluster = [
+            '4b4ca084-b78e-474f-b868-6f9df2d20df0',
+            $this->oldestPlaceId,
+            '4b4ca084-b78e-474f-b868-6f9df2d20df1',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df2',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df3',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df4',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df5',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df6',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df7',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df8',
+            '4b4ca084-b78e-474f-b868-6f9df2d20df9',
+        ];
+        shuffle($cluster);
+
         $canonicalId = $this->canonicalService->getCanonical(
-            [
-                '8717c43d-026f-42e9-9ea9-799623c5763c',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df7',
-                '9c3ed0a7-b0e6-4e8d-996f-786231d31816',
-            ]
+            $cluster
         );
 
-        $this->assertEquals('8717c43d-026f-42e9-9ea9-799623c5763c', $canonicalId);
+        $this->assertEquals($this->oldestPlaceId, $canonicalId);
     }
 }
