@@ -18,18 +18,18 @@ class CanonicalService
 
     private ReadRepositoryInterface $labelRelationsRepository;
 
-    private DocumentRepository $documentRepository;
+    private DocumentRepository $placeRepository;
 
     public function __construct(
         string $museumpasLabel,
         RepositoryInterface $eventRelationsRepository,
         ReadRepositoryInterface $labelRelationsRepository,
-        DocumentRepository $documentRepository
+        DocumentRepository $placeRepository
     ) {
         $this->museumpasLabel = $museumpasLabel;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->labelRelationsRepository = $labelRelationsRepository;
-        $this->documentRepository = $documentRepository;
+        $this->placeRepository = $placeRepository;
     }
 
     public function getCanonical(array $placeIds): string
@@ -77,7 +77,7 @@ class CanonicalService
     {
         $placesByCreationDate = [];
         foreach ($placeIds as $placeId) {
-            $jsonDocument = $this->documentRepository->fetch($placeId);
+            $jsonDocument = $this->placeRepository->fetch($placeId);
             $body = $jsonDocument->getBody();
             $placesByCreationDate[$placeId] = $body->created;
         }
