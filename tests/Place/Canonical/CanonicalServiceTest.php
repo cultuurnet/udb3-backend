@@ -12,6 +12,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CanonicalServiceTest extends TestCase
@@ -20,7 +21,10 @@ class CanonicalServiceTest extends TestCase
 
     private DBALDuplicatePlaceRepository $duplicatePlaceRepository;
 
-    private DocumentRepository $documentRepository;
+    /**
+     * @var DocumentRepository|MockObject
+     */
+    private $documentRepository;
 
     private CanonicalService $canonicalService;
 
