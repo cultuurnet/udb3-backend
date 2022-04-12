@@ -48,12 +48,14 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
             InputOption::VALUE_NONE,
             'Skip confirmation.'
         );
+        $this->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the mark-places-as-duplicate as a dry run.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
+        $dryRun = (boolean) $input->getOption('dry-run');
 
         if ($this->processManager instanceof LoggerAwareInterface) {
             $this->processManager->setLogger($logger);
@@ -71,6 +73,9 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
             }
 
             foreach ($duplicateIds as $duplicateId) {
+                if ($dryRun) {
+                    continue;
+                }
                 try {
                     $this->commandBus->dispatch(
                         new MarkAsDuplicate(
