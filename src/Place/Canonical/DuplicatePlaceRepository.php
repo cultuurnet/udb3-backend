@@ -11,5 +11,8 @@ interface DuplicatePlaceRepository
      */
     public function getClusterIds(): array;
 
-    public function getCluster(int $clusterId): PlaceCluster;
+    /**
+     * @return string[]
+     */
+    public function getCluster(int $clusterId): array;
 }

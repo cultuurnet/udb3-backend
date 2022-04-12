@@ -63,9 +63,9 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
         }
 
         foreach ($clusterIds as $clusterId) {
-            $placeCluster = $this->duplicatePlaceRepository->getCluster($clusterId);
-            $canonicalId = $this->canonicalService->getCanonical($placeCluster->getPlacesIds());
-            $duplicateIds = array_diff($placeCluster->getPlacesIds(), [$canonicalId]);
+            $cluster = $this->duplicatePlaceRepository->getCluster($clusterId);
+            $canonicalId = $this->canonicalService->getCanonical($cluster);
+            $duplicateIds = array_diff($cluster, [$canonicalId]);
 
             foreach ($duplicateIds as $duplicateId) {
                 if ($dryRun) {

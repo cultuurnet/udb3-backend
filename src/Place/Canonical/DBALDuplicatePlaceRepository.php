@@ -27,18 +27,16 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function getCluster(int $clusterId): PlaceCluster
+    public function getCluster(int $clusterId): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $places = $queryBuilder
+        return $queryBuilder
             ->select('place_uuid')
             ->from('duplicate_places')
             ->where('cluster_id = :cluster_id')
             ->setParameter(':cluster_id', $clusterId)
             ->execute()
             ->fetchAll(PDO::FETCH_COLUMN);
-
-        return new PlaceCluster($clusterId, $places);
     }
 }
