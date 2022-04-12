@@ -152,7 +152,7 @@ class CanonicalServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_will_get_the_oldest_place_if_equel_nr_of_events(): void
+    public function it_will_get_the_oldest_place_if_equal_nr_of_events(): void
     {
         $cluster = [
             '4b4ca084-b78e-474f-b868-6f9df2d20df0',
