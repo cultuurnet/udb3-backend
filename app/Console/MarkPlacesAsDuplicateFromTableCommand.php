@@ -69,6 +69,7 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
 
             foreach ($duplicateIds as $duplicateId) {
                 if ($dryRun) {
+                    $logger->info('Would mark place' . $duplicateId . ' as duplicate of' . $canonicalId);
                     continue;
                 }
                 try {
