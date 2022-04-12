@@ -107,11 +107,10 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->assertEquals(
             [
                 '298A39A1-8D1E-4F5D-B05E-811B6459EA36',
-                '99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'
+                '99A78F44-A45B-40E2-A1E3-7632D2F3B1C6',
             ],
             $labelRelationsForType
         );
-
     }
 
     private function saveOfferLabelRelations(): void
