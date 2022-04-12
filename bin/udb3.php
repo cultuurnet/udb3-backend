@@ -108,7 +108,6 @@ $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app
 $consoleApp->add(
     new MarkPlacesAsDuplicateFromTableCommand(
         $app['event_command_bus'],
-        $app[LocationMarkedAsDuplicateProcessManager::class],
         $app['duplicate_place_repository'],
         $app['canonical_service']
     )

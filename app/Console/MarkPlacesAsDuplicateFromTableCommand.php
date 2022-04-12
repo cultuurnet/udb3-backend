@@ -19,20 +19,16 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
 {
-    private EventListener $processManager;
-
     private DuplicatePlaceRepository $duplicatePlaceRepository;
 
     private CanonicalService $canonicalService;
 
     public function __construct(
         CommandBus $commandBus,
-        EventListener $processManager,
         DuplicatePlaceRepository $duplicatePlaceRepository,
         CanonicalService $canonicalService
     ) {
         parent::__construct($commandBus);
-        $this->processManager = $processManager;
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->canonicalService = $canonicalService;
     }
