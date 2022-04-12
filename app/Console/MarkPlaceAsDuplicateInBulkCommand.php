@@ -58,14 +58,14 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
 
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
+        if (!$this->askConfirmation($input, $output, count($clusterIds))) {
+            return 0;
+        }
+
         foreach ($clusterIds as $clusterId) {
             $placeCluster = $this->duplicatePlaceRepository->getCluster($clusterId);
             $canonicalId = $this->canonicalService->getCanonical($placeCluster->getPlacesIds());
             $duplicateIds = array_diff($placeCluster->getPlacesIds(), [$canonicalId]);
-
-            if (!$this->askConfirmation($input, $output, count($duplicateIds))) {
-                return 0;
-            }
 
             foreach ($duplicateIds as $duplicateId) {
                 if ($dryRun) {
@@ -100,7 +100,7 @@ class MarkPlaceAsDuplicateInBulkCommand extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "This action will mark {$count} places as duplicate, continue? [y/N] ",
+                    "This action will process {$count} clusters, continue? [y/N] ",
                     true
                 )
             );
