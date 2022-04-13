@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42262857f22abcf90829a1428c51d901",
+    "content-hash": "c4de21a40fdcb22e445b1dc9801c0740",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5061,6 +5061,39 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/master"
             },
             "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
+            "name": "publiq/udb3-json-schemas",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
+                "reference": "c2e44e1c8ead0eb609d70c6687ae6407e56a3171"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/c2e44e1c8ead0eb609d70c6687ae6407e56a3171",
+                "reference": "c2e44e1c8ead0eb609d70c6687ae6407e56a3171",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "publiq vzw",
+                    "email": "info@publiq.be"
+                }
+            ],
+            "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
+            "support": {
+                "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
+            },
+            "time": "2022-04-13T13:51:07+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -10748,7 +10781,8 @@
     "stability-flags": {
         "chrisboulton/php-resque": 20,
         "cultuurnet/culturefeed-php": 20,
-        "doctrine/migrations": 20
+        "doctrine/migrations": 20,
+        "publiq/udb3-json-schemas": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
