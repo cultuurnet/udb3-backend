@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "014b3c2caacf2cb4b2880bdf85c26dfd",
+    "content-hash": "42262857f22abcf90829a1428c51d901",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5061,38 +5061,6 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/master"
             },
             "time": "2017-10-23T01:57:42+00:00"
-        },
-        {
-            "name": "publiq/stoplight-docs-uitdatabank",
-            "version": "dev-III-4503-imports",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "70a22333fdc6c54a21bce798bae0e270bfc032e7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/70a22333fdc6c54a21bce798bae0e270bfc032e7",
-                "reference": "70a22333fdc6c54a21bce798bae0e270bfc032e7",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "publiq vzw",
-                    "email": "info@publiq.be"
-                }
-            ],
-            "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
-            "support": {
-                "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
-                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/III-4503-imports"
-            },
-            "time": "2022-03-29T14:00:54+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -10780,8 +10748,7 @@
     "stability-flags": {
         "chrisboulton/php-resque": 20,
         "cultuurnet/culturefeed-php": 20,
-        "doctrine/migrations": 20,
-        "publiq/stoplight-docs-uitdatabank": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
