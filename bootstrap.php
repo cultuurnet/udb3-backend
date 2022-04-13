@@ -732,7 +732,7 @@ $app['duplicate_place_repository'] = $app->share(
 $app['canonical_service'] = $app->share(
     function ($app) {
         return new CanonicalService(
-            $app['config']['museumpas'],
+            $app['config']['museumpas']['label'],
             $app['event_relations_repository'],
             new DBALReadRepository(
                 $app['dbal_connection'],
