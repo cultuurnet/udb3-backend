@@ -17,7 +17,7 @@ class JsonSchemaLocatorTest extends TestCase
      */
     public function it_returns_a_resolver_for_the_previously_set_schema_directory(): void
     {
-        $directory = realpath(__DIR__ . '/../../../../vendor/publiq/stoplight-docs-uitdatabank/models');
+        $directory = realpath(__DIR__ . '/../../../../vendor/publiq/udb3-json-schemas');
 
         $expectedResolver = new SchemaResolver();
         $expectedResolver->registerPrefix('file://' . $directory . '/', $directory);
