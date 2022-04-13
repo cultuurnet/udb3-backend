@@ -275,7 +275,7 @@ $app->after(
 
 $app->register(new LegacyRoutesServiceProvider());
 
-JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/stoplight-docs-uitdatabank/models');
+JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
 
 try {
     $app->run();

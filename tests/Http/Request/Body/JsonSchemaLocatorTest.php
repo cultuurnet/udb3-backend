@@ -32,7 +32,7 @@ class JsonSchemaLocatorTest extends TestCase
      */
     public function it_returns_the_schema_uri_for_a_file(): void
     {
-        $expected = Uri::create('file://' . realpath(__DIR__ . '/../../../../vendor/publiq/stoplight-docs-uitdatabank/models/') . '/event-subEvent-patch.json');
+        $expected = Uri::create('file://' . realpath(__DIR__ . '/../../../../vendor/publiq/udb3-json-schemas/') . '/event-subEvent-patch.json');
         $actual = JsonSchemaLocator::createSchemaUri(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH);
         $this->assertEquals($expected, $actual);
     }
