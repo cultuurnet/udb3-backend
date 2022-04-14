@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
-use CultuurNet\UDB3\Place\Canonical\MuseumPassNotUniqueInClusterException;
+use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -62,7 +62,7 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
             $cluster = $this->duplicatePlaceRepository->getCluster($clusterId);
             try {
                 $canonicalId = $this->canonicalService->getCanonical($cluster);
-            } catch (MuseumPassNotUniqueInClusterException $museumPassNotUniqueInClusterException){
+            } catch (MuseumPassNotUniqueInCluster $museumPassNotUniqueInClusterException) {
                 $logger->error($museumPassNotUniqueInClusterException->getMessage());
                 continue;
             }

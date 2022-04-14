@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class CanonicalService
@@ -39,7 +40,7 @@ class CanonicalService
             return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
         }
         if (count($placesWithMuseumpas) > 1) {
-            throw new MuseumPassNotUniqueInClusterException(count($placesWithMuseumpas));
+            throw new MuseumPassNotUniqueInCluster(count($placesWithMuseumpas));
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
