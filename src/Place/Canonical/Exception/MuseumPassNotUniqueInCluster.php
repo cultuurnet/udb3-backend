@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Place\Canonical;
+namespace CultuurNet\UDB3\Place\Canonical\Exception;
 
-class MuseumPassNotUniqueInClusterException extends \Exception
+class MuseumPassNotUniqueInCluster extends \Exception
 {
     public function __construct(int $amount)
     {
