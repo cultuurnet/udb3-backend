@@ -12,11 +12,14 @@ class ResourceOwnerVoter implements PermissionVoter
 {
     private ResourceOwnerQuery $permissionRepository;
 
+    private bool $enableCache;
+
     private array $cache = [];
 
-    public function __construct(ResourceOwnerQuery $permissionRepository)
+    public function __construct(ResourceOwnerQuery $permissionRepository, bool $enableCache)
     {
         $this->permissionRepository = $permissionRepository;
+        $this->enableCache = $enableCache;
     }
 
     public function isAllowed(
@@ -24,13 +27,16 @@ class ResourceOwnerVoter implements PermissionVoter
         StringLiteral $itemId,
         StringLiteral $userId
     ): bool {
+        if (!$this->enableCache) {
+            return in_array($itemId, $this->permissionRepository->getEditableResourceIds($userId));
+        }
+
         $cacheKey = $itemId->toNative() . $userId->toNative();
         if (isset($this->cache[$cacheKey])) {
             return $this->cache[$cacheKey];
         }
 
-        $editableEvents = $this->permissionRepository->getEditableResourceIds($userId);
-        $this->cache[$cacheKey] = in_array($itemId, $editableEvents);
+        $this->cache[$cacheKey] = in_array($itemId, $this->permissionRepository->getEditableResourceIds($userId));
 
         return $this->cache[$cacheKey];
     }
