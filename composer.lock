@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "014b3c2caacf2cb4b2880bdf85c26dfd",
+    "content-hash": "c4de21a40fdcb22e445b1dc9801c0740",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5063,19 +5063,20 @@
             "time": "2017-10-23T01:57:42+00:00"
         },
         {
-            "name": "publiq/stoplight-docs-uitdatabank",
-            "version": "dev-III-4503-imports",
+            "name": "publiq/udb3-json-schemas",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cultuurnet/stoplight-docs-uitdatabank.git",
-                "reference": "70a22333fdc6c54a21bce798bae0e270bfc032e7"
+                "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
+                "reference": "c2e44e1c8ead0eb609d70c6687ae6407e56a3171"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/stoplight-docs-uitdatabank/zipball/70a22333fdc6c54a21bce798bae0e270bfc032e7",
-                "reference": "70a22333fdc6c54a21bce798bae0e270bfc032e7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/c2e44e1c8ead0eb609d70c6687ae6407e56a3171",
+                "reference": "c2e44e1c8ead0eb609d70c6687ae6407e56a3171",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5087,12 +5088,12 @@
                     "email": "info@publiq.be"
                 }
             ],
-            "description": "UiTdatabank API documentation. Useful for including JSON schemas in your application to work with.",
+            "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
-                "issues": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/issues",
-                "source": "https://github.com/cultuurnet/stoplight-docs-uitdatabank/tree/III-4503-imports"
+                "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2022-03-29T14:00:54+00:00"
+            "time": "2022-04-13T13:51:07+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -10781,7 +10782,7 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/culturefeed-php": 20,
         "doctrine/migrations": 20,
-        "publiq/stoplight-docs-uitdatabank": 20
+        "publiq/udb3-json-schemas": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

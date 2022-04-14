@@ -3315,7 +3315,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/typicalAgeRange',
-                'The string should match pattern: \A[\d]*-[\d]*\z'
+                'The string should match pattern: ^[\d]*-[\d]*$'
             ),
         ];
 
