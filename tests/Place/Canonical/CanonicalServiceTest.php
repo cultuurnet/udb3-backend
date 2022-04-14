@@ -8,6 +8,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
+use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
@@ -23,10 +24,21 @@ class CanonicalServiceTest extends TestCase
 
     private CanonicalService $canonicalService;
 
+    private string $museumPassPlaceId;
+
+    private string $anotherMuseumPassPlaceId;
+
+    private string $mostEventsPlaceId;
+
     private string $oldestPlaceId;
 
     public function setUp(): void
     {
+        $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
+        $this->museumPassPlaceId = '901e23fe-b393-4cc6-9307-8e3e3f2ea77f';
+        $this->anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
+        $this->mostEventsPlaceId = '';
+
         $documentRepository = new InMemoryDocumentRepository();
         $labelsRelations = new Table('labels_relations');
         $labelsRelations->addColumn('labelName', Type::STRING)->setLength(255);
@@ -40,7 +52,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
-                'relationId'=> '526605d3-7cc4-4607-97a4-065896253f42',
+                'relationId'=> $this->museumPassPlaceId,
                 'imported' => '0',
             ]
         );
@@ -50,7 +62,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
-                'relationId'=> '901e23fe-b393-4cc6-9307-8e3e3f2ea77f',
+                'relationId'=> $this->anotherMuseumPassPlaceId,
                 'imported' => '0',
             ]
         );
@@ -66,7 +78,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'event' => 'cb11d320-17dc-41f8-831a-8b9d8208ea80',
                 'organizer' => 'eb89d990-8f5b-46be-a548-c87a300a54c8',
-                'place'=> '901e23fe-b393-4cc6-9307-8e3e3f2ea77f',
+                'place'=> $this->museumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
@@ -74,7 +86,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'event' => '86e4540d-eed2-4cc5-8e08-a9f684deb03f',
                 'organizer' => 'eb89d990-8f5b-46be-a548-c87a300a54c8',
-                'place'=> '901e23fe-b393-4cc6-9307-8e3e3f2ea77f',
+                'place'=> $this->museumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
@@ -82,7 +94,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'event' => 'bf1ba6c5-6d02-4c08-ab62-84ce8aa214a0',
                 'organizer' => 'eb89d990-8f5b-46be-a548-c87a300a54c8',
-                'place'=> '526605d3-7cc4-4607-97a4-065896253f42',
+                'place'=> $this->mostEventsPlaceId,
             ]
         );
 
@@ -97,7 +109,6 @@ class CanonicalServiceTest extends TestCase
             $documentRepository->save($jsonDocument);
         }
 
-        $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
         $oldestJsonDocument = new JsonDocument(
             $this->oldestPlaceId,
             Json::encode(['@id' => $this->oldestPlaceId, 'created' => '2017-12-09T19:40:58+00:00'])
@@ -126,28 +137,45 @@ class CanonicalServiceTest extends TestCase
             [
                 '5d202668-7b6f-4848-9271-f0e0474f7922',
                 'b22d5d76-dceb-4583-8947-e1183a93c10d',
-                '901e23fe-b393-4cc6-9307-8e3e3f2ea77f',
+                $this->museumPassPlaceId,
             ]
         );
 
-        $this->assertEquals('901e23fe-b393-4cc6-9307-8e3e3f2ea77f', $canonicalId);
+        $this->assertEquals($this->museumPassPlaceId, $canonicalId);
     }
 
     /**
      * @test
      */
-    public function it_will_get_the_place_with_the_most_events_when_cluster_contains_2_MPM_places(): void
+    public function it_will_get_the_place_with_most_events(): void
     {
         $canonicalId = $this->canonicalService->getCanonical(
             [
                 '5d202668-7b6f-4848-9271-f0e0474f7922',
                 'b22d5d76-dceb-4583-8947-e1183a93c10d',
-                '526605d3-7cc4-4607-97a4-065896253f42',
-                '901e23fe-b393-4cc6-9307-8e3e3f2ea77f',
+                $this->mostEventsPlaceId,
             ]
         );
 
-        $this->assertEquals('901e23fe-b393-4cc6-9307-8e3e3f2ea77f', $canonicalId);
+        $this->assertEquals($this->mostEventsPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_an_exception_when_cluster_contains_2_MPM_places(): void
+    {
+        $this->expectException(MuseumPassNotUniqueInCluster::class);
+        $this->expectExceptionMessage('Cluster contains 2 MuseumPass places');
+
+        $this->canonicalService->getCanonical(
+            [
+                '5d202668-7b6f-4848-9271-f0e0474f7922',
+                'b22d5d76-dceb-4583-8947-e1183a93c10d',
+                $this->anotherMuseumPassPlaceId,
+                $this->museumPassPlaceId,
+            ]
+        );
     }
 
     /**
