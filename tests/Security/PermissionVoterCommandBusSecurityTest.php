@@ -42,7 +42,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
 
         $this->permissionVoter = new AnyOfVoter(
             new GodUserVoter([$this->godUserId]),
-            new ResourceOwnerVoter($this->permissionRepository)
+            new ResourceOwnerVoter($this->permissionRepository, false)
         );
     }
 
