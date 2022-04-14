@@ -39,7 +39,7 @@ class CanonicalService
             return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
         }
         if (count($placesWithMuseumpas) > 1) {
-            throw new \UnexpectedValueException('Multiple Museumpass places should not exist in a single cluster.');
+            throw new MuseumPassNotUniqueInClusterException(count($placesWithMuseumpas));
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
