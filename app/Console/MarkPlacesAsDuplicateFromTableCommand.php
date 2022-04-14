@@ -59,7 +59,12 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
 
         foreach ($clusterIds as $clusterId) {
             $cluster = $this->duplicatePlaceRepository->getCluster($clusterId);
-            $canonicalId = $this->canonicalService->getCanonical($cluster);
+            try {
+                $canonicalId = $this->canonicalService->getCanonical($cluster);
+            } catch (\UnexpectedValueException $unexpectedValueException){
+                $logger->error('Cluster ' . $clusterId . ' contains multiple Museumpass places and is skipped');
+                continue;
+            }
             $duplicateIds = array_diff($cluster, [$canonicalId]);
 
             foreach ($duplicateIds as $duplicateId) {
