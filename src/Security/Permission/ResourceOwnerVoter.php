@@ -10,11 +10,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class ResourceOwnerVoter implements PermissionVoter
 {
-    /**
-     * @var ResourceOwnerQuery
-     */
-    private $permissionRepository;
+    private ResourceOwnerQuery $permissionRepository;
 
+    private array $cache = [];
 
     public function __construct(ResourceOwnerQuery $permissionRepository)
     {
@@ -26,7 +24,14 @@ class ResourceOwnerVoter implements PermissionVoter
         StringLiteral $itemId,
         StringLiteral $userId
     ): bool {
+        $cacheKey = $itemId->toNative() . $userId->toNative();
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
+
         $editableEvents = $this->permissionRepository->getEditableResourceIds($userId);
-        return in_array($itemId, $editableEvents);
+        $this->cache[$cacheKey] = in_array($itemId, $editableEvents);
+
+        return $this->cache[$cacheKey];
     }
 }
