@@ -46,6 +46,7 @@ use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
+use CultuurNet\UDB3\Offer\NotAllowedToPublish;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -224,13 +225,13 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteCurrentOrganizer($eventId);
         }
 
-        $lastCommandId = null;
         foreach ($commands as $command) {
-            /** @var string|null $commandId */
-            $commandId = $this->commandBus->dispatch($command);
-            if ($commandId) {
-                $lastCommandId = $commandId;
+            try {
+                $commandId = $this->commandBus->dispatch($command);
+            } catch (NotAllowedToPublish $notAllowedToPublish) {
+
             }
+            $lastCommandId = $commandId ?? null;
         }
 
         if ($lastCommandId === null) {
