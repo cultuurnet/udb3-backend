@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,13 +19,17 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
 {
+    private DuplicatePlaceRepository $duplicatePlaceRepository;
+
     private CanonicalService $canonicalService;
 
     public function __construct(
         CommandBus $commandBus,
+        DuplicatePlaceRepository $duplicatePlaceRepository,
         CanonicalService $canonicalService
     ) {
         parent::__construct($commandBus);
+        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->canonicalService = $canonicalService;
     }
 
@@ -47,7 +52,7 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
         $logger = new ConsoleLogger($output);
         $dryRun = (bool) $input->getOption('dry-run');
 
-        $clusterIds = $this->canonicalService->getClusterIds();
+        $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
         if (!$this->askConfirmation($input, $output, count($clusterIds))) {
             return 0;
