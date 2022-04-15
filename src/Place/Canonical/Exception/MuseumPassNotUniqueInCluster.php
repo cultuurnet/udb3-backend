@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Place\Canonical\Exception;
 
 class MuseumPassNotUniqueInCluster extends \Exception
 {
-    public function __construct(int $amount)
+    public function __construct(int $clusterId, int $amount)
     {
-        parent::__construct(sprintf('Cluster contains %d MuseumPass places', $amount));
+        parent::__construct(sprintf('Cluster %s contains %d MuseumPass places', $clusterId, $amount));
     }
 }
