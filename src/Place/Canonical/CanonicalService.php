@@ -15,6 +15,8 @@ class CanonicalService
 {
     private string $museumpasLabel;
 
+    private DuplicatePlaceRepository $duplicatePlaceRepository;
+
     private RepositoryInterface $eventRelationsRepository;
 
     private ReadRepositoryInterface $labelRelationsRepository;
@@ -23,11 +25,13 @@ class CanonicalService
 
     public function __construct(
         string $museumpasLabel,
+        DuplicatePlaceRepository $duplicatePlaceRepository,
         RepositoryInterface $eventRelationsRepository,
         ReadRepositoryInterface $labelRelationsRepository,
         DocumentRepository $placeRepository
     ) {
         $this->museumpasLabel = $museumpasLabel;
+        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->labelRelationsRepository = $labelRelationsRepository;
         $this->placeRepository = $placeRepository;
@@ -49,6 +53,14 @@ class CanonicalService
         }
 
         return $this->getOldestPlace($placeIds);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getClusterIds(): array
+    {
+        return $this->duplicatePlaceRepository->getClusterIds();
     }
 
     private function getPlacesWithMuseumPasInCluster(array $placeIds): array
