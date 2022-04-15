@@ -59,14 +59,6 @@ class CanonicalService
         return [ $canonicalId => array_values(array_diff($placeIds, [$canonicalId]))];
     }
 
-    /**
-     * @return int[]
-     */
-    public function getClusterIds(): array
-    {
-        return $this->duplicatePlaceRepository->getClusterIds();
-    }
-
     private function getPlacesWithMuseumPasInCluster(array $placeIds): array
     {
         $result = $this->labelRelationsRepository->getLabelRelationsForType(
