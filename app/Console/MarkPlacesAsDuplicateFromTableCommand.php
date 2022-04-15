@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
-use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,17 +18,13 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
 {
-    private DuplicatePlaceRepository $duplicatePlaceRepository;
-
     private CanonicalService $canonicalService;
 
     public function __construct(
         CommandBus $commandBus,
-        DuplicatePlaceRepository $duplicatePlaceRepository,
         CanonicalService $canonicalService
     ) {
         parent::__construct($commandBus);
-        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->canonicalService = $canonicalService;
     }
 
@@ -52,37 +47,37 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
         $logger = new ConsoleLogger($output);
         $dryRun = (bool) $input->getOption('dry-run');
 
-        $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
+        $clusterIds = $this->canonicalService->getClusterIds();
 
         if (!$this->askConfirmation($input, $output, count($clusterIds))) {
             return 0;
         }
 
         foreach ($clusterIds as $clusterId) {
-            $cluster = $this->duplicatePlaceRepository->getCluster($clusterId);
             try {
-                $canonicalId = $this->canonicalService->getCanonical($cluster);
+                $canonicalSet = $this->canonicalService->getCanonicalSet($clusterId);
             } catch (MuseumPassNotUniqueInCluster $museumPassNotUniqueInClusterException) {
                 $logger->error($museumPassNotUniqueInClusterException->getMessage());
                 continue;
             }
-            $duplicateIds = array_diff($cluster, [$canonicalId]);
 
-            foreach ($duplicateIds as $duplicateId) {
-                if ($dryRun) {
-                    $logger->info('Would mark place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
-                    continue;
-                }
-                try {
-                    $this->commandBus->dispatch(
-                        new MarkAsDuplicate(
+            foreach ($canonicalSet as $canonicalId => $duplicateIds) {
+                foreach ($duplicateIds as $duplicateId) {
+                    if ($dryRun) {
+                        $logger->info('Would mark place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
+                        continue;
+                    }
+                    try {
+                        $this->commandBus->dispatch(
+                            new MarkAsDuplicate(
                             $duplicateId,
                             $canonicalId
                         )
-                    );
-                    $logger->info('Successfully marked place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
-                } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
-                    $logger->error($e->getMessage());
+                        );
+                        $logger->info('Successfully marked place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
+                    } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
+                        $logger->error($e->getMessage());
+                    }
                 }
             }
         }
