@@ -229,7 +229,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             try {
                 $commandId = $this->commandBus->dispatch($command);
             } catch (NotAllowedToPublish $notAllowedToPublish) {
-
             }
             $lastCommandId = $commandId ?? null;
         }
