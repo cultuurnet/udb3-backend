@@ -70,9 +70,9 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
                     try {
                         $this->commandBus->dispatch(
                             new MarkAsDuplicate(
-                            $duplicateId,
-                            $canonicalId
-                        )
+                                $duplicateId,
+                                $canonicalId
+                            )
                         );
                         $logger->info('Successfully marked place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
                     } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
