@@ -226,15 +226,11 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_return_the_MPM_place(): void
     {
-        $canonicalSet = $this->canonicalService->getCanonicalSet(1);
+        $canonicalId = $this->canonicalService->getCanonical(1);
 
         $this->assertEquals(
-            [$this->museumPassPlaceId => [
-                '5d202668-7b6f-4848-9271-f0e0474f7922',
-                'b22d5d76-dceb-4583-8947-e1183a93c10d',
-            ],
-            ],
-            $canonicalSet
+            $this->museumPassPlaceId,
+            $canonicalId
         );
     }
 
@@ -243,15 +239,12 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_place_with_most_events(): void
     {
-        $canonicalId = $this->canonicalService->getCanonicalSet(3);
+        $canonicalId = $this->canonicalService->getCanonical(3);
 
-        $this->assertEquals([$this->mostEventsPlaceId =>
-        [
-            '5d202668-7b6f-4848-9271-f0e0474f7922',
-            'b22d5d76-dceb-4583-8947-e1183a93c10d',
-        ],
-
-            ], $canonicalId);
+        $this->assertEquals(
+            $this->mostEventsPlaceId,
+            $canonicalId
+        );
     }
 
     /**
@@ -262,7 +255,7 @@ class CanonicalServiceTest extends TestCase
         $this->expectException(MuseumPassNotUniqueInCluster::class);
         $this->expectExceptionMessage('Cluster 2 contains 2 MuseumPass places');
 
-        $this->canonicalService->getCanonicalSet(2);
+        $this->canonicalService->getCanonical(2);
     }
 
     /**
@@ -270,35 +263,11 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_oldest_place_if_equal_nr_of_events(): void
     {
-        $cluster = [
-            '4b4ca084-b78e-474f-b868-6f9df2d20df0',
+        $canonicalId = $this->canonicalService->getCanonical(4);
+
+        $this->assertEquals(
             $this->oldestPlaceId,
-            '4b4ca084-b78e-474f-b868-6f9df2d20df1',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df2',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df3',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df4',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df5',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df6',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df7',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df8',
-            '4b4ca084-b78e-474f-b868-6f9df2d20df9',
-        ];
-
-        $canonicalId = $this->canonicalService->getCanonicalSet(4);
-
-        $this->assertEquals([
-            $this->oldestPlaceId => [
-                '4b4ca084-b78e-474f-b868-6f9df2d20df0',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df1',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df2',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df3',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df4',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df5',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df6',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df7',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df8',
-                '4b4ca084-b78e-474f-b868-6f9df2d20df9',
-            ],
-        ], $canonicalId);
+            $canonicalId
+        );
     }
 }

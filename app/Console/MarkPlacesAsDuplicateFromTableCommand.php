@@ -50,7 +50,7 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $dryRun = (bool) $input->getOption('dry-run');
+        $dryRun = (bool)$input->getOption('dry-run');
 
         $clusterIds = $this->duplicatePlaceRepository->getClusterIds();
 
@@ -59,33 +59,34 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
         }
 
         foreach ($clusterIds as $clusterId) {
+            $cluster = $this->duplicatePlaceRepository->getCluster($clusterId);
             try {
-                $canonicalSet = $this->canonicalService->getCanonicalSet($clusterId);
+                $canonicalId = $this->canonicalService->getCanonical($clusterId);
             } catch (MuseumPassNotUniqueInCluster $museumPassNotUniqueInClusterException) {
                 $logger->error($museumPassNotUniqueInClusterException->getMessage());
                 continue;
             }
+            $duplicateIds = array_diff($cluster, [$canonicalId]);
 
-            foreach ($canonicalSet as $canonicalId => $duplicateIds) {
-                foreach ($duplicateIds as $duplicateId) {
-                    if ($dryRun) {
-                        $logger->info('Would mark place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
-                        continue;
-                    }
-                    try {
-                        $this->commandBus->dispatch(
-                            new MarkAsDuplicate(
-                                $duplicateId,
-                                $canonicalId
-                            )
-                        );
-                        $logger->info('Successfully marked place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
-                    } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
-                        $logger->error($e->getMessage());
-                    }
+            foreach ($duplicateIds as $duplicateId) {
+                if ($dryRun) {
+                    $logger->info('Would mark place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
+                    continue;
+                }
+                try {
+                    $this->commandBus->dispatch(
+                        new MarkAsDuplicate(
+                            $duplicateId,
+                            $canonicalId
+                        )
+                    );
+                    $logger->info('Successfully marked place ' . $duplicateId . ' as duplicate of ' . $canonicalId);
+                } catch (CannotMarkPlaceAsCanonical|CannotMarkPlaceAsDuplicate $e) {
+                    $logger->error($e->getMessage());
                 }
             }
         }
+
         return 0;
     }
 

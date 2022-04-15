@@ -37,13 +37,13 @@ class CanonicalService
         $this->placeRepository = $placeRepository;
     }
 
-    public function getCanonicalSet(int $clusterId): array
+    public function getCanonical(int $clusterId): string
     {
         $placeIds = $this->duplicatePlaceRepository->getCluster($clusterId);
+
         $placesWithMuseumpas = $this->getPlacesWithMuseumPasInCluster($placeIds);
         if (count($placesWithMuseumpas) === 1) {
-            $canonicalId = $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
-            return [ $canonicalId => array_values(array_diff($placeIds, [$canonicalId]))];
+            return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
         }
         if (count($placesWithMuseumpas) > 1) {
             throw new MuseumPassNotUniqueInCluster($clusterId, count($placesWithMuseumpas));
@@ -51,12 +51,10 @@ class CanonicalService
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
         if (count($placesWithMostEvents) === 1) {
-            $canonicalId = $placesWithMostEvents[array_key_first($placesWithMostEvents)];
-            return [ $canonicalId => array_values(array_diff($placeIds, [$canonicalId]))];
+            return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
         }
 
-        $canonicalId = $this->getOldestPlace($placeIds);
-        return [ $canonicalId => array_values(array_diff($placeIds, [$canonicalId]))];
+        return $this->getOldestPlace($placeIds);
     }
 
     private function getPlacesWithMuseumPasInCluster(array $placeIds): array
