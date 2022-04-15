@@ -37,7 +37,90 @@ class CanonicalServiceTest extends TestCase
         $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
         $this->museumPassPlaceId = '901e23fe-b393-4cc6-9307-8e3e3f2ea77f';
         $this->anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
-        $this->mostEventsPlaceId = '';
+        $this->mostEventsPlaceId = '34621f3b-b626-4672-be7c-33972ac13791';
+
+        $table = new Table('duplicate_places');
+        $table->addColumn('cluster_id', Type::BIGINT)->setNotnull(true);
+        $table->addColumn('place_uuid', Type::GUID)->setLength(36)->setNotnull(true);
+        $this->createTable($table);
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '1',
+                'place_uuid' => '5d202668-7b6f-4848-9271-f0e0474f7922',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '1',
+                'place_uuid' => $this->museumPassPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '1',
+                'place_uuid' => 'b22d5d76-dceb-4583-8947-e1183a93c10d',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '2',
+                'place_uuid' => $this->anotherMuseumPassPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '2',
+                'place_uuid' => $this->museumPassPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '2',
+                'place_uuid' => '5d202668-7b6f-4848-9271-f0e0474f7922',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '2',
+                'place_uuid' => 'b22d5d76-dceb-4583-8947-e1183a93c10d',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '3',
+                'place_uuid' => '5d202668-7b6f-4848-9271-f0e0474f7922',
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '3',
+                'place_uuid' => $this->mostEventsPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '3',
+                'place_uuid' => 'b22d5d76-dceb-4583-8947-e1183a93c10d',
+            ]
+        );
+
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => '4',
+                'place_uuid' => $this->oldestPlaceId,
+            ]
+        );
 
         $documentRepository = new InMemoryDocumentRepository();
         $labelsRelations = new Table('labels_relations');
@@ -102,6 +185,15 @@ class CanonicalServiceTest extends TestCase
 
         for ($i = 0; $i < 10; $i++) {
             $placeId = '4b4ca084-b78e-474f-b868-6f9df2d20df' . $i;
+
+            $this->getConnection()->insert(
+                'duplicate_places',
+                [
+                    'cluster_id' => '4',
+                    'place_uuid' => $placeId,
+                ]
+            );
+
             $jsonDocument = new JsonDocument(
                 $placeId,
                 Json::encode(['@id' => $placeId, 'created' => '2018-12-0' . $i . 'T19:40:58+00:00'])
@@ -117,6 +209,7 @@ class CanonicalServiceTest extends TestCase
 
         $this->canonicalService = new CanonicalService(
             'museumPASSmusees',
+            new DBALDuplicatePlaceRepository($this->getConnection()),
             new DBALRepository(
                 $this->getConnection()
             ),
@@ -133,15 +226,16 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_return_the_MPM_place(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(
-            [
+        $canonicalSet = $this->canonicalService->getCanonicalSet(1);
+
+        $this->assertEquals(
+            [$this->museumPassPlaceId => [
                 '5d202668-7b6f-4848-9271-f0e0474f7922',
                 'b22d5d76-dceb-4583-8947-e1183a93c10d',
-                $this->museumPassPlaceId,
-            ]
+            ],
+            ],
+            $canonicalSet
         );
-
-        $this->assertEquals($this->museumPassPlaceId, $canonicalId);
     }
 
     /**
@@ -149,15 +243,15 @@ class CanonicalServiceTest extends TestCase
      */
     public function it_will_get_the_place_with_most_events(): void
     {
-        $canonicalId = $this->canonicalService->getCanonical(
-            [
-                '5d202668-7b6f-4848-9271-f0e0474f7922',
-                'b22d5d76-dceb-4583-8947-e1183a93c10d',
-                $this->mostEventsPlaceId,
-            ]
-        );
+        $canonicalId = $this->canonicalService->getCanonicalSet(3);
 
-        $this->assertEquals($this->mostEventsPlaceId, $canonicalId);
+        $this->assertEquals([$this->mostEventsPlaceId =>
+        [
+            '5d202668-7b6f-4848-9271-f0e0474f7922',
+            'b22d5d76-dceb-4583-8947-e1183a93c10d',
+        ],
+
+            ], $canonicalId);
     }
 
     /**
@@ -166,16 +260,9 @@ class CanonicalServiceTest extends TestCase
     public function it_will_throw_an_exception_when_cluster_contains_2_MPM_places(): void
     {
         $this->expectException(MuseumPassNotUniqueInCluster::class);
-        $this->expectExceptionMessage('Cluster contains 2 MuseumPass places');
+        $this->expectExceptionMessage('Cluster 2 contains 2 MuseumPass places');
 
-        $this->canonicalService->getCanonical(
-            [
-                '5d202668-7b6f-4848-9271-f0e0474f7922',
-                'b22d5d76-dceb-4583-8947-e1183a93c10d',
-                $this->anotherMuseumPassPlaceId,
-                $this->museumPassPlaceId,
-            ]
-        );
+        $this->canonicalService->getCanonicalSet(2);
     }
 
     /**
@@ -196,12 +283,22 @@ class CanonicalServiceTest extends TestCase
             '4b4ca084-b78e-474f-b868-6f9df2d20df8',
             '4b4ca084-b78e-474f-b868-6f9df2d20df9',
         ];
-        shuffle($cluster);
 
-        $canonicalId = $this->canonicalService->getCanonical(
-            $cluster
-        );
+        $canonicalId = $this->canonicalService->getCanonicalSet(4);
 
-        $this->assertEquals($this->oldestPlaceId, $canonicalId);
+        $this->assertEquals([
+            $this->oldestPlaceId => [
+                '4b4ca084-b78e-474f-b868-6f9df2d20df0',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df1',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df2',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df3',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df4',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df5',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df6',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df7',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df8',
+                '4b4ca084-b78e-474f-b868-6f9df2d20df9',
+            ],
+        ], $canonicalId);
     }
 }
