@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
+use CultuurNet\UDB3\Offer\NotAllowedToPublish;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
@@ -224,13 +225,12 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteCurrentOrganizer($placeId);
         }
 
-        $lastCommandId = null;
         foreach ($commands as $command) {
-            /** @var string|null $commandId */
-            $commandId = $this->commandBus->dispatch($command);
-            if ($commandId) {
-                $lastCommandId = $commandId;
+            try {
+                $commandId = $this->commandBus->dispatch($command);
+            } catch (NotAllowedToPublish $notAllowedToPublish) {
             }
+            $lastCommandId = $commandId ?? null;
         }
 
         if ($lastCommandId === null) {
