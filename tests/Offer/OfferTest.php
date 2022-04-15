@@ -1234,7 +1234,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_throws_when_trying_to_publish_a_non_draft_offer(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('You can not publish an offer that is not draft');
+        $this->expectExceptionMessage('Only an offer with workflow status DRAFT can be published, current status is REJECTED');
 
         $itemId = 'itemId';
         $now = new \DateTime();
