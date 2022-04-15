@@ -46,7 +46,7 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
         $this->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the mark-places-as-duplicate as a dry run.');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
