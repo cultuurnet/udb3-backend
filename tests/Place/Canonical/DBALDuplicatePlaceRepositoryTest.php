@@ -14,7 +14,8 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
     use DBALTestConnectionTrait;
 
     private DBALDuplicatePlaceRepository $duplicatePlaceRepository;
-    public function setUp()
+
+    public function setUp(): void
     {
         $table = new Table('duplicate_places');
         $table->addColumn('cluster_id', Type::BIGINT)->setNotnull(true);
