@@ -813,7 +813,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         if (!$this->workflowStatus->sameAs(WorkflowStatus::DRAFT())) {
-            throw new Exception('You can not publish an offer that is not draft');
+            throw new NotAllowedToPublish($this->workflowStatus);
         }
 
         return false;
