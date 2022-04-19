@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\StringLiteral;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
@@ -33,10 +34,22 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         }
     }
 
+    public function getLabelRelationsForType(LabelName $labelName, RelationType $relationType): array
+    {
+        $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
+
+        return $this->createQueryBuilder()->select(SchemaConfigurator::RELATION_ID)
+            ->from($this->getTableName()->toNative())
+            ->where($whereLabelName)
+            ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
+            ->setParameters([$labelName->toNative(), $relationType->toString()])
+        ->execute()->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
     /**
      * @inheritdoc
      */
-    public function getLabelRelationsForItem(StringLiteral $relationId)
+    public function getLabelRelationsForItem(StringLiteral $relationId): array
     {
         $aliases = $this->getAliases();
         $whereRelationId = SchemaConfigurator::RELATION_ID . ' = ?';
@@ -60,10 +73,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         return $labelRelations;
     }
 
-    /**
-     * @return array
-     */
-    private function getAliases()
+    private function getAliases(): array
     {
         return [
             SchemaConfigurator::LABEL_NAME,

@@ -18,6 +18,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
@@ -53,6 +54,8 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Place\Canonical\CanonicalService;
+use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
@@ -715,6 +718,29 @@ $app['place_service'] = $app->share(
             $app['place_repository'],
             $app['place_relations_repository'],
             $app['place_iri_generator']
+        );
+    }
+);
+
+$app['duplicate_place_repository'] = $app->share(
+    function ($app) {
+        return new DBALDuplicatePlaceRepository(
+            $app['dbal_connection']
+        );
+    }
+);
+
+$app['canonical_service'] = $app->share(
+    function ($app) {
+        return new CanonicalService(
+            $app['config']['museumpas']['label'],
+            $app['duplicate_place_repository'],
+            $app['event_relations_repository'],
+            new DBALReadRepository(
+                $app['dbal_connection'],
+                new StringLiteral('labels_relations')
+            ),
+            $app['place_jsonld_repository']
         );
     }
 );

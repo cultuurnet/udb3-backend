@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Place\Canonical;
+
+interface DuplicatePlaceRepository
+{
+    /**
+     * @return int[]
+     */
+    public function getClusterIds(): array;
+
+    /**
+     * @return string[]
+     */
+    public function getCluster(int $clusterId): array;
+}

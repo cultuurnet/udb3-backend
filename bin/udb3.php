@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Silex\Console\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
+use CultuurNet\UDB3\Silex\Console\MarkPlacesAsDuplicateFromTableCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
@@ -104,6 +105,13 @@ $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[Organi
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
+$consoleApp->add(
+    new MarkPlacesAsDuplicateFromTableCommand(
+        $app['event_command_bus'],
+        $app['duplicate_place_repository'],
+        $app['canonical_service']
+    )
+);
 $consoleApp->add(
     new DispatchMarkedAsDuplicateEventCommand(
         $app['event_command_bus'],

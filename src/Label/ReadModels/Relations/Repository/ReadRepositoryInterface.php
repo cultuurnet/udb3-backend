@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\StringLiteral;
 
 interface ReadRepositoryInterface
@@ -15,7 +16,12 @@ interface ReadRepositoryInterface
     public function getLabelRelations(LabelName $labelName);
 
     /**
+     * @return string[]
+     */
+    public function getLabelRelationsForType(LabelName $labelName, RelationType $relationType): array;
+
+    /**
      * @return LabelRelation[]
      */
-    public function getLabelRelationsForItem(StringLiteral $relationId);
+    public function getLabelRelationsForItem(StringLiteral $relationId): array;
 }
