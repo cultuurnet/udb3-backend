@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
@@ -27,6 +28,10 @@ final class EventCommandHandlerProvider implements ServiceProviderInterface
 
         $app[RemoveThemeHandler::class] = $app->share(
             fn (Application $application) => new RemoveThemeHandler($app['event_repository'])
+        );
+
+        $app[UpdateAttendanceModeHandler::class] = $app->share(
+            fn (Application $application) => new UpdateAttendanceModeHandler($app['event_repository'])
         );
 
         $app[UpdateAudienceHandler::class] = $app->share(
