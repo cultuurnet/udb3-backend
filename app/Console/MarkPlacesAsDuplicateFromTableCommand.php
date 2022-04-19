@@ -36,14 +36,19 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
     public function configure(): void
     {
         $this->setName('place:mark-places-as-duplicate');
-        $this->setDescription('Marks multiple Places as duplicate of another one, based on the duplicate_places table');
+        $this->setDescription('Marks multiple places as duplicate of another one, based on the duplicate_places table');
         $this->addOption(
             'force',
             null,
             InputOption::VALUE_NONE,
             'Skip confirmation.'
         );
-        $this->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the mark-places-as-duplicate as a dry run.');
+        $this->addOption(
+            'dry-run',
+            null,
+            InputOption::VALUE_NONE,
+            'Execute a dry-run of mark-places-as-duplicate.'
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int

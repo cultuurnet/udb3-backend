@@ -23,5 +23,5 @@ interface ReadRepositoryInterface
     /**
      * @return LabelRelation[]
      */
-    public function getLabelRelationsForItem(StringLiteral $relationId);
+    public function getLabelRelationsForItem(StringLiteral $relationId): array;
 }

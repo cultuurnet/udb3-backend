@@ -26,8 +26,6 @@ class CanonicalServiceTest extends TestCase
 
     private string $museumPassPlaceId;
 
-    private string $anotherMuseumPassPlaceId;
-
     private string $mostEventsPlaceId;
 
     private string $oldestPlaceId;
@@ -36,7 +34,7 @@ class CanonicalServiceTest extends TestCase
     {
         $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
         $this->museumPassPlaceId = '901e23fe-b393-4cc6-9307-8e3e3f2ea77f';
-        $this->anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
+        $anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
         $this->mostEventsPlaceId = '34621f3b-b626-4672-be7c-33972ac13791';
 
         $table = new Table('duplicate_places');
@@ -68,7 +66,7 @@ class CanonicalServiceTest extends TestCase
             'duplicate_places',
             [
                 'cluster_id' => '2',
-                'place_uuid' => $this->anotherMuseumPassPlaceId,
+                'place_uuid' => $anotherMuseumPassPlaceId,
             ]
         );
         $this->getConnection()->insert(
@@ -145,7 +143,7 @@ class CanonicalServiceTest extends TestCase
             [
                 'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
-                'relationId'=> $this->anotherMuseumPassPlaceId,
+                'relationId'=> $anotherMuseumPassPlaceId,
                 'imported' => '0',
             ]
         );
