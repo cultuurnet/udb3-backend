@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
+use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
@@ -164,6 +165,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
                 $commands[] = new UpdateTheme($eventId, $theme->getId());
             }
         }
+
+        $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
 
         if ($location->isDummyPlaceForEducation()) {
             $audienceType = AudienceType::education();
