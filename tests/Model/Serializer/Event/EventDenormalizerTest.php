@@ -64,6 +64,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
@@ -1461,6 +1462,7 @@ class EventDenormalizerTest extends TestCase
                 '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
             ],
             'calendarType' => 'permanent',
+            'attendanceMode' => 'online',
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
@@ -1605,6 +1607,9 @@ class EventDenormalizerTest extends TestCase
             )
             ->withAgeRange(
                 new AgeRange(new Age(8), new Age(12))
+            )
+            ->withAttendanceMode(
+                AttendanceMode::online()
             )
             ->withAudienceType(
                 AudienceType::education()

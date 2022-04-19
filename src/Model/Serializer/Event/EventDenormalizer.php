@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -103,7 +104,18 @@ class EventDenormalizer extends OfferDenormalizer
 
         /* @var ImmutableEvent $offer */
         $offer = $this->denormalizeOffer($data);
+        $offer = $this->denormalizeAttendanceMode($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
+    }
+
+    private function denormalizeAttendanceMode(array $data, ImmutableEvent $event): ImmutableEvent
+    {
+        if (isset($data['attendanceMode'])) {
+            $attendanceMode = new AttendanceMode($data['attendanceMode']);
+            $event = $event->withAttendanceMode($attendanceMode);
+        }
+
+        return $event;
     }
 
     private function denormalizeAudienceType(array $data, ImmutableEvent $event): ImmutableEvent
