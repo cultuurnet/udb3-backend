@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
@@ -63,6 +64,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
@@ -266,6 +268,8 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
+        $jsonLD->attendanceMode = AttendanceMode::offline()->toString();
+
         $defaultAudience = new Audience(AudienceType::everyone());
         $jsonLD->audience = $defaultAudience->serialize();
 
@@ -415,6 +419,16 @@ class EventLDProjector extends OfferLDProjector implements
         ];
 
         return $document->withBody($eventLd);
+    }
+
+    protected function applyAttendanceModeUpdated(AttendanceModeUpdated $attendanceModeUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($attendanceModeUpdated->getEventId());
+        $jsonLD = $document->getBody();
+
+        $jsonLD->attendanceMode = $attendanceModeUpdated->getAttendanceMode();
+
+        return $document->withBody($jsonLD);
     }
 
     protected function applyAudienceUpdated(AudienceUpdated $audienceUpdated): JsonDocument
