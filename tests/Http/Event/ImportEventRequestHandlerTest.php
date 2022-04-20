@@ -133,7 +133,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -203,7 +203,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -284,7 +284,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -330,7 +330,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -401,7 +401,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -444,7 +444,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannekoeken voor het goede doel')),
+                new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannenkoeken voor het goede doel')),
                 new UpdateType($eventId, '1.50.0.0.0'),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
                 new UpdateCalendar($eventId, new Calendar(CalendarType::PERMANENT())),
@@ -727,7 +727,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '0.5.0.0.0',
             ],
@@ -800,7 +800,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '0.5.0.0.0',
             ],
@@ -870,7 +870,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'address' => [
                 'addressCountry' => 'BE',
                 'addressLocality' => '',
@@ -955,7 +955,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '0.5.0.0.0',
             ],
@@ -1024,7 +1024,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '0.5.0.0.0',
             ],
@@ -1103,7 +1103,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '1.50.0.0.0',
             ],
@@ -1180,7 +1180,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '1.50.0.0.0',
             ],
@@ -1256,7 +1256,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '1.50.0.0.0',
             ],
@@ -1336,7 +1336,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '1.50.0.0.0',
             ],
@@ -1410,7 +1410,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $given = [
             'mainLanguage' => 'nl',
-            'name' => 'Pannekoeken voor het goede doel',
+            'name' => 'Pannenkoeken voor het goede doel',
             'type' => [
                 'id' => '1.50.0.0.0',
             ],
@@ -1489,7 +1489,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1574,7 +1574,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'foo',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1607,7 +1607,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'nl',
             ],
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1667,7 +1667,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
                 'fr' => '   ',
                 'en' => '',
             ],
@@ -1766,7 +1766,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
                 'es' => 'Invalid language',
             ],
             'terms' => [
@@ -1834,7 +1834,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1865,7 +1865,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1896,7 +1896,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1933,7 +1933,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1966,7 +1966,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -1997,7 +1997,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2034,7 +2034,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2073,7 +2073,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2111,7 +2111,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2150,7 +2150,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2181,7 +2181,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2218,7 +2218,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2265,7 +2265,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2303,7 +2303,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2352,7 +2352,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2405,7 +2405,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2458,7 +2458,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2500,7 +2500,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2538,7 +2538,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2576,7 +2576,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2610,7 +2610,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2642,7 +2642,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2674,7 +2674,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [],
             'location' => [
@@ -2701,7 +2701,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2733,7 +2733,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2764,7 +2764,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2797,7 +2797,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2833,7 +2833,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2866,7 +2866,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2900,7 +2900,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2936,7 +2936,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -2973,7 +2973,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3074,7 +3074,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3106,7 +3106,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3138,7 +3138,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3172,7 +3172,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3204,7 +3204,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3247,7 +3247,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3284,7 +3284,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3316,7 +3316,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3350,7 +3350,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3384,7 +3384,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3416,7 +3416,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3448,7 +3448,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3480,7 +3480,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3518,7 +3518,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3584,7 +3584,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3616,7 +3616,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3648,7 +3648,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3680,7 +3680,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3729,7 +3729,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3783,7 +3783,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3843,7 +3843,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3910,7 +3910,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -3965,7 +3965,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4008,7 +4008,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4063,7 +4063,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4104,7 +4104,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4153,7 +4153,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4208,7 +4208,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $given = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4288,7 +4288,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4322,7 +4322,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4356,7 +4356,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4390,7 +4390,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4424,7 +4424,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4458,7 +4458,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4495,7 +4495,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4532,7 +4532,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4569,7 +4569,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4612,7 +4612,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4646,7 +4646,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4681,7 +4681,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4718,7 +4718,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4757,7 +4757,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4792,7 +4792,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4824,7 +4824,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4860,7 +4860,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4906,7 +4906,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4946,7 +4946,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -4986,7 +4986,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5026,7 +5026,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5066,7 +5066,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5106,7 +5106,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5146,7 +5146,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5187,7 +5187,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5228,7 +5228,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5269,7 +5269,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5301,7 +5301,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5337,7 +5337,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5374,7 +5374,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5411,7 +5411,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5449,7 +5449,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
@@ -5487,7 +5487,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $event = [
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Pannekoeken voor het goede doel',
+                'nl' => 'Pannenkoeken voor het goede doel',
             ],
             'terms' => [
                 [
