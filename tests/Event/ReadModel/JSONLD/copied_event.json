@@ -22,6 +22,7 @@
     }
   ],
   "workflowStatus": "DRAFT",
+  "attendanceMode": "offline",
   "audience": {
     "audienceType": "everyone"
   },

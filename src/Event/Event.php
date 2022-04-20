@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
@@ -75,6 +76,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -92,6 +94,8 @@ use CultuurNet\UDB3\StringLiteral;
 class Event extends Offer implements UpdateableWithCdbXmlInterface
 {
     protected string $eventId;
+
+    private string $attendanceMode;
 
     private ?Audience $audience = null;
 
@@ -196,6 +200,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $this->calendar = $eventCreated->getCalendar();
+        $this->attendanceMode = AttendanceMode::offline()->toString();
         $this->audience = new Audience(AudienceType::everyone());
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
@@ -361,6 +366,18 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );
         }
+    }
+
+    public function updateAttendanceMode(AttendanceMode $attendanceMode): void
+    {
+        if ($this->attendanceMode !== $attendanceMode->toString()) {
+            $this->apply(new AttendanceModeUpdated($this->eventId, $attendanceMode->toString()));
+        }
+    }
+
+    public function applyAttendanceModeUpdated(AttendanceModeUpdated $attendanceModeUpdated): void
+    {
+        $this->attendanceMode = $attendanceModeUpdated->getAttendanceMode();
     }
 
     public function updateAudience(Audience $audience): void

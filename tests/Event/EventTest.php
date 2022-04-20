@@ -10,6 +10,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -42,6 +43,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -107,6 +109,23 @@ class EventTest extends AggregateRootScenarioTestCase
             new Calendar(CalendarType::PERMANENT()),
             new Theme('1.8.3.1.0', 'Pop en rock')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_update_attendanceMode(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateAttendanceMode(AttendanceMode::online())
+            )
+            ->then([
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::online()->toString()),
+            ]);
     }
 
     /**

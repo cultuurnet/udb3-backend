@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use PHPUnit\Framework\TestCase;
 
 class ImmutableEventTest extends TestCase
@@ -72,6 +73,27 @@ class ImmutableEventTest extends TestCase
         $this->assertNotEquals($event, $updatedEvent);
         $this->assertEquals($placeReference, $event->getPlaceReference());
         $this->assertEquals($updatedPlaceReference, $updatedEvent->getPlaceReference());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_offline_as_the_default_attendanceMode(): void
+    {
+        $this->assertTrue($this->getEvent()->getAttendanceMode()->sameAs(AttendanceMode::offline()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_attendanceMode(): void
+    {
+        $event = $this->getEvent();
+        $updatedEvent = $event->withAttendanceMode(AttendanceMode::mixed());
+
+        $this->assertNotEquals($event, $updatedEvent);
+        $this->assertTrue($event->getAttendanceMode()->sameAs(AttendanceMode::offline()));
+        $this->assertTrue($updatedEvent->getAttendanceMode()->sameAs(AttendanceMode::mixed()));
     }
 
     /**

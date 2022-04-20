@@ -12,11 +12,14 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use InvalidArgumentException;
 
 class ImmutableEvent extends ImmutableOffer implements Event
 {
     private PlaceReference $placeReference;
+
+    private AttendanceMode $attendanceMode;
 
     private AudienceType $audience;
 
@@ -39,6 +42,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
         parent::__construct($id, $mainLanguage, $title, $calendar, $categories);
         $this->placeReference = $placeReference;
+        $this->attendanceMode = AttendanceMode::offline();
         $this->audience = AudienceType::everyone();
     }
 
@@ -51,6 +55,17 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         $c = clone $this;
         $c->placeReference = $placeReference;
+        return $c;
+    }
+
+    public function getAttendanceMode(): AttendanceMode
+    {
+        return $this->attendanceMode;
+    }
+    public function withAttendanceMode(AttendanceMode $attendanceMode): ImmutableEvent
+    {
+        $c = clone $this;
+        $c->attendanceMode = $attendanceMode;
         return $c;
     }
 

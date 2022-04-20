@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -51,6 +52,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -1244,6 +1246,27 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
+    public function it_projects_updating_attendanceMode(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $attendanceModeUpdated = new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString());
+
+        $body = $this->project($attendanceModeUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
+
+        $expectedJson = (object) [
+            '@id' => 'http://example.com/entity/' . $eventId,
+            '@context' => '/contexts/event',
+            'attendanceMode' => AttendanceMode::online()->toString(),
+            'modified' => $this->recordedOn->toString(),
+        ];
+
+        $this->assertEquals($expectedJson, $body);
+    }
+
+    /**
+     * @test
+     */
     public function it_projects_updating_audience(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
@@ -1511,6 +1534,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->created = '2015-01-20T13:25:21+01:00';
         $jsonLD->modified = '2015-01-20T13:25:21+01:00';
         $jsonLD->workflowStatus = 'DRAFT';
+        $jsonLD->attendanceMode = AttendanceMode::offline()->toString();
         $jsonLD->audience = (object)['audienceType' => 'everyone'];
         $jsonLD->languages = [$mainLanguage->getCode()];
         $jsonLD->completedLanguages = [$mainLanguage->getCode()];
