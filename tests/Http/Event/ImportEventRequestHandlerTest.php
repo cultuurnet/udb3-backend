@@ -571,14 +571,14 @@ final class ImportEventRequestHandlerTest extends TestCase
                 [
                     '@id' => 'https://io.uitdatabank.dev/images/85b04295-479c-40f5-b3dd-469dfb4387b3',
                     '@type' => 'schema:ImageObject',
-                    'contentUrl' => 'https://io.uitdatabank.dev/images/pannekoeken.png',
-                    'thumbnailUrl' => 'https://io.uitdatabank.dev/images/pannekoeken.png',
-                    'description' => 'Een stapel pannekoeken',
+                    'contentUrl' => 'https://io.uitdatabank.dev/images/pannenkoeken.png',
+                    'thumbnailUrl' => 'https://io.uitdatabank.dev/images/pannenkoeken.png',
+                    'description' => 'Een stapel pannenkoeken',
                     'copyrightHolder' => '© publiq vzw',
                     'inLanguage' => 'nl',
                 ],
             ],
-            'image' => 'https://io.uitdatabank.dev/images/pannekoeken.png',
+            'image' => 'https://io.uitdatabank.dev/images/pannenkoeken.png',
             'videos' => [
                 [
                     'id' => 'b504cf44-9ab8-4641-9934-38d1cc67242c',
@@ -605,7 +605,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new Image(
                     new UUID('85b04295-479c-40f5-b3dd-469dfb4387b3'),
                     MIMEType::fromSubtype('png'),
-                    new Description('Een stapel pannekoeken'),
+                    new Description('Een stapel pannenkoeken'),
                     new CopyrightHolder('© publiq vzw'),
                     new Url('https://io.uitdatabank.dev/images/8b3c82d5-6cfe-442e-946c-1f4452636d61.png'),
                     new LegacyLanguage('nl')
