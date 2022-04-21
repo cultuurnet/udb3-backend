@@ -9,7 +9,7 @@ use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\CalendarValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -112,7 +112,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $this->importPreProcessingRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $placeId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),
-            new CalendarValidationRequestBodyParser(),
+            new CalendarValidatingRequestBodyParser(),
             new BookingInfoValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForPlace(),
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
