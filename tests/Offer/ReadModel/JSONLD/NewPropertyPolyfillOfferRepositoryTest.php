@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
@@ -155,6 +156,34 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                 'status' => [
                     'type' => 'Unavailable',
                 ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_polyfill_a_default_attendanceMode_if_not_set(): void
+    {
+        $this
+            ->given([])
+            ->assertReturnedDocumentContains(
+                [
+                    'attendanceMode' => AttendanceMode::offline()->toString(),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_change_existing_attendanceMode(): void
+    {
+        $this
+            ->given([
+                'attendanceMode' => AttendanceMode::mixed()->toString(),
+            ])
+            ->assertReturnedDocumentContains([
+                'attendanceMode' => AttendanceMode::mixed()->toString(),
             ]);
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -25,6 +26,7 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             function (array $json) {
                 $json = $this->polyfillMediaObjectId($json);
                 $json = $this->polyfillStatus($json);
+                $json = $this->polyfillAttendanceMode($json);
                 $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventProperties($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
@@ -68,6 +70,15 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             $json['status'] = [
                 'type' => StatusType::available()->toNative(),
             ];
+        }
+
+        return $json;
+    }
+
+    private function polyfillAttendanceMode(array $json): array
+    {
+        if (!isset($json['attendanceMode'])) {
+            $json['attendanceMode'] = AttendanceMode::offline()->toString();
         }
 
         return $json;
