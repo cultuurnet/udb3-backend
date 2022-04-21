@@ -28,7 +28,7 @@ final class AttendanceModeValidatingRequestBodyParser implements RequestBodyPars
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/attendanceMode',
-                    'Attendance mode "offline" can not be combined with a virtual location.'
+                    'Attendance mode "offline" needs to have a real location.'
                 )
             );
         }

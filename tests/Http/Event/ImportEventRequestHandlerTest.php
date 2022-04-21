@@ -2690,7 +2690,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/attendanceMode',
-                'Attendance mode "offline" can not be combined with a virtual location.'
+                'Attendance mode "offline" needs to have a real location.'
             ),
         ];
 
@@ -2722,7 +2722,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/attendanceMode',
-                'Attendance mode "offline" can not be combined with a virtual location.'
+                'Attendance mode "offline" needs to have a real location.'
             ),
         ];
 
