@@ -2764,6 +2764,38 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_attendanceMode_is_mixed_and_location_is_virtual(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/00000000-0000-0000-0000-000000000000',
+            ],
+            'calendarType' => 'permanent',
+            'attendanceMode' => 'mixed',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/attendanceMode',
+                'Attendance mode "mixed" needs to have a real location.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_terms_is_empty(): void
     {
         $event = [
