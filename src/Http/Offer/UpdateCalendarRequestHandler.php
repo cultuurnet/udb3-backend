@@ -38,7 +38,7 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
 
         $parser = RequestBodyParserFactory::createBaseParser(
             new LegacyUpdateCalendarRequestBodyParser(),
-            new UpdateCalendarValidationRequestBodyParser($jsonSchema),
+            new UpdateCalendarValidatingRequestBodyParser($jsonSchema),
             new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class)
         );
 

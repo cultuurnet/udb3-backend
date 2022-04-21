@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class UpdateCalendarValidationRequestBodyParser implements RequestBodyParser
+final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyParser
 {
     private string $jsonSchemaLocatorFile;
 
