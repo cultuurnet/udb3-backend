@@ -90,7 +90,7 @@ final class MajorInfoUpdated extends AbstractEvent
             'title' => (string)$this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
-            'location' => $this->getLocation()->toNative(),
+            'location' => $this->getLocation()->toString(),
             'calendar' => $this->getCalendar()->serialize(),
         ];
     }

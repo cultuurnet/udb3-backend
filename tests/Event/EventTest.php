@@ -848,7 +848,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
-        $locationId = new LocationId($createEvent->getLocation()->toNative());
+        $locationId = new LocationId($createEvent->getLocation()->toString());
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
         $xmlNamespace = self::NS_CDBXML_3_2;
@@ -881,7 +881,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
         $eventId = $createEvent->getEventId();
         $newLocationId = new LocationId('776fd571-9830-42f0-81be-a38eac5506ce');
-        LocationId::setDummyPlaceForEducationIds([$newLocationId->toNative()]);
+        LocationId::setDummyPlaceForEducationIds([$newLocationId->toString()]);
 
         $this->scenario
             ->given(

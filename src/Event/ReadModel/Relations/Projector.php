@@ -77,7 +77,7 @@ class Projector implements EventListener
         $eventId = $event->getEventId();
 
         // Store relation if the event is connected with a place.
-        $cdbid = $event->getLocation()->toNative();
+        $cdbid = $event->getLocation()->toString();
         if (!empty($cdbid)) {
             $organizer = null;
             $this->storeRelations($eventId, $cdbid, $organizer);
@@ -102,7 +102,7 @@ class Projector implements EventListener
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
     {
         $eventId = $majorInfoUpdated->getItemId();
-        $cdbId = $majorInfoUpdated->getLocation()->toNative();
+        $cdbId = $majorInfoUpdated->getLocation()->toString();
         $this->repository->storePlace($eventId, $cdbId);
     }
 
@@ -110,7 +110,7 @@ class Projector implements EventListener
     protected function applyLocationUpdated(LocationUpdated $locationUpdated)
     {
         $eventId = $locationUpdated->getItemId();
-        $locationId = $locationUpdated->getLocationId()->toNative();
+        $locationId = $locationUpdated->getLocationId()->toString();
         $this->repository->storePlace($eventId, $locationId);
     }
 

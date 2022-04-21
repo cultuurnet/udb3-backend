@@ -302,7 +302,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     public function updateLocation(LocationId $locationId): void
     {
-        if (!is_null($this->locationId) && $this->locationId->sameValueAs($locationId)) {
+        if (!is_null($this->locationId) && $this->locationId->sameAs($locationId)) {
             return;
         }
 

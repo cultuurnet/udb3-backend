@@ -62,9 +62,9 @@ final class RelocateEventToCanonicalPlace implements EventListener
             return;
         }
 
-        $place = $this->canonicalPlaceRepository->findCanonicalFor($locationId->toNative());
+        $place = $this->canonicalPlaceRepository->findCanonicalFor($locationId->toString());
         $canonicalPlace = new LocationId($place->getAggregateRootId());
-        if ($locationId->sameValueAs($canonicalPlace)) {
+        if ($locationId->sameAs($canonicalPlace)) {
             return;
         }
 
