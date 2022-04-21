@@ -283,7 +283,7 @@ final class HistoryProjector extends BaseHistoryProjector
             $domainMessage->getId(),
             Log::createFromDomainMessage(
                 $domainMessage,
-                "Locatie aangepast naar '{$event->getLocationId()->toNative()}'"
+                "Locatie aangepast naar '{$event->getLocationId()->toString()}'"
             )
         );
     }

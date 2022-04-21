@@ -58,8 +58,8 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
         $locationId = new LocationId('facccc5f-beac-496d-9cde-09c65608144b');
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn(null);
-        $place->method('getAggregateRootId')->willReturn($locationId->toNative());
-        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId)->willReturn($place);
+        $place->method('getAggregateRootId')->willReturn($locationId->toString());
+        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId->toString())->willReturn($place);
 
         $this->commandBus->record();
         $this->broadcastNow(
@@ -87,7 +87,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
         $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);
-        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId)->willReturn($place);
+        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId->toString())->willReturn($place);
 
         $this->commandBus->record();
         $this->broadcastNow(
@@ -120,7 +120,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
         $place = $this->createMock(Place::class);
         $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
         $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);
-        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId)->willReturn($place);
+        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId->toString())->willReturn($place);
 
         $this->commandBus->record();
         $this->broadcastNow(new LocationUpdated($eventId, $locationId));

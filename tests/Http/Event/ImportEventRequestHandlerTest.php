@@ -522,7 +522,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'availableFrom' => '2021-05-17T22:00:00+00:00',
             'availableTo' => '2021-05-17T22:00:00+00:00',
             'workflowStatus' => 'DRAFT',
-            'attendanceMode' => 'online',
+            'attendanceMode' => 'mixed',
             'audience' => [
                 'audienceType' => 'everyone',
             ],
@@ -637,7 +637,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new UpdateAttendanceMode($eventId, AttendanceMode::online()),
+                new UpdateAttendanceMode($eventId, AttendanceMode::mixed()),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo(
                     $eventId,
@@ -2660,6 +2660,133 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/attendanceMode',
                 'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_attendanceMode_is_empty_and_location_is_virtual(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/00000000-0000-0000-0000-000000000000',
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/attendanceMode',
+                'Attendance mode "offline" needs to have a real location.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_attendanceMode_is_offline_and_location_is_virtual(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/00000000-0000-0000-0000-000000000000',
+            ],
+            'calendarType' => 'permanent',
+            'attendanceMode' => 'offline',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/attendanceMode',
+                'Attendance mode "offline" needs to have a real location.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_attendanceMode_is_online_and_location_is_real(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'attendanceMode' => 'online',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/attendanceMode',
+                'Attendance mode "online" needs to have a virtual location.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_attendanceMode_is_mixed_and_location_is_virtual(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/00000000-0000-0000-0000-000000000000',
+            ],
+            'calendarType' => 'permanent',
+            'attendanceMode' => 'mixed',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/attendanceMode',
+                'Attendance mode "mixed" needs to have a real location.'
             ),
         ];
 

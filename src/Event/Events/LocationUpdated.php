@@ -31,7 +31,7 @@ final class LocationUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-                'location_id' => $this->locationId->toNative(),
+                'location_id' => $this->locationId->toString(),
             ];
     }
 

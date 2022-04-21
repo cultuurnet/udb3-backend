@@ -58,9 +58,13 @@ final class RelocateEventToCanonicalPlace implements EventListener
 
     private function relocateEventToCanonicalPlace(string $eventId, LocationId $locationId): void
     {
-        $place = $this->canonicalPlaceRepository->findCanonicalFor($locationId->toNative());
+        if ($locationId->isVirtualLocation()) {
+            return;
+        }
+
+        $place = $this->canonicalPlaceRepository->findCanonicalFor($locationId->toString());
         $canonicalPlace = new LocationId($place->getAggregateRootId());
-        if ($locationId->sameValueAs($canonicalPlace)) {
+        if ($locationId->sameAs($canonicalPlace)) {
             return;
         }
 

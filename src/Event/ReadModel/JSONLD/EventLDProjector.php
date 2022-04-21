@@ -229,7 +229,7 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->location = [
                 '@type' => 'Place',
             ] + $this->placeJSONLD(
-                $eventCreated->getLocation()->toNative()
+                $eventCreated->getLocation()->toString()
             );
 
         /** @var Calendar $calendar */
@@ -369,7 +369,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->location = [
           '@type' => 'Place',
-        ] + $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
+        ] + $this->placeJSONLD($majorInfoUpdated->getLocation()->toString());
 
         $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar(), $majorInfoUpdated->getEventType());
         $jsonLD->availableTo = (string) $availableTo;
@@ -402,7 +402,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->location = [
             '@type' => 'Place',
-         ] + $this->placeJSONLD($locationUpdated->getLocationId()->toNative());
+         ] + $this->placeJSONLD($locationUpdated->getLocationId()->toString());
 
         return $document->withBody($jsonLD);
     }

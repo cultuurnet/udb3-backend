@@ -122,7 +122,7 @@ final class EventCreated extends EventEvent
             'title' => (string)$this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
-            'location' => $this->getLocation()->toNative(),
+            'location' => $this->getLocation()->toString(),
             'calendar' => $this->getCalendar()->serialize(),
             'publication_date' => $publicationDate,
         ];

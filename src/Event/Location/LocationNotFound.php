@@ -11,6 +11,6 @@ class LocationNotFound extends RuntimeException
 {
     public static function withLocationId(LocationId $locationId): self
     {
-        return new self('Location with id ' . $locationId->toNative() . ' could not be found');
+        return new self('Location with id ' . $locationId->toString() . ' could not be found');
     }
 }
