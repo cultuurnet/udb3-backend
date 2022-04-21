@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
-use CultuurNet\UDB3\Http\Offer\BookingInfoValidationRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidationRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -109,7 +109,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new AgeRangeValidatingRequestBodyParser(),
             new CalendarValidationRequestBodyParser(),
-            new BookingInfoValidationRequestBodyParser(),
+            new BookingInfoValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForEvent(),
             new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();

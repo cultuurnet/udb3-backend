@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class BookingInfoValidationRequestBodyParser implements RequestBodyParser
+final class BookingInfoValidatingRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
