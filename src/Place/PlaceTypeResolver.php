@@ -37,6 +37,7 @@ class PlaceTypeResolver implements TypeResolverInterface
             'OyaPaf64AEmEAYXHeLMAtA' => new EventType('OyaPaf64AEmEAYXHeLMAtA', 'Zaal of expohal'),
             '0.8.0.0.0' => new EventType('0.8.0.0.0', 'Openbare ruimte'),
             '8.70.0.0.0' => new EventType('8.70.0.0.0', 'Theater'),
+            'wwjRVmExI0w6xfQwT1KWpx' => new EventType('wwjRVmExI0w6xfQwT1KWpx', 'Speeltuin'),
         ];
     }
 
