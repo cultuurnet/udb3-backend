@@ -5068,12 +5068,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "aef7f2285606d78958fc12cb51f91ee40f1cc4de"
+                "reference": "686a9f65461cff180fcba89e79ec4380de8cd97a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/aef7f2285606d78958fc12cb51f91ee40f1cc4de",
-                "reference": "aef7f2285606d78958fc12cb51f91ee40f1cc4de",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/686a9f65461cff180fcba89e79ec4380de8cd97a",
+                "reference": "686a9f65461cff180fcba89e79ec4380de8cd97a",
                 "shasum": ""
             },
             "type": "library",
@@ -5092,7 +5092,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/virtual-events"
             },
-            "time": "2022-04-13T14:48:51+00:00"
+            "time": "2022-04-25T08:03:51+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
