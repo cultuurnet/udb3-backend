@@ -92,15 +92,17 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
 
+        $placeIriGenerator = new CallableIriGenerator(
+            fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId
+        );
+
         $this->importEventRequestHandler = new ImportEventRequestHandler(
             $this->aggregateRepository,
             $this->uuidGenerator,
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
             new EventDenormalizer(),
             new CombinedRequestBodyParser(
-                new LegacyEventRequestBodyParser(
-                    new CallableIriGenerator(fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId)
-                ),
+                new LegacyEventRequestBodyParser($placeIriGenerator),
                 RemoveEmptyArraysRequestBodyParser::createForEvents(),
                 new ImportTermRequestBodyParser(new EventCategoryResolver()),
                 new ImportPriceInfoRequestBodyParser(
@@ -110,7 +112,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                         'en' => 'Base tariff',
                         'de' => 'Basisrate',
                     ]
-                )
+                ),
+                new VirtualLocationPolyfillRequestBodyParser($placeIriGenerator)
             ),
             $this->commandBus,
             $this->imageCollectionFactory
@@ -2566,6 +2569,74 @@ final class ImportEventRequestHandlerTest extends TestCase
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_polyfills_missing_virtual_location_for_online_attendanceMode(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'attendanceMode' => 'online',
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromMediaObjectReferences')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => '00000000-0000-0000-0000-000000000000',
+            ]),
+            $response->getBody()->getContents()
+        );
+
+        $this->assertEquals(
+            [
+                new UpdateAttendanceMode($eventId, AttendanceMode::online()),
+                new UpdateAudience($eventId, AudienceType::everyone()),
+                new UpdateBookingInfo($eventId, new BookingInfo()),
+                new UpdateContactPoint($eventId, new ContactPoint()),
+                new DeleteTypicalAgeRange($eventId),
+                new ImportLabels($eventId, new Labels()),
+                new ImportImages($eventId, new ImageCollection()),
+                new ImportVideos($eventId, new VideoCollection()),
+                new DeleteCurrentOrganizer($eventId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
