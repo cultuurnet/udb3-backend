@@ -10,7 +10,7 @@ final class LocationId
 {
     use IsString;
 
-    private const VIRTUAL_LOCATION = '00000000-0000-0000-0000-000000000000';
+    public const VIRTUAL_LOCATION = '00000000-0000-0000-0000-000000000000';
 
     private static array $dummyPlaceForEducationIds = [];
 
