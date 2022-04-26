@@ -128,7 +128,10 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         );
 
         $app[UpdateAttendanceModeRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateAttendanceModeRequestHandler($app['event_command_bus'])
+            fn (Application $app) => new UpdateAttendanceModeRequestHandler(
+                $app['event_command_bus'],
+                $app['event_relations_repository']
+            )
         );
 
         $app[UpdateAudienceRequestHandler::class] = $app->share(
