@@ -236,6 +236,34 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_offline_attendance_mode_has_virtual_location(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withJsonBodyFromArray([
+                'attendanceMode' => 'offline',
+            ])
+            ->build('PUT');
+
+        $this->eventRelationsRepository->expects($this->once())
+            ->method('getPlaceOfEvent')
+            ->with('c269632a-a887-4f21-8455-1631c31e4df5')
+            ->willReturn('00000000-0000-0000-0000-000000000000');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/location',
+                    'The event has no related location, please provide a location'
+                )
+            ),
+            fn () => $this->updateAttendanceModeRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_mixed_attendance_mode_has_missing_location(): void
     {
         $request = (new Psr7RequestBuilder())
@@ -244,6 +272,34 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
                 'attendanceMode' => 'mixed',
             ])
             ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/location',
+                    'The event has no related location, please provide a location'
+                )
+            ),
+            fn () => $this->updateAttendanceModeRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mixed_attendance_mode_has_virtual_location(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withJsonBodyFromArray([
+                'attendanceMode' => 'mixed',
+            ])
+            ->build('PUT');
+
+        $this->eventRelationsRepository->expects($this->once())
+            ->method('getPlaceOfEvent')
+            ->with('c269632a-a887-4f21-8455-1631c31e4df5')
+            ->willReturn('00000000-0000-0000-0000-000000000000');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
