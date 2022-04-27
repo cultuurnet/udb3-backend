@@ -226,7 +226,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/location',
-                    'The event has no related location, please provide a location'
+                    'A location is required when changing an online event to mixed or offline'
                 )
             ),
             fn () => $this->updateAttendanceModeRequestHandler->handle($request)
@@ -254,7 +254,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/location',
-                    'The event has no related location, please provide a location'
+                    'A location is required when changing an online event to mixed or offline'
                 )
             ),
             fn () => $this->updateAttendanceModeRequestHandler->handle($request)
@@ -277,7 +277,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/location',
-                    'The event has no related location, please provide a location'
+                    'A location is required when changing an online event to mixed or offline'
                 )
             ),
             fn () => $this->updateAttendanceModeRequestHandler->handle($request)
@@ -305,7 +305,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/location',
-                    'The event has no related location, please provide a location'
+                    'A location is required when changing an online event to mixed or offline'
                 )
             ),
             fn () => $this->updateAttendanceModeRequestHandler->handle($request)

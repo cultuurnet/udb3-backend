@@ -86,7 +86,7 @@ final class UpdateAttendanceModeRequestHandler implements RequestHandlerInterfac
 
             if ($location === null || $location === LocationId::VIRTUAL_LOCATION) {
                 throw ApiProblem::bodyInvalidData(
-                    new SchemaError('/location', 'The event has no related location, please provide a location')
+                    new SchemaError('/location', 'A location is required when changing an online event to mixed or offline')
                 );
             }
         }
