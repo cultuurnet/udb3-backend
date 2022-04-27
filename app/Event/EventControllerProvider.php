@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
+use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
@@ -43,6 +44,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
         $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
         $controllers->delete('/{eventId}/theme/', DeleteThemeRequestHandler::class);
+        $controllers->put('/{eventId}/attendance-mode/', UpdateAttendanceModeRequestHandler::class);
         $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
         $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
 
@@ -123,6 +125,13 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[DeleteThemeRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteThemeRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateAttendanceModeRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateAttendanceModeRequestHandler(
+                $app['event_command_bus'],
+                $app['event_relations_repository']
+            )
         );
 
         $app[UpdateAudienceRequestHandler::class] = $app->share(
