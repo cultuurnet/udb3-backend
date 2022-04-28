@@ -302,6 +302,11 @@ class EventLDProjector extends OfferLDProjector implements
         $calendar = $eventCopied->getCalendar();
         $calendarJsonLD = $calendar->toJsonLd();
 
+        $eventJsonLD->sameAs = $this->generateSameAs(
+            $eventCopied->getItemId(),
+            (string) reset($eventJsonLD->name)
+        );
+
         $eventJsonLD = (object) array_merge(
             (array) $eventJsonLD,
             $calendarJsonLD
