@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
@@ -307,6 +308,10 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
 
         $this->apply(new LocationUpdated($this->eventId, $locationId));
+
+        if (!$locationId->isVirtualLocation() && $this->attendanceMode === AttendanceMode::online()->toString()) {
+            $this->apply(new AttendanceModeUpdated($this->eventId, AttendanceMode::offline()->toString()));
+        }
 
         if ($locationId->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
