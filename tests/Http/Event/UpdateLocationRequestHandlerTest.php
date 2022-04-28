@@ -61,6 +61,24 @@ final class UpdateLocationRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_an_api_problem_if_the_given_location_is_the_virtual_location(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'dac793c2-4a8c-4744-b593-69420cfbf7bb')
+            ->withRouteParameter('locationId', '00000000-0000-0000-0000-000000000000')
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::pathParameterInvalid(
+                'Instead of passing the virtual location, please update the attendance mode.'
+            ),
+            fn () => $this->updateLocationRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_dispatches_an_update_location_command(): void
     {
         $request = (new Psr7RequestBuilder())

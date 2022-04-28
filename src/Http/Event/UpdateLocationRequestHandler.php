@@ -33,6 +33,12 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         $eventId = $routeParameters->getEventId();
         $locationId = $routeParameters->get('locationId');
 
+        if ((new LocationId($locationId))->isVirtualLocation()) {
+            throw ApiProblem::pathParameterInvalid(
+                'Instead of passing the virtual location, please update the attendance mode.'
+            );
+        }
+
         try {
             // The UpdateLocation handler does not validate the location id, so we should do it here for now to prevent
             // non-existing places being linked.
