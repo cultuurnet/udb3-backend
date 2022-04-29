@@ -1,5 +1,5 @@
 {
-  "@id": "http://example.com/entity/2",
+  "@id": "http://example.com/entity/f0b24f97-4b03-4eb2-96d1-5074819a7648",
   "@context": "/contexts/event",
   "mainLanguage": "en",
   "name": {
@@ -12,7 +12,7 @@
   "startDate": "2015-01-26T13:25:21+01:00",
   "availableTo": "2015-01-29T13:25:21+01:00",
   "sameAs": [
-    "http://www.uitinvlaanderen.be/agenda/e/some-representative-title/1"
+    "http://www.uitinvlaanderen.be/agenda/e/some-representative-title/f0b24f97-4b03-4eb2-96d1-5074819a7648"
   ],
   "terms": [
     {

@@ -201,7 +201,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_handles_copied_events_with_an_incorrect_place_type(): void
     {
-        $eventId = '1';
+        $eventId = 'f8e4f084-1b75-4893-b2b9-fc67fd6e73fb';
         $eventCreated = new EventCreated(
             $eventId,
             new Language('en'),
@@ -223,7 +223,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $eventId
         );
 
-        $newEventId = '2';
+        $newEventId = 'f0b24f97-4b03-4eb2-96d1-5074819a7648';
         $eventCopied = new EventCopied(
             $newEventId,
             $eventId,
@@ -397,7 +397,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_handles_copy_event(): void
     {
-        $originalEventId = '1';
+        $originalEventId = 'f8e4f084-1b75-4893-b2b9-fc67fd6e73fb';
         $originalCalendar = new Calendar(
             CalendarType::PERIODIC(),
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
@@ -422,7 +422,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $originalEventId
         );
 
-        $eventId = '2';
+        $eventId = 'f0b24f97-4b03-4eb2-96d1-5074819a7648';
         $timestamps = [
             new Timestamp(
                 \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
@@ -462,7 +462,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_projects_copied_event_with_work_hours_removed(): void
     {
-        $eventCreated = $this->createEventCreated('1', $this->aPeriodicCalendarWithWorkScheme(), null);
+        $eventCreated = $this->createEventCreated('f8e4f084-1b75-4893-b2b9-fc67fd6e73fb', $this->aPeriodicCalendarWithWorkScheme(), null);
 
         $this->project($eventCreated, $eventCreated->getEventId());
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
@@ -473,7 +473,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-29T13:25:21+01:00')
         );
 
-        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
+        $eventCopied = new EventCopied('f0b24f97-4b03-4eb2-96d1-5074819a7648', $eventCreated->getEventId(), $calendar);
 
         $recordedOn = '2018-01-01T11:55:55+01:00';
         $userId = '20a72430-7e3e-4b75-ab59-043156b3169c';
