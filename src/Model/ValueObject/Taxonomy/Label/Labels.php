@@ -28,6 +28,17 @@ class Labels extends Collection
         parent::__construct(...$uniqueLabels);
     }
 
+    public function findByName(LabelName $labelName): ?Label
+    {
+        /** @var Label $label */
+        foreach ($this->toArray() as $label) {
+            if ($label->getName()->sameAs($labelName)) {
+                return $label;
+            }
+        }
+        return null;
+    }
+
     public function toArrayOfStringNames(): array
     {
         return array_map(
