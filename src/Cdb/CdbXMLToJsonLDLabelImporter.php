@@ -11,7 +11,7 @@ use stdClass;
 
 final class CdbXMLToJsonLDLabelImporter
 {
-    public function importLabels(CultureFeed_Cdb_Item_Base $item, stdClass $jsonLD)
+    public function importLabels(CultureFeed_Cdb_Item_Base $item, stdClass $jsonLD): void
     {
         $labelCollection = LabelCollection::fromKeywords(
             $item->getKeywords(true)
