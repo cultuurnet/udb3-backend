@@ -225,7 +225,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/location',
+                    '/',
                     'A location is required when changing an online event to mixed or offline'
                 )
             ),
@@ -253,7 +253,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/location',
+                    '/',
                     'A location is required when changing an online event to mixed or offline'
                 )
             ),
@@ -276,7 +276,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/location',
+                    '/',
                     'A location is required when changing an online event to mixed or offline'
                 )
             ),
@@ -304,7 +304,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError(
-                    '/location',
+                    '/',
                     'A location is required when changing an online event to mixed or offline'
                 )
             ),
