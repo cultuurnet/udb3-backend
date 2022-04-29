@@ -88,6 +88,17 @@ class LabelCollection implements \Countable
         return !empty($equalLabels);
     }
 
+    public function containsWithSameVisibility(Label $label): bool
+    {
+        $equalLabels = array_filter(
+            $this->labels,
+            function (Label $existingLabel) use ($label) {
+                return $label->equals($existingLabel) && $label->isVisible() === $existingLabel->isVisible();
+            }
+        );
+        return !empty($equalLabels);
+    }
+
     /**
      * @return Label[]
      */

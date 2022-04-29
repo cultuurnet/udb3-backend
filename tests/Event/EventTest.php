@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Event\Events\ImageAdded;
 use CultuurNet\UDB3\Event\Events\ImageRemoved;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
+use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
@@ -43,6 +44,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -506,7 +508,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_be_imported_from_udb2_cdbxml_without_any_labels(): void
+    public function it_can_be_imported_from_udb2_cdbxml_and_takes_labels_into_account(): void
     {
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
         $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
@@ -529,6 +531,52 @@ class EventTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_import_same_label_with_correct_visibility_after_udb2_import_with_incorrect_visibility(): void
+    {
+        $xmlData = $this->getSample('EventTest.cdbxml.xml');
+        $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
+        $xmlNamespace = self::NS_CDBXML_3_2;
+
+        $this->scenario
+            ->given([
+                new EventImportedFromUDB2($eventId, $xmlData, $xmlNamespace),
+            ])
+            ->when(
+                function (Event $event) {
+                    // Do an import with 3 pre-existing labels with different visibility, 2 same labels, and 3 missing/
+                    // removed labels that should be kept (since they were not added via a JSON import before).
+                    $event->importLabels(
+                        new Labels(
+                            new Label(new LabelName('kunst'), false),
+                            new Label(new LabelName('tentoonstelling'), false),
+                            new Label(new LabelName('brugge'), false),
+                            new Label(new LabelName('grafiek'), true),
+                            new Label(new LabelName('TRAEGHE GENUINE ARTS'), true),
+                        ),
+                    );
+                }
+            )
+            ->then([
+                new LabelsImported(
+                    $eventId,
+                    new Labels(
+                        new Label(new LabelName('kunst'), false),
+                        new Label(new LabelName('tentoonstelling'), false),
+                        new Label(new LabelName('brugge'), false),
+                    )
+                ),
+                new LabelRemoved($eventId, new LegacyLabel('kunst', true)),
+                new LabelRemoved($eventId, new LegacyLabel('tentoonstelling', true)),
+                new LabelRemoved($eventId, new LegacyLabel('brugge', true)),
+                new LabelAdded($eventId, new LegacyLabel('kunst', false)),
+                new LabelAdded($eventId, new LegacyLabel('tentoonstelling', false)),
+                new LabelAdded($eventId, new LegacyLabel('brugge', false)),
+            ]);
     }
 
     public function unlabelDataProvider(): array
