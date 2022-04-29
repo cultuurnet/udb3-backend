@@ -77,6 +77,8 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
+use CultuurNet\UDB3\SameAs;
+use CultuurNet\UDB3\SameAsInterface;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -100,6 +102,8 @@ class EventLDProjector extends OfferLDProjector implements
     private EventTypeResolver $eventTypeResolver;
 
     private PlaceTypeResolver $placeTypeResolver;
+
+    private SameAsInterface $sameAs;
 
     /**
      * @param string[] $basePriceTranslations
@@ -133,6 +137,7 @@ class EventLDProjector extends OfferLDProjector implements
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
         $this->placeTypeResolver = new PlaceTypeResolver();
+        $this->sameAs = new SameAs();
     }
 
     protected function newDocument(string $id): JsonDocument
@@ -241,7 +246,7 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->availableTo = (string) $availableTo;
 
         // Same as.
-        $jsonLD->sameAs = $this->generateSameAs(
+        $jsonLD->sameAs = $this->sameAs->generateSameAs(
             $eventCreated->getEventId(),
             (string) reset($jsonLD->name)
         );
@@ -302,7 +307,7 @@ class EventLDProjector extends OfferLDProjector implements
         $calendar = $eventCopied->getCalendar();
         $calendarJsonLD = $calendar->toJsonLd();
 
-        $eventJsonLD->sameAs = $this->generateSameAs(
+        $eventJsonLD->sameAs = $this->sameAs->generateSameAs(
             $eventCopied->getItemId(),
             (string) reset($eventJsonLD->name)
         );
@@ -505,14 +510,6 @@ class EventLDProjector extends OfferLDProjector implements
                 '@id' => $this->placeService->iri($placeId),
             ];
         }
-    }
-
-    private function generateSameAs($eventId, $name): array
-    {
-        $eventSlug = $this->slugger->slug($name);
-        return [
-            'http://www.uitinvlaanderen.be/agenda/e/' . $eventSlug . '/' . $eventId,
-        ];
     }
 
     private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral
