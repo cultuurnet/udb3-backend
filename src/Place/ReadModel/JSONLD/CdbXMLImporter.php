@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use CultuurNet\UDB3\CalendarFactoryInterface;
 use CultuurNet\UDB3\Cdb\Description\MergedDescription;
-use CultuurNet\UDB3\LabelImporter;
+use CultuurNet\UDB3\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporterInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 
@@ -141,7 +141,7 @@ class CdbXMLImporter
             );
         }
 
-        $labelImporter = new LabelImporter();
+        $labelImporter = new CdbXMLToJsonLDLabelImporter();
         $labelImporter->importLabels($item, $jsonLD);
 
         $this->importTerms($item, $jsonLD);

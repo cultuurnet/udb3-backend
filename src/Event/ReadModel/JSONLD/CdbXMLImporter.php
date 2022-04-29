@@ -9,7 +9,7 @@ use CultuurNet\UDB3\CalendarFactoryInterface;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\Description\MergedDescription;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
-use CultuurNet\UDB3\LabelImporter;
+use CultuurNet\UDB3\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporterInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -88,7 +88,7 @@ class CdbXMLImporter
 
         $this->cdbXMLItemBaseImporter->importAvailable($event, $jsonLD);
 
-        $labelImporter = new LabelImporter();
+        $labelImporter = new CdbXMLToJsonLDLabelImporter();
         $labelImporter->importLabels($event, $jsonLD);
 
         $this->importLocation($event, $placeManager, $jsonLD);

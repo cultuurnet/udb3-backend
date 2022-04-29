@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3;
 use CultureFeed_Cdb_Item_Base;
 use stdClass;
 
-class LabelImporter
+final class CdbXMLToJsonLDLabelImporter
 {
     public function importLabels(CultureFeed_Cdb_Item_Base $item, stdClass $jsonLD)
     {
