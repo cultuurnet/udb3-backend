@@ -78,7 +78,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
-use CultuurNet\UDB3\SameAsInterface;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\StringLiteral;
 
