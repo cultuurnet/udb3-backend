@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
@@ -168,6 +169,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         }
 
         $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
+
+        $commands[] = new UpdateOnlineUrl($eventId, $event->getOnlineUrl());
 
         if ($location->isDummyPlaceForEducation()) {
             $audienceType = AudienceType::education();
