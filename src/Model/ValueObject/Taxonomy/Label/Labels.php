@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
-use CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour\HasUniqueValues;
 use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 class Labels extends Collection
 {
-    use HasUniqueValues;
-
     /**
      * @param Label[] ...$labels
      */
     public function __construct(Label ...$labels)
     {
-        $labelNames = array_map(
-            function (Label $label) {
-                return $label->getName();
-            },
-            $labels
-        );
+        // Remove duplicates (with or without the same visibility) by copying every label to a new array, keyed by the
+        // label name. If a label name is twice in $labels (with same or different visibility), the last entry will
+        // always overwrite the previous entries.
+        $uniqueLabels = [];
+        foreach ($labels as $label) {
+            $uniqueLabels[$label->getName()->toString()] = $label;
+        }
 
-        $this->guardUniqueValues($labelNames);
+        // Remove the keys and make the array sequential (0, 1, 2, ...) to avoid "Cannot unpack array with string keys"
+        // error in the parent::__construct() call.
+        $uniqueLabels = array_values($uniqueLabels);
 
-        parent::__construct(...$labels);
+        parent::__construct(...$uniqueLabels);
     }
 
     public function toArrayOfStringNames(): array

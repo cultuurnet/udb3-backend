@@ -11,29 +11,14 @@ class LabelsTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_duplicate_labels_with_the_same_visibility_are_given()
+    public function it_should_filter_out_duplicates_and_always_use_visibility_of_the_last_duplicate(): void
     {
         $name = new LabelName('foo');
         $label = new Label($name, true);
+        $labelHidden = new Label($name, false);
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Found 1 duplicates in the given array.');
+        $labels = new Labels($label, $labelHidden);
 
-        new Labels($label, $label);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_if_duplicate_labels_with_different_visibility_are_given()
-    {
-        $name = new LabelName('foo');
-        $visibleLabel = new Label($name, true);
-        $invisibleLabel = new Label($name, false);
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Found 1 duplicates in the given array.');
-
-        new Labels($visibleLabel, $invisibleLabel);
+        $this->assertEquals([$labelHidden], $labels->toArray());
     }
 }
