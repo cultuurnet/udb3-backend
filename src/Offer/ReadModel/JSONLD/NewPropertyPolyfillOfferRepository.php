@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\SameAs;
+use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 
 final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
@@ -161,7 +161,7 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             return $json;
         }
 
-        $json['sameAs'] = (new SameAs())->generateSameAs($json['@id'], $json['name']['nl']);
+        $json['sameAs'] = (new SameAsForUitInVlaanderen())->generateSameAs($json['@id'], $json['name']['nl']);
 
         return $json;
     }

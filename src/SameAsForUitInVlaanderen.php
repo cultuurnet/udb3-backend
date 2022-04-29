@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
-class SameAs implements SameAsInterface
+class SameAsForUitInVlaanderen
 {
     private SluggerInterface $slugger;
 

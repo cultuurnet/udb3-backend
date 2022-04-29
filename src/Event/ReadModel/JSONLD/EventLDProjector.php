@@ -77,7 +77,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
-use CultuurNet\UDB3\SameAs;
+use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\SameAsInterface;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\StringLiteral;
@@ -103,7 +103,7 @@ class EventLDProjector extends OfferLDProjector implements
 
     private PlaceTypeResolver $placeTypeResolver;
 
-    private SameAsInterface $sameAs;
+    private SameAsForUitInVlaanderen $sameAs;
 
     /**
      * @param string[] $basePriceTranslations
@@ -137,7 +137,7 @@ class EventLDProjector extends OfferLDProjector implements
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
         $this->placeTypeResolver = new PlaceTypeResolver();
-        $this->sameAs = new SameAs();
+        $this->sameAs = new SameAsForUitInVlaanderen();
     }
 
     protected function newDocument(string $id): JsonDocument
