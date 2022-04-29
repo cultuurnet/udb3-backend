@@ -33,4 +33,8 @@ class LabelName
         return new self(mb_strtolower($this->toString(), 'UTF-8'));
     }
 
+    public function sameAs(LabelName $other): bool
+    {
+        return $this->toLowerCase()->toString() === $other->toLowerCase()->toString();
+    }
 }
