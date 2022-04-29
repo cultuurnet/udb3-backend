@@ -11,7 +11,8 @@ final class CdbXMLToJsonLDLabelImporter
 {
     public function importLabels(CultureFeed_Cdb_Item_Base $item, stdClass $jsonLD): void
     {
-        $labels = LabelsFactory::createLabelsFromKeywords($item->getKeywords(true));
+        $keywords = array_values($item->getKeywords(true));
+        $labels = LabelsFactory::createLabelsFromKeywords(...$keywords);
 
         $visibleLabels = $labels->getVisibleLabels()->toArrayOfStringNames();
         $hiddenLabels = $labels->getHiddenLabels()->toArrayOfStringNames();
