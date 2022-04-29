@@ -425,7 +425,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     {
         $this
             ->given([
-                '@id' => '5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                     'name' => [
                         'nl' => 'Kopieertest',
                         ],
@@ -434,7 +434,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                         ],
                     ])
             ->assertReturnedDocumentContains([
-                '@id' => '5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'name' => [
                     'nl' => 'Kopieertest',
                     ],
