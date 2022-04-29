@@ -152,6 +152,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             }
 
             $this->aggregateRepository->save($eventAggregate);
+
+            $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
         } else {
             if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
                 $commands[] = new Publish($eventId, $publishDate);
@@ -159,6 +161,9 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
             $commands[] = new UpdateTitle($eventId, $mainLanguage, $title);
             $commands[] = new UpdateType($eventId, $type->getId());
+            // The attendance mode needs to be updated before the location can be changed.
+            // For example passing a real location to an online event is not allowed.
+            $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
             $commands[] = new UpdateLocation($eventId, $location);
             $commands[] = new UpdateCalendar($eventId, $calendar);
 
@@ -166,8 +171,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
                 $commands[] = new UpdateTheme($eventId, $theme->getId());
             }
         }
-
-        $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
 
         if ($location->isDummyPlaceForEducation()) {
             $audienceType = AudienceType::education();

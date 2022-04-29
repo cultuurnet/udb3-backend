@@ -449,9 +449,9 @@ final class ImportEventRequestHandlerTest extends TestCase
             [
                 new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannenkoeken voor het goede doel')),
                 new UpdateType($eventId, '1.50.0.0.0'),
+                new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
                 new UpdateCalendar($eventId, new Calendar(CalendarType::PERMANENT())),
-                new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
