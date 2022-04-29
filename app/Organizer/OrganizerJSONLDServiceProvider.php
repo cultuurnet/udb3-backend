@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\OrganizerLDProjector;
@@ -36,7 +37,9 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
                         $app['media_object_repository'],
                         $app['media_object_iri_generator']
                     ),
-                    new CdbXMLImporter()
+                    new CdbXMLImporter(
+                        new CdbXMLToJsonLDLabelImporter()
+                    )
                 );
             }
         );

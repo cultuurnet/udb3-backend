@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
@@ -154,7 +155,8 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     ),
                     $app['udb2_event_cdbid_extractor'],
                     $app['calendar_factory'],
-                    $app['cdbxml_contact_info_importer']
+                    $app['cdbxml_contact_info_importer'],
+                    new CdbXMLToJsonLDLabelImporter()
                 );
             }
         );

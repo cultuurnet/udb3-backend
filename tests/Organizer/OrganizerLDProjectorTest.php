@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
@@ -94,7 +95,9 @@ final class OrganizerLDProjectorTest extends TestCase
                 $this->imageRepository,
                 $iriGenerator
             ),
-            new CdbXMLImporter()
+            new CdbXMLImporter(
+                new CdbXMLToJsonLDLabelImporter()
+            )
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(

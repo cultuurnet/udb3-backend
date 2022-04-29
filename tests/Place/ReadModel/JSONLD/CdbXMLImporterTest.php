@@ -8,6 +8,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -37,7 +38,8 @@ class CdbXMLImporterTest extends TestCase
                 ]
             ),
             new CalendarFactory(),
-            new CdbXmlContactInfoImporter()
+            new CdbXmlContactInfoImporter(),
+            new CdbXMLToJsonLDLabelImporter()
         );
         date_default_timezone_set('Europe/Brussels');
     }

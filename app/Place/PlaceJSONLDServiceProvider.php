@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Place;
 
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -132,7 +133,8 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                         $app['config']['base_price_translations']
                     ),
                     $app['calendar_factory'],
-                    $app['cdbxml_contact_info_importer']
+                    $app['cdbxml_contact_info_importer'],
+                    new CdbXMLToJsonLDLabelImporter()
                 );
             }
         );

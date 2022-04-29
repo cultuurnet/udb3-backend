@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -88,7 +89,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 ]
             ),
             new CalendarFactory(),
-            new CdbXmlContactInfoImporter()
+            new CdbXmlContactInfoImporter(),
+            new CdbXMLToJsonLDLabelImporter()
         );
 
         $this->projector = new PlaceLDProjector(

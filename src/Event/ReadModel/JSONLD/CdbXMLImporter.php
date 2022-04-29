@@ -29,16 +29,20 @@ class CdbXMLImporter
 
     private CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter;
 
+    private CdbXMLToJsonLDLabelImporter $cdbXMLLabelImporter;
+
     public function __construct(
         CdbXMLItemBaseImporter $cdbXMLItemBaseImporter,
         EventCdbIdExtractorInterface $cdbIdExtractor,
         CalendarFactoryInterface $calendarFactory,
-        CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter
+        CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter,
+        CdbXMLToJsonLDLabelImporter $cdbXmlLabelImporter
     ) {
         $this->cdbXMLItemBaseImporter = $cdbXMLItemBaseImporter;
         $this->cdbIdExtractor = $cdbIdExtractor;
         $this->calendarFactory = $calendarFactory;
         $this->cdbXmlContactInfoImporter = $cdbXmlContactInfoImporter;
+        $this->cdbXMLLabelImporter = $cdbXmlLabelImporter;
     }
 
     /**
@@ -88,8 +92,7 @@ class CdbXMLImporter
 
         $this->cdbXMLItemBaseImporter->importAvailable($event, $jsonLD);
 
-        $labelImporter = new CdbXMLToJsonLDLabelImporter();
-        $labelImporter->importLabels($event, $jsonLD);
+        $this->cdbXMLLabelImporter->importLabels($event, $jsonLD);
 
         $this->importLocation($event, $placeManager, $jsonLD);
 

@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
@@ -128,7 +129,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ),
             new EventCdbIdExtractor(),
             new CalendarFactory(),
-            new CdbXmlContactInfoImporter()
+            new CdbXmlContactInfoImporter(),
+            new CdbXMLToJsonLDLabelImporter()
         );
 
         $this->projector = new EventLDProjector(

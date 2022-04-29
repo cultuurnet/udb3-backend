@@ -9,6 +9,7 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultureFeed_Cdb_Item_Event;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
@@ -56,7 +57,8 @@ class CdbXMLImporterTest extends TestCase
             ),
             new EventCdbIdExtractor(),
             new CalendarFactory(),
-            new CdbXmlContactInfoImporter()
+            new CdbXmlContactInfoImporter(),
+            new CdbXMLToJsonLDLabelImporter()
         );
         $this->organizerManager = $this->createMock(OrganizerServiceInterface::class);
         $this->placeManager = $this->createMock(PlaceServiceInterface::class);

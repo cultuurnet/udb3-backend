@@ -20,6 +20,13 @@ use stdClass;
  */
 class CdbXMLImporter
 {
+    private CdbXMLToJsonLDLabelImporter $labelImporter;
+
+    public function __construct(CdbXMLToJsonLDLabelImporter $labelImporter)
+    {
+        $this->labelImporter = $labelImporter;
+    }
+
     /**
      * Imports a UDB2 organizer actor into a UDB3 JSON-LD document.
      *
@@ -101,8 +108,7 @@ class CdbXMLImporter
                 $urls[] = $url->getUrl();
             }
 
-            $labelImporter = new CdbXMLToJsonLDLabelImporter();
-            $labelImporter->importLabels($actor, $jsonLD);
+            $this->labelImporter->importLabels($actor, $jsonLD);
 
             $contactPoint = new ContactPoint($phones, $emails, $urls);
 

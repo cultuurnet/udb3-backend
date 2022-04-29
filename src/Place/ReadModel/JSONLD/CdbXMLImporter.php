@@ -31,15 +31,19 @@ class CdbXMLImporter
      */
     private $cdbXmlContactInfoImporter;
 
+    private CdbXMLToJsonLDLabelImporter $cdbXmlLabelImporter;
+
 
     public function __construct(
         CdbXMLItemBaseImporter $dbXMLItemBaseImporter,
         CalendarFactoryInterface $calendarFactory,
-        CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter
+        CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter,
+        CdbXMLToJsonLDLabelImporter $cdbXmlLabelImporter
     ) {
         $this->cdbXMLItemBaseImporter = $dbXMLItemBaseImporter;
         $this->calendarFactory = $calendarFactory;
         $this->cdbXmlContactInfoImporter = $cdbXmlContactInfoImporter;
+        $this->cdbXmlLabelImporter = $cdbXmlLabelImporter;
     }
 
     /**
@@ -141,8 +145,7 @@ class CdbXMLImporter
             );
         }
 
-        $labelImporter = new CdbXMLToJsonLDLabelImporter();
-        $labelImporter->importLabels($item, $jsonLD);
+        $this->cdbXmlLabelImporter->importLabels($item, $jsonLD);
 
         $this->importTerms($item, $jsonLD);
 
