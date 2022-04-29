@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\UpdateLocationNotSupported;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
@@ -47,7 +48,11 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
             throw ApiProblem::pathParameterInvalid('Location with id "' . $locationId . '" does not exist.');
         }
 
-        $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));
+        try {
+            $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));
+        } catch (UpdateLocationNotSupported $exception) {
+            throw ApiProblem::pathParameterInvalid($exception->getMessage());
+        }
 
         return new NoContentResponse();
     }
