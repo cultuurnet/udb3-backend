@@ -170,7 +170,10 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
 
-        $commands[] = new UpdateOnlineUrl($eventId, $event->getOnlineUrl());
+        // TODO: Add command to delete online url
+        if ($event->getOnlineUrl()) {
+            $commands[] = new UpdateOnlineUrl($eventId, $event->getOnlineUrl());
+        }
 
         if ($location->isDummyPlaceForEducation()) {
             $audienceType = AudienceType::education();

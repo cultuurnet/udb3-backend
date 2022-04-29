@@ -22,7 +22,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
     private AttendanceMode $attendanceMode;
 
-    private Url $onlineUrl;
+    private ?Url $onlineUrl = null;
 
     private AudienceType $audience;
 
@@ -73,7 +73,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $c;
     }
 
-    public function getOnlineUrl(): Url
+    public function getOnlineUrl(): ?Url
     {
         return $this->onlineUrl;
     }

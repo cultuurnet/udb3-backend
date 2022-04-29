@@ -14,7 +14,7 @@ interface Event extends Offer
 {
     public function getAttendanceMode(): AttendanceMode;
 
-    public function getOnlineUrl(): Url;
+    public function getOnlineUrl(): ?Url;
 
     public function getAudienceType(): AudienceType;
 
