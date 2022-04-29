@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use InvalidArgumentException;
 
 class ImmutableEvent extends ImmutableOffer implements Event
@@ -20,6 +21,8 @@ class ImmutableEvent extends ImmutableOffer implements Event
     private PlaceReference $placeReference;
 
     private AttendanceMode $attendanceMode;
+
+    private Url $onlineUrl;
 
     private AudienceType $audience;
 
@@ -62,10 +65,23 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         return $this->attendanceMode;
     }
+
     public function withAttendanceMode(AttendanceMode $attendanceMode): ImmutableEvent
     {
         $c = clone $this;
         $c->attendanceMode = $attendanceMode;
+        return $c;
+    }
+
+    public function getOnlineUrl(): Url
+    {
+        return $this->onlineUrl;
+    }
+
+    public function withOnlineUrl(Url $onlineUrl): ImmutableEvent
+    {
+        $c = clone $this;
+        $c->onlineUrl = $onlineUrl;
         return $c;
     }
 
