@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use stdClass;
 

@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3;
+namespace CultuurNet\UDB3\Cdb;
 
 use CultureFeed_Cdb_Item_Base;
+use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\LabelCollection;
 use stdClass;
 
 final class CdbXMLToJsonLDLabelImporter
