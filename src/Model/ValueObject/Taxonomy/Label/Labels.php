@@ -39,6 +39,16 @@ class Labels extends Collection
         return null;
     }
 
+    public function getVisibleLabels(): Labels
+    {
+        return $this->filter(fn (Label $label) => $label->isVisible());
+    }
+
+    public function getHiddenLabels(): Labels
+    {
+        return $this->filter(fn (Label $label) => !$label->isVisible());
+    }
+
     public function toArrayOfStringNames(): array
     {
         return array_map(

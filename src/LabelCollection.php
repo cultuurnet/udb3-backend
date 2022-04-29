@@ -176,6 +176,7 @@ class LabelCollection implements \Countable
     /**
      * @param CultureFeed_Cdb_Data_Keyword[] $keywords
      * @return LabelCollection
+     * @deprecated Use CultuurNet\UDB3\Cdb\LabelsFactory instead.
      */
     public static function fromKeywords($keywords)
     {
