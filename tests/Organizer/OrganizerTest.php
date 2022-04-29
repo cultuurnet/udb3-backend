@@ -160,7 +160,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
                         'foo',
                         false
-                    )
+                    ),
                 ]
             );
     }
