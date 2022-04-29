@@ -108,13 +108,14 @@ class OrganizerLDProjector implements EventListener
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
-        NormalizerInterface $imageNormalizer
+        NormalizerInterface $imageNormalizer,
+        CdbXMLImporter $cdbXMLImporter
     ) {
         $this->repository = $repository;
         $this->iriGenerator = $iriGenerator;
         $this->jsonDocumentMetaDataEnricher = $jsonDocumentMetaDataEnricher;
         $this->imageNormalizer = $imageNormalizer;
-        $this->cdbXMLImporter = new CdbXMLImporter();
+        $this->cdbXMLImporter = $cdbXMLImporter;
         $this->addressNormalizer = new AddressNormalizer();
         $this->contactPointNormalizer = new ContactPointNormalizer();
     }

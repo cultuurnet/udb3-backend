@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
+use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -92,7 +93,8 @@ final class OrganizerLDProjectorTest extends TestCase
             new ImageNormalizer(
                 $this->imageRepository,
                 $iriGenerator
-            )
+            ),
+            new CdbXMLImporter()
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(

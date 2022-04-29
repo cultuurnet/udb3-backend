@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Organizer;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\OrganizerLDProjector;
+use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
@@ -34,7 +35,8 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
                     new ImageNormalizer(
                         $app['media_object_repository'],
                         $app['media_object_iri_generator']
-                    )
+                    ),
+                    new CdbXMLImporter()
                 );
             }
         );
