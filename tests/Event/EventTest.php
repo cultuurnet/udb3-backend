@@ -876,11 +876,16 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_location_and_attendance_mode(): void
+    public function it_throws_when_updating_online_event_to_real_location(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
         $locationId = new LocationId('57738178-28a5-4afb-90c0-fd0beba172a8');
+
+        $this->expectException(UpdateLocationNotSupported::class);
+        $this->expectExceptionMessage(
+            'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
+        );
 
         $this->scenario
             ->given(
@@ -892,12 +897,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 fn (Event $event) => $event->updateLocation($locationId)
             )
-            ->then(
-                [
-                    new LocationUpdated($eventId, $locationId),
-                    new AttendanceModeUpdated($eventId, AttendanceMode::offline()->toString()),
-                ]
-            );
+            ->then([]);
     }
 
     /**
