@@ -413,7 +413,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_duplicate_labels.cdbxml.xml');
 
-        $this->assertEquals(['enkel'], $jsonEvent->labels);
+        $this->assertEquals(['EnKeL'], $jsonEvent->labels);
     }
 
     /**

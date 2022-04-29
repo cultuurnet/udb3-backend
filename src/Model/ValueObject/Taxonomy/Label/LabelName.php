@@ -27,4 +27,10 @@ class LabelName
 
         $this->setValue($value);
     }
+
+    public function toLowerCase(): LabelName
+    {
+        return new self(mb_strtolower($this->toString(), 'UTF-8'));
+    }
+
 }
