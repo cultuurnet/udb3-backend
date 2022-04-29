@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
@@ -618,6 +619,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateThemeHandler::class]);
         $commandBus->subscribe($app[RemoveThemeHandler::class]);
         $commandBus->subscribe($app[UpdateAttendanceModeHandler::class]);
+        $commandBus->subscribe($app[UpdateOnlineUrlHandler::class]);
         $commandBus->subscribe($app[UpdateAudienceHandler::class]);
         $commandBus->subscribe($app[CopyEventHandler::class]);
 
