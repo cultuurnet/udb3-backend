@@ -38,7 +38,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
                         $app['media_object_iri_generator']
                     ),
                     new CdbXMLImporter(
-                        new CdbXMLToJsonLDLabelImporter()
+                        $app[CdbXMLToJsonLDLabelImporter::class]
                     )
                 );
             }

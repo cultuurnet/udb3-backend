@@ -134,7 +134,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     ),
                     $app['calendar_factory'],
                     $app['cdbxml_contact_info_importer'],
-                    new CdbXMLToJsonLDLabelImporter()
+                    $app[CdbXMLToJsonLDLabelImporter::class]
                 );
             }
         );

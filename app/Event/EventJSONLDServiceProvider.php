@@ -156,7 +156,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     $app['udb2_event_cdbid_extractor'],
                     $app['calendar_factory'],
                     $app['cdbxml_contact_info_importer'],
-                    new CdbXMLToJsonLDLabelImporter()
+                    $app[CdbXMLToJsonLDLabelImporter::class]
                 );
             }
         );
