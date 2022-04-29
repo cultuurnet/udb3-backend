@@ -88,8 +88,6 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     $app['config']['curator_labels']
                 );
 
-                $repository = new SameAsOfferRepositoryDecorator($repository, new SameAs());
-
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
                     $app['event_bus'],
