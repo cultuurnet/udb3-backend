@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\SluggerInterface;
@@ -58,7 +59,7 @@ class CdbXMLImporterTest extends TestCase
             new EventCdbIdExtractor(),
             new CalendarFactory(),
             new CdbXmlContactInfoImporter(),
-            new CdbXMLToJsonLDLabelImporter()
+            new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
         );
         $this->organizerManager = $this->createMock(OrganizerServiceInterface::class);
         $this->placeManager = $this->createMock(PlaceServiceInterface::class);

@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -90,7 +91,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             ),
             new CalendarFactory(),
             new CdbXmlContactInfoImporter(),
-            new CdbXMLToJsonLDLabelImporter()
+            new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
         );
 
         $this->projector = new PlaceLDProjector(

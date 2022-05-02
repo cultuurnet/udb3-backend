@@ -46,6 +46,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -130,7 +131,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             new EventCdbIdExtractor(),
             new CalendarFactory(),
             new CdbXmlContactInfoImporter(),
-            new CdbXMLToJsonLDLabelImporter()
+            new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
         );
 
         $this->projector = new EventLDProjector(

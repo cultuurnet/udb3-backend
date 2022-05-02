@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -96,7 +97,7 @@ final class OrganizerLDProjectorTest extends TestCase
                 $iriGenerator
             ),
             new CdbXMLImporter(
-                new CdbXMLToJsonLDLabelImporter()
+                new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
             )
         );
 

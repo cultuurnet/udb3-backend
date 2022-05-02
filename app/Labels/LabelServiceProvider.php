@@ -188,7 +188,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
 
         $app[CdbXMLToJsonLDLabelImporter::class] = $app->share(
-            fn (Application $app) => new CdbXMLToJsonLDLabelImporter()
+            fn (Application $app) => new CdbXMLToJsonLDLabelImporter($app[self::JSON_READ_REPOSITORY])
         );
     }
 
