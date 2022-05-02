@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -55,7 +56,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
         $app['organizer_jsonld_repository'] = $app->share(
             function ($app) {
                 $repository = new CacheDocumentRepository($app['organizer_jsonld_cache']);
-                $repository = new PropertyPolyfillRepository($repository);
+                $repository = new PropertyPolyfillRepository($repository, $app[LabelServiceProvider::JSON_READ_REPOSITORY]);
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
