@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 
 final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
@@ -30,7 +31,8 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
                 $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventProperties($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
-                return $this->polyfillEmbeddedPlaceBookingAvailability($json);
+                $json = $this->polyfillEmbeddedPlaceBookingAvailability($json);
+                return $this->polyfillBrokenSameAs($json);
             }
         );
     }
@@ -149,6 +151,20 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
         if (!isset($json['location']['bookingAvailability'])) {
             $json['location']['bookingAvailability'] = BookingAvailability::available()->serialize();
         }
+
+        return $json;
+    }
+
+    private function polyfillBrokenSameAs(array $json): array
+    {
+        if (!isset($json['sameAs'])) {
+            return $json;
+        }
+
+        $urlParts = explode('/', $json['@id']);
+        $id = array_pop($urlParts);
+
+        $json['sameAs'] = (new SameAsForUitInVlaanderen())->generateSameAs($id, $json['name']['nl']);
 
         return $json;
     }
