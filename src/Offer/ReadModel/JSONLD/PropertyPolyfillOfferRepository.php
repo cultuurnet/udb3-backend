@@ -11,7 +11,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 
-final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
+final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {

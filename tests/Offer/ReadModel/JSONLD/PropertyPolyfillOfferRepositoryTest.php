@@ -9,18 +9,18 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
-class NewPropertyPolyfillOfferRepositoryTest extends TestCase
+class PropertyPolyfillOfferRepositoryTest extends TestCase
 {
     public const DOCUMENT_ID = '5d7ed700-17de-4c1f-923a-0affe7cf2d4c';
 
     /**
-     * @var NewPropertyPolyfillOfferRepository
+     * @var PropertyPolyfillOfferRepository
      */
     private $repository;
 
     protected function setUp()
     {
-        $this->repository = new NewPropertyPolyfillOfferRepository(
+        $this->repository = new PropertyPolyfillOfferRepository(
             new InMemoryDocumentRepository()
         );
     }

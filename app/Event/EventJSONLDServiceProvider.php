@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CuratorEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
@@ -74,7 +74,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     $repository
                 );
 
-                $repository = new NewPropertyPolyfillOfferRepository($repository);
+                $repository = new PropertyPolyfillOfferRepository($repository);
 
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
 
