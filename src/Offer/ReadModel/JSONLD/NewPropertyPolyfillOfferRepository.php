@@ -161,7 +161,10 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             return $json;
         }
 
-        $json['sameAs'] = (new SameAsForUitInVlaanderen())->generateSameAs($json['@id'], $json['name']['nl']);
+        $urlParts = explode('/', $json['@id']);
+        $id = array_pop($urlParts);
+
+        $json['sameAs'] = (new SameAsForUitInVlaanderen())->generateSameAs($id, $json['name']['nl']);
 
         return $json;
     }
