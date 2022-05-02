@@ -135,7 +135,7 @@ final class PropertyPolyfillRepositoryTest extends TestCase
         // Mock that "UiTPAS Mechelen" is visible
         $this->labelReadRepository->expects($this->any())
             ->method('getByName')
-            ->with(new StringLiteral('UiTPAS Mechelen'))
+            ->with(new StringLiteral('uitpas mechelen'))
             ->willReturn(
                 new Entity(
                     new UUID('7ba9e0e6-f1b5-4931-a00a-cd660c990e57'),
@@ -154,7 +154,7 @@ final class PropertyPolyfillRepositoryTest extends TestCase
                         'UiTPAS Mechelen',
                     ],
                     'hiddenLabels' => [
-                        'UiTPAS Mechelen',
+                        'uitpas Mechelen',
                     ],
                 ]
             )
@@ -171,7 +171,7 @@ final class PropertyPolyfillRepositoryTest extends TestCase
                 [
                     'labels' => [
                         'Aanvaarden van SABAM-cultuurchèques',
-                        'UiTPAS Mechelen',
+                        'uitpas Mechelen',
                     ],
                     'hiddenLabels' => [
                         'UiTPAS Mechelen',

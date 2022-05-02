@@ -209,7 +209,11 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     return $json;
                 }
 
-                $duplicates = array_intersect($json['labels'], $json['hiddenLabels']);
+                $toLowerCase = fn (string $label) => mb_strtolower($label, 'UTF-8');
+                $lowerCasedLabels = array_map($toLowerCase, $json['labels']);
+                $lowerCasedHiddenLabels = array_map($toLowerCase, $json['hiddenLabels']);
+                $duplicates = array_intersect($lowerCasedLabels, $lowerCasedHiddenLabels);
+
                 foreach ($duplicates as $duplicate) {
                     // Get the visibility from the read model, or if not found assume invisible to make sure that labels
                     // that should be hidden labels do not show up on publication channels (which would be worse than
@@ -221,7 +225,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     $filterProperty = $visibility->sameAs(Visibility::VISIBLE()) ? 'hiddenLabels' : 'labels';
                     $json[$filterProperty] = array_filter(
                         $json[$filterProperty],
-                        fn ($labelName) => $labelName !== $duplicate
+                        fn ($labelName) => mb_strtolower($labelName, 'UTF-8') !== $duplicate
                     );
                 }
 
