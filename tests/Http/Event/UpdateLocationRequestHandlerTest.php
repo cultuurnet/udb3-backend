@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -71,6 +72,8 @@ final class UpdateLocationRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::pathParameterInvalid(
                 'Instead of passing the virtual location, please update the attendance mode.'
+                . ' For more information check the documentation of the update attendance mode endpoint.'
+                . ' See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
             ),
             fn () => $this->updateLocationRequestHandler->handle($request)
         );

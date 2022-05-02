@@ -35,7 +35,7 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         $locationId = $routeParameters->get('locationId');
 
         if ((new LocationId($locationId))->isVirtualLocation()) {
-            throw ApiProblem::pathParameterInvalid(
+            throw ApiProblem::useAttendanceMode(
                 'Instead of passing the virtual location, please update the attendance mode.'
             );
         }
@@ -51,7 +51,7 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         try {
             $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));
         } catch (UpdateLocationNotSupported $exception) {
-            throw ApiProblem::pathParameterInvalid($exception->getMessage());
+            throw ApiProblem::useAttendanceMode($exception->getMessage());
         }
 
         return new NoContentResponse();
