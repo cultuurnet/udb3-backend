@@ -21,7 +21,10 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
         }
 
         $priceInfoDenormalizer = new PriceInfoDenormalizer();
-        $priceInfo = $priceInfoDenormalizer->denormalize($data->priceInfo, PriceInfo::class);
+        $priceInfo = $priceInfoDenormalizer->denormalize(
+            json_decode(json_encode($data->priceInfo), true),
+            PriceInfo::class
+        );
 
         if ($priceInfo->getTariffs()->hasDuplicates()) {
             throw ApiProblem::bodyInvalidData(
