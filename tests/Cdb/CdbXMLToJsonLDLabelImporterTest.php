@@ -12,13 +12,14 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\StringLiteral;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class CdbXMLToJsonLDLabelImporterTest extends TestCase
 {
     private CdbXMLToJsonLDLabelImporter $cdbXMLToJsonLDLabelImporter;
-    private ReadRepositoryInterface $labelReadRepository;
+    private MockObject $labelReadRepository;
 
     protected function setUp(): void
     {
