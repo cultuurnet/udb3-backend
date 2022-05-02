@@ -12,4 +12,9 @@ class Tariffs extends Collection
     {
         parent::__construct(...$tariffs);
     }
+
+    public function hasDuplicates(): bool
+    {
+        return false;
+    }
 }
