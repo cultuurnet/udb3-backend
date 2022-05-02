@@ -21,12 +21,9 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     public const DOCUMENT_ID = '5d7ed700-17de-4c1f-923a-0affe7cf2d4c';
     private MockObject $labelReadRepository;
 
-    /**
-     * @var PropertyPolyfillOfferRepository
-     */
-    private $repository;
+    private PropertyPolyfillOfferRepository $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelReadRepository = $this->createMock(ReadRepositoryInterface::class);
 
