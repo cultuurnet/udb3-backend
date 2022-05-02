@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\RelatedPlaceLDProjector;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Term\TermRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -102,7 +103,10 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     $repository
                 );
 
-                $repository = new PropertyPolyfillOfferRepository($repository);
+                $repository = new PropertyPolyfillOfferRepository(
+                    $repository,
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                );
 
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
 
