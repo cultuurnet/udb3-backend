@@ -9,8 +9,10 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultureFeed_Cdb_Item_Event;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\SluggerInterface;
@@ -56,7 +58,8 @@ class CdbXMLImporterTest extends TestCase
             ),
             new EventCdbIdExtractor(),
             new CalendarFactory(),
-            new CdbXmlContactInfoImporter()
+            new CdbXmlContactInfoImporter(),
+            new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
         );
         $this->organizerManager = $this->createMock(OrganizerServiceInterface::class);
         $this->placeManager = $this->createMock(PlaceServiceInterface::class);
@@ -413,7 +416,7 @@ class CdbXMLImporterTest extends TestCase
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_duplicate_labels.cdbxml.xml');
 
-        $this->assertEquals(['enkel'], $jsonEvent->labels);
+        $this->assertEquals(['EnKeL'], $jsonEvent->labels);
     }
 
     /**

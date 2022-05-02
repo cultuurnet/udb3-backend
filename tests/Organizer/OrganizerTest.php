@@ -114,6 +114,60 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_can_import_same_label_with_correct_visibility_after_udb2_import_with_incorrect_visibility(): void
+    {
+        $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
+
+        $this->scenario
+            ->given(
+                [
+                    new OrganizerImportedFromUDB2(
+                        '404EE8DE-E828-9C07-FE7D12DC4EB24480',
+                        $cdbXml,
+                        'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+                    ),
+                ]
+            )
+            ->when(
+                function (Organizer $organizer) {
+                    $organizer->importLabels(
+                        new Labels(
+                            new Label(
+                                new LabelName('foo'),
+                                false
+                            )
+                        )
+                    );
+                }
+            )
+            ->then(
+                [
+                    new LabelsImported(
+                        '404EE8DE-E828-9C07-FE7D12DC4EB24480',
+                        new Labels(
+                            new Label(
+                                new LabelName('foo'),
+                                false
+                            )
+                        )
+                    ),
+                    new LabelRemoved(
+                        '404EE8DE-E828-9C07-FE7D12DC4EB24480',
+                        'foo',
+                        true
+                    ),
+                    new LabelAdded(
+                        '404EE8DE-E828-9C07-FE7D12DC4EB24480',
+                        'foo',
+                        false
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_updates_from_udb2_actors_and_takes_labels_into_account(): void
     {
         $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
@@ -211,9 +265,9 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                             )
                         )
                     ),
-                    new LabelAdded($this->id, 'new_label_1'),
                     new LabelRemoved($this->id, 'existing_label_2'),
                     new LabelRemoved($this->id, 'existing_label_3'),
+                    new LabelAdded($this->id, 'new_label_1'),
                 ]
             );
     }
