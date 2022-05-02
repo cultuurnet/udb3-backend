@@ -15,6 +15,14 @@ class Tariffs extends Collection
 
     public function hasDuplicates(): bool
     {
+        $tariffNames = [];
+        foreach ($this->toArray() as $tariff) {
+            $name = $tariff->getName();
+            if (in_array($name, $tariffNames, true)){
+                return true;
+            }
+            $tariffNames[] = $name;
+        }
         return false;
     }
 }
