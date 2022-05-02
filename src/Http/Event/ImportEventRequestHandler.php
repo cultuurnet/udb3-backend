@@ -111,6 +111,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new AgeRangeValidatingRequestBodyParser(),
             new CalendarValidatingRequestBodyParser(),
             new BookingInfoValidatingRequestBodyParser(),
+            new PriceInfoValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForEvent(),
             new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();
