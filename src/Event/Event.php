@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
@@ -304,6 +305,12 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     {
         if (!is_null($this->locationId) && $this->locationId->sameAs($locationId)) {
             return;
+        }
+
+        if (!$locationId->isVirtualLocation() && $this->attendanceMode === AttendanceMode::online()->toString()) {
+            throw new UpdateLocationNotSupported(
+                'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
+            );
         }
 
         $this->apply(new LocationUpdated($this->eventId, $locationId));

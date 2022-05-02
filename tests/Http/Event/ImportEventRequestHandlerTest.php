@@ -62,6 +62,8 @@ use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -96,6 +98,9 @@ final class ImportEventRequestHandlerTest extends TestCase
             fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId
         );
 
+        $locationRepository = new InMemoryDocumentRepository();
+        $locationRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
+
         $this->importEventRequestHandler = new ImportEventRequestHandler(
             $this->aggregateRepository,
             $this->uuidGenerator,
@@ -116,7 +121,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new VirtualLocationPolyfillRequestBodyParser($placeIriGenerator)
             ),
             $this->commandBus,
-            $this->imageCollectionFactory
+            $this->imageCollectionFactory,
+            $locationRepository
         );
 
         $this->commandBus->record();
@@ -449,9 +455,9 @@ final class ImportEventRequestHandlerTest extends TestCase
             [
                 new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannenkoeken voor het goede doel')),
                 new UpdateType($eventId, '1.50.0.0.0'),
+                new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
                 new UpdateCalendar($eventId, new Calendar(CalendarType::PERMANENT())),
-                new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -858,6 +864,37 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             $this->commandBus->getRecordedCommands()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_location_is_not_found(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5df22882-0ce9-47ca-84a3-2cd22c79499e',
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/location',
+                'The location with id "5df22882-0ce9-47ca-84a3-2cd22c79499e" was not found.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
     }
 
     /**
