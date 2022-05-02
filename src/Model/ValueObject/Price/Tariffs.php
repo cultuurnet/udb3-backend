@@ -18,7 +18,7 @@ class Tariffs extends Collection
         $tariffNames = [];
         foreach ($this->toArray() as $tariff) {
             $name = $tariff->getName();
-            if (in_array($name, $tariffNames, true)){
+            if (in_array($name, $tariffNames, true)) {
                 return true;
             }
             $tariffNames[] = $name;
