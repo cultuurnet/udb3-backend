@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\UpdateLocationNotSupported;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -35,8 +36,10 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         $locationId = $routeParameters->get('locationId');
 
         if ((new LocationId($locationId))->isVirtualLocation()) {
-            throw ApiProblem::useAttendanceMode(
-                'Instead of passing the virtual location, please update the attendance mode.'
+            throw ApiProblem::pathParameterInvalid(
+                $this->createUseAttendanceModeMessage(
+                    'Instead of passing the virtual location, please update the attendance mode.'
+                )
             );
         }
 
@@ -51,9 +54,18 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         try {
             $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));
         } catch (UpdateLocationNotSupported $exception) {
-            throw ApiProblem::useAttendanceMode($exception->getMessage());
+            throw ApiProblem::pathParameterInvalid(
+                $this->createUseAttendanceModeMessage($exception->getMessage())
+            );
         }
 
         return new NoContentResponse();
+    }
+
+    private function createUseAttendanceModeMessage(string $detail): string
+    {
+        return $detail
+            . ' For more information check the documentation of the update attendance mode endpoint.'
+            . ' See: ' . Stoplight::ATTENDANCE_MODE_UPDATE;
     }
 }

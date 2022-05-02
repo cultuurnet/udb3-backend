@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
-use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Offer\OfferType;
 use Exception;
 
@@ -407,14 +406,5 @@ final class ApiProblem extends Exception
         );
         $e->setExtraProperties(['label' => $labelName]);
         return $e;
-    }
-
-    public static function useAttendanceMode(string $detail): self
-    {
-        return self::pathParameterInvalid(
-            $detail
-            . ' For more information check the documentation of the update attendance mode endpoint.'
-            . ' See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
-        );
     }
 }
