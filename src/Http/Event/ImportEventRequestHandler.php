@@ -25,6 +25,9 @@ use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
+use CultuurNet\UDB3\Http\Label\DuplicateLabelValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -49,6 +52,8 @@ use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\NotAllowedToPublish;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -66,6 +71,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
     private RequestBodyParser $combinedRequestBodyParser;
     private CommandBus $commandBus;
     private ImageCollectionFactory $imageCollectionFactory;
+    private DocumentRepository $locationDocumentRepository;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -74,7 +80,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         DenormalizerInterface $eventDenormalizer,
         RequestBodyParser $combinedRequestBodyParser,
         CommandBus $commandBus,
-        ImageCollectionFactory $imageCollectionFactory
+        ImageCollectionFactory $imageCollectionFactory,
+        DocumentRepository $locationDocumentRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -83,6 +90,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $this->combinedRequestBodyParser = $combinedRequestBodyParser;
         $this->commandBus = $commandBus;
         $this->imageCollectionFactory = $imageCollectionFactory;
+        $this->locationDocumentRepository = $locationDocumentRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -110,8 +118,9 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new AttendanceModeValidatingRequestBodyParser(),
             new AgeRangeValidatingRequestBodyParser(),
-            new CalendarValidatingRequestBodyParser(),
             new BookingInfoValidatingRequestBodyParser(),
+            new CalendarValidatingRequestBodyParser(),
+            new DuplicateLabelValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForEvent(),
             new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();
@@ -125,6 +134,19 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $calendar = $eventAdapter->getCalendar();
         $theme = $eventAdapter->getTheme();
         $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
+
+        if (!$location->isVirtualLocation()) {
+            try {
+                $this->locationDocumentRepository->fetch($location->toString());
+            } catch (DocumentDoesNotExist $e) {
+                throw ApiProblem::bodyInvalidData(
+                    new SchemaError(
+                        '/location',
+                        'The location with id "' . $location->toString() . '" was not found.'
+                    )
+                );
+            }
+        }
 
         // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
         // If the request URL contains "imports", overwrite the workflowStatus to READY_FOR_VALIDATION to ensure
@@ -153,6 +175,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             }
 
             $this->aggregateRepository->save($eventAggregate);
+
+            $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
         } else {
             if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
                 $commands[] = new Publish($eventId, $publishDate);
@@ -160,6 +184,9 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
             $commands[] = new UpdateTitle($eventId, $mainLanguage, $title);
             $commands[] = new UpdateType($eventId, $type->getId());
+            // The attendance mode needs to be updated before the location can be changed.
+            // For example passing a real location to an online event is not allowed.
+            $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
             $commands[] = new UpdateLocation($eventId, $location);
             $commands[] = new UpdateCalendar($eventId, $calendar);
 
@@ -168,9 +195,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             }
         }
 
-        $commands[] = new UpdateAttendanceMode($eventId, $event->getAttendanceMode());
-
-        // TODO: Add command to delete online url
         if ($event->getOnlineUrl()) {
             $commands[] = new UpdateOnlineUrl($eventId, $event->getOnlineUrl());
         }

@@ -382,8 +382,8 @@ class OfferTest extends AggregateRootScenarioTestCase
                         )
                     )
                 ),
-                new LabelAdded($itemId, new LegacyLabel('new_label_1')),
                 new LabelRemoved($itemId, new LegacyLabel('existing_label_4_added_via_import')),
+                new LabelAdded($itemId, new LegacyLabel('new_label_1')),
             ]);
     }
 

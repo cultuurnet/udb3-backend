@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Label\ValueObjects\Privacy;
+use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\StringLiteral;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class PropertyPolyfillRepositoryTest extends TestCase
@@ -13,11 +20,15 @@ final class PropertyPolyfillRepositoryTest extends TestCase
     private const DOCUMENT_ID = '5d7ed700-17de-4c1f-923a-0affe7cf2d4c';
 
     private PropertyPolyfillRepository $repository;
+    private MockObject $labelReadRepository;
 
     protected function setUp(): void
     {
+        $this->labelReadRepository = $this->createMock(ReadRepositoryInterface::class);
+
         $this->repository = new PropertyPolyfillRepository(
-            new InMemoryDocumentRepository()
+            new InMemoryDocumentRepository(),
+            $this->labelReadRepository
         );
     }
 
@@ -114,6 +125,93 @@ final class PropertyPolyfillRepositoryTest extends TestCase
                 []
             )
             ->assertReturnedDocumentDoesNotContainKey('images');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_fix_visibility_of_label_both_in_labels_and_hiddenLabels(): void
+    {
+        // Mock that "UiTPAS Mechelen" is visible
+        $this->labelReadRepository->expects($this->any())
+            ->method('getByName')
+            ->with(new StringLiteral('uitpas mechelen'))
+            ->willReturn(
+                new Entity(
+                    new UUID('7ba9e0e6-f1b5-4931-a00a-cd660c990e57'),
+                    new StringLiteral('UiTPAS Mechelen'),
+                    Visibility::VISIBLE(),
+                    Privacy::PRIVACY_PUBLIC()
+                )
+            );
+
+        // Make sure the hiddenLabels property gets completely removed.
+        $this
+            ->given(
+                [
+                    'labels' => [
+                        'Aanvaarden van SABAM-cultuurchèques',
+                        'UiTPAS Mechelen',
+                    ],
+                    'hiddenLabels' => [
+                        'uitpas Mechelen',
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentDoesNotContainKey('hiddenLabels');
+    }
+
+    /**
+     * @test
+     */
+    public function it_assumes_labels_are_invisible_if_duplicate_and_not_found_in_read_repository(): void
+    {
+        $this
+            ->given(
+                [
+                    'labels' => [
+                        'Aanvaarden van SABAM-cultuurchèques',
+                        'uitpas Mechelen',
+                    ],
+                    'hiddenLabels' => [
+                        'UiTPAS Mechelen',
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'labels' => [
+                        'Aanvaarden van SABAM-cultuurchèques',
+                    ],
+                    'hiddenLabels' => [
+                        'UiTPAS Mechelen',
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_add_labels_if_not_set(): void
+    {
+        $this
+            ->given(
+                []
+            )
+            ->assertReturnedDocumentDoesNotContainKey('labels');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_add_hiddenLabels_if_not_set(): void
+    {
+        $this
+            ->given(
+                []
+            )
+            ->assertReturnedDocumentDoesNotContainKey('hiddenLabels');
     }
 
     private function given(array $given): self

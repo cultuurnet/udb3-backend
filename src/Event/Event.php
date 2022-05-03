@@ -310,11 +310,13 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             return;
         }
 
-        $this->apply(new LocationUpdated($this->eventId, $locationId));
-
         if (!$locationId->isVirtualLocation() && $this->attendanceMode === AttendanceMode::online()->toString()) {
-            $this->apply(new AttendanceModeUpdated($this->eventId, AttendanceMode::offline()->toString()));
+            throw new UpdateLocationNotSupported(
+                'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
+            );
         }
+
+        $this->apply(new LocationUpdated($this->eventId, $locationId));
 
         if ($locationId->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we

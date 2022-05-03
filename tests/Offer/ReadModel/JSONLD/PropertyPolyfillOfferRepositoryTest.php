@@ -4,24 +4,32 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Label\ValueObjects\Privacy;
+use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\StringLiteral;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class NewPropertyPolyfillOfferRepositoryTest extends TestCase
+class PropertyPolyfillOfferRepositoryTest extends TestCase
 {
     public const DOCUMENT_ID = '5d7ed700-17de-4c1f-923a-0affe7cf2d4c';
+    private MockObject $labelReadRepository;
 
-    /**
-     * @var NewPropertyPolyfillOfferRepository
-     */
-    private $repository;
+    private PropertyPolyfillOfferRepository $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->repository = new NewPropertyPolyfillOfferRepository(
-            new InMemoryDocumentRepository()
+        $this->labelReadRepository = $this->createMock(ReadRepositoryInterface::class);
+
+        $this->repository = new PropertyPolyfillOfferRepository(
+            new InMemoryDocumentRepository(),
+            $this->labelReadRepository
         );
     }
 
@@ -416,6 +424,119 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
         $this
             ->given(['@type' => 'Event'])
             ->assertReturnedDocumentContains(['@type' => 'Event']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_fix_same_as(): void
+    {
+        $this
+            ->given([
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                    'name' => [
+                        'nl' => 'Kopieertest',
+                        ],
+                    'sameAs' => [
+                        'http://www.uitinvlaanderen.be/agenda/e/kopieertest/279e7428-f44f-4b0c-af09-3c53bc2504ef',
+                        ],
+                    ])
+            ->assertReturnedDocumentContains([
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                'name' => [
+                    'nl' => 'Kopieertest',
+                    ],
+                'sameAs' => [
+                    'http://www.uitinvlaanderen.be/agenda/e/kopieertest/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                    ],
+                ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_fix_visibility_of_label_both_in_labels_and_hiddenLabels(): void
+    {
+        // Mock that "UiTPAS Mechelen" is visible
+        $this->labelReadRepository->expects($this->any())
+            ->method('getByName')
+            ->with(new StringLiteral('uitpas mechelen'))
+            ->willReturn(
+                new Entity(
+                    new UUID('7ba9e0e6-f1b5-4931-a00a-cd660c990e57'),
+                    new StringLiteral('UiTPAS Mechelen'),
+                    Visibility::VISIBLE(),
+                    Privacy::PRIVACY_PUBLIC()
+                )
+            );
+
+        // Make sure the hiddenLabels property gets completely removed.
+        $this
+            ->given(
+                [
+                    'labels' => [
+                        'Aanvaarden van SABAM-cultuurchèques',
+                        'UiTPAS Mechelen',
+                    ],
+                    'hiddenLabels' => [
+                        'uitpas Mechelen',
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentDoesNotContainKey('hiddenLabels');
+    }
+
+    /**
+     * @test
+     */
+    public function it_assumes_labels_are_invisible_if_duplicate_and_not_found_in_read_repository(): void
+    {
+        $this
+            ->given(
+                [
+                    'labels' => [
+                        'Aanvaarden van SABAM-cultuurchèques',
+                        'uitpas Mechelen',
+                    ],
+                    'hiddenLabels' => [
+                        'UiTPAS Mechelen',
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'labels' => [
+                        'Aanvaarden van SABAM-cultuurchèques',
+                    ],
+                    'hiddenLabels' => [
+                        'UiTPAS Mechelen',
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_add_labels_if_not_set(): void
+    {
+        $this
+            ->given(
+                []
+            )
+            ->assertReturnedDocumentDoesNotContainKey('labels');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_add_hiddenLabels_if_not_set(): void
+    {
+        $this
+            ->given(
+                []
+            )
+            ->assertReturnedDocumentDoesNotContainKey('hiddenLabels');
     }
 
     private function given(array $given): self
