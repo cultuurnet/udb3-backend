@@ -2923,7 +2923,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'permanent',
-            'onlineUrl' => 'rtp://www.publiq.be/livestream'
+            'onlineUrl' => 'rtp://www.publiq.be/livestream',
         ];
 
         $expectedErrors = [
@@ -2955,7 +2955,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
             ],
             'calendarType' => 'permanent',
-            'onlineUrl' => '   '
+            'onlineUrl' => '   ',
         ];
 
         $expectedErrors = [
