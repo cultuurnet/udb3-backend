@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\PriceInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
