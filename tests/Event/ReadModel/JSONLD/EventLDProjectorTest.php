@@ -11,6 +11,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -1249,7 +1250,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_updating_attendanceMode(): void
+    public function it_projects_attendanceMode_updated(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
@@ -1261,6 +1262,27 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '@id' => 'http://example.com/entity/' . $eventId,
             '@context' => '/contexts/event',
             'attendanceMode' => AttendanceMode::online()->toString(),
+            'modified' => $this->recordedOn->toString(),
+        ];
+
+        $this->assertEquals($expectedJson, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_onlineUrl_updated(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $onlineUrlUpdated = new OnlineUrlUpdated($eventId, 'https://www.publiq.be/livestream');
+
+        $body = $this->project($onlineUrlUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
+
+        $expectedJson = (object) [
+            '@id' => 'http://example.com/entity/' . $eventId,
+            '@context' => '/contexts/event',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
             'modified' => $this->recordedOn->toString(),
         ];
 
