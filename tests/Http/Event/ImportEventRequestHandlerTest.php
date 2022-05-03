@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
@@ -532,6 +533,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'availableTo' => '2021-05-17T22:00:00+00:00',
             'workflowStatus' => 'DRAFT',
             'attendanceMode' => 'mixed',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
             'audience' => [
                 'audienceType' => 'everyone',
             ],
@@ -647,6 +649,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::mixed()),
+                new UpdateOnlineUrl($eventId, new Url('https://www.publiq.be/livestream')),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo(
                     $eventId,
