@@ -399,7 +399,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     public function applyOnlineUrlUpdated(OnlineUrlUpdated $onlineUrlUpdated): void
     {
-        $this->attendanceMode = $onlineUrlUpdated->getOnlineUrl();
+        $this->onlineUrl = $onlineUrlUpdated->getOnlineUrl();
     }
 
     public function updateAudience(Audience $audience): void
