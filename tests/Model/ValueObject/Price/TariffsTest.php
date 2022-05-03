@@ -14,7 +14,7 @@ class TariffsTest extends TestCase
     /**
      * @test
      */
-    public function it_should_find_duplicates()
+    public function it_should_find_duplicates(): void
     {
         $duplicateName = new TranslatedTariffName(
             new Language('nl'),
@@ -41,7 +41,7 @@ class TariffsTest extends TestCase
     /**
      * @test
      */
-    public function it_should_find_only_unique_values()
+    public function it_should_find_only_unique_values(): void
     {
         $name1 = new TranslatedTariffName(
             new Language('nl'),
