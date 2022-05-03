@@ -4395,6 +4395,64 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_priceInfo_has_duplicate_names(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Kinderen',
+                    ],
+                    'price' => 5,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Kinderen',
+                    ],
+                    'price' => 7,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/priceInfo/1/name',
+                'The data (string) must match the type: object'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+
+    /**
+     * @test
+     */
     public function it_overrides_base_tariff_names(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
