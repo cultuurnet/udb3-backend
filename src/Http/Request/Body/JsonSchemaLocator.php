@@ -17,6 +17,7 @@ final class JsonSchemaLocator
 
     public const EVENT = 'event.json';
     public const EVENT_ATTENDANCE_MODE_PUT = 'event-attendanceMode-put.json';
+    public const EVENT_ONLINE_URL_PUT = 'event-onlineUrl-put.json';
     public const EVENT_AUDIENCE = 'event-audience.json';
     public const EVENT_AVAILABLE_FROM_PUT = 'event-availableFrom-put.json';
     public const EVENT_BOOKING_AVAILABILITY = 'event-bookingAvailability.json';
