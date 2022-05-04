@@ -176,8 +176,9 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
         $urlParts = explode('/', $json['@id']);
         $id = array_pop($urlParts);
+        $name = $json['name']['nl'] ?? ($json['name'][$json['mainLanguage']] ?? current($json['name']));
 
-        $json['sameAs'] = (new SameAsForUitInVlaanderen())->generateSameAs($id, $json['name']['nl']);
+        $json['sameAs'] = (new SameAsForUitInVlaanderen())->generateSameAs($id, $name);
 
         return $json;
     }

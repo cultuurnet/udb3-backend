@@ -434,15 +434,17 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
         $this
             ->given([
                 '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
-                    'name' => [
-                        'nl' => 'Kopieertest',
-                        ],
+                'mainLanguage' => 'nl',
+                'name' => [
+                    'nl' => 'Kopieertest',
+                    ],
                     'sameAs' => [
                         'http://www.uitinvlaanderen.be/agenda/e/kopieertest/279e7428-f44f-4b0c-af09-3c53bc2504ef',
                         ],
                     ])
             ->assertReturnedDocumentContains([
                 '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                'mainLanguage' => 'nl',
                 'name' => [
                     'nl' => 'Kopieertest',
                     ],
@@ -450,6 +452,49 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                     'http://www.uitinvlaanderen.be/agenda/e/kopieertest/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                     ],
                 ]);
+
+        $this
+            ->given([
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                'mainLanguage' => 'nl',
+                'name' => [
+                    'fr' => 'Kopieertest',
+                ],
+                'sameAs' => [
+                    'http://www.uitinvlaanderen.be/agenda/e/kopieertest/279e7428-f44f-4b0c-af09-3c53bc2504ef',
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                'mainLanguage' => 'nl',
+                'name' => [
+                    'fr' => 'Kopieertest',
+                ],
+                'sameAs' => [
+                    'http://www.uitinvlaanderen.be/agenda/e/kopieertest/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                ],
+            ]);
+
+        $this
+            ->given([
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                'mainLanguage' => 'fr',
+                'name' => [
+                    'fr' => 'Test de copie',
+                ],
+                'sameAs' => [
+                    'http://www.uitinvlaanderen.be/agenda/e/test-de-copie/279e7428-f44f-4b0c-af09-3c53bc2504ef',
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                'name' => [
+                    'fr' => 'Test de copie',
+                ],
+                'sameAs' => [
+                    'http://www.uitinvlaanderen.be/agenda/e/test-de-copie/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                ],
+            ]);
     }
 
     /**
