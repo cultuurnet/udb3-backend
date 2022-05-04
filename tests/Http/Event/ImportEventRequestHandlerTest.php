@@ -2907,6 +2907,38 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_onlineUrl_is_provided_on_offline_event(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/onlineUrl',
+                'An onlineUrl can not be used in combination with an offline attendanceMode.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_onlineUrl_has_wrong_format(): void
     {
         $event = [
