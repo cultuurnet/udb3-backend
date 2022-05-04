@@ -108,9 +108,11 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
 
                     // Filter the duplicate out of the property that it does not belong in.
                     $filterProperty = $visibility->sameAs(Visibility::VISIBLE()) ? 'hiddenLabels' : 'labels';
-                    $json[$filterProperty] = array_filter(
-                        $json[$filterProperty],
-                        fn ($labelName) => mb_strtolower($labelName, 'UTF-8') !== $duplicate
+                    $json[$filterProperty] = array_values(
+                        array_filter(
+                            $json[$filterProperty],
+                            fn ($labelName) => mb_strtolower($labelName, 'UTF-8') !== $duplicate
+                        )
                     );
                 }
 
