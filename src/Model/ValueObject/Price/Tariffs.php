@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Price;
 
 use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class Tariffs extends Collection
 {
@@ -15,14 +16,32 @@ class Tariffs extends Collection
 
     public function hasDuplicates(): bool
     {
-        $tariffNames = [];
-        foreach ($this->toArray() as $tariff) {
-            $name = $tariff->getName();
-            if (in_array($name, $tariffNames, true)) {
-                return true;
+        $matrix = $this->geTariffsMatrix();
+
+        foreach ($matrix as $languageTariffs) {
+            $tariffNames = [];
+            foreach ($languageTariffs as $translatedTariff) {
+                if (in_array($translatedTariff, $tariffNames, true)) {
+                    return true;
+                }
+                $tariffNames[] = $translatedTariff;
             }
-            $tariffNames[] = $name;
         }
         return false;
+    }
+
+    private function geTariffsMatrix(): array
+    {
+        $tariffsMatrix = [];
+        /** @var Tariff $tariff */
+        foreach ($this->toArray() as $tariff) {
+            $languages = $tariff->getName()->getLanguages();
+            /** @var Language $language */
+            foreach ($languages as $language) {
+                $tariffsMatrix[$language->getCode()][] = $tariff->getName()->getTranslation($language)->toString();
+            }
+        }
+
+        return $tariffsMatrix;
     }
 }
