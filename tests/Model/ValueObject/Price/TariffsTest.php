@@ -68,4 +68,66 @@ class TariffsTest extends TestCase
 
         $this->assertFalse($tariffs->hasDuplicates());
     }
+
+    /**
+     * @test
+     */
+    public function it_should_ignore_same_tariff_names_in_another_language(): void
+    {
+        $name1 = new TranslatedTariffName(
+            new Language('nl'),
+            new TariffName('Leerkrachten')
+        );
+        $name2 = new TranslatedTariffName(
+            new Language('en'),
+            new TariffName('CEO')
+        );
+        $name3 = new TranslatedTariffName(
+            new Language('nl'),
+            new TariffName('CEO')
+        );
+
+        $price1 = new Money(1000, new Currency('EUR'));
+        $price2 = new Money(2000, new Currency('EUR'));
+        $price3 = new Money(2000, new Currency('EUR'));
+
+        $tariff1 = new Tariff($name1, $price1);
+        $tariff2 = new Tariff($name2, $price2);
+        $tariff3 = new Tariff($name3, $price3);
+
+        $tariffs = new Tariffs($tariff1, $tariff2, $tariff3);
+
+        $this->assertFalse($tariffs->hasDuplicates());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_find_same_tariff_names_in_another_language(): void
+    {
+        $name1 = new TranslatedTariffName(
+            new Language('nl'),
+            new TariffName('Leerkrachten')
+        );
+        $name2 = new TranslatedTariffName(
+            new Language('en'),
+            new TariffName('CEO')
+        );
+        $name3 = new TranslatedTariffName(
+            new Language('en'),
+            new TariffName('CEO')
+        );
+
+        $price1 = new Money(1000, new Currency('EUR'));
+        $price2 = new Money(2000, new Currency('EUR'));
+        $price3 = new Money(2000, new Currency('EUR'));
+
+        $tariff1 = new Tariff($name1, $price1);
+        $tariff2 = new Tariff($name2, $price2);
+        $tariff3 = new Tariff($name3, $price3);
+
+        $tariffs = new Tariffs($tariff1, $tariff2, $tariff3);
+
+        $this->assertFalse($tariffs->hasDuplicates());
+    }
 }
