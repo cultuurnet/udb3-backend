@@ -457,7 +457,9 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
             ->given([
                 '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'mainLanguage' => 'nl',
-                'name' => 'Kopieertest',
+                'name' => [
+                    'fr' => 'Kopieertest',
+                ],
                 'sameAs' => [
                     'http://www.uitinvlaanderen.be/agenda/e/kopieertest/279e7428-f44f-4b0c-af09-3c53bc2504ef',
                 ],
@@ -465,7 +467,9 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
             ->assertReturnedDocumentContains([
                 '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'mainLanguage' => 'nl',
-                'name' => 'Kopieertest',
+                'name' => [
+                    'fr' => 'Kopieertest',
+                ],
                 'sameAs' => [
                     'http://www.uitinvlaanderen.be/agenda/e/kopieertest/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 ],
