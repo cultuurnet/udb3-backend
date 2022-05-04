@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
@@ -78,6 +78,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -97,6 +98,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected string $eventId;
 
     private string $attendanceMode;
+
+    private string $onlineUrl = '';
 
     private ?Audience $audience = null;
 
@@ -385,6 +388,18 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     public function applyAttendanceModeUpdated(AttendanceModeUpdated $attendanceModeUpdated): void
     {
         $this->attendanceMode = $attendanceModeUpdated->getAttendanceMode();
+    }
+
+    public function updateOnlineUrl(Url $onlineUrl): void
+    {
+        if ($this->onlineUrl !== $onlineUrl->toString()) {
+            $this->apply(new OnlineUrlUpdated($this->eventId, $onlineUrl->toString()));
+        }
+    }
+
+    public function applyOnlineUrlUpdated(OnlineUrlUpdated $onlineUrlUpdated): void
+    {
+        $this->onlineUrl = $onlineUrlUpdated->getOnlineUrl();
     }
 
     public function updateAudience(Audience $audience): void

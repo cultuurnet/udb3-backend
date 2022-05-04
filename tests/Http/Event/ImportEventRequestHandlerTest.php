@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
@@ -532,6 +533,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'availableTo' => '2021-05-17T22:00:00+00:00',
             'workflowStatus' => 'DRAFT',
             'attendanceMode' => 'mixed',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
             'audience' => [
                 'audienceType' => 'everyone',
             ],
@@ -647,6 +649,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::mixed()),
+                new UpdateOnlineUrl($eventId, new Url('https://www.publiq.be/livestream')),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo(
                     $eventId,
@@ -2895,6 +2898,70 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/attendanceMode',
                 'Attendance mode "mixed" needs to have a real location.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_onlineUrl_has_wrong_format(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'onlineUrl' => 'rtp://www.publiq.be/livestream',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/onlineUrl',
+                'The string should match pattern: ^http[s]?:\/\/'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_onlineUrl_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'onlineUrl' => '   ',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/onlineUrl',
+                'The data must match the \'uri\' format'
             ),
         ];
 
