@@ -497,6 +497,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                     'labels' => [
                         'Aanvaarden van SABAM-cultuurchèques',
                         'uitpas Mechelen',
+                        '3rd label to check that the array does not become an object when a label in the middle is removed',
                     ],
                     'hiddenLabels' => [
                         'UiTPAS Mechelen',
@@ -507,6 +508,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                 [
                     'labels' => [
                         'Aanvaarden van SABAM-cultuurchèques',
+                        '3rd label to check that the array does not become an object when a label in the middle is removed',
                     ],
                     'hiddenLabels' => [
                         'UiTPAS Mechelen',
