@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Serializer\UpdateOnlineUrlDenormalizer;
+use CultuurNet\UDB3\Event\UpdateOnlineUrlNotSupported;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -39,7 +42,16 @@ final class UpdateOnlineUrlRequestHandler implements RequestHandlerInterface
         /** @var UpdateOnlineUrl $updateOnlineUrl */
         $updateOnlineUrl = $parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch($updateOnlineUrl);
+        try {
+            $this->commandBus->dispatch($updateOnlineUrl);
+        } catch (UpdateOnlineUrlNotSupported $exception) {
+            throw ApiProblem::bodyInvalidData(
+                new SchemaError(
+                    '/onlineUrl',
+                    'An onlineUrl can not be used in combination with an offline attendanceMode.'
+                )
+            );
+        }
 
         return new NoContentResponse();
     }
