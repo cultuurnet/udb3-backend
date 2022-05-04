@@ -4415,7 +4415,15 @@ final class ImportEventRequestHandlerTest extends TestCase
                 [
                     'category' => 'base',
                     'name' => [
-                        'nl' => 'Basistarief',
+                        'nl' => 'Basis',
+                    ],
+                    'price' => 15,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Kinderen',
                     ],
                     'price' => 10,
                     'priceCurrency' => 'EUR',
@@ -4428,21 +4436,13 @@ final class ImportEventRequestHandlerTest extends TestCase
                     'price' => 5,
                     'priceCurrency' => 'EUR',
                 ],
-                [
-                    'category' => 'tariff',
-                    'name' => [
-                        'nl' => 'Kinderen',
-                    ],
-                    'price' => 7,
-                    'priceCurrency' => 'EUR',
-                ],
             ],
         ];
 
         $expectedErrors = [
             new SchemaError(
-                '/priceInfo/1/name',
-                'The data (string) must match the type: object'
+                '/priceInfo',
+                'Tariff names should be unique.'
             ),
         ];
 
