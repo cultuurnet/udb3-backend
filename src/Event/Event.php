@@ -392,6 +392,10 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     public function updateOnlineUrl(Url $onlineUrl): void
     {
+        if ($this->attendanceMode === AttendanceMode::offline()->toString()) {
+            throw new UpdateOnlineUrlNotSupported();
+        }
+
         if ($this->onlineUrl !== $onlineUrl->toString()) {
             $this->apply(new OnlineUrlUpdated($this->eventId, $onlineUrl->toString()));
         }
