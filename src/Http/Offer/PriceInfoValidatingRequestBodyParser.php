@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +23,7 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
 
         $priceInfoDenormalizer = new PriceInfoDenormalizer();
         $priceInfo = $priceInfoDenormalizer->denormalize(
-            json_decode(json_encode($data->priceInfo), true),
+            Json::decode(Json::encode($data->priceInfo)),
             PriceInfo::class
         );
 
