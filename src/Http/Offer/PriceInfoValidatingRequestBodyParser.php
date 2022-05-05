@@ -23,7 +23,7 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
 
         $priceInfoDenormalizer = new PriceInfoDenormalizer();
         $priceInfo = $priceInfoDenormalizer->denormalize(
-            Json::decode(Json::encode($data->priceInfo)),
+            Json::decodeAssociatively(Json::encode($data->priceInfo)),
             PriceInfo::class
         );
 
