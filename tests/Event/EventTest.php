@@ -135,6 +135,26 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_removes_onlineUrl_for_offline_attendanceMode(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::online()->toString()),
+                new OnlineUrlUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'https://www.publiq.be/livestream'),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateAttendanceMode(AttendanceMode::offline())
+            )
+            ->then([
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::offline()->toString()),
+                new OnlineUrlDeleted('d2b41f1d-598c-46af-a3a5-10e373faa6fe'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_update_onlineUrl_on_online_event(): void
     {
         $this->scenario

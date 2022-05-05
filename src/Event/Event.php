@@ -384,6 +384,10 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         if ($this->attendanceMode !== $attendanceMode->toString()) {
             $this->apply(new AttendanceModeUpdated($this->eventId, $attendanceMode->toString()));
         }
+
+        if (!empty($this->onlineUrl) && $this->attendanceMode === AttendanceMode::offline()->toString()) {
+            $this->apply(new OnlineUrlDeleted($this->eventId));
+        }
     }
 
     public function applyAttendanceModeUpdated(AttendanceModeUpdated $attendanceModeUpdated): void
