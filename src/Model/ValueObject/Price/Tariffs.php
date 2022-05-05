@@ -19,12 +19,8 @@ class Tariffs extends Collection
         $matrix = $this->geTariffsMatrix();
 
         foreach ($matrix as $languageTariffs) {
-            $tariffNames = [];
-            foreach ($languageTariffs as $translatedTariff) {
-                if (in_array($translatedTariff, $tariffNames, true)) {
-                    return true;
-                }
-                $tariffNames[] = $translatedTariff;
+            if (count($languageTariffs) !== count(array_unique($languageTariffs))) {
+                return true;
             }
         }
         return false;
