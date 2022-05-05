@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
@@ -200,6 +201,41 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 fn (Event $event) => $event->updateOnlineUrl(new Url('https://www.publiq.be/livestream'))
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_an_onlineUrl(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::mixed()->toString()),
+                new OnlineUrlUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'https://www.publiq.be/livestream'),
+            ])
+            ->when(
+                fn (Event $event) => $event->deleteOnlineUrl()
+            )
+            ->then([
+                new OnlineUrlDeleted('d2b41f1d-598c-46af-a3a5-10e373faa6fe'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_deleting_an_empty_onlineUrl(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::mixed()->toString()),
+            ])
+            ->when(
+                fn (Event $event) => $event->deleteOnlineUrl()
             )
             ->then([]);
     }
