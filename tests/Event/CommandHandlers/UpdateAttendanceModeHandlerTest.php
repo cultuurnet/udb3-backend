@@ -61,13 +61,13 @@ final class UpdateAttendanceModeHandlerTest extends CommandHandlerScenarioTestCa
                         $eventId,
                         file_get_contents(__DIR__ . '/../samples/EventTest.cdbxml.xml'),
                         CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
-                    )
+                    ),
                 ]
             )
             ->when(new UpdateAttendanceMode($eventId, AttendanceMode::online()))
             ->then(
                 [
-                    new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString())
+                    new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString()),
                 ]
             );
     }

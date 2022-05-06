@@ -253,7 +253,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
                         $eventId,
                         file_get_contents(__DIR__ . '/samples/EventTest.cdbxml.xml'),
                         CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
-                    )
+                    ),
                 ]
             )
             ->when(
