@@ -187,6 +187,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
 
         $this->mockPlaceService();
 
@@ -282,6 +283,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'theme',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
 
         $this->mockPlaceService();
 
@@ -327,6 +329,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'theme',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
         $jsonLD->creator = $expectedCreator;
 
         $this->mockPlaceService();
@@ -638,6 +641,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'theme',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
 
         $this->mockPlaceService();
 

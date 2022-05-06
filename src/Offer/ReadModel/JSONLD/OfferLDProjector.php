@@ -669,7 +669,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        unset($offerLd->typicalAgeRange);
+        $offerLd->typicalAgeRange = '-';
 
         return $document->withBody($offerLd);
     }
