@@ -9,10 +9,10 @@ use Exception;
 
 final class InvalidWorkflowStatusTransition extends Exception
 {
-    public function __construct(WorkflowStatus $workflowStatus)
+    public function __construct(WorkflowStatus $from, WorkflowStatus $to)
     {
         parent::__construct(
-            'Only an offer with workflow status DRAFT can be published, current status is ' . $workflowStatus->toString()
+            'Cannot transition from workflowStatus "' . $from->toString() . '" to "' . $to->toString() . '".'
         );
     }
 }

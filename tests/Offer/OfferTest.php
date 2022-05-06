@@ -1234,7 +1234,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_throws_when_trying_to_publish_a_non_draft_offer(): void
     {
         $this->expectException(InvalidWorkflowStatusTransition::class);
-        $this->expectExceptionMessage('Only an offer with workflow status DRAFT can be published, current status is REJECTED');
+        $this->expectExceptionMessage('Cannot transition from workflowStatus "REJECTED" to "READY_FOR_VALIDATION".');
 
         $itemId = 'itemId';
         $now = new \DateTime();
