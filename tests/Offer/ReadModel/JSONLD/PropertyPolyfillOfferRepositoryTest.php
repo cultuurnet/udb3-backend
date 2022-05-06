@@ -186,6 +186,22 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_polyfill_attendanceMode_for_place(): void
+    {
+        $this->repository = new PropertyPolyfillOfferRepository(
+            new InMemoryDocumentRepository(),
+            $this->labelReadRepository,
+            OfferType::place()
+        );
+
+        $this
+            ->given([])
+            ->assertReturnedDocumentDoesNotContainKey('attendanceMode');
+    }
+
+    /**
+     * @test
+     */
     public function it_should_not_change_existing_attendanceMode(): void
     {
         $this

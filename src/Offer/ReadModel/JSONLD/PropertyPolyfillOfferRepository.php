@@ -47,11 +47,15 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
             function (array $json) {
                 $json = $this->polyfillMediaObjectId($json);
                 $json = $this->polyfillStatus($json);
-                $json = $this->polyfillAttendanceMode($json);
                 $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventProperties($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 $json = $this->polyfillEmbeddedPlaceBookingAvailability($json);
+
+                if ($this->offerType->sameAs(OfferType::event())) {
+                    $json = $this->polyfillAttendanceMode($json);
+                }
+
                 return $this->polyfillBrokenSameAs($json);
             }
         );
