@@ -31,7 +31,7 @@ use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
-use CultuurNet\UDB3\Offer\NotAllowedToPublish;
+use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
@@ -230,7 +230,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         foreach ($commands as $command) {
             try {
                 $commandId = $this->commandBus->dispatch($command);
-            } catch (NotAllowedToPublish $notAllowedToPublish) {
+            } catch (InvalidWorkflowStatusTransition $notAllowedToPublish) {
             }
             $lastCommandId = $commandId ?? null;
         }
