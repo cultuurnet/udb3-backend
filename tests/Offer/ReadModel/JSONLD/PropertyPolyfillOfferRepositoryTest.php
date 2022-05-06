@@ -247,22 +247,6 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_polyfill_typicalAgeRange_on_places(): void
-    {
-        $this->repository = new PropertyPolyfillOfferRepository(
-            new InMemoryDocumentRepository(),
-            $this->labelReadRepository,
-            OfferType::place()
-        );
-
-        $this
-            ->given([])
-            ->assertReturnedDocumentDoesNotContainKey('typicalAgeRange');
-    }
-
-    /**
-     * @test
-     */
     public function it_should_polyfill_a_default_booking_availability_if_not_set(): void
     {
         $this

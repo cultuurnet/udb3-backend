@@ -51,10 +51,10 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                 $json = $this->polyfillSubEventProperties($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 $json = $this->polyfillEmbeddedPlaceBookingAvailability($json);
+                $json = $this->polyfillTypicalAgeRange($json);
 
                 if ($this->offerType->sameAs(OfferType::event())) {
                     $json = $this->polyfillAttendanceMode($json);
-                    $json = $this->polyfillTypicalAgeRange($json);
                 }
 
                 return $this->polyfillBrokenSameAs($json);
