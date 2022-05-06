@@ -38,7 +38,9 @@ final class LegacyEventRequestBodyParser implements RequestBodyParser
 
         if (is_object($data) && isset($data->location) && !isset($data->location->{'@id'})) {
             if (is_object($data->location) && isset($data->location->id) && is_string($data->location->id)) {
-                $data->location->{'@id'} = $this->placeIriGenerator->iri($data->location->id);
+                /** @var stdClass $location */
+                $location = $data->location;
+                $location->{'@id'} = $this->placeIriGenerator->iri($location->id);
             }
 
             // Added to handle the angular UI which passes the location as a string.
