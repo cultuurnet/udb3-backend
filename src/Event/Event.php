@@ -97,7 +97,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 {
     protected string $eventId;
 
-    private string $attendanceMode;
+    private string $attendanceMode = 'offline';
 
     private string $onlineUrl = '';
 
@@ -204,7 +204,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $this->calendar = $eventCreated->getCalendar();
-        $this->attendanceMode = AttendanceMode::offline()->toString();
         $this->audience = new Audience(AudienceType::everyone());
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
