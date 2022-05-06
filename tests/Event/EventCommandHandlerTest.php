@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
 use Cake\Chronos\Chronos;
+use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
@@ -21,6 +22,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
@@ -221,6 +223,37 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->factorOfferCreated($eventId),
+                ]
+            )
+            ->when(
+                new UpdateLocation($eventId, $locationId)
+            )
+            ->then(
+                [
+                    new LocationUpdated($eventId, $locationId),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4702
+     */
+    public function it_can_update_location_of_an_event_imported_from_xml(): void
+    {
+        $eventId = '3ed90f18-93a3-4340-981d-12e57efa0211';
+        $locationId = new LocationId('57738178-28a5-4afb-90c0-fd0beba172a8');
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given(
+                [
+                    new EventImportedFromUDB2(
+                        $eventId,
+                        file_get_contents(__DIR__ . '/samples/EventTest.cdbxml.xml'),
+                        CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
+                    )
                 ]
             )
             ->when(
