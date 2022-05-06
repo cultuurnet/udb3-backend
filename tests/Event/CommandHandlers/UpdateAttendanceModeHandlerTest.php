@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
@@ -16,6 +17,7 @@ use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
+use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
@@ -42,6 +44,34 @@ final class UpdateAttendanceModeHandlerTest extends CommandHandlerScenarioTestCa
             ->given([$this->getEventCreated($eventId)])
             ->when(new UpdateAttendanceMode($eventId, AttendanceMode::online()))
             ->then([new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString())]);
+    }
+
+    /**
+     * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4702
+     */
+    public function it_handles_updating_the_attendanceMode_on_events_created_via_xml(): void
+    {
+        $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given(
+                [
+                    new EventImportedFromUDB2(
+                        $eventId,
+                        file_get_contents(__DIR__ . '/../samples/EventTest.cdbxml.xml'),
+                        CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2')
+                    ),
+                ]
+            )
+            ->when(new UpdateAttendanceMode($eventId, AttendanceMode::online()))
+            ->then(
+                [
+                    new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString()),
+                ]
+            );
     }
 
     /**
