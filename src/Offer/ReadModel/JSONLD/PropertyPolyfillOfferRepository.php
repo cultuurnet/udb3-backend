@@ -54,6 +54,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 
                 if ($this->offerType->sameAs(OfferType::event())) {
                     $json = $this->polyfillAttendanceMode($json);
+                    $json = $this->polyfillTypicalAgeRange($json);
                 }
 
                 return $this->polyfillBrokenSameAs($json);
@@ -114,6 +115,15 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
     {
         if (!isset($json['bookingAvailability'])) {
             $json['bookingAvailability'] = BookingAvailability::available()->serialize();
+        }
+
+        return $json;
+    }
+
+    private function polyfillTypicalAgeRange(array $json): array
+    {
+        if (!isset($json['typicalAgeRange'])) {
+            $json['typicalAgeRange'] = '-';
         }
 
         return $json;
