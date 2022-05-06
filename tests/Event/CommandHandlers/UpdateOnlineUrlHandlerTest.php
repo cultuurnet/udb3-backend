@@ -12,11 +12,14 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\EventRepository;
+use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\UpdateOnlineUrlNotSupported;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -31,8 +34,45 @@ final class UpdateOnlineUrlHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_updating_online_url(): void
+    public function it_handles_updating_online_url_on_online_event(): void
     {
+        $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given([
+                $this->getEventCreated($eventId),
+                new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString()),
+            ])
+            ->when(new UpdateOnlineUrl($eventId, new Url('https://www.publiq.be/livestream')))
+            ->then([new OnlineUrlUpdated($eventId, 'https://www.publiq.be/livestream')]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_updating_online_url_on_mixed_event(): void
+    {
+        $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given([
+                $this->getEventCreated($eventId),
+                new AttendanceModeUpdated($eventId, AttendanceMode::mixed()->toString()),
+            ])
+            ->when(new UpdateOnlineUrl($eventId, new Url('https://www.publiq.be/livestream')))
+            ->then([new OnlineUrlUpdated($eventId, 'https://www.publiq.be/livestream')]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_updating_online_url_on_offline_event(): void
+    {
+        $this->expectException(UpdateOnlineUrlNotSupported::class);
+        $this->expectExceptionMessage('');
+
         $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
 
         $this->scenario
@@ -53,6 +93,7 @@ final class UpdateOnlineUrlHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($eventId)
             ->given([
                 $this->getEventCreated($eventId),
+                new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString()),
                 new OnlineUrlUpdated($eventId, 'https://www.publiq.be/livestream'),
             ])
             ->when(new UpdateOnlineUrl($eventId, new Url('https://www.publiq.be/livestream')))

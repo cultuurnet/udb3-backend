@@ -134,8 +134,47 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_onlineUrl(): void
+    public function it_handles_update_onlineUrl_on_online_event(): void
     {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::online()->toString()),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateOnlineUrl(new Url('https://www.publiq.be/livestream'))
+            )
+            ->then([
+                new OnlineUrlUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'https://www.publiq.be/livestream'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_update_onlineUrl_on_mixed_event(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::mixed()->toString()),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateOnlineUrl(new Url('https://www.publiq.be/livestream'))
+            )
+            ->then([
+                new OnlineUrlUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'https://www.publiq.be/livestream'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_updating_onlineUrl_on_offline_event(): void
+    {
+        $this->expectException(UpdateOnlineUrlNotSupported::class);
+        $this->expectExceptionMessage('');
+
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
@@ -156,6 +195,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
+                new AttendanceModeUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', AttendanceMode::mixed()->toString()),
                 new OnlineUrlUpdated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'https://www.publiq.be/livestream'),
             ])
             ->when(
