@@ -902,6 +902,36 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4701
+     */
+    public function it_does_not_crash_on_empty_location_object_but_returns_an_invalid_data_api_problem(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => 'Pannenkoeken voor het goede doel',
+            'type' => [
+                'id' => '0.5.0.0.0',
+            ],
+            'theme' => [
+                'id' => '0.52.0.0.0',
+                'label' => 'Circus',
+            ],
+            'location' => (object) [],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/location',
+                'The required properties (@id) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
      */
     public function it_creates_a_new_event_from_legacy_format_and_ignores_address(): void
     {
