@@ -902,6 +902,8 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4701
      */
     public function it_does_not_crash_on_empty_location_object_but_returns_an_invalid_data_api_problem(): void
     {
