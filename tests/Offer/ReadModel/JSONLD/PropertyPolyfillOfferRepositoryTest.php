@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
@@ -29,7 +30,8 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
         $this->repository = new PropertyPolyfillOfferRepository(
             new InMemoryDocumentRepository(),
-            $this->labelReadRepository
+            $this->labelReadRepository,
+            OfferType::event()
         );
     }
 

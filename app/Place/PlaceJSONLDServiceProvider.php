@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -105,7 +106,8 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 
                 $repository = new PropertyPolyfillOfferRepository(
                     $repository,
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    OfferType::place()
                 );
 
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);

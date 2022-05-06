@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
@@ -19,10 +20,16 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
     private ReadRepositoryInterface $labelReadRepository;
 
-    public function __construct(DocumentRepository $repository, ReadRepositoryInterface $labelReadRepository)
-    {
+    private OfferType $offerType;
+
+    public function __construct(
+        DocumentRepository $repository,
+        ReadRepositoryInterface $labelReadRepository,
+        OfferType $offerType
+    ) {
         parent::__construct($repository);
         $this->labelReadRepository = $labelReadRepository;
+        $this->offerType = $offerType;
     }
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument

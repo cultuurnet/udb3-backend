@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\RelatedEventLDProjector;
 use CultuurNet\UDB3\Event\Recommendations\DBALRecommendationsRepository;
 use CultuurNet\UDB3\Event\Recommendations\RecommendationForEnrichedOfferRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -77,7 +78,8 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
 
                 $repository = new PropertyPolyfillOfferRepository(
                     $repository,
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    OfferType::event()
                 );
 
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
