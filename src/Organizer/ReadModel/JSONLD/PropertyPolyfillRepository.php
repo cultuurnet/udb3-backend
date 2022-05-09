@@ -25,7 +25,7 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
     {
         $document = parent::fetch($id, $includeMetadata);
         $document = $this->polyfillNewProperties($document);
-        $document = $this->fixNullLabels($document);
+        $document = $this->removeNullLabels($document);
         $document = $this->fixDuplicateLabelVisibility($document);
         return $document;
     }
@@ -80,7 +80,7 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
         return $json;
     }
 
-    private function fixNullLabels(JsonDocument $jsonDocument): JsonDocument
+    private function removeNullLabels(JsonDocument $jsonDocument): JsonDocument
     {
         return $jsonDocument->applyAssoc(
             function (array $json) {
