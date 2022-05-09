@@ -1952,7 +1952,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'terms' => [
                 [
-                    'id' => '0.50.1.0.0',
+                    'id' => '0.15.0.0.0',
                 ],
             ],
             'address' => [
@@ -2280,8 +2280,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/terms',
-                'At least 1 array items must match schema'
+                '/terms/0/id',
+                'The term 1 does not exist or is not supported'
             ),
         ];
 
@@ -4163,7 +4163,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
             'terms' => [
                 [
-                    'id' => '0.50.1.0.0',
+                    'id' => '0.15.0.0.0',
                 ],
             ],
             'address' => [

@@ -127,32 +127,6 @@ final class ImportTermRequestBodyParserTest extends TestCase
                     ],
                 ],
             ],
-            'body with unknown terms id' => [
-                (object) [
-                    'name' => (object) [
-                        'nl' => 'Cafe Den Hemel',
-                    ],
-                    'terms' => [
-                        (object) [
-                            'id' => 'Unknown id',
-                            'label' => 'Openbare ruimte',
-                            'domain' => 'unkown domain',
-                        ],
-                    ],
-                ],
-                (object) [
-                    'name' => (object) [
-                        'nl' => 'Cafe Den Hemel',
-                    ],
-                    'terms' => [
-                        (object) [
-                            'id' => 'Unknown id',
-                            'label' => 'Openbare ruimte',
-                            'domain' => 'unkown domain',
-                        ],
-                    ],
-                ],
-            ],
             'body with wrong term fields' => [
                 (object) [
                     'name' => (object) [
