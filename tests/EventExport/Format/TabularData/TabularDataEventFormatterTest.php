@@ -81,6 +81,8 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      * @dataProvider organizerDataProvider
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-3921
      */
     public function it_handles_organizer(string $sampleFile): void
     {
@@ -111,7 +113,32 @@ class TabularDataEventFormatterTest extends TestCase
             [
                 'event_with_untranslated_organizer.json',
             ],
+            [
+                'event_with_organizer_with_different_mainLanguage.json',
+            ],
         ];
+    }
+
+    /**
+     * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-3921
+     */
+    public function it_handles_missing_typicalAgeRange(): void
+    {
+        $includedProperties = [
+            'typicalAgeRange',
+        ];
+        $eventWithTranslatedOrganizer = $this->getJSONEventFromFile('event_with_dates.json');
+        $formatter = new TabularDataEventFormatter($includedProperties);
+
+        $formattedEvent = $formatter->formatEvent($eventWithTranslatedOrganizer);
+        $expectedFormatting = [
+            'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
+            'typicalAgeRange' => '',
+        ];
+
+        $this->assertEquals($expectedFormatting, $formattedEvent);
     }
 
     /**
