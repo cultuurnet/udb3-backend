@@ -111,6 +111,9 @@ class TabularDataEventFormatterTest extends TestCase
             [
                 'event_with_untranslated_organizer.json',
             ],
+            [
+                'event_with_organizer_with_different_mainLanguage.json',
+            ],
         ];
     }
 
