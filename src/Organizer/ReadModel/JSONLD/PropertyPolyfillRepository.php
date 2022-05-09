@@ -25,6 +25,7 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
     {
         $document = parent::fetch($id, $includeMetadata);
         $document = $this->polyfillNewProperties($document);
+        $document = $this->removeNullLabels($document);
         $document = $this->fixDuplicateLabelVisibility($document);
         return $document;
     }
@@ -77,6 +78,31 @@ final class PropertyPolyfillRepository extends DocumentRepositoryDecorator
         );
 
         return $json;
+    }
+
+    private function removeNullLabels(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                $filterNullLabels = static function (array $json, string $propertyName): array {
+                    if (!isset($json[$propertyName]) || !is_array($json[$propertyName])) {
+                        return $json;
+                    }
+                    $json[$propertyName] = array_values(
+                        array_filter($json[$propertyName], fn ($label) => $label !== null)
+                    );
+                    if ($json[$propertyName] === []) {
+                        unset($json[$propertyName]);
+                    }
+                    return $json;
+                };
+
+                $json = $filterNullLabels($json, 'labels');
+                $json = $filterNullLabels($json, 'hiddenLabels');
+
+                return $json;
+            }
+        );
     }
 
     /**
