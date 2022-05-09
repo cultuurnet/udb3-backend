@@ -3140,6 +3140,39 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4705
+     */
+    public function it_throws_if_terms_id_is_not_known_and_no_domain_is_set(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.51.12.0.',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms/0/id',
+                'The term 1.51.12.0. does not exist or is not supported'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
      */
     public function it_throws_if_terms_id_is_not_known(): void
     {
