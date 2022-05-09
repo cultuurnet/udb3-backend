@@ -14,6 +14,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
+use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
@@ -186,6 +187,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -267,6 +269,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -385,6 +388,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -459,6 +463,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
                 new UpdateCalendar($eventId, new Calendar(CalendarType::PERMANENT())),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -786,6 +791,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -856,6 +862,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1002,6 +1009,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1071,6 +1079,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1150,6 +1159,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1227,6 +1237,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1303,6 +1314,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1383,6 +1395,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1457,6 +1470,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1535,6 +1549,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1607,6 +1622,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1885,6 +1901,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -2696,6 +2713,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::online()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -3926,6 +3944,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -4253,6 +4272,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint([], ['info@publiq.be'], [])),
@@ -4625,6 +4645,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),

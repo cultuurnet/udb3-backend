@@ -41,6 +41,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
@@ -447,6 +448,16 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD = $document->getBody();
 
         $jsonLD->onlineUrl = $onlineUrlUpdated->getOnlineUrl();
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyOnlineUrlDeleted(OnlineUrlDeleted $onlineUrlDeleted): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($onlineUrlDeleted->getEventId());
+        $jsonLD = $document->getBody();
+
+        unset($jsonLD->onlineUrl);
 
         return $document->withBody($jsonLD);
     }

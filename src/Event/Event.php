@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
@@ -382,6 +383,10 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         if ($this->attendanceMode !== $attendanceMode->toString()) {
             $this->apply(new AttendanceModeUpdated($this->eventId, $attendanceMode->toString()));
         }
+
+        if (!empty($this->onlineUrl) && $this->attendanceMode === AttendanceMode::offline()->toString()) {
+            $this->apply(new OnlineUrlDeleted($this->eventId));
+        }
     }
 
     public function applyAttendanceModeUpdated(AttendanceModeUpdated $attendanceModeUpdated): void
@@ -403,6 +408,18 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     public function applyOnlineUrlUpdated(OnlineUrlUpdated $onlineUrlUpdated): void
     {
         $this->onlineUrl = $onlineUrlUpdated->getOnlineUrl();
+    }
+
+    public function deleteOnlineUrl(): void
+    {
+        if (!empty($this->onlineUrl)) {
+            $this->apply(new OnlineUrlDeleted($this->eventId));
+        }
+    }
+
+    public function applyOnlineUrlDeleted(OnlineUrlDeleted $onlineUrlDeleted): void
+    {
+        $this->onlineUrl = '';
     }
 
     public function updateAudience(Audience $audience): void

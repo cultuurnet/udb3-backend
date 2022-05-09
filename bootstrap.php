@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
@@ -620,6 +621,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[RemoveThemeHandler::class]);
         $commandBus->subscribe($app[UpdateAttendanceModeHandler::class]);
         $commandBus->subscribe($app[UpdateOnlineUrlHandler::class]);
+        $commandBus->subscribe($app[DeleteOnlineUrlHandler::class]);
         $commandBus->subscribe($app[UpdateAudienceHandler::class]);
         $commandBus->subscribe($app[CopyEventHandler::class]);
 

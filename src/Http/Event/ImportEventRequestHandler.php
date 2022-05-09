@@ -9,6 +9,7 @@ use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
+use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
@@ -207,6 +208,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         if ($event->getOnlineUrl()) {
             $commands[] = new UpdateOnlineUrl($eventId, $event->getOnlineUrl());
+        } else {
+            $commands[] = new DeleteOnlineUrl($eventId);
         }
 
         if ($location->isDummyPlaceForEducation()) {

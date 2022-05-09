@@ -15,6 +15,8 @@ use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -70,6 +72,27 @@ final class UpdateAttendanceModeHandlerTest extends CommandHandlerScenarioTestCa
                     new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString()),
                 ]
             );
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_onlineUrl_for_offline_attendanceMode(): void
+    {
+        $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given([
+                $this->getEventCreated($eventId),
+                new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString()),
+                new OnlineUrlUpdated($eventId, 'https://www.publiq.be/livestream'),
+            ])
+            ->when(new UpdateAttendanceMode($eventId, AttendanceMode::offline()))
+            ->then([
+                new AttendanceModeUpdated($eventId, AttendanceMode::offline()->toString()),
+                new OnlineUrlDeleted($eventId),
+            ]);
     }
 
     /**
