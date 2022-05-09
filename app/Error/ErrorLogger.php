@@ -14,6 +14,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -53,7 +54,6 @@ final class ErrorLogger
         AccessDeniedHttpException::class,
         AccessDeniedException::class,
         CalendarTypeNotSupported::class,
-        ApiProblem::class,
     ];
 
     /**
@@ -78,6 +78,19 @@ final class ErrorLogger
 
     public static function isBadRequestException(Throwable $e): bool
     {
+        // If the Throwable can be converted to an ApiProblem, do that first.
+        if ($e instanceof ConvertsToApiProblem) {
+            $e = $e->toApiProblem();
+        }
+        // If the Throwable is now an ApiProblem (or always was), check its status code to determine if it's a bad
+        // request or an internal server error.
+        if ($e instanceof ApiProblem) {
+            return $e->getStatus() >= 400 && $e->getStatus() < 500;
+        }
+
+        // If the Throwable is not an ApiProblem, check the list of known exceptions that are caused by bad requests on
+        // endpoints that do not have good error handling (= throwing ApiProblem) yet, so the logs & Sentry do not get
+        // flooded with exceptions caused by bad requests.
         // Use an instanceof check instead of in_array to also allow filtering on parent class or interface.
         foreach (self::BAD_REQUESTS as $badRequestExceptionClass) {
             if ($e instanceof $badRequestExceptionClass) {
