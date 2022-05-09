@@ -101,4 +101,31 @@ class TariffsTest extends TestCase
 
         $this->assertTrue($tariffs->hasDuplicateNames());
     }
+
+    /**
+     * @test
+     */
+    public function it_should_fetch_duplicate_tariffs(): void
+    {
+        $duplicateNameInForeignLanguage = new TranslatedTariffName(
+            new Language('en'),
+            new TariffName('CEO')
+        );
+        $price3 = new Money(2000, new Currency('EUR'));
+        $tariff3 = new Tariff($duplicateNameInForeignLanguage, $price3);
+
+        $price4 = new Money(2000, new Currency('EUR'));
+        $tariff4 = new Tariff($duplicateNameInForeignLanguage, $price4);
+
+        $tariffs = new Tariffs($this->tariff1, $this->tariff2, $tariff3, $tariff4);
+
+        $expected = [
+            [
+                'index' => 1,
+                'language' => 'en',
+                'name' => 'CEO',
+            ],
+        ];
+        $this->assertEquals($expected, $tariffs->getDuplicatesNames());
+    }
 }

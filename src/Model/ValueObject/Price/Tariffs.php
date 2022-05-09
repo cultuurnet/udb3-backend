@@ -26,6 +26,29 @@ class Tariffs extends Collection
         return false;
     }
 
+    public function getDuplicatesNames(): array
+    {
+        $matrix = $this->geTariffsMatrix();
+        $duplicateNames = [];
+
+        foreach ($matrix as $languageCode => $languageTariffs) {
+            $tempTable = [];
+            foreach ($languageTariffs as $i => $tariffName) {
+                if (in_array($tariffName, $tempTable, true)) {
+                    $duplicateNames[] = [
+                        'index' => $i,
+                        'language' => $languageCode,
+                        'name' => $tariffName,
+                    ];
+                } else {
+                    $tempTable[] = $tariffName;
+                }
+            }
+        }
+
+        return $duplicateNames;
+    }
+
     private function geTariffsMatrix(): array
     {
         $tariffsMatrix = [];
