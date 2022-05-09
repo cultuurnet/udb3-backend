@@ -341,19 +341,12 @@ class TabularDataEventFormatter
             'organizer' => [
                 'name' => 'organisatie',
                 'include' => function ($event) {
-                    if (property_exists($event, 'organizer')
-                        && isset($event->organizer->name)
-                    ) {
-                        // @replay_i18n
-                        // @see https://jira.uitdatabank.be/browse/III-2201
-                        // Should also take into account the main language.
-                        if (!is_string($event->organizer->name)) {
-                            $mainLanguage = isset($event->mainLanguage) ? $event->mainLanguage : 'nl';
-                            return $event->organizer->name->{$mainLanguage};
-                        }
-
-                        return $event->organizer->name;
+                    if (isset($event->organizer, $event->organizer->name)) {
+                        $name = (array) $event->organizer->name;
+                        $mainLanguage = $event->mainLanguage ?? 'nl';
+                        return $name[$mainLanguage] ?? current($name);
                     }
+                    return '';
                 },
                 'property' => 'organizer',
             ],
