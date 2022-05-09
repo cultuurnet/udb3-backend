@@ -1952,7 +1952,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'terms' => [
                 [
-                    'id' => '0.50.1.0.0',
+                    'id' => '0.15.0.0.0',
                 ],
             ],
             'address' => [
@@ -4163,7 +4163,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
             'terms' => [
                 [
-                    'id' => '0.50.1.0.0',
+                    'id' => '0.15.0.0.0',
                 ],
             ],
             'address' => [
