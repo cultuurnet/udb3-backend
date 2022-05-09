@@ -27,13 +27,26 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
             PriceInfo::class
         );
 
-        if ($priceInfo->getTariffs()->hasDuplicateNames()) {
+        /*if ($priceInfo->getTariffs()->hasDuplicateNames()) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/priceInfo',
                     'Tariff names should be unique.'
                 )
             );
+        }*/
+
+        $duplicateNames = $priceInfo->getTariffs()->getDuplicatesNames();
+
+        if (count($duplicateNames) > 0) {
+            $errors = [];
+            foreach ($duplicateNames as $duplicateName) {
+                $errors[] = new SchemaError(
+                    '/priceInfo' . '/' . $duplicateName['index'] . '/' . $duplicateName['name'] . '/' . $duplicateName['language'],
+                    'Tariff names should be unique.'
+                );
+            }
+            throw ApiProblem::bodyInvalidData(...$errors);
         }
 
         return $request;
