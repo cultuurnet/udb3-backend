@@ -119,6 +119,16 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
+    public function it_sets_all_ages_as_default()
+    {
+        $jsonPlace = $this->createJsonPlaceFromCdbXml('place_with_long_description.cdbxml.xml');
+
+        $this->assertEquals('-', $jsonPlace->typicalAgeRange);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_mark_a_place_as_ready_for_validation_when_importing_without_a_workflow_status()
     {
         $jsonPlace = $this->createJsonPlaceFromCdbXml('place_with_image.cdbxml.xml');

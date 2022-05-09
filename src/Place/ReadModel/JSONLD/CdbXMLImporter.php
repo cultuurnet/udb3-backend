@@ -131,6 +131,8 @@ class CdbXMLImporter
             }
         }
 
+        $jsonLD->typicalAgeRange = '-';
+
         if ($item->getContactInfo()) {
             $this->cdbXmlContactInfoImporter->importBookingInfo(
                 $jsonLD,
