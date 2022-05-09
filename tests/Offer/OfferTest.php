@@ -1254,6 +1254,26 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_does_not_throw_when_publishing_an_offer_that_is_already_published_and_approved(): void
+    {
+        $itemId = 'itemId';
+        $now = new \DateTime();
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new Published($itemId, $now),
+                new Approved($itemId),
+            ])
+            ->when(function (Item $item) use ($now) {
+                $item->publish($now);
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_approve_an_offer_that_is_ready_for_validation(): void
     {
         $itemId = '23bb131f-d060-4e00-86c7-cf8af0de1190';
