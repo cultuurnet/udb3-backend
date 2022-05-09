@@ -119,6 +119,28 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-3921
+     */
+    public function it_handles_missing_typicalAgeRange(): void
+    {
+        $includedProperties = [
+            'typicalAgeRange',
+        ];
+        $eventWithTranslatedOrganizer = $this->getJSONEventFromFile('event_with_dates.json');
+        $formatter = new TabularDataEventFormatter($includedProperties);
+
+        $formattedEvent = $formatter->formatEvent($eventWithTranslatedOrganizer);
+        $expectedFormatting = [
+            'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
+            'typicalAgeRange' => '',
+        ];
+
+        $this->assertEquals($expectedFormatting, $formattedEvent);
+    }
+
+    /**
+     * @test
      * @dataProvider addressDataProvider
      */
     public function it_handles_address(string $sampleFile): void
