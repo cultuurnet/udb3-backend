@@ -3196,7 +3196,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/terms',
+                '/terms/0/id',
                 'The term 1 does not exist or is not supported'
             ),
         ];
