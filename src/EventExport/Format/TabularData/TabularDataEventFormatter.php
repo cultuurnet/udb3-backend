@@ -341,6 +341,7 @@ class TabularDataEventFormatter
             'organizer' => [
                 'name' => 'organisatie',
                 'include' => function ($event) {
+                    /** @var stdClass $event */
                     if (isset($event->organizer, $event->organizer->name)) {
                         $name = (array) $event->organizer->name;
                         $mainLanguage = $event->mainLanguage ?? 'nl';
