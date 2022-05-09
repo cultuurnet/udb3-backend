@@ -381,7 +381,7 @@ class TabularDataEventFormatter
             'typicalAgeRange' => [
                 'name' => 'leeftijd',
                 'include' => function ($event) {
-                    return $event->typicalAgeRange;
+                    return $event->typicalAgeRange ?? '';
                 },
                 'property' => 'typicalAgeRange',
             ],
