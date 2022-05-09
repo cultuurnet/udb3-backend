@@ -27,7 +27,7 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
             PriceInfo::class
         );
 
-        if ($priceInfo->getTariffs()->hasDuplicates()) {
+        if ($priceInfo->getTariffs()->hasDuplicateNames()) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/priceInfo',

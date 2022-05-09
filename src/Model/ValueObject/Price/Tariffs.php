@@ -14,7 +14,7 @@ class Tariffs extends Collection
         parent::__construct(...$tariffs);
     }
 
-    public function hasDuplicates(): bool
+    public function hasDuplicateNames(): bool
     {
         $matrix = $this->geTariffsMatrix();
 

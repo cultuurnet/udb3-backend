@@ -45,7 +45,7 @@ class TariffsTest extends TestCase
         $tariff3 = new Tariff($duplicateName, $price3);
         $tariffs = new Tariffs($this->tariff1, $this->tariff2, $tariff3);
 
-        $this->assertTrue($tariffs->hasDuplicates());
+        $this->assertTrue($tariffs->hasDuplicateNames());
     }
 
     /**
@@ -62,7 +62,7 @@ class TariffsTest extends TestCase
 
         $tariffs = new Tariffs($this->tariff1, $this->tariff2, $tariff3);
 
-        $this->assertFalse($tariffs->hasDuplicates());
+        $this->assertFalse($tariffs->hasDuplicateNames());
     }
 
     /**
@@ -79,7 +79,7 @@ class TariffsTest extends TestCase
 
         $tariffs = new Tariffs($this->tariff1, $this->tariff2, $tariff3);
 
-        $this->assertFalse($tariffs->hasDuplicates());
+        $this->assertFalse($tariffs->hasDuplicateNames());
     }
 
     /**
@@ -99,6 +99,6 @@ class TariffsTest extends TestCase
 
         $tariffs = new Tariffs($this->tariff1, $this->tariff2, $tariff3, $tariff4);
 
-        $this->assertTrue($tariffs->hasDuplicates());
+        $this->assertTrue($tariffs->hasDuplicateNames());
     }
 }
