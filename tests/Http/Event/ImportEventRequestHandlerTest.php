@@ -4436,12 +4436,40 @@ final class ImportEventRequestHandlerTest extends TestCase
                     'price' => 5,
                     'priceCurrency' => 'EUR',
                 ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'en' => 'Children',
+                    ],
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'en' => 'Students',
+                    ],
+                    'price' => 5,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'en' => 'Children',
+                    ],
+                    'price' => 5,
+                    'priceCurrency' => 'EUR',
+                ],
             ],
         ];
 
         $expectedErrors = [
             new SchemaError(
                 '/priceInfo/1/Kinderen/nl',
+                'Tariff names should be unique.'
+            ),
+            new SchemaError(
+                '/priceInfo/2/Children/en',
                 'Tariff names should be unique.'
             ),
         ];
