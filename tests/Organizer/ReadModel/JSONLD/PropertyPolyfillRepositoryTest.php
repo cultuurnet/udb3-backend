@@ -216,6 +216,39 @@ final class PropertyPolyfillRepositoryTest extends TestCase
             ->assertReturnedDocumentDoesNotContainKey('hiddenLabels');
     }
 
+
+    /**
+     * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4708
+     */
+    public function it_should_remove_null_labels(): void
+    {
+        $this
+            ->given(
+                [
+                    'hiddenLabels' => [null, 'foo'],
+                ]
+            )
+            ->assertReturnedDocumentContains(['hiddenLabels' => ['foo']]);
+    }
+
+    /**
+     * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4708
+     */
+    public function it_should_remove_label_properties_with_only_null_values(): void
+    {
+        $this
+            ->given(
+                [
+                    'labels' => [null],
+                ]
+            )
+            ->assertReturnedDocumentDoesNotContainKey('labels');
+    }
+
     private function given(array $given): self
     {
         $this->repository->save(
