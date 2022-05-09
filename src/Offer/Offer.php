@@ -802,7 +802,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     private function guardPublish(): bool
     {
         if ($this->workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
-            return true; // nothing left to do if the offer has already been published
+            // Nothing left to do if the offer has already been published.
+            return true;
+        }
+        if ($this->workflowStatus->sameAs(WorkflowStatus::APPROVED())) {
+            // Approved is the next logical step from ready for validation. So also consider this to be handled.
+            return true;
         }
 
         if (!$this->workflowStatus->sameAs(WorkflowStatus::DRAFT())) {
