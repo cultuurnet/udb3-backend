@@ -53,7 +53,7 @@ use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
-use CultuurNet\UDB3\Offer\NotAllowedToPublish;
+use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
@@ -275,7 +275,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         foreach ($commands as $command) {
             try {
                 $commandId = $this->commandBus->dispatch($command);
-            } catch (NotAllowedToPublish $notAllowedToPublish) {
+            } catch (InvalidWorkflowStatusTransition $notAllowedToPublish) {
             }
             $lastCommandId = $commandId ?? null;
         }

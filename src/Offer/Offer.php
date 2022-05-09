@@ -790,26 +790,24 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     /**
-     * Publish the offer when it has workflowstatus draft.
+     * Publish the offer when it has workflowStatus DRAFT.
+     * Does nothing if the offer is already in READY_FOR_VALIDATION or APPROVED.
+     * Throws if the workflowStatus is REJECTED or DELETED.
      */
     public function publish(\DateTimeInterface $publicationDate): void
     {
-        $this->guardPublish() ?: $this->apply(
-            $this->createPublishedEvent($publicationDate)
-        );
-    }
-
-    private function guardPublish(): bool
-    {
-        if ($this->workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
-            return true; // nothing left to do if the offer has already been published
+        if ($this->workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION()) ||
+            $this->workflowStatus->sameAs(WorkflowStatus::APPROVED())) {
+            // Nothing left to do if the offer has already been published.
+            // Approved is the next logical step from ready for validation. So also consider this to be handled.
+            return;
         }
 
         if (!$this->workflowStatus->sameAs(WorkflowStatus::DRAFT())) {
-            throw new NotAllowedToPublish($this->workflowStatus);
+            throw new InvalidWorkflowStatusTransition($this->workflowStatus, WorkflowStatus::READY_FOR_VALIDATION());
         }
 
-        return false;
+        $this->apply($this->createPublishedEvent($publicationDate));
     }
 
     public function approve(): void
