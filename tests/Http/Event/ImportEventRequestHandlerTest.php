@@ -3164,7 +3164,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/terms',
-                'At least 1 array items must match schema'
+                'The term 1 does not exist or is not supported'
             ),
         ];
 
