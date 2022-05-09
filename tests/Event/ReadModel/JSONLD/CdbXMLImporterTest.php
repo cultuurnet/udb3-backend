@@ -1075,11 +1075,11 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_import_an_event_without_age_range_when_age_from_and_to_are_not_set()
+    public function it_imports_events_with_all_age_range_by_default()
     {
         $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange(null, null);
 
-        $this->assertObjectNotHasAttribute('typicalAgeRange', $jsonEvent);
+        $this->assertObjectHasAttribute('typicalAgeRange', $jsonEvent, '-');
     }
 
     /**
@@ -1115,11 +1115,11 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_import_missing_age_from()
+    public function it_always_sets_an_all_age_range()
     {
         $jsonEvent = $this->createJsonEventFromCdbXmlWithoutAgeFrom();
 
-        $this->assertFalse(isset($jsonEvent->typicalAgeRange));
+        $this->assertTrue(isset($jsonEvent->typicalAgeRange));
     }
 
     /**

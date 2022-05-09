@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
@@ -29,7 +30,8 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
         $this->repository = new PropertyPolyfillOfferRepository(
             new InMemoryDocumentRepository(),
-            $this->labelReadRepository
+            $this->labelReadRepository,
+            OfferType::event()
         );
     }
 
@@ -184,6 +186,22 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_polyfill_attendanceMode_for_place(): void
+    {
+        $this->repository = new PropertyPolyfillOfferRepository(
+            new InMemoryDocumentRepository(),
+            $this->labelReadRepository,
+            OfferType::place()
+        );
+
+        $this
+            ->given([])
+            ->assertReturnedDocumentDoesNotContainKey('attendanceMode');
+    }
+
+    /**
+     * @test
+     */
     public function it_should_not_change_existing_attendanceMode(): void
     {
         $this
@@ -193,6 +211,37 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
             ->assertReturnedDocumentContains([
                 'attendanceMode' => AttendanceMode::mixed()->toString(),
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_polyfills_typicalAgeRange(): void
+    {
+        $this
+            ->given([])
+            ->assertReturnedDocumentContains(
+                [
+                    'typicalAgeRange' => '-',
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_change_existing_typicalAgeRange(): void
+    {
+        $this
+            ->given([
+                'typicalAgeRange' => '-12',
+
+            ])
+            ->assertReturnedDocumentContains(
+                [
+                    'typicalAgeRange' => '-12',
+                ]
+            );
     }
 
     /**

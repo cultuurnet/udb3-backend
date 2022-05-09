@@ -248,6 +248,7 @@ class CdbXMLImporter
         $ageTo = $event->getAgeTo();
 
         if (!is_int($ageFrom) && !is_int($ageTo)) {
+            $jsonLD->typicalAgeRange = '-';
             return;
         }
 

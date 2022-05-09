@@ -23,6 +23,7 @@
   ],
   "workflowStatus": "DRAFT",
   "attendanceMode": "offline",
+  "typicalAgeRange": "-",
   "audience": {
     "audienceType": "everyone"
   },

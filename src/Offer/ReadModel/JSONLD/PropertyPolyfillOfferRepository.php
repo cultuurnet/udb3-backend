@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
@@ -19,10 +20,16 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
     private ReadRepositoryInterface $labelReadRepository;
 
-    public function __construct(DocumentRepository $repository, ReadRepositoryInterface $labelReadRepository)
-    {
+    private OfferType $offerType;
+
+    public function __construct(
+        DocumentRepository $repository,
+        ReadRepositoryInterface $labelReadRepository,
+        OfferType $offerType
+    ) {
         parent::__construct($repository);
         $this->labelReadRepository = $labelReadRepository;
+        $this->offerType = $offerType;
     }
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
@@ -40,11 +47,16 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
             function (array $json) {
                 $json = $this->polyfillMediaObjectId($json);
                 $json = $this->polyfillStatus($json);
-                $json = $this->polyfillAttendanceMode($json);
                 $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventProperties($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 $json = $this->polyfillEmbeddedPlaceBookingAvailability($json);
+                $json = $this->polyfillTypicalAgeRange($json);
+
+                if ($this->offerType->sameAs(OfferType::event())) {
+                    $json = $this->polyfillAttendanceMode($json);
+                }
+
                 return $this->polyfillBrokenSameAs($json);
             }
         );
@@ -103,6 +115,15 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
     {
         if (!isset($json['bookingAvailability'])) {
             $json['bookingAvailability'] = BookingAvailability::available()->serialize();
+        }
+
+        return $json;
+    }
+
+    private function polyfillTypicalAgeRange(array $json): array
+    {
+        if (!isset($json['typicalAgeRange'])) {
+            $json['typicalAgeRange'] = '-';
         }
 
         return $json;

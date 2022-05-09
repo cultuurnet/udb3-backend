@@ -276,6 +276,8 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->attendanceMode = AttendanceMode::offline()->toString();
 
+        $jsonLD->typicalAgeRange = '-';
+
         $defaultAudience = new Audience(AudienceType::everyone());
         $jsonLD->audience = $defaultAudience->serialize();
 
