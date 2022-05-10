@@ -138,4 +138,24 @@ class JSONLDEventFormatterTest extends TestCase
             $event
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_exports_attendance(): void
+    {
+        $includedProperties = [
+            'id',
+            'attendance',
+        ];
+        $eventWithAttendanceMode = $this->getJSONEventFromFile('event_with_attendance_mode.json');
+        $formatter = new JSONLDEventFormatter($includedProperties);
+
+        $event = $formatter->formatEvent($eventWithAttendanceMode);
+
+        $this->assertEquals(
+            '{"@id":"https:\/\/udb-silex-acc.uitdatabank.be\/event\/0c70b8f3-66a0-4532-959f-2e13b4624f04","attendanceMode":"mixed","onlineUrl":"https:\/\/www.publiq.be\/livestream"}',
+            $event
+        );
+    }
 }

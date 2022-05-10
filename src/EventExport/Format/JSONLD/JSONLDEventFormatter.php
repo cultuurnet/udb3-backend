@@ -44,6 +44,11 @@ class JSONLDEventFormatter
                 array_push($include, 'bookingInfo');
             }
 
+            if (in_array('attendance', $include)) {
+                $include[] = 'attendanceMode';
+                $include[] = 'onlineUrl';
+            }
+
             $terms = $this->filterTermsFromProperties($include);
             if (count($terms) > 0) {
                 $this->includedTerms = $terms;
