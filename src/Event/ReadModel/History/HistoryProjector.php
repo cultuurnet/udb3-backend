@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
@@ -73,6 +74,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof AttendanceModeUpdated:
                 $this->projectAttendanceModeUpdated($domainMessage);
+                break;
+            case $event instanceof OnlineUrlUpdated:
+                $this->projectOnlineUrlUpdated($domainMessage);
                 break;
             case $event instanceof BookingInfoUpdated:
                 $this->projectBookingInfoUpdated($domainMessage);
@@ -216,6 +220,14 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Deelnamevorm (fysiek / online) aangepast')
+        );
+    }
+
+    private function projectOnlineUrlUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Online url aangepast')
         );
     }
 
