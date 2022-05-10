@@ -179,6 +179,10 @@ class TabularDataEventFormatter
                 'videos.url',
                 'videos.copyrightHolder',
             ],
+            'attendance' => [
+                'attendance.mode',
+                'attendance.url',
+            ],
         ];
 
         foreach ($properties as $property) {
@@ -663,6 +667,16 @@ class TabularDataEventFormatter
                 },
                 'property' => 'videos',
             ],
+            'attendance.mode' => [
+                'name' => 'Aanwezigheidsvorm (fysiek / online)',
+                'include' => fn ($event) => $this->formatAttendanceMode($event->attendanceMode),
+                'property' => 'attendanceMode',
+            ],
+            'attendance.url' => [
+                'name' => 'online url',
+                'include' => fn ($event) => $event->onlineUrl ?? '',
+                'property' => 'onlineUrl',
+            ],
         ];
     }
 
@@ -813,5 +827,16 @@ class TabularDataEventFormatter
             $properties[] = $video->{$property};
         }
         return implode(';', $properties);
+    }
+
+    private function formatAttendanceMode(string $attendanceMode): string
+    {
+        $map = [
+            'offline' => 'fysiek',
+            'online' => 'online',
+            'mixed' => 'gemengd (fysiek / online)',
+        ];
+
+        return $map[$attendanceMode];
     }
 }

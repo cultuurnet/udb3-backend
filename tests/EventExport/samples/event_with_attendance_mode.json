@@ -1,0 +1,6 @@
+{
+  "@id": "https:\/\/udb-silex-acc.uitdatabank.be\/event\/0c70b8f3-66a0-4532-959f-2e13b4624f04",
+  "@context": "\/contexts\/event",
+  "attendanceMode": "mixed",
+  "onlineUrl": "https://www.publiq.be/livestream"
+}
