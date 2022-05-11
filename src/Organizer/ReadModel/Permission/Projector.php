@@ -20,15 +20,9 @@ class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var CreatedByToUserIdResolverInterface
-     */
-    private $userIdResolver;
+    private CreatedByToUserIdResolverInterface $userIdResolver;
 
-    /**
-     * @var ResourceOwnerRepository
-     */
-    private $permissionRepository;
+    private ResourceOwnerRepository $permissionRepository;
 
     public function __construct(
         ResourceOwnerRepository $permissionRepository,
@@ -40,7 +34,7 @@ class Projector implements EventListener
 
     protected function applyOrganizerImportedFromUDB2(
         OrganizerImportedFromUDB2 $organizerImportedFromUDB2
-    ) {
+    ): void {
         $cdbEvent = ActorItemFactory::createActorFromCdbXml(
             $organizerImportedFromUDB2->getCdbXmlNamespaceUri(),
             $organizerImportedFromUDB2->getCdbXml()
@@ -67,7 +61,7 @@ class Projector implements EventListener
     protected function applyOrganizerCreated(
         OrganizerCreated $organizerCreated,
         DomainMessage $domainMessage
-    ) {
+    ): void  {
         $this->makeOrganizerEditableByUser(
             $organizerCreated->getOrganizerId(),
             $domainMessage
@@ -77,7 +71,7 @@ class Projector implements EventListener
     protected function applyOrganizerCreatedWithUniqueWebsite(
         OrganizerCreatedWithUniqueWebsite $organizerCreatedWithUniqueWebsite,
         DomainMessage $domainMessage
-    ) {
+    ): void  {
         $this->makeOrganizerEditableByUser(
             $organizerCreatedWithUniqueWebsite->getOrganizerId(),
             $domainMessage
@@ -95,7 +89,7 @@ class Projector implements EventListener
     private function makeOrganizerEditableByUser(
         string $organizerId,
         DomainMessage $domainMessage
-    ) {
+    ): void  {
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 
