@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -61,7 +60,6 @@ final class PriceInfoValidatingRequestBodyParserTest extends TestCase
      */
     public function it_throws_on_same_names(): void
     {
-
         $priceInfo = [
             (object) [
                 'category' => 'base',
