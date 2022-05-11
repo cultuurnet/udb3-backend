@@ -61,7 +61,7 @@ class Projector implements EventListener
     protected function applyOrganizerCreated(
         OrganizerCreated $organizerCreated,
         DomainMessage $domainMessage
-    ): void  {
+    ): void {
         $this->makeOrganizerEditableByUser(
             $organizerCreated->getOrganizerId(),
             $domainMessage
@@ -71,7 +71,7 @@ class Projector implements EventListener
     protected function applyOrganizerCreatedWithUniqueWebsite(
         OrganizerCreatedWithUniqueWebsite $organizerCreatedWithUniqueWebsite,
         DomainMessage $domainMessage
-    ): void  {
+    ): void {
         $this->makeOrganizerEditableByUser(
             $organizerCreatedWithUniqueWebsite->getOrganizerId(),
             $domainMessage
@@ -89,7 +89,7 @@ class Projector implements EventListener
     private function makeOrganizerEditableByUser(
         string $organizerId,
         DomainMessage $domainMessage
-    ): void  {
+    ): void {
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 
