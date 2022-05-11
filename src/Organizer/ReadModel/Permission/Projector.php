@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
@@ -83,6 +84,13 @@ class Projector implements EventListener
         );
     }
 
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
+    {
+        $this->permissionRepository->markResourceEditableByNewUser(
+            new StringLiteral($ownerChanged->getOrganizerId()),
+            new StringLiteral($ownerChanged->getNewOwnerId())
+        );
+    }
 
     private function makeOrganizerEditableByUser(
         string $organizerId,
