@@ -8,8 +8,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use Psr\Http\Message\ServerRequestInterface;
 
 class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
@@ -21,34 +19,37 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
             return $request;
         }
 
-        $priceInfoDenormalizer = new PriceInfoDenormalizer();
-        $priceInfo = $priceInfoDenormalizer->denormalize(
-            Json::decodeAssociatively(Json::encode($data->priceInfo)),
-            PriceInfo::class
+        $errors = $this->getSchemaErrors(
+            Json::decodeAssociatively(Json::encode($data->priceInfo))
         );
 
-        /*if ($priceInfo->getTariffs()->hasDuplicateNames()) {
-            throw ApiProblem::bodyInvalidData(
-                new SchemaError(
-                    '/priceInfo',
-                    'Tariff names should be unique.'
-                )
-            );
-        }*/
-
-        $duplicateNames = $priceInfo->getTariffs()->getDuplicatesNames();
-
-        if (count($duplicateNames) > 0) {
-            $errors = [];
-            foreach ($duplicateNames as $duplicateName) {
-                $errors[] = new SchemaError(
-                    '/priceInfo' . '/' . $duplicateName['index'] . '/' . $duplicateName['name'] . '/' . $duplicateName['language'],
-                    'Tariff names should be unique.'
-                );
-            }
+        if (count($errors) > 0) {
             throw ApiProblem::bodyInvalidData(...$errors);
         }
 
         return $request;
+    }
+
+    /*
+     * @return SchemaError[]
+     */
+    private function getSchemaErrors(array $priceInfo): array
+    {
+        $errors = [];
+        $priceMatrix = [];
+
+        foreach ($priceInfo as $index => $price) {
+            foreach ($price['name'] as $lang => $priceLang) {
+                if (isset($priceMatrix[$lang]) && in_array($priceLang, $priceMatrix[$lang], true)) {
+                    $errors[] = new SchemaError(
+                        '/priceInfo' . '/' . $index . '/name/' . $lang,
+                        'Tariff name "' . $priceLang . '" should be unique.'
+                    );
+                }
+                $priceMatrix[$lang][] = $priceLang;
+            }
+        }
+
+        return $errors;
     }
 }
