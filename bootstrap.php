@@ -642,6 +642,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateImageHandler::class]);
         $commandBus->subscribe($app[RemoveImageHandler::class]);
         $commandBus->subscribe($app[ImportImagesHandler::class]);
+        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler::class]);
 
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
     };
