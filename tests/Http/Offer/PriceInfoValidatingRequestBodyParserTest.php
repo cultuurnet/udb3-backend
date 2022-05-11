@@ -21,7 +21,6 @@ final class PriceInfoValidatingRequestBodyParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->commandBus = new TraceableCommandBus();
         $this->priceInfoValidatingRequestBodyParser = new PriceInfoValidatingRequestBodyParser();
         $this->requestBuilder = new Psr7RequestBuilder();
     }
