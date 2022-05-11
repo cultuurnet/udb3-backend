@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwner;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Silex\Console\ChangeOrganizerOwner;
+use CultuurNet\UDB3\Silex\Console\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Silex\Console\ConsumeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
 use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
@@ -150,6 +151,7 @@ $consoleApp->add(new UpdateBookingAvailabilityCommand($app['event_command_bus'],
 $consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
 $consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_owner_query']));
 $consoleApp->add(new ChangeOrganizerOwner($app['event_command_bus']));
+$consoleApp->add(new ChangeOrganizerOwnerInBulk($app['event_command_bus'], $app['organizer_owner.repository']));
 $consoleApp->add(new UpdateUniqueLabels($app['dbal_connection']));
 $consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection'], new WebsiteNormalizer()));
 
