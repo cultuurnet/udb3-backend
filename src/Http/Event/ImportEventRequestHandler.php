@@ -118,9 +118,9 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new AttendanceModeValidatingRequestBodyParser(),
             new AgeRangeValidatingRequestBodyParser(),
+            new OfferValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForEvent(),
-            new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class),
-            new OfferValidatingRequestBodyParser()
+            new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();
 
         $eventAdapter = new Udb3ModelToLegacyEventAdapter($event);

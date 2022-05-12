@@ -8,11 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Http\Label\DuplicateLabelValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Offer\CalendarValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Offer\PriceInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -115,13 +111,9 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $this->importPreProcessingRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $placeId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),
-            //new BookingInfoValidatingRequestBodyParser(),
-            //new CalendarValidatingRequestBodyParser(),
-            //new DuplicateLabelValidatingRequestBodyParser(),
-            //new PriceInfoValidatingRequestBodyParser(),
+            new OfferValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForPlace(),
-            new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class),
-            new OfferValidatingRequestBodyParser()
+            new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
 
         $placeAdapter = new Udb3ModelToLegacyPlaceAdapter($place);

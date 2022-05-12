@@ -23,7 +23,6 @@ final class OfferValidatingRequestBodyParser implements RequestBodyParser
         );
     }
 
-
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         return $this->combinedRequestBodyParser->parse($request);
