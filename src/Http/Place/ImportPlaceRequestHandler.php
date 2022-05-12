@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Request\Body\MainLanguageValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
@@ -30,6 +29,7 @@ use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
@@ -111,8 +111,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $this->importPreProcessingRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $placeId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),
-            new OfferValidatingRequestBodyParser(),
-            MainLanguageValidatingRequestBodyParser::createForPlace(),
+            new OfferValidatingRequestBodyParser(OfferType::place()),
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
 
