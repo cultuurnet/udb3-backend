@@ -11,6 +11,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Label\DuplicateLabelValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -88,6 +89,7 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
             $this->importPreProcessingRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $organizerId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::ORGANIZER),
+            new DuplicateLabelValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForOrganizer(),
             new DenormalizingRequestBodyParser(new OrganizerDenormalizer(), Organizer::class)
         )->parse($request)->getParsedBody();

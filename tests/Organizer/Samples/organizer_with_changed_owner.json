@@ -1,0 +1,23 @@
+{
+  "@id": "http:\/\/udb-silex.dev\/organizer\/586f596d-7e43-4ab9-b062-04db9436fca4",
+  "@context": "\/api\/1.0\/organizer.jsonld",
+  "name": {
+    "nl": "TestOrganisatie"
+  },
+  "address": {
+    "nl": {
+      "addressCountry": "BE",
+      "addressLocality": "Kessel-Lo (Leuven)",
+      "postalCode": "3010",
+      "streetAddress": "Straat"
+    }
+  },
+  "phone": [],
+  "email": [],
+  "url": [],
+  "created": "2016-09-28T10:01:28+00:00",
+  "creator": "9906d685-9557-4422-a3a9-44aec6e2a23f",
+  "languages": ["nl"],
+  "completedLanguages": ["nl"],
+  "modified": "2018-01-18T13:57:09+00:00"
+}

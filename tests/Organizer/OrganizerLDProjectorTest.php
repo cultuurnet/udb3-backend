@@ -13,9 +13,11 @@ use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -42,9 +44,11 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
+use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -92,6 +96,9 @@ final class OrganizerLDProjectorTest extends TestCase
             new ImageNormalizer(
                 $this->imageRepository,
                 $iriGenerator
+            ),
+            new CdbXMLImporter(
+                new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
             )
         );
 
@@ -248,6 +255,24 @@ final class OrganizerLDProjectorTest extends TestCase
                 $this->recordedOn->toBroadwayDateTime()
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_owner_changed(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new OwnerChanged($organizerId, '9906d685-9557-4422-a3a9-44aec6e2a23f')
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_changed_owner.json');
+
+        $this->projector->handle($domainMessage);
     }
 
     /**

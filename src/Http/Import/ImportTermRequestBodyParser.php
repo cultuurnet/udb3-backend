@@ -25,11 +25,38 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
     {
         $json = $request->getParsedBody();
 
-        // Attempt to add label and/or domain to terms, or fix them if they're incorrect.
+        // Taken from https://taxonomy.uitdatabank.be/api/domain (without eventtype, theme, facility!)
+        $ignoreDomains = [
+            'municipal',
+            'IPE',
+            'actortype',
+            'educationfield',
+            'educationlevel',
+            'flandersregion',
+            'flanderstouristregion',
+            'misc',
+            'publicscope',
+            'targetaudience',
+            'umv',
+            'workingregion',
+        ];
+
         if (isset($json->terms) && is_array($json->terms)) {
+            // Filter out terms from ignored legacy domains.
+            // We have events that were imported from XML that had terms from these domains, and they used to be
+            // projected to JSON-LD. An integrator might be sending us our own JSON-LD with some modifications, so we
+            // need to make sure we do not return an error for these old domains. Easiest is to just filter them out.
+            $json->terms = array_filter(
+                $json->terms,
+                function ($term) use ($ignoreDomains) {
+                    return !($term instanceof stdClass && isset($term->domain) && in_array($term->domain, $ignoreDomains, true));
+                }
+            );
+
+            // Attempt to add label and/or domain to terms, or fix them if they're incorrect.
             $json->terms = array_map(
-                function (stdClass $term, int $index) {
-                    if (isset($term->id) && is_string($term->id)) {
+                function ($term, int $index) {
+                    if ($term instanceof stdClass && isset($term->id) && is_string($term->id)) {
                         $id = $term->id;
                         $category = $this->categoryResolver->byId(new CategoryID($id));
                         if ($category) {
@@ -37,7 +64,7 @@ final class ImportTermRequestBodyParser implements RequestBodyParser
                             $term->domain = $category->getDomain()->toString();
                         }
 
-                        if ($category === null && isset($term->domain) && $term->domain === 'eventtype') {
+                        if ($category === null) {
                             throw ApiProblem::bodyInvalidData(
                                 new SchemaError(
                                     '/terms/' . $index . '/id',

@@ -41,6 +41,8 @@ use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
@@ -77,6 +79,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
+use CultuurNet\UDB3\SameAsForUitInVlaanderen;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -100,6 +103,8 @@ class EventLDProjector extends OfferLDProjector implements
     private EventTypeResolver $eventTypeResolver;
 
     private PlaceTypeResolver $placeTypeResolver;
+
+    private SameAsForUitInVlaanderen $sameAs;
 
     /**
      * @param string[] $basePriceTranslations
@@ -133,6 +138,7 @@ class EventLDProjector extends OfferLDProjector implements
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
         $this->placeTypeResolver = new PlaceTypeResolver();
+        $this->sameAs = new SameAsForUitInVlaanderen();
     }
 
     protected function newDocument(string $id): JsonDocument
@@ -241,7 +247,7 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->availableTo = (string) $availableTo;
 
         // Same as.
-        $jsonLD->sameAs = $this->generateSameAs(
+        $jsonLD->sameAs = $this->sameAs->generateSameAs(
             $eventCreated->getEventId(),
             (string) reset($jsonLD->name)
         );
@@ -269,6 +275,8 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->workflowStatus = WorkflowStatus::DRAFT()->toString();
 
         $jsonLD->attendanceMode = AttendanceMode::offline()->toString();
+
+        $jsonLD->typicalAgeRange = '-';
 
         $defaultAudience = new Audience(AudienceType::everyone());
         $jsonLD->audience = $defaultAudience->serialize();
@@ -301,6 +309,11 @@ class EventLDProjector extends OfferLDProjector implements
         /** @var Calendar $calendar */
         $calendar = $eventCopied->getCalendar();
         $calendarJsonLD = $calendar->toJsonLd();
+
+        $eventJsonLD->sameAs = $this->sameAs->generateSameAs(
+            $eventCopied->getItemId(),
+            (string) reset($eventJsonLD->name)
+        );
 
         $eventJsonLD = (object) array_merge(
             (array) $eventJsonLD,
@@ -431,6 +444,26 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
+    protected function applyOnlineUrlUpdated(OnlineUrlUpdated $onlineUrlUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($onlineUrlUpdated->getEventId());
+        $jsonLD = $document->getBody();
+
+        $jsonLD->onlineUrl = $onlineUrlUpdated->getOnlineUrl();
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyOnlineUrlDeleted(OnlineUrlDeleted $onlineUrlDeleted): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepositoryByItemId($onlineUrlDeleted->getEventId());
+        $jsonLD = $document->getBody();
+
+        unset($jsonLD->onlineUrl);
+
+        return $document->withBody($jsonLD);
+    }
+
     protected function applyAudienceUpdated(AudienceUpdated $audienceUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($audienceUpdated);
@@ -500,14 +533,6 @@ class EventLDProjector extends OfferLDProjector implements
                 '@id' => $this->placeService->iri($placeId),
             ];
         }
-    }
-
-    private function generateSameAs($eventId, $name): array
-    {
-        $eventSlug = $this->slugger->slug($name);
-        return [
-            'http://www.uitinvlaanderen.be/agenda/e/' . $eventSlug . '/' . $eventId,
-        ];
     }
 
     private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral

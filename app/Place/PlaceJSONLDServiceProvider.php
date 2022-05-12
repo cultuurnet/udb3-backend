@@ -6,14 +6,16 @@ namespace CultuurNet\UDB3\Silex\Place;
 
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
@@ -25,6 +27,7 @@ use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\RelatedPlaceLDProjector;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Term\TermRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -101,7 +104,11 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     $repository
                 );
 
-                $repository = new NewPropertyPolyfillOfferRepository($repository);
+                $repository = new PropertyPolyfillOfferRepository(
+                    $repository,
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    OfferType::place()
+                );
 
                 $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
 
@@ -132,7 +139,8 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                         $app['config']['base_price_translations']
                     ),
                     $app['calendar_factory'],
-                    $app['cdbxml_contact_info_importer']
+                    $app['cdbxml_contact_info_importer'],
+                    $app[CdbXMLToJsonLDLabelImporter::class]
                 );
             }
         );

@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
@@ -77,6 +79,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -95,7 +98,9 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 {
     protected string $eventId;
 
-    private string $attendanceMode;
+    private string $attendanceMode = 'offline';
+
+    private string $onlineUrl = '';
 
     private ?Audience $audience = null;
 
@@ -200,7 +205,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $this->calendar = $eventCreated->getCalendar();
-        $this->attendanceMode = AttendanceMode::offline()->toString();
         $this->audience = new Audience(AudienceType::everyone());
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
@@ -306,6 +310,12 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             return;
         }
 
+        if (!$locationId->isVirtualLocation() && $this->attendanceMode === AttendanceMode::online()->toString()) {
+            throw new UpdateLocationNotSupported(
+                'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
+            );
+        }
+
         $this->apply(new LocationUpdated($this->eventId, $locationId));
 
         if ($locationId->isDummyPlaceForEducation()) {
@@ -373,11 +383,43 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         if ($this->attendanceMode !== $attendanceMode->toString()) {
             $this->apply(new AttendanceModeUpdated($this->eventId, $attendanceMode->toString()));
         }
+
+        if (!empty($this->onlineUrl) && $this->attendanceMode === AttendanceMode::offline()->toString()) {
+            $this->apply(new OnlineUrlDeleted($this->eventId));
+        }
     }
 
     public function applyAttendanceModeUpdated(AttendanceModeUpdated $attendanceModeUpdated): void
     {
         $this->attendanceMode = $attendanceModeUpdated->getAttendanceMode();
+    }
+
+    public function updateOnlineUrl(Url $onlineUrl): void
+    {
+        if ($this->attendanceMode === AttendanceMode::offline()->toString()) {
+            throw new UpdateOnlineUrlNotSupported();
+        }
+
+        if ($this->onlineUrl !== $onlineUrl->toString()) {
+            $this->apply(new OnlineUrlUpdated($this->eventId, $onlineUrl->toString()));
+        }
+    }
+
+    public function applyOnlineUrlUpdated(OnlineUrlUpdated $onlineUrlUpdated): void
+    {
+        $this->onlineUrl = $onlineUrlUpdated->getOnlineUrl();
+    }
+
+    public function deleteOnlineUrl(): void
+    {
+        if (!empty($this->onlineUrl)) {
+            $this->apply(new OnlineUrlDeleted($this->eventId));
+        }
+    }
+
+    public function applyOnlineUrlDeleted(OnlineUrlDeleted $onlineUrlDeleted): void
+    {
+        $this->onlineUrl = '';
     }
 
     public function updateAudience(Audience $audience): void

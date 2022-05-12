@@ -9,7 +9,10 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -45,6 +48,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -128,7 +132,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ),
             new EventCdbIdExtractor(),
             new CalendarFactory(),
-            new CdbXmlContactInfoImporter()
+            new CdbXmlContactInfoImporter(),
+            new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class))
         );
 
         $this->projector = new EventLDProjector(
@@ -183,6 +188,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'eventtype',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
 
         $this->mockPlaceService();
 
@@ -201,7 +207,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_handles_copied_events_with_an_incorrect_place_type(): void
     {
-        $eventId = '1';
+        $eventId = 'f8e4f084-1b75-4893-b2b9-fc67fd6e73fb';
         $eventCreated = new EventCreated(
             $eventId,
             new Language('en'),
@@ -223,7 +229,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $eventId
         );
 
-        $newEventId = '2';
+        $newEventId = 'f0b24f97-4b03-4eb2-96d1-5074819a7648';
         $eventCopied = new EventCopied(
             $newEventId,
             $eventId,
@@ -278,6 +284,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'theme',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
 
         $this->mockPlaceService();
 
@@ -323,6 +330,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'theme',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
         $jsonLD->creator = $expectedCreator;
 
         $this->mockPlaceService();
@@ -397,7 +405,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_handles_copy_event(): void
     {
-        $originalEventId = '1';
+        $originalEventId = 'f8e4f084-1b75-4893-b2b9-fc67fd6e73fb';
         $originalCalendar = new Calendar(
             CalendarType::PERIODIC(),
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
@@ -422,7 +430,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $originalEventId
         );
 
-        $eventId = '2';
+        $eventId = 'f0b24f97-4b03-4eb2-96d1-5074819a7648';
         $timestamps = [
             new Timestamp(
                 \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-26T13:25:21+01:00'),
@@ -462,7 +470,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function it_projects_copied_event_with_work_hours_removed(): void
     {
-        $eventCreated = $this->createEventCreated('1', $this->aPeriodicCalendarWithWorkScheme(), null);
+        $eventCreated = $this->createEventCreated('f8e4f084-1b75-4893-b2b9-fc67fd6e73fb', $this->aPeriodicCalendarWithWorkScheme(), null);
 
         $this->project($eventCreated, $eventCreated->getEventId());
         $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
@@ -473,7 +481,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             \DateTime::createFromFormat(DateTimeInterface::ATOM, '2015-01-29T13:25:21+01:00')
         );
 
-        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
+        $eventCopied = new EventCopied('f0b24f97-4b03-4eb2-96d1-5074819a7648', $eventCreated->getEventId(), $calendar);
 
         $recordedOn = '2018-01-01T11:55:55+01:00';
         $userId = '20a72430-7e3e-4b75-ab59-043156b3169c';
@@ -634,6 +642,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'domain' => 'theme',
             ],
         ];
+        $jsonLD->typicalAgeRange = '-';
 
         $this->mockPlaceService();
 
@@ -1246,7 +1255,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
-    public function it_projects_updating_attendanceMode(): void
+    public function it_projects_attendanceMode_updated(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
@@ -1258,6 +1267,56 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '@id' => 'http://example.com/entity/' . $eventId,
             '@context' => '/contexts/event',
             'attendanceMode' => AttendanceMode::online()->toString(),
+            'modified' => $this->recordedOn->toString(),
+        ];
+
+        $this->assertEquals($expectedJson, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_onlineUrl_updated(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $onlineUrlUpdated = new OnlineUrlUpdated($eventId, 'https://www.publiq.be/livestream');
+
+        $body = $this->project($onlineUrlUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
+
+        $expectedJson = (object) [
+            '@id' => 'http://example.com/entity/' . $eventId,
+            '@context' => '/contexts/event',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
+            'modified' => $this->recordedOn->toString(),
+        ];
+
+        $this->assertEquals($expectedJson, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_onlineUrl_deleted(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->project(
+            new OnlineUrlUpdated($eventId, 'https://www.publiq.be/livestream'),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+        $body = $this->project(
+            new OnlineUrlDeleted($eventId),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $expectedJson = (object) [
+            '@id' => 'http://example.com/entity/' . $eventId,
+            '@context' => '/contexts/event',
             'modified' => $this->recordedOn->toString(),
         ];
 

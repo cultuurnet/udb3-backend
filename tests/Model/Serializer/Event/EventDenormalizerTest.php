@@ -1463,6 +1463,7 @@ class EventDenormalizerTest extends TestCase
             ],
             'calendarType' => 'permanent',
             'attendanceMode' => 'online',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
@@ -1610,6 +1611,9 @@ class EventDenormalizerTest extends TestCase
             )
             ->withAttendanceMode(
                 AttendanceMode::online()
+            )
+            ->withOnlineUrl(
+                new Url('https://www.publiq.be/livestream')
             )
             ->withAudienceType(
                 AudienceType::education()

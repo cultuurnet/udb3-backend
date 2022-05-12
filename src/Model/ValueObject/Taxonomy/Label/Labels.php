@@ -4,28 +4,55 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
-use CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour\HasUniqueValues;
 use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 class Labels extends Collection
 {
-    use HasUniqueValues;
-
     /**
      * @param Label[] ...$labels
      */
     public function __construct(Label ...$labels)
     {
-        $labelNames = array_map(
-            function (Label $label) {
-                return $label->getName();
-            },
-            $labels
-        );
+        // Remove duplicates (with or without the same visibility) by copying every label to a new array, keyed by the
+        // label name. If a label name is twice in $labels (with same or different visibility), the last entry will
+        // always overwrite the previous entries.
+        // Also make sure that the array key is converted to lowercase so we avoid duplicates with other casing. The
+        // last casing will be kept, so a previously incorrect casing can be fixed (using with()).
+        $uniqueLabels = [];
+        foreach ($labels as $label) {
+            $key = $label
+                ->getName()
+                ->toLowerCase()
+                ->toString();
+            $uniqueLabels[$key] = $label;
+        }
 
-        $this->guardUniqueValues($labelNames);
+        // Remove the keys and make the array sequential (0, 1, 2, ...) to avoid "Cannot unpack array with string keys"
+        // error in the parent::__construct() call.
+        $uniqueLabels = array_values($uniqueLabels);
 
-        parent::__construct(...$labels);
+        parent::__construct(...$uniqueLabels);
+    }
+
+    public function findByName(LabelName $labelName): ?Label
+    {
+        /** @var Label $label */
+        foreach ($this->toArray() as $label) {
+            if ($label->getName()->sameAs($labelName)) {
+                return $label;
+            }
+        }
+        return null;
+    }
+
+    public function getVisibleLabels(): Labels
+    {
+        return $this->filter(fn (Label $label) => $label->isVisible());
+    }
+
+    public function getHiddenLabels(): Labels
+    {
+        return $this->filter(fn (Label $label) => !$label->isVisible());
     }
 
     public function toArrayOfStringNames(): array

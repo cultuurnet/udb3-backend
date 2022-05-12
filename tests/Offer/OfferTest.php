@@ -382,8 +382,8 @@ class OfferTest extends AggregateRootScenarioTestCase
                         )
                     )
                 ),
-                new LabelAdded($itemId, new LegacyLabel('new_label_1')),
                 new LabelRemoved($itemId, new LegacyLabel('existing_label_4_added_via_import')),
+                new LabelAdded($itemId, new LegacyLabel('new_label_1')),
             ]);
     }
 
@@ -1233,8 +1233,8 @@ class OfferTest extends AggregateRootScenarioTestCase
      */
     public function it_throws_when_trying_to_publish_a_non_draft_offer(): void
     {
-        $this->expectException(NotAllowedToPublish::class);
-        $this->expectExceptionMessage('Only an offer with workflow status DRAFT can be published, current status is REJECTED');
+        $this->expectException(InvalidWorkflowStatusTransition::class);
+        $this->expectExceptionMessage('Cannot transition from workflowStatus "REJECTED" to "READY_FOR_VALIDATION".');
 
         $itemId = 'itemId';
         $now = new \DateTime();
@@ -1244,6 +1244,26 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new ItemCreated($itemId),
                 new Published($itemId, $now),
                 new FlaggedAsDuplicate($itemId),
+            ])
+            ->when(function (Item $item) use ($now) {
+                $item->publish($now);
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_throw_when_publishing_an_offer_that_is_already_published_and_approved(): void
+    {
+        $itemId = 'itemId';
+        $now = new \DateTime();
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new Published($itemId, $now),
+                new Approved($itemId),
             ])
             ->when(function (Item $item) use ($now) {
                 $item->publish($now);

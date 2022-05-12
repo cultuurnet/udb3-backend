@@ -1952,7 +1952,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ],
             'terms' => [
                 [
-                    'id' => '0.50.1.0.0',
+                    'id' => '0.15.0.0.0',
                 ],
             ],
             'address' => [
@@ -2280,8 +2280,8 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/terms',
-                'At least 1 array items must match schema'
+                '/terms/0/id',
+                'The term 1 does not exist or is not supported'
             ),
         ];
 
@@ -4163,7 +4163,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             'calendarType' => 'permanent',
             'terms' => [
                 [
-                    'id' => '0.50.1.0.0',
+                    'id' => '0.15.0.0.0',
                 ],
             ],
             'address' => [
@@ -4939,6 +4939,47 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new SchemaError(
                 '/videos/1/copyrightHolder',
                 'The string should match pattern: \S'
+            ),
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_a_label_is_both_in_labels_and_hiddenLabels(): void
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => 'Yf4aZBfsUEu2NsQqsprngw',
+                    'domain' => 'eventtype',
+                    'label' => 'Cultuur- of ontmoetingscentrum',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'labels' => ['foo', 'UiTPAS Mechelen'],
+            'hiddenLabels' => ['uitpas mechelen'],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/labels/1',
+                'Label "UiTPAS Mechelen" cannot be both in labels and hiddenLabels properties.'
             ),
         ];
 

@@ -407,4 +407,14 @@ final class ApiProblem extends Exception
         $e->setExtraProperties(['label' => $labelName]);
         return $e;
     }
+
+    public static function invalidWorkflowStatusTransition(string $from, string $to): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/invalid-workflow-status-transition',
+            'Invalid workflowStatus transition',
+            400,
+            'Cannot transition from workflowStatus "' . $from . '" to "' . $to . '".'
+        );
+    }
 }

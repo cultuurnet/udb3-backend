@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
@@ -32,6 +34,14 @@ final class EventCommandHandlerProvider implements ServiceProviderInterface
 
         $app[UpdateAttendanceModeHandler::class] = $app->share(
             fn (Application $application) => new UpdateAttendanceModeHandler($app['event_repository'])
+        );
+
+        $app[UpdateOnlineUrlHandler::class] = $app->share(
+            fn (Application $application) => new UpdateOnlineUrlHandler($app['event_repository'])
+        );
+
+        $app[DeleteOnlineUrlHandler::class] = $app->share(
+            fn (Application $application) => new DeleteOnlineUrlHandler($app['event_repository'])
         );
 
         $app[UpdateAudienceHandler::class] = $app->share(

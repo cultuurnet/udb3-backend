@@ -9,6 +9,7 @@ use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -70,6 +71,9 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
             case $e instanceof Error:
                 return ApiProblem::internalServerError();
+
+            case $e instanceof ConvertsToApiProblem:
+                return $e->toApiProblem();
 
             case $e instanceof AccessDeniedException:
             case $e instanceof AccessDeniedHttpException:

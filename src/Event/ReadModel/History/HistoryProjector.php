@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
+use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
@@ -36,6 +37,8 @@ use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
+use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
+use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
@@ -69,6 +72,15 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof AudienceUpdated:
                 $this->projectAudienceUpdated($domainMessage);
+                break;
+            case $event instanceof AttendanceModeUpdated:
+                $this->projectAttendanceModeUpdated($domainMessage);
+                break;
+            case $event instanceof OnlineUrlUpdated:
+                $this->projectOnlineUrlUpdated($domainMessage);
+                break;
+            case $event instanceof OnlineUrlDeleted:
+                $this->projectOnlineUrlDeleted($domainMessage);
                 break;
             case $event instanceof BookingInfoUpdated:
                 $this->projectBookingInfoUpdated($domainMessage);
@@ -204,6 +216,30 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Toegang aangepast')
+        );
+    }
+
+    private function projectAttendanceModeUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Deelnamevorm (fysiek / online) aangepast')
+        );
+    }
+
+    private function projectOnlineUrlUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Online url aangepast')
+        );
+    }
+
+    private function projectOnlineUrlDeleted(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Online url verwijderd')
         );
     }
 

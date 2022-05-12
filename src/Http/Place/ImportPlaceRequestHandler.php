@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\Label\DuplicateLabelValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\PriceInfoValidatingRequestBodyParser;
@@ -31,7 +32,7 @@ use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
-use CultuurNet\UDB3\Offer\NotAllowedToPublish;
+use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
@@ -113,9 +114,9 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $this->importPreProcessingRequestBodyParser,
             new IdPropertyPolyfillRequestBodyParser($this->iriGenerator, $placeId),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::PLACE),
-            new CalendarValidatingRequestBodyParser(),
             new BookingInfoValidatingRequestBodyParser(),
-            new PriceInfoValidatingRequestBodyParser(),
+            new CalendarValidatingRequestBodyParser(),
+            new DuplicateLabelValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForPlace(),
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
@@ -230,7 +231,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         foreach ($commands as $command) {
             try {
                 $commandId = $this->commandBus->dispatch($command);
-            } catch (NotAllowedToPublish $notAllowedToPublish) {
+            } catch (InvalidWorkflowStatusTransition $notAllowedToPublish) {
             }
             $lastCommandId = $commandId ?? null;
         }

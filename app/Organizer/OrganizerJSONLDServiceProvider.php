@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\OrganizerLDProjector;
+use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -34,6 +37,9 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
                     new ImageNormalizer(
                         $app['media_object_repository'],
                         $app['media_object_iri_generator']
+                    ),
+                    new CdbXMLImporter(
+                        $app[CdbXMLToJsonLDLabelImporter::class]
                     )
                 );
             }
@@ -50,7 +56,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
         $app['organizer_jsonld_repository'] = $app->share(
             function ($app) {
                 $repository = new CacheDocumentRepository($app['organizer_jsonld_cache']);
-                $repository = new PropertyPolyfillRepository($repository);
+                $repository = new PropertyPolyfillRepository($repository, $app[LabelServiceProvider::JSON_READ_REPOSITORY]);
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,

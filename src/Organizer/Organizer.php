@@ -46,6 +46,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
@@ -82,6 +83,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private Labels $labels;
 
     private WorkflowStatus $workflowStatus;
+
+    private string $ownerId = '';
 
     /**
      * @var string[]
@@ -492,29 +495,22 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             ));
         }
 
+        // What are the deleted labels?
+        // Labels which are inside the internal state but not inside imported labels. (Taking visibility into
+        // consideration). For each deleted label fire a LabelDeleted event.
+        foreach ($this->labels->toArray() as $label) {
+            $inImportWithSameVisibility = $importLabelsCollection->contains($label);
+            $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $importLabelsCollection->findByName($label->getName());
+            $canBeRemoved = !$keepLabelsCollection->contains($label);
+            if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
+                $this->apply(new LabelRemoved($this->actorId, $label->getName()->toString(), $label->isVisible()));
+            }
+        }
+
         // For each added label fire a LabelAdded event.
         foreach ($addedLabels->toArray() as $label) {
             /** @var Label $label */
             $this->apply(new LabelAdded($this->actorId, $label->getName()->toString(), $label->isVisible()));
-        }
-
-        // What are the deleted labels?
-        // Labels which are inside the internal state but not inside imported labels.
-        // For each deleted label fire a LabelDeleted event.
-        foreach ($this->labels->toArray() as $label) {
-            $labelName = $label->getName()->toString();
-            $importLabelNames = array_map(
-                fn (Label $label) => $label->getName()->toString(),
-                $importLabelsCollection->toArray()
-            );
-            $keepLabelNames = array_map(
-                fn (Label $label) => $label->getName()->toString(),
-                $keepLabelsCollection->toArray()
-            );
-
-            if (!in_array($labelName, $importLabelNames, true) && !in_array($labelName, $keepLabelNames, true)) {
-                $this->apply(new LabelRemoved($this->actorId, $label->getName()->toString(), $label->isVisible()));
-            }
         }
     }
 
@@ -525,6 +521,18 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
                 new OrganizerDeleted($this->getAggregateRootId())
             );
         }
+    }
+
+    public function changeOwner(string $newOwnerId): void
+    {
+        if ($this->ownerId !== $newOwnerId) {
+            $this->apply(new OwnerChanged($this->actorId, $newOwnerId));
+        }
+    }
+
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
+    {
+        $this->ownerId = $ownerChanged->getNewOwnerId();
     }
 
     protected function applyOrganizerCreated(OrganizerCreated $organizerCreated): void

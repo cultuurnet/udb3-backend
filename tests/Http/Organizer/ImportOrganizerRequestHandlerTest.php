@@ -1279,6 +1279,18 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     new SchemaError('/hiddenLabels/0', 'The string should match pattern: ^(?=.{2,255}$)(?=.*\S.*\S.*)[^;]*$'),
                 ],
             ],
+            'labels_duplicate_in_hiddenLabels' => [
+                'given' => [
+                    'mainLanguage' => 'nl',
+                    'name' => ['nl' => 'Test'],
+                    'url' => 'https://www.organizer.be',
+                    'labels' => ['foo', 'UitPas MecHeLen'],
+                    'hiddenLabels' => ['UiTPAS Mechelen'],
+                ],
+                'schemaErrors' => [
+                    new SchemaError('/labels/1', 'Label "UitPas MecHeLen" cannot be both in labels and hiddenLabels properties.'),
+                ],
+            ],
         ];
     }
 

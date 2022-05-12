@@ -14,6 +14,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description as LegacyDescription;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
+use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
@@ -22,6 +23,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
@@ -62,6 +64,8 @@ use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -96,6 +100,9 @@ final class ImportEventRequestHandlerTest extends TestCase
             fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId
         );
 
+        $locationRepository = new InMemoryDocumentRepository();
+        $locationRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
+
         $this->importEventRequestHandler = new ImportEventRequestHandler(
             $this->aggregateRepository,
             $this->uuidGenerator,
@@ -116,7 +123,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new VirtualLocationPolyfillRequestBodyParser($placeIriGenerator)
             ),
             $this->commandBus,
-            $this->imageCollectionFactory
+            $this->imageCollectionFactory,
+            $locationRepository
         );
 
         $this->commandBus->record();
@@ -179,6 +187,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -260,6 +269,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -378,6 +388,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -449,9 +460,10 @@ final class ImportEventRequestHandlerTest extends TestCase
             [
                 new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannenkoeken voor het goede doel')),
                 new UpdateType($eventId, '1.50.0.0.0'),
+                new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
                 new UpdateCalendar($eventId, new Calendar(CalendarType::PERMANENT())),
-                new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -526,6 +538,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             'availableTo' => '2021-05-17T22:00:00+00:00',
             'workflowStatus' => 'DRAFT',
             'attendanceMode' => 'mixed',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
             'audience' => [
                 'audienceType' => 'everyone',
             ],
@@ -641,6 +654,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::mixed()),
+                new UpdateOnlineUrl($eventId, new Url('https://www.publiq.be/livestream')),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo(
                     $eventId,
@@ -777,6 +791,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -847,6 +862,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -858,6 +874,67 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             $this->commandBus->getRecordedCommands()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_location_is_not_found(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5df22882-0ce9-47ca-84a3-2cd22c79499e',
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/location',
+                'The location with id "5df22882-0ce9-47ca-84a3-2cd22c79499e" was not found.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4701
+     */
+    public function it_does_not_crash_on_empty_location_object_but_returns_an_invalid_data_api_problem(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => 'Pannenkoeken voor het goede doel',
+            'type' => [
+                'id' => '0.5.0.0.0',
+            ],
+            'theme' => [
+                'id' => '0.52.0.0.0',
+                'label' => 'Circus',
+            ],
+            'location' => (object) [],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/location',
+                'The required properties (@id) are missing'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
     }
 
     /**
@@ -932,6 +1009,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1001,6 +1079,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1080,6 +1159,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1157,6 +1237,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1233,6 +1314,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1313,6 +1395,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1387,6 +1470,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1465,6 +1549,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1537,6 +1622,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -1815,6 +1901,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -2626,6 +2713,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::online()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -2867,6 +2955,102 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_onlineUrl_is_provided_on_offline_event(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'onlineUrl' => 'https://www.publiq.be/livestream',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/onlineUrl',
+                'An onlineUrl can not be used in combination with an offline attendanceMode.'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_onlineUrl_has_wrong_format(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'onlineUrl' => 'rtp://www.publiq.be/livestream',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/onlineUrl',
+                'The string should match pattern: ^http[s]?:\/\/'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_onlineUrl_is_empty(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'onlineUrl' => '   ',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/onlineUrl',
+                'The data must match the \'uri\' format'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_terms_is_empty(): void
     {
         $event = [
@@ -2956,6 +3140,39 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @bugfix
+     * @see https://jira.uitdatabank.be/browse/III-4705
+     */
+    public function it_throws_if_terms_id_is_not_known_and_no_domain_is_set(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.51.12.0.',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/terms/0/id',
+                'The term 1.51.12.0. does not exist or is not supported'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
      */
     public function it_throws_if_terms_id_is_not_known(): void
     {
@@ -2979,8 +3196,8 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $expectedErrors = [
             new SchemaError(
-                '/terms',
-                'At least 1 array items must match schema'
+                '/terms/0/id',
+                'The term 1 does not exist or is not supported'
             ),
         ];
 
@@ -3760,6 +3977,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -4087,6 +4305,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint([], ['info@publiq.be'], [])),
@@ -4557,6 +4776,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
+                new DeleteOnlineUrl($eventId),
                 new UpdateAudience($eventId, AudienceType::everyone()),
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
@@ -5807,6 +6027,39 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/videos/0/copyrightHolder',
                 'Maximum string length is 250, found 251'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_a_label_is_both_in_labels_and_hiddenLabels(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'labels' => ['foo', 'uitpas mechelen'],
+            'hiddenLabels' => ['UiTPAS Mechelen'],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/labels/1',
+                'Label "uitpas mechelen" cannot be both in labels and hiddenLabels properties.'
             ),
         ];
 

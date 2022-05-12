@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
+use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
@@ -13,6 +14,7 @@ use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\VirtualLocationPolyfillRequestBodyParser;
@@ -45,6 +47,8 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
         $controllers->delete('/{eventId}/theme/', DeleteThemeRequestHandler::class);
         $controllers->put('/{eventId}/attendance-mode/', UpdateAttendanceModeRequestHandler::class);
+        $controllers->put('/{eventId}/online-url/', UpdateOnlineUrlRequestHandler::class);
+        $controllers->delete('/{eventId}/online-url/', DeleteOnlineUrlRequestHandler::class);
         $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
         $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
 
@@ -104,7 +108,8 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                     new VirtualLocationPolyfillRequestBodyParser($app['place_iri_generator'])
                 ),
                 $app['imports_command_bus'],
-                $app['import_image_collection_factory']
+                $app['import_image_collection_factory'],
+                $app['place_jsonld_repository']
             )
         );
 
@@ -132,6 +137,14 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                 $app['event_command_bus'],
                 $app['event_relations_repository']
             )
+        );
+
+        $app[UpdateOnlineUrlRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateOnlineUrlRequestHandler($app['event_command_bus'])
+        );
+
+        $app[DeleteOnlineUrlRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteOnlineUrlRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateAudienceRequestHandler::class] = $app->share(
