@@ -17,7 +17,7 @@ final class OfferValidatingRequestBodyParser implements RequestBodyParser
 
     public function __construct(OfferType $offerType)
     {
-        if ($offerType === OfferType::event()) {
+        if ($offerType->sameAs(OfferType::event())) {
             $this->combinedRequestBodyParser = new CombinedRequestBodyParser(
                 new BookingInfoValidatingRequestBodyParser(),
                 new CalendarValidatingRequestBodyParser(),
