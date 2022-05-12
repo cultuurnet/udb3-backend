@@ -37,17 +37,17 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
     private function getSchemaErrors(array $priceInfos): array
     {
         $errors = [];
-        $priceMatrix = [];
+        $nameMatrix = [];
 
         foreach ($priceInfos as $index => $priceInfo) {
             foreach ($priceInfo['name'] as $language => $priceLang) {
-                if (isset($priceMatrix[$language]) && in_array($priceLang, $priceMatrix[$language], true)) {
+                if (isset($nameMatrix[$language]) && in_array($priceLang, $nameMatrix[$language], true)) {
                     $errors[] = new SchemaError(
                         '/priceInfo' . '/' . $index . '/name/' . $language,
                         'Tariff name "' . $priceLang . '" should be unique.'
                     );
                 }
-                $priceMatrix[$language][] = $priceLang;
+                $nameMatrix[$language][] = $priceLang;
             }
         }
 
