@@ -4693,15 +4693,15 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/priceInfo/2/name/nl',
-                'Tariff name "Kinderen" should be unique.'
+                'Tariff name "Kinderen" must be unique.'
             ),
             new SchemaError(
                 '/priceInfo/5/name/en',
-                'Tariff name "Children" should be unique.'
+                'Tariff name "Children" must be unique.'
             ),
             new SchemaError(
                 '/priceInfo/6/name/nl',
-                'Tariff name "Kinderen" should be unique.'
+                'Tariff name "Kinderen" must be unique.'
             ),
         ];
 

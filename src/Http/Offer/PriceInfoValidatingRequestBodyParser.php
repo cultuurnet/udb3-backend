@@ -44,7 +44,7 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
                 if (isset($nameMatrix[$language]) && in_array($priceLang, $nameMatrix[$language], true)) {
                     $errors[] = new SchemaError(
                         '/priceInfo' . '/' . $index . '/name/' . $language,
-                        'Tariff name "' . $priceLang . '" should be unique.'
+                        'Tariff name "' . $priceLang . '" must be unique.'
                     );
                 }
                 $nameMatrix[$language][] = $priceLang;

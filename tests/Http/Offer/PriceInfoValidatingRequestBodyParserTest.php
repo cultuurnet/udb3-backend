@@ -109,8 +109,8 @@ final class PriceInfoValidatingRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/priceInfo/2/name/nl', 'Tariff name "Studenten" should be unique.'),
-                new SchemaError('/priceInfo/4/name/nl', 'Tariff name "Studenten" should be unique.')
+                new SchemaError('/priceInfo/2/name/nl', 'Tariff name "Studenten" must be unique.'),
+                new SchemaError('/priceInfo/4/name/nl', 'Tariff name "Studenten" must be unique.')
             ),
             fn () => $this->priceInfoValidatingRequestBodyParser->parse($request)
         );
