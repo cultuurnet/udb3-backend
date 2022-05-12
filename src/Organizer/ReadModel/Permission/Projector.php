@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
@@ -19,15 +20,9 @@ class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var CreatedByToUserIdResolverInterface
-     */
-    private $userIdResolver;
+    private CreatedByToUserIdResolverInterface $userIdResolver;
 
-    /**
-     * @var ResourceOwnerRepository
-     */
-    private $permissionRepository;
+    private ResourceOwnerRepository $permissionRepository;
 
     public function __construct(
         ResourceOwnerRepository $permissionRepository,
@@ -39,7 +34,7 @@ class Projector implements EventListener
 
     protected function applyOrganizerImportedFromUDB2(
         OrganizerImportedFromUDB2 $organizerImportedFromUDB2
-    ) {
+    ): void {
         $cdbEvent = ActorItemFactory::createActorFromCdbXml(
             $organizerImportedFromUDB2->getCdbXmlNamespaceUri(),
             $organizerImportedFromUDB2->getCdbXml()
@@ -66,7 +61,7 @@ class Projector implements EventListener
     protected function applyOrganizerCreated(
         OrganizerCreated $organizerCreated,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->makeOrganizerEditableByUser(
             $organizerCreated->getOrganizerId(),
             $domainMessage
@@ -76,18 +71,25 @@ class Projector implements EventListener
     protected function applyOrganizerCreatedWithUniqueWebsite(
         OrganizerCreatedWithUniqueWebsite $organizerCreatedWithUniqueWebsite,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->makeOrganizerEditableByUser(
             $organizerCreatedWithUniqueWebsite->getOrganizerId(),
             $domainMessage
         );
     }
 
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
+    {
+        $this->permissionRepository->markResourceEditableByNewUser(
+            new StringLiteral($ownerChanged->getOrganizerId()),
+            new StringLiteral($ownerChanged->getNewOwnerId())
+        );
+    }
 
     private function makeOrganizerEditableByUser(
         string $organizerId,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 

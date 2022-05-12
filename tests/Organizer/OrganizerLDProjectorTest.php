@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
@@ -254,6 +255,24 @@ final class OrganizerLDProjectorTest extends TestCase
                 $this->recordedOn->toBroadwayDateTime()
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_owner_changed(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new OwnerChanged($organizerId, '9906d685-9557-4422-a3a9-44aec6e2a23f')
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_changed_owner.json');
+
+        $this->projector->handle($domainMessage);
     }
 
     /**

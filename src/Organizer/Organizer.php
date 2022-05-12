@@ -46,6 +46,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
@@ -82,6 +83,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private Labels $labels;
 
     private WorkflowStatus $workflowStatus;
+
+    private string $ownerId = '';
 
     /**
      * @var string[]
@@ -518,6 +521,18 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
                 new OrganizerDeleted($this->getAggregateRootId())
             );
         }
+    }
+
+    public function changeOwner(string $newOwnerId): void
+    {
+        if ($this->ownerId !== $newOwnerId) {
+            $this->apply(new OwnerChanged($this->actorId, $newOwnerId));
+        }
+    }
+
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
+    {
+        $this->ownerId = $ownerChanged->getNewOwnerId();
     }
 
     protected function applyOrganizerCreated(OrganizerCreated $organizerCreated): void

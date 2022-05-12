@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler;
@@ -117,6 +118,10 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 
         $app[ImportImagesHandler::class] = $app->share(
             fn (Application $application) => new ImportImagesHandler($app['organizer_repository'])
+        );
+
+        $app[ChangeOwnerHandler::class] = $app->share(
+            fn (Application $application) => new ChangeOwnerHandler($app['organizer_repository'])
         );
     }
 

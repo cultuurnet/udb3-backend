@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
@@ -1409,6 +1410,29 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new OrganizerDeleted($this->id),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_change_the_owner(): void
+    {
+        $this->scenario
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                ]
+            )
+            ->when(
+                function (Organizer $organizer) {
+                    $organizer->changeOwner('5314f3fd-69fd-4650-8c87-0e7b0b5c0dd3');
+                }
+            )
+            ->then(
+                [
+                    new OwnerChanged($this->id, '5314f3fd-69fd-4650-8c87-0e7b0b5c0dd3'),
                 ]
             );
     }

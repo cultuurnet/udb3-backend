@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
+use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
@@ -68,6 +69,7 @@ class OrganizerLDProjector implements EventListener
      * @uses applyOrganizerImportedFromUDB2
      * @uses applyOrganizerCreated
      * @uses applyOrganizerCreatedWithUniqueWebsite
+     * @uses applyOwnerChanged
      * @uses applyWebsiteUpdated
      * @uses applyTitleUpdated
      * @uses applyTitleTranslated
@@ -255,6 +257,16 @@ class OrganizerLDProjector implements EventListener
         $jsonLD = $this->appendCreator($jsonLD, $domainMessage);
 
         $jsonLD->workflowStatus = WorkflowStatus::ACTIVE()->toString();
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): JsonDocument
+    {
+        $document = $this->repository->fetch($ownerChanged->getOrganizerId());
+        $jsonLD = $document->getBody();
+
+        $jsonLD->creator = $ownerChanged->getNewOwnerId();
 
         return $document->withBody($jsonLD);
     }
