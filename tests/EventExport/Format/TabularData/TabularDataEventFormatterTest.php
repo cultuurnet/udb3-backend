@@ -778,4 +778,27 @@ class TabularDataEventFormatterTest extends TestCase
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
     }
+
+    /**
+     * @test
+     */
+    public function it_formats_attendance(): void
+    {
+        $includedProperties = [
+            'id',
+            'attendance',
+        ];
+
+        $event = $this->getJSONEventFromFile('event_with_attendance_mode.json');
+        $formatter = new TabularDataEventFormatter($includedProperties);
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $expectedFormattedEvent = [
+            'id' => '0c70b8f3-66a0-4532-959f-2e13b4624f04',
+            'attendance.mode' => 'gemengd (fysiek / online)',
+            'attendance.url' => 'https://www.publiq.be/livestream',
+        ];
+
+        $this->assertEquals($expectedFormattedEvent, $formattedEvent);
+    }
 }
