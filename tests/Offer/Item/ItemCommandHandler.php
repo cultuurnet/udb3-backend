@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Offer\Item\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateImage;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Item\Commands\SelectMainImage;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdatePriceInfo;
@@ -54,14 +53,6 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getImportImagesClassName()
     {
         return ImportImages::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUpdateTitleClassName()
-    {
-        return UpdateTitle::class;
     }
 
     protected function getUpdateDescriptionClassName()
