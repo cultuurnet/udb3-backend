@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateTitle;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -94,13 +93,15 @@ class DefaultOfferEditingServiceTest extends TestCase
             ->with('foo')
             ->willReturn(new JsonDocument('foo'));
 
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdateTitleCommand')
-            ->with('foo', new Language('en'), new Title('English title'))
-            ->willReturn(new UpdateTitle('foo', new Language('en'), new Title('English title')));
-
         $this->commandBus->expects($this->once())
             ->method('dispatch')
+            ->with(
+                new Commands\UpdateTitle(
+                    'foo',
+                    new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('en'),
+                    new \CultuurNet\UDB3\Model\ValueObject\Text\Title('English title')
+                )
+            )
             ->willReturn($this->expectedCommandId);
 
         $commandId = $this->offerEditingService->updateTitle(
