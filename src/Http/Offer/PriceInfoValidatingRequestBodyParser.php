@@ -31,7 +31,7 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
         return $request;
     }
 
-    /*
+    /**
      * @return SchemaError[]
      */
     private function getSchemaErrors(array $priceInfos): array
@@ -40,14 +40,14 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
         $nameMatrix = [];
 
         foreach ($priceInfos as $index => $priceInfo) {
-            foreach ($priceInfo['name'] as $language => $priceLang) {
-                if (isset($nameMatrix[$language]) && in_array($priceLang, $nameMatrix[$language], true)) {
+            foreach ($priceInfo['name'] as $language => $name) {
+                if (isset($nameMatrix[$language]) && in_array($name, $nameMatrix[$language], true)) {
                     $errors[] = new SchemaError(
                         '/priceInfo' . '/' . $index . '/name/' . $language,
-                        'Tariff name "' . $priceLang . '" should be unique.'
+                        'Tariff name "' . $name . '" must be unique.'
                     );
                 }
-                $nameMatrix[$language][] = $priceLang;
+                $nameMatrix[$language][] = $name;
             }
         }
 
