@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\Offer\Mock\Commands\UpdateTitle;
-use CultuurNet\UDB3\Title;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
