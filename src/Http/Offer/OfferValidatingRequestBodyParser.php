@@ -17,23 +17,15 @@ final class OfferValidatingRequestBodyParser implements RequestBodyParser
 
     public function __construct(OfferType $offerType)
     {
-        if ($offerType->sameAs(OfferType::event())) {
-            $this->combinedRequestBodyParser = new CombinedRequestBodyParser(
-                new BookingInfoValidatingRequestBodyParser(),
-                new CalendarValidatingRequestBodyParser(),
-                new DuplicateLabelValidatingRequestBodyParser(),
-                new PriceInfoValidatingRequestBodyParser(),
-                MainLanguageValidatingRequestBodyParser::createForEvent()
-            );
-        } else {
-            $this->combinedRequestBodyParser = new CombinedRequestBodyParser(
-                new BookingInfoValidatingRequestBodyParser(),
-                new CalendarValidatingRequestBodyParser(),
-                new DuplicateLabelValidatingRequestBodyParser(),
-                new PriceInfoValidatingRequestBodyParser(),
+        $this->combinedRequestBodyParser = new CombinedRequestBodyParser(
+            new BookingInfoValidatingRequestBodyParser(),
+            new CalendarValidatingRequestBodyParser(),
+            new DuplicateLabelValidatingRequestBodyParser(),
+            new PriceInfoValidatingRequestBodyParser(),
+            $offerType->sameAs(OfferType::event()) ?
+                MainLanguageValidatingRequestBodyParser::createForEvent() :
                 MainLanguageValidatingRequestBodyParser::createForPlace()
-            );
-        }
+        );
     }
 
     public function parse(ServerRequestInterface $request): ServerRequestInterface
