@@ -11,6 +11,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Http\Label\DuplicateLabelValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\CalendarValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\PriceInfoValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -116,6 +117,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             new BookingInfoValidatingRequestBodyParser(),
             new CalendarValidatingRequestBodyParser(),
             new DuplicateLabelValidatingRequestBodyParser(),
+            new PriceInfoValidatingRequestBodyParser(),
             MainLanguageValidatingRequestBodyParser::createForPlace(),
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
