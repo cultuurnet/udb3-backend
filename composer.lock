@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1640240ab0488653aa547800d3257774",
+    "content-hash": "e935063062de2f956efafc89b74b786c",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -5064,16 +5064,16 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-uitdatabank/virtual-events",
+            "version": "dev-feature/III-4250-update-name-endpoint",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "6dee7bdd4dfb34553479dd95a364a604e16e48a0"
+                "reference": "ba0d8a8de51eccfb5fee64ee8ecd45f262308607"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/6dee7bdd4dfb34553479dd95a364a604e16e48a0",
-                "reference": "6dee7bdd4dfb34553479dd95a364a604e16e48a0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/ba0d8a8de51eccfb5fee64ee8ecd45f262308607",
+                "reference": "ba0d8a8de51eccfb5fee64ee8ecd45f262308607",
                 "shasum": ""
             },
             "type": "library",
@@ -5090,9 +5090,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/uitdatabank/virtual-events"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/feature/III-4250-update-name-endpoint"
             },
-            "time": "2022-05-03T09:19:24+00:00"
+            "time": "2022-05-12T12:01:51+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
