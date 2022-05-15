@@ -26,17 +26,13 @@ use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
-use CultuurNet\UDB3\Http\Label\DuplicateLabelValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use CultuurNet\UDB3\Http\Offer\BookingInfoValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Offer\CalendarValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Offer\PriceInfoValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
-use CultuurNet\UDB3\Http\Request\Body\MainLanguageValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
@@ -55,6 +51,7 @@ use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
@@ -121,11 +118,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
             new AttendanceModeValidatingRequestBodyParser(),
             new AgeRangeValidatingRequestBodyParser(),
-            new BookingInfoValidatingRequestBodyParser(),
-            new CalendarValidatingRequestBodyParser(),
-            new DuplicateLabelValidatingRequestBodyParser(),
-            new PriceInfoValidatingRequestBodyParser(),
-            MainLanguageValidatingRequestBodyParser::createForEvent(),
+            new OfferValidatingRequestBodyParser(OfferType::event()),
             new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();
 
