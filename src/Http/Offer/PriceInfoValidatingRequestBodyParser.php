@@ -31,7 +31,7 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
         return $request;
     }
 
-    /*
+    /**
      * @return SchemaError[]
      */
     private function getSchemaErrors(array $priceInfos): array
