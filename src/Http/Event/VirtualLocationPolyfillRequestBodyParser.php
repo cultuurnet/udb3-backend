@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Event;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 

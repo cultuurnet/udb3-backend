@@ -44,7 +44,7 @@ use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;

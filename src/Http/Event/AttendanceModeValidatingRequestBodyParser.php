@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class AttendanceModeValidatingRequestBodyParser implements RequestBodyParser

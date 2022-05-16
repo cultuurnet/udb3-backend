@@ -78,7 +78,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;

@@ -56,7 +56,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;

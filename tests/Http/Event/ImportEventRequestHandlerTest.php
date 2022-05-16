@@ -55,7 +55,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;

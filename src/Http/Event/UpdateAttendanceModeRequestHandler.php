@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
