@@ -20,7 +20,7 @@ final class AttendanceModeValidatingRequestBodyParser implements RequestBodyPars
         if (!is_object($data)) {
             return $request;
         }
-        $hasVirtualLocation = (new LocationId($data->location->{'@id'}))->isVirtualLocation();
+        $hasVirtualLocation = (new LocationId($data->location->{'@id'}))->isOnlineLocation();
         $isOffline = !isset($data->attendanceMode) || $data->attendanceMode === AttendanceMode::offline()->toString();
         $isOnline = isset($data->attendanceMode) && $data->attendanceMode === AttendanceMode::online()->toString();
         $isMixed = isset($data->attendanceMode) && $data->attendanceMode === AttendanceMode::mixed()->toString();

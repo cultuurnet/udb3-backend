@@ -34,7 +34,7 @@ final class OnlineLocationPolyfillRequestBodyParser implements RequestBodyParser
             $data->attendanceMode === AttendanceMode::online()->toString()
         ) {
             $data->location = new stdClass();
-            $data->location->{'@id'} = $this->iriGenerator->iri(LocationId::VIRTUAL_LOCATION);
+            $data->location->{'@id'} = $this->iriGenerator->iri(LocationId::ONLINE_LOCATION);
         }
 
         return $request->withParsedBody($data);

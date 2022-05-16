@@ -132,7 +132,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $theme = $eventAdapter->getTheme();
         $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
 
-        if (!$location->isVirtualLocation()) {
+        if (!$location->isOnlineLocation()) {
             try {
                 $this->locationDocumentRepository->fetch($location->toString());
             } catch (DocumentDoesNotExist $e) {
