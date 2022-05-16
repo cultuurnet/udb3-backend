@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 
-final class VirtualLocationPolyfillRequestBodyParser implements RequestBodyParser
+final class OnlineLocationPolyfillRequestBodyParser implements RequestBodyParser
 {
     private IriGeneratorInterface $iriGenerator;
 

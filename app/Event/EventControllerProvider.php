@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
-use CultuurNet\UDB3\Http\Event\VirtualLocationPolyfillRequestBodyParser;
+use CultuurNet\UDB3\Http\Event\OnlineLocationPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
@@ -105,7 +105,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                         $app['media_object_iri_generator'],
                         $app['media_object_repository']
                     ),
-                    new VirtualLocationPolyfillRequestBodyParser($app['place_iri_generator'])
+                    new OnlineLocationPolyfillRequestBodyParser($app['place_iri_generator'])
                 ),
                 $app['imports_command_bus'],
                 $app['import_image_collection_factory'],

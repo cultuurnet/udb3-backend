@@ -120,7 +120,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         'de' => 'Basisrate',
                     ]
                 ),
-                new VirtualLocationPolyfillRequestBodyParser($placeIriGenerator)
+                new OnlineLocationPolyfillRequestBodyParser($placeIriGenerator)
             ),
             $this->commandBus,
             $this->imageCollectionFactory,
