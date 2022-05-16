@@ -38,7 +38,7 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         if ((new LocationId($locationId))->isOnlineLocation()) {
             throw ApiProblem::pathParameterInvalid(
                 $this->createUseAttendanceModeMessage(
-                    'Instead of passing the virtual location, please update the attendance mode.'
+                    'Instead of passing the online location, please update the attendance mode.'
                 )
             );
         }

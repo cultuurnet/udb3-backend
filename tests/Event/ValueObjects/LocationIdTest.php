@@ -23,9 +23,9 @@ class LocationIdTest extends TestCase
      * @dataProvider locationDataProvider
      * @test
      */
-    public function it_recognizes_virtual_locations(LocationId $locationId, bool $isVirtualLocation): void
+    public function it_recognizes_online_locations(LocationId $locationId, bool $isOnlineLocation): void
     {
-        $this->assertEquals($isVirtualLocation, $locationId->isOnlineLocation());
+        $this->assertEquals($isOnlineLocation, $locationId->isOnlineLocation());
     }
 
     public function locationDataProvider(): array
