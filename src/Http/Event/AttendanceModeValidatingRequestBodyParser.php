@@ -20,12 +20,12 @@ final class AttendanceModeValidatingRequestBodyParser implements RequestBodyPars
         if (!is_object($data)) {
             return $request;
         }
-        $hasVirtualLocation = (new LocationId($data->location->{'@id'}))->isOnlineLocation();
+        $isOnlineLocation = (new LocationId($data->location->{'@id'}))->isOnlineLocation();
         $isOffline = !isset($data->attendanceMode) || $data->attendanceMode === AttendanceMode::offline()->toString();
         $isOnline = isset($data->attendanceMode) && $data->attendanceMode === AttendanceMode::online()->toString();
         $isMixed = isset($data->attendanceMode) && $data->attendanceMode === AttendanceMode::mixed()->toString();
 
-        if ($hasVirtualLocation && $isOffline) {
+        if ($isOnlineLocation && $isOffline) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/attendanceMode',
@@ -34,16 +34,16 @@ final class AttendanceModeValidatingRequestBodyParser implements RequestBodyPars
             );
         }
 
-        if (!$hasVirtualLocation && $isOnline) {
+        if (!$isOnlineLocation && $isOnline) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/attendanceMode',
-                    'Attendance mode "online" needs to have a virtual location.'
+                    'Attendance mode "online" needs to have an online location.'
                 )
             );
         }
 
-        if ($hasVirtualLocation && $isMixed) {
+        if ($isOnlineLocation && $isMixed) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/attendanceMode',
