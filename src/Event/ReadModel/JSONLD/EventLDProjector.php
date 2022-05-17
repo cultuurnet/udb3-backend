@@ -525,7 +525,7 @@ class EventLDProjector extends OfferLDProjector implements
         }
 
         if ((new LocationId($placeId))->isNilLocation()) {
-            return $this->onlineLocationJSONLD();
+            return $this->nilLocationJSONLD();
         }
 
         try {
@@ -547,7 +547,7 @@ class EventLDProjector extends OfferLDProjector implements
         }
     }
 
-    private function onlineLocationJSONLD(): array
+    private function nilLocationJSONLD(): array
     {
         return (new NilLocationNormalizer($this->placeIriGenerator))
             ->normalize(ImmutablePlace::createNilLocation());
