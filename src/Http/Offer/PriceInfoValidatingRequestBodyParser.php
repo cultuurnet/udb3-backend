@@ -16,7 +16,7 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
     {
         $data = $request->getParsedBody();
 
-        if (!isset($data->priceInfo)) {
+        if (!isset($data->priceInfo) && !is_array($data)) {
             return $request;
         }
 
