@@ -90,6 +90,4 @@ interface OfferEditingServiceInterface
      * @return string
      */
     public function updateBookingInfo($id, BookingInfo $bookingInfo);
-
-    public function updatePriceInfo(string $id, PriceInfo $priceInfo);
 }

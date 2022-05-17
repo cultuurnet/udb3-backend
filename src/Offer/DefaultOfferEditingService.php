@@ -247,15 +247,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    public function updatePriceInfo(string $id, PriceInfo $priceInfo)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createUpdatePriceInfoCommand($id, $priceInfo)
-        );
-    }
-
     /**
      * @param string $id
      *
