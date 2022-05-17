@@ -637,8 +637,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4708
+     * @bugfix https://jira.uitdatabank.be/browse/III-4708
      */
     public function it_should_remove_null_labels(): void
     {
@@ -653,8 +652,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4708
+     * @bugfix https://jira.uitdatabank.be/browse/III-4708
      */
     public function it_should_remove_label_properties_with_only_null_values(): void
     {

@@ -81,8 +81,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      * @dataProvider organizerDataProvider
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-3921
+     * @bugfix https://jira.uitdatabank.be/browse/III-3921
      */
     public function it_handles_organizer(string $sampleFile): void
     {
@@ -121,8 +120,7 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-3921
+     * @bugfix https://jira.uitdatabank.be/browse/III-3921
      */
     public function it_handles_missing_typicalAgeRange(): void
     {
