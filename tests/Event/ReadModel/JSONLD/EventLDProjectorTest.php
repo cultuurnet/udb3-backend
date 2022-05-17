@@ -139,6 +139,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->projector = new EventLDProjector(
             $this->documentRepository,
             $iriGenerator,
+            new CallableIriGenerator(fn ($id) => 'https://io.uitdatabank.dev/places/' . $id),
             $this->placeService,
             $this->organizerService,
             $this->serializer,
@@ -1250,6 +1251,57 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
 
         $this->assertEquals($expectedTerms, $body->terms);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handle_event_created_with_online_location(): void
+    {
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('en'),
+            new Title('Online workshop'),
+            new EventType('0.3.1.0.0', 'Cursus of workshop'),
+            new LocationId(LocationId::ONLINE_LOCATION),
+            new Calendar(CalendarType::PERMANENT())
+        );
+
+        $body = $this->project($eventCreated, $eventCreated->getEventId());
+
+        $this->assertEquals(
+            (object) [
+                '@type' => 'Place',
+                '@id' => 'https://io.uitdatabank.dev/places/00000000-0000-0000-0000-000000000000',
+                'mainLanguage' => 'nl',
+                'name' => (object) [
+                    'nl' => 'Online location',
+                ],
+                'terms' => [
+                    (object) [
+                        'id' => '0.8.0.0.0',
+                        'label' => 'Openbare ruimte',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+                'calendarType' => 'permanent',
+                'status' => (object) [
+                    'type' => 'Available',
+                ],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                ],
+                'address' => (object) [
+                    'nl' =>(object) [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => '___',
+                        'postalCode' => '0000',
+                        'streetAddress' => '___',
+                    ],
+                ],
+            ],
+            $body->location
+        );
     }
 
     /**
