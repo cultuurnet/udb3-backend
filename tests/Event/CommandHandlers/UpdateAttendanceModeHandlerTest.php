@@ -48,8 +48,7 @@ final class UpdateAttendanceModeHandlerTest extends CommandHandlerScenarioTestCa
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4702
+     * @bugfix https://jira.uitdatabank.be/browse/III-4702
      */
     public function it_handles_updating_the_attendanceMode_on_events_created_via_xml(): void
     {
