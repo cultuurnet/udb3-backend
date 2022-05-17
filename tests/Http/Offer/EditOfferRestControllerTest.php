@@ -62,11 +62,6 @@ class EditOfferRestControllerTest extends TestCase
     private $descriptionDeserializer;
 
     /**
-     * @var PriceInfoJSONDeserializer
-     */
-    private $priceInfoDeserializer;
-
-    /**
      * @var DataValidatorInterface|MockObject
      */
     private $calendarDataValidator;
@@ -88,7 +83,6 @@ class EditOfferRestControllerTest extends TestCase
         $this->labelDeserializer = new LabelJSONDeserializer();
         $this->titleDeserializer = new TitleJSONDeserializer();
         $this->descriptionDeserializer = new DescriptionJSONDeserializer();
-        $this->priceInfoDeserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
 
         $this->controller = new EditOfferRestController(
             $this->commandBus,
@@ -96,8 +90,7 @@ class EditOfferRestControllerTest extends TestCase
             $this->mainLanguageQuery,
             $this->labelDeserializer,
             $this->titleDeserializer,
-            $this->descriptionDeserializer,
-            $this->priceInfoDeserializer
+            $this->descriptionDeserializer
         );
     }
 
@@ -165,50 +158,6 @@ class EditOfferRestControllerTest extends TestCase
             ->removeLabel($cdbid, $label);
 
         $this->assertEquals([new RemoveLabel($cdbid, new Label($label))], $this->commandBus->getRecordedCommands());
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_price_info()
-    {
-        $data = '[
-            {"category": "base", "price": 15, "priceCurrency": "EUR"},
-            {"category": "tarrif", "name": {"nl": "Werkloze dodo kwekers"}, "price": 0, "priceCurrency": "EUR"}
-        ]';
-
-        $cdbid = 'c6ff4c27-bdbb-452f-a1b5-d9e2e3aa846c';
-
-        $this->mainLanguageQuery->expects($this->once())
-            ->method('execute')
-            ->with($cdbid)
-            ->willReturn(new Language('nl'));
-
-        $request = new Request([], [], [], [], [], [], $data);
-
-        $expectedBasePrice = new BasePrice(
-            new Money(1500, new Currency('EUR'))
-        );
-
-        $expectedTariff = new Tariff(
-            new MultilingualString(new Language('nl'), new StringLiteral('Werkloze dodo kwekers')),
-            new Money(0, new Currency('EUR'))
-        );
-
-        $expectedPriceInfo = (new PriceInfo($expectedBasePrice))
-            ->withExtraTariff($expectedTariff);
-
-        $this->editService->expects($this->once())
-            ->method('updatePriceInfo')
-            ->with(
-                $cdbid,
-                $expectedPriceInfo
-            );
-
-        $response = $this->controller
-            ->updatePriceInfo($request, $cdbid);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
