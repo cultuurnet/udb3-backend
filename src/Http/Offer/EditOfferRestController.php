@@ -51,19 +51,13 @@ class EditOfferRestController
      */
     private $descriptionJsonDeserializer;
 
-    /**
-     * @var DeserializerInterface
-     */
-    private $priceInfoJsonDeserializer;
-
     public function __construct(
         CommandBus $commandBus,
         OfferEditingServiceInterface $editingServiceInterface,
         MainLanguageQueryInterface $mainLanguageQuery,
         DeserializerInterface $labelJsonDeserializer,
         DeserializerInterface $titleJsonDeserializer,
-        DeserializerInterface $descriptionJsonDeserializer,
-        DeserializerInterface $priceInfoJsonDeserializer
+        DeserializerInterface $descriptionJsonDeserializer
     ) {
         $this->commandBus = $commandBus;
         $this->editService = $editingServiceInterface;
@@ -71,7 +65,6 @@ class EditOfferRestController
         $this->labelJsonDeserializer = $labelJsonDeserializer;
         $this->titleJsonDeserializer = $titleJsonDeserializer;
         $this->descriptionJsonDeserializer = $descriptionJsonDeserializer;
-        $this->priceInfoJsonDeserializer = $priceInfoJsonDeserializer;
     }
 
     public function addLabel(string $cdbid, string $label): Response
@@ -125,31 +118,6 @@ class EditOfferRestController
             $cdbid,
             new Language($lang),
             $description
-        );
-
-        return new NoContent();
-    }
-
-    public function updatePriceInfo(Request $request, string $cdbid): Response
-    {
-        $mainLanguage = null;
-        $deserializer = $this->priceInfoJsonDeserializer;
-
-        try {
-            $mainLanguage = $this->mainLanguageQuery->execute($cdbid);
-        } catch (EntityNotFoundException $e) {
-            // Will be handled by the editService.
-        }
-
-        if ($mainLanguage && $deserializer instanceof PriceInfoJSONDeserializer) {
-            $deserializer = $deserializer->forMainLanguage($mainLanguage);
-        }
-
-        $priceInfo = $deserializer->deserialize(new StringLiteral($request->getContent()));
-
-        $this->editService->updatePriceInfo(
-            $cdbid,
-            $priceInfo
         );
 
         return new NoContent();

@@ -49,7 +49,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
 
         $controllers->put('/{cdbid}/name/{lang}/', "{$controllerName}:updateTitle");
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
-        $controllers->put('/{cdbid}/price-info/', "{$controllerName}:updatePriceInfo");
         $controllers->patch('/{cdbid}/', "{$patchControllerName}:handle");
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
         $controllers->get('/{offerId}/permissions/{userId}/', "{$permissionsControllerName}:getPermissionsForGivenUser");
@@ -88,8 +87,7 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                     $mainLanguageQuery,
                     new LabelJSONDeserializer(),
                     new TitleJSONDeserializer(false, new StringLiteral('name')),
-                    new DescriptionJSONDeserializer(),
-                    new PriceInfoJSONDeserializer(new PriceInfoDataValidator())
+                    new DescriptionJSONDeserializer()
                 );
             }
         );
