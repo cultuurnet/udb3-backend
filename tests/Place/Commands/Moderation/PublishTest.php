@@ -11,6 +11,7 @@ final class PublishTest extends TestCase
 {
     /**
      * @test
+     * @bugfix https://jira.uitdatabank.be/browse/III-4700
      */
     public function it_has_permission_aanbodBewerken(): void
     {
