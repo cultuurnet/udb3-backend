@@ -40,8 +40,10 @@ final class PriceInfoValidatingRequestBodyParserTest extends TestCase
             ],
             (object) [
                 'category' => 'tariff',
-                'name' => 'Senioren',
-                'price' => '100',
+                'name' => (object) [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 100,
                 'priceCurrency' => 'USD',
             ],
         ];
