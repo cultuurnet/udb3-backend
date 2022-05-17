@@ -10,9 +10,19 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use InvalidArgumentException;
@@ -83,7 +93,8 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     public static function createDummyLocation(
         Language $mainLanguage,
         TranslatedTitle $title,
-        TranslatedAddress $address
+        TranslatedAddress $address,
+        Categories $categories = null
     ): ImmutablePlace {
         return new ImmutablePlace(
             self::getDummyLocationId(),
@@ -91,7 +102,34 @@ final class ImmutablePlace extends ImmutableOffer implements Place
             $title,
             new PermanentCalendar(new OpeningHours()),
             $address,
-            new Categories()
+            $categories ?? new Categories()
+        );
+    }
+
+    public static function createOnlineLocation(): ImmutablePlace
+    {
+        return self::createDummyLocation(
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Online location')
+            ),
+            new TranslatedAddress(
+                new Language('nl'),
+                new Address(
+                    new Street('___'),
+                    new PostalCode('0000'),
+                    new Locality('___'),
+                    new CountryCode('BE')
+                )
+            ),
+            new Categories(
+                new Category(
+                    new CategoryID('0.8.0.0.0'),
+                    new CategoryLabel('Openbare ruimte'),
+                    new CategoryDomain('eventtype')
+                )
+            )
         );
     }
 
