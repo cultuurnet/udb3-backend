@@ -48,6 +48,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/type/{termId}/', UpdateTypeRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/facilities/', UpdateFacilitiesRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/priceInfo/', UpdatePriceInfoRequestHandler::class);
+
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/videos/{videoId}', DeleteVideoRequestHandler::class);
