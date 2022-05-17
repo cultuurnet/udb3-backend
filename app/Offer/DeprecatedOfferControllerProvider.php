@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionController;

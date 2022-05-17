@@ -6,14 +6,12 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
-use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
-use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
