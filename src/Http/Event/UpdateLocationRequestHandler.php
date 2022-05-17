@@ -35,7 +35,7 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         $eventId = $routeParameters->getEventId();
         $locationId = $routeParameters->get('locationId');
 
-        if ((new LocationId($locationId))->isOnlineLocation()) {
+        if ((new LocationId($locationId))->isNilLocation()) {
             throw ApiProblem::pathParameterInvalid(
                 $this->createUseAttendanceModeMessage(
                     'Instead of passing the online location, please update the attendance mode.'

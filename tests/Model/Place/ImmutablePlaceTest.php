@@ -167,39 +167,44 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_be_a_dummy_location_by_default()
+    public function it_should_not_be_nil_location_by_default()
     {
-        $this->assertFalse($this->getPlace()->isDummyLocation());
+        $this->assertFalse($this->getPlace()->isNilLocation());
     }
 
     /**
      * @test
      */
-    public function it_should_be_able_to_create_dummy_locations()
+    public function it_should_be_able_to_create_nil_locations()
     {
-        $dummy = ImmutablePlace::createDummyLocation(
-            $this->getMainLanguage(),
-            $this->getTitle(),
-            $this->getAddress()
+        $nilLocation = ImmutablePlace::createNilLocation();
+
+        $this->assertInstanceOf(Place::class, $nilLocation);
+        $this->assertTrue($nilLocation->isNilLocation());
+
+        $this->assertEquals(ImmutablePlace::getNilLocationId(), $nilLocation->getId());
+        $this->assertEquals($this->getMainLanguage(), $nilLocation->getMainLanguage());
+        $this->assertEquals($this->getTitle(), $nilLocation->getTitle());
+        $this->assertNull($nilLocation->getDescription());
+        $this->assertEquals(
+            new Categories(
+                new Category(
+                    new CategoryID('0.8.0.0.0'),
+                    new CategoryLabel('Openbare ruimte'),
+                    new CategoryDomain('eventtype')
+                )
+            ),
+            $nilLocation->getTerms()
         );
-
-        $this->assertInstanceOf(Place::class, $dummy);
-        $this->assertTrue($dummy->isDummyLocation());
-
-        $this->assertEquals(ImmutablePlace::getDummyLocationId(), $dummy->getId());
-        $this->assertEquals($this->getMainLanguage(), $dummy->getMainLanguage());
-        $this->assertEquals($this->getTitle(), $dummy->getTitle());
-        $this->assertNull($dummy->getDescription());
-        $this->assertEquals(new Categories(), $dummy->getTerms());
-        $this->assertEquals(new Labels(), $dummy->getLabels());
-        $this->assertNull($dummy->getAgeRange());
-        $this->assertNull($dummy->getPriceInfo());
-        $this->assertEquals(new BookingInfo(), $dummy->getBookingInfo());
-        $this->assertEquals(new ContactPoint(), $dummy->getContactPoint());
-        $this->assertEquals(WorkflowStatus::DRAFT(), $dummy->getWorkflowStatus());
-        $this->assertEquals(new PermanentCalendar(new OpeningHours()), $dummy->getCalendar());
-        $this->assertEquals($this->getAddress(), $dummy->getAddress());
-        $this->assertNull($dummy->getGeoCoordinates());
+        $this->assertEquals(new Labels(), $nilLocation->getLabels());
+        $this->assertNull($nilLocation->getAgeRange());
+        $this->assertNull($nilLocation->getPriceInfo());
+        $this->assertEquals(new BookingInfo(), $nilLocation->getBookingInfo());
+        $this->assertEquals(new ContactPoint(), $nilLocation->getContactPoint());
+        $this->assertEquals(WorkflowStatus::DRAFT(), $nilLocation->getWorkflowStatus());
+        $this->assertEquals(new PermanentCalendar(new OpeningHours()), $nilLocation->getCalendar());
+        $this->assertEquals($this->getAddress(), $nilLocation->getAddress());
+        $this->assertNull($nilLocation->getGeoCoordinates());
     }
 
     /**
@@ -225,7 +230,7 @@ class ImmutablePlaceTest extends TestCase
     {
         return new TranslatedTitle(
             $this->getMainLanguage(),
-            new Title('foo')
+            new Title('Online')
         );
     }
 
@@ -243,9 +248,9 @@ class ImmutablePlaceTest extends TestCase
     private function getAddress()
     {
         $address = new Address(
-            new Street('Henegouwenkaai 41-43'),
-            new PostalCode('1080'),
-            new Locality('Brussel'),
+            new Street('___'),
+            new PostalCode('0000'),
+            new Locality('___'),
             new CountryCode('BE')
         );
 

@@ -46,7 +46,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         // Normal places require at least one "eventtype" (sic) category.
         // We can not enforce this particular requirement because categories can
         // be POSTed using only their id.
-        if ($categories->isEmpty() && !$id->sameAs(self::getDummyLocationId())) {
+        if ($categories->isEmpty() && !$id->sameAs(self::getNilLocationId())) {
             throw new InvalidArgumentException('Categories should not be empty (eventtype required).');
         }
 
@@ -85,19 +85,19 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         return $c;
     }
 
-    public function isDummyLocation(): bool
+    public function isNilLocation(): bool
     {
-        return $this->getId()->sameAs(self::getDummyLocationId());
+        return $this->getId()->sameAs(self::getNilLocationId());
     }
 
-    public static function createDummyLocation(
+    private static function createDummyLocation(
         Language $mainLanguage,
         TranslatedTitle $title,
         TranslatedAddress $address,
         Categories $categories = null
     ): ImmutablePlace {
         return new ImmutablePlace(
-            self::getDummyLocationId(),
+            self::getNilLocationId(),
             $mainLanguage,
             $title,
             new PermanentCalendar(new OpeningHours()),
@@ -106,13 +106,13 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         );
     }
 
-    public static function createOnlineLocation(): ImmutablePlace
+    public static function createNilLocation(): ImmutablePlace
     {
         return self::createDummyLocation(
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
-                new Title('Online location')
+                new Title('Online')
             ),
             new TranslatedAddress(
                 new Language('nl'),
@@ -133,7 +133,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         );
     }
 
-    public static function getDummyLocationId(): UUID
+    public static function getNilLocationId(): UUID
     {
         return new UUID('00000000-0000-0000-0000-000000000000');
     }

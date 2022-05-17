@@ -58,7 +58,7 @@ final class RelocateEventToCanonicalPlace implements EventListener
 
     private function relocateEventToCanonicalPlace(string $eventId, LocationId $locationId): void
     {
-        if ($locationId->isOnlineLocation()) {
+        if ($locationId->isNilLocation()) {
             return;
         }
 

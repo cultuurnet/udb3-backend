@@ -64,7 +64,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
-use CultuurNet\UDB3\Model\Serializer\Place\DummyLocationNormalizer;
+use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -524,7 +524,7 @@ class EventLDProjector extends OfferLDProjector implements
             return [];
         }
 
-        if ((new LocationId($placeId))->isOnlineLocation()) {
+        if ((new LocationId($placeId))->isNilLocation()) {
             return $this->onlineLocationJSONLD();
         }
 
@@ -549,8 +549,8 @@ class EventLDProjector extends OfferLDProjector implements
 
     private function onlineLocationJSONLD(): array
     {
-        return (new DummyLocationNormalizer($this->placeIriGenerator))
-            ->normalize(ImmutablePlace::createOnlineLocation());
+        return (new NilLocationNormalizer($this->placeIriGenerator))
+            ->normalize(ImmutablePlace::createNilLocation());
     }
 
     private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral

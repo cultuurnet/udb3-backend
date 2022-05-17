@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class DummyLocationNormalizer implements NormalizerInterface
+final class NilLocationNormalizer implements NormalizerInterface
 {
     private IriGeneratorInterface $iriGenerator;
 
