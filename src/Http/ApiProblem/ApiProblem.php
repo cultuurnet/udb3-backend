@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
+use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Offer\OfferType;
 use Exception;
 
@@ -412,6 +413,16 @@ final class ApiProblem extends Exception
             'Invalid workflowStatus transition',
             400,
             'Cannot transition from workflowStatus "' . $from . '" to "' . $to . '".'
+        );
+    }
+
+    public static function attendanceModeNotSupported($detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/attendance-mode-not-supported',
+            'Attendance mode not supported',
+            400,
+            $detail . ' For more information check the documentation of the update attendance mode endpoint. See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
         );
     }
 }

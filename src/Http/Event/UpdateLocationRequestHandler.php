@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
-use CultuurNet\UDB3\Event\UpdateLocationNotSupported;
+use CultuurNet\UDB3\Event\AttendanceModeNotSupported;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Docs\Stoplight;
@@ -36,10 +36,8 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         $locationId = $routeParameters->get('locationId');
 
         if ((new LocationId($locationId))->isNilLocation()) {
-            throw ApiProblem::urlNotFound(
-                $this->createUseAttendanceModeMessage(
-                    'Cannot update the location of an offline or mixed event to a nil location. Set the attendanceMode to online instead.'
-                )
+            throw new AttendanceModeNotSupported(
+                'Cannot update the location of an offline or mixed event to a nil location. Set the attendanceMode to online instead.'
             );
         }
 
@@ -51,21 +49,8 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
             throw ApiProblem::urlNotFound('Location with id "' . $locationId . '" does not exist.');
         }
 
-        try {
-            $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));
-        } catch (UpdateLocationNotSupported $exception) {
-            throw ApiProblem::urlNotFound(
-                $this->createUseAttendanceModeMessage($exception->getMessage())
-            );
-        }
+        $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));
 
         return new NoContentResponse();
-    }
-
-    private function createUseAttendanceModeMessage(string $detail): string
-    {
-        return $detail
-            . ' For more information check the documentation of the update attendance mode endpoint.'
-            . ' See: ' . Stoplight::ATTENDANCE_MODE_UPDATE;
     }
 }

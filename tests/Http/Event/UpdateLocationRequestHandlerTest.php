@@ -70,10 +70,8 @@ final class UpdateLocationRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::urlNotFound(
+            ApiProblem::attendanceModeNotSupported(
                 'Cannot update the location of an offline or mixed event to a nil location. Set the attendanceMode to online instead.'
-                . ' For more information check the documentation of the update attendance mode endpoint.'
-                . ' See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
             ),
             fn () => $this->updateLocationRequestHandler->handle($request)
         );

@@ -1060,7 +1060,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
         $locationId = new LocationId('57738178-28a5-4afb-90c0-fd0beba172a8');
 
-        $this->expectException(UpdateLocationNotSupported::class);
+        $this->expectException(AttendanceModeNotSupported::class);
         $this->expectExceptionMessage(
             'Cannot update the location of an online event to a real location. Set the attendanceMode to mixed or offline first.'
         );
