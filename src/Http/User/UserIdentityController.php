@@ -58,14 +58,14 @@ class UserIdentityController
     public function getCurrentUser(): ResponseInterface
     {
         if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
-            throw ApiProblem::tokenNotSupported(
+            throw ApiProblem::unauthorized(
                 'Client access tokens are not supported on this endpoint because a user is required to return user info.'
             );
         }
 
         $userIdentity = $this->jwt->getUserIdentityDetails($this->userIdentityResolver);
         if (!($userIdentity instanceof UserIdentityDetails)) {
-            throw ApiProblem::tokenNotSupported('No user found for the given token.');
+            throw ApiProblem::unauthorized('No user found for the given token.');
         }
 
         $userIdentityAsArray = $userIdentity->jsonSerialize();

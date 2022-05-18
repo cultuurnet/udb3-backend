@@ -187,7 +187,7 @@ class UserIdentityControllerTest extends TestCase
         );
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::tokenNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.'),
+            ApiProblem::unauthorized('Client access tokens are not supported on this endpoint because a user is required to return user info.'),
             fn () => $userIdentityControllerWithClientToken->getCurrentUser()
         );
     }
@@ -203,7 +203,7 @@ class UserIdentityControllerTest extends TestCase
             ->willReturn(null);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::tokenNotSupported('No user found for the given token.'),
+            ApiProblem::unauthorized('No user found for the given token.'),
             fn () => $this->userIdentityController->getCurrentUser()
         );
     }
