@@ -47,7 +47,7 @@ class UserIdentityController
         $userIdentity = $this->userIdentityResolver->getUserByEmail($emailAddress);
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
-            throw ApiProblem::userNotFound('No user found for the given email address.');
+            throw ApiProblem::urlNotFound('No user found for the given email address.');
         }
 
         return (new JsonLdResponse($userIdentity));

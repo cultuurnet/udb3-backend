@@ -95,7 +95,7 @@ class UserIdentityControllerTest extends TestCase
             ->willReturn(null);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::userNotFound('No user found for the given email address.'),
+            ApiProblem::urlNotFound('No user found for the given email address.'),
             fn () => $this->userIdentityController->getByEmailAddress(
                 (new ServerRequest())->withAttribute('emailAddress', 'jane.doe@anonymous.com')
             )
