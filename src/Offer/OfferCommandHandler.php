@@ -170,11 +170,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * @return string
      */
-    abstract protected function getUpdatePriceInfoClassName();
-
-    /**
-     * @return string
-     */
     abstract protected function getPublishClassName();
 
     /**
