@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
@@ -33,6 +34,9 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->get('/{offerType}/{offerId}/', GetDetailRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/', DeleteRequestHandler::class);
+
+        $controllers->put('/{offerType}/{offerId}/name/{language}/', UpdateTitleRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/{language}/title/', UpdateTitleRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 
@@ -62,6 +66,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[DeleteRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTitleRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateTitleRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateAvailableFromRequestHandler::class] = $app->share(
