@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionController;
@@ -49,7 +47,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
 
         $controllers->put('/{cdbid}/name/{lang}/', "{$controllerName}:updateTitle");
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
-        $controllers->put('/{cdbid}/price-info/', "{$controllerName}:updatePriceInfo");
         $controllers->patch('/{cdbid}/', "{$patchControllerName}:handle");
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
         $controllers->get('/{offerId}/permissions/{userId}/', "{$permissionsControllerName}:getPermissionsForGivenUser");
@@ -88,8 +85,7 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                     $mainLanguageQuery,
                     new LabelJSONDeserializer(),
                     new TitleJSONDeserializer(false, new StringLiteral('name')),
-                    new DescriptionJSONDeserializer(),
-                    new PriceInfoJSONDeserializer(new PriceInfoDataValidator())
+                    new DescriptionJSONDeserializer()
                 );
             }
         );
