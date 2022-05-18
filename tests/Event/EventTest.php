@@ -1062,7 +1062,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $this->expectException(UpdateLocationNotSupported::class);
         $this->expectExceptionMessage(
-            'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
+            'Cannot update the location of an online event to a real location. Set the attendanceMode to mixed or offline first.'
         );
 
         $this->scenario

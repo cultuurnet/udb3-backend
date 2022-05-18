@@ -36,9 +36,9 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
         $locationId = $routeParameters->get('locationId');
 
         if ((new LocationId($locationId))->isNilLocation()) {
-            throw ApiProblem::pathParameterInvalid(
+            throw ApiProblem::urlNotFound(
                 $this->createUseAttendanceModeMessage(
-                    'Instead of passing the online location, please update the attendance mode.'
+                    'Cannot update the location of an offline or mixed event to a nil location. Set the attendanceMode to online instead.'
                 )
             );
         }
@@ -48,13 +48,13 @@ final class UpdateLocationRequestHandler implements RequestHandlerInterface
             // non-existing places being linked.
             $this->locationDocumentRepository->fetch($locationId);
         } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::pathParameterInvalid('Location with id "' . $locationId . '" does not exist.');
+            throw ApiProblem::urlNotFound('Location with id "' . $locationId . '" does not exist.');
         }
 
         try {
             $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($locationId)));
         } catch (UpdateLocationNotSupported $exception) {
-            throw ApiProblem::pathParameterInvalid(
+            throw ApiProblem::urlNotFound(
                 $this->createUseAttendanceModeMessage($exception->getMessage())
             );
         }
