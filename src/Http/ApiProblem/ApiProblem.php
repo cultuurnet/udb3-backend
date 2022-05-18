@@ -274,16 +274,6 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('Image', $imageId);
     }
 
-    public static function tokenNotSupported(string $detail): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/auth/token-not-supported',
-            'Token not supported',
-            400,
-            $detail
-        );
-    }
-
     public static function bodyMissing(): self
     {
         return self::create(
