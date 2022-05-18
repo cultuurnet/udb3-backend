@@ -35,7 +35,7 @@ final class UpdateThemeRequestHandler implements RequestHandlerInterface
         try {
             $this->commandBus->dispatch(new UpdateTheme($eventId, $termId));
         } catch (CategoryNotFound $e) {
-            throw ApiProblem::pathParameterInvalid($e->getMessage());
+            throw ApiProblem::urlNotFound($e->getMessage());
         }
 
         return new NoContentResponse();

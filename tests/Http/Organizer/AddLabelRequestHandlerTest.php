@@ -68,7 +68,7 @@ class AddLabelRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('The label should match pattern: ^[^;]{2,255}$'),
+            ApiProblem::urlNotFound('The label should match pattern: ^[^;]{2,255}$'),
             fn () => $this->addLabelRequestHandler->handle($addLabelRequest)
         );
     }
