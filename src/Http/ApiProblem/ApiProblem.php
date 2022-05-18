@@ -324,16 +324,6 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function userNotFound(string $detail): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/uitdatabank/user-not-found',
-            'User not found',
-            404,
-            $detail
-        );
-    }
-
     public static function invalidEmailAddress(string $email): self
     {
         return self::create(
