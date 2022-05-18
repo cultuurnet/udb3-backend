@@ -44,7 +44,7 @@ use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
@@ -132,7 +132,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $theme = $eventAdapter->getTheme();
         $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
 
-        if (!$location->isVirtualLocation()) {
+        if (!$location->isOnlineLocation()) {
             try {
                 $this->locationDocumentRepository->fetch($location->toString());
             } catch (DocumentDoesNotExist $e) {

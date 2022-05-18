@@ -7,11 +7,11 @@ namespace CultuurNet\UDB3\Http\Event;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 
-final class VirtualLocationPolyfillRequestBodyParser implements RequestBodyParser
+final class OnlineLocationPolyfillRequestBodyParser implements RequestBodyParser
 {
     private IriGeneratorInterface $iriGenerator;
 
@@ -34,7 +34,7 @@ final class VirtualLocationPolyfillRequestBodyParser implements RequestBodyParse
             $data->attendanceMode === AttendanceMode::online()->toString()
         ) {
             $data->location = new stdClass();
-            $data->location->{'@id'} = $this->iriGenerator->iri(LocationId::VIRTUAL_LOCATION);
+            $data->location->{'@id'} = $this->iriGenerator->iri(LocationId::ONLINE_LOCATION);
         }
 
         return $request->withParsedBody($data);

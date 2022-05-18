@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\UpdateOnlineUrlNotSupported;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;

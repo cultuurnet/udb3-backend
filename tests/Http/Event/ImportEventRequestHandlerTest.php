@@ -55,7 +55,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -120,7 +120,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         'de' => 'Basisrate',
                     ]
                 ),
-                new VirtualLocationPolyfillRequestBodyParser($placeIriGenerator)
+                new OnlineLocationPolyfillRequestBodyParser($placeIriGenerator)
             ),
             $this->commandBus,
             $this->imageCollectionFactory,
@@ -2660,7 +2660,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_polyfills_missing_virtual_location_for_online_attendanceMode(): void
+    public function it_polyfills_missing_online_location_for_online_attendanceMode(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
 
@@ -2827,7 +2827,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_attendanceMode_is_empty_and_location_is_virtual(): void
+    public function it_throws_if_attendanceMode_is_empty_and_location_is_online(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -2858,7 +2858,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_attendanceMode_is_offline_and_location_is_virtual(): void
+    public function it_throws_if_attendanceMode_is_offline_and_location_is_online(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -2912,7 +2912,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/attendanceMode',
-                'Attendance mode "online" needs to have a virtual location.'
+                'Attendance mode "online" needs to have an online location.'
             ),
         ];
 
@@ -2922,7 +2922,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_attendanceMode_is_mixed_and_location_is_virtual(): void
+    public function it_throws_if_attendanceMode_is_mixed_and_location_is_online(): void
     {
         $event = [
             'mainLanguage' => 'nl',

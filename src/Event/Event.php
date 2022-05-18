@@ -78,7 +78,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -310,7 +310,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             return;
         }
 
-        if (!$locationId->isVirtualLocation() && $this->attendanceMode === AttendanceMode::online()->toString()) {
+        if (!$locationId->isOnlineLocation() && $this->attendanceMode === AttendanceMode::online()->toString()) {
             throw new UpdateLocationNotSupported(
                 'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
             );

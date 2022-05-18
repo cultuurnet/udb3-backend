@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -84,7 +84,7 @@ final class UpdateAttendanceModeRequestHandler implements RequestHandlerInterfac
             !$attendanceModeWithLocation->getAttendanceMode()->sameAs(AttendanceMode::online())) {
             $location = $eventRelationsRepository->getPlaceOfEvent($eventId);
 
-            if ($location === null || $location === LocationId::VIRTUAL_LOCATION) {
+            if ($location === null || $location === LocationId::ONLINE_LOCATION) {
                 throw ApiProblem::bodyInvalidData(
                     new SchemaError(
                         '/',

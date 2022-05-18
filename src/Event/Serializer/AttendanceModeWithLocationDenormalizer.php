@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Serializer;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -18,7 +18,7 @@ final class AttendanceModeWithLocationDenormalizer implements DenormalizerInterf
         $attendanceMode = new AttendanceMode($data['attendanceMode']);
 
         if ($attendanceMode->sameAs(AttendanceMode::online())) {
-            $location = new LocationId(LocationId::VIRTUAL_LOCATION);
+            $location = new LocationId(LocationId::ONLINE_LOCATION);
         }
 
         if (!$attendanceMode->sameAs(AttendanceMode::online()) && isset($data['location'])) {

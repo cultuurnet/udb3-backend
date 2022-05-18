@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\ValueObject\Virtual;
+namespace CultuurNet\UDB3\Model\ValueObject\Online;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 

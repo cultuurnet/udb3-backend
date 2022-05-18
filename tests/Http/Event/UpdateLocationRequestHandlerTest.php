@@ -62,7 +62,7 @@ final class UpdateLocationRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_if_the_given_location_is_the_virtual_location(): void
+    public function it_throws_an_api_problem_if_the_given_location_is_an_online_location(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', 'dac793c2-4a8c-4744-b593-69420cfbf7bb')
@@ -71,7 +71,7 @@ final class UpdateLocationRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::pathParameterInvalid(
-                'Instead of passing the virtual location, please update the attendance mode.'
+                'Instead of passing the online location, please update the attendance mode.'
                 . ' For more information check the documentation of the update attendance mode endpoint.'
                 . ' See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
             ),
