@@ -7,9 +7,8 @@ namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer as UpdatePlaceOrganizer;
-use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo as UpdatePlacePriceInfo;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use Money\Currency;
@@ -186,7 +185,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
-        $priceCommand = new UpdatePlacePriceInfo(
+        $priceCommand = new UpdatePriceInfo(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
             new PriceInfo(
                 new BasePrice(
