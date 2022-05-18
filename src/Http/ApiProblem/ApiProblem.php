@@ -231,6 +231,13 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
+    {
+        return self::urlNotFound(
+            'Query parameter ' . $parameterName . ' has invalid value "' . $value . '". Should be one of ' . implode(', ', $allowedValues)
+        );
+    }
+
     public static function resourceNotFound(string $resourceType, string $resourceId): self
     {
         return self::urlNotFound('The ' . $resourceType . ' with id "' . $resourceId . '" was not found.');
@@ -313,16 +320,6 @@ final class ApiProblem extends Exception
             'Invalid body data',
             400,
             $detail
-        );
-    }
-
-    public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/url/query-parameter-invalid',
-            'Query parameter invalid',
-            400,
-            'Query parameter ' . $parameterName . ' has invalid value "' . $value . '". Should be one of ' . implode(', ', $allowedValues)
         );
     }
 
