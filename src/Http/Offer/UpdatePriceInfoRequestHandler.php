@@ -8,6 +8,8 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo as EventUpdatePriceInfo;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -36,6 +38,13 @@ class UpdatePriceInfoRequestHandler implements RequestHandlerInterface
         $offerType = $routeParameters->getOfferType();
 
         $parser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_PRICE_INFO_PUT,
+                    JsonSchemaLocator::PLACE_PRICE_INFO_PUT
+                )
+            ),
             new PriceInfoValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(
                 new PriceInfoDenormalizer(),
