@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
@@ -197,6 +198,10 @@ class OfferServiceProvider implements ServiceProviderInterface
 
         $app[DeleteOfferHandler::class] = $app->share(
             fn (Application $application) => new DeleteOfferHandler($app[OfferRepository::class])
+        );
+
+        $app[UpdatePriceInfoHandler::class] = $app->share(
+            fn (Application $application) => new UpdatePriceInfoHandler($app[OfferRepository::class])
         );
     }
 
