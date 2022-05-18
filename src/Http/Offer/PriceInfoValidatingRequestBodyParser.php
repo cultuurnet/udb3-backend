@@ -16,12 +16,14 @@ class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
     {
         $data = $request->getParsedBody();
 
-        if (!isset($data->priceInfo)) {
+        if (!isset($data->priceInfo) && !is_array($data)) {
             return $request;
         }
 
+        $priceInfo = $data->priceInfo ?? $data;
+
         $errors = $this->getSchemaErrors(
-            Json::decodeAssociatively(Json::encode($data->priceInfo))
+            Json::decodeAssociatively(Json::encode($priceInfo))
         );
 
         if (count($errors) > 0) {
