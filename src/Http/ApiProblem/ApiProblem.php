@@ -324,16 +324,6 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function invalidEmailAddress(string $email): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/uitdatabank/invalid-email-address',
-            'Invalid email address',
-            400,
-            sprintf('"%s" is not a valid email address', $email)
-        );
-    }
-
     public static function calendarTypeNotSupported(string $detail): self
     {
         return self::create(
