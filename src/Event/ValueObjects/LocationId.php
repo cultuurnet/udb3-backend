@@ -10,7 +10,7 @@ final class LocationId
 {
     use IsString;
 
-    public const ONLINE_LOCATION = '00000000-0000-0000-0000-000000000000';
+    public const NIL_LOCATION = '00000000-0000-0000-0000-000000000000';
 
     private static array $dummyPlaceForEducationIds = [];
 
@@ -23,9 +23,9 @@ final class LocationId
         $this->setValue($value);
     }
 
-    public function isOnlineLocation(): bool
+    public function isNilLocation(): bool
     {
-        return substr($this->value, -strlen(self::ONLINE_LOCATION)) === self::ONLINE_LOCATION;
+        return substr($this->value, -strlen(self::NIL_LOCATION)) === self::NIL_LOCATION;
     }
 
     public function isDummyPlaceForEducation(): bool

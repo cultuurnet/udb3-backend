@@ -2660,7 +2660,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_polyfills_missing_online_location_for_online_attendanceMode(): void
+    public function it_polyfills_missing_nil_location_for_online_attendanceMode(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
 

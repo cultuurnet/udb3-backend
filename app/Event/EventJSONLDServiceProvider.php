@@ -114,6 +114,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                 return new EventLDProjector(
                     $app['event_jsonld_repository'],
                     $app['event_iri_generator'],
+                    $app['place_iri_generator'],
                     $app['place_service'],
                     $app['organizer_service'],
                     $app['media_object_serializer'],

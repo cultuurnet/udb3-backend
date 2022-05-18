@@ -84,7 +84,7 @@ final class UpdateAttendanceModeRequestHandler implements RequestHandlerInterfac
             !$attendanceModeWithLocation->getAttendanceMode()->sameAs(AttendanceMode::online())) {
             $location = $eventRelationsRepository->getPlaceOfEvent($eventId);
 
-            if ($location === null || $location === LocationId::ONLINE_LOCATION) {
+            if ($location === null || $location === LocationId::NIL_LOCATION) {
                 throw ApiProblem::bodyInvalidData(
                     new SchemaError(
                         '/',

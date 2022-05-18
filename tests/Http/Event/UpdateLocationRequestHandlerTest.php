@@ -62,7 +62,7 @@ final class UpdateLocationRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_if_the_given_location_is_an_online_location(): void
+    public function it_throws_an_api_problem_if_the_given_location_is_a_nil_location(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', 'dac793c2-4a8c-4744-b593-69420cfbf7bb')
