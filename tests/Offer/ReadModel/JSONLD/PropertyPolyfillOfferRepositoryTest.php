@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -637,8 +637,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4708
+     * @bugfix https://jira.uitdatabank.be/browse/III-4708
      */
     public function it_should_remove_null_labels(): void
     {
@@ -653,8 +652,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4708
+     * @bugfix https://jira.uitdatabank.be/browse/III-4708
      */
     public function it_should_remove_label_properties_with_only_null_values(): void
     {

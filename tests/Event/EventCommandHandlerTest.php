@@ -212,8 +212,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4702
+     * @bugfix https://jira.uitdatabank.be/browse/III-4702
      */
     public function it_can_update_location_of_an_event_imported_from_xml(): void
     {
