@@ -41,7 +41,9 @@ class UserIdentityController
         try {
             $emailAddress = new EmailAddress($emailAddressString);
         } catch (InvalidArgumentException $e) {
-            throw ApiProblem::invalidEmailAddress($emailAddressString);
+            throw ApiProblem::urlNotFound(
+                sprintf('"%s" is not a valid email address', $emailAddressString)
+            );
         }
 
         $userIdentity = $this->userIdentityResolver->getUserByEmail($emailAddress);

@@ -76,7 +76,7 @@ class UserIdentityControllerTest extends TestCase
     public function it_returns_not_found_on_get_by_email_when_email_is_missing(): void
     {
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::invalidEmailAddress('foo'),
+            ApiProblem::urlNotFound('"foo" is not a valid email address'),
             fn () => $this->userIdentityController->getByEmailAddress(
                 (new ServerRequest())
                     ->withAttribute('emailAddress', 'foo')
