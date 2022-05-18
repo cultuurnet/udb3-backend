@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo as EventUpdatePriceInfo;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo as PlaceUpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
@@ -77,12 +76,12 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
         );
 
         if ($offerType === 'events') {
-            $expected = new EventUpdatePriceInfo(
+            $expected = new UpdatePriceInfo(
                 'a91bc028-c44a-4429-9784-8641c9858eed',
                 $priceInfo
             );
         } else {
-            $expected = new PlaceUpdatePriceInfo(
+            $expected = new UpdatePriceInfo(
                 'a91bc028-c44a-4429-9784-8641c9858eed',
                 $priceInfo
             );

@@ -30,13 +30,8 @@ use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
-use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
-use Money\Currency;
-use Money\Money;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -167,36 +162,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->when(new UpdateDescription($id, $language, $description))
             ->then([new DescriptionTranslated($id, $language, $description)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_price_info_commands()
-    {
-        $id = '1';
-
-        $priceInfo = new PriceInfo(
-            new BasePrice(
-                new Money(1050, new Currency('EUR'))
-            )
-        );
-
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                ]
-            )
-            ->when(
-                $this->commandFactory->createUpdatePriceInfoCommand($id, $priceInfo)
-            )
-            ->then(
-                [
-                    new PriceInfoUpdated($id, $priceInfo),
-                ]
-            );
     }
 
     protected function createCommandHandler(
