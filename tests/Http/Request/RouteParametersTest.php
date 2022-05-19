@@ -88,7 +88,7 @@ class RouteParametersTest extends TestCase
         $routeParameters = new RouteParameters($request);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid(
+            ApiProblem::urlNotFound(
                 'The provided language route parameter is not supported.'
             ),
             fn () => $routeParameters->getLanguage()
@@ -119,7 +119,7 @@ class RouteParametersTest extends TestCase
         $routeParameters = new RouteParameters($request);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('The label should match pattern: ^[^;]{2,255}$'),
+            ApiProblem::urlNotFound('The label should match pattern: ^[^;]{2,255}$'),
             fn () => $routeParameters->getLabelName()
         );
     }

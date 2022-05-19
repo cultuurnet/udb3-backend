@@ -61,7 +61,7 @@ class UpdateThemeRequestHandlerTest extends TestCase
             ->willThrowException(new CategoryNotFound('Term not found.'));
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('Term not found.'),
+            ApiProblem::urlNotFound('Term not found.'),
             fn () => $this->updateThemeRequestHandler->handle($request)
         );
     }

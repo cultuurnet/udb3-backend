@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\ApiProblem;
 
+use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Offer\OfferType;
 use Exception;
 
@@ -231,6 +232,13 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
+    {
+        return self::urlNotFound(
+            'Query parameter ' . $parameterName . ' has invalid value "' . $value . '". Should be one of ' . implode(', ', $allowedValues)
+        );
+    }
+
     public static function resourceNotFound(string $resourceType, string $resourceId): self
     {
         return self::urlNotFound('The ' . $resourceType . ' with id "' . $resourceId . '" was not found.');
@@ -264,16 +272,6 @@ final class ApiProblem extends Exception
     public static function imageNotFound(string $imageId): self
     {
         return self::resourceNotFound('Image', $imageId);
-    }
-
-    public static function tokenNotSupported(string $detail): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/auth/token-not-supported',
-            'Token not supported',
-            400,
-            $detail
-        );
     }
 
     public static function bodyMissing(): self
@@ -313,46 +311,6 @@ final class ApiProblem extends Exception
             'Invalid body data',
             400,
             $detail
-        );
-    }
-
-    public static function queryParameterInvalidValue(string $parameterName, string $value, array $allowedValues): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/url/query-parameter-invalid',
-            'Query parameter invalid',
-            400,
-            'Query parameter ' . $parameterName . ' has invalid value "' . $value . '". Should be one of ' . implode(', ', $allowedValues)
-        );
-    }
-
-    public static function pathParameterInvalid(string $detail): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/url/path-parameter-invalid',
-            'Path parameter invalid',
-            400,
-            $detail
-        );
-    }
-
-    public static function userNotFound(string $detail): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/uitdatabank/user-not-found',
-            'User not found',
-            404,
-            $detail
-        );
-    }
-
-    public static function invalidEmailAddress(string $email): self
-    {
-        return self::create(
-            'https://api.publiq.be/probs/uitdatabank/invalid-email-address',
-            'Invalid email address',
-            400,
-            sprintf('"%s" is not a valid email address', $email)
         );
     }
 
@@ -415,6 +373,16 @@ final class ApiProblem extends Exception
             'Invalid workflowStatus transition',
             400,
             'Cannot transition from workflowStatus "' . $from . '" to "' . $to . '".'
+        );
+    }
+
+    public static function attendanceModeNotSupported($detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/attendance-mode-not-supported',
+            'Attendance mode not supported',
+            400,
+            $detail . ' For more information check the documentation of the update attendance mode endpoint. See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
         );
     }
 }

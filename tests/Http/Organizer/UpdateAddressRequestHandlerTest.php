@@ -218,7 +218,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid('The provided language route parameter is not supported.'),
+            ApiProblem::urlNotFound('The provided language route parameter is not supported.'),
             fn () => $this->updateAddressRequestHandler->handle($updateAddressRequest)
         );
     }

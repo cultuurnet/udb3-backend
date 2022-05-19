@@ -35,7 +35,7 @@ final class UpdateTypeRequestHandler implements RequestHandlerInterface
         try {
             $this->commandBus->dispatch(new UpdateType($offerId, $termId));
         } catch (CategoryNotFound $e) {
-            throw ApiProblem::pathParameterInvalid($e->getMessage());
+            throw ApiProblem::urlNotFound($e->getMessage());
         }
 
         return new NoContentResponse();
