@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
@@ -53,7 +54,6 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
@@ -599,6 +599,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         // Offer command handlers
         // @todo can we auto-discover these and register them automatically?
         // @see https://jira.uitdatabank.be/browse/III-4176
+        $commandBus->subscribe($app[UpdateTitleHandler::class]);
         $commandBus->subscribe($app[UpdateAvailableFromHandler::class]);
         $commandBus->subscribe($app[UpdateCalendarHandler::class]);
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
@@ -630,7 +631,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class]);
-        $commandBus->subscribe($app[UpdateTitleHandler::class]);
+        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler::class]);
         $commandBus->subscribe($app[UpdateDescriptionHandler::class]);
         $commandBus->subscribe($app[DeleteDescriptionHandler::class]);
         $commandBus->subscribe($app[UpdateAddressHandler::class]);

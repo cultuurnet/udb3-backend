@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
@@ -54,12 +53,14 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -67,7 +68,6 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
@@ -458,7 +458,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannenkoeken voor het goede doel')),
+                new UpdateTitle($eventId, new Language('nl'), new Title('Pannenkoeken voor het goede doel')),
                 new UpdateType($eventId, '1.50.0.0.0'),
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
@@ -699,7 +699,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 ),
                 new UpdateTitle(
                     $eventId,
-                    new LegacyLanguage('en'),
+                    new Language('en'),
                     new Title('English name')
                 ),
                 new UpdateDescription(
@@ -1905,7 +1905,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
                 new DeleteTypicalAgeRange($eventId),
-                new UpdateTitle($eventId, new LegacyLanguage('es'), new Title('Invalid language')),
+                new UpdateTitle($eventId, new Language('es'), new Title('Invalid language')),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),

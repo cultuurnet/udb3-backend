@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
-use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
@@ -38,16 +37,19 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
@@ -188,7 +190,11 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
                 $commands[] = new Publish($eventId, $publishDate);
             }
 
-            $commands[] = new UpdateTitle($eventId, $mainLanguage, $title);
+            $commands[] = new UpdateTitle(
+                $eventId,
+                $event->getMainLanguage(),
+                $event->getTitle()->getTranslation($event->getMainLanguage())
+            );
             $commands[] = new UpdateType($eventId, $type->getId());
             // The attendance mode needs to be updated before the location can be changed.
             // For example passing a real location to an online event is not allowed.
@@ -238,12 +244,15 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         }
 
         foreach ($eventAdapter->getTitleTranslations() as $language => $title) {
-            $language = new Language($language);
-            $commands[] = new UpdateTitle($eventId, $language, $title);
+            $commands[] = new UpdateTitle(
+                $eventId,
+                new Language($language),
+                new Title($title->toNative())
+            );
         }
 
         foreach ($eventAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new Language($language);
+            $language = new LegacyLanguage($language);
             $commands[] = new UpdateDescription($eventId, $language, $description);
         }
 

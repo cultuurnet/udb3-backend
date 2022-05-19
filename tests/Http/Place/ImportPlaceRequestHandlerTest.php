@@ -51,11 +51,13 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
@@ -67,13 +69,11 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
@@ -839,7 +839,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new UpdateTitle($placeId, new LegacyLanguage('nl'), new Title('In De Hel')),
+                new UpdateTitle($placeId, new Language('nl'), new Title('In De Hel')),
                 new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
                 new UpdateAddress(
                     $placeId,
@@ -1011,7 +1011,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new UpdateTitle($placeId, new LegacyLanguage('nl'), new Title('In De Hel')),
+                new UpdateTitle($placeId, new Language('nl'), new Title('In De Hel')),
                 new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
                 new UpdateAddress(
                     $placeId,
@@ -1103,7 +1103,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new Publish($placeId, new DateTimeImmutable('2024-01-01T16:00:00+01:00')),
-                new UpdateTitle($placeId, new LegacyLanguage('nl'), new Title('In De Hel')),
+                new UpdateTitle($placeId, new Language('nl'), new Title('In De Hel')),
                 new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
                 new UpdateAddress(
                     $placeId,
@@ -1190,7 +1190,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new UpdateTitle($placeId, new LegacyLanguage('nl'), new Title('In De Hel')),
+                new UpdateTitle($placeId, new Language('nl'), new Title('In De Hel')),
                 new UpdateType($placeId, 'Yf4aZBfsUEu2NsQqsprngw'),
                 new UpdateAddress(
                     $placeId,
