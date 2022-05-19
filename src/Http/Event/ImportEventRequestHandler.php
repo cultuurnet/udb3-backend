@@ -244,7 +244,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         }
 
         foreach ($eventAdapter->getTitleTranslations() as $language => $title) {
-            $commands[] =new UpdateTitle(
+            $commands[] = new UpdateTitle(
                 $eventId,
                 new Language($language),
                 new Title($title->toNative())
