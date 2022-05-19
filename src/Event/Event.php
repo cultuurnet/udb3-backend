@@ -311,8 +311,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
 
         if (!$locationId->isNilLocation() && $this->attendanceMode === AttendanceMode::online()->toString()) {
-            throw new UpdateLocationNotSupported(
-                'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
+            throw new AttendanceModeNotSupported(
+                'Cannot update the location of an online event to a physical location. Set the attendanceMode to mixed or offline first.'
             );
         }
 

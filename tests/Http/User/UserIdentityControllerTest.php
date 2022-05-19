@@ -76,7 +76,7 @@ class UserIdentityControllerTest extends TestCase
     public function it_returns_not_found_on_get_by_email_when_email_is_missing(): void
     {
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::invalidEmailAddress('foo'),
+            ApiProblem::urlNotFound('"foo" is not a valid email address'),
             fn () => $this->userIdentityController->getByEmailAddress(
                 (new ServerRequest())
                     ->withAttribute('emailAddress', 'foo')
@@ -95,7 +95,7 @@ class UserIdentityControllerTest extends TestCase
             ->willReturn(null);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::userNotFound('No user found for the given email address.'),
+            ApiProblem::urlNotFound('No user found for the given email address.'),
             fn () => $this->userIdentityController->getByEmailAddress(
                 (new ServerRequest())->withAttribute('emailAddress', 'jane.doe@anonymous.com')
             )
@@ -187,7 +187,7 @@ class UserIdentityControllerTest extends TestCase
         );
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::tokenNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.'),
+            ApiProblem::unauthorized('Client access tokens are not supported on this endpoint because a user is required to return user info.'),
             fn () => $userIdentityControllerWithClientToken->getCurrentUser()
         );
     }
@@ -203,7 +203,7 @@ class UserIdentityControllerTest extends TestCase
             ->willReturn(null);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::tokenNotSupported('No user found for the given token.'),
+            ApiProblem::unauthorized('No user found for the given token.'),
             fn () => $this->userIdentityController->getCurrentUser()
         );
     }
