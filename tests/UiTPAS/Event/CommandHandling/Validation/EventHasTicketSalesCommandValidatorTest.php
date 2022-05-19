@@ -41,8 +41,9 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
      */
     private $placeRepository;
 
-
     private string $placeId;
+
+    private string $eventID;
 
     public function setUp()
     {
@@ -50,16 +51,16 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->placeRepository = $this->createMock(PlaceRepository::class);
 
-        $placeId = '9a129c08-1b16-46d6-a4b7-9ffc6d0741fe';
+        $this->placeId = '9a129c08-1b16-46d6-a4b7-9ffc6d0741fe';
 
         $this->placeRepository->method('load')
-            ->with([$placeId])
+            ->with($this->placeId)
             ->willReturn(
                 $this->createMock(AggregateRoot::class)
             );
 
         $this->placeRepository->method('load')
-            ->with(['5e75970e-43d8-481f-88db-9a61dd087cbb'])
+            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
             ->willThrowException(new AggregateNotFoundException());
 
         $this->validator = new EventHasTicketSalesCommandValidator(
