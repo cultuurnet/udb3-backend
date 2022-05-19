@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Silex\Console\ReplaceNewsArticlePublisher;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateBookingAvailabilityCommand;
+use CultuurNet\UDB3\Silex\Console\UpdateEventsAttendanceMode;
 use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
@@ -148,6 +149,7 @@ $consoleApp->add(
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::event(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::place(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
 $consoleApp->add(new UpdateBookingAvailabilityCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
+$consoleApp->add(new UpdateEventsAttendanceMode($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
 $consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
 $consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_owner_query']));
 $consoleApp->add(new ChangeOrganizerOwner($app['event_command_bus']));
