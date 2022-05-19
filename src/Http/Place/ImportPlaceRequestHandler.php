@@ -192,7 +192,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         }
 
         foreach ($placeAdapter->getTitleTranslations() as $language => $title) {
-            $commands[] =new UpdateTitle(
+            $commands[] = new UpdateTitle(
                 $placeId,
                 new Language($language),
                 new Title($title->toNative())
