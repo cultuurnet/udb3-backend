@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer as UpdatePlaceOrganizer;
+use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use Money\Currency;
@@ -28,19 +29,23 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
      */
     private $logger;
 
+    private EventHasTicketSalesCommandValidator $validator;
+
     /**
-     * @var EventHasTicketSalesCommandValidator
+     * @var PlaceRepository|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $validator;
+    private $placeRepository;
 
     public function setUp()
     {
         $this->uitpas = $this->createMock(\CultureFeed_Uitpas::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->placeRepository = $this->createMock(PlaceRepository::class);
 
         $this->validator = new EventHasTicketSalesCommandValidator(
             $this->uitpas,
-            $this->logger
+            $this->logger,
+            $this->placeRepository
         );
     }
 
