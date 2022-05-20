@@ -54,7 +54,6 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
             // The offer is a place and does not need to be blocked
             return;
         } catch (AggregateNotFoundException $exception) {
-
         }
 
         try {

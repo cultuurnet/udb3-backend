@@ -45,7 +45,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
 
     private string $eventID;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->uitpas = $this->createMock(\CultureFeed_Uitpas::class);
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -73,7 +73,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_updating_the_organizer_of_an_event_with_ticket_sales()
+    public function it_should_throw_an_exception_when_updating_the_organizer_of_an_event_with_ticket_sales(): void
     {
         $command = new UpdateOrganizer(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
@@ -93,7 +93,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_deleting_the_organizer_of_an_event_with_ticket_sales()
+    public function it_should_throw_an_exception_when_deleting_the_organizer_of_an_event_with_ticket_sales(): void
     {
         $command = new DeleteOrganizer(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
@@ -113,7 +113,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_updating_the_price_of_an_event_with_ticket_sales()
+    public function it_should_throw_an_exception_when_updating_the_price_of_an_event_with_ticket_sales(): void
     {
         $command = new UpdatePriceInfo(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
@@ -137,7 +137,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_throw_an_exception_when_updating_the_organizer_of_an_event_without_ticket_sales()
+    public function it_should_not_throw_an_exception_when_updating_the_organizer_of_an_event_without_ticket_sales(): void
     {
         $command = new UpdateOrganizer(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
@@ -155,7 +155,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_throw_an_exception_when_updating_the_price_of_an_event_without_ticket_sales()
+    public function it_should_not_throw_an_exception_when_updating_the_price_of_an_event_without_ticket_sales(): void
     {
         $command = new UpdatePriceInfo(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
@@ -177,7 +177,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_handle_uitpas_exceptions_as_no_ticket_sales()
+    public function it_should_handle_uitpas_exceptions_as_no_ticket_sales(): void
     {
         $command = new UpdateOrganizer(
             '5e75970e-43d8-481f-88db-9a61dd087cbb',
@@ -201,7 +201,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_ignore_place_commands()
+    public function it_should_ignore_place_commands(): void
     {
         $this->uitpas->expects($this->never())
             ->method('eventHasTicketSales');
