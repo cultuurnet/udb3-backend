@@ -9,8 +9,6 @@ use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Event\Recommendations\Recommendation;
-use CultuurNet\UDB3\Event\Recommendations\Recommendations;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer as UpdatePlaceOrganizer;
 use CultuurNet\UDB3\Place\PlaceRepository;
