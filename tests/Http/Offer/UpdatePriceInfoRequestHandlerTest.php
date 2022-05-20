@@ -45,10 +45,36 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
      */
     public function it_dispatches_an_update_command_if_no_duplicate_names_are_found(string $offerType): void
     {
+        $body = [
+            [
+                'category' => 'base',
+                'name' => [
+                    'nl' => 'Basistarief',
+                ],
+                'price' => 10,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Jongeren',
+                ],
+                'price' => 5,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 5,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
-            ->withBodyFromString('[{"category":"base","name":{"nl":"Basistarief"},"price":10,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Jongeren"},"price":5,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Senioren"},"price":5,"priceCurrency":"EUR"}]')
+            ->withJsonBodyFromArray($body)
             ->build('PUT');
 
         $priceInfo = (new PriceInfo(
@@ -101,10 +127,37 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_if_the_price_info_contains_duplicate_names(string $offerType): void
     {
+        $body = [
+            [
+                'category' => 'base',
+                'name' => [
+                    'nl' => 'Basistarief',
+                ],
+                'price' => 10,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Studenten',
+                ],
+                'price' => 5,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Studenten',
+                ],
+                'price' => 2,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
-            ->withBodyFromString('[{"category":"base","name":{"nl":"Basistarief"},"price":10,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Studenten"},"price":5,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Studenten"},"price":5,"priceCurrency":"EUR"}]')
+            ->withJsonBodyFromArray($body)
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
