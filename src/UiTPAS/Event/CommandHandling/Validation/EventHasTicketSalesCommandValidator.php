@@ -28,8 +28,8 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
 
     public function __construct(
         \CultureFeed_Uitpas $uitpas,
-        LoggerInterface $logger,
-        PlaceRepository $placeRepository
+        PlaceRepository $placeRepository,
+        LoggerInterface $logger
     ) {
         $this->uitpas = $uitpas;
         $this->logger = $logger;

@@ -59,8 +59,8 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
 
         $this->validator = new EventHasTicketSalesCommandValidator(
             $this->uitpas,
-            $this->logger,
-            $placeRepository
+            $placeRepository,
+            $this->logger
         );
     }
 
