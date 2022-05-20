@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo as EventUpdatePriceInfo;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -52,24 +51,20 @@ class UpdatePriceInfoRequestHandler implements RequestHandlerInterface
             )
         );
 
-        try {
-            /** @var PriceInfo $priceInfo */
-            $priceInfo = $parser->parse($request)->getParsedBody();
-            if ($offerType->sameAs(OfferType::event())) {
-                $updatePriceInfo = new EventUpdatePriceInfo(
-                    $offerId,
-                    LegacyPriceInfo::fromUdb3ModelPriceInfo($priceInfo)
-                );
-            } else {
-                $updatePriceInfo = new PlaceUpdatePriceInfo(
-                    $offerId,
-                    LegacyPriceInfo::fromUdb3ModelPriceInfo($priceInfo)
-                );
-            }
-            $this->commandBus->dispatch($updatePriceInfo);
-        } catch (ApiProblem $apiProblem) {
-            throw $apiProblem;
+        /** @var PriceInfo $priceInfo */
+        $priceInfo = $parser->parse($request)->getParsedBody();
+        if ($offerType->sameAs(OfferType::event())) {
+            $updatePriceInfo = new EventUpdatePriceInfo(
+                $offerId,
+                LegacyPriceInfo::fromUdb3ModelPriceInfo($priceInfo)
+            );
+        } else {
+            $updatePriceInfo = new PlaceUpdatePriceInfo(
+                $offerId,
+                LegacyPriceInfo::fromUdb3ModelPriceInfo($priceInfo)
+            );
         }
+        $this->commandBus->dispatch($updatePriceInfo);
 
         return new NoContentResponse();
     }
