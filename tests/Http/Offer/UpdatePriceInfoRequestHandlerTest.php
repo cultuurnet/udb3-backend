@@ -168,14 +168,6 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
         );
     }
 
-    public function offerTypeDataProvider(): array
-    {
-        return [
-            ['events'],
-            ['places'],
-        ];
-    }
-
     /**
      * @test
      * @dataProvider offerTypeDataProvider
@@ -455,5 +447,13 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
             ),
             fn () => $this->updatePriceInfoRequestHandler->handle($request)
         );
+    }
+
+    public function offerTypeDataProvider(): array
+    {
+        return [
+            ['events'],
+            ['places'],
+        ];
     }
 }

@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Json;
 use Psr\Http\Message\ServerRequestInterface;
 
-class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
+class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {

@@ -44,7 +44,7 @@ class UpdatePriceInfoRequestHandler implements RequestHandlerInterface
                     JsonSchemaLocator::PLACE_PRICE_INFO_PUT
                 )
             ),
-            new PriceInfoValidatingRequestBodyParser(),
+            new PriceInfoDuplicateNameValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(
                 new PriceInfoDenormalizer(),
                 PriceInfo::class
