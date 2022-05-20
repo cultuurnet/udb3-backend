@@ -9,9 +9,9 @@ use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
+use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer as UpdatePlaceOrganizer;
-use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use Money\Currency;
@@ -42,24 +42,24 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     {
         $this->uitpas = $this->createMock(\CultureFeed_Uitpas::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $placeRepository = $this->createMock(PlaceRepository::class);
+        $eventRepository = $this->createMock(EventRepository::class);
 
         $this->eventId = '5e75970e-43d8-481f-88db-9a61dd087cbb';
         $this->placeId = '9a129c08-1b16-46d6-a4b7-9ffc6d0741fe';
 
-        $placeRepository->method('load')
+        $eventRepository->method('load')
             ->willReturnCallback(
                 function (string $offerId) {
                     if ($offerId === $this->placeId) {
-                        return $this->createMock(AggregateRoot::class);
+                        throw new AggregateNotFoundException();
                     }
-                    throw new AggregateNotFoundException();
+                    return $this->createMock(AggregateRoot::class);
                 }
             );
 
         $this->validator = new EventHasTicketSalesCommandValidator(
             $this->uitpas,
-            $placeRepository,
+            $eventRepository,
             $this->logger
         );
     }

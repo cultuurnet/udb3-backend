@@ -5,35 +5,30 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 
 use Broadway\Repository\AggregateNotFoundException;
+use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CommandValidatorInterface;
 use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
+use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Place\PlaceRepository;
 use Psr\Log\LoggerInterface;
 
 class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
 {
-    /**
-     * @var \CultureFeed_Uitpas
-     */
-    private $uitpas;
+    private CultureFeed_Uitpas $uitpas;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    private PlaceRepository $placeRepository;
+    private EventRepository $eventRepository;
 
     public function __construct(
-        \CultureFeed_Uitpas $uitpas,
-        PlaceRepository $placeRepository,
+        CultureFeed_Uitpas $uitpas,
+        EventRepository $eventRepository,
         LoggerInterface $logger
     ) {
         $this->uitpas = $uitpas;
+        $this->eventRepository = $eventRepository;
         $this->logger = $logger;
-        $this->placeRepository = $placeRepository;
     }
 
     /**
@@ -50,10 +45,10 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
         $eventId = $command->getItemId();
 
         try {
-            $this->placeRepository->load($eventId);
-            // The offer is a place and does not need to be blocked
-            return;
+            $this->eventRepository->load($eventId);
         } catch (AggregateNotFoundException $exception) {
+            // Offer is a place and doesn't need to be blocked.
+            return;
         }
 
         try {
