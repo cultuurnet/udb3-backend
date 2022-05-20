@@ -15,8 +15,6 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
-use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\StringLiteral;
@@ -245,15 +243,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
         return $this->commandBus->dispatch(
             $this->commandFactory->createUpdateBookingInfoCommand($id, $bookingInfo)
-        );
-    }
-
-    public function updatePriceInfo(string $id, PriceInfo $priceInfo)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            new UpdatePriceInfo($id, $priceInfo)
         );
     }
 
