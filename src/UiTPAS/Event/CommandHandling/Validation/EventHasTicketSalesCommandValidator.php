@@ -51,7 +51,7 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
 
         try {
             $this->placeRepository->load($eventId);
-            // The offer is a place and does need to be blocked
+            // The offer is a place and does not need to be blocked
             return;
         } catch (AggregateNotFoundException $exception) {
 
