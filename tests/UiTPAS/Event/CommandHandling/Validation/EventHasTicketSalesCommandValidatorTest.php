@@ -36,11 +36,6 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
 
     private EventHasTicketSalesCommandValidator $validator;
 
-    /**
-     * @var PlaceRepository|MockObject
-     */
-    private $placeRepository;
-
     private string $placeId;
 
     private string $eventID;
@@ -49,24 +44,24 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     {
         $this->uitpas = $this->createMock(\CultureFeed_Uitpas::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->placeRepository = $this->createMock(PlaceRepository::class);
+        $placeRepository = $this->createMock(PlaceRepository::class);
 
         $this->placeId = '9a129c08-1b16-46d6-a4b7-9ffc6d0741fe';
 
-        $this->placeRepository->method('load')
-            ->with($this->placeId)
-            ->willReturn(
-                $this->createMock(AggregateRoot::class)
+        $placeRepository->method('load')
+            ->willReturnCallback(
+                function (string $offerId) {
+                    if ($offerId === $this->placeId) {
+                        return $this->createMock(AggregateRoot::class);
+                    }
+                    throw new AggregateNotFoundException();
+                }
             );
-
-        $this->placeRepository->method('load')
-            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
-            ->willThrowException(new AggregateNotFoundException());
 
         $this->validator = new EventHasTicketSalesCommandValidator(
             $this->uitpas,
             $this->logger,
-            $this->placeRepository
+            $placeRepository
         );
     }
 
