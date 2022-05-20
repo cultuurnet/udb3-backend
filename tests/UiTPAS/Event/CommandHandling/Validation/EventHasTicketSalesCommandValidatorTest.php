@@ -38,7 +38,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
 
     private string $placeId;
 
-    private string $eventID;
+    private string $eventId;
 
     public function setUp(): void
     {
@@ -46,6 +46,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $placeRepository = $this->createMock(PlaceRepository::class);
 
+        $this->eventId = '5e75970e-43d8-481f-88db-9a61dd087cbb';
         $this->placeId = '9a129c08-1b16-46d6-a4b7-9ffc6d0741fe';
 
         $placeRepository->method('load')
@@ -71,13 +72,13 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     public function it_should_throw_an_exception_when_updating_the_organizer_of_an_event_with_ticket_sales(): void
     {
         $command = new UpdateOrganizer(
-            '5e75970e-43d8-481f-88db-9a61dd087cbb',
+            $this->eventId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
-            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
+            ->with($this->eventId)
             ->willReturn(true);
 
         $this->expectException(EventHasTicketSalesException::class);
@@ -91,13 +92,13 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     public function it_should_throw_an_exception_when_deleting_the_organizer_of_an_event_with_ticket_sales(): void
     {
         $command = new DeleteOrganizer(
-            '5e75970e-43d8-481f-88db-9a61dd087cbb',
+            $this->eventId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
-            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
+            ->with($this->eventId)
             ->willReturn(true);
 
         $this->expectException(EventHasTicketSalesException::class);
@@ -111,7 +112,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     public function it_should_throw_an_exception_when_updating_the_price_of_an_event_with_ticket_sales(): void
     {
         $command = new UpdatePriceInfo(
-            '5e75970e-43d8-481f-88db-9a61dd087cbb',
+            $this->eventId,
             new PriceInfo(
                 new BasePrice(
                     new Money(1499, new Currency('EUR'))
@@ -121,7 +122,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
-            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
+            ->with($this->eventId)
             ->willReturn(true);
 
         $this->expectException(EventHasTicketSalesException::class);
@@ -135,13 +136,13 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     public function it_should_not_throw_an_exception_when_updating_the_organizer_of_an_event_without_ticket_sales(): void
     {
         $command = new UpdateOrganizer(
-            '5e75970e-43d8-481f-88db-9a61dd087cbb',
+            $this->eventId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
-            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
+            ->with($this->eventId)
             ->willReturn(false);
 
         $this->validator->validate($command);
@@ -153,7 +154,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     public function it_should_not_throw_an_exception_when_updating_the_price_of_an_event_without_ticket_sales(): void
     {
         $command = new UpdatePriceInfo(
-            '5e75970e-43d8-481f-88db-9a61dd087cbb',
+            $this->eventId,
             new PriceInfo(
                 new BasePrice(
                     new Money(1499, new Currency('EUR'))
@@ -163,7 +164,7 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
-            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
+            ->with($this->eventId)
             ->willReturn(false);
 
         $this->validator->validate($command);
@@ -175,13 +176,13 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
     public function it_should_handle_uitpas_exceptions_as_no_ticket_sales(): void
     {
         $command = new UpdateOrganizer(
-            '5e75970e-43d8-481f-88db-9a61dd087cbb',
+            $this->eventId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
-            ->with('5e75970e-43d8-481f-88db-9a61dd087cbb')
+            ->with($this->eventId)
             ->willThrowException(new CultureFeed_HttpException('result message', 404));
 
         $this->logger->expects($this->once())
