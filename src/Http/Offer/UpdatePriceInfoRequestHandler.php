@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\PriceInfo\PriceInfo as LegacyPriceInfo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -55,7 +54,7 @@ class UpdatePriceInfoRequestHandler implements RequestHandlerInterface
             $priceInfo = $parser->parse($request)->getParsedBody();
             $updatePriceInfo = new UpdatePriceInfo(
                 $offerId,
-                LegacyPriceInfo::fromUdb3ModelPriceInfo($priceInfo)
+                $priceInfo
             );
 
             $this->commandBus->dispatch($updatePriceInfo);

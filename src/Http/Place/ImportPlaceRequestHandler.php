@@ -184,9 +184,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteTypicalAgeRange($placeId);
         }
 
-        $priceInfo = $placeAdapter->getPriceInfo();
-        if ($priceInfo) {
-            $commands[] = new UpdatePriceInfo($placeId, $priceInfo);
+        if ($place->getPriceInfo()) {
+            $commands[] = new UpdatePriceInfo($placeId, $place->getPriceInfo());
         }
 
         foreach ($placeAdapter->getTitleTranslations() as $language => $title) {

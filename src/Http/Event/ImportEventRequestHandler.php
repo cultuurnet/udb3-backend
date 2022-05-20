@@ -232,9 +232,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteTypicalAgeRange($eventId);
         }
 
-        $priceInfo = $eventAdapter->getPriceInfo();
-        if ($priceInfo) {
-            $commands[] = new UpdatePriceInfo($eventId, $priceInfo);
+        if ($event->getPriceInfo()) {
+            $commands[] = new UpdatePriceInfo($eventId, $event->getPriceInfo());
         }
 
         foreach ($eventAdapter->getTitleTranslations() as $language => $title) {
