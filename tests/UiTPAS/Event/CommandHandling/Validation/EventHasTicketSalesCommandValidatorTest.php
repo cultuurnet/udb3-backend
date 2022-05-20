@@ -10,10 +10,14 @@ use CultureFeed_HttpException;
 use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\EventRepository;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer as UpdatePlaceOrganizer;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -112,9 +116,14 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
         $command = new UpdatePriceInfo(
             $this->eventId,
             new PriceInfo(
-                new BasePrice(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Basisprijs')
+                    ),
                     new Money(1499, new Currency('EUR'))
-                )
+                ),
+                new Tariffs()
             )
         );
 
@@ -154,9 +163,14 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
         $command = new UpdatePriceInfo(
             $this->eventId,
             new PriceInfo(
-                new BasePrice(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Basisprijs')
+                    ),
                     new Money(1499, new Currency('EUR'))
-                )
+                ),
+                new Tariffs()
             )
         );
 
@@ -208,9 +222,14 @@ class EventHasTicketSalesCommandValidatorTest extends TestCase
         $priceCommand = new UpdatePriceInfo(
             $this->placeId,
             new PriceInfo(
-                new BasePrice(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Basisprijs')
+                    ),
                     new Money(1499, new Currency('EUR'))
-                )
+                ),
+                new Tariffs()
             )
         );
 

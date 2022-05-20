@@ -9,13 +9,13 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -50,28 +50,29 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
             ->withBodyFromString('[{"category":"base","name":{"nl":"Basistarief"},"price":10,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Jongeren"},"price":5,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Senioren"},"price":5,"priceCurrency":"EUR"}]')
             ->build('PUT');
 
-        $priceInfo = (new PriceInfo(
-            new BasePrice(
-                new Money(
-                    1000,
-                    new Currency('EUR')
+        $priceInfo = new PriceInfo(
+            new Tariff(
+                new TranslatedTariffName(
+                    new Language('nl'),
+                    new TariffName('Basistarief')
+                ),
+                new Money(1000, new Currency('EUR'))
+            ),
+            new Tariffs(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Jongeren')
+                    ),
+                    new Money(500, new Currency('EUR'))
+                ),
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Senioren')
+                    ),
+                    new Money(500, new Currency('EUR'))
                 )
-            )
-        ))->withExtraTariff(
-            new Tariff(
-                new MultilingualString(
-                    new Language('nl'),
-                    new StringLiteral('Jongeren')
-                ),
-                new Money(500, new Currency('EUR'))
-            )
-        )->withExtraTariff(
-            new Tariff(
-                new MultilingualString(
-                    new Language('nl'),
-                    new StringLiteral('Senioren')
-                ),
-                new Money(500, new Currency('EUR'))
             )
         );
 

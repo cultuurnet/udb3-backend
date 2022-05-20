@@ -48,6 +48,11 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -70,8 +75,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
@@ -907,7 +910,23 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 new UpdatePriceInfo(
                     $placeId,
                     new PriceInfo(
-                        new BasePrice(new Money(1050, new Currency('EUR')))
+                        new Tariff(
+                            (new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Basistarief')
+                            ))->withTranslation(
+                                new Language('fr'),
+                                new TariffName('Tarif de base')
+                            )->withTranslation(
+                                new Language('en'),
+                                new TariffName('Base tariff')
+                            )->withTranslation(
+                                new Language('de'),
+                                new TariffName('Basisrate')
+                            ),
+                            new Money(1050, new Currency('EUR'))
+                        ),
+                        new Tariffs()
                     )
                 ),
                 new ImportLabels(
