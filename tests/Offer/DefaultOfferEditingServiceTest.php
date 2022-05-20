@@ -143,48 +143,6 @@ class DefaultOfferEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_price_info()
-    {
-        $aggregateId = '940ce4d1-740b-43d2-a1a6-85be04a3eb30';
-        $expectedCommandId = 'f42802e4-c1f1-4aa6-9909-a08cfc66f355';
-
-        $priceInfo = new PriceInfo(
-            new BasePrice(
-                new Money(1050, new Currency('EUR'))
-            )
-        );
-
-        $updatePriceInfoCommand = $this->getMockForAbstractClass(
-            AbstractUpdatePriceInfo::class,
-            [$aggregateId, $priceInfo]
-        );
-
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdatePriceInfoCommand')
-            ->with($aggregateId, $priceInfo)
-            ->willReturn($updatePriceInfoCommand);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updatePriceInfoCommand)
-            ->willReturn($expectedCommandId);
-
-        $this->offerRepository->expects($this->once())
-            ->method('fetch')
-            ->with('940ce4d1-740b-43d2-a1a6-85be04a3eb30')
-            ->willReturn(new JsonDocument('940ce4d1-740b-43d2-a1a6-85be04a3eb30'));
-
-        $commandId = $this->offerEditingService->updatePriceInfo(
-            $aggregateId,
-            $priceInfo
-        );
-
-        $this->assertEquals($expectedCommandId, $commandId);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_guard_that_a_document_exists_for_a_given_id()
     {
         $unknownId = '8FEFDA81-993D-4F33-851F-C19F8CB90712';
