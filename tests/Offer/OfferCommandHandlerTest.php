@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Reject;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Item\Events\ItemCreated;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Approved;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\FlaggedAsDuplicate;
@@ -24,10 +23,8 @@ use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
-use CultuurNet\UDB3\Offer\Item\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\ItemCommandHandler;
 use CultuurNet\UDB3\Offer\Item\ItemRepository;
-use CultuurNet\UDB3\Offer\Mock\Commands\UpdatePriceInfo as UpdatePriceInfoOnSomethingElse;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
@@ -111,59 +108,6 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
             $this->organizerRepository,
             $this->mediaManager
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_price_info_commands_from_the_correct_namespace()
-    {
-        $this->scenario
-            ->withAggregateId($this->id)
-            ->given(
-                [
-                    $this->itemCreated,
-                ]
-            )
-            ->when(new UpdatePriceInfo($this->id, $this->priceInfo))
-            ->then(
-                [
-                    new PriceInfoUpdated($this->id, $this->priceInfo),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_update_price_info_if_there_were_no_changes()
-    {
-        $this->scenario
-            ->withAggregateId($this->id)
-            ->given(
-                [
-                    $this->itemCreated,
-                    new PriceInfoUpdated($this->id, $this->priceInfo),
-                ]
-            )
-            ->when(new UpdatePriceInfo($this->id, $this->priceInfo))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_ignores_price_info_commands_from_incorrect_namespace()
-    {
-        $this->scenario
-            ->withAggregateId($this->id)
-            ->given(
-                [
-                    $this->itemCreated,
-                ]
-            )
-            ->when(new UpdatePriceInfoOnSomethingElse($this->id, $this->priceInfo))
-            ->then([]);
     }
 
     /**
