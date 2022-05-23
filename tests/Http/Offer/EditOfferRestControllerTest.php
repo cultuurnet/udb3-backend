@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Language;
@@ -16,7 +15,6 @@ use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -56,11 +54,6 @@ class EditOfferRestControllerTest extends TestCase
     private $descriptionDeserializer;
 
     /**
-     * @var PriceInfoJSONDeserializer
-     */
-    private $priceInfoDeserializer;
-
-    /**
      * @var DataValidatorInterface|MockObject
      */
     private $calendarDataValidator;
@@ -82,7 +75,6 @@ class EditOfferRestControllerTest extends TestCase
         $this->labelDeserializer = new LabelJSONDeserializer();
         $this->titleDeserializer = new TitleJSONDeserializer();
         $this->descriptionDeserializer = new DescriptionJSONDeserializer();
-        $this->priceInfoDeserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
 
         $this->controller = new EditOfferRestController(
             $this->commandBus,
