@@ -52,10 +52,10 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
             return;
         }
 
+        $output->writeln("Dispatching geocode command for place {$placeId}.");
+
         $this->commandBus->dispatch(
             new UpdateGeoCoordinatesFromAddress($placeId, $address)
         );
-
-        $output->writeln("Dispatched geocode command for place {$placeId}.");
     }
 }
