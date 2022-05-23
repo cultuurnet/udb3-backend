@@ -111,6 +111,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new UpdateFacilitiesRequestHandler($app['event_command_bus'])
         );
 
+        $app[UpdatePriceInfoRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdatePriceInfoRequestHandler($app['event_command_bus'])
+        );
+
         $app[AddVideoRequestHandler::class] = $app->share(
             fn (Application $app) => new AddVideoRequestHandler(
                 $app['event_command_bus'],
