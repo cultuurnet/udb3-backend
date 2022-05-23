@@ -10,18 +10,21 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
 use CultuurNet\UDB3\Json;
 use Psr\Http\Message\ServerRequestInterface;
 
-class PriceInfoValidatingRequestBodyParser implements RequestBodyParser
+class PriceInfoDuplicateNameValidatingRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $data = $request->getParsedBody();
 
-        if (!isset($data->priceInfo)) {
+        // This is to catch both full Offers and PriceInfo at the root of the request
+        if (!isset($data->priceInfo) && !is_array($data)) {
             return $request;
         }
 
+        $priceInfo = $data->priceInfo ?? $data;
+
         $errors = $this->getSchemaErrors(
-            Json::decodeAssociatively(Json::encode($data->priceInfo))
+            Json::decodeAssociatively(Json::encode($priceInfo))
         );
 
         if (count($errors) > 0) {

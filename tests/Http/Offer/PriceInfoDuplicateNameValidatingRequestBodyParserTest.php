@@ -10,17 +10,17 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
-final class PriceInfoValidatingRequestBodyParserTest extends TestCase
+final class PriceInfoDuplicateNameValidatingRequestBodyParserTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private PriceInfoValidatingRequestBodyParser $priceInfoValidatingRequestBodyParser;
+    private PriceInfoDuplicateNameValidatingRequestBodyParser $priceInfoDuplicateNameValidatingRequestBodyParser;
 
     private Psr7RequestBuilder $requestBuilder;
 
     protected function setUp(): void
     {
-        $this->priceInfoValidatingRequestBodyParser = new PriceInfoValidatingRequestBodyParser();
+        $this->priceInfoDuplicateNameValidatingRequestBodyParser = new PriceInfoDuplicateNameValidatingRequestBodyParser();
         $this->requestBuilder = new Psr7RequestBuilder();
     }
 
@@ -40,8 +40,10 @@ final class PriceInfoValidatingRequestBodyParserTest extends TestCase
             ],
             (object) [
                 'category' => 'tariff',
-                'name' => 'Senioren',
-                'price' => '100',
+                'name' => (object) [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 100,
                 'priceCurrency' => 'USD',
             ],
         ];
@@ -50,7 +52,7 @@ final class PriceInfoValidatingRequestBodyParserTest extends TestCase
             ->build('PUT')
             ->withParsedBody($priceInfo);
 
-        $actual =  $this->priceInfoValidatingRequestBodyParser->parse($request)->getParsedBody();
+        $actual =  $this->priceInfoDuplicateNameValidatingRequestBodyParser->parse($request)->getParsedBody();
 
         $this->assertEquals($priceInfo, $actual);
     }
@@ -112,7 +114,7 @@ final class PriceInfoValidatingRequestBodyParserTest extends TestCase
                 new SchemaError('/priceInfo/2/name/nl', 'Tariff name "Studenten" must be unique.'),
                 new SchemaError('/priceInfo/4/name/nl', 'Tariff name "Studenten" must be unique.')
             ),
-            fn () => $this->priceInfoValidatingRequestBodyParser->parse($request)
+            fn () => $this->priceInfoDuplicateNameValidatingRequestBodyParser->parse($request)
         );
     }
 }
