@@ -25,7 +25,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateImage;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -75,14 +74,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     protected function getImportImagesClassName()
     {
         return ImportImages::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUpdateTitleClassName()
-    {
-        return UpdateTitle::class;
     }
 
     /**

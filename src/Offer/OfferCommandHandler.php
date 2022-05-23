@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Offer\Commands\Image\AbstractImportImages;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractApprove;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
@@ -96,11 +95,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
         return $commands;
     }
-
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateTitleClassName();
 
     /**
      * @return string
@@ -191,14 +185,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      * @return string
      */
     abstract protected function getFlagAsInappropriateClassName();
-
-
-    private function handleUpdateTitle(AbstractUpdateTitle $translateTitle)
-    {
-        $offer = $this->load($translateTitle->getItemId());
-        $offer->updateTitle($translateTitle->getLanguage(), $translateTitle->getTitle());
-        $this->offerRepository->save($offer);
-    }
 
     /**
      * Handle an add image command.

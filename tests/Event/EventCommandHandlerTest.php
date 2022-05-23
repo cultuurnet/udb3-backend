@@ -18,14 +18,12 @@ use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
-use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -111,29 +109,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         // reset mocked time
         Chronos::setTestNow();
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_translate_the_title_of_an_event_by_updating_with_a_foreign_language(): void
-    {
-        $id = '1';
-        $title = new Title('Voorbeeld');
-        $language = new Language('fr');
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                ]
-            )
-            ->when(new UpdateTitle($id, $language, $title))
-            ->then(
-                [
-                    new TitleTranslated($id, $language, $title),
-                ]
-            );
     }
 
     /**
@@ -232,8 +207,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4702
+     * @bugfix https://jira.uitdatabank.be/browse/III-4702
      */
     public function it_can_update_location_of_an_event_imported_from_xml(): void
     {

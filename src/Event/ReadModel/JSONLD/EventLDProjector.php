@@ -60,13 +60,16 @@ use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
+use CultuurNet\UDB3\Model\Place\ImmutablePlace;
+use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
@@ -94,6 +97,8 @@ class EventLDProjector extends OfferLDProjector implements
     EventListener,
     PlaceServiceInterface
 {
+    private IriGeneratorInterface $placeIriGenerator;
+
     protected LocalPlaceService $placeService;
 
     protected IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory;
@@ -112,6 +117,7 @@ class EventLDProjector extends OfferLDProjector implements
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
+        IriGeneratorInterface $placeIriGenerator,
         LocalPlaceService $placeService,
         OrganizerService $organizerService,
         MediaObjectSerializer $mediaObjectSerializer,
@@ -131,6 +137,8 @@ class EventLDProjector extends OfferLDProjector implements
             $basePriceTranslations,
             $videoNormalizer
         );
+
+        $this->placeIriGenerator = $placeIriGenerator;
 
         $this->placeService = $placeService;
         $this->cdbXMLImporter = $cdbXMLImporter;
@@ -516,6 +524,10 @@ class EventLDProjector extends OfferLDProjector implements
             return [];
         }
 
+        if ((new LocationId($placeId))->isNilLocation()) {
+            return $this->nilLocationJSONLD();
+        }
+
         try {
             $placeJSONLD = $this->placeService->getEntity(
                 $placeId
@@ -533,6 +545,12 @@ class EventLDProjector extends OfferLDProjector implements
                 '@id' => $this->placeService->iri($placeId),
             ];
         }
+    }
+
+    private function nilLocationJSONLD(): array
+    {
+        return (new NilLocationNormalizer($this->placeIriGenerator))
+            ->normalize(ImmutablePlace::createNilLocation());
     }
 
     private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral

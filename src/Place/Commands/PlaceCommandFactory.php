@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
@@ -64,11 +63,6 @@ class PlaceCommandFactory implements OfferCommandFactoryInterface
     public function createSelectMainImage(string $id, Image $image): AbstractSelectMainImage
     {
         return new SelectMainImage($id, $image);
-    }
-
-    public function createUpdateTitleCommand(string $id, Language $language, StringLiteral $title): AbstractUpdateTitle
-    {
-        return new UpdateTitle($id, $language, $title);
     }
 
     public function createUpdateDescriptionCommand(string $id, Language $language, Description $description): AbstractUpdateDescription

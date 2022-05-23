@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
@@ -35,12 +36,15 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->get('/{offerType}/{offerId}/', GetDetailRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/', DeleteRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/name/{language}/', UpdateTitleRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/{language}/title/', UpdateTitleRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 
         $controllers->get('/{offerType}/{offerId}/history/', GetHistoryRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
-        $controllers->get('/{offerType}/{offerId}/calendar-summary', GetCalendarSummaryRequestHandler::class);
+        $controllers->get('/{offerType}/{offerId}/calendar-summary/', GetCalendarSummaryRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/status/', UpdateStatusRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
@@ -52,7 +56,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
-        $controllers->delete('/{offerType}/{offerId}/videos/{videoId}', DeleteVideoRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/videos/{videoId}/', DeleteVideoRequestHandler::class);
 
         return $controllers;
     }
@@ -65,6 +69,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[DeleteRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTitleRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateTitleRequestHandler($app['event_command_bus'])
         );
 
         $app[UpdateAvailableFromRequestHandler::class] = $app->share(

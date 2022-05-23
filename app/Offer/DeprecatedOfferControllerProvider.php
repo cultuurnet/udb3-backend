@@ -45,7 +45,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $controllers->delete('/{cdbid}/labels/{label}/', "{$controllerName}:removeLabel");
         $controllers->put('/{cdbid}/labels/{label}/', "{$controllerName}:addLabel");
 
-        $controllers->put('/{cdbid}/name/{lang}/', "{$controllerName}:updateTitle");
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
         $controllers->patch('/{cdbid}/', "{$patchControllerName}:handle");
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
@@ -56,7 +55,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
          * These routes usually used an incorrect HTTP method.
          */
         $controllers->post('/{cdbid}/labels/', "{$controllerName}:addLabelFromJsonBody");
-        $controllers->post('/{cdbid}/{lang}/title/', "{$controllerName}:updateTitle");
         $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
         $controllers->get('/{offerId}/permission/', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
         $controllers->get('/{offerId}/permission/{userId}/', "{$deprecatedPermissionControllerName}:givenUserHasPermission");

@@ -32,8 +32,6 @@ interface OfferCommandFactoryInterface
 
     public function createSelectMainImageCommand(string $id, Image $image): AbstractSelectMainImage;
 
-    public function createUpdateTitleCommand(string $id, Language $language, StringLiteral $title): AbstractUpdateTitle;
-
     public function createUpdateDescriptionCommand(string $id, Language $language, Description $description): AbstractUpdateDescription;
 
     public function createUpdateTypicalAgeRangeCommand(string $id, AgeRange $ageRange): AbstractUpdateTypicalAgeRange;

@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -52,7 +51,7 @@ final class UpdateLocationRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid(
+            ApiProblem::urlNotFound(
                 'Location with id "74e62b6c-9df4-42e4-bcd5-f4c242b4df2e" does not exist.'
             ),
             fn () => $this->updateLocationRequestHandler->handle($request)
@@ -62,7 +61,7 @@ final class UpdateLocationRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_if_the_given_location_is_the_virtual_location(): void
+    public function it_throws_an_api_problem_if_the_given_location_is_a_nil_location(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', 'dac793c2-4a8c-4744-b593-69420cfbf7bb')
@@ -70,10 +69,8 @@ final class UpdateLocationRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::pathParameterInvalid(
-                'Instead of passing the virtual location, please update the attendance mode.'
-                . ' For more information check the documentation of the update attendance mode endpoint.'
-                . ' See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
+            ApiProblem::attendanceModeNotSupported(
+                'Cannot update the location of an offline or mixed event to a nil location. Set the attendanceMode to online instead.'
             ),
             fn () => $this->updateLocationRequestHandler->handle($request)
         );

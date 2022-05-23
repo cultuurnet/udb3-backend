@@ -25,7 +25,7 @@ class ApiProblemTest extends TestCase
      */
     public function it_can_have_a_detail(): void
     {
-        $problem = ApiProblem::invalidEmailAddress('foo');
+        $problem = ApiProblem::urlNotFound('"foo" is not a valid email address');
         $this->assertEquals('"foo" is not a valid email address', $problem->getDetail());
     }
 

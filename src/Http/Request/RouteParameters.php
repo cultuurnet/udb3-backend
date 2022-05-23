@@ -95,7 +95,7 @@ final class RouteParameters
         try {
             return new Language($this->get('language'));
         } catch (InvalidArgumentException $exception) {
-            throw ApiProblem::pathParameterInvalid('The provided language route parameter is not supported.');
+            throw ApiProblem::urlNotFound('The provided language route parameter is not supported.');
         }
     }
 
@@ -104,7 +104,7 @@ final class RouteParameters
         try {
             return new LabelName($this->get('labelName'));
         } catch (InvalidArgumentException $exception) {
-            throw ApiProblem::pathParameterInvalid('The label should match pattern: ^[^;]{2,255}$');
+            throw ApiProblem::urlNotFound('The label should match pattern: ^[^;]{2,255}$');
         }
     }
 

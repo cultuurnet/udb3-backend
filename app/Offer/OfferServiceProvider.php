@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
@@ -103,6 +104,12 @@ class OfferServiceProvider implements ServiceProviderInterface
                     $app['event_repository'],
                     $app['place_repository']
                 );
+            }
+        );
+
+        $app[UpdateTitleHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateTitleHandler($app[OfferRepository::class]);
             }
         );
 

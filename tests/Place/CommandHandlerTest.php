@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
@@ -22,15 +21,11 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
-use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
-use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
-use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
-use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Title;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -122,46 +117,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ],
         ];
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_translate_the_title_of_a_place_by_updating_with_a_foreign_language()
-    {
-        $id = '1';
-        $title = new Title('Voorbeeld');
-        $language = new Language('fr');
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                ]
-            )
-            ->when(new UpdateTitle($id, $language, $title))
-            ->then(
-                [
-                    new TitleTranslated($id, $language, $title),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_translate_the_description_by_updating_with_a_foreign_language()
-    {
-        $id = '1';
-        $description = new Description('Lorem ipsum dolor si amet...');
-        $language = new Language('fr');
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new UpdateDescription($id, $language, $description))
-            ->then([new DescriptionTranslated($id, $language, $description)]);
     }
 
     protected function createCommandHandler(

@@ -18,14 +18,17 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
@@ -40,7 +43,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Place\Commands\UpdateTitle;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
 use DateTimeImmutable;
@@ -157,8 +159,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
             $commands[] = new UpdateTitle(
                 $placeId,
-                $mainLanguage,
-                $title
+                $place->getMainLanguage(),
+                $place->getTitle()->getTranslation($place->getMainLanguage())
             );
 
             $commands[] = new UpdateType($placeId, $type->getId());
@@ -189,17 +191,20 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         }
 
         foreach ($placeAdapter->getTitleTranslations() as $language => $title) {
-            $language = new Language($language);
-            $commands[] = new UpdateTitle($placeId, $language, $title);
+            $commands[] = new UpdateTitle(
+                $placeId,
+                new Language($language),
+                new Title($title->toNative())
+            );
         }
 
         foreach ($placeAdapter->getDescriptionTranslations() as $language => $description) {
-            $language = new Language($language);
+            $language = new LegacyLanguage($language);
             $commands[] = new UpdateDescription($placeId, $language, $description);
         }
 
         foreach ($placeAdapter->getAddressTranslations() as $language => $address) {
-            $language = new Language($language);
+            $language = new LegacyLanguage($language);
             $commands[] = new UpdateAddress($placeId, $address, $language);
         }
 

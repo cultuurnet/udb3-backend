@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
-use CultuurNet\UDB3\Event\Commands\UpdateTitle;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
@@ -58,19 +57,20 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeImmutable;
 use Money\Currency;
@@ -123,7 +123,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         'de' => 'Basisrate',
                     ]
                 ),
-                new VirtualLocationPolyfillRequestBodyParser($placeIriGenerator)
+                new OnlineLocationPolyfillRequestBodyParser($placeIriGenerator)
             ),
             $this->commandBus,
             $this->imageCollectionFactory,
@@ -461,7 +461,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new UpdateTitle($eventId, new LegacyLanguage('nl'), new Title('Pannenkoeken voor het goede doel')),
+                new UpdateTitle($eventId, new Language('nl'), new Title('Pannenkoeken voor het goede doel')),
                 new UpdateType($eventId, '1.50.0.0.0'),
                 new UpdateAttendanceMode($eventId, AttendanceMode::offline()),
                 new UpdateLocation($eventId, new LocationId('5cf42d51-3a4f-46f0-a8af-1cf672be8c84')),
@@ -718,7 +718,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 ),
                 new UpdateTitle(
                     $eventId,
-                    new LegacyLanguage('en'),
+                    new Language('en'),
                     new Title('English name')
                 ),
                 new UpdateDescription(
@@ -928,8 +928,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4701
+     * @bugfix https://jira.uitdatabank.be/browse/III-4701
      */
     public function it_does_not_crash_on_empty_location_object_but_returns_an_invalid_data_api_problem(): void
     {
@@ -1925,7 +1924,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new UpdateBookingInfo($eventId, new BookingInfo()),
                 new UpdateContactPoint($eventId, new ContactPoint()),
                 new DeleteTypicalAgeRange($eventId),
-                new UpdateTitle($eventId, new LegacyLanguage('es'), new Title('Invalid language')),
+                new UpdateTitle($eventId, new Language('es'), new Title('Invalid language')),
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
@@ -2680,7 +2679,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_polyfills_missing_virtual_location_for_online_attendanceMode(): void
+    public function it_polyfills_missing_nil_location_for_online_attendanceMode(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
 
@@ -2847,7 +2846,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_attendanceMode_is_empty_and_location_is_virtual(): void
+    public function it_throws_if_attendanceMode_is_empty_and_location_is_online(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -2878,7 +2877,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_attendanceMode_is_offline_and_location_is_virtual(): void
+    public function it_throws_if_attendanceMode_is_offline_and_location_is_online(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -2932,7 +2931,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/attendanceMode',
-                'Attendance mode "online" needs to have a virtual location.'
+                'Attendance mode "online" needs to have an online location.'
             ),
         ];
 
@@ -2942,7 +2941,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_attendanceMode_is_mixed_and_location_is_virtual(): void
+    public function it_throws_if_attendanceMode_is_mixed_and_location_is_online(): void
     {
         $event = [
             'mainLanguage' => 'nl',
@@ -3159,8 +3158,7 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @bugfix
-     * @see https://jira.uitdatabank.be/browse/III-4705
+     * @bugfix https://jira.uitdatabank.be/browse/III-4705
      */
     public function it_throws_if_terms_id_is_not_known_and_no_domain_is_set(): void
     {

@@ -16,6 +16,8 @@ trait AssertApiProblemTrait
             $this->fail('No ' . ApiProblem::class . ' thrown');
         } catch (ApiProblem $e) {
             $this->assertEquals($expectedApiProblem, $e);
+        } catch (ConvertsToApiProblem $e) {
+            $this->assertEquals($expectedApiProblem, $e->toApiProblem());
         }
     }
 }

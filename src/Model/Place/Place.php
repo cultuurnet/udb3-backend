@@ -19,5 +19,5 @@ interface Place extends Offer
      *   They were locations that were imported from older systems.
      *   They use place id 00000000-0000-0000-0000-000000000000.
      */
-    public function isDummyLocation(): bool;
+    public function isNilLocation(): bool;
 }

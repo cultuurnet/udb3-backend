@@ -9,6 +9,7 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
@@ -20,6 +21,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
+use CultuurNet\UDB3\Place\NilLocationEnrichedPlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
@@ -92,6 +94,11 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                         $app['place_jsonld_cache']
                     ),
                     $dummyPlaceIds
+                );
+
+                $repository = new NilLocationEnrichedPlaceRepository(
+                    new NilLocationNormalizer($app['place_iri_generator']),
+                    $repository
                 );
 
                 $repository = new OfferMetadataEnrichedOfferRepository(

@@ -47,7 +47,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Virtual\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -1060,9 +1060,9 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
         $locationId = new LocationId('57738178-28a5-4afb-90c0-fd0beba172a8');
 
-        $this->expectException(UpdateLocationNotSupported::class);
+        $this->expectException(AttendanceModeNotSupported::class);
         $this->expectExceptionMessage(
-            'Instead of passing the real location for this online event, please update the attendance mode to offline or mixed.'
+            'Cannot update the location of an online event to a physical location. Set the attendanceMode to mixed or offline first.'
         );
 
         $this->scenario
