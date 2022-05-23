@@ -89,7 +89,7 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         return 0;
     }
 
-    private function askForQuery($input, $output): string
+    private function askForQuery(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Provide SAPI 3 query for events to update' . \PHP_EOL);
 
