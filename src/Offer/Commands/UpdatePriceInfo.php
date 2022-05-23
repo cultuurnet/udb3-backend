@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 
 final class UpdatePriceInfo extends AbstractCommand
 {
-    protected PriceInfo $priceInfo;
+    private PriceInfo $priceInfo;
 
     public function __construct(string $offerId, PriceInfo $priceInfo)
     {
