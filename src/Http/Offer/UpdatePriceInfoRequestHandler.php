@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -42,25 +41,21 @@ class UpdatePriceInfoRequestHandler implements RequestHandlerInterface
                     JsonSchemaLocator::PLACE_PRICE_INFO_PUT
                 )
             ),
-            new PriceInfoValidatingRequestBodyParser(),
+            new PriceInfoDuplicateNameValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(
                 new PriceInfoDenormalizer(),
                 PriceInfo::class
             )
         );
 
-        try {
-            /** @var PriceInfo $priceInfo */
-            $priceInfo = $parser->parse($request)->getParsedBody();
-            $updatePriceInfo = new UpdatePriceInfo(
-                $offerId,
-                $priceInfo
-            );
+        /** @var PriceInfo $priceInfo */
+        $priceInfo = $parser->parse($request)->getParsedBody();
+        $updatePriceInfo = new UpdatePriceInfo(
+            $offerId,
+            $priceInfo
+        );
 
-            $this->commandBus->dispatch($updatePriceInfo);
-        } catch (ApiProblem $apiProblem) {
-            throw $apiProblem;
-        }
+        $this->commandBus->dispatch($updatePriceInfo);
 
         return new NoContentResponse();
     }

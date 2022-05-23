@@ -44,10 +44,36 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
      */
     public function it_dispatches_an_update_command_if_no_duplicate_names_are_found(string $offerType): void
     {
+        $body = [
+            [
+                'category' => 'base',
+                'name' => [
+                    'nl' => 'Basistarief',
+                ],
+                'price' => 10,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Jongeren',
+                ],
+                'price' => 5,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 5,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
-            ->withBodyFromString('[{"category":"base","name":{"nl":"Basistarief"},"price":10,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Jongeren"},"price":5,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Senioren"},"price":5,"priceCurrency":"EUR"}]')
+            ->withJsonBodyFromArray($body)
             ->build('PUT');
 
         $priceInfo = new PriceInfo(
@@ -101,15 +127,323 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_if_the_price_info_contains_duplicate_names(string $offerType): void
     {
+        $body = [
+            [
+                'category' => 'base',
+                'name' => [
+                    'nl' => 'Basistarief',
+                ],
+                'price' => 10,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Studenten',
+                ],
+                'price' => 5,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Studenten',
+                ],
+                'price' => 2,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
-            ->withBodyFromString('[{"category":"base","name":{"nl":"Basistarief"},"price":10,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Studenten"},"price":5,"priceCurrency":"EUR"},{"category":"tariff","name":{"nl":"Studenten"},"price":5,"priceCurrency":"EUR"}]')
+            ->withJsonBodyFromArray($body)
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError('/priceInfo/2/name/nl', 'Tariff name "Studenten" must be unique.')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_a_category_is_missing(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'base',
+                'price' => 15,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'name' => [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 10.5,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'At most 1 array items must match schema')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_a_tariff_name_is_missing(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'base',
+                'price' => 15,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'price' => 10.5,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/1', 'The required properties (name) are missing')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_a_tariff_name_is_malformed(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'base',
+                'price' => 15,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => 'Senioren',
+                'price' => 10.5,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/1/name', 'The data (string) must match the type: object')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_a_tariff_name_has_an_invalid_value(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'base',
+                'price' => 15,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 1000,
+                ],
+                'price' => 10.5,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/1/name/nl', 'The data (integer) must match the type: string')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_a_tariff_price_is_missing(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'base',
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Senioren',
+                ],
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/0', 'The required properties (price) are missing'),
+                new SchemaError('/1', 'The required properties (price) are missing')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_a_tariff_price_is_not_a_number(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'base',
+                'price' => 15,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 'foo',
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/1/price', 'The data (string) must match the type: number')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_multiple_base_tariffs_are_found(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'base',
+                'price' => 15,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 10.5,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'base',
+                'price' => 20,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'At most 1 array items must match schema')
+            ),
+            fn () => $this->updatePriceInfoRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
+    public function it_should_throw_an_exception_if_no_tariffs_with_category_base_are_found(string $offerType): void
+    {
+        $data = [
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Senioren',
+                ],
+                'price' => 10.5,
+                'priceCurrency' => 'EUR',
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($data)
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'At least 1 array items must match schema')
             ),
             fn () => $this->updatePriceInfoRequestHandler->handle($request)
         );
