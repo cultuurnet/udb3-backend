@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\OfferRepository;
+use CultuurNet\UDB3\PriceInfo\PriceInfo;
 
 class UpdatePriceInfoHandler implements CommandHandler
 {
@@ -24,9 +25,7 @@ class UpdatePriceInfoHandler implements CommandHandler
         }
 
         $offer = $this->offerRepository->load($command->getItemId());
-        $offer->updatePriceInfo(
-            $command->getPriceInfo()
-        );
+        $offer->updatePriceInfo(PriceInfo::fromUdb3ModelPriceInfo($command->getPriceInfo()));
         $this->offerRepository->save($offer);
     }
 }
