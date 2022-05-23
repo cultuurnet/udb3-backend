@@ -52,17 +52,7 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
             return 0;
         }
 
-        $confirmation = $this->getHelper('question')
-            ->ask(
-                $input,
-                $output,
-                new ConfirmationQuestion(
-                    'This action will update the attendance mode of ' . $count . ' events, continue? [y/N]',
-                    false
-                )
-            );
-
-        if (!$confirmation) {
+        if (!$this->askConfirmation($input, $output, $count)) {
             return 0;
         }
 
@@ -111,5 +101,15 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         $question->setErrorMessage('Invalid attendance mode: %s');
 
         return new AttendanceMode($this->getHelper('question')->ask($input, $output, $question));
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
+    {
+        $question = new ConfirmationQuestion(
+            'This action will update the attendance mode of ' . $count . ' events, continue? [y/N]',
+            false
+        );
+
+        return $this->getHelper('question')->ask($input, $output, $question);
     }
 }
