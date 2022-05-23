@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
+use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -45,6 +47,11 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         $query = $this->askForQuery($input, $output);
         $attendanceMode = $this->askAttendanceMode($input, $output);
 
+        $locationId = new LocationId(LocationId::NIL_LOCATION);
+        if (!$attendanceMode->sameAs(AttendanceMode::online())) {
+            $locationId = $this->askForPhysicalLocation($input, $output);
+        }
+
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count <= 0) {
@@ -63,6 +70,8 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         foreach ($events as $id => $event) {
             try {
                 $this->commandBus->dispatch(new UpdateAttendanceMode($id, $attendanceMode));
+
+                $this->commandBus->dispatch(new UpdateLocation($id, $locationId));
             } catch (Exception $exception) {
                 $exceptions[$id] = 'Event with id: ' . $id . ' caused an exception: ' . $exception->getMessage();
             }
@@ -85,6 +94,13 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         $question = new Question('Provide SAPI 3 query for events to update' . \PHP_EOL);
 
         return $this->getHelper('question')->ask($input, $output, $question);
+    }
+
+    private function askForPhysicalLocation(InputInterface $input, OutputInterface $output): LocationId
+    {
+        $question = new Question('Provide UUID of the physical location the mixed/offline event will take place' . \PHP_EOL);
+
+        return new LocationId($this->getHelper('question')->ask($input, $output, $question));
     }
 
     private function askAttendanceMode(InputInterface $input, OutputInterface $output): AttendanceMode
