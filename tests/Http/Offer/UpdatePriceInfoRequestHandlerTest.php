@@ -102,17 +102,10 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
             )
         );
 
-        if ($offerType === 'events') {
-            $expected = new UpdatePriceInfo(
-                'a91bc028-c44a-4429-9784-8641c9858eed',
-                $priceInfo
-            );
-        } else {
-            $expected = new UpdatePriceInfo(
-                'a91bc028-c44a-4429-9784-8641c9858eed',
-                $priceInfo
-            );
-        }
+        $expected = new UpdatePriceInfo(
+            'a91bc028-c44a-4429-9784-8641c9858eed',
+            $priceInfo
+        );
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')
