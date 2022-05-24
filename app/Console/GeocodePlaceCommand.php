@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,9 +32,9 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
             return;
         }
 
-        $jsonLd = json_decode($document->getRawBody(), true);
+        $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
-        $mainLanguage = isset($jsonLd->mainLanguage) ? $jsonLd->mainLanguage : 'nl';
+        $mainLanguage = $jsonLd->mainLanguage ?? 'nl';
 
         if (!isset($jsonLd['address'][$mainLanguage])) {
             $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address for {$mainLanguage}.)");
