@@ -67,11 +67,11 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
         $this->mockRepository->expects($this->any())
             ->method('getByName')
             ->willReturnCallback(
-                function (StringLiteral $name) {
+                function (string $name) {
                     $labels = array_filter(
                         $this->labels,
                         function (Entity $label) use ($name) {
-                            return $label->getName()->sameValueAs($name);
+                            return $label->getName()->toNative() === $name;
                         }
                     );
 
@@ -84,7 +84,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
             ->method('canUseLabel')
             ->willReturnCallback(
                 function (StringLiteral $userId, StringLiteral $name) {
-                    $label = $this->mockRepository->getByName($name);
+                    $label = $this->mockRepository->getByName($name->toNative());
 
                     if (!$label) {
                         return true;
@@ -137,9 +137,8 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     public function it_should_return_a_label_by_name_using_the_injected_repository(): void
     {
-        $name = new StringLiteral('foo');
         $expected = $this->labels['c7a73397-a210-4126-8fa0-a9f822c2a356'];
-        $actual = $this->repository->getByName($name);
+        $actual = $this->repository->getByName('foo');
         $this->assertEquals($expected, $actual);
     }
 

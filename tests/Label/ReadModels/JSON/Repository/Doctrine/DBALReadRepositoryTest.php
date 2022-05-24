@@ -155,7 +155,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_get_by_name(): void
     {
         $entity = $this->dbalReadRepository->getByName(
-            $this->entityByName->getName()
+            $this->entityByName->getName()->toNative()
         );
 
         $this->assertEquals($this->entityByName, $entity);
@@ -166,9 +166,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_get_by_name_case_insensitive(): void
     {
-        $entity = $this->dbalReadRepository->getByName(
-            new StringLiteral('BosWandeling')
-        );
+        $entity = $this->dbalReadRepository->getByName('BosWandeling');
 
         $this->assertEquals($this->entityByName, $entity);
     }
@@ -178,9 +176,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_does_not_get_on_part_of_name(): void
     {
-        $entity = $this->dbalReadRepository->getByName(
-            new StringLiteral('oswand')
-        );
+        $entity = $this->dbalReadRepository->getByName('oswand');
 
         $this->assertNull($entity);
     }
@@ -190,9 +186,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_returns_null_when_not_found_by_name(): void
     {
-        $entity = $this->dbalReadRepository->getByName(
-            new StringLiteral('familievoorstelling')
-        );
+        $entity = $this->dbalReadRepository->getByName('familievoorstelling');
 
         $this->assertNull($entity);
     }
@@ -417,7 +411,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_takes_into_account_excluded(): void
     {
-        $excludedLabel = $this->dbalReadRepository->getByName(new StringLiteral('excluded'));
+        $excludedLabel = $this->dbalReadRepository->getByName('excluded');
         $this->assertEquals(
             $this->excluded,
             $excludedLabel

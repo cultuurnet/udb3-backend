@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\StringLiteral;
 
 final class AddLabelHandler implements CommandHandler
 {
@@ -49,7 +48,7 @@ final class AddLabelHandler implements CommandHandler
         $labelVisibility = $command->getLabel()->isVisible();
 
         // Load the label read model so we can determine the correct visibility.
-        $labelEntity = $this->labelRepository->getByName(new StringLiteral($labelName));
+        $labelEntity = $this->labelRepository->getByName($labelName);
         if ($labelEntity instanceof Entity) {
             $labelVisibility = $labelEntity->getVisibility()->sameAs(Visibility::VISIBLE());
         }

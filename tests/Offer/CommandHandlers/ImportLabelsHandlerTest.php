@@ -84,11 +84,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
         $this->labelPermissionRepository->expects($this->any())
             ->method('getByName')
             ->willReturnCallback(
-                function (StringLiteral $labelName) {
+                function ($labelName) {
                     return new Entity(
                         new UUID(\Ramsey\Uuid\Uuid::uuid4()->toString()),
-                        $labelName,
-                        $labelName->toNative() !== 'bar' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
+                        new StringLiteral($labelName),
+                        $labelName !== 'bar' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
                         Privacy::PRIVACY_PUBLIC()
                     );
                 }

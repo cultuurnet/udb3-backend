@@ -85,7 +85,7 @@ final class LabelImportPreProcessor
             ...array_map(
                 function (Label $label): Label {
                     $readModel = $this->labelsPermissionRepository->getByName(
-                        new StringLiteral($label->getName()->toString())
+                        $label->getName()->toString()
                     );
                     $visible = !$readModel ?
                         $label->isVisible() : $readModel->getVisibility()->sameAs(Visibility::VISIBLE());

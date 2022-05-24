@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 class Projector extends AbstractProjector
 {
@@ -36,7 +35,7 @@ class Projector extends AbstractProjector
     public function applyCreated(Created $created): void
     {
         $labelWithSameUuid = $this->readRepository->getByUuid($created->getUuid());
-        $labelWithSameName = $this->readRepository->getByName($created->getName());
+        $labelWithSameName = $this->readRepository->getByName($created->getName()->toNative());
 
         if ($labelWithSameUuid ||  $labelWithSameName) {
             return;
@@ -52,7 +51,7 @@ class Projector extends AbstractProjector
     public function applyCopyCreated(CopyCreated $copyCreated): void
     {
         $labelWithSameUuid = $this->readRepository->getByUuid($copyCreated->getUuid());
-        $labelWithSameName = $this->readRepository->getByName($copyCreated->getName());
+        $labelWithSameName = $this->readRepository->getByName($copyCreated->getName()->toNative());
 
         if ($labelWithSameUuid ||  $labelWithSameName) {
             return;
@@ -114,9 +113,7 @@ class Projector extends AbstractProjector
     {
         $uuid = null;
 
-        $entity = $this->readRepository->getByName(
-            new StringLiteral($labelEvent->getLabelName())
-        );
+        $entity = $this->readRepository->getByName($labelEvent->getLabelName());
 
         if ($entity !== null) {
             $uuid = $entity->getUuid();

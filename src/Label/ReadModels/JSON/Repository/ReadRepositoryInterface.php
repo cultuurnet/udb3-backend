@@ -11,7 +11,7 @@ interface ReadRepositoryInterface
 {
     public function getByUuid(UUID $uuid): ?Entity;
 
-    public function getByName(StringLiteral $name): ?Entity;
+    public function getByName(string $name): ?Entity;
 
     public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool;
 

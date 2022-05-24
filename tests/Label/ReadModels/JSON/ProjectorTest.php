@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Place\Events\LabelAdded as LabelAddedToPlace;
 use CultuurNet\UDB3\Place\Events\LabelRemoved as LabelRemovedFromPlace;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
@@ -81,8 +80,8 @@ class ProjectorTest extends TestCase
             ->will($this->returnValueMap($uuidMap));
 
         $readRepository->method('getByName')
-            ->willReturnCallback(function (StringLiteral $value) {
-                if ($value->toNative() === $this->labelName->toNative()) {
+            ->willReturnCallback(function (string $value) {
+                if ($value === $this->labelName->toNative()) {
                     return $this->entity;
                 }
                 return null;

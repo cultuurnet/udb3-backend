@@ -30,7 +30,7 @@ final class ReadService implements ReadServiceInterface
 
     public function getByName(StringLiteral $identifier): ?Entity
     {
-        return $this->readRepository->getByName($identifier);
+        return $this->readRepository->getByName($identifier->toNative());
     }
 
     public function search(Query $query): ?array

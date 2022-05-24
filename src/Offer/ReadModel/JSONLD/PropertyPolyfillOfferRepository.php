@@ -14,7 +14,6 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SameAsForUitInVlaanderen;
-use CultuurNet\UDB3\StringLiteral;
 
 final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
 {
@@ -266,7 +265,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     // Get the visibility from the read model, or if not found assume invisible to make sure that labels
                     // that should be hidden labels do not show up on publication channels (which would be worse than
                     // visible labels accidentally being hidden).
-                    $readModel = $this->labelReadRepository->getByName(new StringLiteral($duplicate));
+                    $readModel = $this->labelReadRepository->getByName($duplicate);
                     $visibility = $readModel ? $readModel->getVisibility() : Visibility::INVISIBLE();
 
                     // Filter the duplicate out of the property that it does not belong in.

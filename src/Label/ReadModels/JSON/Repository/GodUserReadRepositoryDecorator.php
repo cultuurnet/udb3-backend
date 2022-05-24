@@ -27,7 +27,7 @@ final class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
         return $this->repository->getByUuid($uuid);
     }
 
-    public function getByName(StringLiteral $name): ?Entity
+    public function getByName(string $name): ?Entity
     {
         return $this->repository->getByName($name);
     }

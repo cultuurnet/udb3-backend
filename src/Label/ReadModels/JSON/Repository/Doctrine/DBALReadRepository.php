@@ -53,13 +53,13 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         return $this->getResult($queryBuilder);
     }
 
-    public function getByName(StringLiteral $name): ?Entity
+    public function getByName(string $name): ?Entity
     {
         $aliases = $this->getAliases();
         $queryBuilder = $this->createQueryBuilder();
         $likeCondition = $queryBuilder->expr()->like(
             SchemaConfigurator::NAME_COLUMN,
-            $queryBuilder->expr()->literal($name->toNative())
+            $queryBuilder->expr()->literal($name)
         );
 
         $queryBuilder = $queryBuilder->select($aliases)
@@ -67,7 +67,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             ->where($likeCondition)
             ->setParameter(
                 SchemaConfigurator::NAME_COLUMN,
-                $name->toNative()
+                $name
             );
 
         return $this->getResult($queryBuilder);
@@ -76,7 +76,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool
     {
         // A new label is always allowed.
-        $label = $this->getByName($name);
+        $label = $this->getByName($name->toNative());
         if ($label === null) {
             return true;
         }
