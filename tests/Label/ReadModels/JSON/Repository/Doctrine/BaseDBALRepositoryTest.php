@@ -60,7 +60,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
             $entity->getName()->toNative(),
             $entity->getVisibility()->sameAs(Visibility::VISIBLE()),
             $entity->getPrivacy()->sameAs(Privacy::PRIVACY_PRIVATE()),
-            $entity->getParentUuid()->toString(),
+            $entity->getParentUuid() ? $entity->getParentUuid()->toString() : null,
             $entity->getCount(),
         ];
     }

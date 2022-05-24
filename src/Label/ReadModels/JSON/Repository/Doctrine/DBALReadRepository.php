@@ -124,7 +124,19 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
                 ->setMaxResults($query->getLimit());
         }
 
-        return $this->getResults($queryBuilder);
+        $labels = $this->getResults($queryBuilder);
+
+        // The UI filters out specific labels which resulted in empty results
+        // The filtering is now done in the API with a regex instead
+        // Note that a SQL REGEXP was not possible because SQLite is used for testing
+        if ($query->isSuggestion()) {
+            $labels = array_filter(
+                $labels,
+                fn (Entity $label) => preg_match('/^[a-zA-Z\d_\-]{2,50}$/', $label->getName()->toNative())
+            );
+        }
+
+        return $labels;
     }
 
     public function searchTotalLabels(Query $query): int
