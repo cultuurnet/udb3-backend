@@ -20,7 +20,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
 
     protected function getQueryForMissingCoordinates(): string
     {
-        return 'NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
+        return '_exists_:address NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
     protected function dispatchGeocodingCommand(string $placeId, OutputInterface $output): void
@@ -34,11 +34,6 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
         $jsonLd = json_decode($document->getRawBody(), true);
 
         $mainLanguage = isset($jsonLd->mainLanguage) ? $jsonLd->mainLanguage : 'nl';
-
-        if (!isset($jsonLd['address'])) {
-            $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address.)");
-            return;
-        }
 
         if (!isset($jsonLd['address'][$mainLanguage])) {
             $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address for {$mainLanguage}.)");
