@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -56,9 +56,9 @@ class EditRoleRestControllerTest extends TestCase
     private $queryJsonDeserializer;
 
     /**
-     * @var ReadServiceInterface|MockObject
+     * @var ReadRepositoryInterface|MockObject
      */
-    private $labelService;
+    private $labelRepository;
 
     /**
      * @var EditRoleRestController
@@ -73,14 +73,14 @@ class EditRoleRestControllerTest extends TestCase
         $this->editService = $this->createMock(RoleEditingServiceInterface::class);
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->updateRoleRequestDeserializer = $this->createMock(UpdateRoleRequestDeserializer::class);
-        $this->labelService = $this->createMock(ReadServiceInterface::class);
+        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->queryJsonDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->controller = new EditRoleRestController(
             $this->editService,
             $this->commandBus,
             $this->updateRoleRequestDeserializer,
-            $this->labelService,
+            $this->labelRepository,
             $this->queryJsonDeserializer
         );
     }
@@ -261,9 +261,9 @@ class EditRoleRestControllerTest extends TestCase
             Privacy::PRIVACY_PUBLIC()
         );
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn($label);
 
         $this->editService->expects($this->once())
@@ -285,9 +285,9 @@ class EditRoleRestControllerTest extends TestCase
     {
         $labelName = 'foo';
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn(null);
 
         $this->expectException(ApiProblem::class);
@@ -326,9 +326,9 @@ class EditRoleRestControllerTest extends TestCase
             Privacy::PRIVACY_PUBLIC()
         );
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn($label);
 
         $this->editService->expects($this->once())
@@ -350,9 +350,9 @@ class EditRoleRestControllerTest extends TestCase
     {
         $labelName = 'foo';
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn(null);
 
         $this->expectException(ApiProblem::class);

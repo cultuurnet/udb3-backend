@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Role;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
@@ -27,7 +27,7 @@ class EditRoleRestController
 
     private UpdateRoleRequestDeserializer $updateRoleRequestDeserializer;
 
-    private ReadServiceInterface $labelEntityService;
+    private ReadRepositoryInterface $labelRepository;
 
     private DeserializerInterface $queryJsonDeserializer;
 
@@ -35,13 +35,13 @@ class EditRoleRestController
         RoleEditingServiceInterface $service,
         CommandBus $commandBus,
         UpdateRoleRequestDeserializer $updateRoleRequestDeserializer,
-        ReadServiceInterface $labelEntityService,
+        ReadRepositoryInterface $labelRepository,
         DeserializerInterface $queryJsonDeserializer
     ) {
         $this->service = $service;
         $this->commandBus = $commandBus;
         $this->updateRoleRequestDeserializer = $updateRoleRequestDeserializer;
-        $this->labelEntityService = $labelEntityService;
+        $this->labelRepository = $labelRepository;
         $this->queryJsonDeserializer = $queryJsonDeserializer;
     }
 
@@ -225,9 +225,7 @@ class EditRoleRestController
         try {
             return new UUID($labelIdentifier);
         } catch (\InvalidArgumentException $exception) {
-            $entity = $this->labelEntityService->getByName(
-                new StringLiteral($labelIdentifier)
-            );
+            $entity = $this->labelRepository->getByName($labelIdentifier);
 
             return is_null($entity) ? null : new UUID($entity->getUuid()->toString());
         }

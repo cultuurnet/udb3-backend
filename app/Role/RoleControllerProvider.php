@@ -43,7 +43,7 @@ class RoleControllerProvider implements ControllerProviderInterface
                     $app['role_editing_service'],
                     $app['event_command_bus'],
                     new UpdateRoleRequestDeserializer(),
-                    $app[LabelServiceProvider::READ_SERVICE],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                     new QueryJSONDeserializer()
                 );
             }
