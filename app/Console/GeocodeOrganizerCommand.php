@@ -54,10 +54,10 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
             return;
         }
 
+        $output->writeln("Dispatching geocode command for organizer {$organizerId}.");
+
         $this->commandBus->dispatch(
             new UpdateGeoCoordinatesFromAddress($organizerId, $address)
         );
-
-        $output->writeln("Dispatched geocode command for organizer {$organizerId}.");
     }
 }
