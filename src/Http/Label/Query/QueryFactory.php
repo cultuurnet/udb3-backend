@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Label\Query;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\UDB3\StringLiteral;
 
 class QueryFactory implements QueryFactoryInterface
 {
@@ -24,9 +23,9 @@ class QueryFactory implements QueryFactoryInterface
     public function createFromRequest(Request $request): Query
     {
         $value = $request->query->get(self::QUERY) !== null
-            ? new StringLiteral($request->query->get(self::QUERY)) : new StringLiteral('');
+            ? (string) $request->query->get(self::QUERY) : '';
 
-        $userId = $this->userId ? new StringLiteral($this->userId) : null;
+        $userId = $this->userId ?: null;
 
         $offset = (int) $request->query->get(self::START);
 

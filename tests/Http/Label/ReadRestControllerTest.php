@@ -55,8 +55,8 @@ final class ReadRestControllerTest extends TestCase
         ]);
 
         $this->query = new Query(
-            new StringLiteral('label'),
-            new StringLiteral('userId'),
+            'label',
+            'userId',
             5,
             2
         );

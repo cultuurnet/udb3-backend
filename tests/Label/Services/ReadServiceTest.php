@@ -37,7 +37,7 @@ final class ReadServiceTest extends TestCase
             Privacy::PRIVACY_PRIVATE()
         );
 
-        $this->query = new Query(new StringLiteral('something'));
+        $this->query = new Query('something');
 
         $this->readRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->mockGetByUuid();

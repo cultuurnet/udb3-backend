@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Label\Query;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\UDB3\StringLiteral;
 
 final class QueryFactoryTest extends TestCase
 {
@@ -37,8 +36,8 @@ final class QueryFactoryTest extends TestCase
         $query = $this->queryFactory->createFromRequest($request);
 
         $expectedQuery = new Query(
-            new StringLiteral(self::QUERY_VALUE),
-            new StringLiteral(self::USER_ID_VALUE),
+            self::QUERY_VALUE,
+            self::USER_ID_VALUE,
             self::START_VALUE,
             self::LIMIT_VALUE
         );
@@ -59,8 +58,8 @@ final class QueryFactoryTest extends TestCase
         $query = $this->queryFactory->createFromRequest($request);
 
         $expectedQuery = new Query(
-            new StringLiteral(self::QUERY_VALUE),
-            new StringLiteral(self::USER_ID_VALUE),
+            self::QUERY_VALUE,
+            self::USER_ID_VALUE,
             null,
             self::LIMIT_VALUE
         );
@@ -81,8 +80,8 @@ final class QueryFactoryTest extends TestCase
         $query = $this->queryFactory->createFromRequest($request);
 
         $expectedQuery = new Query(
-            new StringLiteral(self::QUERY_VALUE),
-            new StringLiteral(self::USER_ID_VALUE),
+            self::QUERY_VALUE,
+            self::USER_ID_VALUE,
             self::START_VALUE,
             null
         );
@@ -102,8 +101,8 @@ final class QueryFactoryTest extends TestCase
         $query = $this->queryFactory->createFromRequest($request);
 
         $expectedQuery = new Query(
-            new StringLiteral(self::QUERY_VALUE),
-            new StringLiteral(self::USER_ID_VALUE),
+            self::QUERY_VALUE,
+            self::USER_ID_VALUE,
             null,
             null
         );
@@ -125,8 +124,8 @@ final class QueryFactoryTest extends TestCase
         $query = $this->queryFactory->createFromRequest($request);
 
         $expectedQuery = new Query(
-            new StringLiteral(self::QUERY_VALUE),
-            new StringLiteral(self::USER_ID_VALUE),
+            self::QUERY_VALUE,
+            self::USER_ID_VALUE,
             0,
             0
         );
@@ -150,7 +149,7 @@ final class QueryFactoryTest extends TestCase
         $query = $queryFactory->createFromRequest($request);
 
         $expectedQuery = new Query(
-            new StringLiteral(self::QUERY_VALUE),
+            self::QUERY_VALUE,
             null,
             self::START_VALUE,
             self::LIMIT_VALUE

@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
-use CultuurNet\UDB3\StringLiteral;
-
 final class Query
 {
-    private StringLiteral $value;
+    private string $value;
 
-    private ?StringLiteral $userId;
+    private ?string $userId;
 
     private ?int $offset;
 
     private ?int $limit;
 
     public function __construct(
-        StringLiteral $value,
-        StringLiteral $userId = null,
+        string $value,
+        ?string $userId = null,
         ?int $offset = null,
         ?int $limit = null
     ) {
@@ -36,12 +34,12 @@ final class Query
         $this->limit = $limit;
     }
 
-    public function getValue(): StringLiteral
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    public function getUserId(): ?StringLiteral
+    public function getUserId(): ?string
     {
         return $this->userId;
     }

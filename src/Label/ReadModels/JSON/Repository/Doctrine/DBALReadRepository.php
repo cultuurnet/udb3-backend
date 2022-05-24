@@ -87,7 +87,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         }
 
         // A private label is allowed if the user has a role with the label.
-        $query = new Query($name, $userId);
+        $query = new Query($name->toNative(), $userId->toNative());
         $foundLabels = $this->search($query);
 
         if ($foundLabels) {
@@ -172,7 +172,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
                 )
             )->setParameter(
                 PermissionsSchemaConfigurator::USER_ID_COLUMN,
-                $query->getUserId()->toNative()
+                $query->getUserId()
             );
         }
 
@@ -218,7 +218,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
     private function createLikeParameter(Query $query): string
     {
-        return '%' . $query->getValue()->toNative() . '%';
+        return '%' . $query->getValue() . '%';
     }
 
     private function getResult(QueryBuilder $queryBuilder): ?Entity

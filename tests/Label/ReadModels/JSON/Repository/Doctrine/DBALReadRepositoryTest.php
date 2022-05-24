@@ -202,7 +202,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_search_on_exact_name(): void
     {
-        $search = new Query(new StringLiteral('label1'));
+        $search = new Query('label1');
 
         $entities = $this->dbalReadRepository->search($search);
 
@@ -214,7 +214,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_search_on_name_part(): void
     {
-        $search = new Query(new StringLiteral('labe'));
+        $search = new Query('labe');
 
         $entities = $this->dbalReadRepository->search($search);
 
@@ -226,7 +226,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_search_on_name_case_insensitive(): void
     {
-        $search = new Query(new StringLiteral('LAB'));
+        $search = new Query('LAB');
 
         $entities = $this->dbalReadRepository->search($search);
 
@@ -238,11 +238,11 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_filter_private_labels_for_user_with_missing_role(): void
     {
-        $userId = new StringLiteral('70569052-37d5-4937-bf09-16c7a255c7d3');
+        $userId = '70569052-37d5-4937-bf09-16c7a255c7d3';
         $this->seedRoles($userId);
 
         $search = new Query(
-            new StringLiteral('wandel'),
+            'wandel',
             $userId
         );
 
@@ -266,7 +266,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_search_with_offset(): void
     {
         $search = new Query(
-            new StringLiteral('label'),
+            'label',
             null,
             5
         );
@@ -284,7 +284,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_search_with_offset_and_limit(): void
     {
         $search = new Query(
-            new StringLiteral('label'),
+            'label',
             null,
             4,
             3
@@ -303,7 +303,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_search_with_limit(): void
     {
         $search = new Query(
-            new StringLiteral('label'),
+            'label',
             null,
             null,
             3
@@ -321,7 +321,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_returns_null_when_nothing_matches_search(): void
     {
-        $search = new Query(new StringLiteral('nothing_please'));
+        $search = new Query('nothing_please');
 
         $entities = $this->dbalReadRepository->search($search);
 
@@ -333,7 +333,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_get_total_items_of_search(): void
     {
-        $search = new Query(new StringLiteral('lab'));
+        $search = new Query('lab');
 
         $totalLabels = $this->dbalReadRepository->searchTotalLabels($search);
 
@@ -345,7 +345,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_returns_zero_for_total_items_when_search_did_match_nothing(): void
     {
-        $search = new Query(new StringLiteral('kroegentocht'));
+        $search = new Query('kroegentocht');
 
         $totalLabels = $this->dbalReadRepository->searchTotalLabels($search);
 
@@ -379,16 +379,16 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function a_user_needs_permission_on_private_label(): void
     {
-        $userId = new StringLiteral('a02f67cb-3227-439b-861b-6ec24de7f0d1');
+        $userId = 'a02f67cb-3227-439b-861b-6ec24de7f0d1';
         $this->seedRoles($userId);
 
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
-            $userId,
+            new StringLiteral($userId),
             $this->entityPrivateAccess->getName()
         ));
 
         $this->assertFalse($this->dbalReadRepository->canUseLabel(
-            $userId,
+            new StringLiteral($userId),
             $this->entityPrivateNoAccess->getName()
         ));
     }
@@ -398,16 +398,16 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function a_user_needs_permission_on_private_label_case_insensitive(): void
     {
-        $userId = new StringLiteral('a02f67cb-3227-439b-861b-6ec24de7f0d1');
+        $userId = 'a02f67cb-3227-439b-861b-6ec24de7f0d1';
         $this->seedRoles($userId);
 
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
-            $userId,
+            new StringLiteral($userId),
             new StringLiteral('Wandeltocht')
         ));
 
         $this->assertFalse($this->dbalReadRepository->canUseLabel(
-            $userId,
+            new StringLiteral($userId),
             new StringLiteral('Stadswandeling')
         ));
     }
@@ -436,19 +436,19 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     }
 
 
-    private function insertUserRole(StringLiteral $userId, UUID $roleId): void
+    private function insertUserRole(string $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->userRolesTableName->toNative(),
             [
-                PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId->toNative(),
+                PermissionsSchemaConfigurator::USER_ID_COLUMN => $userId,
                 PermissionsSchemaConfigurator::ROLE_ID_COLUMN => $roleId->toString(),
             ]
         );
     }
 
 
-    private function seedRoles(StringLiteral $userId): void
+    private function seedRoles(string $userId): void
     {
         $roleId1 = new UUID('5d0842b4-4fd1-4bc2-8577-c06a5ac5000a');
         $roleId2 = new UUID('56a8b820-2262-4a17-a496-bfa07f7e49bb');

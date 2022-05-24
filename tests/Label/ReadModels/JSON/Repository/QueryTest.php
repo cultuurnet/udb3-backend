@@ -20,8 +20,8 @@ final class QueryTest extends TestCase
     protected function setUp(): void
     {
         $this->query = new Query(
-            new StringLiteral(self::NAME),
-            new StringLiteral(self::USER_ID),
+            self::NAME,
+            self::USER_ID,
             self::OFFSET,
             self::LIMIT
         );
@@ -76,7 +76,7 @@ final class QueryTest extends TestCase
      */
     public function it_has_a_default_user_id_of_null(): void
     {
-        $query = new Query(new StringLiteral(self::NAME));
+        $query = new Query(self::NAME);
 
         $this->assertEquals(null, $query->getUserId());
     }
@@ -86,7 +86,7 @@ final class QueryTest extends TestCase
      */
     public function it_has_a_default_offset_of_null(): void
     {
-        $query = new Query(new StringLiteral(self::NAME));
+        $query = new Query(self::NAME);
 
         $this->assertEquals(null, $query->getOffset());
     }
@@ -99,8 +99,8 @@ final class QueryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new Query(
-            new StringLiteral(self::NAME),
-            new StringLiteral(self::USER_ID),
+            self::NAME,
+            self::USER_ID,
             -1,
             self::LIMIT
         );
@@ -111,7 +111,7 @@ final class QueryTest extends TestCase
      */
     public function it_has_a_default_limit_of_null(): void
     {
-        $query = new Query(new StringLiteral(self::NAME));
+        $query = new Query(self::NAME);
 
         $this->assertEquals(null, $query->getLimit());
     }
@@ -124,8 +124,8 @@ final class QueryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new Query(
-            new StringLiteral(self::NAME),
-            new StringLiteral(self::USER_ID),
+            self::NAME,
+            self::USER_ID,
             self::OFFSET,
             -1
         );

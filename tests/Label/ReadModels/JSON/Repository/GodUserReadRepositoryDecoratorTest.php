@@ -166,7 +166,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     public function it_should_return_search_results_for_a_query_using_the_injected_repository(): void
     {
-        $query = new Query(new StringLiteral('test'));
+        $query = new Query('test');
         $expected = $this->labels;
         $actual = $this->repository->search($query);
         $this->assertEquals($expected, $actual);
@@ -177,7 +177,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     public function it_should_return_result_count_for_a_query_using_the_injected_repository(): void
     {
-        $query = new Query(new StringLiteral('test'));
+        $query = new Query('test');
         $expected = count($this->labels);
         $actual = $this->repository->searchTotalLabels($query);
         $this->assertEquals($expected, $actual);
