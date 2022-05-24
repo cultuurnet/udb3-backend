@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\StringLiteral;
 
 final class LabelImportPreProcessor
 {
@@ -39,8 +38,8 @@ final class LabelImportPreProcessor
         foreach ($labelsAlreadyOnResource as $labelOnOffer) {
             $labelName = $labelOnOffer->getName()->toString();
             $canUseLabel = $this->labelsPermissionRepository->canUseLabel(
-                new StringLiteral($this->currentUserId),
-                new StringLiteral($labelName)
+                $this->currentUserId,
+                $labelName
             );
             if (!$canUseLabel && !$importLabels->contains($labelOnOffer)) {
                 $importLabels = $importLabels->with($labelOnOffer);
@@ -56,8 +55,8 @@ final class LabelImportPreProcessor
         $labelNamesNotOnOffer = array_diff($labelNamesToImport, $labelNamesOnOffer);
         foreach ($labelNamesNotOnOffer as $labelName) {
             $canUseLabel = $this->labelsPermissionRepository->canUseLabel(
-                new StringLiteral($this->currentUserId),
-                new StringLiteral($labelName)
+                $this->currentUserId,
+                $labelName
             );
 
             if (!$canUseLabel) {

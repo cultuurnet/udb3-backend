@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Organizer\Events\LabelsImported;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
-use CultuurNet\UDB3\StringLiteral;
 
 final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -36,8 +35,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
         $labelPermissionRepository->expects($this->any())
             ->method('canUseLabel')
             ->willReturnCallback(
-                function (StringLiteral $userId, StringLiteral $labelName) {
-                    return $labelName->toNative() !== 'not_allowed';
+                function (string $userId, string $labelName) {
+                    return $labelName !== 'not_allowed';
                 }
             );
 

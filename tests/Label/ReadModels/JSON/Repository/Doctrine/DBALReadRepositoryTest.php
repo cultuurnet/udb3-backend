@@ -352,8 +352,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function a_new_label_can_be_used(): void
     {
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
-            new StringLiteral('0092d9eb-7f91-4699-876a-21cc660925d4'),
-            new StringLiteral('fietstocht')
+            '0092d9eb-7f91-4699-876a-21cc660925d4',
+            'fietstocht'
         ));
     }
 
@@ -363,8 +363,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function a_public_label_can_be_used(): void
     {
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
-            new StringLiteral('8d2f6739-7ba1-4c82-99f1-deca6cc79654'),
-            new StringLiteral('bibliotheekweek')
+            '8d2f6739-7ba1-4c82-99f1-deca6cc79654',
+            'bibliotheekweek'
         ));
     }
 
@@ -377,13 +377,13 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->seedRoles($userId);
 
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
-            new StringLiteral($userId),
-            $this->entityPrivateAccess->getName()
+            $userId,
+            $this->entityPrivateAccess->getName()->toNative()
         ));
 
         $this->assertFalse($this->dbalReadRepository->canUseLabel(
-            new StringLiteral($userId),
-            $this->entityPrivateNoAccess->getName()
+            $userId,
+            $this->entityPrivateNoAccess->getName()->toNative()
         ));
     }
 
@@ -396,13 +396,13 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         $this->seedRoles($userId);
 
         $this->assertTrue($this->dbalReadRepository->canUseLabel(
-            new StringLiteral($userId),
-            new StringLiteral('Wandeltocht')
+            $userId,
+            'Wandeltocht'
         ));
 
         $this->assertFalse($this->dbalReadRepository->canUseLabel(
-            new StringLiteral($userId),
-            new StringLiteral('Stadswandeling')
+            $userId,
+            'Stadswandeling'
         ));
     }
 

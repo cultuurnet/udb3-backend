@@ -25,15 +25,15 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
 
     private GodUserReadRepositoryDecorator $repository;
 
-    private StringLiteral $godUserId;
+    private string $godUserId;
 
-    private StringLiteral $userId;
+    private string $userId;
 
     private array $labels;
 
-    private StringLiteral $privateLabel;
+    private string $privateLabel;
 
-    private StringLiteral $publicLabel;
+    private string $publicLabel;
 
     public function setUp(): void
     {
@@ -83,8 +83,8 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
         $this->mockRepository->expects($this->any())
             ->method('canUseLabel')
             ->willReturnCallback(
-                function (StringLiteral $userId, StringLiteral $name) {
-                    $label = $this->mockRepository->getByName($name->toNative());
+                function (string $userId, string $name) {
+                    $label = $this->mockRepository->getByName($name);
 
                     if (!$label) {
                         return true;
@@ -112,11 +112,11 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
             '88272ef3-0add-47df-b40e-1eaaa509b1c8',
         ];
 
-        $this->godUserId = new StringLiteral($this->godUserIds[0]);
-        $this->userId = new StringLiteral('50793168-2667-44f1-9a78-bf8548d7810d');
+        $this->godUserId = $this->godUserIds[0];
+        $this->userId = '50793168-2667-44f1-9a78-bf8548d7810d';
 
-        $this->privateLabel = new StringLiteral('foo');
-        $this->publicLabel = new StringLiteral('bar');
+        $this->privateLabel = 'foo';
+        $this->publicLabel = 'bar';
 
         $this->repository = new GodUserReadRepositoryDecorator($this->mockRepository, $this->godUserIds);
     }

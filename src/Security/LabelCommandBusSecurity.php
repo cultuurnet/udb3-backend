@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * Checks commands that add/remove labels from entities to see if the user is allowed to use those specific labels.
@@ -46,8 +45,8 @@ class LabelCommandBusSecurity implements CommandBusSecurity
 
         foreach ($command->getLabelNames() as $labelName) {
             if (!$this->labelReadRepository->canUseLabel(
-                new StringLiteral($this->userId),
-                $labelName
+                $this->userId,
+                $labelName->toNative()
             )) {
                 throw ApiProblem::labelNotAllowed($labelName->toNative());
             }

@@ -73,10 +73,10 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         return $this->getResult($queryBuilder);
     }
 
-    public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool
+    public function canUseLabel(string $userId, string $name): bool
     {
         // A new label is always allowed.
-        $label = $this->getByName($name->toNative());
+        $label = $this->getByName($name);
         if ($label === null) {
             return true;
         }
@@ -87,11 +87,11 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         }
 
         // A private label is allowed if the user has a role with the label.
-        $query = new Query($name->toNative(), $userId->toNative());
+        $query = new Query($name, $userId);
         $foundLabels = $this->search($query);
 
         if ($foundLabels) {
-            $nameLowerCase = mb_strtolower($name->toNative());
+            $nameLowerCase = mb_strtolower($name);
             foreach ($foundLabels as $foundLabel) {
                 $foundLabelLowerCase = mb_strtolower($foundLabel->getName()->toNative());
                 if ($nameLowerCase === $foundLabelLowerCase) {

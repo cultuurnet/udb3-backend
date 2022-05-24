@@ -50,8 +50,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
         $this->labelPermissionRepository->expects($this->any())
             ->method('canUseLabel')
             ->willReturnCallback(
-                function (StringLiteral $userId, StringLiteral $labelName) {
-                    return $labelName->toNative() !== 'not_allowed';
+                function (string $userId, string $labelName) {
+                    return $labelName !== 'not_allowed';
                 }
             );
 

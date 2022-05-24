@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 final class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
 {
@@ -32,9 +31,9 @@ final class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
         return $this->repository->getByName($name);
     }
 
-    public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool
+    public function canUseLabel(string $userId, string $name): bool
     {
-        if (in_array($userId->toNative(), $this->godUserIds)) {
+        if (in_array($userId, $this->godUserIds)) {
             // God users can use any label.
             return true;
         }
