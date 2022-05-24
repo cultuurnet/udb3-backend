@@ -157,4 +157,66 @@ final class QueryFactoryTest extends TestCase
 
         $this->assertEquals($expectedQuery, $query);
     }
+
+    /**
+     * @test
+     * @dataProvider suggestionDataProvider
+     */
+    public function it_can_return_a_query_with_suggestion($queryValue, bool $suggestion): void
+    {
+        $queryFactory = new QueryFactory(null);
+
+        $request = new Request([
+            QueryFactory::QUERY => self::QUERY_VALUE,
+            QueryFactory::START => self::START_VALUE,
+            QueryFactory::LIMIT => self::LIMIT_VALUE,
+            QueryFactory::SUGGESTION => $queryValue,
+        ]);
+
+        $query = $queryFactory->createFromRequest($request);
+
+        $expectedQuery = new Query(
+            self::QUERY_VALUE,
+            null,
+            self::START_VALUE,
+            self::LIMIT_VALUE,
+            $suggestion
+        );
+
+        $this->assertEquals($expectedQuery, $query);
+    }
+
+    public function suggestionDataProvider(): array
+    {
+        return [
+            [
+                true,
+                true,
+            ],
+            [
+                1,
+                true,
+            ],
+            [
+                'true',
+                true,
+            ],
+            [
+                false,
+                false,
+            ],
+            [
+                0,
+                false,
+            ],
+            [
+                'false',
+                false,
+            ],
+            [
+                'something',
+                false,
+            ],
+        ];
+    }
 }

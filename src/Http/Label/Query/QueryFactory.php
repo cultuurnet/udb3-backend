@@ -12,6 +12,7 @@ class QueryFactory implements QueryFactoryInterface
     public const QUERY = 'query';
     public const START = 'start';
     public const LIMIT = 'limit';
+    public const SUGGESTION = 'suggestion';
 
     private ?string $userId;
 
@@ -31,11 +32,14 @@ class QueryFactory implements QueryFactoryInterface
 
         $limit = (int) $request->query->get(self::LIMIT);
 
+        $suggestion = filter_var($request->query->get(self::SUGGESTION), FILTER_VALIDATE_BOOLEAN);
+
         return new Query(
             $value,
             $userId,
             $offset,
-            $limit
+            $limit,
+            $suggestion
         );
     }
 }
