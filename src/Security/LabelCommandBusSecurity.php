@@ -12,20 +12,11 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
  */
 class LabelCommandBusSecurity implements CommandBusSecurity
 {
-    /**
-     * @var CommandBusSecurity
-     */
-    private $decoratee;
+    private CommandBusSecurity $decoratee;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $labelReadRepository;
+    private ReadRepositoryInterface $labelReadRepository;
 
     public function __construct(
         CommandBusSecurity $decoratee,

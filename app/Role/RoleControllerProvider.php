@@ -15,14 +15,7 @@ use Silex\ControllerProviderInterface;
 
 class RoleControllerProvider implements ControllerProviderInterface
 {
-    /**
-     * Returns routes to connect to the given application.
-     *
-     * @param Application $app An Application instance
-     *
-     * @return ControllerCollection A ControllerCollection instance
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         $app['role_controller'] = $app->share(
             function (Application $app) {
