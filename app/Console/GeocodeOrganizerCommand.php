@@ -21,7 +21,7 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
 
     protected function getQueryForMissingCoordinates(): string
     {
-        return 'NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
+        return '_exists_:address NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
     protected function dispatchGeocodingCommand(string $organizerId, OutputInterface $output): void
@@ -36,11 +36,6 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
         $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
         $mainLanguage = $jsonLd->mainLanguage ?? 'nl';
-
-        if (!isset($jsonLd['address'])) {
-            $output->writeln("Skipping {$organizerId}. (JSON-LD does not contain an address.)");
-            return;
-        }
 
         if (!isset($jsonLd['address'][$mainLanguage])) {
             $output->writeln("Skipping {$organizerId}. (JSON-LD does not contain an address for {$mainLanguage}.)");
