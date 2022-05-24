@@ -32,7 +32,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
         $app[self::READ_REST_CONTROLLER] = $app->share(
             function (Application $app) {
                 return new ReadRestController(
-                    $app[LabelServiceProvider::READ_SERVICE],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                     $app[LabelServiceProvider::QUERY_FACTORY]
                 );
             }
