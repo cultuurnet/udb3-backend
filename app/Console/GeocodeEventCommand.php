@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
+use CultuurNet\UDB3\Json;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodeEventCommand extends AbstractGeocodeCommand
@@ -33,7 +34,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             return;
         }
 
-        $jsonLd = json_decode($document->getRawBody(), true);
+        $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
         $mainLanguage = isset($jsonLd->mainLanguage) ? $jsonLd->mainLanguage : 'nl';
 
