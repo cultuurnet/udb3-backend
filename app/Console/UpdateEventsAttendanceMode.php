@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Exception;
+use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -99,6 +100,11 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
     private function askForPhysicalLocation(InputInterface $input, OutputInterface $output): LocationId
     {
         $question = new Question('Provide UUID of the physical location the mixed/offline event will take place' . \PHP_EOL);
+        $question->setValidator(static function (string $location) {
+            if ($location === LocationId::NIL_LOCATION) {
+                throw new RuntimeException('Mixed and offline events require a physical location and not a nil location');
+            }
+        });
 
         return new LocationId($this->getHelper('question')->ask($input, $output, $question));
     }
