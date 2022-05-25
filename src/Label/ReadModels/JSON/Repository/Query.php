@@ -14,11 +14,14 @@ final class Query
 
     private ?int $limit;
 
+    private bool $suggestion;
+
     public function __construct(
         string $value,
         ?string $userId = null,
         ?int $offset = null,
-        ?int $limit = null
+        ?int $limit = null,
+        bool $suggestion = false
     ) {
         if ($offset < 0) {
             throw new \InvalidArgumentException('Offset should be zero or higher');
@@ -32,6 +35,7 @@ final class Query
         $this->userId = $userId;
         $this->offset = $offset;
         $this->limit = $limit;
+        $this->suggestion = $suggestion;
     }
 
     public function getValue(): string
@@ -52,5 +56,10 @@ final class Query
     public function getLimit(): ?int
     {
         return $this->limit;
+    }
+
+    public function isSuggestion(): bool
+    {
+        return $this->suggestion;
     }
 }

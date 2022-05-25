@@ -130,4 +130,14 @@ final class QueryTest extends TestCase
             -1
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_has_a_default_false_suggestion(): void
+    {
+        $query = new Query(self::NAME);
+
+        $this->assertFalse($query->isSuggestion());
+    }
 }
