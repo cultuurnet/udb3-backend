@@ -6,10 +6,13 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
+use CultuurNet\UDB3\Event\Commands\UpdateLocation;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Exception;
+use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,6 +48,11 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         $query = $this->askForQuery($input, $output);
         $attendanceMode = $this->askAttendanceMode($input, $output);
 
+        $locationId = new LocationId(LocationId::NIL_LOCATION);
+        if (!$attendanceMode->sameAs(AttendanceMode::online())) {
+            $locationId = $this->askForPhysicalLocation($input, $output);
+        }
+
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count <= 0) {
@@ -52,17 +60,7 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
             return 0;
         }
 
-        $confirmation = $this->getHelper('question')
-            ->ask(
-                $input,
-                $output,
-                new ConfirmationQuestion(
-                    'This action will update the attendance mode of ' . $count . ' events, continue? [y/N]',
-                    false
-                )
-            );
-
-        if (!$confirmation) {
+        if (!$this->askConfirmation($input, $output, $count)) {
             return 0;
         }
 
@@ -73,6 +71,8 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         foreach ($events as $id => $event) {
             try {
                 $this->commandBus->dispatch(new UpdateAttendanceMode($id, $attendanceMode));
+
+                $this->commandBus->dispatch(new UpdateLocation($id, $locationId));
             } catch (Exception $exception) {
                 $exceptions[$id] = 'Event with id: ' . $id . ' caused an exception: ' . $exception->getMessage();
             }
@@ -90,11 +90,24 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         return 0;
     }
 
-    private function askForQuery($input, $output): string
+    private function askForQuery(InputInterface $input, OutputInterface $output): string
     {
         $question = new Question('Provide SAPI 3 query for events to update' . \PHP_EOL);
 
         return $this->getHelper('question')->ask($input, $output, $question);
+    }
+
+    private function askForPhysicalLocation(InputInterface $input, OutputInterface $output): LocationId
+    {
+        $question = new Question('Provide UUID of the physical location the mixed/offline event will take place' . \PHP_EOL);
+        $question->setValidator(static function (string $location) {
+            if ($location === LocationId::NIL_LOCATION) {
+                throw new RuntimeException('Mixed and offline events require a physical location and not a nil location');
+            }
+            return $location;
+        });
+
+        return new LocationId($this->getHelper('question')->ask($input, $output, $question));
     }
 
     private function askAttendanceMode(InputInterface $input, OutputInterface $output): AttendanceMode
@@ -111,5 +124,15 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         $question->setErrorMessage('Invalid attendance mode: %s');
 
         return new AttendanceMode($this->getHelper('question')->ask($input, $output, $question));
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
+    {
+        $question = new ConfirmationQuestion(
+            'This action will update the attendance mode of ' . $count . ' events, continue? [y/N]',
+            false
+        );
+
+        return $this->getHelper('question')->ask($input, $output, $question);
     }
 }
