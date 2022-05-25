@@ -14,15 +14,9 @@ use Psr\Log\LoggerInterface;
 
 class DefaultGeocodingService implements GeocodingService
 {
-    /**
-     * @var Geocoder
-     */
-    private $geocoder;
+    private Geocoder $geocoder;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         Geocoder $geocoder,
@@ -32,10 +26,7 @@ class DefaultGeocodingService implements GeocodingService
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getCoordinates($address)
+    public function getCoordinates($address): ?Coordinates
     {
         try {
             $addresses = $this->geocoder->geocode($address);
@@ -51,7 +42,7 @@ class DefaultGeocodingService implements GeocodingService
                 new Longitude($coordinates->getLongitude())
             );
         } catch (Exception|CollectionIsEmpty $exception) {
-            $this->logger->error(
+            $this->logger->warning(
                 'No results for address: "' . $address . '". Exception message: ' . $exception->getMessage()
             );
             return null;

@@ -7,22 +7,16 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Json;
 use Doctrine\Common\Cache\Cache;
 
 class CachedGeocodingService implements GeocodingService
 {
     public const NO_COORDINATES_FOUND = 'NO_COORDINATES_FOUND';
 
-    /**
-     * @var GeocodingService
-     */
-    private $geocodingService;
+    private GeocodingService $geocodingService;
 
-    /**
-     * @var Cache
-     */
-    private $cache;
-
+    private Cache $cache;
 
     public function __construct(GeocodingService $geocodingService, Cache $cache)
     {
@@ -30,15 +24,12 @@ class CachedGeocodingService implements GeocodingService
         $this->cache = $cache;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getCoordinates($address)
+    public function getCoordinates($address): ?Coordinates
     {
         $encodedCacheData = $this->cache->fetch($address);
 
         if ($encodedCacheData) {
-            $cacheData = json_decode($encodedCacheData, true);
+            $cacheData = Json::decodeAssociatively($encodedCacheData);
 
             // Some addresses have no coordinates, to cache these addresses 'NO_COORDINATES_FOUND' is used as value.
             // When the 'NO_COORDINATES_FOUND' cached value is found null is returned as coordinate.
@@ -46,7 +37,7 @@ class CachedGeocodingService implements GeocodingService
                 return null;
             }
 
-            if (isset($cacheData['lat']) && isset($cacheData['long'])) {
+            if (isset($cacheData['lat'], $cacheData['long'])) {
                 return new Coordinates(
                     new Latitude((float) $cacheData['lat']),
                     new Longitude((float) $cacheData['long'])
@@ -66,7 +57,7 @@ class CachedGeocodingService implements GeocodingService
             ];
         }
 
-        $this->cache->save($address, json_encode($cacheData));
+        $this->cache->save($address, Json::encode($cacheData));
 
         return $coordinates;
     }
