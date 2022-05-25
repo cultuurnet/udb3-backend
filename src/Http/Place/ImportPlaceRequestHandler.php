@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\Offer\InvalidWorkflowStatusTransition;
@@ -42,7 +43,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
 use DateTimeImmutable;
@@ -186,9 +186,8 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteTypicalAgeRange($placeId);
         }
 
-        $priceInfo = $placeAdapter->getPriceInfo();
-        if ($priceInfo) {
-            $commands[] = new UpdatePriceInfo($placeId, $priceInfo);
+        if ($place->getPriceInfo()) {
+            $commands[] = new UpdatePriceInfo($placeId, $place->getPriceInfo());
         }
 
         foreach ($placeAdapter->getTitleTranslations() as $language => $title) {

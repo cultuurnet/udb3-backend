@@ -4,29 +4,30 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 
+use Broadway\Repository\AggregateNotFoundException;
+use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CommandValidatorInterface;
 use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Event\EventRepository;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use Psr\Log\LoggerInterface;
 
 class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
 {
-    /**
-     * @var \CultureFeed_Uitpas
-     */
-    private $uitpas;
+    private CultureFeed_Uitpas $uitpas;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
+
+    private EventRepository $eventRepository;
 
     public function __construct(
-        \CultureFeed_Uitpas $uitpas,
+        CultureFeed_Uitpas $uitpas,
+        EventRepository $eventRepository,
         LoggerInterface $logger
     ) {
         $this->uitpas = $uitpas;
+        $this->eventRepository = $eventRepository;
         $this->logger = $logger;
     }
 
@@ -42,6 +43,13 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
         }
 
         $eventId = $command->getItemId();
+
+        try {
+            $this->eventRepository->load($eventId);
+        } catch (AggregateNotFoundException $exception) {
+            // The command is for a place which can not have ticket sales.
+            return;
+        }
 
         try {
             $hasTicketSales = $this->uitpas->eventHasTicketSales($eventId);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo as EventUpdatePriceInfo;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -14,9 +13,7 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo as PlaceUpdatePriceInfo;
-use CultuurNet\UDB3\PriceInfo\PriceInfo as LegacyPriceInfo;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -53,17 +50,11 @@ class UpdatePriceInfoRequestHandler implements RequestHandlerInterface
 
         /** @var PriceInfo $priceInfo */
         $priceInfo = $parser->parse($request)->getParsedBody();
-        if ($offerType->sameAs(OfferType::event())) {
-            $updatePriceInfo = new EventUpdatePriceInfo(
-                $offerId,
-                LegacyPriceInfo::fromUdb3ModelPriceInfo($priceInfo)
-            );
-        } else {
-            $updatePriceInfo = new PlaceUpdatePriceInfo(
-                $offerId,
-                LegacyPriceInfo::fromUdb3ModelPriceInfo($priceInfo)
-            );
-        }
+        $updatePriceInfo = new UpdatePriceInfo(
+            $offerId,
+            $priceInfo
+        );
+
         $this->commandBus->dispatch($updatePriceInfo);
 
         return new NoContentResponse();

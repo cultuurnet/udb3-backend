@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
@@ -615,6 +616,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[DeleteVideoHandler::class]);
         $commandBus->subscribe($app[ImportVideosHandler::class]);
         $commandBus->subscribe($app[DeleteOfferHandler::class]);
+        $commandBus->subscribe($app[UpdatePriceInfoHandler::class]);
 
         // Event command handlers
         $commandBus->subscribe($app[UpdateSubEventsHandler::class]);

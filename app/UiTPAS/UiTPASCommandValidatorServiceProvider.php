@@ -19,6 +19,7 @@ class UiTPASCommandValidatorServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new EventHasTicketSalesCommandValidator(
                     $app['uitpas'],
+                    $app['event_repository'],
                     LoggerFactory::create($app, LoggerName::forService('uitpas', 'ticket-sales'))
                 );
             }

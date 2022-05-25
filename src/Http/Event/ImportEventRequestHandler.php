@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
-use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
@@ -49,6 +48,7 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
@@ -238,9 +238,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteTypicalAgeRange($eventId);
         }
 
-        $priceInfo = $eventAdapter->getPriceInfo();
-        if ($priceInfo) {
-            $commands[] = new UpdatePriceInfo($eventId, $priceInfo);
+        if ($event->getPriceInfo()) {
+            $commands[] = new UpdatePriceInfo($eventId, $event->getPriceInfo());
         }
 
         foreach ($eventAdapter->getTitleTranslations() as $language => $title) {

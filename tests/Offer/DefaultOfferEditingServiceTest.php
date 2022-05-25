@@ -9,18 +9,13 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
-use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -139,48 +134,6 @@ class DefaultOfferEditingServiceTest extends TestCase
         );
 
         $this->assertEquals($this->expectedCommandId, $commandId);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_price_info()
-    {
-        $aggregateId = '940ce4d1-740b-43d2-a1a6-85be04a3eb30';
-        $expectedCommandId = 'f42802e4-c1f1-4aa6-9909-a08cfc66f355';
-
-        $priceInfo = new PriceInfo(
-            new BasePrice(
-                new Money(1050, new Currency('EUR'))
-            )
-        );
-
-        $updatePriceInfoCommand = $this->getMockForAbstractClass(
-            AbstractUpdatePriceInfo::class,
-            [$aggregateId, $priceInfo]
-        );
-
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdatePriceInfoCommand')
-            ->with($aggregateId, $priceInfo)
-            ->willReturn($updatePriceInfoCommand);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($updatePriceInfoCommand)
-            ->willReturn($expectedCommandId);
-
-        $this->offerRepository->expects($this->once())
-            ->method('fetch')
-            ->with('940ce4d1-740b-43d2-a1a6-85be04a3eb30')
-            ->willReturn(new JsonDocument('940ce4d1-740b-43d2-a1a6-85be04a3eb30'));
-
-        $commandId = $this->offerEditingService->updatePriceInfo(
-            $aggregateId,
-            $priceInfo
-        );
-
-        $this->assertEquals($expectedCommandId, $commandId);
     }
 
     /**

@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
@@ -50,6 +51,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/type/{termId}/', UpdateTypeRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/facilities/', UpdateFacilitiesRequestHandler::class);
+
+        $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
@@ -106,6 +109,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[UpdateFacilitiesRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateFacilitiesRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdatePriceInfoRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdatePriceInfoRequestHandler($app['event_command_bus'])
         );
 
         $app[AddVideoRequestHandler::class] = $app->share(

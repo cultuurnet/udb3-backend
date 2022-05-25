@@ -24,19 +24,14 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
-use Money\Currency;
-use Money\Money;
 
 class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -236,36 +231,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->then(
                 [
                     new LocationUpdated($eventId, $locationId),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_price_info(): void
-    {
-        $id = '1';
-
-        $priceInfo = new PriceInfo(
-            new BasePrice(
-                new Money(1050, new Currency('EUR'))
-            )
-        );
-
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                ]
-            )
-            ->when(
-                $this->commandFactory->createUpdatePriceInfoCommand($id, $priceInfo)
-            )
-            ->then(
-                [
-                    new PriceInfoUpdated($id, $priceInfo),
                 ]
             );
     }

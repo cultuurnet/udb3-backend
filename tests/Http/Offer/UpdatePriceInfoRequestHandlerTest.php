@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo as EventUpdatePriceInfo;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo as PlaceUpdatePriceInfo;
-use CultuurNet\UDB3\PriceInfo\BasePrice;
-use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -77,42 +76,36 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray($body)
             ->build('PUT');
 
-        $priceInfo = (new PriceInfo(
-            new BasePrice(
-                new Money(
-                    1000,
-                    new Currency('EUR')
+        $priceInfo = new PriceInfo(
+            new Tariff(
+                new TranslatedTariffName(
+                    new Language('nl'),
+                    new TariffName('Basistarief')
+                ),
+                new Money(1000, new Currency('EUR'))
+            ),
+            new Tariffs(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Jongeren')
+                    ),
+                    new Money(500, new Currency('EUR'))
+                ),
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Senioren')
+                    ),
+                    new Money(500, new Currency('EUR'))
                 )
-            )
-        ))->withExtraTariff(
-            new Tariff(
-                new MultilingualString(
-                    new Language('nl'),
-                    new StringLiteral('Jongeren')
-                ),
-                new Money(500, new Currency('EUR'))
-            )
-        )->withExtraTariff(
-            new Tariff(
-                new MultilingualString(
-                    new Language('nl'),
-                    new StringLiteral('Senioren')
-                ),
-                new Money(500, new Currency('EUR'))
             )
         );
 
-        if ($offerType === 'events') {
-            $expected = new EventUpdatePriceInfo(
-                'a91bc028-c44a-4429-9784-8641c9858eed',
-                $priceInfo
-            );
-        } else {
-            $expected = new PlaceUpdatePriceInfo(
-                'a91bc028-c44a-4429-9784-8641c9858eed',
-                $priceInfo
-            );
-        }
+        $expected = new UpdatePriceInfo(
+            'a91bc028-c44a-4429-9784-8641c9858eed',
+            $priceInfo
+        );
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')
