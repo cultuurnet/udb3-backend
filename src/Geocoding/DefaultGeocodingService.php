@@ -42,7 +42,7 @@ class DefaultGeocodingService implements GeocodingService
                 new Longitude($coordinates->getLongitude())
             );
         } catch (Exception|CollectionIsEmpty $exception) {
-            $this->logger->error(
+            $this->logger->warning(
                 'No results for address: "' . $address . '". Exception message: ' . $exception->getMessage()
             );
             return null;
