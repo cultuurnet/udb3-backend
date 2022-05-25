@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\Exceptions\ImageUploadError;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemOperator;
@@ -76,7 +77,7 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getMimeType')
             ->willReturn('video/avi');
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ImageUploadError::class);
         $this->expectExceptionMessage('The uploaded file is not an image.');
 
         $this->uploader->upload($file, $description, $copyrightHolder, $language);
@@ -136,7 +137,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ImageUploadError::class);
         $this->expectExceptionMessage('The file did not upload correctly.');
 
         $this->uploader->upload($file, $description, $copyrightHolder, $language);
@@ -163,7 +164,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ImageUploadError::class);
         $this->expectExceptionMessage('The type of the uploaded file can not be guessed.');
 
         $this->uploader->upload($file, $description, $copyrightHolder, $language);

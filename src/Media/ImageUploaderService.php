@@ -8,12 +8,13 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
+use CultuurNet\UDB3\Media\Exceptions\ImageUploadError;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\StringLiteral;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use CultuurNet\UDB3\StringLiteral;
 
 class ImageUploaderService implements ImageUploaderInterface
 {
@@ -56,13 +57,13 @@ class ImageUploaderService implements ImageUploaderInterface
         Language $language
     ): UUID {
         if (!$file->isValid()) {
-            throw new \InvalidArgumentException('The file did not upload correctly.');
+            throw new ImageUploadError('The file did not upload correctly.');
         }
 
         $mimeTypeString = $file->getMimeType();
 
         if (!$mimeTypeString) {
-            throw new \InvalidArgumentException('The type of the uploaded file can not be guessed.');
+            throw new ImageUploadError('The type of the uploaded file can not be guessed.');
         }
 
         $this->guardFileSizeLimit($file);
@@ -70,7 +71,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $fileTypeParts = explode('/', $mimeTypeString);
         $fileType = array_shift($fileTypeParts);
         if ($fileType !== 'image') {
-            throw new \InvalidArgumentException('The uploaded file is not an image.');
+            throw new ImageUploadError('The uploaded file is not an image.');
         }
 
         /** @var MIMEType $mimeType */
