@@ -36,7 +36,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
 
         $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
-        $mainLanguage = isset($jsonLd->mainLanguage) ? $jsonLd->mainLanguage : 'nl';
+        $mainLanguage = $jsonLd->mainLanguage ?? 'nl';
 
         if (!isset($jsonLd['location'])) {
             $output->writeln("Skipping {$eventId}. (JSON-LD does not contain a location.)");
