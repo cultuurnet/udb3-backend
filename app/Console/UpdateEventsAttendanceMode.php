@@ -104,6 +104,7 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
             if ($location === LocationId::NIL_LOCATION) {
                 throw new RuntimeException('Mixed and offline events require a physical location and not a nil location');
             }
+            return $location;
         });
 
         return new LocationId($this->getHelper('question')->ask($input, $output, $question));
