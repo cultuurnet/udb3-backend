@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,7 +21,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
 
     protected function getQueryForMissingCoordinates(): string
     {
-        return 'NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
+        return '_exists_:address NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
     protected function dispatchGeocodingCommand(string $placeId, OutputInterface $output): void
@@ -31,24 +32,23 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
             return;
         }
 
-        $jsonLd = json_decode($document->getRawBody(), true);
+        $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
-        $mainLanguage = isset($jsonLd->mainLanguage) ? $jsonLd->mainLanguage : 'nl';
+        $addressLanguage = $jsonLd->mainLanguage ?? 'nl';
 
-        if (!isset($jsonLd['address'])) {
-            $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address.)");
-            return;
-        }
-
-        if (!isset($jsonLd['address'][$mainLanguage])) {
-            $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address for {$mainLanguage}.)");
-            return;
+        if (!isset($jsonLd['address'][$addressLanguage])) {
+            // Some places have an address in another language then the main language or `nl`
+            $addressLanguage = array_key_first($jsonLd['address']);
+            if ($addressLanguage === null) {
+                $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address for {$addressLanguage}.)");
+                return;
+            }
         }
 
         try {
-            $address = Address::deserialize($jsonLd['address'][$mainLanguage]);
+            $address = Address::deserialize($jsonLd['address'][$addressLanguage]);
         } catch (\Exception $e) {
-            $output->writeln("Skipping {$placeId}. (JSON-LD address for {$mainLanguage} could not be parsed.)");
+            $output->writeln("Skipping {$placeId}. (JSON-LD address for {$addressLanguage} could not be parsed.)");
             return;
         }
 

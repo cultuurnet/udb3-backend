@@ -21,7 +21,7 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
 
     protected function getQueryForMissingCoordinates(): string
     {
-        return 'NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
+        return '_exists_:address NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
     protected function dispatchGeocodingCommand(string $organizerId, OutputInterface $output): void
@@ -35,22 +35,21 @@ class GeocodeOrganizerCommand extends AbstractGeocodeCommand
 
         $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
-        $mainLanguage = $jsonLd->mainLanguage ?? 'nl';
+        $addressLanguage = $jsonLd->mainLanguage ?? 'nl';
 
-        if (!isset($jsonLd['address'])) {
-            $output->writeln("Skipping {$organizerId}. (JSON-LD does not contain an address.)");
-            return;
-        }
-
-        if (!isset($jsonLd['address'][$mainLanguage])) {
-            $output->writeln("Skipping {$organizerId}. (JSON-LD does not contain an address for {$mainLanguage}.)");
-            return;
+        if (!isset($jsonLd['address'][$addressLanguage])) {
+            // Some organizers have an address in another language then the main language or `nl`
+            $addressLanguage = array_key_first($jsonLd['address']);
+            if ($addressLanguage === null) {
+                $output->writeln("Skipping {$organizerId}. (JSON-LD does not contain an address for {$addressLanguage}.)");
+                return;
+            }
         }
 
         try {
-            $address = Address::deserialize($jsonLd['address'][$mainLanguage]);
+            $address = Address::deserialize($jsonLd['address'][$addressLanguage]);
         } catch (\Exception $e) {
-            $output->writeln("Skipping {$organizerId}. (JSON-LD address for {$mainLanguage} could not be parsed.)");
+            $output->writeln("Skipping {$organizerId}. (JSON-LD address for {$addressLanguage} could not be parsed.)");
             return;
         }
 

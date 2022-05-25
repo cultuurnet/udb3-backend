@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
+use CultuurNet\UDB3\Json;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodeEventCommand extends AbstractGeocodeCommand
@@ -22,7 +23,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
     {
         // Only geo-code events without location id. Events with a location id can only be geo-coded by geo-coding the
         // linked place.
-        return 'NOT(_exists_:geo OR _exists_:location.id OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
+        return '_exists:address NOT(_exists_:geo OR _exists_:location.id OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
     protected function dispatchGeocodingCommand(string $eventId, OutputInterface $output): void
@@ -33,9 +34,9 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             return;
         }
 
-        $jsonLd = json_decode($document->getRawBody(), true);
+        $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
-        $mainLanguage = isset($jsonLd->mainLanguage) ? $jsonLd->mainLanguage : 'nl';
+        $mainLanguage = $jsonLd->mainLanguage ?? 'nl';
 
         if (!isset($jsonLd['location'])) {
             $output->writeln("Skipping {$eventId}. (JSON-LD does not contain a location.)");
@@ -47,11 +48,6 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             $output->writeln(
                 "Skipping {$eventId}. (JSON-LD contains a location with an id. Geocode the linked place instead.)"
             );
-            return;
-        }
-
-        if (!isset($location['address'])) {
-            $output->writeln("Skipping {$eventId}. (JSON-LD does not contain an address.)");
             return;
         }
 
