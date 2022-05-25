@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -25,15 +25,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class EditRoleRestControllerTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $roleId;
+    private string $roleId;
 
-    /**
-     * @var string
-     */
-    private $labelId;
+    private string $labelId;
 
     /**
      * @var RoleEditingServiceInterface|MockObject
@@ -56,16 +50,13 @@ class EditRoleRestControllerTest extends TestCase
     private $queryJsonDeserializer;
 
     /**
-     * @var ReadServiceInterface|MockObject
+     * @var ReadRepositoryInterface|MockObject
      */
-    private $labelService;
+    private $labelRepository;
 
-    /**
-     * @var EditRoleRestController
-     */
-    private $controller;
+    private EditRoleRestController $controller;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->roleId = '5a359014-d022-48e4-98e2-173496e636fb';
         $this->labelId = 'b426ab4f-2371-427b-b27c-4b6b7b283c2a';
@@ -73,14 +64,14 @@ class EditRoleRestControllerTest extends TestCase
         $this->editService = $this->createMock(RoleEditingServiceInterface::class);
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->updateRoleRequestDeserializer = $this->createMock(UpdateRoleRequestDeserializer::class);
-        $this->labelService = $this->createMock(ReadServiceInterface::class);
+        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->queryJsonDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->controller = new EditRoleRestController(
             $this->editService,
             $this->commandBus,
             $this->updateRoleRequestDeserializer,
-            $this->labelService,
+            $this->labelRepository,
             $this->queryJsonDeserializer
         );
     }
@@ -88,7 +79,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_role()
+    public function it_creates_a_role(): void
     {
         $roleId = new UUID('d01e0e24-4a8e-11e6-beb8-9e71128cae77');
         $roleName = new StringLiteral('roleName');
@@ -109,7 +100,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_a_role()
+    public function it_updates_a_role(): void
     {
         $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
         $request = $this->makeRequest('PATCH', 'samples/update_role.json');
@@ -137,7 +128,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_constraint()
+    public function it_adds_a_constraint(): void
     {
         $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
         $constraintQuery = new Query('city:3000');
@@ -164,7 +155,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_a_constraint()
+    public function it_updates_a_constraint(): void
     {
         $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
         $constraintQuery = new Query('city:3000');
@@ -191,7 +182,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_a_constraint()
+    public function it_removes_a_constraint(): void
     {
         $roleId = 'd01e0e24-4a8e-11e6-beb8-9e71128cae77';
 
@@ -207,7 +198,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_deletes_a_role()
+    public function it_deletes_a_role(): void
     {
         $roleId = new UUID('d01e0e24-4a8e-11e6-beb8-9e71128cae77');
 
@@ -223,7 +214,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_no_roleId_is_given_to_delete()
+    public function it_throws_an_exception_when_no_roleId_is_given_to_delete(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Required field id is missing');
@@ -233,7 +224,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_label()
+    public function it_adds_a_label(): void
     {
         $this->editService->expects($this->once())
             ->method('addLabel')
@@ -250,7 +241,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_label_by_name()
+    public function it_adds_a_label_by_name(): void
     {
         $labelName = 'foo';
 
@@ -261,9 +252,9 @@ class EditRoleRestControllerTest extends TestCase
             Privacy::PRIVACY_PUBLIC()
         );
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn($label);
 
         $this->editService->expects($this->once())
@@ -281,13 +272,13 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_exception_when_adding_an_unknown_label()
+    public function it_throws_an_api_problem_exception_when_adding_an_unknown_label(): void
     {
         $labelName = 'foo';
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn(null);
 
         $this->expectException(ApiProblem::class);
@@ -298,7 +289,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_a_label()
+    public function it_removes_a_label(): void
     {
         $this->editService->expects($this->once())
             ->method('removeLabel')
@@ -315,7 +306,7 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_a_label_by_name()
+    public function it_removes_a_label_by_name(): void
     {
         $labelName = 'foo';
 
@@ -326,9 +317,9 @@ class EditRoleRestControllerTest extends TestCase
             Privacy::PRIVACY_PUBLIC()
         );
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn($label);
 
         $this->editService->expects($this->once())
@@ -346,13 +337,13 @@ class EditRoleRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_exception_when_removing_an_unknown_label()
+    public function it_throws_an_api_problem_exception_when_removing_an_unknown_label(): void
     {
         $labelName = 'foo';
 
-        $this->labelService->expects($this->once())
+        $this->labelRepository->expects($this->once())
             ->method('getByName')
-            ->with(new StringLiteral($labelName))
+            ->with($labelName)
             ->willReturn(null);
 
         $this->expectException(ApiProblem::class);
@@ -369,12 +360,8 @@ class EditRoleRestControllerTest extends TestCase
         return $request;
     }
 
-    private function getJson($fileName)
+    private function getJson($fileName): string
     {
-        $json = file_get_contents(
-            __DIR__ . '/' . $fileName
-        );
-
-        return $json;
+        return file_get_contents(__DIR__ . '/' . $fileName);
     }
 }

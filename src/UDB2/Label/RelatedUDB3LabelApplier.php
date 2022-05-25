@@ -42,7 +42,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
 
         foreach ($labelRelations as $labelRelation) {
             if (!$labelRelation->isImported()) {
-                $labelName = $labelRelation->getLabelName();
+                $labelName = $labelRelation->getLabelName()->toNative();
                 $label = $this->labelsRepository->getByName($labelName);
 
                 if ($label) {

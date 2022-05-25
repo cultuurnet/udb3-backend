@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\StringLiteral;
 use stdClass;
 
 final class CdbXMLToJsonLDLabelImporter
@@ -29,7 +28,7 @@ final class CdbXMLToJsonLDLabelImporter
 
         /** @var Label $label */
         foreach ($labels as $label) {
-            $labelReadModel = $this->labelReadRepository->getByName(new StringLiteral($label->getName()->toString()));
+            $labelReadModel = $this->labelReadRepository->getByName($label->getName()->toString());
             if ($labelReadModel) {
                 $isVisible = $labelReadModel->getVisibility()->sameAs(Visibility::VISIBLE());
                 $label = new Label($label->getName(), $isVisible);

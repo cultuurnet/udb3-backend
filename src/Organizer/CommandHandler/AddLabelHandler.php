@@ -43,7 +43,7 @@ final class AddLabelHandler implements CommandHandler
 
         $this->labelService->createLabelAggregateIfNew(new LabelName($name->toString()), $visible);
 
-        $readModelLabelEntity = $this->labelRepository->getByName(new LabelName($name->toString()));
+        $readModelLabelEntity = $this->labelRepository->getByName($name->toString());
         if ($readModelLabelEntity) {
             $visible = $readModelLabelEntity->getVisibility()->sameAs(Visibility::VISIBLE());
         }

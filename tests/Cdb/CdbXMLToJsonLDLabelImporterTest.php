@@ -44,20 +44,18 @@ class CdbXMLToJsonLDLabelImporterTest extends TestCase
         $this->labelReadRepository->expects($this->any())
             ->method('getByName')
             ->willReturnCallback(
-                static function (StringLiteral $labelName): ?Entity {
-                    $labelNameString = $labelName->toNative();
-
+                static function (string $labelName): ?Entity {
                     $uuid = new UUID('3b069d8a-2394-45f4-80ce-50469c643386');
                     $privacy = Privacy::PRIVACY_PUBLIC();
 
-                    switch ($labelNameString) {
+                    switch ($labelName) {
                         case 'visible_in_xml_and_visible_in_udb3':
                         case 'invisible_in_xml_and_visible_in_udb3':
-                            return new Entity($uuid, $labelName, Visibility::VISIBLE(), $privacy);
+                            return new Entity($uuid, new StringLiteral($labelName), Visibility::VISIBLE(), $privacy);
 
                         case 'visible_in_xml_and_invisible_in_udb3':
                         case 'invisible_in_xml_and_invisible_in_udb3':
-                            return new Entity($uuid, $labelName, Visibility::INVISIBLE(), $privacy);
+                            return new Entity($uuid, new StringLiteral($labelName), Visibility::INVISIBLE(), $privacy);
 
                         default:
                             return null;

@@ -15,14 +15,7 @@ use Silex\ControllerProviderInterface;
 
 class RoleControllerProvider implements ControllerProviderInterface
 {
-    /**
-     * Returns routes to connect to the given application.
-     *
-     * @param Application $app An Application instance
-     *
-     * @return ControllerCollection A ControllerCollection instance
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         $app['role_controller'] = $app->share(
             function (Application $app) {
@@ -43,7 +36,7 @@ class RoleControllerProvider implements ControllerProviderInterface
                     $app['role_editing_service'],
                     $app['event_command_bus'],
                     new UpdateRoleRequestDeserializer(),
-                    $app[LabelServiceProvider::READ_SERVICE],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                     new QueryJSONDeserializer()
                 );
             }

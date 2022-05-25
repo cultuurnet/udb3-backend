@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Label;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
@@ -28,9 +28,9 @@ final class ReadRestControllerTest extends TestCase
     private Query $query;
 
     /**
-     * @var ReadServiceInterface|MockObject
+     * @var ReadRepositoryInterface|MockObject
      */
-    private $readService;
+    private $labelRepository;
 
     /**
      * @var QueryFactoryInterface|MockObject
@@ -55,13 +55,13 @@ final class ReadRestControllerTest extends TestCase
         ]);
 
         $this->query = new Query(
-            new StringLiteral('label'),
-            new StringLiteral('userId'),
+            'label',
+            'userId',
             5,
             2
         );
 
-        $this->readService = $this->createMock(ReadServiceInterface::class);
+        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->mockGetByUuid();
         $this->mockGetByName();
         $this->mockSearch();
@@ -71,7 +71,7 @@ final class ReadRestControllerTest extends TestCase
         $this->mockCreateQuery();
 
         $this->readRestController = new ReadRestController(
-            $this->readService,
+            $this->labelRepository,
             $this->queryFactory
         );
     }
@@ -97,7 +97,7 @@ final class ReadRestControllerTest extends TestCase
      */
     public function it_should_return_a_json_response_when_you_get_a_label_by_name(): void
     {
-        $this->readService
+        $this->labelRepository
             ->expects($this->never())
             ->method('getByUuid');
 
@@ -138,7 +138,7 @@ final class ReadRestControllerTest extends TestCase
      */
     public function it_returns_an_empty_collection_when_no_labels_are_found(): void
     {
-        $readService = $this->createMock(ReadServiceInterface::class);
+        $readService = $this->createMock(ReadRepositoryInterface::class);
 
         $readService->method('searchTotalLabels')
             ->with($this->query)
@@ -169,28 +169,28 @@ final class ReadRestControllerTest extends TestCase
 
     private function mockGetByUuid(): void
     {
-        $this->readService->method('getByUuid')
+        $this->labelRepository->method('getByUuid')
             ->with($this->entity->getUuid())
             ->willReturn($this->entity);
     }
 
     private function mockGetByName(): void
     {
-        $this->readService->method('getByName')
+        $this->labelRepository->method('getByName')
             ->with($this->entity->getName()->toNative())
             ->willReturn($this->entity);
     }
 
     private function mockSearch(): void
     {
-        $this->readService->method('search')
+        $this->labelRepository->method('search')
             ->with($this->query)
             ->willReturn([$this->entity, $this->entity]);
     }
 
     private function mockSearchTotalLabels(): void
     {
-        $this->readService->method('searchTotalLabels')
+        $this->labelRepository->method('searchTotalLabels')
             ->with($this->query)
             ->willReturn(2);
     }

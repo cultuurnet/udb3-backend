@@ -36,7 +36,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @var Entity[]
      */
-    private $mockedLabelReadModels;
+    private array $mockedLabelReadModels;
 
     /**
      * @var LabelServiceInterface|MockObject
@@ -49,8 +49,8 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
         $labelRepository
             ->method('getByName')
             ->willReturnCallback(
-                function (StringLiteral $name) {
-                    return $this->mockedLabelReadModels[$name->toNative()] ?? null;
+                function (string $name) {
+                    return $this->mockedLabelReadModels[$name] ?? null;
                 }
             );
 

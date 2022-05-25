@@ -15,10 +15,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
     public const READ_REST_CONTROLLER = 'labels.read_rest_controller';
     public const EDIT_REST_CONTROLLER = 'labels.edit_rest_controller';
 
-    /**
-     * @inheritdoc
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         $this->setUpReadRestController($app);
         $this->setUpEditRestController($app);
@@ -27,12 +24,12 @@ class LabelsControllerProvider implements ControllerProviderInterface
     }
 
 
-    private function setUpReadRestController(Application $app)
+    private function setUpReadRestController(Application $app): void
     {
         $app[self::READ_REST_CONTROLLER] = $app->share(
             function (Application $app) {
                 return new ReadRestController(
-                    $app[LabelServiceProvider::READ_SERVICE],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                     $app[LabelServiceProvider::QUERY_FACTORY]
                 );
             }
@@ -40,7 +37,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
     }
 
 
-    private function setUpEditRestController(Application $app)
+    private function setUpEditRestController(Application $app): void
     {
         $app[self::EDIT_REST_CONTROLLER] = $app->share(
             function (Application $app) {
@@ -51,10 +48,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
         );
     }
 
-    /**
-     * @return ControllerCollection
-     */
-    private function setControllerPaths(ControllerCollection $controllers)
+    private function setControllerPaths(ControllerCollection $controllers): ControllerCollection
     {
         $controllers->get('/{id}/', self::READ_REST_CONTROLLER . ':get');
         $controllers->patch('/{id}/', self::EDIT_REST_CONTROLLER . ':patch');

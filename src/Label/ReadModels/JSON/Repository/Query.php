@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
-use CultuurNet\UDB3\StringLiteral;
-
 final class Query
 {
-    private StringLiteral $value;
+    private string $value;
 
-    private ?StringLiteral $userId;
+    private ?string $userId;
 
     private ?int $offset;
 
     private ?int $limit;
 
+    private bool $suggestion;
+
     public function __construct(
-        StringLiteral $value,
-        StringLiteral $userId = null,
+        string $value,
+        ?string $userId = null,
         ?int $offset = null,
-        ?int $limit = null
+        ?int $limit = null,
+        bool $suggestion = false
     ) {
         if ($offset < 0) {
             throw new \InvalidArgumentException('Offset should be zero or higher');
@@ -34,14 +35,15 @@ final class Query
         $this->userId = $userId;
         $this->offset = $offset;
         $this->limit = $limit;
+        $this->suggestion = $suggestion;
     }
 
-    public function getValue(): StringLiteral
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    public function getUserId(): ?StringLiteral
+    public function getUserId(): ?string
     {
         return $this->userId;
     }
@@ -54,5 +56,10 @@ final class Query
     public function getLimit(): ?int
     {
         return $this->limit;
+    }
+
+    public function isSuggestion(): bool
+    {
+        return $this->suggestion;
     }
 }

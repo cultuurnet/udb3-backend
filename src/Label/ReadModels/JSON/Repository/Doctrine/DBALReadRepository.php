@@ -53,13 +53,13 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         return $this->getResult($queryBuilder);
     }
 
-    public function getByName(StringLiteral $name): ?Entity
+    public function getByName(string $name): ?Entity
     {
         $aliases = $this->getAliases();
         $queryBuilder = $this->createQueryBuilder();
         $likeCondition = $queryBuilder->expr()->like(
             SchemaConfigurator::NAME_COLUMN,
-            $queryBuilder->expr()->literal($name->toNative())
+            $queryBuilder->expr()->literal($name)
         );
 
         $queryBuilder = $queryBuilder->select($aliases)
@@ -67,13 +67,13 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
             ->where($likeCondition)
             ->setParameter(
                 SchemaConfigurator::NAME_COLUMN,
-                $name->toNative()
+                $name
             );
 
         return $this->getResult($queryBuilder);
     }
 
-    public function canUseLabel(StringLiteral $userId, StringLiteral $name): bool
+    public function canUseLabel(string $userId, string $name): bool
     {
         // A new label is always allowed.
         $label = $this->getByName($name);
@@ -91,7 +91,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $foundLabels = $this->search($query);
 
         if ($foundLabels) {
-            $nameLowerCase = mb_strtolower($name->toNative());
+            $nameLowerCase = mb_strtolower($name);
             foreach ($foundLabels as $foundLabel) {
                 $foundLabelLowerCase = mb_strtolower($foundLabel->getName()->toNative());
                 if ($nameLowerCase === $foundLabelLowerCase) {
@@ -124,7 +124,19 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
                 ->setMaxResults($query->getLimit());
         }
 
-        return $this->getResults($queryBuilder);
+        $labels = $this->getResults($queryBuilder);
+
+        // The UI filters out specific labels which resulted in empty results
+        // The filtering is now done in the API with a regex instead
+        // Note that a SQL REGEXP was not possible because SQLite is used for testing
+        if ($query->isSuggestion()) {
+            $labels = array_filter(
+                $labels,
+                fn (Entity $label) => preg_match('/^[a-zA-Z\d_\-]{2,50}$/', $label->getName()->toNative())
+            );
+        }
+
+        return $labels;
     }
 
     public function searchTotalLabels(Query $query): int
@@ -172,7 +184,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
                 )
             )->setParameter(
                 PermissionsSchemaConfigurator::USER_ID_COLUMN,
-                $query->getUserId()->toNative()
+                $query->getUserId()
             );
         }
 
@@ -218,7 +230,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
     private function createLikeParameter(Query $query): string
     {
-        return '%' . $query->getValue()->toNative() . '%';
+        return '%' . $query->getValue() . '%';
     }
 
     private function getResult(QueryBuilder $queryBuilder): ?Entity

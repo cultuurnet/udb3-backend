@@ -25,15 +25,15 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
 
     private GodUserReadRepositoryDecorator $repository;
 
-    private StringLiteral $godUserId;
+    private string $godUserId;
 
-    private StringLiteral $userId;
+    private string $userId;
 
     private array $labels;
 
-    private StringLiteral $privateLabel;
+    private string $privateLabel;
 
-    private StringLiteral $publicLabel;
+    private string $publicLabel;
 
     public function setUp(): void
     {
@@ -67,11 +67,11 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
         $this->mockRepository->expects($this->any())
             ->method('getByName')
             ->willReturnCallback(
-                function (StringLiteral $name) {
+                function (string $name) {
                     $labels = array_filter(
                         $this->labels,
                         function (Entity $label) use ($name) {
-                            return $label->getName()->sameValueAs($name);
+                            return $label->getName()->toNative() === $name;
                         }
                     );
 
@@ -83,7 +83,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
         $this->mockRepository->expects($this->any())
             ->method('canUseLabel')
             ->willReturnCallback(
-                function (StringLiteral $userId, StringLiteral $name) {
+                function (string $userId, string $name) {
                     $label = $this->mockRepository->getByName($name);
 
                     if (!$label) {
@@ -112,11 +112,11 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
             '88272ef3-0add-47df-b40e-1eaaa509b1c8',
         ];
 
-        $this->godUserId = new StringLiteral($this->godUserIds[0]);
-        $this->userId = new StringLiteral('50793168-2667-44f1-9a78-bf8548d7810d');
+        $this->godUserId = $this->godUserIds[0];
+        $this->userId = '50793168-2667-44f1-9a78-bf8548d7810d';
 
-        $this->privateLabel = new StringLiteral('foo');
-        $this->publicLabel = new StringLiteral('bar');
+        $this->privateLabel = 'foo';
+        $this->publicLabel = 'bar';
 
         $this->repository = new GodUserReadRepositoryDecorator($this->mockRepository, $this->godUserIds);
     }
@@ -137,9 +137,8 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     public function it_should_return_a_label_by_name_using_the_injected_repository(): void
     {
-        $name = new StringLiteral('foo');
         $expected = $this->labels['c7a73397-a210-4126-8fa0-a9f822c2a356'];
-        $actual = $this->repository->getByName($name);
+        $actual = $this->repository->getByName('foo');
         $this->assertEquals($expected, $actual);
     }
 
@@ -166,7 +165,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     public function it_should_return_search_results_for_a_query_using_the_injected_repository(): void
     {
-        $query = new Query(new StringLiteral('test'));
+        $query = new Query('test');
         $expected = $this->labels;
         $actual = $this->repository->search($query);
         $this->assertEquals($expected, $actual);
@@ -177,7 +176,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     public function it_should_return_result_count_for_a_query_using_the_injected_repository(): void
     {
-        $query = new Query(new StringLiteral('test'));
+        $query = new Query('test');
         $expected = count($this->labels);
         $actual = $this->repository->searchTotalLabels($query);
         $this->assertEquals($expected, $actual);

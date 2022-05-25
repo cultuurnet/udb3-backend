@@ -102,7 +102,7 @@ class Entity implements \JsonSerializable
     }
 
     /**
-     * @return UUID
+     * @return ?UUID
      */
     public function getParentUuid()
     {
