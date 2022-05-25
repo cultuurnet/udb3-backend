@@ -15,6 +15,8 @@ use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
+use CultuurNet\UDB3\Media\Exceptions\ImageSizeError;
+use CultuurNet\UDB3\Media\Exceptions\ImageUploadError;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -54,6 +56,8 @@ final class ErrorLogger
         AccessDeniedHttpException::class,
         AccessDeniedException::class,
         CalendarTypeNotSupported::class,
+        ImageUploadError::class,
+        ImageSizeError::class,
     ];
 
     /**
