@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Media;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
@@ -91,18 +92,27 @@ class EditMediaRestControllerTest extends TestCase
                 ),
                 'response' => new JsonResponse(['error' => 'copyright holder required'], 400),
             ],
-            'file' => [
-                'request' => new Request(
-                    [],
-                    [
-                        'copyrightHolder' => ' Dwight Hooker',
-                        'description' => 'Lenna',
-                        'language' => 'nl',
-                    ]
-                ),
-                'response' => new JsonResponse(['error' => 'file required'], 400),
-            ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_throw_file_missing_api_problem_on_empty_file(): void
+    {
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('File missing');
+
+        $this->controller->upload(
+            new Request(
+                [],
+                [
+                    'copyrightHolder' => ' Dwight Hooker',
+                    'description' => 'Lenna',
+                    'language' => 'nl',
+                ]
+            )
+        );
     }
 
     /**

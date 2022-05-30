@@ -79,7 +79,7 @@ class ImageUploaderServiceTest extends TestCase
             ->willReturn('video/avi');
 
         $this->expectException(ImageUploadError::class);
-        $this->expectExceptionMessage('The uploaded file is not an image.');
+        $this->expectExceptionMessage('The uploaded file has type "video" instead of "image".');
 
         $this->uploader->upload($file, $description, $copyrightHolder, $language);
     }
