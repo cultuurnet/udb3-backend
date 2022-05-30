@@ -56,8 +56,6 @@ final class ErrorLogger
         AccessDeniedHttpException::class,
         AccessDeniedException::class,
         CalendarTypeNotSupported::class,
-        ImageUploadError::class,
-        ImageSizeError::class,
     ];
 
     /**
