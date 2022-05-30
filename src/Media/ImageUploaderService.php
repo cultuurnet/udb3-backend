@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
-use CultuurNet\UDB3\Media\Exceptions\ImageSizeError;
+use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Media\Exceptions\ImageUploadError;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -105,11 +105,11 @@ class ImageUploaderService implements ImageUploaderInterface
         $fileSize = filesize($filePath);
 
         if ($this->maxFileSize && !$fileSize) {
-            throw new ImageSizeError('There is a maximum size and we could not determine the size of the uploaded image.');
+            throw new InvalidFileSize('There is a maximum size and we could not determine the size of the uploaded image.');
         }
 
         if ($this->maxFileSize && $fileSize > $this->maxFileSize) {
-            throw new ImageSizeError(
+            throw new InvalidFileSize(
                 'The file size of the uploaded image is too big. File size (bytes): ' . $fileSize . ' Max size (bytes):' . $this->maxFileSize
             );
         }

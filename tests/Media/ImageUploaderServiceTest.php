@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Media\Exceptions\ImageSizeError;
+use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Media\Exceptions\ImageUploadError;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -190,7 +190,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $this->expectException(ImageSizeError::class);
+        $this->expectException(InvalidFileSize::class);
         $this->expectExceptionMessage('The file size of the uploaded image is too big.');
 
         $uploader->upload($file, $description, $copyrightHolder, $language);
@@ -215,7 +215,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $this->expectException(ImageSizeError::class);
+        $this->expectException(InvalidFileSize::class);
         $this->expectExceptionMessage('There is a maximum size and we could not determine the size of the uploaded image.');
 
         $uploader->upload($file, $description, $copyrightHolder, $language);

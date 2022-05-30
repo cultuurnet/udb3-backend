@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use Exception;
 
-final class ImageSizeError extends Exception implements ConvertsToApiProblem
+final class InvalidFileSize extends Exception implements ConvertsToApiProblem
 {
     public function toApiProblem(): ApiProblem
     {
