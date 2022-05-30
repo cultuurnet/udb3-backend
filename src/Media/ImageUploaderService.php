@@ -41,7 +41,7 @@ class ImageUploaderService implements ImageUploaderInterface
         int $maxFileSize = null
     ) {
         if ($maxFileSize < 0) {
-            throw new ImageSizeError('Max file size should be 0 or bigger.');
+            throw new \InvalidArgumentException('Max file size should be 0 or bigger inside config.yml.');
         }
 
         $this->uuidGenerator = $uuidGenerator;
