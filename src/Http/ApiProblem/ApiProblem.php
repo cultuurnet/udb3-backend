@@ -385,4 +385,34 @@ final class ApiProblem extends Exception
             $detail . ' For more information check the documentation of the update attendance mode endpoint. See: ' . Stoplight::ATTENDANCE_MODE_UPDATE
         );
     }
+
+    public static function fileMissing($detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/body/file-missing',
+            'File missing',
+            400,
+            $detail
+        );
+    }
+
+    public static function fileInvalidType($detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/body/file-invalid-type',
+            'Invalid file type',
+            400,
+            $detail
+        );
+    }
+
+    public static function fileInvalidSize($detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/body/file-invalid-size',
+            'Invalid file size',
+            400,
+            $detail
+        );
+    }
 }
