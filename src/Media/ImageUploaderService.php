@@ -9,7 +9,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
-use CultuurNet\UDB3\Media\Exceptions\ImageUploadError;
+use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -58,13 +58,13 @@ class ImageUploaderService implements ImageUploaderInterface
         Language $language
     ): UUID {
         if (!$file->isValid()) {
-            throw new ImageUploadError('The file did not upload correctly.');
+            throw new InvalidFileType('The file did not upload correctly.');
         }
 
         $mimeTypeString = $file->getMimeType();
 
         if (!$mimeTypeString) {
-            throw new ImageUploadError('The type of the uploaded file can not be guessed.');
+            throw new InvalidFileType('The type of the uploaded file can not be guessed.');
         }
 
         $this->guardFileSizeLimit($file);
@@ -72,7 +72,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $fileTypeParts = explode('/', $mimeTypeString);
         $fileType = array_shift($fileTypeParts);
         if ($fileType !== 'image') {
-            throw new ImageUploadError('The uploaded file has type "' . $fileType . '" instead of "image".');
+            throw new InvalidFileType('The uploaded file has type "' . $fileType . '" instead of "image".');
         }
 
         /** @var MIMEType $mimeType */
