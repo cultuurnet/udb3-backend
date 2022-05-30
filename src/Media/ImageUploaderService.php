@@ -72,7 +72,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $fileTypeParts = explode('/', $mimeTypeString);
         $fileType = array_shift($fileTypeParts);
         if ($fileType !== 'image') {
-            throw new ImageUploadError('The uploaded file is not an image.');
+            throw new ImageUploadError('The uploaded file has type "' . $fileType . '" instead of "image".');
         }
 
         /** @var MIMEType $mimeType */
@@ -110,7 +110,7 @@ class ImageUploaderService implements ImageUploaderInterface
 
         if ($this->maxFileSize && $fileSize > $this->maxFileSize) {
             throw new ImageSizeError(
-                'The file size of the uploaded image is too big.'
+                'The file size of the uploaded image is too big. File size (bytes): ' . $fileSize . ' Max size (bytes):' . $this->maxFileSize
             );
         }
     }
