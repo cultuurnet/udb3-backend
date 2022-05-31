@@ -35,7 +35,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     /**
      * @var DocumentRepository|MockObject
      */
-    private $itemRepository;
+    private $documentRepository;
 
     /**
      * @var ReadRepositoryInterface|MockObject
@@ -44,11 +44,11 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
     protected function setUp()
     {
-        $this->itemRepository = $this->createMock(DocumentRepository::class);
+        $this->documentRepository = $this->createMock(DocumentRepository::class);
         $this->relationRepository = $this->createMock(ReadRepositoryInterface::class);
 
         $this->projector = new LabelVisibilityOnRelatedDocumentsProjector(
-            $this->itemRepository,
+            $this->documentRepository,
             $this->relationRepository
         );
     }
@@ -74,7 +74,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
                 ]
             );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('fetch')
             ->with($jsonDocument->getId())
@@ -123,7 +123,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
             )
         );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('save')
             ->with($expectedDocument);
@@ -189,7 +189,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
             )
         );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('save')
             ->with($expectedDocument);
@@ -237,7 +237,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
             )
         );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('save')
             ->with($expectedDocument);
@@ -286,7 +286,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
             )
         );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('save')
             ->with($expectedDocument);
@@ -334,7 +334,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
             )
         );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('save')
             ->with($expectedDocument);
@@ -383,7 +383,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
             )
         );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('save')
             ->with($expectedDocument);
@@ -425,7 +425,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
                 ]
             );
 
-        $this->itemRepository
+        $this->documentRepository
             ->expects($this->once())
             ->method('fetch')
             ->willThrowException(DocumentDoesNotExist::withId((string) $placeId));
