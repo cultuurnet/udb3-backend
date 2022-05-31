@@ -23,14 +23,14 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private DocumentRepository $itemRepository;
+    private DocumentRepository $documentRepository;
     private ReadRepositoryInterface $relationRepository;
 
     public function __construct(
         DocumentRepository $itemRepository,
         ReadRepositoryInterface $relationRepository
     ) {
-        $this->itemRepository = $itemRepository;
+        $this->documentRepository = $itemRepository;
         $this->relationRepository = $relationRepository;
         $this->logger = new NullLogger();
     }
@@ -65,7 +65,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
 
         foreach ($labelRelations as $labelRelation) {
             try {
-                $item = $this->itemRepository->fetch((string) $labelRelation->getRelationId());
+                $document = $this->documentRepository->fetch((string) $labelRelation->getRelationId());
             } catch (DocumentDoesNotExist $exception) {
                 $this->logger->alert(
                     'Can not update visibility of label: "' . $labelRelation->getLabelName() . '"'
@@ -75,7 +75,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
                 continue;
             }
 
-            $offerLd = $item->getBody();
+            $offerLd = $document->getBody();
 
             $addToArray = isset($offerLd->{$addTo}) ? (array) $offerLd->{$addTo} : [];
 
@@ -92,7 +92,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
                 }
             }
 
-            $this->itemRepository->save($item->withBody($offerLd));
+            $this->documentRepository->save($document->withBody($offerLd));
         }
     }
 }
