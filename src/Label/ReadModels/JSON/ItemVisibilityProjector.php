@@ -27,10 +27,10 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
     private ReadRepositoryInterface $relationRepository;
 
     public function __construct(
-        DocumentRepository $itemRepository,
+        DocumentRepository $documentRepository,
         ReadRepositoryInterface $relationRepository
     ) {
-        $this->documentRepository = $itemRepository;
+        $this->documentRepository = $documentRepository;
         $this->relationRepository = $relationRepository;
         $this->logger = new NullLogger();
     }
