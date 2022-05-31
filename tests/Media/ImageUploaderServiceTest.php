@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Media;
 
-use _HumbugBox113887eee2b6\RuntimeException;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
@@ -216,7 +215,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The size of the uploaded image could not be determined.');
 
         $uploader->upload($file, $description, $copyrightHolder, $language);
