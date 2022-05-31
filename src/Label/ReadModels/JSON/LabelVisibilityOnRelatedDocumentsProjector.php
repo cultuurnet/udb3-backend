@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
+use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Log\LoggerAwareInterface;
@@ -53,6 +54,11 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
         $this->updateLabels($madeInvisible->getName(), false);
     }
 
+    private function getDocumentRepositoryForRelationType(RelationType $relationType): ?DocumentRepository
+    {
+        return $this->documentRepository;
+    }
+
     private function updateLabels(LegacyLabelName $labelName, bool $madeVisible): void
     {
         $labelRelations = $this->relationRepository->getLabelRelations($labelName);
@@ -61,8 +67,23 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
         $addTo = $madeVisible ? 'labels' : 'hiddenLabels';
 
         foreach ($labelRelations as $labelRelation) {
+            $relationType = $labelRelation->getRelationType();
+            $repository = $this->getDocumentRepositoryForRelationType($relationType);
+
+            if (!$repository) {
+                $this->logger->error(
+                    sprintf(
+                        'Can not update visibility of label: "%s" for the relation with id "%s" because '
+                        . 'no document repository configured for relation type "%s".',
+                        $labelRelation->getLabelName(),
+                        $labelRelation->getRelationId(),
+                        $relationType->toString()
+                    )
+                );
+            }
+
             try {
-                $document = $this->documentRepository->fetch((string) $labelRelation->getRelationId());
+                $document = $repository->fetch((string) $labelRelation->getRelationId());
             } catch (DocumentDoesNotExist $exception) {
                 $this->logger->alert(
                     'Can not update visibility of label: "' . $labelRelation->getLabelName() . '"'
