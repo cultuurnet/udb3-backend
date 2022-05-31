@@ -33,6 +33,12 @@ class ImageUploaderService implements ImageUploaderInterface
      */
     private ?int $maxFileSize;
 
+    private array $supportedMimeTypes = [
+        'image/png',
+        'image/jpg',
+        'image/gif',
+    ];
+
     public function __construct(
         UuidGeneratorInterface $uuidGenerator,
         CommandBus $commandBus,
@@ -69,10 +75,10 @@ class ImageUploaderService implements ImageUploaderInterface
 
         $this->guardFileSizeLimit($file);
 
-        $fileTypeParts = explode('/', $mimeTypeString);
-        $fileType = array_shift($fileTypeParts);
-        if ($fileType !== 'image') {
-            throw new InvalidFileType('The uploaded file has type "' . $fileType . '" instead of "image".');
+        if (!\in_array($mimeTypeString, $this->supportedMimeTypes, true)){
+            throw new InvalidFileType(
+                'The uploaded file has mime type "' . $mimeTypeString . '" instead of ' . \implode(',', $this->supportedMimeTypes)
+            );
         }
 
         /** @var MIMEType $mimeType */

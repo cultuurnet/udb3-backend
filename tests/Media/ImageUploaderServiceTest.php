@@ -79,7 +79,7 @@ class ImageUploaderServiceTest extends TestCase
             ->willReturn('video/avi');
 
         $this->expectException(InvalidFileType::class);
-        $this->expectExceptionMessage('The uploaded file has type "video" instead of "image".');
+        $this->expectExceptionMessage('The uploaded file has mime type "video/avi" instead of image/png,image/jpg,image/gif');
 
         $this->uploader->upload($file, $description, $copyrightHolder, $language);
     }
