@@ -105,7 +105,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $fileSize = filesize($filePath);
 
         if ($this->maxFileSize && !$fileSize) {
-            throw new InvalidFileSize('There is a maximum size and we could not determine the size of the uploaded image.');
+            throw new \RuntimeException('The size of the uploaded image could not be determined.');
         }
 
         if ($this->maxFileSize && $fileSize > $this->maxFileSize) {
