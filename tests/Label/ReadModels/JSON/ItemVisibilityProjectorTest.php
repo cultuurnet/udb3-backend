@@ -28,7 +28,7 @@ use CultuurNet\UDB3\StringLiteral;
 class ItemVisibilityProjectorTest extends TestCase
 {
     /**
-     * @var ItemVisibilityProjector
+     * @var LabelVisibilityOnRelatedDocumentsProjector
      */
     private $projector;
 
@@ -47,7 +47,7 @@ class ItemVisibilityProjectorTest extends TestCase
         $this->itemRepository = $this->createMock(DocumentRepository::class);
         $this->relationRepository = $this->createMock(ReadRepositoryInterface::class);
 
-        $this->projector = new ItemVisibilityProjector(
+        $this->projector = new LabelVisibilityOnRelatedDocumentsProjector(
             $this->itemRepository,
             $this->relationRepository
         );

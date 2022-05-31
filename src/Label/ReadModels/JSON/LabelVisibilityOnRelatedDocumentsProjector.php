@@ -16,7 +16,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
+class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
