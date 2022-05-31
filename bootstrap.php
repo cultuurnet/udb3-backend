@@ -21,6 +21,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
@@ -452,10 +453,8 @@ $app['event_bus'] = function ($app) {
             'udb2_label_importer',
             LabelServiceProvider::JSON_PROJECTOR,
             LabelServiceProvider::RELATIONS_PROJECTOR,
-            LabelServiceProvider::EVENT_LABEL_PROJECTOR,
-            LabelServiceProvider::PLACE_LABEL_PROJECTOR,
-            LabelServiceProvider::ORGANIZER_LABEL_PROJECTOR,
             LabelServiceProvider::LABEL_ROLES_PROJECTOR,
+            LabelVisibilityOnRelatedDocumentsProjector::class,
             'role_detail_projector',
             'role_labels_projector',
             'label_roles_projector',

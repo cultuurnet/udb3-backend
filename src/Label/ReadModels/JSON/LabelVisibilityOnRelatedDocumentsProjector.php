@@ -21,16 +21,23 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
 {
     use LoggerAwareTrait;
 
-    private DocumentRepository $documentRepository;
     private ReadRepositoryInterface $relationRepository;
+    private array $documentRepositories;
 
     public function __construct(
-        DocumentRepository $documentRepository,
         ReadRepositoryInterface $relationRepository
     ) {
-        $this->documentRepository = $documentRepository;
         $this->relationRepository = $relationRepository;
         $this->logger = new NullLogger();
+    }
+
+    public function withDocumentRepositoryForRelationType(
+        RelationType $relationType,
+        DocumentRepository $documentRepository
+    ): self {
+        $c = clone $this;
+        $c->documentRepositories[$relationType->toString()] = $documentRepository;
+        return $c;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -56,7 +63,7 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
 
     private function getDocumentRepositoryForRelationType(RelationType $relationType): ?DocumentRepository
     {
-        return $this->documentRepository;
+        return $this->documentRepositories[$relationType->toString()] ?? null;
     }
 
     private function updateLabels(LegacyLabelName $labelName, bool $madeVisible): void
@@ -113,7 +120,7 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
                 }
             }
 
-            $this->documentRepository->save($document->withBody($offerLd));
+            $repository->save($document->withBody($offerLd));
         }
     }
 }
