@@ -85,10 +85,13 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
             try {
                 $document = $repository->fetch((string) $labelRelation->getRelationId());
             } catch (DocumentDoesNotExist $exception) {
-                $this->logger->alert(
-                    'Can not update visibility of label: "' . $labelRelation->getLabelName() . '"'
-                    . ' for the relation with id: "' . $labelRelation->getRelationId() . '"'
-                    . ' because the document could not be retrieved.'
+                $this->logger->error(
+                    sprintf(
+                        'Can not update visibility of label: "%s" for the relation with id "%s" because '
+                        . 'the document could not be retrieved.',
+                        $labelRelation->getLabelName(),
+                        $labelRelation->getRelationId()
+                    )
                 );
                 continue;
             }
