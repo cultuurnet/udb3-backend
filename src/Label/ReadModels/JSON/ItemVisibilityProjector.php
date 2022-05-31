@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterfac
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
+use Generator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -20,16 +22,8 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $itemRepository;
-
-    /**
-     * @var ReadRepositoryInterface
-     */
-    private $relationRepository;
-
+    private DocumentRepository $itemRepository;
+    private ReadRepositoryInterface $relationRepository;
 
     public function __construct(
         DocumentRepository $itemRepository,
@@ -40,8 +34,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
 
@@ -52,22 +45,17 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
         }
     }
 
-
-    public function applyMadeVisible(MadeVisible $madeVisible)
+    public function applyMadeVisible(MadeVisible $madeVisible): void
     {
         $this->updateLabels($madeVisible->getName(), true);
     }
 
-
-    public function applyMadeInvisible(MadeInvisible $madeInvisible)
+    public function applyMadeInvisible(MadeInvisible $madeInvisible): void
     {
         $this->updateLabels($madeInvisible->getName(), false);
     }
 
-    /**
-     * @param bool $madeVisible
-     */
-    private function updateLabels(LabelName $labelName, $madeVisible)
+    private function updateLabels(LabelName $labelName, bool $madeVisible): void
     {
         $items = $this->getRelatedItems($labelName);
 
@@ -97,9 +85,9 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @return \CultuurNet\UDB3\ReadModel\JsonDocument[]|\Generator
+     * @return JsonDocument[]|Generator
      */
-    private function getRelatedItems(LabelName $labelName)
+    private function getRelatedItems(LabelName $labelName): Generator
     {
         $labelRelations = $this->relationRepository->getLabelRelations($labelName);
 
