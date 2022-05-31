@@ -257,62 +257,6 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_provides_suggestions(): void
-    {
-        $excludedHashtagLabel = new Entity(
-            new UUID('15c8c391-724d-4878-8a06-86163ed54131'),
-            new StringLiteral('#label1'),
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
-            null
-        );
-        $this->saveEntity($excludedHashtagLabel);
-
-        $excludedQuoteLabel = new Entity(
-            new UUID('ee01cb8f-e95d-4b7d-91fa-3a24d896871e'),
-            new StringLiteral('\'Sint Job'),
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
-            null
-        );
-        $this->saveEntity($excludedQuoteLabel);
-
-        $includedUnderscoreLabel = new Entity(
-            new UUID('88683b10-7f82-41a5-93d0-4fd93d1c6368'),
-            new StringLiteral('_label1'),
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
-            null
-        );
-        $this->saveEntity($includedUnderscoreLabel);
-
-        $includedDashLabel = new Entity(
-            new UUID('4e21e0d1-6bee-480c-8766-f62f779b74c4'),
-            new StringLiteral('label-'),
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
-            null
-        );
-        $this->saveEntity($includedDashLabel);
-
-        $search = new Query(
-            'label',
-            null,
-            null,
-            null,
-            true
-        );
-
-        $entities = $this->dbalReadRepository->search($search);
-
-        $this->assertCount(12, $entities);
-        $this->assertEquals('_label1', $entities[1]->getName()->toNative());
-        $this->assertEquals('label-', $entities[2]->getName()->toNative());
-    }
-
-    /**
-     * @test
-     */
     public function it_can_search_with_offset(): void
     {
         $search = new Query(
