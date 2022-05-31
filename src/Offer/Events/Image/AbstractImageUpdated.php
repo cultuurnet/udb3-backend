@@ -4,24 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events\Image;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractImageUpdated extends AbstractEvent
 {
-    protected UUID $mediaObjectId;
+    private string $mediaObjectId;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $description;
+    private string $description;
 
-    /**
-     * @var CopyrightHolder
-     */
-    protected $copyrightHolder;
+    private string $copyrightHolder;
 
     /**
      * Nullable because this was missing in the past, so we don't have historical data for this.
@@ -32,9 +23,9 @@ abstract class AbstractImageUpdated extends AbstractEvent
 
     final public function __construct(
         string $itemId,
-        UUID $mediaObjectId,
-        StringLiteral $description,
-        CopyrightHolder $copyrightHolder,
+        string $mediaObjectId,
+        string $description,
+        string $copyrightHolder,
         ?string $language = null
     ) {
         parent::__construct($itemId);
@@ -44,17 +35,17 @@ abstract class AbstractImageUpdated extends AbstractEvent
         $this->language = $language;
     }
 
-    public function getMediaObjectId(): UUID
+    public function getMediaObjectId(): string
     {
         return $this->mediaObjectId;
     }
 
-    public function getDescription(): StringLiteral
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function getCopyrightHolder(): CopyrightHolder
+    public function getCopyrightHolder(): string
     {
         return $this->copyrightHolder;
     }
@@ -67,9 +58,9 @@ abstract class AbstractImageUpdated extends AbstractEvent
     public function serialize(): array
     {
         $data = parent::serialize() +  [
-            'media_object_id' => $this->mediaObjectId->toString(),
-            'description' => (string) $this->description,
-            'copyright_holder' => $this->copyrightHolder->toString(),
+            'media_object_id' => $this->mediaObjectId,
+            'description' => $this->description,
+            'copyright_holder' => $this->copyrightHolder,
         ];
         if ($this->language) {
             $data['language'] = $this->language;
@@ -81,9 +72,9 @@ abstract class AbstractImageUpdated extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-            new UUID($data['media_object_id']),
-            new StringLiteral($data['description']),
-            new CopyrightHolder($data['copyright_holder']),
+            $data['media_object_id'],
+            $data['description'],
+            $data['copyright_holder'],
             $data['language'] ?? null
         );
     }
