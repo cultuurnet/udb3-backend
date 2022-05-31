@@ -128,9 +128,9 @@ class Item extends Offer
     ): ImageUpdated {
         return new ImageUpdated(
             $this->id,
-            $mediaObjectId,
-            $description,
-            $copyrightHolder,
+            $mediaObjectId->toString(),
+            $description->toNative(),
+            $copyrightHolder->toString(),
             $language
         );
     }

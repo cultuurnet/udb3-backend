@@ -474,9 +474,9 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ImageAdded('someId', $anotherImage),
                     new ImageUpdated(
                         'someId',
-                        $anotherImage->getMediaObjectId(),
-                        new Description('new description'),
-                        new CopyrightHolder('new copyright holder')
+                        $anotherImage->getMediaObjectId()->toString(),
+                        'new description',
+                        'new copyright holder'
                     ),
                     new MainImageSelected('someId', $anotherImage),
                 ]
@@ -519,9 +519,9 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ImageAdded('someId', $this->image),
                     new ImageUpdated(
                         'someId',
-                        $this->image->getMediaObjectId(),
-                        new Description('my favorite cat'),
-                        new CopyrightHolder('Jane Doe')
+                        $this->image->getMediaObjectId()->toString(),
+                        'my favorite cat',
+                        'Jane Doe'
                     ),
                 ]
             );
@@ -567,15 +567,15 @@ class OfferTest extends AggregateRootScenarioTestCase
                     ),
                     new ImageUpdated(
                         'someId',
-                        $this->image->getMediaObjectId(),
-                        new Description('other description'),
-                        $this->image->getCopyrightHolder()
+                        $this->image->getMediaObjectId()->toString(),
+                        'other description',
+                        $this->image->getCopyrightHolder()->toString()
                     ),
                     new ImageUpdated(
                         'someId',
-                        $this->image->getMediaObjectId(),
-                        new Description('other description'),
-                        new CopyrightHolder('other copyright')
+                        $this->image->getMediaObjectId()->toString(),
+                        'other description',
+                        'other copyright'
                     ),
                 ]
             );

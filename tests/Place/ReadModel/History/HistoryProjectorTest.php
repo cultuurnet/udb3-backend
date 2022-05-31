@@ -494,9 +494,9 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new ImageUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
-            new Description('description'),
-            new CopyrightHolder('copyright holder')
+            '0aa8d12d-26d6-409f-aa68-e8200e5c91a0',
+            'description',
+            'copyright holder'
         );
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);

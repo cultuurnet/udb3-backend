@@ -138,7 +138,7 @@ trait OfferHistoryProjectorTrait
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId->toString()}' aangepast")
+            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' aangepast")
         );
     }
 

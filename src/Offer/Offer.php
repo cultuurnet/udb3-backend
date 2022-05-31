@@ -942,13 +942,13 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyImageUpdated(AbstractImageUpdated $imageUpdated): void
     {
-        $image = $this->images->findImageByUUID($imageUpdated->getMediaObjectId());
+        $image = $this->images->findImageByUUID(new UUID($imageUpdated->getMediaObjectId()));
 
         $updatedImage = new Image(
             $image->getMediaObjectId(),
             $image->getMimeType(),
-            new ImageDescription($imageUpdated->getDescription()->toNative()),
-            $imageUpdated->getCopyrightHolder(),
+            new ImageDescription($imageUpdated->getDescription()),
+            new CopyrightHolder($imageUpdated->getCopyrightHolder()),
             $image->getSourceLocation(),
             $image->getLanguage()
         );
