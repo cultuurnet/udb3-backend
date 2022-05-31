@@ -25,7 +25,7 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class ItemVisibilityProjectorTest extends TestCase
+class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 {
     /**
      * @var LabelVisibilityOnRelatedDocumentsProjector
