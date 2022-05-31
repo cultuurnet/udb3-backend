@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Media;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
@@ -26,7 +27,7 @@ class EditMediaRestController
     public function upload(Request $request): JsonResponse
     {
         if (!$request->files->has('file')) {
-            return new JsonResponse(['error' => 'file required'], 400);
+            throw ApiProblem::fileMissing('The file property is required');
         }
 
         $description = $request->request->get('description');
