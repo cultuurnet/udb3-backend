@@ -79,7 +79,7 @@ class ImageUploaderServiceTest extends TestCase
             ->willReturn('video/avi');
 
         $this->expectException(InvalidFileType::class);
-        $this->expectExceptionMessage('The uploaded file has mime type "video/avi" instead of image/png,image/jpg,image/gif');
+        $this->expectExceptionMessage('The uploaded file has mime type "video/avi" instead of image/png,image/jpeg,image/gif');
 
         $this->uploader->upload($file, $description, $copyrightHolder, $language);
     }
@@ -240,7 +240,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.jpg';
+        $expectedDestination = $this->directory . '/' . $this->fileId->toString() . '.jpeg';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator
@@ -305,12 +305,12 @@ class ImageUploaderServiceTest extends TestCase
         $image
             ->expects($this->once())
             ->method('getMimeType')
-            ->willReturn('image/jpg');
+            ->willReturn('image/jpeg');
 
         $image
             ->expects($this->any())
             ->method('guessExtension')
-            ->willReturn('jpg');
+            ->willReturn('jpeg');
 
         return $image;
     }

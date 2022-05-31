@@ -35,7 +35,7 @@ class ImageUploaderService implements ImageUploaderInterface
 
     private array $supportedMimeTypes = [
         'image/png',
-        'image/jpg',
+        'image/jpeg',
         'image/gif',
     ];
 
@@ -75,7 +75,7 @@ class ImageUploaderService implements ImageUploaderInterface
 
         $this->guardFileSizeLimit($file);
 
-        if (!\in_array($mimeTypeString, $this->supportedMimeTypes, true)){
+        if (!\in_array($mimeTypeString, $this->supportedMimeTypes, true)) {
             throw new InvalidFileType(
                 'The uploaded file has mime type "' . $mimeTypeString . '" instead of ' . \implode(',', $this->supportedMimeTypes)
             );
