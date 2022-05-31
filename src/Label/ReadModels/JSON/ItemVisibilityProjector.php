@@ -9,7 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -55,7 +55,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
         $this->updateLabels($madeInvisible->getName(), false);
     }
 
-    private function updateLabels(LabelName $labelName, bool $madeVisible): void
+    private function updateLabels(LegacyLabelName $labelName, bool $madeVisible): void
     {
         $items = $this->getRelatedItems($labelName);
 
@@ -87,7 +87,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
     /**
      * @return JsonDocument[]|Generator
      */
-    private function getRelatedItems(LabelName $labelName): Generator
+    private function getRelatedItems(LegacyLabelName $labelName): Generator
     {
         $labelRelations = $this->relationRepository->getLabelRelations($labelName);
 
