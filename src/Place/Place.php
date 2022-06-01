@@ -204,6 +204,10 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
             throw CannotMarkPlaceAsDuplicate::becauseItIsAlreadyADuplicate($this->placeId);
         }
 
+        if (!empty($this->duplicates)) {
+            throw CannotMarkPlaceAsDuplicate::becauseItIsCanonical($this->placeId);
+        }
+
         $this->apply(new MarkedAsDuplicate($this->placeId, $placeIdOfCanonical));
     }
 
