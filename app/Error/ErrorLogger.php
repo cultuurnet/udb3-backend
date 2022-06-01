@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation\EventHasTicketSalesException;
 use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\GroupedValidationException;
+use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -32,6 +33,10 @@ use Throwable;
 
 final class ErrorLogger
 {
+    private const BAD_CLI_INPUT = [
+        SymfonyConsoleRuntimeException::class,
+    ];
+
     private const BAD_REQUESTS = [
         EntityNotFoundException::class,
         CommandAuthorizationException::class,
@@ -68,12 +73,24 @@ final class ErrorLogger
 
     public function log(Throwable $throwable): void
     {
-        if (self::isBadRequestException($throwable)) {
+        if (self::isBadRequestException($throwable) || self::isBadCLIInput($throwable)) {
             return;
         }
 
         // Include the original throwable as "exception" so that the Sentry monolog handler can process it correctly.
         $this->logger->error($throwable->getMessage(), ['exception' => $throwable]);
+    }
+
+    public static function isBadCLIInput(Throwable $e): bool
+    {
+        // Use foreach + instanceof instead of in_array() to also filter out child classes and/or interface
+        // implementations.
+        foreach (self::BAD_CLI_INPUT as $badCLIInputExceptionClass) {
+            if ($e instanceof $badCLIInputExceptionClass) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static function isBadRequestException(Throwable $e): bool
