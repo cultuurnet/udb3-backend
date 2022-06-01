@@ -17,4 +17,9 @@ final class CannotMarkPlaceAsDuplicate extends Exception
     {
         return new self('Cannot mark place ' . $placeId . ' as duplicate because it is already a duplicate');
     }
+
+    public static function becauseItIsCanonical(string $placeId): self
+    {
+        return new self('Cannot mark place ' . $placeId . ' as duplicate because it is a canonical place');
+    }
 }
