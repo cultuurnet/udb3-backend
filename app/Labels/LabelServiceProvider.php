@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Label\ConstraintAwareLabelService;
 use CultuurNet\UDB3\Label\Events\LabelNameUniqueConstraintService;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
-use CultuurNet\UDB3\Label\ReadModels\JSON\ItemVisibilityProjector;
+use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepo
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\WriteService;
+use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
@@ -57,9 +58,6 @@ class LabelServiceProvider implements ServiceProviderInterface
 
     public const JSON_PROJECTOR = 'labels.json_projector';
     public const RELATIONS_PROJECTOR = 'labels.relations_projector';
-    public const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
-    public const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
-    public const ORGANIZER_LABEL_PROJECTOR = 'labels.organizer_label_projector';
     public const LABEL_ROLES_PROJECTOR = 'labels.label_roles_projector';
 
     public const QUERY_FACTORY = 'label.query_factory';
@@ -250,38 +248,21 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[self::PLACE_LABEL_PROJECTOR] = $app->share(
+        $app[LabelVisibilityOnRelatedDocumentsProjector::class] = $app->share(
             function (Application $app) {
-                $projector = new ItemVisibilityProjector(
-                    $app['place_jsonld_repository'],
-                    $app[self::RELATIONS_READ_REPOSITORY]
-                );
-
-                $projector->setLogger($app[self::LOGGER]);
-
-                return $projector;
-            }
-        );
-
-        $app[self::EVENT_LABEL_PROJECTOR] = $app->share(
-            function (Application $app) {
-                $projector =  new ItemVisibilityProjector(
-                    $app['event_jsonld_repository'],
-                    $app[self::RELATIONS_READ_REPOSITORY]
-                );
-
-                $projector->setLogger($app[self::LOGGER]);
-
-                return $projector;
-            }
-        );
-
-        $app[self::ORGANIZER_LABEL_PROJECTOR] = $app->share(
-            function (Application $app) {
-                $projector =  new ItemVisibilityProjector(
-                    $app['organizer_jsonld_repository'],
-                    $app[self::RELATIONS_READ_REPOSITORY]
-                );
+                $projector = (new LabelVisibilityOnRelatedDocumentsProjector($app[self::RELATIONS_READ_REPOSITORY]))
+                    ->withDocumentRepositoryForRelationType(
+                        RelationType::event(),
+                        $app['event_jsonld_repository']
+                    )
+                    ->withDocumentRepositoryForRelationType(
+                        RelationType::place(),
+                        $app['place_jsonld_repository']
+                    )
+                    ->withDocumentRepositoryForRelationType(
+                        RelationType::organizer(),
+                        $app['organizer_jsonld_repository']
+                    );
 
                 $projector->setLogger($app[self::LOGGER]);
 
