@@ -976,9 +976,9 @@ class HistoryProjectorTest extends TestCase
     {
         $event = new ImageUpdated(
             self::EVENT_ID_1,
-            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
-            new Description('description'),
-            new CopyrightHolder('copyright holder')
+            '0aa8d12d-26d6-409f-aa68-e8200e5c91a0',
+            'description',
+            'copyright holder'
         );
 
         $domainMessage = new DomainMessage(

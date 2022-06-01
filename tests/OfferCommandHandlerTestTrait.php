@@ -233,9 +233,9 @@ trait OfferCommandHandlerTestTrait
             ->then([
                 new $eventClass(
                     $itemId,
-                    $mediaObjectId,
-                    $description,
-                    $copyrightHolder
+                    $mediaObjectId->toString(),
+                    $description->toNative(),
+                    $copyrightHolder->toString()
                 ),
             ]);
     }
@@ -259,9 +259,9 @@ trait OfferCommandHandlerTestTrait
         $updatedEvent = function (Image $image) use ($itemId, $imageUpdated) {
             return new $imageUpdated(
                 $itemId,
-                $image->getMediaObjectId(),
-                $image->getDescription(),
-                $image->getCopyrightHolder(),
+                $image->getMediaObjectId()->toString(),
+                $image->getDescription()->toNative(),
+                $image->getCopyrightHolder()->toString(),
                 $image->getLanguage()->getCode()
             );
         };

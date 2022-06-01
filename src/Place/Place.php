@@ -404,9 +404,9 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     ): ImageUpdated {
         return new ImageUpdated(
             $this->placeId,
-            $mediaObjectId,
-            $description,
-            $copyrightHolder,
+            $mediaObjectId->toString(),
+            $description->toNative(),
+            $copyrightHolder->toString(),
             $language
         );
     }

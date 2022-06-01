@@ -8,10 +8,7 @@ use Broadway\Serializer\Serializable;
 
 abstract class AbstractEvent implements Serializable
 {
-    /**
-     * @var string
-     */
-    protected $itemId;
+    protected string $itemId;
 
     public function __construct(string $itemId)
     {

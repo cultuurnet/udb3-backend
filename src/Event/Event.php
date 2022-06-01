@@ -531,9 +531,9 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     ): ImageUpdated {
         return new ImageUpdated(
             $this->eventId,
-            $mediaObjectId,
-            $description,
-            $copyrightHolder,
+            $mediaObjectId->toString(),
+            $description->toNative(),
+            $copyrightHolder->toString(),
             $language
         );
     }
