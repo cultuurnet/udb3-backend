@@ -748,6 +748,33 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_will_not_be_marked_as_duplicate_when_it_is_already_marked_as_canonical(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+        $canonicalPlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
+        $duplicatedBy = 'd51440e5-f3bc-4dcb-8af1-a28d23031fbc';
+
+        $this->expectException(CannotMarkPlaceAsDuplicate::class);
+
+        $this->scenario
+            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
+            ->given(
+                [
+                    $placeCreated,
+                    new MarkedAsCanonical($placeId, $duplicatedBy),
+                ]
+            )
+            ->when(
+                function (Place $place) use ($canonicalPlaceId) {
+                    $place->markAsDuplicateOf($canonicalPlaceId);
+                }
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_be_marked_as_canonical(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
