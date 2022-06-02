@@ -885,7 +885,7 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_keep_the_main_image_when_deleting_a_previous_in_a_list(): void
+    public function it_should_keep_the_main_image_when_deleting_an_image_with_a_lower_index(): void
     {
         $eventId = 'event-1';
         $image = new Image(
@@ -945,7 +945,7 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_keep_the_udb2_image_main_when_deleting_a_new_one(): void
+    public function it_should_keep_the_udb2_image_main_when_deleting_another_image(): void
     {
         $eventId = 'event-1';
         $image = new Image(
