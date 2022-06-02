@@ -881,6 +881,56 @@ class OfferLDProjectorTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_keep_the_udb2_image_main_when_deleting_a_new_one(): void
+    {
+        $eventId = 'event-1';
+        $image = new Image(
+            new UUID('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
+            new MIMEType('image/jpeg'),
+            new Description('funny giphy image'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('https://example.com/entity/5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
+            new LegacyLanguage('en')
+        );
+        $initialDocument = new JsonDocument(
+            $eventId,
+            Json::encode([
+                'image' => 'https://images.uitdatabank.dev/20160606/THE_FOX.jpg',
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/7fba0270-9efa-5091-ac4a-381d6cc9394f',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'https://images.uitdatabank.dev/20160606/THE_FOX.jpg',
+                        'thumbnailUrl' => 'https://images.uitdatabank.dev/20160606/THE_FOX.jpg',
+                        'description' => 'THE FOX',
+                        'copyrightHolder' => 'THE FOX',
+                        'inLanguage' => 'en',
+                    ],
+                    [
+                        '@id' => 'https://example.com/entity/5ae74e68-20a3-4cb1-b255-8e405aa01ab9',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'https://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
+                        'thumbnailUrl' => 'https://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
+                        'description' => 'funny giphy image',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+        $imageRemovedEvent = new ImageRemoved($eventId, $image);
+        $eventBody = $this->project($imageRemovedEvent, $eventId);
+
+        $this->assertEquals(
+            'https://images.uitdatabank.dev/20160606/THE_FOX.jpg',
+            $eventBody->image
+        );
+    }
 
     /**
      * @test
