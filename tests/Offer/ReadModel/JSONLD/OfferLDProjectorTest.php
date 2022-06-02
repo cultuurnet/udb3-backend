@@ -881,6 +881,67 @@ class OfferLDProjectorTest extends TestCase
         );
     }
 
+
+    /**
+     * @test
+     */
+    public function it_should_keep_the_main_image_when_deleting_a_previous_in_a_list(): void
+    {
+        $eventId = 'event-1';
+        $image = new Image(
+            new UUID('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
+            new MIMEType('image/png'),
+            new Description('funny giphy image'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png'),
+            new LegacyLanguage('en')
+        );
+        $initialDocument = new JsonDocument(
+            $eventId,
+            Json::encode([
+                'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/793725b3-fc62-43b0-be67-687d55f53378',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/793725b3-fc62-43b0-be67-687d55f53378.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/793725b3-fc62-43b0-be67-687d55f53378.png',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                    [
+                        '@id' => 'http://example.com/entity/5ae74e68-20a3-4cb1-b255-8e405aa01ab9',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
+                        'description' => 'funny giphy image',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'description' => 'The Angelus',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+        $imageRemovedEvent = new ImageRemoved($eventId, $image);
+        $eventBody = $this->project($imageRemovedEvent, $eventId);
+
+        $this->assertEquals(
+            'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            $eventBody->image
+        );
+    }
+
     /**
      * @test
      */
