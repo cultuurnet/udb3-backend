@@ -405,7 +405,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
 
         $imageId = $imageRemoved->getImage()->getMediaObjectId()->toString();
-        $imageUrl = $imageRemoved->getImage()->getSourceLocation()->getPath();
+        $imageUrl = $imageRemoved->getImage()->getSourceLocation()->toString();
 
         /**
          * @return bool
