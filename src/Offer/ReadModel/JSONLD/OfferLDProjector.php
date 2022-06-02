@@ -405,6 +405,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
 
         $imageId = $imageRemoved->getImage()->getMediaObjectId()->toString();
+        $imageUrl = $imageRemoved->getImage()->getSourceLocation()->getPath();
 
         /**
          * @return bool
@@ -422,7 +423,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         );
 
         // Unset the main image if it matches the removed image
-        if (isset($offerLd->image)) {
+        if (isset($offerLd->image) && strpos($offerLd->{'image'}, $imageId)) {
+            unset($offerLd->{'image'});
+        }
+
+        // Unset the main image if it matches the removed image from udb2
+        if (isset($offerLd->image) && strpos($offerLd->{'image'}, $imageUrl)) {
             unset($offerLd->{'image'});
         }
 
