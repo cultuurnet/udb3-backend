@@ -38,7 +38,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeObsoleteProperties($document);
         $document = $this->removeNullLabels($document);
         $document = $this->fixDuplicateLabelVisibility($document);
-        return $document;
+        return $this->removeNewLineLabels($document);
     }
 
     private function polyfillNewProperties(JsonDocument $jsonDocument): JsonDocument
@@ -237,6 +237,26 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                 $json = $filterNullLabels($json, 'hiddenLabels');
 
                 return $json;
+            }
+        );
+    }
+
+    private function removeNewLineLabels(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                $removeNewLineLabels = static function (array $json, string $propertyName): array {
+                    if (!isset($json[$propertyName]) || !is_array($json[$propertyName])) {
+                        return $json;
+                    }
+                    $json[$propertyName] = preg_replace('/\\\\r\\\\n/', ' ', $json[$propertyName]);
+                    $json[$propertyName] = preg_replace('/\\\\n/', ' ', $json[$propertyName]);
+
+                    return $json;
+                };
+
+                $json = $removeNewLineLabels($json, 'labels');
+                return $removeNewLineLabels($json, 'hiddenLabels');
             }
         );
     }
