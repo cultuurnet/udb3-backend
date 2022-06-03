@@ -622,12 +622,12 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                     'labels' => [
                         'windows\r\nnewline',
                         'unix\nnewline',
-                        'sanity label'
+                        'sanity label',
                     ],
                     'hiddenLabels' => [
                         'hidden\nwindows\r\nnewline',
                         'hidden\r\nunix\nnewline',
-                        'hidden sanity label'
+                        'hidden sanity label',
                     ],
                 ]
             )
@@ -636,12 +636,12 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                     'labels' => [
                         'windows newline',
                         'unix newline',
-                        'sanity label'
+                        'sanity label',
                     ],
                     'hiddenLabels' => [
                         'hidden windows newline',
                         'hidden unix newline',
-                        'hidden sanity label'
+                        'hidden sanity label',
                     ],
                 ]
             );
