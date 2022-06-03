@@ -614,6 +614,42 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_remove_newlines_in_labels(): void
+    {
+        $this
+            ->given(
+                [
+                    'labels' => [
+                        'windows\r\nnewline',
+                        'unix\nnewline',
+                        'sanity label'
+                    ],
+                    'hiddenLabels' => [
+                        'hidden\nwindows\r\nnewline',
+                        'hidden\r\nunix\nnewline',
+                        'hidden sanity label'
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'labels' => [
+                        'windows newline',
+                        'unix newline',
+                        'sanity label'
+                    ],
+                    'hiddenLabels' => [
+                        'hidden windows newline',
+                        'hidden unix newline',
+                        'hidden sanity label'
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_not_add_labels_if_not_set(): void
     {
         $this
