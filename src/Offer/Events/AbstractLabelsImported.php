@@ -34,7 +34,7 @@ abstract class AbstractLabelsImported extends AbstractEvent implements LabelsImp
         $labels = new Labels();
         foreach ($data['labels'] as $label) {
             $labels = $labels->with(new Label(
-                new LabelName($label['label']),
+                new LabelName(self::trimLineEndings($label['label'])),
                 $label['visibility']
             ));
         }
@@ -59,5 +59,11 @@ abstract class AbstractLabelsImported extends AbstractEvent implements LabelsImp
         return parent::serialize() + [
             'labels' => $labels,
         ];
+    }
+
+    private static function trimLineEndings(string $labelName): string
+    {
+        $labelName = preg_replace('/\\\\r\\\\n/', ' ', $labelName);
+        return preg_replace('/\\\\n/', ' ', $labelName);
     }
 }
