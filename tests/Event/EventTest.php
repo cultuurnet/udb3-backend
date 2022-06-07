@@ -1208,6 +1208,40 @@ class EventTest extends AggregateRootScenarioTestCase
 
     /**
      * @test
+     */
+    public function it_can_update_an_event_with_newline_labels(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $createEvent = $this->getCreationEvent();
+        $newlineLabel = new LegacyLabel('Newline\r\nLabel');
+        $correctLabel = new Label(
+            new LabelName('Correct Label')
+        );
+
+        $this->scenario
+            ->given(
+                [
+                    $createEvent,
+                    new AttendanceModeUpdated($eventId, AttendanceMode::online()->toString()),
+                    new LabelAdded(
+                        $eventId,
+                        $newlineLabel
+                    )
+                ]
+            )
+            ->when(
+                fn (Event $event) => $event->addLabel($correctLabel)
+            )
+            ->then([
+               new LabelAdded(
+                   $eventId,
+                   new LegacyLabel('Correct Label')
+               )
+            ]);
+    }
+
+    /**
+     * @test
      * @group issue-III-1380
      */
     public function it_refuses_to_copy_when_there_are_uncommitted_events(): void
