@@ -46,7 +46,13 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
         return new static(
             $data['item_id'],
-            new Label($data['label'], $data['visibility'])
+            new Label(self::trimLineEndings($data['label']), $data['visibility'])
         );
+    }
+
+    private static function trimLineEndings(string $labelName): string
+    {
+        $labelName = preg_replace('/\\r\\n/', ' ', $labelName);
+        return preg_replace('/\\n/', ' ', $labelName);
     }
 }
