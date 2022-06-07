@@ -646,6 +646,27 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_unset_labels_if_only_newline_labels_are_present(): void
+    {
+        $this
+            ->given(
+                [
+                    'labels' => [
+                        'windows\r\nnewline',
+                        'unix\nnewline',
+                    ],
+                    'hiddenLabels' => [
+                        'hidden\nwindows\r\nnewline',
+                        'hidden\r\nunix\nnewline',
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentDoesNotContainKeys(['labels', 'hiddenLabels']);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_not_add_labels_if_not_set(): void
     {
         $this
@@ -718,6 +739,14 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     {
         $actualFromFetch = $this->repository->fetch(self::DOCUMENT_ID)->getAssocBody();
         $this->assertArrayNotHasKey($key, $actualFromFetch);
+    }
+
+    private function assertReturnedDocumentDoesNotContainKeys(array $keys): void
+    {
+        foreach ($keys as $key) {
+            $actualFromFetch = $this->repository->fetch(self::DOCUMENT_ID)->getAssocBody();
+            $this->assertArrayNotHasKey($key, $actualFromFetch);
+        }
     }
 
     private function assertArrayContainsExpectedKeys(array $expected, array $actual): void
