@@ -1226,7 +1226,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     new LabelAdded(
                         $eventId,
                         $newlineLabel
-                    )
+                    ),
                 ]
             )
             ->when(
@@ -1236,7 +1236,7 @@ class EventTest extends AggregateRootScenarioTestCase
                new LabelAdded(
                    $eventId,
                    new LegacyLabel('Correct Label')
-               )
+               ),
             ]);
     }
 
