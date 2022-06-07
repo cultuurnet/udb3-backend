@@ -634,13 +634,9 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
             ->assertReturnedDocumentContains(
                 [
                     'labels' => [
-                        'windows newline',
-                        'unix newline',
                         'sanity label',
                     ],
                     'hiddenLabels' => [
-                        'hidden windows newline',
-                        'hidden unix newline',
                         'hidden sanity label',
                     ],
                 ]
