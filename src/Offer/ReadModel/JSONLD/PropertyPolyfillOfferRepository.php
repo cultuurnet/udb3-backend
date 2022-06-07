@@ -249,9 +249,12 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     if (!isset($json[$propertyName]) || !is_array($json[$propertyName])) {
                         return $json;
                     }
-                    $json[$propertyName] = preg_replace('/\\\\r\\\\n/', ' ', $json[$propertyName]);
-                    $json[$propertyName] = preg_replace('/\\\\n/', ' ', $json[$propertyName]);
-
+                    $json[$propertyName] = array_values(
+                        array_filter($json[$propertyName], fn ($label) => !str_contains($label, '\\n'))
+                    );
+                    if ($json[$propertyName] === []) {
+                        unset($json[$propertyName]);
+                    }
                     return $json;
                 };
 
