@@ -18,9 +18,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function getClusterIds(): array
     {
-        $queryBuilder = $this->connection->createQueryBuilder();
-
-        $result = $queryBuilder
+        $result = $this->connection->createQueryBuilder()
             ->select('DISTINCT cluster_id')
             ->from('duplicate_places')
             ->execute()
@@ -31,9 +29,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
     public function getCluster(int $clusterId): array
     {
-        $queryBuilder = $this->connection->createQueryBuilder();
-
-        return $queryBuilder
+        return $this->connection->createQueryBuilder()
             ->select('place_uuid')
             ->from('duplicate_places')
             ->where('cluster_id = :cluster_id')
