@@ -115,4 +115,35 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
             $actualRows
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_get_the_canonical_of_a_place(): void
+    {
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(1, '1accbcfb-3b22-4762-bc13-be0f67fd3116');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(2, '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
+
+        $this->assertEquals(
+            '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('19ce6565-76be-425d-94d6-894f84dd2947')
+        );
+        $this->assertEquals(
+            null,
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('1accbcfb-3b22-4762-bc13-be0f67fd3116')
+        );
+        $this->assertEquals(
+            '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('526605d3-7cc4-4607-97a4-065896253f42')
+        );
+
+        $this->assertEquals(
+            '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad',
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('4a355db3-c3f9-4acc-8093-61b333a3aefb')
+        );
+        $this->assertEquals(
+            null,
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad')
+        );
+    }
 }

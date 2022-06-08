@@ -52,4 +52,17 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ])
             ->execute();
     }
+
+    public function getCanonicalOfPlace(string $placeId): ?string
+    {
+        $rows = $this->connection->createQueryBuilder()
+            ->select('canonical')
+            ->from('duplicate_places')
+            ->where('place_uuid = :place_uuid')
+            ->setParameter(':place_uuid', $placeId)
+            ->execute()
+            ->fetchAll(PDO::FETCH_COLUMN);
+
+        return count($rows) === 1 ? $rows[0]: null;
+    }
 }
