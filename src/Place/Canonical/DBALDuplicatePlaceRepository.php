@@ -37,4 +37,18 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute()
             ->fetchAll(PDO::FETCH_COLUMN);
     }
+
+    public function setCanonicalOnCluster(int $clusterId, string $canonical): void
+    {
+        $this->connection->createQueryBuilder()
+            ->update('duplicate_places')
+            ->set('canonical', ':canonical')
+            ->where('cluster_id = :cluster_id')
+            ->setParameters([
+                ':canonical' => $canonical,
+                ':cluster_id' => $clusterId,
+            ])
+            ->execute();
+    }
+
 }

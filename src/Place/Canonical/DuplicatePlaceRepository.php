@@ -15,4 +15,6 @@ interface DuplicatePlaceRepository
      * @return string[]
      */
     public function getCluster(int $clusterId): array;
+
+    public function setCanonicalOnCluster(int $clusterId, string $canonical): void;
 }
