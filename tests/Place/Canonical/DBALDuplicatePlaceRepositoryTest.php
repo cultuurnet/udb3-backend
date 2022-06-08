@@ -107,10 +107,10 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $this->assertEquals(
             [
                 ['1', '19ce6565-76be-425d-94d6-894f84dd2947', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
-                ['1', '1accbcfb-3b22-4762-bc13-be0f67fd3116', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                ['1', '1accbcfb-3b22-4762-bc13-be0f67fd3116', null],
                 ['1', '526605d3-7cc4-4607-97a4-065896253f42', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
                 ['2', '4a355db3-c3f9-4acc-8093-61b333a3aefb', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
-                ['2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
+                ['2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad', null],
             ],
             $actualRows
         );

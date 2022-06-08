@@ -44,9 +44,11 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->update('duplicate_places')
             ->set('canonical', ':canonical')
             ->where('cluster_id = :cluster_id')
+            ->andWhere('place_uuid != :canonical')
             ->setParameters([
                 ':canonical' => $canonical,
                 ':cluster_id' => $clusterId,
+                ':place_uuid' => $canonical,
             ])
             ->execute();
     }
