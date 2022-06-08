@@ -50,5 +50,4 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ])
             ->execute();
     }
-
 }
