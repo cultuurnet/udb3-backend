@@ -65,4 +65,17 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
 
         return count($rows) === 1 ? $rows[0] : null;
     }
+
+    public function getDuplicatesOfPlace(string $placeId): ?array
+    {
+        $duplicates = $this->connection->createQueryBuilder()
+            ->select('place_uuid')
+            ->from('duplicate_places')
+            ->where('canonical = :canonical')
+            ->setParameter(':canonical', $placeId)
+            ->execute()
+            ->fetchAll(PDO::FETCH_COLUMN);
+
+        return count($duplicates) > 0 ? $duplicates : null;
+    }
 }
