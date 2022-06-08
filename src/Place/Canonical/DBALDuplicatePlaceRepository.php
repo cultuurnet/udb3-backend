@@ -27,7 +27,7 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
         return array_map('intval', $result);
     }
 
-    public function getCluster(int $clusterId): array
+    public function getPlacesInCluster(int $clusterId): array
     {
         return $this->connection->createQueryBuilder()
             ->select('place_uuid')

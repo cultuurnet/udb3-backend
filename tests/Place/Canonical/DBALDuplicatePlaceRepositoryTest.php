@@ -78,7 +78,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
      */
     public function it_can_return_placeIds(): void
     {
-        $clusterIds = $this->duplicatePlaceRepository->getCluster(1);
+        $clusterIds = $this->duplicatePlaceRepository->getPlacesInCluster(1);
 
         $this->assertEquals(
             [

@@ -39,7 +39,7 @@ class CanonicalService
 
     public function getCanonical(int $clusterId): string
     {
-        $placeIds = $this->duplicatePlaceRepository->getCluster($clusterId);
+        $placeIds = $this->duplicatePlaceRepository->getPlacesInCluster($clusterId);
 
         $placesWithMuseumpas = $this->getPlacesWithMuseumPasInCluster($placeIds);
         if (count($placesWithMuseumpas) === 1) {
