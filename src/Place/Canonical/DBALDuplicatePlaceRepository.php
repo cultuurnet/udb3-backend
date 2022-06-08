@@ -63,6 +63,6 @@ class DBALDuplicatePlaceRepository implements DuplicatePlaceRepository
             ->execute()
             ->fetchAll(PDO::FETCH_COLUMN);
 
-        return count($rows) === 1 ? $rows[0]: null;
+        return count($rows) === 1 ? $rows[0] : null;
     }
 }
