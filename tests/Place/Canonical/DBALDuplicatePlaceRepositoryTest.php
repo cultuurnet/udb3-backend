@@ -80,10 +80,10 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
 
         $this->assertEquals(
             [
-                    '19ce6565-76be-425d-94d6-894f84dd2947',
-                    '1accbcfb-3b22-4762-bc13-be0f67fd3116',
-                    '526605d3-7cc4-4607-97a4-065896253f42',
-                ],
+                '19ce6565-76be-425d-94d6-894f84dd2947',
+                '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+                '526605d3-7cc4-4607-97a4-065896253f42',
+            ],
             $clusterIds
         );
     }
