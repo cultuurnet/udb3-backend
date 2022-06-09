@@ -116,6 +116,7 @@ $consoleApp->add(
         $app['amqp.publisher'],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
         $app['event_relations_repository'],
+        $app['dbal_connection']
     )
 );
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));

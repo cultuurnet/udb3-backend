@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
+use Doctrine\DBAL\Connection;
+use PDO;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,19 +33,23 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
     private DocumentEventFactory $eventFactoryForEvents;
 
+    private Connection $connection;
+
     public function __construct(
         CommandBus $commandBus,
         DuplicatePlaceRepository $duplicatePlaceRepository,
         CanonicalService $canonicalService,
         AMQPPublisher $amqpPublisher,
         DocumentEventFactory $eventFactoryForEvents,
-        RepositoryInterface $eventRelationsRepository
+        RepositoryInterface $eventRelationsRepository,
+        Connection $connection
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->canonicalService = $canonicalService;
         $this->amqpPublisher = $amqpPublisher;
         $this->eventFactoryForEvents = $eventFactoryForEvents;
         $this->eventRelationsRepository = $eventRelationsRepository;
+        $this->connection = $connection;
 
         parent::__construct($commandBus);
     }
@@ -90,10 +96,13 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             }
 
             // 2. Trigger a SAPI3 reindex on the places in duplicate_places and places removed from duplicate_places
-            $placesInCluster = $this->duplicatePlaceRepository->getPlacesInCluster($clusterId);
-            foreach ($placesInCluster as $placeInCluster) {
-                $placeProjected = $this->eventFactoryForEvents->createEvent($placeInCluster);
-                $output->writeln('Dispatching PlaceProjectedToJSONLD for place with id ' . $placeInCluster);
+            $placesToReIndex = array_merge(
+                $this->duplicatePlaceRepository->getPlacesInCluster($clusterId),
+                $this->getDuplicatePlacesRemovedFromCluster()
+            );
+            foreach ($placesToReIndex as $placeToReIndex) {
+                $placeProjected = $this->eventFactoryForEvents->createEvent($placeToReIndex);
+                $output->writeln('Dispatching PlaceProjectedToJSONLD for place with id ' . $placeToReIndex);
                 if (!$dryRun) {
                     $this->amqpPublisher->handle((new DomainMessageBuilder())->create($placeProjected));
                 }
@@ -135,5 +144,14 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                     false
                 )
             );
+    }
+
+    private function getDuplicatePlacesRemovedFromCluster(): array
+    {
+        return $this->connection->createQueryBuilder()
+            ->select('place_uuid')
+            ->from('duplicate_places_removed_from_cluster')
+            ->execute()
+            ->fetchAll(PDO::FETCH_COLUMN);
     }
 }
