@@ -145,4 +145,13 @@ class LabelNameTest extends TestCase
         );
         new LabelName($longLabel);
     }
+
+    /**
+     * @test
+     */
+    public function it_stores_a_newline_label_value(): void
+    {
+        $labelName = new LabelName("New\nWave");
+        $this->assertEquals("New\nWave", $labelName->toString());
+    }
 }
