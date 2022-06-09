@@ -67,6 +67,18 @@ class LabelNameTest extends TestCase
                 '--',
                 true,
             ],
+            [
+                PHP_EOL,
+                false
+            ],
+            [
+                'Hard' . PHP_EOL . 'Rock',
+                true
+            ],
+            [
+                PHP_EOL . 'Techno',
+                true
+            ]
         ];
     }
 
