@@ -31,7 +31,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
     private AMQPPublisher $amqpPublisher;
 
-    private DocumentEventFactory $eventFactoryForEvents;
+    private DocumentEventFactory $placeEventFactory;
 
     private Connection $connection;
 
@@ -40,14 +40,14 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         DuplicatePlaceRepository $duplicatePlaceRepository,
         CanonicalService $canonicalService,
         AMQPPublisher $amqpPublisher,
-        DocumentEventFactory $eventFactoryForEvents,
+        DocumentEventFactory $placeEventFactory,
         RepositoryInterface $eventRelationsRepository,
         Connection $connection
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->canonicalService = $canonicalService;
         $this->amqpPublisher = $amqpPublisher;
-        $this->eventFactoryForEvents = $eventFactoryForEvents;
+        $this->placeEventFactory = $placeEventFactory;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->connection = $connection;
 
@@ -101,7 +101,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 $this->getDuplicatePlacesRemovedFromCluster()
             );
             foreach ($placesToReIndex as $placeToReIndex) {
-                $placeProjected = $this->eventFactoryForEvents->createEvent($placeToReIndex);
+                $placeProjected = $this->placeEventFactory->createEvent($placeToReIndex);
                 $output->writeln('Dispatching PlaceProjectedToJSONLD for place with id ' . $placeToReIndex);
                 if (!$dryRun) {
                     $this->amqpPublisher->handle((new DomainMessageBuilder())->create($placeProjected));
