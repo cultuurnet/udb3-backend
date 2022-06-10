@@ -39,7 +39,6 @@ use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
-use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
@@ -958,42 +957,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($placeUpdatedFromUdb2, '318F2ACB-F612-6F75-0037C9C29F44087A');
 
         $this->assertArrayNotHasKey('geo', (array) $body);
-    }
-
-    /**
-     * @test
-     */
-    public function it_adds_the_canonical_id_to_a_place_that_is_marked_as_a_duplicate(): void
-    {
-        $duplicateId = 'cb0f0523-ccd9-4a8e-b985-820e40ca5d40';
-        $canonicalId = '6caefd7d-9e2f-4b61-a7fa-54d8b25fb8d9';
-
-        $initialDocument = new JsonDocument(
-            $duplicateId,
-            Json::encode(
-                [
-                    'name' => [
-                        'nl' => 'Old title',
-                    ],
-                    'geo' => [
-                        'latitude' => 1.5678,
-                        'longitude' => -0.9524,
-                    ],
-                    'terms' => [],
-                    'languages' => ['nl'],
-                    'completedLanguages' => ['nl'],
-                ]
-            )
-        );
-
-        $this->documentRepository->save($initialDocument);
-
-        $markedAsDuplicate = new MarkedAsDuplicate($duplicateId, $canonicalId);
-
-        $body = $this->project($markedAsDuplicate, $duplicateId);
-
-        $this->assertArrayHasKey('duplicateOf', (array) $body);
-        $this->assertEquals('http://example.com/entity/' . $canonicalId, $body->duplicateOf);
     }
 
     /**

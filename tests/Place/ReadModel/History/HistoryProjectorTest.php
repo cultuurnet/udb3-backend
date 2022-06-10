@@ -54,7 +54,6 @@ use CultuurNet\UDB3\Place\Events\LabelsImported;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
-use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
@@ -786,25 +785,6 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getPlaceId(),
             'Locatie gemarkeerd als canonical'
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_projects_MarkedAsDuplicate_event(): void
-    {
-        $event = new MarkedAsDuplicate(
-            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            '6288f51f-dabe-4423-9e45-35491c5f8395'
-        );
-
-        $domainMessage = $this->aDomainMessageForEvent($event->getPlaceId(), $event);
-
-        $this->historyProjector->handle($domainMessage);
-        $this->assertHistoryContainsLogWithDescription(
-            $event->getPlaceId(),
-            'Locatie gemarkeerd als duplicaat van \'6288f51f-dabe-4423-9e45-35491c5f8395\''
         );
     }
 
