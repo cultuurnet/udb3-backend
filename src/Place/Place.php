@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -371,12 +372,12 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return new OwnerChanged($this->placeId, $newOwnerId);
     }
 
-    protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
+    protected function createLabelAddedEvent(Label $label): LabelAdded
     {
         return new LabelAdded($this->placeId, $label);
     }
 
-    protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
+    protected function createLabelRemovedEvent(Label $label): LabelRemoved
     {
         return new LabelRemoved($this->placeId, $label);
     }

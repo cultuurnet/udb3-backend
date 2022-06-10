@@ -77,6 +77,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -498,12 +499,12 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         );
     }
 
-    protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
+    protected function createLabelAddedEvent(Label $label): LabelAdded
     {
         return new LabelAdded($this->eventId, $label);
     }
 
-    protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
+    protected function createLabelRemovedEvent(Label $label): LabelRemoved
     {
         return new LabelRemoved($this->eventId, $label);
     }

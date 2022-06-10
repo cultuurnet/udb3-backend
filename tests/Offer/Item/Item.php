@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -95,12 +96,12 @@ class Item extends Offer
         return new OwnerChanged($this->id, $newOwnerId);
     }
 
-    protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
+    protected function createLabelAddedEvent(Label $label): LabelAdded
     {
         return new LabelAdded($this->id, $label);
     }
 
-    protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
+    protected function createLabelRemovedEvent(Label $label): LabelRemoved
     {
         return new LabelRemoved($this->id, $label);
     }

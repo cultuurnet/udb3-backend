@@ -251,7 +251,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
         if (!$this->labels->contains($legacyLabel)) {
             $this->apply(
-                $this->createLabelAddedEvent($legacyLabel)
+                $this->createLabelAddedEvent($label)
             );
         }
     }
@@ -261,7 +261,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
         if ($this->labels->contains($legacyLabel)) {
             $this->apply(
-                $this->createLabelRemovedEvent($legacyLabel)
+                $this->createLabelRemovedEvent($label)
             );
         }
     }
@@ -1036,9 +1036,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = isset($newMainImage) ? $images->withMain($newMainImage) : $images;
     }
 
-    abstract protected function createLabelAddedEvent(LegacyLabel $label): AbstractLabelAdded;
+    abstract protected function createLabelAddedEvent(Label $label): AbstractLabelAdded;
 
-    abstract protected function createLabelRemovedEvent(LegacyLabel $label): AbstractLabelRemoved;
+    abstract protected function createLabelRemovedEvent(Label $label): AbstractLabelRemoved;
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 
