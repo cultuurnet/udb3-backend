@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlacesEnrichedPlaceRepository;
 use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
 use CultuurNet\UDB3\Place\NilLocationEnrichedPlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
@@ -110,6 +111,14 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     $app[PopularityRepository::class],
                     $repository
                 );
+
+                if ($app['config']['polyfill_duplicate_places']) {
+                    $repository = new DuplicatePlacesEnrichedPlaceRepository(
+                        $app['duplicate_place_repository'],
+                        $app['place_iri_generator'],
+                        $repository
+                    );
+                }
 
                 $repository = new PropertyPolyfillOfferRepository(
                     $repository,
