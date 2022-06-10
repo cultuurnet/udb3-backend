@@ -9,7 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
@@ -20,10 +20,12 @@ use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
@@ -38,9 +40,9 @@ class ProjectorTest extends TestCase
 
     private UUID $unknownId;
 
-    private LabelName $labelName;
+    private LegacyLabelName $labelName;
 
-    private LabelName $unknownLabelName;
+    private LegacyLabelName $unknownLabelName;
 
     /**
      * @var WriteRepositoryInterface|MockObject
@@ -56,8 +58,8 @@ class ProjectorTest extends TestCase
         $this->uuid = new UUID('EC1697B7-7E2B-4462-A901-EC20E2A0AAFC');
         $this->unknownId = new UUID('ACFCFE56-3D16-48FB-A053-FAA9950720DC');
 
-        $this->labelName = new LabelName('labelName');
-        $this->unknownLabelName = new LabelName('unknownLabelName');
+        $this->labelName = new LegacyLabelName('labelName');
+        $this->unknownLabelName = new LegacyLabelName('unknownLabelName');
 
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
 
@@ -313,7 +315,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            new Label(new LabelName($this->labelName->toNative()))
         );
 
         $this->handleAdding($labelAdded);
@@ -326,7 +328,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            new Label(new LabelName($this->labelName->toNative()))
         );
 
         $this->handleDeleting($labelRemoved);
@@ -339,7 +341,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            new Label(new LabelName($this->labelName->toNative()))
         );
 
         $this->handleAdding($labelAdded);
@@ -352,7 +354,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            new Label(new LabelName($this->labelName->toNative()))
         );
 
         $this->handleDeleting($labelRemoved);
