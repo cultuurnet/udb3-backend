@@ -48,7 +48,6 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
@@ -305,14 +304,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyPlaceDeleted(PlaceDeleted $event): void
     {
         $this->workflowStatus = WorkflowStatus::DELETED();
-    }
-
-    protected function applyMarkedAsCanonical(MarkedAsCanonical $event): void
-    {
-        $this->duplicates[] = $event->getDuplicatedBy();
-        foreach ($event->getDuplicatesOfDuplicate() as $duplicateOfDuplicate) {
-            $this->duplicates[] = $duplicateOfDuplicate;
-        }
     }
 
     public function getCanonicalPlaceId(): ?string
