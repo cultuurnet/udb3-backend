@@ -319,13 +319,19 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $labels->findByName(new LabelName($label->getName()->toNative()));
             $canBeRemoved = !$keepLabelsCollection->containsWithSameVisibility($label);
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply($this->createLabelRemovedEvent($label));
+                $this->apply($this->createLabelRemovedEvent(
+                    new Label(
+                        new LabelName($label->getName()->toNative()),
+                        $label->isVisible()
+                    )
+                )
+                );
             }
         }
 
         // For each added label fire a LabelAdded event.
         foreach ($addedLabels->asArray() as $label) {
-            $this->apply($this->createLabelAddedEvent($label));
+            $this->apply($this->createLabelAddedEvent(New Label(new LabelName($label->getName()->toNative()), $label->isVisible())));
         }
     }
 
