@@ -23,12 +23,14 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
@@ -801,7 +803,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $initialDocument = new JsonDocument(
@@ -837,7 +839,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $body = $this->project($labelRemoved, 'foo');
@@ -864,7 +866,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $body = $this->project($labelAdded, 'foo', null, $this->recordedOn->toBroadwayDateTime());

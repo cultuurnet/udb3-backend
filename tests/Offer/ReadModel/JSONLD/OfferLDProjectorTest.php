@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -23,6 +23,8 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
@@ -166,7 +168,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $initialDocument = new JsonDocument(
@@ -193,7 +195,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B', false)
+            new Label(new LabelName('label B'), false)
         );
 
         $initialDocument = new JsonDocument(
@@ -233,7 +235,7 @@ class OfferLDProjectorTest extends TestCase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $body = $this->project($labelRemoved, 'foo');
@@ -261,7 +263,7 @@ class OfferLDProjectorTest extends TestCase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label C', false)
+            new Label(new LabelName('label C'), false)
         );
 
         $body = $this->project($labelRemoved, 'foo', null, $this->recordedOn->toBroadwayDateTime());
@@ -291,7 +293,7 @@ class OfferLDProjectorTest extends TestCase
 
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $body = $this->project($labelAdded, 'foo', null, $this->recordedOn->toBroadwayDateTime());
