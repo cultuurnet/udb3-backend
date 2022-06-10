@@ -15,8 +15,10 @@ use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
@@ -46,11 +48,11 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new Label('foo', true)),
+                    new LabelAdded($id, new Label(new LabelName('foo'), true)),
                 ]
             )
-            ->when(new RemoveLabel($id, new Label('foo', true)))
-            ->then([new LabelRemoved($id, new Label('foo', true))]);
+            ->when(new RemoveLabel($id, new LegacyLabel('foo', true)))
+            ->then([new LabelRemoved($id, new Label(new LabelName('foo'), true))]);
     }
 
     /**
@@ -65,11 +67,11 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new Label('foo', true)),
+                    new LabelAdded($id, new Label(new LabelName('foo'), true)),
                 ]
             )
-            ->when(new RemoveLabel($id, new Label('foo', false)))
-            ->then([new LabelRemoved($id, new Label('foo', false))]);
+            ->when(new RemoveLabel($id, new LegacyLabel('foo', false)))
+            ->then([new LabelRemoved($id, new Label(new LabelName('foo'), false))]);
     }
 
     /**
@@ -82,7 +84,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
-            ->when(new RemoveLabel($id, new Label('foo', false)))
+            ->when(new RemoveLabel($id, new LegacyLabel('foo', false)))
             ->then([]);
     }
 
