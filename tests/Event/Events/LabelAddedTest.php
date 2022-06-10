@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class LabelAddedTest extends TestCase
@@ -13,11 +15,11 @@ class LabelAddedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_to_an_array()
+    public function it_can_be_serialized_to_an_array(): void
     {
         $labelsMerged = new LabelAdded(
             'foo',
-            new Label('label 1')
+            new Label(new LabelName('label 1'))
         );
 
         $this->assertInstanceOf(Serializable::class, $labelsMerged);
@@ -47,7 +49,7 @@ class LabelAddedTest extends TestCase
 
         $expectedEventWasLabelled = new LabelAdded(
             'foo',
-            new Label('label 1')
+            new Label(new LabelName('label 1'))
         );
 
         $this->assertEquals(
