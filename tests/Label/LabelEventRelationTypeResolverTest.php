@@ -8,6 +8,8 @@ use CultuurNet\UDB3\Event\Events\LabelAdded as EventLabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as EventLabelRemoved;
 use CultuurNet\UDB3\Label as LabelValueObject;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as ModelLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as ModelLabelName;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved as OrganizerLabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelAdded as PlaceLabelAdded;
@@ -108,7 +110,10 @@ class LabelEventRelationTypeResolverTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $dummyLabelEvent = new DummyLabelEvent('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $dummyLabelEvent = new DummyLabelEvent(
+            '6b96a237-2e00-49a2-ba6d-fc2beab0707e',
+            new ModelLabel(new ModelLabelName('foo'))
+        );
         $this->labelEventRelationTypeResolver->getRelationType($dummyLabelEvent);
     }
 }

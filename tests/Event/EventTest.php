@@ -587,8 +587,8 @@ class EventTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('foo')),
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('bar')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label(new LabelName('foo'))),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label(new LabelName('bar'))),
             ]);
     }
 
