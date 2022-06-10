@@ -2,7 +2,6 @@
 <?php
 
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Silex\ApiName;
@@ -12,7 +11,6 @@ use CultuurNet\UDB3\Silex\Console\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Silex\Console\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Silex\Console\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Silex\Console\ConsumeCommand;
-use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
 use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
@@ -40,7 +38,6 @@ use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Knp\Provider\ConsoleServiceProvider;
-use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -115,14 +112,6 @@ $consoleApp->add(
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
         $app['event_relations_repository'],
         $app['dbal_connection']
-    )
-);
-$consoleApp->add(
-    new DispatchMarkedAsDuplicateEventCommand(
-        $app['event_command_bus'],
-        $app[LocationMarkedAsDuplicateProcessManager::class],
-        $app['event_bus'],
-        new UuidFactory()
     )
 );
 $consoleApp->add(
