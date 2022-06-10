@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
-use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlacesAsDuplicateFromTableCommand;
 use CultuurNet\UDB3\Silex\Console\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
@@ -119,7 +118,6 @@ $consoleApp->add(
         $app['dbal_connection']
     )
 );
-$consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(
     new MarkPlacesAsDuplicateFromTableCommand(
         $app['event_command_bus'],
