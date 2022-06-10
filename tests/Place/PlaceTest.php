@@ -16,9 +16,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
-use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
-use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
-use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
@@ -44,7 +41,6 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
-use Ramsey\Uuid\Uuid;
 use CultuurNet\UDB3\StringLiteral;
 
 class PlaceTest extends AggregateRootScenarioTestCase
