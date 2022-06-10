@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -468,7 +467,6 @@ $app['event_bus'] = function ($app) {
             'organizer_geocoordinates_process_manager',
             'uitpas_event_process_manager',
             'curators_news_article_process_manager',
-            LocationMarkedAsDuplicateProcessManager::class,
             RelocateEventToCanonicalPlace::class,
             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
         ];
