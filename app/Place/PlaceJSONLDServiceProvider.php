@@ -112,7 +112,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     $repository
                 );
 
-                if ($app['config']['polyfill_duplicate_places']) {
+                if (isset($app['config']['polyfill_duplicate_places']) && $app['config']['polyfill_duplicate_places']) {
                     $repository = new DuplicatePlacesEnrichedPlaceRepository(
                         $app['duplicate_place_repository'],
                         $app['place_iri_generator'],
