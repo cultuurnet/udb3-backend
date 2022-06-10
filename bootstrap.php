@@ -61,7 +61,6 @@ use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
-use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
@@ -581,8 +580,6 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
                 $app['media_manager']
             )
         );
-
-        $commandBus->subscribe(new MarkAsDuplicateCommandHandler($app['place_repository']));
 
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Role\CommandHandler($app['real_role_repository'])
