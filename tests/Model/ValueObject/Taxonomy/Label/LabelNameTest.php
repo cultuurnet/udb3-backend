@@ -67,6 +67,22 @@ class LabelNameTest extends TestCase
                 '--',
                 true,
             ],
+            [
+                "\r\n",
+                false,
+            ],
+            [
+                "A\n",
+                false,
+            ],
+            [
+                "Hard\r\nRock",
+                true,
+            ],
+            [
+                "\r\nTechno",
+                true,
+            ],
         ];
     }
 
@@ -113,20 +129,29 @@ class LabelNameTest extends TestCase
      */
     public function it_requires_labels_of_at_most_255_characters(): void
     {
-        $longLabel = 'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz
-            abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz';
+        $longLabel = 'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz' .
+            'abcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyzabcdefghijklmnopqrtsuvwxyz';
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'String \'' . $longLabel . '\' does not match regex pattern ' . LabelName::REGEX . '.'
         );
         new LabelName($longLabel);
+    }
+
+    /**
+     * @test
+     */
+    public function it_stores_a_newline_label_value(): void
+    {
+        $labelName = new LabelName("New\nWave");
+        $this->assertEquals("New\nWave", $labelName->toString());
     }
 }
