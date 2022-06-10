@@ -64,7 +64,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -73,6 +73,8 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
@@ -420,7 +422,7 @@ class HistoryProjectorTest extends TestCase
     {
         $eventWasTagged = new LabelAdded(
             self::EVENT_ID_1,
-            new Label('foo')
+            new Label(new LabelName('foo'))
         );
 
         $taggedDate = '2015-03-27T10:17:19.176169+02:00';
@@ -454,7 +456,7 @@ class HistoryProjectorTest extends TestCase
     {
         $tagErased = new LabelRemoved(
             self::EVENT_ID_1,
-            new Label('foo')
+            new Label(new LabelName('foo'))
         );
 
         $tagErasedDate = '2015-03-27T10:17:19.176169+02:00';
