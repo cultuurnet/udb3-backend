@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +25,7 @@ class AbstractLabelEventTest extends TestCase
     public function setUp(): void
     {
         $this->itemId = 'Foo';
-        $this->label = new Label('LabelTest');
+        $this->label = new Label(new LabelName('LabelTest'));
         $this->labelEvent = new LabelAdded($this->itemId, $this->label);
     }
 
@@ -33,7 +35,7 @@ class AbstractLabelEventTest extends TestCase
     public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
-        $expectedLabel = new Label('LabelTest');
+        $expectedLabel = new Label(new LabelName('LabelTest'));
         $expectedLabelEvent = new LabelAdded($expectedItemId, $expectedLabel);
 
         $this->assertEquals($expectedLabelEvent, $this->labelEvent);
@@ -45,7 +47,7 @@ class AbstractLabelEventTest extends TestCase
     public function it_can_return_its_properties(): void
     {
         $expectedItemId = 'Foo';
-        $expectedLabel = new Label('LabelTest');
+        $expectedLabel = new LegacyLabel('LabelTest');
 
         $this->assertEquals($expectedItemId, $this->labelEvent->getItemId());
         $this->assertEquals($expectedLabel, $this->labelEvent->getLabelName());
@@ -90,7 +92,7 @@ class AbstractLabelEventTest extends TestCase
                 ],
                 new LabelAdded(
                     'madId',
-                    new Label('label123')
+                    new Label(new LabelName('label123'))
                 ),
             ],
             'abstractLabelEvent2' => [
@@ -101,7 +103,7 @@ class AbstractLabelEventTest extends TestCase
                 ],
                 new LabelAdded(
                     'madId',
-                    new Label('label123', false)
+                    new Label(new LabelName('label123'), false)
                 ),
             ],
         ];

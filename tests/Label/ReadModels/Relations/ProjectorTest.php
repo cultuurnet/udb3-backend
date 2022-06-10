@@ -13,13 +13,15 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Event\Events\LabelsImported as EventLabelsImported;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as RelationsReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
@@ -42,7 +44,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    private LabelName $labelName;
+    private LegacyLabelName $labelName;
 
     private string $relationId;
 
@@ -62,7 +64,7 @@ class ProjectorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->labelName = new LabelName('labelName');
+        $this->labelName = new LegacyLabelName('labelName');
 
         $this->relationId = $this->getRelationId();
 
@@ -111,7 +113,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToEvent(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    new Label(new LabelName('labelName'))
                 ),
                 RelationType::event(),
             ],
@@ -119,7 +121,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToPlace(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    new Label(new LabelName('labelName'))
                 ),
                 RelationType::place(),
             ],
@@ -163,14 +165,14 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelRemovedFromEvent(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    new Label(new LabelName('labelName'))
                 ),
             ],
             [
                 $this->getRelationId(),
                 new LabelRemovedFromPlace(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    new Label(new LabelName('labelName'))
                 ),
             ],
             [
@@ -203,13 +205,13 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->withConsecutive(
                 [
-                    new LabelName('foo'),
+                    new LegacyLabelName('foo'),
                     $relationType,
                     new StringLiteral($relationId),
                     true,
                 ],
                 [
-                    new LabelName('bar'),
+                    new LegacyLabelName('bar'),
                     $relationType,
                     new StringLiteral($relationId),
                     true,
@@ -281,7 +283,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->at(1))
             ->method('save')
             ->with(
-                new LabelName('2dotstwice'),
+                new LegacyLabelName('2dotstwice'),
                 $relationType,
                 $itemId,
                 true
@@ -290,7 +292,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->at(2))
             ->method('save')
             ->with(
-                new LabelName('cultuurnet'),
+                new LegacyLabelName('cultuurnet'),
                 $relationType,
                 $itemId,
                 true
@@ -327,7 +329,7 @@ class ProjectorTest extends TestCase
             ->with($itemId)
             ->willReturn([
                 new LabelRelation(
-                    new LabelName('2DOTStwice'),
+                    new LegacyLabelName('2DOTStwice'),
                     RelationType::organizer(),
                     new StringLiteral('123'),
                     false
@@ -337,7 +339,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->once())
             ->method('save')
             ->with(
-                new LabelName('cultuurnet'),
+                new LegacyLabelName('cultuurnet'),
                 RelationType::organizer(),
                 $itemId,
                 true

@@ -732,7 +732,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
+                        $label
                     ),
                 ],
             ],
@@ -755,7 +755,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        new LegacyLabel('fOO')
+                        new Label(new LabelName('fOO'))
                     ),
                 ],
             ],
@@ -780,7 +780,7 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->then(
                 [
-                    new LabelRemoved($id, new LegacyLabel($label->getName()->toString(), $label->isVisible())),
+                    new LabelRemoved($id, $label),
                 ]
             );
     }
@@ -828,11 +828,11 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
+                        $label
                     ),
                     new LabelRemoved(
                         $id,
-                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
+                        $label
                     ),
                 ],
             ],

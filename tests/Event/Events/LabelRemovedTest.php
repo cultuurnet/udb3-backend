@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class LabelRemovedTest extends TestCase
@@ -50,7 +52,7 @@ class LabelRemovedTest extends TestCase
                 ],
                 new LabelRemoved(
                     'foo',
-                    new Label('Label1')
+                    new Label(new LabelName('Label1'))
                 ),
             ],
         ];
