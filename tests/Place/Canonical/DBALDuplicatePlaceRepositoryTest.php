@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 class DBALDuplicatePlaceRepositoryTest extends TestCase
@@ -20,6 +21,7 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
         $table = new Table('duplicate_places');
         $table->addColumn('cluster_id', Type::BIGINT)->setNotnull(true);
         $table->addColumn('place_uuid', Type::GUID)->setLength(36)->setNotnull(true);
+        $table->addColumn('canonical', Type::GUID)->setLength(36)->setNotnull(false)->setDefault(null);
         $this->createTable($table);
 
         $this->getConnection()->insert(
@@ -76,15 +78,105 @@ class DBALDuplicatePlaceRepositoryTest extends TestCase
      */
     public function it_can_return_placeIds(): void
     {
-        $clusterIds = $this->duplicatePlaceRepository->getCluster(1);
+        $clusterIds = $this->duplicatePlaceRepository->getPlacesInCluster(1);
 
         $this->assertEquals(
             [
-                    '19ce6565-76be-425d-94d6-894f84dd2947',
-                    '1accbcfb-3b22-4762-bc13-be0f67fd3116',
-                    '526605d3-7cc4-4607-97a4-065896253f42',
-                ],
+                '19ce6565-76be-425d-94d6-894f84dd2947',
+                '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+                '526605d3-7cc4-4607-97a4-065896253f42',
+            ],
             $clusterIds
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_the_canonical_of_a_cluster(): void
+    {
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(1, '1accbcfb-3b22-4762-bc13-be0f67fd3116');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(2, '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
+
+        $actualRows = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from('duplicate_places')
+            ->execute()
+            ->fetchAll(PDO::FETCH_NUM);
+
+        $this->assertEquals(
+            [
+                ['1', '19ce6565-76be-425d-94d6-894f84dd2947', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                ['1', '1accbcfb-3b22-4762-bc13-be0f67fd3116', null],
+                ['1', '526605d3-7cc4-4607-97a4-065896253f42', '1accbcfb-3b22-4762-bc13-be0f67fd3116'],
+                ['2', '4a355db3-c3f9-4acc-8093-61b333a3aefb', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad'],
+                ['2', '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad', null],
+            ],
+            $actualRows
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_the_canonical_of_a_place(): void
+    {
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(1, '1accbcfb-3b22-4762-bc13-be0f67fd3116');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(2, '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
+
+        $this->assertEquals(
+            '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('19ce6565-76be-425d-94d6-894f84dd2947')
+        );
+        $this->assertEquals(
+            null,
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('1accbcfb-3b22-4762-bc13-be0f67fd3116')
+        );
+        $this->assertEquals(
+            '1accbcfb-3b22-4762-bc13-be0f67fd3116',
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('526605d3-7cc4-4607-97a4-065896253f42')
+        );
+
+        $this->assertEquals(
+            '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad',
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('4a355db3-c3f9-4acc-8093-61b333a3aefb')
+        );
+        $this->assertEquals(
+            null,
+            $this->duplicatePlaceRepository->getCanonicalOfPlace('64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_the_duplicates_of_a_place(): void
+    {
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(1, '1accbcfb-3b22-4762-bc13-be0f67fd3116');
+        $this->duplicatePlaceRepository->setCanonicalOnCluster(2, '64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad');
+
+        $this->assertNull(
+            $this->duplicatePlaceRepository->getDuplicatesOfPlace('19ce6565-76be-425d-94d6-894f84dd2947')
+        );
+        $this->assertEquals(
+            [
+                '19ce6565-76be-425d-94d6-894f84dd2947',
+                '526605d3-7cc4-4607-97a4-065896253f42',
+            ],
+            $this->duplicatePlaceRepository->getDuplicatesOfPlace('1accbcfb-3b22-4762-bc13-be0f67fd3116')
+        );
+        $this->assertNull(
+            $this->duplicatePlaceRepository->getDuplicatesOfPlace('526605d3-7cc4-4607-97a4-065896253f42')
+        );
+
+        $this->assertNull(
+            $this->duplicatePlaceRepository->getDuplicatesOfPlace('4a355db3-c3f9-4acc-8093-61b333a3aefb')
+        );
+        $this->assertEquals(
+            [
+                '4a355db3-c3f9-4acc-8093-61b333a3aefb',
+            ],
+            $this->duplicatePlaceRepository->getDuplicatesOfPlace('64901efc-6bd7-4e9d-8916-fcdeb5b1c8ad')
         );
     }
 }

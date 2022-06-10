@@ -64,7 +64,7 @@ class MarkPlacesAsDuplicateFromTableCommand extends AbstractCommand
         }
 
         foreach ($clusterIds as $clusterId) {
-            $cluster = $this->duplicatePlaceRepository->getCluster($clusterId);
+            $cluster = $this->duplicatePlaceRepository->getPlacesInCluster($clusterId);
             try {
                 $canonicalId = $this->canonicalService->getCanonical($clusterId);
             } catch (MuseumPassNotUniqueInCluster $museumPassNotUniqueInClusterException) {
