@@ -47,7 +47,7 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -57,6 +57,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
@@ -422,12 +424,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->project(
-            new LabelAdded($originalEventId, new Label('2dotstwice', true)),
+            new LabelAdded($originalEventId, new Label(new LabelName('2dotstwice'), true)),
             $originalEventId
         );
 
         $this->project(
-            new LabelAdded($originalEventId, new Label('cultuurnet', false)),
+            new LabelAdded($originalEventId, new Label(new LabelName('cultuurnet'), false)),
             $originalEventId
         );
 
@@ -891,7 +893,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $initialDocument = new JsonDocument(
@@ -927,7 +929,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $body = $this->project($labelRemoved, 'foo');
@@ -954,7 +956,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            new Label(new LabelName('label B'))
         );
 
         $body = $this->project($labelAdded, 'foo', null, $this->recordedOn->toBroadwayDateTime());
