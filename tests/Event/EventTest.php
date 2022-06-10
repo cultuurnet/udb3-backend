@@ -608,7 +608,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('foo')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label(new LabelName('foo'))),
             ]);
     }
 
@@ -630,8 +630,8 @@ class EventTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('Foo')),
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new LegacyLabel('België')),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label(new LabelName('Foo'))),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', new Label(new LabelName('België'))),
             ]);
     }
 
@@ -700,12 +700,12 @@ class EventTest extends AggregateRootScenarioTestCase
                         new Label(new LabelName('brugge'), false),
                     )
                 ),
-                new LabelRemoved($eventId, new LegacyLabel('kunst', true)),
-                new LabelRemoved($eventId, new LegacyLabel('tentoonstelling', true)),
-                new LabelRemoved($eventId, new LegacyLabel('brugge', true)),
-                new LabelAdded($eventId, new LegacyLabel('kunst', false)),
-                new LabelAdded($eventId, new LegacyLabel('tentoonstelling', false)),
-                new LabelAdded($eventId, new LegacyLabel('brugge', false)),
+                new LabelRemoved($eventId, new Label(new LabelName('kunst'), true)),
+                new LabelRemoved($eventId, new Label(new LabelName('tentoonstelling'), true)),
+                new LabelRemoved($eventId, new Label(new LabelName('brugge'), true)),
+                new LabelAdded($eventId, new Label(new LabelName('kunst'), false)),
+                new LabelAdded($eventId, new Label(new LabelName('tentoonstelling'), false)),
+                new LabelAdded($eventId, new Label(new LabelName('brugge'), false)),
             ]);
     }
 
@@ -1261,7 +1261,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     ),
                     new LabelAdded(
                         $newEventId,
-                        new LegacyLabel($label->getName()->toString(), $label->isVisible())
+                        $label
                     ),
                 ]
             );

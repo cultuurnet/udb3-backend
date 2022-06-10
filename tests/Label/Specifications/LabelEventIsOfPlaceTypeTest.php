@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Label\Specifications;
 use CultuurNet\UDB3\Event\Events\LabelAdded as EventLabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as EventLabelRemoved;
 use CultuurNet\UDB3\Label as LabelValueObject;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as ModelLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as ModelLabelName;
 use CultuurNet\UDB3\Place\Events\LabelAdded as PlaceLabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved as PlaceLabelRemoved;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +30,7 @@ class LabelEventIsOfPlaceTypeTest extends TestCase
      */
     public function it_is_satisfied_by_label_added_on_place(): void
     {
-        $labelAdded = new PlaceLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelAdded = new PlaceLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new ModelLabel(new ModelLabelName('foo')));
 
         $this->assertTrue($this->labelEventIsOfPlaceType->isSatisfiedBy(
             $labelAdded
@@ -40,7 +42,7 @@ class LabelEventIsOfPlaceTypeTest extends TestCase
      */
     public function it_is_satisfied_by_label_removed_from_place(): void
     {
-        $labelRemoved = new PlaceLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelRemoved = new PlaceLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new ModelLabel(new ModelLabelName('foo')));
 
         $this->assertTrue($this->labelEventIsOfPlaceType->isSatisfiedBy(
             $labelRemoved
@@ -52,7 +54,7 @@ class LabelEventIsOfPlaceTypeTest extends TestCase
      */
     public function it_is_not_satisfied_by_label_added_on_event(): void
     {
-        $labelAdded = new EventLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelAdded = new EventLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new ModelLabel(new ModelLabelName('foo')));
 
         $this->assertFalse($this->labelEventIsOfPlaceType->isSatisfiedBy(
             $labelAdded
@@ -64,7 +66,7 @@ class LabelEventIsOfPlaceTypeTest extends TestCase
      */
     public function it_is_not_satisfied_by_label_deleted_from_event(): void
     {
-        $labelRemoved = new EventLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelRemoved = new EventLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new ModelLabel(new ModelLabelName('foo')));
 
         $this->assertFalse($this->labelEventIsOfPlaceType->isSatisfiedBy(
             $labelRemoved
