@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Specifications;
 
-use CultuurNet\UDB3\Label as LabelValueObject;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as ModelLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as ModelLabelName;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
