@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
-use CultuurNet\UDB3\Silex\Console\MarkPlacesAsDuplicateFromTableCommand;
 use CultuurNet\UDB3\Silex\Console\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexEventsWithRecommendations;
@@ -116,13 +115,6 @@ $consoleApp->add(
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
         $app['event_relations_repository'],
         $app['dbal_connection']
-    )
-);
-$consoleApp->add(
-    new MarkPlacesAsDuplicateFromTableCommand(
-        $app['event_command_bus'],
-        $app['duplicate_place_repository'],
-        $app['canonical_service']
     )
 );
 $consoleApp->add(
