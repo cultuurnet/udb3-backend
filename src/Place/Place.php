@@ -194,19 +194,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->addresses[$addressTranslated->getLanguage()->getCode()] = $addressTranslated->getAddress();
     }
 
-    public function markAsCanonicalFor(string $placeIdOfDuplicate, array $duplicatesOfDuplicate = []): void
-    {
-        if ($this->isDeleted()) {
-            throw CannotMarkPlaceAsCanonical::becauseItIsDeleted($this->placeId);
-        }
-
-        if ($this->isDuplicate) {
-            throw CannotMarkPlaceAsCanonical::becauseItIsAlreadyADuplicate($this->placeId);
-        }
-
-        $this->apply(new MarkedAsCanonical($this->placeId, $placeIdOfDuplicate, $duplicatesOfDuplicate));
-    }
-
     /**
      * @return string[]
      */
