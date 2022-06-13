@@ -9,11 +9,8 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\EventEditingService;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
-use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -40,17 +37,6 @@ class EventEditingServiceProvider implements ServiceProviderInterface
                 return new EventOrganizerRelationService(
                     $app['event_editor'],
                     $app['event_relations_repository']
-                );
-            }
-        );
-
-        $app[LocationMarkedAsDuplicateProcessManager::class] = $app->share(
-            function ($app) {
-                return new ReplayFilteringEventListener(
-                    new LocationMarkedAsDuplicateProcessManager(
-                        new ResultsGenerator($app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]),
-                        $app['event_command_bus']
-                    )
                 );
             }
         );
