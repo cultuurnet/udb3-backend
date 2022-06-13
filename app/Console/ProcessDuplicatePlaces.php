@@ -110,6 +110,9 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
             // 3. Trigger an UpdateLocation for places inside duplicate_places
             $duplicatePlaces = $this->duplicatePlaceRepository->getDuplicatesOfPlace($canonicalId);
+            if ($duplicatePlaces === null) {
+                continue;
+            }
 
             foreach ($duplicatePlaces as $duplicatePlace) {
                 $commands = [];
