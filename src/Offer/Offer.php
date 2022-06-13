@@ -157,7 +157,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         foreach ($this->labels->asArray() as $label) {
             $labels = $labels->with(
                 new Label(
-                    new LabelName($label->getName()->toNative()),
+                    new LabelName(
+                        $label->getName()->toNative()
+                    ),
                     $label->isVisible()
                 )
             );
