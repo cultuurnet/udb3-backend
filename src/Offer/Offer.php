@@ -517,7 +517,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyLabelsImported(AbstractLabelsImported $labelsImported): void
     {
-        foreach ($labelsImported->getLabels()->toArrayOfStringNames() as $importedLabelName) {
+        foreach ($labelsImported->getAllLabelNames() as $importedLabelName) {
             if (!in_array($importedLabelName, $this->importedLabelNames, true)) {
                 $this->importedLabelNames[] = $importedLabelName;
             }
