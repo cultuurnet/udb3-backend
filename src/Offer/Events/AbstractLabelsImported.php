@@ -63,11 +63,16 @@ abstract class AbstractLabelsImported extends AbstractEvent implements LabelsImp
     public function serialize(): array
     {
         $labels = [];
-        foreach ($this->getLabels() as $label) {
-            /** @var Label $label */
+        foreach ($this->getVisibleLabelNames() as $labelName) {
             $labels[] = [
-                'label' => $label->getName()->toString(),
-                'visibility' => $label->isVisible(),
+                'label' => $labelName,
+                'visibility' => true,
+            ];
+        }
+        foreach ($this->getHiddenLabelNames() as $labelName) {
+            $labels[] = [
+                'label' => $labelName,
+                'visibility' => false,
             ];
         }
 
