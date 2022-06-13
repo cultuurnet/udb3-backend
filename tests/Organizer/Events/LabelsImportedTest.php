@@ -63,9 +63,9 @@ class LabelsImportedTest extends TestCase
     public function it_stores_all_labels(): void
     {
         $this->assertEquals(
-     [
+            [
          'foo',
-         'bar'
+         'bar',
      ],
             $this->labelsImported->getAllLabelNames()
         );
@@ -92,7 +92,7 @@ class LabelsImportedTest extends TestCase
         $this->assertEquals(
             [
 
-                'bar'
+                'bar',
             ],
             $this->labelsImported->getHiddenLabelNames()
         );

@@ -65,7 +65,7 @@ class LabelsImportedTest extends TestCase
         $this->assertEquals(
             [
                 'foo',
-                'bar'
+                'bar',
             ],
             $this->labelsImported->getAllLabelNames()
         );
