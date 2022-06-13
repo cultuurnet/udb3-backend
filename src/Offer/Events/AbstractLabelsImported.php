@@ -24,11 +24,6 @@ abstract class AbstractLabelsImported extends AbstractEvent implements LabelsImp
         $this->labels = $labels;
     }
 
-    public function getLabels(): Labels
-    {
-        return $this->labels;
-    }
-
     public function getAllLabelNames(): array
     {
         return $this->labels->toArrayOfStringNames();
