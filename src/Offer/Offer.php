@@ -321,11 +321,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
                 $this->apply(
                     $this->createLabelRemovedEvent(
-                    new Label(
+                        new Label(
                         new LabelName($label->getName()->toNative()),
                         $label->isVisible()
                     )
-                )
+                    )
                 );
             }
         }
