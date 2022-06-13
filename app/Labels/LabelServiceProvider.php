@@ -108,7 +108,7 @@ class LabelServiceProvider implements ServiceProviderInterface
                         new StringLiteral(self::JSON_TABLE),
                         new StringLiteral(self::LABEL_ROLES_TABLE),
                         new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
-                        new InMemoryExcludedLabelsRepository($labels)
+                        new InMemoryExcludedLabelsRepository($labels ?? [])
                     ),
                     $app['config']['user_permissions']['allow_all']
                 );
