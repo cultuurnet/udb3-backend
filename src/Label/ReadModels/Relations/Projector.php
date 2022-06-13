@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
