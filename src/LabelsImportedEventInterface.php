@@ -14,22 +14,17 @@ interface LabelsImportedEventInterface
     public function getItemId();
 
     /**
-     * @return Labels
-     */
-    public function getLabels();
-
-    /**
-     * @return array<string>
+     * @return string[]
      */
     public function getAllLabelNames(): array;
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function getVisibleLabelNames(): array;
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function getHiddenLabelNames(): array;
 }
