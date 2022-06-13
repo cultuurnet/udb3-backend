@@ -29,9 +29,20 @@ final class LabelsImported extends OrganizerEvent implements LabelsImportedEvent
         return $this->getOrganizerId();
     }
 
-    public function getLabels(): Labels
+
+    public function getAllLabelNames(): array
     {
-        return $this->labels;
+        return $this->labels->toArrayOfStringNames();
+    }
+
+    public function getVisibleLabelNames(): array
+    {
+        return $this->labels->getVisibleLabels()->toArrayOfStringNames();
+    }
+
+    public function getHiddenLabelNames(): array
+    {
+        return $this->labels->getHiddenLabels()->toArrayOfStringNames();
     }
 
     public static function deserialize(array $data): LabelsImported
@@ -53,11 +64,16 @@ final class LabelsImported extends OrganizerEvent implements LabelsImportedEvent
     public function serialize(): array
     {
         $labels = [];
-        foreach ($this->getLabels() as $label) {
-            /** @var Label $label */
+        foreach ($this->getVisibleLabelNames() as $labelName) {
             $labels[] = [
-                'label' => $label->getName()->toString(),
-                'visibility' => $label->isVisible(),
+                'label' => $labelName,
+                'visibility' => true,
+            ];
+        }
+        foreach ($this->getHiddenLabelNames() as $labelName) {
+            $labels[] = [
+                'label' => $labelName,
+                'visibility' => false,
             ];
         }
 
