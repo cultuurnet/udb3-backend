@@ -23,8 +23,7 @@ class AbstractLabelEventTest extends TestCase
     public function setUp(): void
     {
         $this->itemId = 'Foo';
-        $this->label = new Label('LabelTest');
-        $this->labelEvent = new LabelAdded($this->itemId, $this->label);
+        $this->labelEvent = new LabelAdded($this->itemId, 'LabelTest');
     }
 
     /**
@@ -33,8 +32,7 @@ class AbstractLabelEventTest extends TestCase
     public function it_can_be_instantiated_With_properties(): void
     {
         $expectedItemId = 'Foo';
-        $expectedLabel = new Label('LabelTest');
-        $expectedLabelEvent = new LabelAdded($expectedItemId, $expectedLabel);
+        $expectedLabelEvent = new LabelAdded($expectedItemId, 'LabelTest');
 
         $this->assertEquals($expectedLabelEvent, $this->labelEvent);
     }
@@ -90,7 +88,7 @@ class AbstractLabelEventTest extends TestCase
                 ],
                 new LabelAdded(
                     'madId',
-                    new Label('label123')
+                   'label123'
                 ),
             ],
             'abstractLabelEvent2' => [
@@ -101,7 +99,7 @@ class AbstractLabelEventTest extends TestCase
                 ],
                 new LabelAdded(
                     'madId',
-                    new Label('label123', false)
+                    'label123', false
                 ),
             ],
         ];

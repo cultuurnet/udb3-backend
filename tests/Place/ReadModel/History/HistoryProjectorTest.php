@@ -1070,7 +1070,7 @@ class HistoryProjectorTest extends TestCase
     {
         return new LabelAdded(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Label('Label-of-adding')
+            'Label-of-adding'
         );
     }
 
@@ -1078,7 +1078,7 @@ class HistoryProjectorTest extends TestCase
     {
         return new LabelRemoved(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Label('Label-of-removing')
+            'Label-of-removing'
         );
     }
 

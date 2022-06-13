@@ -108,7 +108,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $dummyLabelEvent = new DummyLabelEvent('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $dummyLabelEvent = new DummyLabelEvent('6b96a237-2e00-49a2-ba6d-fc2beab0707e', 'foo');
         $this->labelEventRelationTypeResolver->getRelationType($dummyLabelEvent);
     }
 }

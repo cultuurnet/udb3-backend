@@ -373,12 +373,12 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
     {
-        return new LabelAdded($this->placeId, $label);
+        return new LabelAdded($this->placeId, $label->getName()->toNative(), $label->isVisible());
     }
 
     protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
     {
-        return new LabelRemoved($this->placeId, $label);
+        return new LabelRemoved($this->placeId, $label->getName()->toNative(), $label->isVisible());
     }
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported

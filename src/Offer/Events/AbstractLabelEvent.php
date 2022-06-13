@@ -13,10 +13,10 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
     private bool $isLabelVisible;
 
-    final public function __construct(string $itemId, string $labelName, bool $isLabelVisible)
+    final public function __construct(string $itemId, string $labelName, bool $isLabelVisible = true)
     {
         parent::__construct($itemId);
-        $this->labelName = $$labelName;
+        $this->labelName = $labelName;
         $this->isLabelVisible = $isLabelVisible;
     }
 

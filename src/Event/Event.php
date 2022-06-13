@@ -500,12 +500,12 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
     {
-        return new LabelAdded($this->eventId, $label);
+        return new LabelAdded($this->eventId, $label->getName()->toNative(), $label->isVisible());
     }
 
     protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
     {
-        return new LabelRemoved($this->eventId, $label);
+        return new LabelRemoved($this->eventId, $label->getName()->toNative(), $label->isVisible());
     }
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported

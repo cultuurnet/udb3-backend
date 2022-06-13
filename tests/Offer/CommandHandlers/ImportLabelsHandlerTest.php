@@ -129,8 +129,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                             )
                         )
                     ),
-                    new LabelAdded($id, new LegacyLabel('foo', true)),
-                    new LabelAdded($id, new LegacyLabel('bar', false)),
+                    new LabelAdded($id, 'foo', true),
+                    new LabelAdded($id, 'bar', false),
                 ]
             );
     }
@@ -182,14 +182,14 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                             )
                         )
                     ),
-                    new LabelAdded($id, new LegacyLabel('not_allowed')),
-                    new LabelAdded($id, new LegacyLabel('allowed')),
+                    new LabelAdded($id, 'not_allowed'),
+                    new LabelAdded($id, 'allowed'),
                 ]
             )
             ->when(
                 new ImportLabels($id, new Labels())
             )
-            ->then([new LabelRemoved($id, new LegacyLabel('allowed'))]);
+            ->then([new LabelRemoved($id, 'allowed')]);
     }
 
     /**
@@ -207,8 +207,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new LegacyLabel('label 1')),
-                    new LabelAdded($id, new LegacyLabel('label 2')),
+                    new LabelAdded($id, 'label 1'),
+                    new LabelAdded($id, 'label 2'),
                 ]
             )
             ->when(new ImportLabels($id, new Labels()))

@@ -50,7 +50,7 @@ class LabelRemovedTest extends TestCase
                 ],
                 new LabelRemoved(
                     'foo',
-                    new Label('Label1')
+                    'Label1'
                 ),
             ],
         ];

@@ -801,7 +801,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $initialDocument = new JsonDocument(
@@ -864,7 +864,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $body = $this->project($labelAdded, 'foo', null, $this->recordedOn->toBroadwayDateTime());

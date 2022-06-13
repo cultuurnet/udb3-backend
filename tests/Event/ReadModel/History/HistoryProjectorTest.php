@@ -420,7 +420,7 @@ class HistoryProjectorTest extends TestCase
     {
         $eventWasTagged = new LabelAdded(
             self::EVENT_ID_1,
-            new Label('foo')
+            'foo'
         );
 
         $taggedDate = '2015-03-27T10:17:19.176169+02:00';
@@ -454,7 +454,7 @@ class HistoryProjectorTest extends TestCase
     {
         $tagErased = new LabelRemoved(
             self::EVENT_ID_1,
-            new Label('foo')
+            'foo'
         );
 
         $tagErasedDate = '2015-03-27T10:17:19.176169+02:00';

@@ -88,7 +88,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
             ->when(new AddLabel($id, new Label('foo', false)))
-            ->then([new LabelAdded($id, new Label('foo', true))]);
+            ->then([new LabelAdded($id, 'foo', true)]);
     }
 
     /**
@@ -110,9 +110,9 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
             ->when(new AddLabel($id, new Label('visible', true)))
-            ->then([new LabelAdded($id, new Label('visible', true))])
+            ->then([new LabelAdded($id, 'visible', true)])
             ->when(new AddLabel($id, new Label('hidden', false)))
-            ->then([new LabelAdded($id, new Label('hidden', false))]);
+            ->then([new LabelAdded($id, 'hidden', false)]);
     }
 
     private function eventCreated(string $id): EventCreated

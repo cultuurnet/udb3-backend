@@ -17,7 +17,7 @@ class LabelAddedTest extends TestCase
     {
         $labelsMerged = new LabelAdded(
             'foo',
-            new Label('label 1')
+            'label 1'
         );
 
         $this->assertInstanceOf(Serializable::class, $labelsMerged);
@@ -47,7 +47,7 @@ class LabelAddedTest extends TestCase
 
         $expectedEventWasLabelled = new LabelAdded(
             'foo',
-            new Label('label 1')
+            'label 1'
         );
 
         $this->assertEquals(
