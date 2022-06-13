@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelEventInterface;
 
 abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInterface

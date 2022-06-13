@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Label;
 use PHPUnit\Framework\TestCase;
 
 class LabelAddedTest extends TestCase
