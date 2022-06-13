@@ -60,14 +60,41 @@ class LabelsImportedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_labels_collection()
+    public function it_stores_all_labels(): void
     {
         $this->assertEquals(
-            new Labels(
-                new Label(new LabelName('foo'), true),
-                new Label(new LabelName('bar'), false)
-            ),
-            $this->labelsImported->getLabels()
+     [
+         'foo',
+         'bar'
+     ],
+            $this->labelsImported->getAllLabelNames()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_stores_visible_labels(): void
+    {
+        $this->assertEquals(
+            [
+                'foo',
+            ],
+            $this->labelsImported->getVisibleLabelNames()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_stores_hidden_labels(): void
+    {
+        $this->assertEquals(
+            [
+
+                'bar'
+            ],
+            $this->labelsImported->getHiddenLabelNames()
         );
     }
 
