@@ -324,9 +324,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
                 $this->apply(
                     $this->createLabelRemovedEvent(
                         new Label(
-                        new LabelName($label->getName()->toNative()),
-                        $label->isVisible()
-                    )
+                            new LabelName($label->getName()->toNative()),
+                            $label->isVisible()
+                        )
                     )
                 );
             }
