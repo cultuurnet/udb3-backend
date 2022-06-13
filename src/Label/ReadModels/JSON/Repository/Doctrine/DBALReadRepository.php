@@ -159,7 +159,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
                     $queryBuilder->expr()->notIn(
                         SchemaConfigurator::UUID_COLUMN,
                         array_map(
-                            fn(string $label) => '"' . $label . '"',
+                            fn (string $label) => '"' . $label . '"',
                             $excludedLabels
                         )
                     )
