@@ -49,7 +49,7 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
      */
     public function it_is_not_satisfied_by_label_added_on_place(): void
     {
-        $labelAdded = new PlaceLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelAdded = new PlaceLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', 'foo');
 
         $this->assertFalse($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelAdded
@@ -61,7 +61,7 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
      */
     public function it_is_not_satisfied_by_label_removed_from_place(): void
     {
-        $labelRemoved = new PlaceLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
+        $labelRemoved = new PlaceLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', 'foo');
 
         $this->assertFalse($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelRemoved

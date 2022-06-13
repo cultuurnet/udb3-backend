@@ -837,7 +837,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $body = $this->project($labelRemoved, 'foo');

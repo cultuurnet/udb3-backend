@@ -111,7 +111,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToEvent(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
                 RelationType::event(),
             ],
@@ -119,7 +119,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToPlace(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
                 RelationType::place(),
             ],
@@ -163,14 +163,14 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelRemovedFromEvent(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
             ],
             [
                 $this->getRelationId(),
                 new LabelRemovedFromPlace(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
             ],
             [

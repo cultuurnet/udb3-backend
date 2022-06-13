@@ -313,7 +313,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleAdding($labelAdded);
@@ -326,7 +326,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleDeleting($labelRemoved);
@@ -339,7 +339,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleAdding($labelAdded);
@@ -352,7 +352,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleDeleting($labelRemoved);
