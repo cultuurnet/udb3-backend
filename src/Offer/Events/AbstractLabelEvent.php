@@ -13,11 +13,11 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
     private bool $isLabelVisible;
 
-    final public function __construct(string $itemId, Label $label)
+    final public function __construct(string $itemId, string $labelName, bool $isLabelVisible)
     {
         parent::__construct($itemId);
-        $this->labelName = $label->getName()->toNative();
-        $this->isLabelVisible = $label->isVisible();
+        $this->labelName = $$labelName;
+        $this->isLabelVisible = $isLabelVisible;
     }
 
     public function getLabelName(): string
@@ -46,7 +46,8 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
         return new static(
             $data['item_id'],
-            new Label($data['label'], $data['visibility'])
+            $data['label'],
+            $data['visibility']
         );
     }
 }
