@@ -88,7 +88,7 @@ class AbstractLabelEventTest extends TestCase
                 ],
                 new LabelAdded(
                     'madId',
-                   'label123'
+                    'label123'
                 ),
             ],
             'abstractLabelEvent2' => [
@@ -99,7 +99,8 @@ class AbstractLabelEventTest extends TestCase
                 ],
                 new LabelAdded(
                     'madId',
-                    'label123', false
+                    'label123',
+                    false
                 ),
             ],
         ];

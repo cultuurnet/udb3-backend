@@ -630,7 +630,7 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->then([
                 new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'Foo'),
-                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe','België'),
+                new LabelAdded('d2b41f1d-598c-46af-a3a5-10e373faa6fe', 'België'),
             ]);
     }
 
@@ -701,9 +701,9 @@ class EventTest extends AggregateRootScenarioTestCase
                 ),
                 new LabelRemoved($eventId, 'kunst', true),
                 new LabelRemoved($eventId, 'tentoonstelling', true),
-                new LabelRemoved($eventId,'brugge', true),
+                new LabelRemoved($eventId, 'brugge', true),
                 new LabelAdded($eventId, 'kunst', false),
-                new LabelAdded($eventId,'tentoonstelling', false),
+                new LabelAdded($eventId, 'tentoonstelling', false),
                 new LabelAdded($eventId, 'brugge', false),
             ]);
     }
@@ -731,7 +731,8 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        $label->getName()->toString(), $label->isVisible()
+                        $label->getName()->toString(),
+                        $label->isVisible()
                     ),
                 ],
             ],
@@ -827,11 +828,13 @@ class EventTest extends AggregateRootScenarioTestCase
                     $eventImportedFromUdb2,
                     new LabelAdded(
                         $id,
-                        $label->getName()->toString(), $label->isVisible()
+                        $label->getName()->toString(),
+                        $label->isVisible()
                     ),
                     new LabelRemoved(
                         $id,
-                        $label->getName()->toString(), $label->isVisible()
+                        $label->getName()->toString(),
+                        $label->isVisible()
                     ),
                 ],
             ],
@@ -1260,7 +1263,8 @@ class EventTest extends AggregateRootScenarioTestCase
                     ),
                     new LabelAdded(
                         $newEventId,
-                        $label->getName()->toString(), $label->isVisible()
+                        $label->getName()->toString(),
+                        $label->isVisible()
                     ),
                 ]
             );

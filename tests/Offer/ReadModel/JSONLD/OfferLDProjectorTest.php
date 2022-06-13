@@ -192,7 +192,8 @@ class OfferLDProjectorTest extends TestCase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            'label B', false
+            'label B',
+            false
         );
 
         $initialDocument = new JsonDocument(
@@ -260,7 +261,8 @@ class OfferLDProjectorTest extends TestCase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            'label C', false
+            'label C',
+            false
         );
 
         $body = $this->project($labelRemoved, 'foo', null, $this->recordedOn->toBroadwayDateTime());
