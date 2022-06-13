@@ -73,11 +73,10 @@ class Projector extends AbstractProjector
 
     public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void
     {
-        foreach ($labelsImported->getLabels()->toArray() as $label) {
+        foreach ($labelsImported->getAllLabelNames() as $labelName) {
             try {
-                /** @var Label $label */
                 $this->writeRepository->save(
-                    new LabelName($label->getName()->toString()),
+                    new LabelName($labelName),
                     $this->offerTypeResolver->getRelationTypeForImport($labelsImported),
                     new StringLiteral($labelsImported->getItemId()),
                     true
