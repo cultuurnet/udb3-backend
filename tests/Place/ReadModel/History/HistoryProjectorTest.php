@@ -706,7 +706,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_LabelsImported_event(): void
     {
-        $event = new LabelsImported('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Labels());
+        $event = new LabelsImported('a0ee7b1c-a9c1-4da1-af7e-d15496014656', [], []);
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 

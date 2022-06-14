@@ -693,11 +693,12 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([
                 new LabelsImported(
                     $eventId,
-                    new Labels(
-                        new Label(new LabelName('kunst'), false),
-                        new Label(new LabelName('tentoonstelling'), false),
-                        new Label(new LabelName('brugge'), false),
-                    )
+                    [],
+                    [
+                        'kunst',
+                        'tentoonstelling',
+                        'brugge'
+                    ]
                 ),
                 new LabelRemoved($eventId, 'kunst', true),
                 new LabelRemoved($eventId, 'tentoonstelling', true),

@@ -107,7 +107,7 @@ class Item extends Offer
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
-        return new LabelsImported($this->id, $labels);
+        return new LabelsImported($this->id, $labels->getVisibleLabels()->toArrayOfStringNames(), $labels->getHiddenLabels()->toArrayOfStringNames());
     }
 
     protected function createImageAddedEvent(Image $image): ImageAdded

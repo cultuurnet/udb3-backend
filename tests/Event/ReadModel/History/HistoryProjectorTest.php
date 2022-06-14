@@ -1225,7 +1225,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_labels_imported(): void
     {
-        $event = new LabelsImported(self::EVENT_ID_1, new Labels());
+        $event = new LabelsImported(self::EVENT_ID_1, [], []);
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),
