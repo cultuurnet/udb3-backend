@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3;
 
 interface LabelsImportedEventInterface
 {
-    /**
-     * @return string
-     */
-    public function getItemId();
+    public function getItemId(): string;
 
     /**
      * @return string[]
