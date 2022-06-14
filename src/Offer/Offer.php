@@ -498,12 +498,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved): void
     {
-        $this->labels = $this->labels->without(
-            new LegacyLabel(
-                $labelRemoved->getLabelName(),
-                $labelRemoved->isLabelVisible()
-            )
-        );
+        $this->discardLabel($labelRemoved->getLabelName());
 
         $this->importedLabelNames = array_filter(
             $this->importedLabelNames,
