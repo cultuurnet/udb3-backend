@@ -81,7 +81,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public const DUPLICATE_REASON = 'duplicate';
     public const INAPPROPRIATE_REASON = 'inappropriate';
 
-    protected LabelCollection $labels;
+    // Multidimensional associative array of labels
+    // The key is the lowercase label name
+    // The value is an associative array with label name and visibility
+    protected array $labels;
 
     protected ImageCollection $images;
 
