@@ -1052,6 +1052,15 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         unset($this->labels[mb_strtolower($labelName, 'UTF-8')]);
     }
 
+    protected function getLabel(string $labelName): ?array
+    {
+        if (!$this->containsLabel($labelName)) {
+            return null;
+        }
+
+        return $this->labels[mb_strtolower($labelName, 'UTF-8')];
+    }
+
     protected function containsLabel(string $labelName): bool
     {
         return array_key_exists(mb_strtolower($labelName, 'UTF-8'), $this->labels);
