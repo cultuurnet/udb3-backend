@@ -383,7 +383,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
-        return new LabelsImported($this->placeId, $labels);
+        return new LabelsImported($this->placeId, $labels->getVisibleLabels()->toArrayOfStringNames(), $labels->getHiddenLabels()->toArrayOfStringNames());
     }
 
     protected function createImageAddedEvent(Image $image): ImageAdded

@@ -117,16 +117,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new LabelsImported(
                         $id,
-                        new Labels(
-                            new Label(
-                                new LabelName('foo'),
-                                true
-                            ),
-                            new Label(
-                                new LabelName('bar'),
-                                false
-                            )
-                        )
+                        ['foo'],
+                        ['bar']
                     ),
                     new LabelAdded($id, 'foo', true),
                     new LabelAdded($id, 'bar', false),
@@ -172,14 +164,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                     $this->eventCreated($id),
                     new LabelsImported(
                         $id,
-                        new Labels(
-                            new Label(
-                                new LabelName('not_allowed')
-                            ),
-                            new Label(
-                                new LabelName('allowed')
-                            )
-                        )
+                        [
+                            'not_allowed',
+                            'allowed'
+                        ],
+                        []
                     ),
                     new LabelAdded($id, 'not_allowed'),
                     new LabelAdded($id, 'allowed'),

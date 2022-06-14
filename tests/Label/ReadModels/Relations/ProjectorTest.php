@@ -238,7 +238,8 @@ class ProjectorTest extends TestCase
                 RelationType::event(),
                 new EventLabelsImported(
                     $this->getRelationId(),
-                    $labels
+                    $labels->getVisibleLabels()->toArrayOfStringNames(),
+                    $labels->getHiddenLabels()->toArrayOfStringNames()
                 ),
             ],
             [
@@ -246,7 +247,8 @@ class ProjectorTest extends TestCase
                 RelationType::place(),
                 new PlaceLabelsImported(
                     $this->getRelationId(),
-                    $labels
+                    $labels->getVisibleLabels()->toArrayOfStringNames(),
+                    $labels->getHiddenLabels()->toArrayOfStringNames()
                 ),
             ],
             [

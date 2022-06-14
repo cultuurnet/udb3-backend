@@ -358,10 +358,11 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new LabelAdded($itemId, 'existing_label_2_added_via_ui'),
                 new LabelsImported(
                     $itemId,
-                    new Labels(
-                        new Label(new LabelName('existing_label_3_added_via_import_and_also_in_new_import')),
-                        new Label(new LabelName('existing_label_4_added_via_import'))
-                    )
+                    [
+                        'existing_label_3_added_via_import_and_also_in_new_import',
+                        'existing_label_4_added_via_import'
+                    ],
+                    []
                 ),
                 new LabelAdded($itemId, 'existing_label_3_added_via_import_and_also_in_new_import'),
                 new LabelAdded($itemId, 'existing_label_4_added_via_import'),
@@ -375,12 +376,8 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then([
                 new LabelsImported(
                     $itemId,
-                    new Labels(
-                        new Label(
-                            new LabelName('new_label_1'),
-                            true
-                        )
-                    )
+                    ['new_label_1'],
+                    []
                 ),
                 new LabelRemoved($itemId, 'existing_label_4_added_via_import'),
                 new LabelAdded($itemId, 'new_label_1'),
