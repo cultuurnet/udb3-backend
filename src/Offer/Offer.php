@@ -154,14 +154,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $labels = new Labels();
 
-        // Convert deprecated LabelCollection to Labels VO
-        foreach ($this->labels->asArray() as $label) {
-            $labels = $labels->with(
-                new Label(
-                    new LabelName($label->getName()->toNative()),
-                    $label->isVisible()
-                )
-            );
+        foreach ($this->labels as $label) {
+            $labels = $labels->with(new Label(new LabelName($label['labelName']), $label['isVisible']));
         }
 
         return $labels;
