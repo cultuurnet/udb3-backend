@@ -11,10 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 
 final class LabelsImported extends OrganizerEvent implements LabelsImportedEventInterface
 {
-    /**
-     * @var Labels
-     */
-    private $labels;
+    private Labels $labels;
 
     public function __construct(
         string $organizerId,
@@ -28,7 +25,6 @@ final class LabelsImported extends OrganizerEvent implements LabelsImportedEvent
     {
         return $this->getOrganizerId();
     }
-
 
     public function getAllLabelNames(): array
     {
@@ -64,16 +60,11 @@ final class LabelsImported extends OrganizerEvent implements LabelsImportedEvent
     public function serialize(): array
     {
         $labels = [];
-        foreach ($this->getVisibleLabelNames() as $labelName) {
+        foreach ($this->labels as $label) {
+            /** @var Label $label */
             $labels[] = [
-                'label' => $labelName,
-                'visibility' => true,
-            ];
-        }
-        foreach ($this->getHiddenLabelNames() as $labelName) {
-            $labels[] = [
-                'label' => $labelName,
-                'visibility' => false,
+                'label' => $label->getName()->toString(),
+                'visibility' => $label->isVisible(),
             ];
         }
 
