@@ -14,7 +14,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -292,7 +291,11 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->priceInfo = null;
 
         $this->importWorkflowStatus($udb2Actor);
-        $this->labels = LabelCollection::fromKeywords($udb2Actor->getKeywords(true));
+
+        $this->labels = [];
+        foreach ($udb2Actor->getKeywords(true) as $keyword) {
+            $this->keepLabel($keyword->getValue(), $keyword->isVisible());
+        }
     }
 
     protected function applyPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2): void
@@ -323,7 +326,11 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->priceInfo = null;
 
         $this->importWorkflowStatus($udb2Actor);
-        $this->labels = LabelCollection::fromKeywords($udb2Actor->getKeywords(true));
+
+        $this->labels = [];
+        foreach ($udb2Actor->getKeywords(true) as $keyword) {
+            $this->keepLabel($keyword->getValue(), $keyword->isVisible());
+        }
 
         unset($this->addresses[$this->mainLanguage->getCode()]);
     }
