@@ -76,7 +76,7 @@ class ProjectorTest extends TestCase
         $readRepository = $this->createMock(ReadRepositoryInterface::class);
 
         $readRepository->method('getByUuid')
-            ->will($this->returnValueMap($uuidMap));
+            ->willReturnMap($uuidMap);
 
         $readRepository->method('getByName')
             ->willReturnCallback(function (string $value) {
