@@ -252,8 +252,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function removeLabel(Label $label): void
     {
-        $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
-        if ($this->labels->contains($legacyLabel)) {
+        if ($this->containsLabel($label->getName()->toString())) {
             $this->apply(
                 $this->createLabelRemovedEvent($label->getName()->toString(), $label->isVisible())
             );
