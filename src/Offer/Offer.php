@@ -251,7 +251,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
         if (!$this->labels->contains($legacyLabel)) {
             $this->apply(
-                $this->createLabelAddedEvent($legacyLabel)
+                $this->createLabelAddedEvent($label->getName()->toString(), $label->isVisible())
             );
         }
     }
@@ -261,7 +261,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
         if ($this->labels->contains($legacyLabel)) {
             $this->apply(
-                $this->createLabelRemovedEvent($legacyLabel)
+                $this->createLabelRemovedEvent($label->getName()->toString(), $label->isVisible())
             );
         }
     }
@@ -319,13 +319,13 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $labels->findByName(new LabelName($label->getName()->toNative()));
             $canBeRemoved = !$keepLabelsCollection->containsWithSameVisibility($label);
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply($this->createLabelRemovedEvent($label));
+                $this->apply($this->createLabelRemovedEvent($label->getName()->toNative(), $label->isVisible()));
             }
         }
 
         // For each added label fire a LabelAdded event.
         foreach ($addedLabels->asArray() as $label) {
-            $this->apply($this->createLabelAddedEvent($label));
+            $this->apply($this->createLabelAddedEvent($label->getName()->toNative(), $label->isVisible()));
         }
     }
 
@@ -1036,9 +1036,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = isset($newMainImage) ? $images->withMain($newMainImage) : $images;
     }
 
-    abstract protected function createLabelAddedEvent(LegacyLabel $label): AbstractLabelAdded;
+    abstract protected function createLabelAddedEvent(string $labelName, bool $isVisible): AbstractLabelAdded;
 
-    abstract protected function createLabelRemovedEvent(LegacyLabel $label): AbstractLabelRemoved;
+    abstract protected function createLabelRemovedEvent(string $labelName, bool $isVisible): AbstractLabelRemoved;
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 

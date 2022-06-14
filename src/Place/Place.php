@@ -14,7 +14,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
@@ -371,14 +370,14 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return new OwnerChanged($this->placeId, $newOwnerId);
     }
 
-    protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
+    protected function createLabelAddedEvent(string $labelName, bool $isVisible): LabelAdded
     {
-        return new LabelAdded($this->placeId, $label->getName()->toNative(), $label->isVisible());
+        return new LabelAdded($this->placeId, $labelName, $isVisible);
     }
 
-    protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
+    protected function createLabelRemovedEvent(string $labelName, bool $isVisible): LabelRemoved
     {
-        return new LabelRemoved($this->placeId, $label->getName()->toNative(), $label->isVisible());
+        return new LabelRemoved($this->placeId, $labelName, $isVisible);
     }
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported
