@@ -138,7 +138,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $this->titles = [];
         $this->descriptions = [];
-        $this->labels = new LabelCollection();
+        $this->labels = [];
         $this->images = new ImageCollection();
         $this->videos = new VideoCollection();
         $this->facilities = [];
