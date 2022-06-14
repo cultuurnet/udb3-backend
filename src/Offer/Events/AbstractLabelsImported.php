@@ -12,46 +12,57 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 abstract class AbstractLabelsImported extends AbstractEvent implements LabelsImportedEventInterface
 {
     /**
-     * @var Labels
+     * @var string[]
      */
-    private $labels;
+    private array $visibleLabels;
+
+    /**
+     * @var string[]
+     */
+    private array $hiddenLabels;
 
     final public function __construct(
         string $organizerId,
-        Labels $labels
+        array $visibleLabels,
+        array $hiddenLabels
+
     ) {
         parent::__construct($organizerId);
-        $this->labels = $labels;
+        $this->visibleLabels = $visibleLabels;
+        $this->hiddenLabels = $hiddenLabels;
     }
 
     public function getAllLabelNames(): array
     {
-        return $this->labels->toArrayOfStringNames();
+        return array_merge($this->visibleLabels, $this->hiddenLabels);
     }
 
     public function getVisibleLabelNames(): array
     {
-        return $this->labels->getVisibleLabels()->toArrayOfStringNames();
+        return $this->visibleLabels;
     }
 
     public function getHiddenLabelNames(): array
     {
-        return $this->labels->getHiddenLabels()->toArrayOfStringNames();
+        return $this->hiddenLabels;
     }
 
     public static function deserialize(array $data): AbstractLabelsImported
     {
-        $labels = new Labels();
+        $visibleLabels = [];
+        $hiddenLabels = [];
         foreach ($data['labels'] as $label) {
-            $labels = $labels->with(new Label(
-                new LabelName($label['label']),
-                $label['visibility']
-            ));
+            if ($label['visibility']) {
+                $visibleLabels[] = $label['label'];
+            } else {
+                $hiddenLabels[] = $label['label'];
+            }
         }
 
         return new static(
             $data['item_id'],
-            $labels
+            $visibleLabels,
+            $hiddenLabels
         );
     }
 
