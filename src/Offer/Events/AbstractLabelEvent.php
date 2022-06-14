@@ -39,14 +39,10 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
     public static function deserialize(array $data): AbstractLabelEvent
     {
-        if (!isset($data['visibility'])) {
-            $data['visibility'] = true;
-        }
-
         return new static(
             $data['item_id'],
             $data['label'],
-            $data['visibility']
+            $data['visibility'] ?? true
         );
     }
 }
