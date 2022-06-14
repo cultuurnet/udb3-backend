@@ -13,13 +13,13 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Event\Events\LabelsImported as EventLabelsImported;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as RelationsReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
@@ -56,8 +56,6 @@ class ProjectorTest extends TestCase
      */
     private $relationsReadRepository;
 
-    private LabelEventRelationTypeResolver $offerTypeResolver;
-
     private Projector $projector;
 
     protected function setUp(): void
@@ -68,12 +66,12 @@ class ProjectorTest extends TestCase
 
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
         $this->relationsReadRepository = $this->createMock(RelationsReadRepositoryInterface::class);
-        $this->offerTypeResolver = new LabelEventRelationTypeResolver();
+        $offerTypeResolver = new LabelEventRelationTypeResolver();
 
         $this->projector = new Projector(
             $this->writeRepository,
             $this->relationsReadRepository,
-            $this->offerTypeResolver
+            $offerTypeResolver
         );
     }
 
@@ -221,25 +219,14 @@ class ProjectorTest extends TestCase
 
     public function labelsImportedDataProvider(): array
     {
-        $labels = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('foo'),
-                true
-            ),
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('bar'),
-                false
-            )
-        );
-
         return [
             [
                 $this->getRelationId(),
                 RelationType::event(),
                 new EventLabelsImported(
                     $this->getRelationId(),
-                    $labels->getVisibleLabels()->toArrayOfStringNames(),
-                    $labels->getHiddenLabels()->toArrayOfStringNames()
+                    ['foo'],
+                    ['bar']
                 ),
             ],
             [
@@ -247,8 +234,8 @@ class ProjectorTest extends TestCase
                 RelationType::place(),
                 new PlaceLabelsImported(
                     $this->getRelationId(),
-                    $labels->getVisibleLabels()->toArrayOfStringNames(),
-                    $labels->getHiddenLabels()->toArrayOfStringNames()
+                    ['foo'],
+                    ['bar']
                 ),
             ],
             [
@@ -256,7 +243,16 @@ class ProjectorTest extends TestCase
                 RelationType::organizer(),
                 new OrganizerLabelsImported(
                     $this->getRelationId(),
-                    $labels
+                    new Labels(
+                        new Label(
+                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('foo'),
+                            true
+                        ),
+                        new Label(
+                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('bar'),
+                            false
+                        )
+                    )
                 ),
             ],
         ];
