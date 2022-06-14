@@ -275,9 +275,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         // Always keep non-imported labels that are already on the offer
         $keepLabelsCollection = new LabelCollection();
-        foreach ($this->labels->asArray() as $label) {
-            if (!in_array($label->getName()->toNative(), $this->importedLabelNames, true)) {
-                $keepLabelsCollection = $keepLabelsCollection->with($label);
+        foreach ($this->labels as $label) {
+            if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
+                $keepLabelsCollection = $keepLabelsCollection->with(
+                    new LegacyLabel($label['labelName'], $label['isVisible'])
+                );
             }
         }
 
@@ -285,7 +287,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // Labels which are not inside the internal state but inside the imported labels
         $addedLabels = new LabelCollection();
         foreach ($importLabelsCollection->asArray() as $label) {
-            if (!$this->labels->containsWithSameVisibility($label)) {
+            $existingLabel = $this->getLabel($label->getName()->toNative());
+            if ($existingLabel === null || $existingLabel['isVisible'] !== $label->isVisible()) {
                 $addedLabels = $addedLabels->with($label);
             }
         }
@@ -307,7 +310,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // What are the deleted labels?
         // Labels which are inside the internal state but not inside imported labels or labels to keep. (Taking
         // visibility into consideration.) For each deleted label fire a LabelDeleted event.
-        foreach ($this->labels->asArray() as $label) {
+        foreach ($this->labels as $label) {
+            $label = new LegacyLabel($label['labelName'], $label['isVisible']);
             $inImportWithSameVisibility = $importLabelsCollection->containsWithSameVisibility($label);
             $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $labels->findByName(new LabelName($label->getName()->toNative()));
             $canBeRemoved = !$keepLabelsCollection->containsWithSameVisibility($label);
