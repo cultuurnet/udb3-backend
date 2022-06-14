@@ -12,7 +12,7 @@ class LabelAddedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_to_an_array()
+    public function it_can_be_serialized_to_an_array(): void
     {
         $labelsMerged = new LabelAdded(
             'foo',
@@ -36,7 +36,7 @@ class LabelAddedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_an_array()
+    public function it_can_deserialize_an_array(): void
     {
         $serializedEvent = [
             'item_id' => 'foo',
