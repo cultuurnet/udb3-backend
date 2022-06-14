@@ -52,11 +52,7 @@ use stdClass;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 {
-    private MediaObjectSerializer $serializer;
-
     private Address $address;
-
-    private CdbXMLImporter $cdbXMLImporter;
 
     public function __construct(string $name = null, array $data = [], string $dataName = '')
     {
@@ -73,9 +69,9 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             }
         );
 
-        $this->serializer = new MediaObjectSerializer($iriGenerator);
+        $serializer = new MediaObjectSerializer($iriGenerator);
 
-        $this->cdbXMLImporter = new CdbXMLImporter(
+        $cdbXMLImporter = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
                 new PriceDescriptionParser(
                     new NumberFormatRepository(),
@@ -97,8 +93,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $this->documentRepository,
             $iriGenerator,
             $this->organizerService,
-            $this->serializer,
-            $this->cdbXMLImporter,
+            $serializer,
+            $cdbXMLImporter,
             new JsonDocumentLanguageEnricher(
                 new PlaceJsonDocumentLanguageAnalyzer()
             ),

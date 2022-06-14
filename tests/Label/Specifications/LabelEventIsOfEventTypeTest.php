@@ -12,10 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class LabelEventIsOfEventTypeTest extends TestCase
 {
-    /**
-     * @var LabelEventIsOfEventType
-     */
-    private $labelEventIsOfEventType;
+    private LabelEventIsOfEventType $labelEventIsOfEventType;
 
     protected function setUp(): void
     {

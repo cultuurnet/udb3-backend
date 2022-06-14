@@ -12,10 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class LabelEventIsOfPlaceTypeTest extends TestCase
 {
-    /**
-     * @var LabelEventIsOfPlaceType
-     */
-    private $labelEventIsOfPlaceType;
+    private LabelEventIsOfPlaceType $labelEventIsOfPlaceType;
 
     protected function setUp(): void
     {
