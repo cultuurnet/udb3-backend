@@ -124,8 +124,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected ?BookingInfo $bookingInfo = null;
 
-    protected bool $isDeleted = false;
-
     private ?string $ownerId = null;
 
     /**
