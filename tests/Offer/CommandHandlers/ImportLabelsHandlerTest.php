@@ -166,7 +166,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                         $id,
                         [
                             'not_allowed',
-                            'allowed'
+                            'allowed',
                         ],
                         []
                     ),

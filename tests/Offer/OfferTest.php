@@ -360,7 +360,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $itemId,
                     [
                         'existing_label_3_added_via_import_and_also_in_new_import',
-                        'existing_label_4_added_via_import'
+                        'existing_label_4_added_via_import',
                     ],
                     []
                 ),

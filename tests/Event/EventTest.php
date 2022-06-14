@@ -697,7 +697,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     [
                         'kunst',
                         'tentoonstelling',
-                        'brugge'
+                        'brugge',
                     ]
                 ),
                 new LabelRemoved($eventId, 'kunst', true),
