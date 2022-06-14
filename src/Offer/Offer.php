@@ -1037,6 +1037,16 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = isset($newMainImage) ? $images->withMain($newMainImage) : $images;
     }
 
+    protected function keepLabel(string $labelName, bool $isVisible): void
+    {
+        if (!$this->containsLabel($labelName)) {
+            $this->labels[mb_strtolower($labelName, 'UTF-8')] = [
+                'labelName' => $labelName,
+                'isVisible' => $isVisible,
+            ];
+        }
+    }
+
     abstract protected function createLabelAddedEvent(string $labelName, bool $isVisible): AbstractLabelAdded;
 
     abstract protected function createLabelRemovedEvent(string $labelName, bool $isVisible): AbstractLabelRemoved;
