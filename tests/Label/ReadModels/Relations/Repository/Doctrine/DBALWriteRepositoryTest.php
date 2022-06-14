@@ -20,7 +20,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
 
         $this->dbalWriteRepository = new DBALWriteRepository(
             $this->getConnection(),
-            $this->getTableName()
+            new StringLiteral($this->getTableName())
         );
     }
 

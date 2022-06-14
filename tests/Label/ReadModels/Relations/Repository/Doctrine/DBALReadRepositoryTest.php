@@ -27,7 +27,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->readRepository = new DBALReadRepository(
             $this->getConnection(),
-            $this->getTableName()
+            new StringLiteral($this->getTableName())
         );
 
         $this->saveOfferLabelRelations();
