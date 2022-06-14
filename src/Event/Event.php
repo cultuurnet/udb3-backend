@@ -63,7 +63,6 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -219,7 +218,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->eventId = $eventCopied->getItemId();
         $this->calendar = $eventCopied->getCalendar();
         $this->workflowStatus = WorkflowStatus::DRAFT();
-        $this->labels = new LabelCollection();
+        $this->labels = [];
     }
 
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
@@ -276,7 +275,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->priceInfo = null;
 
         $this->importWorkflowStatus($udb2Event);
-        $this->labels = LabelCollection::fromKeywords($udb2Event->getKeywords(true));
+
+        $this->labels = [];
+        foreach ($udb2Event->getKeywords(true) as $keyword) {
+            $this->keepLabel($keyword->getValue(), $keyword->isVisible());
+        }
     }
 
     public function updateMajorInfo(
