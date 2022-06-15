@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -34,7 +33,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         }
     }
 
-    public function getLabelRelationsForType(LabelName $labelName, RelationType $relationType): array
+    public function getLabelRelationsForType(string $labelName, RelationType $relationType): array
     {
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
 
@@ -42,7 +41,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ->from($this->getTableName()->toNative())
             ->where($whereLabelName)
             ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
-            ->setParameters([$labelName->toNative(), $relationType->toString()])
+            ->setParameters([$labelName, $relationType->toString()])
         ->execute()->fetchAll(\PDO::FETCH_COLUMN);
     }
 

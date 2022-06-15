@@ -98,7 +98,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_should_return_offers_by_label_for_type(): void
     {
         $labelRelationsForType = $this->readRepository->getLabelRelationsForType(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::place()
         );
 
