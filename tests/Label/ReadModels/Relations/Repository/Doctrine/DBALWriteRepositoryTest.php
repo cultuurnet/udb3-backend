@@ -180,7 +180,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->saveLabelRelation($OfferLabelRelation2);
 
         $this->dbalWriteRepository->deleteByLabelNameAndRelationId(
-            $OfferLabelRelation1->getLabelName(),
+            $OfferLabelRelation1->getLabelName()->toNative(),
             $OfferLabelRelation1->getRelationId()
         );
 

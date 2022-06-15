@@ -62,11 +62,9 @@ class Projector extends AbstractProjector
 
     public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void
     {
-        $labelRelation = $this->createLabelRelation($labelRemoved);
-
         $this->writeRepository->deleteByLabelNameAndRelationId(
-            $labelRelation->getLabelName(),
-            $labelRelation->getRelationId()
+            $labelRemoved->getLabelName(),
+            new StringLiteral($labelRemoved->getItemId())
         );
     }
 

@@ -42,7 +42,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    private LabelName $labelName;
+    private string $labelName;
 
     private string $relationId;
 
@@ -60,7 +60,7 @@ class ProjectorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->labelName = new LabelName('labelName');
+        $this->labelName = 'labelName';
 
         $this->relationId = $this->getRelationId();
 
@@ -94,7 +94,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->once())
             ->method('save')
             ->with(
-                $this->labelName->toNative(),
+                $this->labelName,
                 $relationType,
                 new StringLiteral($this->relationId)
             );

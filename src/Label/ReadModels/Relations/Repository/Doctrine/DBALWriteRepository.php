@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use Doctrine\DBAL\Query\QueryBuilder;
 use CultuurNet\UDB3\StringLiteral;
@@ -38,14 +37,14 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     }
 
     public function deleteByLabelNameAndRelationId(
-        LabelName $labelName,
+        string $labelName,
         StringLiteral $relationId
     ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
             ->where(SchemaConfigurator::LABEL_NAME . ' = ?')
             ->andWhere(SchemaConfigurator::RELATION_ID . ' = ?')
-            ->setParameters([$labelName->toNative(), $relationId->toNative()]);
+            ->setParameters([$labelName, $relationId->toNative()]);
 
         $this->executeTransactional($queryBuilder);
     }

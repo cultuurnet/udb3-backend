@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -18,7 +17,7 @@ interface WriteRepositoryInterface
     ): void;
 
     public function deleteByLabelNameAndRelationId(
-        LabelName $labelName,
+        string $labelName,
         StringLiteral $relationId
     ): void;
 
