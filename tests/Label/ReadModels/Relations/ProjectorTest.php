@@ -94,7 +94,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->once())
             ->method('save')
             ->with(
-                $this->labelName,
+                $this->labelName->toNative(),
                 $relationType,
                 new StringLiteral($this->relationId)
             );
@@ -279,7 +279,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->at(1))
             ->method('save')
             ->with(
-                new LabelName('2dotstwice'),
+                '2dotstwice',
                 $relationType,
                 $itemId,
                 true
@@ -288,7 +288,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->at(2))
             ->method('save')
             ->with(
-                new LabelName('cultuurnet'),
+                'cultuurnet',
                 $relationType,
                 $itemId,
                 true

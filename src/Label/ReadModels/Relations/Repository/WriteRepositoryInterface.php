@@ -11,7 +11,7 @@ use CultuurNet\UDB3\StringLiteral;
 interface WriteRepositoryInterface
 {
     public function save(
-        LabelName $labelName,
+        string $labelName,
         RelationType $relationType,
         StringLiteral $relationId,
         bool $imported

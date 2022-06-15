@@ -14,7 +14,7 @@ use CultuurNet\UDB3\StringLiteral;
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
     public function save(
-        LabelName $labelName,
+        string $labelName,
         RelationType $relationType,
         StringLiteral $relationId,
         bool $imported
@@ -28,7 +28,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
                 SchemaConfigurator::IMPORTED => '?',
             ])
             ->setParameters([
-                $labelName->toNative(),
+                $labelName,
                 $relationType->toString(),
                 $relationId->toNative(),
                 $imported ? 1 : 0,

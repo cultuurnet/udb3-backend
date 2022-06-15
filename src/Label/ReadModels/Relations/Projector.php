@@ -50,7 +50,7 @@ class Projector extends AbstractProjector
 
         try {
             $this->writeRepository->save(
-                $LabelRelation->getLabelName(),
+                $LabelRelation->getLabelName()->toNative(),
                 $LabelRelation->getRelationType(),
                 $LabelRelation->getRelationId(),
                 false
@@ -75,7 +75,7 @@ class Projector extends AbstractProjector
         foreach ($labelsImported->getAllLabelNames() as $labelName) {
             try {
                 $this->writeRepository->save(
-                    new LabelName($labelName),
+                    $labelName,
                     $this->offerTypeResolver->getRelationTypeForImport($labelsImported),
                     new StringLiteral($labelsImported->getItemId()),
                     true
@@ -180,7 +180,7 @@ class Projector extends AbstractProjector
         // Only save the UDB2 labels, because the UDB3 labels are still present.
         foreach ($udb2Labels as $label) {
             $this->writeRepository->save(
-                new LabelName((string) $label),
+                $label->getName()->toNative(),
                 $relationType,
                 $relationId,
                 true

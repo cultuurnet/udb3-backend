@@ -37,7 +37,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->dbalWriteRepository->save(
-            $expectedOfferLabelRelation->getLabelName(),
+            $expectedOfferLabelRelation->getLabelName()->toNative(),
             $expectedOfferLabelRelation->getRelationType(),
             $expectedOfferLabelRelation->getRelationId(),
             $expectedOfferLabelRelation->isImported()
@@ -70,7 +70,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->dbalWriteRepository->save(
-            $labelRelation2->getLabelName(),
+            $labelRelation2->getLabelName()->toNative(),
             $labelRelation2->getRelationType(),
             $labelRelation2->getRelationId(),
             $labelRelation2->isImported()
@@ -109,7 +109,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->dbalWriteRepository->save(
-            $labelRelation2->getLabelName(),
+            $labelRelation2->getLabelName()->toNative(),
             $labelRelation2->getRelationType(),
             $labelRelation2->getRelationId(),
             $labelRelation2->isImported()
@@ -150,7 +150,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->expectException(UniqueConstraintViolationException::class);
 
         $this->dbalWriteRepository->save(
-            $sameOfferLabelRelation->getLabelName(),
+            $sameOfferLabelRelation->getLabelName()->toNative(),
             $sameOfferLabelRelation->getRelationType(),
             $sameOfferLabelRelation->getRelationId(),
             $sameOfferLabelRelation->isImported()
