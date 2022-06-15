@@ -11,7 +11,6 @@ use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class RelatedUDB3LabelApplier implements LabelApplierInterface
 {
@@ -34,7 +33,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
     public function apply(LabelAwareAggregateRoot $aggregateRoot): void
     {
         $labelRelations = $this->labelsRelationsRepository->getLabelRelationsForItem(
-            new StringLiteral($aggregateRoot->getAggregateRootId())
+            $aggregateRoot->getAggregateRootId()
         );
 
         /** @var Label[] $udb3Labels */

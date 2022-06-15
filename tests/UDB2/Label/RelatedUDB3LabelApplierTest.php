@@ -73,7 +73,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
         AggregateRoot $aggregateRoot,
         RelationType $relationType
     ): void {
-        $relationId = new StringLiteral($aggregateRoot->getAggregateRootId());
+        $relationId = $aggregateRoot->getAggregateRootId();
 
         $this->logger->expects($this->exactly(2))
             ->method('info')
@@ -96,13 +96,13 @@ class RelatedUDB3LabelApplierTest extends TestCase
                     new LabelRelation(
                         '2dotstwice',
                         $relationType,
-                        $relationId,
+                        new StringLiteral($relationId),
                         false
                     ),
                     new LabelRelation(
                         'Cultuurnet',
                         $relationType,
-                        $relationId,
+                        new StringLiteral($relationId),
                         true
                     ),
                 ]

@@ -166,7 +166,7 @@ class Projector extends AbstractProjector
             function (LabelRelation $labelRelation) {
                 return $labelRelation->getLabelName();
             },
-            $this->readRepository->getLabelRelationsForItem(new StringLiteral($relationId))
+            $this->readRepository->getLabelRelationsForItem($relationId)
         );
         $udb2Labels = array_udiff(
             $labelCollection->asArray(),

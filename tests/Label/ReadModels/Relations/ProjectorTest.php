@@ -321,7 +321,7 @@ class ProjectorTest extends TestCase
         // Make sure to have different casing for the UDB3 label then the UDB2 label.
         $this->relationsReadRepository->expects($this->once())
             ->method('getLabelRelationsForItem')
-            ->with(new StringLiteral($itemId))
+            ->with($itemId)
             ->willReturn([
                 new LabelRelation(
                     '2DOTStwice',

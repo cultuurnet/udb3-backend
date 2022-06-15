@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
@@ -48,7 +47,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     /**
      * @inheritdoc
      */
-    public function getLabelRelationsForItem(StringLiteral $relationId): array
+    public function getLabelRelationsForItem(string $relationId): array
     {
         $aliases = $this->getAliases();
         $whereRelationId = SchemaConfigurator::RELATION_ID . ' = ?';
@@ -58,7 +57,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ->where($whereRelationId)
             ->setParameters(
                 [
-                    $relationId->toNative(),
+                    $relationId,
                 ]
             );
 

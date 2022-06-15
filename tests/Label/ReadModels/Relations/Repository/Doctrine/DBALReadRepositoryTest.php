@@ -66,9 +66,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_return_all_labels_for_a_relation_id(): void
     {
-        $labelRelations = $this->readRepository->getLabelRelationsForItem(
-            new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6')
-        );
+        $labelRelations = $this->readRepository->getLabelRelationsForItem('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6');
 
         $this->assertEquals(
             [
@@ -84,9 +82,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_returns_an_empty_list_when_no_match_on_relation_id(): void
     {
-        $labelRelations = $this->readRepository->getLabelRelationsForItem(
-            new StringLiteral('89A78F44-A45B-40E2-A1E3-7632D2F3B1C5')
-        );
+        $labelRelations = $this->readRepository->getLabelRelationsForItem('89A78F44-A45B-40E2-A1E3-7632D2F3B1C5');
 
         $this->assertEmpty($labelRelations);
     }
