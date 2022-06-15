@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
@@ -292,10 +293,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
         $this->importWorkflowStatus($udb2Actor);
 
-        $this->labels = [];
-        foreach ($udb2Actor->getKeywords(true) as $keyword) {
-            $this->keepLabel($keyword->getValue(), $keyword->isVisible());
-        }
+        $this->labels = LabelsArray::createFromKeywords($udb2Actor->getKeywords(true));
     }
 
     protected function applyPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2): void
@@ -327,10 +325,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
         $this->importWorkflowStatus($udb2Actor);
 
-        $this->labels = [];
-        foreach ($udb2Actor->getKeywords(true) as $keyword) {
-            $this->keepLabel($keyword->getValue(), $keyword->isVisible());
-        }
+        $this->labels = LabelsArray::createFromKeywords($udb2Actor->getKeywords(true));
 
         unset($this->addresses[$this->mainLanguage->getCode()]);
     }
