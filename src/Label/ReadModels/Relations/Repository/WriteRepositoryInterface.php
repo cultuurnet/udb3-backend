@@ -21,8 +21,6 @@ interface WriteRepositoryInterface
         string $relationId
     ): void;
 
-    public function deleteByRelationId(StringLiteral $relationId): void;
-
     /**
      * This method will only delete the imported labels based on relation id.
      */

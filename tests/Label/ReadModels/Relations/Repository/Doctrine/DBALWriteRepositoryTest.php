@@ -196,28 +196,6 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     /**
      * @test
      */
-    public function it_can_delete_based_on_relation_id(): void
-    {
-        $labelRelations = $this->seedLabelRelations();
-
-        $this->dbalWriteRepository->deleteByRelationId(
-            $labelRelations[0]->getRelationId()
-        );
-
-        $foundLabelRelations = $this->getLabelRelations();
-
-        $this->assertEquals(
-            [
-                $labelRelations[1],
-                $labelRelations[3],
-            ],
-            $foundLabelRelations
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_can_delete_imported_labels_on_relation_id(): void
     {
         $labelRelations = $this->seedLabelRelations();

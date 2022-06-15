@@ -49,16 +49,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    public function deleteByRelationId(StringLiteral $relationId): void
-    {
-        $queryBuilder = $this->createQueryBuilder()
-            ->delete($this->getTableName())
-            ->where(SchemaConfigurator::RELATION_ID . ' = ?')
-            ->setParameters([$relationId->toNative()]);
-
-        $this->executeTransactional($queryBuilder);
-    }
-
     public function deleteImportedByRelationId(StringLiteral $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
