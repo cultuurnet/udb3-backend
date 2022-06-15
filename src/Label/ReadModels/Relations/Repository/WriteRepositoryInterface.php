@@ -12,7 +12,7 @@ interface WriteRepositoryInterface
     public function save(
         string $labelName,
         RelationType $relationType,
-        StringLiteral $relationId,
+        string $relationId,
         bool $imported
     ): void;
 

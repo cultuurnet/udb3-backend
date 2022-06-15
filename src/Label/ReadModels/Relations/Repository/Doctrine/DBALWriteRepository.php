@@ -15,7 +15,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     public function save(
         string $labelName,
         RelationType $relationType,
-        StringLiteral $relationId,
+        string $relationId,
         bool $imported
     ): void {
         $queryBuilder = $this->createQueryBuilder()
@@ -29,7 +29,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             ->setParameters([
                 $labelName,
                 $relationType->toString(),
-                $relationId->toNative(),
+                $relationId,
                 $imported ? 1 : 0,
             ]);
 

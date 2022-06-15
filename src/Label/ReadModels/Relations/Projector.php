@@ -51,7 +51,7 @@ class Projector extends AbstractProjector
             $this->writeRepository->save(
                 $LabelRelation->getLabelName(),
                 $LabelRelation->getRelationType(),
-                $LabelRelation->getRelationId(),
+                $LabelRelation->getRelationId()->toNative(),
                 false
             );
         } catch (UniqueConstraintViolationException $exception) {
@@ -74,7 +74,7 @@ class Projector extends AbstractProjector
                 $this->writeRepository->save(
                     $labelName,
                     $this->offerTypeResolver->getRelationTypeForImport($labelsImported),
-                    new StringLiteral($labelsImported->getItemId()),
+                    $labelsImported->getItemId(),
                     true
                 );
             } catch (UniqueConstraintViolationException $exception) {
@@ -153,10 +153,10 @@ class Projector extends AbstractProjector
         \CultureFeed_Cdb_Item_Base $cdbItem,
         RelationType $relationType
     ): void {
-        $relationId = new StringLiteral($cdbItem->getCdbId());
+        $relationId = $cdbItem->getCdbId();
 
         // Never delete the UDB3 labels on an update.
-        $this->writeRepository->deleteImportedByRelationId($relationId);
+        $this->writeRepository->deleteImportedByRelationId(new StringLiteral($relationId));
 
         $keywords = $cdbItem->getKeywords();
         $labelCollection = LabelCollection::fromStrings($keywords);
@@ -166,7 +166,7 @@ class Projector extends AbstractProjector
             function (LabelRelation $labelRelation) {
                 return $labelRelation->getLabelName();
             },
-            $this->readRepository->getLabelRelationsForItem($relationId)
+            $this->readRepository->getLabelRelationsForItem(new StringLiteral($relationId))
         );
         $udb2Labels = array_udiff(
             $labelCollection->asArray(),

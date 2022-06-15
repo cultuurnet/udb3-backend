@@ -38,7 +38,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->dbalWriteRepository->save(
             $expectedOfferLabelRelation->getLabelName(),
             $expectedOfferLabelRelation->getRelationType(),
-            $expectedOfferLabelRelation->getRelationId(),
+            $expectedOfferLabelRelation->getRelationId()->toNative(),
             $expectedOfferLabelRelation->isImported()
         );
 
@@ -71,7 +71,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->dbalWriteRepository->save(
             $labelRelation2->getLabelName(),
             $labelRelation2->getRelationType(),
-            $labelRelation2->getRelationId(),
+            $labelRelation2->getRelationId()->toNative(),
             $labelRelation2->isImported()
         );
 
@@ -110,7 +110,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->dbalWriteRepository->save(
             $labelRelation2->getLabelName(),
             $labelRelation2->getRelationType(),
-            $labelRelation2->getRelationId(),
+            $labelRelation2->getRelationId()->toNative(),
             $labelRelation2->isImported()
         );
 
@@ -151,7 +151,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->dbalWriteRepository->save(
             $sameOfferLabelRelation->getLabelName(),
             $sameOfferLabelRelation->getRelationType(),
-            $sameOfferLabelRelation->getRelationId(),
+            $sameOfferLabelRelation->getRelationId()->toNative(),
             $sameOfferLabelRelation->isImported()
         );
     }
