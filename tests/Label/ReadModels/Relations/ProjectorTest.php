@@ -37,7 +37,6 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
@@ -326,7 +325,7 @@ class ProjectorTest extends TestCase
                 new LabelRelation(
                     '2DOTStwice',
                     RelationType::organizer(),
-                    new StringLiteral('123'),
+                    '123',
                     false
                 ),
             ]);

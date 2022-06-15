@@ -89,7 +89,7 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
             }
 
             try {
-                $document = $repository->fetch((string) $labelRelation->getRelationId());
+                $document = $repository->fetch($labelRelation->getRelationId());
             } catch (DocumentDoesNotExist $exception) {
                 $this->logger->error(
                     sprintf(

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use JsonSerializable;
-use CultuurNet\UDB3\StringLiteral;
 
 class LabelRelation implements JsonSerializable
 {
@@ -15,14 +14,14 @@ class LabelRelation implements JsonSerializable
 
     private RelationType $relationType;
 
-    private StringLiteral $relationId;
+    private string $relationId;
 
     private bool $imported;
 
     public function __construct(
         string $labelName,
         RelationType $relationType,
-        StringLiteral $relationId,
+        string $relationId,
         bool $imported
     ) {
         $this->labelName = $labelName;
@@ -41,7 +40,7 @@ class LabelRelation implements JsonSerializable
         return $this->relationType;
     }
 
-    public function getRelationId(): StringLiteral
+    public function getRelationId(): string
     {
         return $this->relationId;
     }
@@ -56,7 +55,7 @@ class LabelRelation implements JsonSerializable
         return [
             SchemaConfigurator::LABEL_NAME => $this->labelName,
             SchemaConfigurator::RELATION_TYPE => $this->relationType->toString(),
-            SchemaConfigurator::RELATION_ID => $this->relationId->toNative(),
+            SchemaConfigurator::RELATION_ID => $this->relationId,
             SchemaConfigurator::IMPORTED => $this->imported,
         ];
     }
@@ -66,7 +65,7 @@ class LabelRelation implements JsonSerializable
         return new self(
             $relation[SchemaConfigurator::LABEL_NAME],
             new RelationType($relation[SchemaConfigurator::RELATION_TYPE]),
-            new StringLiteral($relation[SchemaConfigurator::RELATION_ID]),
+            $relation[SchemaConfigurator::RELATION_ID],
             (bool) $relation[SchemaConfigurator::IMPORTED]
         );
     }

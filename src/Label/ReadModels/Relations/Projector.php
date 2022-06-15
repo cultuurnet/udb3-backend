@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use CultuurNet\UDB3\StringLiteral;
 
 class Projector extends AbstractProjector
 {
@@ -51,7 +50,7 @@ class Projector extends AbstractProjector
             $this->writeRepository->save(
                 $LabelRelation->getLabelName(),
                 $LabelRelation->getRelationType(),
-                $LabelRelation->getRelationId()->toNative(),
+                $LabelRelation->getRelationId(),
                 false
             );
         } catch (UniqueConstraintViolationException $exception) {
@@ -187,13 +186,10 @@ class Projector extends AbstractProjector
 
     private function createLabelRelation(LabelEventInterface $labelEvent): LabelRelation
     {
-        $relationType = $this->offerTypeResolver->getRelationType($labelEvent);
-        $relationId = new StringLiteral($labelEvent->getItemId());
-
         return new LabelRelation(
             $labelEvent->getLabelName(),
-            $relationType,
-            $relationId,
+            $this->offerTypeResolver->getRelationType($labelEvent),
+            $labelEvent->getItemId(),
             false
         );
     }

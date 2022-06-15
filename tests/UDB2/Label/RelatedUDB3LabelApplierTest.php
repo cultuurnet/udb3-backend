@@ -96,13 +96,13 @@ class RelatedUDB3LabelApplierTest extends TestCase
                     new LabelRelation(
                         '2dotstwice',
                         $relationType,
-                        new StringLiteral($relationId),
+                        $relationId,
                         false
                     ),
                     new LabelRelation(
                         'Cultuurnet',
                         $relationType,
-                        new StringLiteral($relationId),
+                        $relationId,
                         true
                     ),
                 ]

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class OfferLabelRelationTest extends TestCase
 {
@@ -15,7 +14,7 @@ class OfferLabelRelationTest extends TestCase
 
     private RelationType $relationType;
 
-    private StringLiteral $offerId;
+    private string $offerId;
 
     private bool $imported;
 
@@ -25,7 +24,7 @@ class OfferLabelRelationTest extends TestCase
     {
         $this->labelName = '2dotstwice';
         $this->relationType = RelationType::place();
-        $this->offerId = new StringLiteral('relationId');
+        $this->offerId = 'relationId';
         $this->imported = true;
 
         $this->offerLabelRelation = new LabelRelation(
@@ -73,7 +72,7 @@ class OfferLabelRelationTest extends TestCase
         $imported = $this->imported ? 'true' : 'false';
         $expectedJson = '{"labelName":"' . $this->labelName
             . '","relationType":"' . $this->relationType->toString()
-            . '","relationId":"' . $this->offerId->toNative()
+            . '","relationId":"' . $this->offerId
             . '","imported":' . $imported . '}';
 
         $this->assertEquals($expectedJson, $json);

@@ -82,7 +82,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
                     new LabelRelation(
                         $labelName,
                         $relationType,
-                        new StringLiteral($jsonDocument->getId()),
+                        $jsonDocument->getId(),
                         false
                     ),
                 ]
@@ -420,7 +420,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     {
         $labelId = new UUID('1d9a5bb0-3c57-4d9c-af3e-e7978d5b737f');
         $labelName = 'foo';
-        $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
+        $documentId = 'B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A';
         $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
 
         /** @var LoggerInterface|MockObject $logger */
@@ -441,7 +441,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
                     new LabelRelation(
                         $labelName,
                         RelationType::place(),
-                        new StringLiteral((string) $documentId),
+                        $documentId,
                         false
                     ),
                 ]
