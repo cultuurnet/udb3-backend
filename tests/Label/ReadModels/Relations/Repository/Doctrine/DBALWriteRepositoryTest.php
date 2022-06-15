@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use CultuurNet\UDB3\StringLiteral;
@@ -30,14 +29,14 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_save(): void
     {
         $expectedOfferLabelRelation = new LabelRelation(
-            new LabelName('2dotstwice'),
+            '2dotstwice',
             RelationType::place(),
             new StringLiteral('relationId'),
             true
         );
 
         $this->dbalWriteRepository->save(
-            $expectedOfferLabelRelation->getLabelName()->toNative(),
+            $expectedOfferLabelRelation->getLabelName(),
             $expectedOfferLabelRelation->getRelationType(),
             $expectedOfferLabelRelation->getRelationId(),
             $expectedOfferLabelRelation->isImported()
@@ -54,7 +53,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_save_same_label_name_but_different_relation_type_and_relation_id(): void
     {
         $labelRelation1 = new LabelRelation(
-            new LabelName('2dotstwice'),
+            '2dotstwice',
             RelationType::place(),
             new StringLiteral('relationId'),
             false
@@ -70,7 +69,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->dbalWriteRepository->save(
-            $labelRelation2->getLabelName()->toNative(),
+            $labelRelation2->getLabelName(),
             $labelRelation2->getRelationType(),
             $labelRelation2->getRelationId(),
             $labelRelation2->isImported()
@@ -93,7 +92,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_save_same_label_name_and_relation_type_but_different_relation_id(): void
     {
         $labelRelation1 = new LabelRelation(
-            new LabelName('2dotstwice'),
+            '2dotstwice',
             RelationType::place(),
             new StringLiteral('relationId'),
             false
@@ -109,7 +108,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->dbalWriteRepository->save(
-            $labelRelation2->getLabelName()->toNative(),
+            $labelRelation2->getLabelName(),
             $labelRelation2->getRelationType(),
             $labelRelation2->getRelationId(),
             $labelRelation2->isImported()
@@ -132,7 +131,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_not_save_same_offer_label_relation(): void
     {
         $offerLabelRelation = new LabelRelation(
-            new LabelName('2dotstwice'),
+            '2dotstwice',
             RelationType::place(),
             new StringLiteral('relationId'),
             true
@@ -150,7 +149,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->expectException(UniqueConstraintViolationException::class);
 
         $this->dbalWriteRepository->save(
-            $sameOfferLabelRelation->getLabelName()->toNative(),
+            $sameOfferLabelRelation->getLabelName(),
             $sameOfferLabelRelation->getRelationType(),
             $sameOfferLabelRelation->getRelationId(),
             $sameOfferLabelRelation->isImported()
@@ -163,14 +162,14 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_delete_based_on_label_name_and_relation_id(): void
     {
         $OfferLabelRelation1 = new LabelRelation(
-            new LabelName('2dotstwice'),
+            '2dotstwice',
             RelationType::place(),
             new StringLiteral('relationId'),
             false
         );
 
         $OfferLabelRelation2 = new LabelRelation(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::place(),
             new StringLiteral('otherRelationId'),
             true
@@ -180,7 +179,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->saveLabelRelation($OfferLabelRelation2);
 
         $this->dbalWriteRepository->deleteByLabelNameAndRelationId(
-            $OfferLabelRelation1->getLabelName()->toNative(),
+            $OfferLabelRelation1->getLabelName(),
             $OfferLabelRelation1->getRelationId()
         );
 
@@ -246,25 +245,25 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     {
         $labelRelations = [
             new LabelRelation(
-                new LabelName('2dotstwice'),
+                '2dotstwice',
                 RelationType::place(),
                 new StringLiteral('relationId'),
                 true
             ),
             new LabelRelation(
-                new LabelName('cultuurnet'),
+                'cultuurnet',
                 RelationType::place(),
                 new StringLiteral('otherRelationId'),
                 false
             ),
             new LabelRelation(
-                new LabelName('cultuurnet'),
+                'cultuurnet',
                 RelationType::place(),
                 new StringLiteral('relationId'),
                 false
             ),
             new LabelRelation(
-                new LabelName('foo'),
+                'foo',
                 RelationType::place(),
                 new StringLiteral('fooId'),
                 false

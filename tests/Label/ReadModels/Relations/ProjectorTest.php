@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as RelationsReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -201,13 +200,13 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->withConsecutive(
                 [
-                    new LabelName('foo'),
+                    'foo',
                     $relationType,
                     new StringLiteral($relationId),
                     true,
                 ],
                 [
-                    new LabelName('bar'),
+                    'bar',
                     $relationType,
                     new StringLiteral($relationId),
                     true,
@@ -325,7 +324,7 @@ class ProjectorTest extends TestCase
             ->with($itemId)
             ->willReturn([
                 new LabelRelation(
-                    new LabelName('2DOTStwice'),
+                    '2DOTStwice',
                     RelationType::organizer(),
                     new StringLiteral('123'),
                     false
@@ -335,7 +334,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->once())
             ->method('save')
             ->with(
-                new LabelName('cultuurnet'),
+                'cultuurnet',
                 RelationType::organizer(),
                 $itemId,
                 true

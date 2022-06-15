@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -113,7 +112,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private function saveOfferLabelRelations(): void
     {
-        $labelName = new LabelName('2dotstwice');
+        $labelName = '2dotstwice';
 
         $this->relation1 = new LabelRelation(
             $labelName,
@@ -130,21 +129,21 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $relation3 = new LabelRelation(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::place(),
             new StringLiteral('298A39A1-8D1E-4F5D-B05E-811B6459EA36'),
             false
         );
 
         $this->relation4 = new LabelRelation(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::place(),
             new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'),
             false
         );
 
         $relation5 = new LabelRelation(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::event(),
             new StringLiteral('e3d79147-7a2a-4c0c-ae34-2fcea72f8b5c'),
             false

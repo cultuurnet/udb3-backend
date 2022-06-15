@@ -94,13 +94,13 @@ class RelatedUDB3LabelApplierTest extends TestCase
             ->willReturn(
                 [
                     new LabelRelation(
-                        new LegacyLabelName('2dotstwice'),
+                        '2dotstwice',
                         $relationType,
                         $relationId,
                         false
                     ),
                     new LabelRelation(
-                        new LegacyLabelName('Cultuurnet'),
+                        'Cultuurnet',
                         $relationType,
                         $relationId,
                         true

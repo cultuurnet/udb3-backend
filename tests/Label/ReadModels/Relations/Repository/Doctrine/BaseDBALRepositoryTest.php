@@ -42,7 +42,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     protected function labelRelationToValues(LabelRelation $offerLabelRelation): array
     {
         return [
-            $offerLabelRelation->getLabelName()->toNative(),
+            $offerLabelRelation->getLabelName(),
             $offerLabelRelation->getRelationType()->toString(),
             $offerLabelRelation->getRelationId(),
             $offerLabelRelation->isImported(),

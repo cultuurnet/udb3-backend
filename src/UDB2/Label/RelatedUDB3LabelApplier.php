@@ -42,7 +42,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
 
         foreach ($labelRelations as $labelRelation) {
             if (!$labelRelation->isImported()) {
-                $labelName = $labelRelation->getLabelName()->toNative();
+                $labelName = $labelRelation->getLabelName();
                 $label = $this->labelsRepository->getByName($labelName);
 
                 if ($label) {
@@ -52,7 +52,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
                     );
 
                     $udb3Labels[] = new Label(
-                        new LabelName($labelRelation->getLabelName()->toNative()),
+                        new LabelName($labelRelation->getLabelName()),
                         $label->getVisibility()->sameAs(Visibility::VISIBLE())
                     );
                 }

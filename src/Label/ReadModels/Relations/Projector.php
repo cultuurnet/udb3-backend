@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Label\ReadModels\AbstractProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\LabelEventInterface;
@@ -50,7 +49,7 @@ class Projector extends AbstractProjector
 
         try {
             $this->writeRepository->save(
-                $LabelRelation->getLabelName()->toNative(),
+                $LabelRelation->getLabelName(),
                 $LabelRelation->getRelationType(),
                 $LabelRelation->getRelationId(),
                 false
@@ -165,7 +164,7 @@ class Projector extends AbstractProjector
         // Calculate the UDB2 imported labels.
         $udb3Labels = array_map(
             function (LabelRelation $labelRelation) {
-                return $labelRelation->getLabelName()->toNative();
+                return $labelRelation->getLabelName();
             },
             $this->readRepository->getLabelRelationsForItem($relationId)
         );
@@ -188,17 +187,14 @@ class Projector extends AbstractProjector
 
     private function createLabelRelation(LabelEventInterface $labelEvent): LabelRelation
     {
-        $labelName = new LabelName($labelEvent->getLabelName());
         $relationType = $this->offerTypeResolver->getRelationType($labelEvent);
         $relationId = new StringLiteral($labelEvent->getItemId());
 
-        $labelRelation = new LabelRelation(
-            $labelName,
+        return new LabelRelation(
+            $labelEvent->getLabelName(),
             $relationType,
             $relationId,
             false
         );
-
-        return $labelRelation;
     }
 }
