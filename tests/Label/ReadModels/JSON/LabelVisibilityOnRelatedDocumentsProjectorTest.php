@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
@@ -134,7 +135,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'hiddenLabels' => ['green', 'black'],
                 ]
@@ -154,7 +155,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'hiddenLabels' => ['green'],
                     'labels' => ['black'],
@@ -197,7 +198,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['green', 'black'],
                 ]
@@ -217,7 +218,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['green'],
                     'hiddenLabels' => ['black'],
@@ -242,7 +243,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange', 'green'],
                     'hiddenLabels' => ['black'],
@@ -263,7 +264,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange', 'green', 'black'],
                 ]
@@ -287,7 +288,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange', 'black'],
                     'hiddenLabels' => ['green'],
@@ -308,7 +309,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange'],
                     'hiddenLabels' => ['green', 'black'],
@@ -333,7 +334,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['black'],
                     'hiddenLabels' => ['orange'],
@@ -354,7 +355,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'hiddenLabels' => ['orange', 'black'],
                 ]
@@ -378,7 +379,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['black', 'red', 'green'],
                     'hiddenLabels' => ['orange', 'blue', 'purple'],
@@ -399,7 +400,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['red', 'green'],
                     'hiddenLabels' => ['orange', 'blue', 'purple', 'black'],
