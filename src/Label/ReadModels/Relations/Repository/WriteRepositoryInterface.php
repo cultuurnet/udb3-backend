@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\StringLiteral;
 
 interface WriteRepositoryInterface
 {
@@ -21,8 +20,5 @@ interface WriteRepositoryInterface
         string $relationId
     ): void;
 
-    /**
-     * This method will only delete the imported labels based on relation id.
-     */
-    public function deleteImportedByRelationId(StringLiteral $relationId): void;
+    public function deleteImportedByRelationId(string $relationId): void;
 }

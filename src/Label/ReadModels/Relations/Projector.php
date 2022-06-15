@@ -156,7 +156,7 @@ class Projector extends AbstractProjector
         $relationId = $cdbItem->getCdbId();
 
         // Never delete the UDB3 labels on an update.
-        $this->writeRepository->deleteImportedByRelationId(new StringLiteral($relationId));
+        $this->writeRepository->deleteImportedByRelationId($relationId);
 
         $keywords = $cdbItem->getKeywords();
         $labelCollection = LabelCollection::fromStrings($keywords);

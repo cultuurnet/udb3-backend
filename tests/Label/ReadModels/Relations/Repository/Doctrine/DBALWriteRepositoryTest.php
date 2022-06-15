@@ -201,7 +201,7 @@ class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $labelRelations = $this->seedLabelRelations();
 
         $this->dbalWriteRepository->deleteImportedByRelationId(
-            $labelRelations[0]->getRelationId()
+            $labelRelations[0]->getRelationId()->toNative()
         );
 
         $foundLabelRelations = $this->getLabelRelations();

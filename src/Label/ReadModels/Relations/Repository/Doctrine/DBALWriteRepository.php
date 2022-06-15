@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use Doctrine\DBAL\Query\QueryBuilder;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
@@ -49,7 +48,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    public function deleteImportedByRelationId(StringLiteral $relationId): void
+    public function deleteImportedByRelationId(string $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
@@ -57,7 +56,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             ->andWhere(SchemaConfigurator::IMPORTED . ' = :imported')
             ->setParameters(
                 [
-                    ':relationId' => $relationId->toNative(),
+                    ':relationId' => $relationId,
                     ':imported' => true,
                 ]
             );
