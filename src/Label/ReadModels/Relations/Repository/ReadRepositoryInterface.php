@@ -13,7 +13,7 @@ interface ReadRepositoryInterface
     /**
      * @return \Generator|LabelRelation[]
      */
-    public function getLabelRelations(LabelName $labelName);
+    public function getLabelRelations(string $labelName);
 
     /**
      * @return string[]

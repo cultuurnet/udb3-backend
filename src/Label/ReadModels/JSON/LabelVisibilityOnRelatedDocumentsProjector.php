@@ -9,7 +9,6 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -53,12 +52,12 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
 
     public function applyMadeVisible(MadeVisible $madeVisible): void
     {
-        $this->updateLabels($madeVisible->getName(), true);
+        $this->updateLabels($madeVisible->getName()->toNative(), true);
     }
 
     public function applyMadeInvisible(MadeInvisible $madeInvisible): void
     {
-        $this->updateLabels($madeInvisible->getName(), false);
+        $this->updateLabels($madeInvisible->getName()->toNative(), false);
     }
 
     private function getDocumentRepositoryForRelationType(RelationType $relationType): ?DocumentRepository
@@ -66,7 +65,7 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
         return $this->documentRepositories[$relationType->toString()] ?? null;
     }
 
-    private function updateLabels(LegacyLabelName $labelName, bool $madeVisible): void
+    private function updateLabels(string $labelName, bool $madeVisible): void
     {
         $labelRelations = $this->relationRepository->getLabelRelations($labelName);
 
@@ -107,7 +106,7 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
 
             $addToArray = isset($offerLd->{$addTo}) ? (array) $offerLd->{$addTo} : [];
 
-            $addToArray[] = $labelName->toNative();
+            $addToArray[] = $labelName;
             $offerLd->{$addTo} = array_values(array_unique($addToArray));
 
             if (isset($offerLd->{$removeFrom})) {

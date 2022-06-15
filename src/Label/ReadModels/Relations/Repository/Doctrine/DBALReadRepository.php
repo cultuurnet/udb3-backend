@@ -16,7 +16,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     /**
      * @inheritdoc
      */
-    public function getLabelRelations(LabelName $labelName)
+    public function getLabelRelations(string $labelName)
     {
         $aliases = $this->getAliases();
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
@@ -24,7 +24,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
             ->from($this->getTableName()->toNative())
             ->where($whereLabelName)
-            ->setParameters([$labelName->toNative()]);
+            ->setParameters([$labelName]);
 
         $statement = $queryBuilder->execute();
 

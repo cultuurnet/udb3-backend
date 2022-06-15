@@ -13,8 +13,6 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 {
     private DBALReadRepository $readRepository;
 
-    private LabelName $labelName;
-
     private LabelRelation $relation1;
 
     private LabelRelation $relation2;
@@ -39,7 +37,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_should_return_relations_of_the_offers_that_are_tagged_with_a_specific_label(): void
     {
         $offerLabelRelations = [];
-        foreach ($this->readRepository->getLabelRelations($this->labelName) as $offerLabelRelation) {
+        foreach ($this->readRepository->getLabelRelations('2dotstwice') as $offerLabelRelation) {
             $offerLabelRelations[] = $offerLabelRelation;
         }
 
@@ -57,7 +55,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_returns_empty_array_when_no_relations_found_for_specific_label(): void
     {
         $offerLabelRelations = [];
-        foreach ($this->readRepository->getLabelRelations(new LabelName('missing')) as $offerLabelRelation) {
+        foreach ($this->readRepository->getLabelRelations('missing') as $offerLabelRelation) {
             $offerLabelRelations[] = $offerLabelRelation;
         }
 
@@ -115,17 +113,17 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private function saveOfferLabelRelations(): void
     {
-        $this->labelName = new LabelName('2dotstwice');
+        $labelName = new LabelName('2dotstwice');
 
         $this->relation1 = new LabelRelation(
-            $this->labelName,
+            $labelName,
             RelationType::place(),
             new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'),
             false
         );
 
         $this->relation2 = new LabelRelation(
-            $this->labelName,
+            $labelName,
             RelationType::place(),
             new StringLiteral('A9B3FA7B-9AF5-49F4-8BB5-2B169CE83107'),
             false
