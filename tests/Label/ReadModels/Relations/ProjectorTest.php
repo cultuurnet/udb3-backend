@@ -148,7 +148,7 @@ class ProjectorTest extends TestCase
 
         $this->writeRepository->expects($this->once())
             ->method('deleteByLabelNameAndRelationId')
-            ->with($this->labelName, new StringLiteral($relationId));
+            ->with($this->labelName, $relationId);
 
         $this->projector->handle($domainMessage);
     }

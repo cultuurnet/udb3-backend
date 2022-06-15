@@ -18,7 +18,7 @@ interface WriteRepositoryInterface
 
     public function deleteByLabelNameAndRelationId(
         string $labelName,
-        StringLiteral $relationId
+        string $relationId
     ): void;
 
     public function deleteByRelationId(StringLiteral $relationId): void;

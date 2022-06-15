@@ -63,7 +63,7 @@ class Projector extends AbstractProjector
     {
         $this->writeRepository->deleteByLabelNameAndRelationId(
             $labelRemoved->getLabelName(),
-            new StringLiteral($labelRemoved->getItemId())
+            $labelRemoved->getItemId()
         );
     }
 

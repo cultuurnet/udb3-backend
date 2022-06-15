@@ -38,13 +38,13 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
 
     public function deleteByLabelNameAndRelationId(
         string $labelName,
-        StringLiteral $relationId
+        string $relationId
     ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
             ->where(SchemaConfigurator::LABEL_NAME . ' = ?')
             ->andWhere(SchemaConfigurator::RELATION_ID . ' = ?')
-            ->setParameters([$labelName, $relationId->toNative()]);
+            ->setParameters([$labelName, $relationId]);
 
         $this->executeTransactional($queryBuilder);
     }
