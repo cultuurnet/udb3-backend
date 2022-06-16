@@ -14,18 +14,15 @@ use CultuurNet\UDB3\Label\ReadModels\AbstractProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use CultuurNet\UDB3\StringLiteral;
 
 class Projector extends AbstractProjector
 {
@@ -63,23 +60,20 @@ class Projector extends AbstractProjector
 
     public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void
     {
-        $labelRelation = $this->createLabelRelation($labelRemoved);
-
         $this->writeRepository->deleteByLabelNameAndRelationId(
-            $labelRelation->getLabelName(),
-            $labelRelation->getRelationId()
+            $labelRemoved->getLabelName(),
+            $labelRemoved->getItemId()
         );
     }
 
     public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void
     {
-        foreach ($labelsImported->getLabels()->toArray() as $label) {
+        foreach ($labelsImported->getAllLabelNames() as $labelName) {
             try {
-                /** @var Label $label */
                 $this->writeRepository->save(
-                    new LabelName($label->getName()->toString()),
+                    $labelName,
                     $this->offerTypeResolver->getRelationTypeForImport($labelsImported),
-                    new StringLiteral($labelsImported->getItemId()),
+                    $labelsImported->getItemId(),
                     true
                 );
             } catch (UniqueConstraintViolationException $exception) {
@@ -158,7 +152,7 @@ class Projector extends AbstractProjector
         \CultureFeed_Cdb_Item_Base $cdbItem,
         RelationType $relationType
     ): void {
-        $relationId = new StringLiteral($cdbItem->getCdbId());
+        $relationId = $cdbItem->getCdbId();
 
         // Never delete the UDB3 labels on an update.
         $this->writeRepository->deleteImportedByRelationId($relationId);
@@ -169,7 +163,7 @@ class Projector extends AbstractProjector
         // Calculate the UDB2 imported labels.
         $udb3Labels = array_map(
             function (LabelRelation $labelRelation) {
-                return $labelRelation->getLabelName()->toNative();
+                return $labelRelation->getLabelName();
             },
             $this->readRepository->getLabelRelationsForItem($relationId)
         );
@@ -182,7 +176,7 @@ class Projector extends AbstractProjector
         // Only save the UDB2 labels, because the UDB3 labels are still present.
         foreach ($udb2Labels as $label) {
             $this->writeRepository->save(
-                new LabelName((string) $label),
+                $label->getName()->toNative(),
                 $relationType,
                 $relationId,
                 true
@@ -192,17 +186,11 @@ class Projector extends AbstractProjector
 
     private function createLabelRelation(LabelEventInterface $labelEvent): LabelRelation
     {
-        $labelName = new LabelName($labelEvent->getLabelName());
-        $relationType = $this->offerTypeResolver->getRelationType($labelEvent);
-        $relationId = new StringLiteral($labelEvent->getItemId());
-
-        $labelRelation = new LabelRelation(
-            $labelName,
-            $relationType,
-            $relationId,
+        return new LabelRelation(
+            $labelEvent->getLabelName(),
+            $this->offerTypeResolver->getRelationType($labelEvent),
+            $labelEvent->getItemId(),
             false
         );
-
-        return $labelRelation;
     }
 }

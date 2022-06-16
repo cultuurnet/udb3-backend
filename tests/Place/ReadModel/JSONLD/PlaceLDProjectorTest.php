@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
@@ -51,11 +50,7 @@ use stdClass;
 
 class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 {
-    private MediaObjectSerializer $serializer;
-
     private Address $address;
-
-    private CdbXMLImporter $cdbXMLImporter;
 
     public function __construct(string $name = null, array $data = [], string $dataName = '')
     {
@@ -72,9 +67,9 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             }
         );
 
-        $this->serializer = new MediaObjectSerializer($iriGenerator);
+        $serializer = new MediaObjectSerializer($iriGenerator);
 
-        $this->cdbXMLImporter = new CdbXMLImporter(
+        $cdbXMLImporter = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
                 new PriceDescriptionParser(
                     new NumberFormatRepository(),
@@ -96,8 +91,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             $this->documentRepository,
             $iriGenerator,
             $this->organizerService,
-            $this->serializer,
-            $this->cdbXMLImporter,
+            $serializer,
+            $cdbXMLImporter,
             new JsonDocumentLanguageEnricher(
                 new PlaceJsonDocumentLanguageAnalyzer()
             ),
@@ -799,7 +794,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $initialDocument = new JsonDocument(
@@ -835,7 +830,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $body = $this->project($labelRemoved, 'foo');
@@ -862,7 +857,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $body = $this->project($labelAdded, 'foo', null, $this->recordedOn->toBroadwayDateTime());

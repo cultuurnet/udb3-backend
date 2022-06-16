@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
@@ -118,19 +117,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new LabelsImported(
                         $id,
-                        new Labels(
-                            new Label(
-                                new LabelName('foo'),
-                                true
-                            ),
-                            new Label(
-                                new LabelName('bar'),
-                                false
-                            )
-                        )
+                        ['foo'],
+                        ['bar']
                     ),
-                    new LabelAdded($id, new LegacyLabel('foo', true)),
-                    new LabelAdded($id, new LegacyLabel('bar', false)),
+                    new LabelAdded($id, 'foo', true),
+                    new LabelAdded($id, 'bar', false),
                 ]
             );
     }
@@ -173,23 +164,20 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                     $this->eventCreated($id),
                     new LabelsImported(
                         $id,
-                        new Labels(
-                            new Label(
-                                new LabelName('not_allowed')
-                            ),
-                            new Label(
-                                new LabelName('allowed')
-                            )
-                        )
+                        [
+                            'not_allowed',
+                            'allowed',
+                        ],
+                        []
                     ),
-                    new LabelAdded($id, new LegacyLabel('not_allowed')),
-                    new LabelAdded($id, new LegacyLabel('allowed')),
+                    new LabelAdded($id, 'not_allowed'),
+                    new LabelAdded($id, 'allowed'),
                 ]
             )
             ->when(
                 new ImportLabels($id, new Labels())
             )
-            ->then([new LabelRemoved($id, new LegacyLabel('allowed'))]);
+            ->then([new LabelRemoved($id, 'allowed')]);
     }
 
     /**
@@ -207,8 +195,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new LegacyLabel('label 1')),
-                    new LabelAdded($id, new LegacyLabel('label 2')),
+                    new LabelAdded($id, 'label 1'),
+                    new LabelAdded($id, 'label 2'),
                 ]
             )
             ->when(new ImportLabels($id, new Labels()))

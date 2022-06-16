@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelEventInterface;
 
 abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInterface
@@ -13,11 +12,11 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
     private bool $isLabelVisible;
 
-    final public function __construct(string $itemId, Label $label)
+    final public function __construct(string $itemId, string $labelName, bool $isLabelVisible = true)
     {
         parent::__construct($itemId);
-        $this->labelName = $label->getName()->toNative();
-        $this->isLabelVisible = $label->isVisible();
+        $this->labelName = $labelName;
+        $this->isLabelVisible = $isLabelVisible;
     }
 
     public function getLabelName(): string
@@ -40,13 +39,10 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
     public static function deserialize(array $data): AbstractLabelEvent
     {
-        if (!isset($data['visibility'])) {
-            $data['visibility'] = true;
-        }
-
         return new static(
             $data['item_id'],
-            new Label($data['label'], $data['visibility'])
+            $data['label'],
+            $data['visibility'] ?? true
         );
     }
 }

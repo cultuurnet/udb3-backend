@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Label;
 use PHPUnit\Framework\TestCase;
 
 class LabelRemovedTest extends TestCase
@@ -12,12 +11,11 @@ class LabelRemovedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
      */
     public function it_can_be_serialized_into_an_array(
-        $expectedSerializedValue,
+        array $expectedSerializedValue,
         LabelRemoved $labelRemoved
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedSerializedValue,
             $labelRemoved->serialize()
@@ -27,19 +25,18 @@ class LabelRemovedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
      */
     public function it_can_be_deserialized_from_an_array(
-        $serializedValue,
+        array $serializedValue,
         LabelRemoved $expectedLabelRemovedEvent
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedLabelRemovedEvent,
             LabelRemoved::deserialize($serializedValue)
         );
     }
 
-    public function serializationDataProvider()
+    public function serializationDataProvider(): array
     {
         return [
             'label removed event' => [
@@ -50,7 +47,7 @@ class LabelRemovedTest extends TestCase
                 ],
                 new LabelRemoved(
                     'foo',
-                    new Label('Label1')
+                    'Label1'
                 ),
             ],
         ];

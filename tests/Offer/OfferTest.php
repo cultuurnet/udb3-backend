@@ -293,9 +293,9 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new LabelAdded($itemId, new LegacyLabel('purple')),
-                new LabelAdded($itemId, new LegacyLabel('orange')),
-                new LabelAdded($itemId, new LegacyLabel('green')),
+                new LabelAdded($itemId, 'purple'),
+                new LabelAdded($itemId, 'orange'),
+                new LabelAdded($itemId, 'green'),
             ]);
     }
 
@@ -321,11 +321,11 @@ class OfferTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([
-                new LabelAdded($itemId, new LegacyLabel('purple')),
-                new LabelAdded($itemId, new LegacyLabel('orange')),
-                new LabelAdded($itemId, new LegacyLabel('green')),
-                new LabelRemoved($itemId, new LegacyLabel('purple')),
-                new LabelAdded($itemId, new LegacyLabel('purple')),
+                new LabelAdded($itemId, 'purple'),
+                new LabelAdded($itemId, 'orange'),
+                new LabelAdded($itemId, 'green'),
+                new LabelRemoved($itemId, 'purple'),
+                new LabelAdded($itemId, 'purple'),
             ]);
     }
 
@@ -354,17 +354,18 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
-                new LabelAdded($itemId, new LegacyLabel('existing_label_1_added_via_ui_and_also_in_new_import')),
-                new LabelAdded($itemId, new LegacyLabel('existing_label_2_added_via_ui')),
+                new LabelAdded($itemId, 'existing_label_1_added_via_ui_and_also_in_new_import'),
+                new LabelAdded($itemId, 'existing_label_2_added_via_ui'),
                 new LabelsImported(
                     $itemId,
-                    new Labels(
-                        new Label(new LabelName('existing_label_3_added_via_import_and_also_in_new_import')),
-                        new Label(new LabelName('existing_label_4_added_via_import'))
-                    )
+                    [
+                        'existing_label_3_added_via_import_and_also_in_new_import',
+                        'existing_label_4_added_via_import',
+                    ],
+                    []
                 ),
-                new LabelAdded($itemId, new LegacyLabel('existing_label_3_added_via_import_and_also_in_new_import')),
-                new LabelAdded($itemId, new LegacyLabel('existing_label_4_added_via_import')),
+                new LabelAdded($itemId, 'existing_label_3_added_via_import_and_also_in_new_import'),
+                new LabelAdded($itemId, 'existing_label_4_added_via_import'),
             ])
             ->when(
                 function (Item $item) use ($labels) {
@@ -375,15 +376,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then([
                 new LabelsImported(
                     $itemId,
-                    new Labels(
-                        new Label(
-                            new LabelName('new_label_1'),
-                            true
-                        )
-                    )
+                    ['new_label_1'],
+                    []
                 ),
-                new LabelRemoved($itemId, new LegacyLabel('existing_label_4_added_via_import')),
-                new LabelAdded($itemId, new LegacyLabel('new_label_1')),
+                new LabelRemoved($itemId, 'existing_label_4_added_via_import'),
+                new LabelAdded($itemId, 'new_label_1'),
             ]);
     }
 

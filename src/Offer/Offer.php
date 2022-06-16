@@ -81,7 +81,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public const DUPLICATE_REASON = 'duplicate';
     public const INAPPROPRIATE_REASON = 'inappropriate';
 
-    protected LabelCollection $labels;
+    protected LabelsArray $labels;
 
     protected ImageCollection $images;
 
@@ -124,8 +124,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected ?BookingInfo $bookingInfo = null;
 
-    protected bool $isDeleted = false;
-
     private ?string $ownerId = null;
 
     /**
@@ -137,7 +135,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $this->titles = [];
         $this->descriptions = [];
-        $this->labels = new LabelCollection();
+        $this->labels = new LabelsArray();
         $this->images = new ImageCollection();
         $this->videos = new VideoCollection();
         $this->facilities = [];
@@ -153,14 +151,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         $labels = new Labels();
 
-        // Convert deprecated LabelCollection to Labels VO
-        foreach ($this->labels->asArray() as $label) {
-            $labels = $labels->with(
-                new Label(
-                    new LabelName($label->getName()->toNative()),
-                    $label->isVisible()
-                )
-            );
+        foreach ($this->labels->toArray() as $label) {
+            $labels = $labels->with(new Label(new LabelName($label['labelName']), $label['isVisible']));
         }
 
         return $labels;
@@ -248,20 +240,18 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function addLabel(Label $label): void
     {
-        $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
-        if (!$this->labels->contains($legacyLabel)) {
+        if (!$this->labels->containsLabel($label->getName()->toString())) {
             $this->apply(
-                $this->createLabelAddedEvent($legacyLabel)
+                $this->createLabelAddedEvent($label->getName()->toString(), $label->isVisible())
             );
         }
     }
 
     public function removeLabel(Label $label): void
     {
-        $legacyLabel = new LegacyLabel($label->getName()->toString(), $label->isVisible());
-        if ($this->labels->contains($legacyLabel)) {
+        if ($this->labels->containsLabel($label->getName()->toString())) {
             $this->apply(
-                $this->createLabelRemovedEvent($legacyLabel)
+                $this->createLabelRemovedEvent($label->getName()->toString(), $label->isVisible())
             );
         }
     }
@@ -282,9 +272,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         // Always keep non-imported labels that are already on the offer
         $keepLabelsCollection = new LabelCollection();
-        foreach ($this->labels->asArray() as $label) {
-            if (!in_array($label->getName()->toNative(), $this->importedLabelNames, true)) {
-                $keepLabelsCollection = $keepLabelsCollection->with($label);
+        foreach ($this->labels->toArray() as $label) {
+            if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
+                $keepLabelsCollection = $keepLabelsCollection->with(
+                    new LegacyLabel($label['labelName'], $label['isVisible'])
+                );
             }
         }
 
@@ -292,7 +284,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // Labels which are not inside the internal state but inside the imported labels
         $addedLabels = new LabelCollection();
         foreach ($importLabelsCollection->asArray() as $label) {
-            if (!$this->labels->containsWithSameVisibility($label)) {
+            $existingLabel = $this->labels->getLabel($label->getName()->toNative());
+            if ($existingLabel === null || $existingLabel['isVisible'] !== $label->isVisible()) {
                 $addedLabels = $addedLabels->with($label);
             }
         }
@@ -314,18 +307,19 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // What are the deleted labels?
         // Labels which are inside the internal state but not inside imported labels or labels to keep. (Taking
         // visibility into consideration.) For each deleted label fire a LabelDeleted event.
-        foreach ($this->labels->asArray() as $label) {
+        foreach ($this->labels->toArray() as $label) {
+            $label = new LegacyLabel($label['labelName'], $label['isVisible']);
             $inImportWithSameVisibility = $importLabelsCollection->containsWithSameVisibility($label);
             $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $labels->findByName(new LabelName($label->getName()->toNative()));
             $canBeRemoved = !$keepLabelsCollection->containsWithSameVisibility($label);
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply($this->createLabelRemovedEvent($label));
+                $this->apply($this->createLabelRemovedEvent($label->getName()->toNative(), $label->isVisible()));
             }
         }
 
         // For each added label fire a LabelAdded event.
         foreach ($addedLabels->asArray() as $label) {
-            $this->apply($this->createLabelAddedEvent($label));
+            $this->apply($this->createLabelAddedEvent($label->getName()->toNative(), $label->isVisible()));
         }
     }
 
@@ -492,22 +486,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyLabelAdded(AbstractLabelAdded $labelAdded): void
     {
-        $this->labels = $this->labels->with(
-            new LegacyLabel(
-                $labelAdded->getLabelName(),
-                $labelAdded->isLabelVisible()
-            )
-        );
+        $this->labels->addLabel($labelAdded->getLabelName(), $labelAdded->isLabelVisible());
     }
 
     protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved): void
     {
-        $this->labels = $this->labels->without(
-            new LegacyLabel(
-                $labelRemoved->getLabelName(),
-                $labelRemoved->isLabelVisible()
-            )
-        );
+        $this->labels->removeLabel($labelRemoved->getLabelName());
 
         $this->importedLabelNames = array_filter(
             $this->importedLabelNames,
@@ -517,7 +501,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyLabelsImported(AbstractLabelsImported $labelsImported): void
     {
-        foreach ($labelsImported->getLabels()->toArrayOfStringNames() as $importedLabelName) {
+        foreach ($labelsImported->getAllLabelNames() as $importedLabelName) {
             if (!in_array($importedLabelName, $this->importedLabelNames, true)) {
                 $this->importedLabelNames[] = $importedLabelName;
             }
@@ -1036,9 +1020,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->images = isset($newMainImage) ? $images->withMain($newMainImage) : $images;
     }
 
-    abstract protected function createLabelAddedEvent(LegacyLabel $label): AbstractLabelAdded;
+    abstract protected function createLabelAddedEvent(string $labelName, bool $isVisible): AbstractLabelAdded;
 
-    abstract protected function createLabelRemovedEvent(LegacyLabel $label): AbstractLabelRemoved;
+    abstract protected function createLabelRemovedEvent(string $labelName, bool $isVisible): AbstractLabelRemoved;
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 

@@ -5,54 +5,76 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\LabelsImportedEventInterface;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 
 abstract class AbstractLabelsImported extends AbstractEvent implements LabelsImportedEventInterface
 {
     /**
-     * @var Labels
+     * @var string[]
      */
-    private $labels;
+    private array $visibleLabels;
+
+    /**
+     * @var string[]
+     */
+    private array $hiddenLabels;
 
     final public function __construct(
         string $organizerId,
-        Labels $labels
+        array $visibleLabels,
+        array $hiddenLabels
     ) {
         parent::__construct($organizerId);
-        $this->labels = $labels;
+        $this->visibleLabels = $visibleLabels;
+        $this->hiddenLabels = $hiddenLabels;
     }
 
-    public function getLabels(): Labels
+    public function getAllLabelNames(): array
     {
-        return $this->labels;
+        return array_merge($this->visibleLabels, $this->hiddenLabels);
+    }
+
+    public function getVisibleLabelNames(): array
+    {
+        return $this->visibleLabels;
+    }
+
+    public function getHiddenLabelNames(): array
+    {
+        return $this->hiddenLabels;
     }
 
     public static function deserialize(array $data): AbstractLabelsImported
     {
-        $labels = new Labels();
+        $visibleLabels = [];
+        $hiddenLabels = [];
         foreach ($data['labels'] as $label) {
-            $labels = $labels->with(new Label(
-                new LabelName($label['label']),
-                $label['visibility']
-            ));
+            if ($label['visibility']) {
+                $visibleLabels[] = $label['label'];
+            } else {
+                $hiddenLabels[] = $label['label'];
+            }
         }
 
         return new static(
             $data['item_id'],
-            $labels
+            $visibleLabels,
+            $hiddenLabels
         );
     }
 
     public function serialize(): array
     {
         $labels = [];
-        foreach ($this->getLabels() as $label) {
-            /** @var Label $label */
+        foreach ($this->getVisibleLabelNames() as $labelName) {
             $labels[] = [
-                'label' => $label->getName()->toString(),
-                'visibility' => $label->isVisible(),
+                'label' => $labelName,
+                'visibility' => true,
+            ];
+        }
+        foreach ($this->getHiddenLabelNames() as $labelName) {
+            $labels[] = [
+                'label' => $labelName,
+                'visibility' => false,
             ];
         }
 

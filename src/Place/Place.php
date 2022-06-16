@@ -14,8 +14,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Label as LegacyLabel;
-use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -28,6 +26,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
@@ -265,7 +264,8 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->priceInfo = null;
 
         $this->importWorkflowStatus($udb2Actor);
-        $this->labels = LabelCollection::fromKeywords($udb2Actor->getKeywords(true));
+
+        $this->labels = LabelsArray::createFromKeywords($udb2Actor->getKeywords(true));
     }
 
     protected function applyPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2): void
@@ -296,7 +296,8 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->priceInfo = null;
 
         $this->importWorkflowStatus($udb2Actor);
-        $this->labels = LabelCollection::fromKeywords($udb2Actor->getKeywords(true));
+
+        $this->labels = LabelsArray::createFromKeywords($udb2Actor->getKeywords(true));
 
         unset($this->addresses[$this->mainLanguage->getCode()]);
     }
@@ -329,19 +330,23 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         return new OwnerChanged($this->placeId, $newOwnerId);
     }
 
-    protected function createLabelAddedEvent(LegacyLabel $label): LabelAdded
+    protected function createLabelAddedEvent(string $labelName, bool $isVisible): LabelAdded
     {
-        return new LabelAdded($this->placeId, $label);
+        return new LabelAdded($this->placeId, $labelName, $isVisible);
     }
 
-    protected function createLabelRemovedEvent(LegacyLabel $label): LabelRemoved
+    protected function createLabelRemovedEvent(string $labelName, bool $isVisible): LabelRemoved
     {
-        return new LabelRemoved($this->placeId, $label);
+        return new LabelRemoved($this->placeId, $labelName, $isVisible);
     }
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
-        return new LabelsImported($this->placeId, $labels);
+        return new LabelsImported(
+            $this->placeId,
+            $labels->getVisibleLabels()->toArrayOfStringNames(),
+            $labels->getHiddenLabels()->toArrayOfStringNames()
+        );
     }
 
     protected function createImageAddedEvent(Image $image): ImageAdded

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventListener;
 
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use CultuurNet\UDB3\Offer\Item\Events\LabelRemoved;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +20,7 @@ class ClassNameEventSpecificationTest extends TestCase
     {
         $this->labelAdded = new LabelAdded(
             '26e36905-64d0-4cac-ba41-6d6dcd997ca0',
-            new Label('UiTPAS')
+            'UiTPAS'
         );
     }
 

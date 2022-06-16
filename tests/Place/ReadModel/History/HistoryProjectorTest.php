@@ -20,7 +20,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -29,7 +28,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -705,7 +703,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_LabelsImported_event(): void
     {
-        $event = new LabelsImported('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Labels());
+        $event = new LabelsImported('a0ee7b1c-a9c1-4da1-af7e-d15496014656', [], []);
 
         $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
 
@@ -1030,7 +1028,7 @@ class HistoryProjectorTest extends TestCase
     {
         return new LabelAdded(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Label('Label-of-adding')
+            'Label-of-adding'
         );
     }
 
@@ -1038,7 +1036,7 @@ class HistoryProjectorTest extends TestCase
     {
         return new LabelRemoved(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Label('Label-of-removing')
+            'Label-of-removing'
         );
     }
 

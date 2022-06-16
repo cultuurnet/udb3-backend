@@ -9,7 +9,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\Events\CopyCreated;
 use CultuurNet\UDB3\Label\Events\Created;
@@ -77,7 +76,7 @@ class ProjectorTest extends TestCase
         $readRepository = $this->createMock(ReadRepositoryInterface::class);
 
         $readRepository->method('getByUuid')
-            ->will($this->returnValueMap($uuidMap));
+            ->willReturnMap($uuidMap);
 
         $readRepository->method('getByName')
             ->willReturnCallback(function (string $value) {
@@ -313,7 +312,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleAdding($labelAdded);
@@ -326,7 +325,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleDeleting($labelRemoved);
@@ -339,7 +338,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleAdding($labelAdded);
@@ -352,7 +351,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            new Label($this->labelName->toNative())
+            $this->labelName->toNative()
         );
 
         $this->handleDeleting($labelRemoved);

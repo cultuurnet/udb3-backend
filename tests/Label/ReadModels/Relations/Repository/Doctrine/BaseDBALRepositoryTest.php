@@ -7,17 +7,16 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class BaseDBALRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    private StringLiteral $tableName;
+    private string $tableName;
 
     protected function setUp(): void
     {
-        $this->tableName = new StringLiteral('test_places_relations');
+        $this->tableName = 'test_places_relations';
 
         $schemaConfigurator = new SchemaConfigurator($this->tableName);
 
@@ -26,7 +25,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         $schemaConfigurator->configure($schemaManager);
     }
 
-    protected function getTableName(): StringLiteral
+    protected function getTableName(): string
     {
         return $this->tableName;
     }
@@ -43,7 +42,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     protected function labelRelationToValues(LabelRelation $offerLabelRelation): array
     {
         return [
-            $offerLabelRelation->getLabelName()->toNative(),
+            $offerLabelRelation->getLabelName(),
             $offerLabelRelation->getRelationType()->toString(),
             $offerLabelRelation->getRelationId(),
             $offerLabelRelation->isImported(),

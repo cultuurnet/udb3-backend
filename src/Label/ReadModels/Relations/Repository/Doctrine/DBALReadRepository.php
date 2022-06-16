@@ -7,16 +7,14 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
     /**
      * @inheritdoc
      */
-    public function getLabelRelations(LabelName $labelName)
+    public function getLabelRelations(string $labelName)
     {
         $aliases = $this->getAliases();
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
@@ -24,7 +22,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         $queryBuilder = $this->createQueryBuilder()->select($aliases)
             ->from($this->getTableName()->toNative())
             ->where($whereLabelName)
-            ->setParameters([$labelName->toNative()]);
+            ->setParameters([$labelName]);
 
         $statement = $queryBuilder->execute();
 
@@ -34,7 +32,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         }
     }
 
-    public function getLabelRelationsForType(LabelName $labelName, RelationType $relationType): array
+    public function getLabelRelationsForType(string $labelName, RelationType $relationType): array
     {
         $whereLabelName = SchemaConfigurator::LABEL_NAME . ' = ?';
 
@@ -42,14 +40,14 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ->from($this->getTableName()->toNative())
             ->where($whereLabelName)
             ->andWhere(SchemaConfigurator::RELATION_TYPE . ' = ?')
-            ->setParameters([$labelName->toNative(), $relationType->toString()])
+            ->setParameters([$labelName, $relationType->toString()])
         ->execute()->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     /**
      * @inheritdoc
      */
-    public function getLabelRelationsForItem(StringLiteral $relationId): array
+    public function getLabelRelationsForItem(string $relationId): array
     {
         $aliases = $this->getAliases();
         $whereRelationId = SchemaConfigurator::RELATION_ID . ' = ?';
@@ -59,7 +57,7 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
             ->where($whereRelationId)
             ->setParameters(
                 [
-                    $relationId->toNative(),
+                    $relationId,
                 ]
             );
 

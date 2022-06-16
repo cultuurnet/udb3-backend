@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -166,7 +165,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $initialDocument = new JsonDocument(
@@ -193,7 +192,8 @@ class OfferLDProjectorTest extends TestCase
     {
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B', false)
+            'label B',
+            false
         );
 
         $initialDocument = new JsonDocument(
@@ -233,7 +233,7 @@ class OfferLDProjectorTest extends TestCase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $body = $this->project($labelRemoved, 'foo');
@@ -261,7 +261,8 @@ class OfferLDProjectorTest extends TestCase
 
         $labelRemoved = new LabelRemoved(
             'foo',
-            new Label('label C', false)
+            'label C',
+            false
         );
 
         $body = $this->project($labelRemoved, 'foo', null, $this->recordedOn->toBroadwayDateTime());
@@ -291,7 +292,7 @@ class OfferLDProjectorTest extends TestCase
 
         $labelAdded = new LabelAdded(
             'foo',
-            new Label('label B')
+            'label B'
         );
 
         $body = $this->project($labelAdded, 'foo', null, $this->recordedOn->toBroadwayDateTime());

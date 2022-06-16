@@ -732,7 +732,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     protected function applyLabelsImported(LabelsImported $labelsImported): void
     {
-        foreach ($labelsImported->getLabels()->toArrayOfStringNames() as $importedLabelName) {
+        foreach ($labelsImported->getAllLabelNames() as $importedLabelName) {
             if (!in_array($importedLabelName, $this->importedLabelNames, true)) {
                 $this->importedLabelNames[] = $importedLabelName;
             }

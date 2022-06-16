@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\StringLiteral;
 
 class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 {
     private DBALReadRepository $readRepository;
-
-    private LabelName $labelName;
 
     private LabelRelation $relation1;
 
@@ -27,7 +24,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         $this->readRepository = new DBALReadRepository(
             $this->getConnection(),
-            $this->getTableName()
+            new StringLiteral($this->getTableName())
         );
 
         $this->saveOfferLabelRelations();
@@ -39,7 +36,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_should_return_relations_of_the_offers_that_are_tagged_with_a_specific_label(): void
     {
         $offerLabelRelations = [];
-        foreach ($this->readRepository->getLabelRelations($this->labelName) as $offerLabelRelation) {
+        foreach ($this->readRepository->getLabelRelations('2dotstwice') as $offerLabelRelation) {
             $offerLabelRelations[] = $offerLabelRelation;
         }
 
@@ -57,7 +54,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_returns_empty_array_when_no_relations_found_for_specific_label(): void
     {
         $offerLabelRelations = [];
-        foreach ($this->readRepository->getLabelRelations(new LabelName('missing')) as $offerLabelRelation) {
+        foreach ($this->readRepository->getLabelRelations('missing') as $offerLabelRelation) {
             $offerLabelRelations[] = $offerLabelRelation;
         }
 
@@ -69,9 +66,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_can_return_all_labels_for_a_relation_id(): void
     {
-        $labelRelations = $this->readRepository->getLabelRelationsForItem(
-            new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6')
-        );
+        $labelRelations = $this->readRepository->getLabelRelationsForItem('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6');
 
         $this->assertEquals(
             [
@@ -87,9 +82,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
      */
     public function it_returns_an_empty_list_when_no_match_on_relation_id(): void
     {
-        $labelRelations = $this->readRepository->getLabelRelationsForItem(
-            new StringLiteral('89A78F44-A45B-40E2-A1E3-7632D2F3B1C5')
-        );
+        $labelRelations = $this->readRepository->getLabelRelationsForItem('89A78F44-A45B-40E2-A1E3-7632D2F3B1C5');
 
         $this->assertEmpty($labelRelations);
     }
@@ -100,7 +93,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_should_return_offers_by_label_for_type(): void
     {
         $labelRelationsForType = $this->readRepository->getLabelRelationsForType(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::place()
         );
 
@@ -115,40 +108,40 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private function saveOfferLabelRelations(): void
     {
-        $this->labelName = new LabelName('2dotstwice');
+        $labelName = '2dotstwice';
 
         $this->relation1 = new LabelRelation(
-            $this->labelName,
+            $labelName,
             RelationType::place(),
-            new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'),
+            '99A78F44-A45B-40E2-A1E3-7632D2F3B1C6',
             false
         );
 
         $this->relation2 = new LabelRelation(
-            $this->labelName,
+            $labelName,
             RelationType::place(),
-            new StringLiteral('A9B3FA7B-9AF5-49F4-8BB5-2B169CE83107'),
+            'A9B3FA7B-9AF5-49F4-8BB5-2B169CE83107',
             false
         );
 
         $relation3 = new LabelRelation(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::place(),
-            new StringLiteral('298A39A1-8D1E-4F5D-B05E-811B6459EA36'),
+            '298A39A1-8D1E-4F5D-B05E-811B6459EA36',
             false
         );
 
         $this->relation4 = new LabelRelation(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::place(),
-            new StringLiteral('99A78F44-A45B-40E2-A1E3-7632D2F3B1C6'),
+            '99A78F44-A45B-40E2-A1E3-7632D2F3B1C6',
             false
         );
 
         $relation5 = new LabelRelation(
-            new LabelName('cultuurnet'),
+            'cultuurnet',
             RelationType::event(),
-            new StringLiteral('e3d79147-7a2a-4c0c-ae34-2fcea72f8b5c'),
+            'e3d79147-7a2a-4c0c-ae34-2fcea72f8b5c',
             false
         );
 

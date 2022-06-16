@@ -46,11 +46,11 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new Label('foo', true)),
+                    new LabelAdded($id, 'foo', true),
                 ]
             )
             ->when(new RemoveLabel($id, new Label('foo', true)))
-            ->then([new LabelRemoved($id, new Label('foo', true))]);
+            ->then([new LabelRemoved($id, 'foo', true)]);
     }
 
     /**
@@ -65,11 +65,11 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->given(
                 [
                     $this->eventCreated($id),
-                    new LabelAdded($id, new Label('foo', true)),
+                    new LabelAdded($id, 'foo', true),
                 ]
             )
             ->when(new RemoveLabel($id, new Label('foo', false)))
-            ->then([new LabelRemoved($id, new Label('foo', false))]);
+            ->then([new LabelRemoved($id, 'foo', false)]);
     }
 
     /**

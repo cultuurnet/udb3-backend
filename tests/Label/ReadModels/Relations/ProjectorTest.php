@@ -13,13 +13,12 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as LabelRemovedFromEvent;
 use CultuurNet\UDB3\Event\Events\LabelsImported as EventLabelsImported;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as RelationsReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
@@ -38,11 +37,10 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
-    private LabelName $labelName;
+    private string $labelName;
 
     private string $relationId;
 
@@ -56,24 +54,22 @@ class ProjectorTest extends TestCase
      */
     private $relationsReadRepository;
 
-    private LabelEventRelationTypeResolver $offerTypeResolver;
-
     private Projector $projector;
 
     protected function setUp(): void
     {
-        $this->labelName = new LabelName('labelName');
+        $this->labelName = 'labelName';
 
         $this->relationId = $this->getRelationId();
 
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
         $this->relationsReadRepository = $this->createMock(RelationsReadRepositoryInterface::class);
-        $this->offerTypeResolver = new LabelEventRelationTypeResolver();
+        $offerTypeResolver = new LabelEventRelationTypeResolver();
 
         $this->projector = new Projector(
             $this->writeRepository,
             $this->relationsReadRepository,
-            $this->offerTypeResolver
+            $offerTypeResolver
         );
     }
 
@@ -98,7 +94,7 @@ class ProjectorTest extends TestCase
             ->with(
                 $this->labelName,
                 $relationType,
-                new StringLiteral($this->relationId)
+                $this->relationId
             );
 
         $this->projector->handle($domainMessage);
@@ -111,7 +107,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToEvent(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
                 RelationType::event(),
             ],
@@ -119,7 +115,7 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelAddedToPlace(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
                 RelationType::place(),
             ],
@@ -151,7 +147,7 @@ class ProjectorTest extends TestCase
 
         $this->writeRepository->expects($this->once())
             ->method('deleteByLabelNameAndRelationId')
-            ->with($this->labelName, new StringLiteral($relationId));
+            ->with($this->labelName, $relationId);
 
         $this->projector->handle($domainMessage);
     }
@@ -163,14 +159,14 @@ class ProjectorTest extends TestCase
                 $this->getRelationId(),
                 new LabelRemovedFromEvent(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
             ],
             [
                 $this->getRelationId(),
                 new LabelRemovedFromPlace(
                     $this->getRelationId(),
-                    new Label('labelName')
+                    'labelName'
                 ),
             ],
             [
@@ -203,15 +199,15 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->withConsecutive(
                 [
-                    new LabelName('foo'),
+                    'foo',
                     $relationType,
-                    new StringLiteral($relationId),
+                    $relationId,
                     true,
                 ],
                 [
-                    new LabelName('bar'),
+                    'bar',
                     $relationType,
-                    new StringLiteral($relationId),
+                    $relationId,
                     true,
                 ]
             );
@@ -221,24 +217,14 @@ class ProjectorTest extends TestCase
 
     public function labelsImportedDataProvider(): array
     {
-        $labels = new Labels(
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('foo'),
-                true
-            ),
-            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('bar'),
-                false
-            )
-        );
-
         return [
             [
                 $this->getRelationId(),
                 RelationType::event(),
                 new EventLabelsImported(
                     $this->getRelationId(),
-                    $labels
+                    ['foo'],
+                    ['bar']
                 ),
             ],
             [
@@ -246,7 +232,8 @@ class ProjectorTest extends TestCase
                 RelationType::place(),
                 new PlaceLabelsImported(
                     $this->getRelationId(),
-                    $labels
+                    ['foo'],
+                    ['bar']
                 ),
             ],
             [
@@ -254,7 +241,16 @@ class ProjectorTest extends TestCase
                 RelationType::organizer(),
                 new OrganizerLabelsImported(
                     $this->getRelationId(),
-                    $labels
+                    new Labels(
+                        new Label(
+                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('foo'),
+                            true
+                        ),
+                        new Label(
+                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('bar'),
+                            false
+                        )
+                    )
                 ),
             ],
         ];
@@ -265,12 +261,12 @@ class ProjectorTest extends TestCase
      * @dataProvider fromUdb2DataProvider
      */
     public function it_handles_import_and_update_events_from_udb2(
-        StringLiteral $itemId,
+        string $itemId,
         Serializable $payload,
         RelationType $relationType
     ): void {
         $domainMessage = $this->createDomainMessage(
-            $itemId->toNative(),
+            $itemId,
             $payload
         );
 
@@ -281,7 +277,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->at(1))
             ->method('save')
             ->with(
-                new LabelName('2dotstwice'),
+                '2dotstwice',
                 $relationType,
                 $itemId,
                 true
@@ -290,7 +286,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->at(2))
             ->method('save')
             ->with(
-                new LabelName('cultuurnet'),
+                'cultuurnet',
                 $relationType,
                 $itemId,
                 true
@@ -309,13 +305,13 @@ class ProjectorTest extends TestCase
      */
     public function it_should_only_add_labels_from_udb2_when_updating_with_labels_already_present_in_udb3(): void
     {
-        $itemId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
+        $itemId = 'd53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1';
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
 
         $domainMessage = $this->createDomainMessage(
-            $itemId->toNative(),
+            $itemId,
             new OrganizerUpdatedFromUDB2(
-                $itemId->toNative(),
+                $itemId,
                 file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing.xml'),
                 $cdbXmlNamespaceUri
             )
@@ -327,9 +323,9 @@ class ProjectorTest extends TestCase
             ->with($itemId)
             ->willReturn([
                 new LabelRelation(
-                    new LabelName('2DOTStwice'),
+                    '2DOTStwice',
                     RelationType::organizer(),
-                    new StringLiteral('123'),
+                    '123',
                     false
                 ),
             ]);
@@ -337,7 +333,7 @@ class ProjectorTest extends TestCase
         $this->writeRepository->expects($this->once())
             ->method('save')
             ->with(
-                new LabelName('cultuurnet'),
+                'cultuurnet',
                 RelationType::organizer(),
                 $itemId,
                 true
@@ -348,14 +344,14 @@ class ProjectorTest extends TestCase
 
     public function fromUdb2DataProvider(): array
     {
-        $itemId = new StringLiteral('d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1');
+        $itemId = 'd53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1';
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
 
         return [
             [
                 $itemId,
                 new EventImportedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/event.xml'),
                     $cdbXmlNamespaceUri
                 ),
@@ -364,7 +360,7 @@ class ProjectorTest extends TestCase
             [
                 $itemId,
                 new PlaceImportedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/place.xml'),
                     $cdbXmlNamespaceUri
                 ),
@@ -373,7 +369,7 @@ class ProjectorTest extends TestCase
             [
                 $itemId,
                 new OrganizerImportedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/organizer.xml'),
                     $cdbXmlNamespaceUri
                 ),
@@ -382,7 +378,7 @@ class ProjectorTest extends TestCase
             [
                 $itemId,
                 new EventUpdatedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/event.xml'),
                     $cdbXmlNamespaceUri
                 ),
@@ -391,7 +387,7 @@ class ProjectorTest extends TestCase
             [
                 $itemId,
                 new PlaceUpdatedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/place.xml'),
                     $cdbXmlNamespaceUri
                 ),
@@ -400,7 +396,7 @@ class ProjectorTest extends TestCase
             [
                 $itemId,
                 new OrganizerUpdatedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/organizer.xml'),
                     $cdbXmlNamespaceUri
                 ),
@@ -409,7 +405,7 @@ class ProjectorTest extends TestCase
             [
                 $itemId,
                 new OrganizerUpdatedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing.xml'),
                     $cdbXmlNamespaceUri
                 ),
@@ -418,7 +414,7 @@ class ProjectorTest extends TestCase
             [
                 $itemId,
                 new OrganizerUpdatedFromUDB2(
-                    $itemId->toNative(),
+                    $itemId,
                     file_get_contents(__DIR__ . '/Samples/organizer_with_same_label_but_different_casing_and_visibility.xml'),
                     $cdbXmlNamespaceUri
                 ),
