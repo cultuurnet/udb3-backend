@@ -86,7 +86,7 @@ class EditOfferRestController
 
     public function removeLabel(string $cdbid, string $label): Response
     {
-        $this->commandBus->dispatch(new RemoveLabel($cdbid, new Label($label)));
+        $this->commandBus->dispatch(new RemoveLabel($cdbid, $label));
 
         return new NoContent();
     }
