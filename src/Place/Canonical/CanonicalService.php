@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -60,7 +59,7 @@ class CanonicalService
     private function getPlacesWithMuseumPasInCluster(array $placeIds): array
     {
         $result = $this->labelRelationsRepository->getLabelRelationsForType(
-            new LabelName($this->museumpasLabel),
+            $this->museumpasLabel,
             RelationType::place()
         );
 

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
@@ -68,7 +69,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     }
 
     private function mockRelatedDocument(
-        LabelName $labelName,
+        string $labelName,
         JsonDocument $jsonDocument,
         RelationType $relationType
     ): void {
@@ -81,7 +82,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
                     new LabelRelation(
                         $labelName,
                         $relationType,
-                        new StringLiteral($jsonDocument->getId()),
+                        $jsonDocument->getId(),
                         false
                     ),
                 ]
@@ -128,13 +129,13 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         RelationType $relationType
     ): void {
         $labelId = new UUID('3960ff99-ceab-4b44-aa51-dc7a187b77e0');
-        $labelName = new LabelName('black');
+        $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeVisible($labelId, $labelName);
+        $madeVisibleEvent = new MadeVisible($labelId, new LabelName($labelName));
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'hiddenLabels' => ['green', 'black'],
                 ]
@@ -154,7 +155,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'hiddenLabels' => ['green'],
                     'labels' => ['black'],
@@ -191,13 +192,13 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     public function it_updates_the_projection_of_documents_which_have_a_label_made_invisible(): void
     {
         $labelId = new UUID('3e6aa636-ec87-4f66-b6a5-4f8135120b28');
-        $labelName = new LabelName('black');
+        $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeInvisibleEvent = new MadeInvisible($labelId, $labelName);
+        $madeInvisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['green', 'black'],
                 ]
@@ -217,7 +218,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['green'],
                     'hiddenLabels' => ['black'],
@@ -236,13 +237,13 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     public function it_should_remove_the_hidden_labels_property_of_a_document_when_the_last_hidden_label_is_made_visible(): void
     {
         $labelId = new UUID('0b8f148e-713f-4986-9170-bdb23f3ff0d7');
-        $labelName = new LabelName('black');
+        $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeVisible($labelId, $labelName);
+        $madeVisibleEvent = new MadeVisible($labelId, new LabelName($labelName));
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange', 'green'],
                     'hiddenLabels' => ['black'],
@@ -263,7 +264,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange', 'green', 'black'],
                 ]
@@ -281,13 +282,13 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     public function it_should_update_the_projection_of_documents_which_have_a_label_made_invisible(): void
     {
         $labelId = new UUID('aabf18cd-00dd-4327-9d8b-8179b4a7c36a');
-        $labelName = new LabelName('black');
+        $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
+        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange', 'black'],
                     'hiddenLabels' => ['green'],
@@ -308,7 +309,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['orange'],
                     'hiddenLabels' => ['green', 'black'],
@@ -327,13 +328,13 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     public function it_should_remove_the_labels_property_of_a_document_when_the_last_shown_label_is_made_invisible(): void
     {
         $labelId = new UUID('b2b756eb-09aa-4c03-b284-008a2b1cd8f7');
-        $labelName = new LabelName('black');
+        $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
+        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['black'],
                     'hiddenLabels' => ['orange'],
@@ -354,7 +355,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'hiddenLabels' => ['orange', 'black'],
                 ]
@@ -372,13 +373,13 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     public function it_keeps_a_flat_label_array_when_modifying_label_visibility(): void
     {
         $labelId = new UUID('2bc515a3-4aea-4457-999d-f3822b601651');
-        $labelName = new LabelName('black');
+        $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
+        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['black', 'red', 'green'],
                     'hiddenLabels' => ['orange', 'blue', 'purple'],
@@ -399,7 +400,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
 
         $expectedDocument = new JsonDocument(
             (string) $documentId,
-            json_encode(
+            Json::encode(
                 (object) [
                     'labels' => ['red', 'green'],
                     'hiddenLabels' => ['orange', 'blue', 'purple', 'black'],
@@ -418,9 +419,9 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     public function it_should_log_the_absence_of_a_document_when_the_visibility_of_its_labels_changes(): void
     {
         $labelId = new UUID('1d9a5bb0-3c57-4d9c-af3e-e7978d5b737f');
-        $labelName = new LabelName('foo');
-        $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
+        $labelName = 'foo';
+        $documentId = 'B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A';
+        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
 
         /** @var LoggerInterface|MockObject $logger */
         $logger = $this->createMock(AbstractLogger::class);
@@ -440,7 +441,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
                     new LabelRelation(
                         $labelName,
                         RelationType::place(),
-                        new StringLiteral((string) $documentId),
+                        $documentId,
                         false
                     ),
                 ]
