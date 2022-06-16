@@ -49,7 +49,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                     new LabelAdded($id, 'foo', true),
                 ]
             )
-            ->when(new RemoveLabel($id, new Label('foo', true)))
+            ->when(new RemoveLabel($id, 'foo', true))
             ->then([new LabelRemoved($id, 'foo', true)]);
     }
 
@@ -68,7 +68,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                     new LabelAdded($id, 'foo', true),
                 ]
             )
-            ->when(new RemoveLabel($id, new Label('foo', false)))
+            ->when(new RemoveLabel($id, 'foo', false))
             ->then([new LabelRemoved($id, 'foo', false)]);
     }
 
@@ -82,7 +82,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
-            ->when(new RemoveLabel($id, new Label('foo', false)))
+            ->when(new RemoveLabel($id, 'foo', false))
             ->then([]);
     }
 

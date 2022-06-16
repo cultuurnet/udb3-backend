@@ -133,16 +133,16 @@ class EventProcessManagerTest extends TestCase
         );
 
         $expectedCommands = [
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('Paspartoe')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Gent')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Oostende')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS regio Aalst')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Dender')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Zuidwest')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Mechelen')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Kempen')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Maasmechelen')),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'Paspartoe'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Gent'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Oostende'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS regio Aalst'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Dender'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Zuidwest'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Mechelen'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Kempen'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Maasmechelen'),
         ];
 
         $this->eventProcessManager->handle($domainMessage);
@@ -181,13 +181,13 @@ class EventProcessManagerTest extends TestCase
         );
 
         $expectedCommands = [
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS regio Aalst')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Dender')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Zuidwest')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Mechelen')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Kempen')),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Maasmechelen')),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS regio Aalst'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Dender'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Zuidwest'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Mechelen'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Kempen'),
+            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Maasmechelen'),
             new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('Paspartoe', true)),
             new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Gent', true)),
             new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label('UiTPAS Oostende', true)),

@@ -316,7 +316,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $item->addLabel(new Label(new LabelName('orange')));
                     $item->addLabel(new Label(new LabelName('green')));
 
-                    $item->removeLabel(new Label(new LabelName('purple')));
+                    $item->removeLabel('purple');
                     $item->addLabel(new Label(new LabelName('purple')));
                 }
             )

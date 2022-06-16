@@ -50,7 +50,7 @@ class DeleteLabelRequestHandlerTest extends TestCase
             [
                 new RemoveLabel(
                     'a088f396-ac96-45c4-b6b2-e2b6afe8af07',
-                    new Label(new LabelName('MyLabel'))
+                    'MyLabel'
                 ),
             ],
             $this->commandBus->getRecordedCommands()

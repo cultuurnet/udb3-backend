@@ -35,7 +35,6 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_removes_an_attached_label(): void
     {
         $id = '60abd28a-8856-4167-ad59-014108259444';
-        $label = new Label(new LabelName('foo'), true);
 
         $this->scenario
             ->withAggregateId($id)
@@ -43,7 +42,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                 $this->organizerCreated($id),
                 new LabelAdded($id, 'foo'),
             ])
-            ->when(new RemoveLabel($id, $label))
+            ->when(new RemoveLabel($id, 'foo'))
             ->then([new LabelRemoved($id, 'foo')]);
     }
 
@@ -61,7 +60,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                 $this->organizerCreated($id),
                 new LabelAdded($id, 'bar', false),
             ])
-            ->when(new RemoveLabel($id, $label))
+            ->when(new RemoveLabel($id, $label->getName()->toString(), false))
             ->then([new LabelRemoved($id, 'bar', false)]);
     }
 
@@ -76,7 +75,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
-            ->when(new RemoveLabel($id, $label))
+            ->when(new RemoveLabel($id, 'foo'))
             ->then([]);
     }
 
