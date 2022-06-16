@@ -29,7 +29,7 @@ final class DeleteLabelRequestHandler implements RequestHandlerInterface
         $labelName = $routeParameters->getLabelName();
 
         $this->commandBus->dispatch(
-            new RemoveLabel($organizerId, new Label($labelName))
+            new RemoveLabel($organizerId, $labelName->toString())
         );
 
         return new NoContentResponse();
