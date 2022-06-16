@@ -152,7 +152,7 @@ class EventProcessManager implements EventListener
      * @param string $eventId
      * @param Label[] $labels
      */
-    private function removeLabelsFromEvent($eventId, array $labels)
+    private function removeLabelsFromEvent($eventId, array $labels): void
     {
         $this->logger->info(
             'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
@@ -162,7 +162,8 @@ class EventProcessManager implements EventListener
             function (Label $label) use ($eventId) {
                 return new RemoveLabel(
                     $eventId,
-                    $label
+                    $label->getName()->toNative(),
+                    $label->isVisible()
                 );
             },
             $labels
