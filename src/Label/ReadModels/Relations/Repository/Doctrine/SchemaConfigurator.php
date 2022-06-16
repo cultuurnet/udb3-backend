@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
-use CultuurNet\UDB3\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
@@ -17,37 +17,27 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     public const RELATION_ID = 'relationId';
     public const IMPORTED = 'imported';
 
-    /**
-     * @var StringLiteral
-     */
-    private $tableName;
+    private string $tableName;
 
-    /**
-     * SchemaConfigurator constructor.
-     */
-    public function __construct(StringLiteral $tableName)
+    public function __construct(string $tableName)
     {
         $this->tableName = $tableName;
     }
 
-
-    public function configure(AbstractSchemaManager $schemaManager)
+    public function configure(AbstractSchemaManager $schemaManager): void
     {
         $schema = $schemaManager->createSchema();
 
-        if (!$schema->hasTable($this->tableName->toNative())) {
+        if (!$schema->hasTable($this->tableName)) {
             $table = $this->createTable($schema, $this->tableName);
 
             $schemaManager->createTable($table);
         }
     }
 
-    /**
-     * @return \Doctrine\DBAL\Schema\Table
-     */
-    private function createTable(Schema $schema, StringLiteral $tableName)
+    private function createTable(Schema $schema, string $tableName): Table
     {
-        $table = $schema->createTable($tableName->toNative());
+        $table = $schema->createTable($tableName);
 
         $table->addColumn(self::LABEL_NAME, Type::STRING)
             ->setLength(255)

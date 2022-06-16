@@ -23,8 +23,7 @@ abstract class AbstractProjector implements EventListener
         DelegateEventHandlingToSpecificMethodTrait::handle as handleSpecific;
     }
 
-
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $payload = $domainMessage->getPayload();
 
@@ -48,37 +47,25 @@ abstract class AbstractProjector implements EventListener
         }
     }
 
-
     abstract public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata);
-
 
     abstract public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata);
 
-
     abstract public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata);
 
-    /**
-     * @return bool
-     */
-    private function isLabelAdded($payload)
+    private function isLabelAdded($payload): bool
     {
         return ($payload instanceof OfferAbstractLabelAdded ||
             $payload instanceof OrganizerLabelAdded);
     }
 
-    /**
-     * @return bool
-     */
-    private function isLabelRemoved($payload)
+    private function isLabelRemoved($payload): bool
     {
         return ($payload instanceof OfferAbstractLabelRemoved ||
             $payload instanceof OrganizerLabelRemoved);
     }
 
-    /**
-     * @return bool
-     */
-    private function isLabelsImported($payload)
+    private function isLabelsImported($payload): bool
     {
         return ($payload instanceof AbstractLabelsImported ||
             $payload instanceof LabelsImported);

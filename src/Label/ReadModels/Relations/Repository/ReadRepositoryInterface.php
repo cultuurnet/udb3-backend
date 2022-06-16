@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\StringLiteral;
 
 interface ReadRepositoryInterface
 {
     /**
      * @return \Generator|LabelRelation[]
      */
-    public function getLabelRelations(LabelName $labelName);
+    public function getLabelRelations(string $labelName);
 
     /**
      * @return string[]
      */
-    public function getLabelRelationsForType(LabelName $labelName, RelationType $relationType): array;
+    public function getLabelRelationsForType(string $labelName, RelationType $relationType): array;
 
     /**
      * @return LabelRelation[]
      */
-    public function getLabelRelationsForItem(StringLiteral $relationId): array;
+    public function getLabelRelationsForItem(string $relationId): array;
 }
