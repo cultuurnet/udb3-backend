@@ -307,7 +307,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new LabelRemoved($this->id, 'invalid;label'),
-                    new LabelRemoved($this->id, "newlin\r\nLabel"),
+                    new LabelRemoved($this->id, "newline\r\nLabel"),
                 ]
             );
     }
