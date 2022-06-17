@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractImportImages;
@@ -134,11 +133,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      * @return string
      */
     abstract protected function getDeleteTypicalAgeRangeClassName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateOrganizerClassName();
 
     /**
      * @return string
@@ -271,21 +265,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($deleteTypicalAgeRange->getItemId());
 
         $offer->deleteTypicalAgeRange();
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * Handle an update command to update organizer of a place.
-     */
-    public function handleUpdateOrganizer(AbstractUpdateOrganizer $updateOrganizer)
-    {
-        $offer = $this->load($updateOrganizer->getItemId());
-        $this->loadOrganizer($updateOrganizer->getOrganizerId());
-
-        $offer->updateOrganizer(
-            $updateOrganizer->getOrganizerId()
-        );
 
         $this->offerRepository->save($offer);
     }

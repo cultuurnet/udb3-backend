@@ -38,8 +38,6 @@ interface OfferCommandFactoryInterface
 
     public function createDeleteTypicalAgeRangeCommand(string $id): AbstractDeleteTypicalAgeRange;
 
-    public function createUpdateOrganizerCommand(string $id, string $organizerId): AbstractUpdateOrganizer;
-
     public function createDeleteOrganizerCommand(string $id, string $organizerId): AbstractDeleteOrganizer;
 
     public function createUpdateContactPointCommand(string $id, ContactPoint $contactPoint): AbstractUpdateContactPoint;

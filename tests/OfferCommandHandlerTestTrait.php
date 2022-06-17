@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
 use CultuurNet\UDB3\Media\Image;
@@ -18,7 +17,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Organizer\Organizer;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionObject;
 
@@ -396,57 +394,6 @@ trait OfferCommandHandlerTestTrait
                 new $commandClass($id, $organizerId)
             )
             ->then([new $eventClass($id, $organizerId)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_organizer_of_an_offer()
-    {
-        $id = '1';
-        $organizer = '1';
-        $commandClass = $this->getCommandClass('UpdateOrganizer');
-        $eventClass = $this->getEventClass('OrganizerUpdated');
-
-        $this->organizerRepository
-            ->method('load')
-            ->willReturn($this->createMock(Organizer::class));
-
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(
-                new $commandClass($id, $organizer)
-            )
-            ->then([new $eventClass($id, $organizer)]);
-    }
-
-    /**
-     * @test
-     * @expectedException \Broadway\Repository\AggregateNotFoundException
-     */
-    public function it_should_not_update_an_offer_with_an_unknown_organizer()
-    {
-        $offerId = '988691DA-8AED-45F7-9794-0577370EAE75';
-        $organizerId = 'DD309AA8-208A-4267-AD46-02A7E8082174';
-        $commandClass = $this->getCommandClass('UpdateOrganizer');
-
-        $this->organizerRepository
-            ->method('load')
-            ->with('DD309AA8-208A-4267-AD46-02A7E8082174')
-            ->willThrowException(new AggregateNotFoundException($organizerId));
-
-        $this->scenario
-            ->withAggregateId($offerId)
-            ->given(
-                [$this->factorOfferCreated($offerId)]
-            )
-            ->when(
-                new $commandClass($offerId, $organizerId)
-            )
-            ->then([]);
     }
 
     /**

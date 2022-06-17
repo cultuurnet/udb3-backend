@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Offer\Item\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateImage;
 use CultuurNet\UDB3\Offer\Item\Commands\SelectMainImage;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 
@@ -67,11 +66,6 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getDeleteTypicalAgeRangeClassName()
     {
         return DeleteTypicalAgeRange::class;
-    }
-
-    protected function getUpdateOrganizerClassName()
-    {
-        return UpdateOrganizer::class;
     }
 
     protected function getDeleteOrganizerClassName()

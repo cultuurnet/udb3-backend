@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
@@ -78,11 +77,6 @@ class EventCommandFactory implements OfferCommandFactoryInterface
     public function createDeleteTypicalAgeRangeCommand(string $id): AbstractDeleteTypicalAgeRange
     {
         return new DeleteTypicalAgeRange($id);
-    }
-
-    public function createUpdateOrganizerCommand(string $id, string $organizerId): AbstractUpdateOrganizer
-    {
-        return new UpdateOrganizer($id, $organizerId);
     }
 
     public function createDeleteOrganizerCommand(string $id, string $organizerId): AbstractDeleteOrganizer
