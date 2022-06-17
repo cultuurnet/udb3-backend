@@ -202,7 +202,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateFacilities(array $facilities): void
     {
-        if (empty($this->facilities) || !$this->sameFacilities($this->facilities, $facilities)) {
+        if (!$this->sameFacilities($this->facilities, $facilities)) {
             $this->apply($this->createFacilitiesUpdatedEvent($facilities));
         }
     }
@@ -214,6 +214,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private function sameFacilities(array $facilities1, array $facilities2): bool
     {
+        if (empty($facilities1) && empty($facilities2)) {
+            return true;
+        }
+
         if (count($facilities1) !== count($facilities2)) {
             return false;
         }
