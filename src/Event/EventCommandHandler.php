@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Event\Commands\RemoveImage;
-use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
@@ -145,14 +144,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     protected function getDeleteTypicalAgeRangeClassName()
     {
         return DeleteTypicalAgeRange::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDeleteOrganizerClassName()
-    {
-        return DeleteOrganizer::class;
     }
 
     /**

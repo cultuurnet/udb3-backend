@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer\Item;
 use CultuurNet\UDB3\Offer\Item\Commands\AddImage;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\ImportImages;
-use CultuurNet\UDB3\Offer\Item\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Offer\Item\Commands\Moderation\FlagAsDuplicate;
@@ -66,11 +65,6 @@ class ItemCommandHandler extends OfferCommandHandler
     protected function getDeleteTypicalAgeRangeClassName()
     {
         return DeleteTypicalAgeRange::class;
-    }
-
-    protected function getDeleteOrganizerClassName()
-    {
-        return DeleteOrganizer::class;
     }
 
     protected function getDeleteCurrentOrganizerClassName()

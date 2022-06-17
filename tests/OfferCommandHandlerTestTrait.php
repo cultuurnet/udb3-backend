@@ -374,31 +374,6 @@ trait OfferCommandHandlerTestTrait
     /**
      * @test
      */
-    public function it_can_delete_an_organizer_of_an_offer()
-    {
-        $id = '1';
-        $organizerId = '5';
-        $commandClass = $this->getCommandClass('DeleteOrganizer');
-        $eventClass = $this->getEventClass('OrganizerDeleted');
-        $organizerUpdatedClass = $this->getEventClass('OrganizerUpdated');
-
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new $organizerUpdatedClass($id, $organizerId),
-                ]
-            )
-            ->when(
-                new $commandClass($id, $organizerId)
-            )
-            ->then([new $eventClass($id, $organizerId)]);
-    }
-
-    /**
-     * @test
-     */
     public function it_can_update_typical_agerange_of_an_offer()
     {
         $id = '1';
