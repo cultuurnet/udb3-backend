@@ -470,9 +470,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     {
         // Always keep non-imported labels that are already on the organizer.
         $keepLabelsCollection = new Labels();
-        /** @var Label $label */
         foreach ($this->labels->toArray() as $label) {
-            if (!$keepLabelsCollection->contains($label) && !in_array($label['labelName'], $this->importedLabelNames, true)) {
+            if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
                 $keepLabelsCollection = $keepLabelsCollection->with(
                     new Label(new LabelName($label['labelName']), $label['isVisible'])
                 );
@@ -482,9 +481,10 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // What are the added labels?
         // Labels which are not inside the internal state but inside the imported labels
         $addedLabels = new Labels();
-        foreach ($importLabelsCollection->toArray() as $label) {
-            if (!$this->labels->containsLabel($label->getName()->toString())) {
-                $addedLabels = $addedLabels->with($label);
+        /** @var Label $importedLabel */
+        foreach ($importLabelsCollection->toArray() as $importedLabel) {
+            if (!$this->labels->containsLabel($importedLabel->getName()->toString())) {
+                $addedLabels = $addedLabels->with($importedLabel);
             }
         }
 
@@ -504,11 +504,12 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // Labels which are inside the internal state but not inside imported labels. (Taking visibility into
         // consideration). For each deleted label fire a LabelDeleted event.
         foreach ($this->labels->toArray() as $label) {
+            $label = new Label(new LabelName($label['labelName']), $label['isVisible']);
             $inImportWithSameVisibility = $importLabelsCollection->contains($label);
-            $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $importLabelsCollection->findByName(new LabelName($label['labelName']));
+            $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $importLabelsCollection->findByName($label->getName());
             $canBeRemoved = !$keepLabelsCollection->contains($label);
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply(new LabelRemoved($this->actorId, $label['labelName'], $label['isVisible']));
+                $this->apply(new LabelRemoved($this->actorId, $label->getName()->toString(), $label->isVisible()));
             }
         }
 
