@@ -276,6 +276,46 @@ class OrganizerTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_can_remove_invalid_labels(): void
+    {
+        $labels = new Labels(
+            new Label(
+                new LabelName('new_label_1'),
+                true
+            ),
+            new Label(
+                new LabelName('existing_label_1'),
+                true
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId($this->id)
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                    new LabelAdded($this->id, 'invalid;label'),
+                    new LabelAdded($this->id, "newlin\r\nLabel"),
+                ]
+            )
+            ->when(
+                function (Organizer $organizer) {
+                    $organizer->removeLabel('invalid;label');
+                    $organizer->removeLabel("newlin\r\nLabel");
+                }
+            )
+            ->then(
+                [
+                    new LabelRemoved($this->id, 'invalid;label'),
+                    new LabelRemoved($this->id, "newlin\r\nLabel"),
+                ]
+            );
+    }
+
+
+    /**
+     * @test
+     */
     public function it_can_create_new_organizers(): void
     {
         $this->scenario
