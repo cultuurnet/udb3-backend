@@ -332,6 +332,31 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_should_be_able_to_remove_invalid_labels(): void
+    {
+        $itemId = '60257f64-46b3-4653-8599-e41487174744';
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new LabelAdded($itemId, 'invalid;label', true),
+                new LabelAdded($itemId, "newline\r\nlabel", false),
+            ])
+            ->when(
+                function (Item $item) {
+                    $item->removeLabel('invalid;label');
+                    $item->removeLabel("newline\r\nlabel");
+                }
+            )
+            ->then([
+                new LabelRemoved($itemId, 'invalid;label'),
+                new LabelRemoved($itemId, "newline\r\nlabel"),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_import_labels(): void
     {
         $itemId = '9538e4b6-2b8c-404c-93dc-e0dccf8eb175';
