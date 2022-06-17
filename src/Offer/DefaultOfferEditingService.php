@@ -15,7 +15,9 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
+use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -203,9 +205,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createUpdateOrganizerCommand($id, $organizerId)
-        );
+        return $this->commandBus->dispatch(new UpdateOrganizer($id, $organizerId));
     }
 
     /**
@@ -217,9 +217,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createDeleteOrganizerCommand($id, $organizerId)
-        );
+        return $this->commandBus->dispatch(new DeleteOrganizer($id, $organizerId));
     }
 
     /**
