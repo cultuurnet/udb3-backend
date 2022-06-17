@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
@@ -200,16 +201,23 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param AbstractLabelCommand[] $commands
+     * @param AbstractCommand[] $commands
      */
-    private function dispatchCommands($commands)
+    private function dispatchCommands($commands): void
     {
         foreach ($commands as $command) {
+            if($command instanceof AddLabel) {
+                $labelName = (string) $command->getLabel();
+            } else if($command instanceof RemoveLabel) {
+                $labelName = $command->getLabelName();
+            } else {
+                return;
+            }
             $this->logger->info(
                 'Dispatching label command ' . get_class($command),
                 [
                     'item id' => $command->getItemId(),
-                    'label' => (string) $command->getLabel(),
+                    'label' => $labelName,
                 ]
             );
 
