@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class RemoveFacilitiesFromPlace extends AbstractCommand
 {
-    private const FACILITY_QUERY = 'terms.id:3.';
+    private const FACILITY_QUERY = 'terms.id:3.*';
 
     private ResultsGeneratorInterface $searchResultsGenerator;
 
