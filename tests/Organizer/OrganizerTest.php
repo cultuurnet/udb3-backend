@@ -145,12 +145,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new LabelsImported(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        new Labels(
-                            new Label(
-                                new LabelName('foo'),
-                                false
-                            )
-                        )
+                        [],
+                        ['foo']
                     ),
                     new LabelRemoved(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
@@ -238,11 +234,12 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     $this->organizerCreatedWithUniqueWebsite,
                     new LabelsImported(
                         $this->id,
-                        new Labels(
-                            new Label(new LabelName('existing_label_1')),
-                            new Label(new LabelName('existing_label_2')),
-                            new Label(new LabelName('existing_label_3')),
-                        )
+                        [
+                            'existing_label_1',
+                            'existing_label_2',
+                            'existing_label_3',
+                        ],
+                        []
                     ),
                     new LabelAdded($this->id, 'existing_label_1'),
                     new LabelAdded($this->id, 'existing_label_2'),
@@ -259,12 +256,8 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new LabelsImported(
                         $this->id,
-                        new Labels(
-                            new Label(
-                                new LabelName('new_label_1'),
-                                true
-                            )
-                        )
+                        ['new_label_1'],
+                        []
                     ),
                     new LabelRemoved($this->id, 'existing_label_2'),
                     new LabelRemoved($this->id, 'existing_label_3'),

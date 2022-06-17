@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterfa
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as RelationsReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelsImported;
@@ -241,16 +240,8 @@ class ProjectorTest extends TestCase
                 RelationType::organizer(),
                 new OrganizerLabelsImported(
                     $this->getRelationId(),
-                    new Labels(
-                        new Label(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('foo'),
-                            true
-                        ),
-                        new Label(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName('bar'),
-                            false
-                        )
-                    )
+                    ['foo'],
+                    ['bar']
                 ),
             ],
         ];

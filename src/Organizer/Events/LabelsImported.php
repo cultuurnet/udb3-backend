@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use CultuurNet\UDB3\LabelsImportedEventInterface;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 
 final class LabelsImported extends OrganizerEvent implements LabelsImportedEventInterface
 {
@@ -66,7 +63,7 @@ final class LabelsImported extends OrganizerEvent implements LabelsImportedEvent
         return new self(
             $data['organizer_id'],
             $visibleLabels,
-            $hiddenLabelss
+            $hiddenLabels
         );
     }
 

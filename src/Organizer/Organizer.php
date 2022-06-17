@@ -495,7 +495,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         if ($importLabels->count() > 0) {
             $this->apply(new LabelsImported(
                 $this->actorId,
-                $importLabels
+                $importLabels->getVisibleLabels()->toArrayOfStringNames(),
+                $importLabels->getHiddenLabels()->toArrayOfStringNames()
             ));
         }
 
