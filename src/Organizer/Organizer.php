@@ -472,8 +472,10 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $keepLabelsCollection = new Labels();
         /** @var Label $label */
         foreach ($this->labels->toArray() as $label) {
-            if (!$keepLabelsCollection->contains($label) && !in_array($label->getName()->toString(), $this->importedLabelNames, true)) {
-                $keepLabelsCollection = $keepLabelsCollection->with($label);
+            if (!$keepLabelsCollection->contains($label) && !in_array($label['labelName'], $this->importedLabelNames, true)) {
+                $keepLabelsCollection = $keepLabelsCollection->with(
+                    new Label(new LabelName($label['labelName']), $label['isVisible'])
+                );
             }
         }
 
@@ -503,10 +505,10 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         // consideration). For each deleted label fire a LabelDeleted event.
         foreach ($this->labels->toArray() as $label) {
             $inImportWithSameVisibility = $importLabelsCollection->contains($label);
-            $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $importLabelsCollection->findByName($label->getName());
+            $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $importLabelsCollection->findByName(new LabelName($label['labelName']));
             $canBeRemoved = !$keepLabelsCollection->contains($label);
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply(new LabelRemoved($this->actorId, $label->getName()->toString(), $label->isVisible()));
+                $this->apply(new LabelRemoved($this->actorId, $label['labelName'], $label['isVisible']));
             }
         }
 
