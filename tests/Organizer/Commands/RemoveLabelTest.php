@@ -12,7 +12,7 @@ class RemoveLabelTest extends TestCase
     /**
      * @test
      */
-    public function it_derives_from_abstract_label_command(): void
+    public function it_derives_from_authorizable_command(): void
     {
         $removeLabel = new RemoveLabel('organizerId', 'foo');
 
