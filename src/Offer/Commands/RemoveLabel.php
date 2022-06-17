@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\StringLiteral;
 
 final class RemoveLabel extends AbstractCommand

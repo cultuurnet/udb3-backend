@@ -9,7 +9,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
@@ -206,9 +205,9 @@ class EventProcessManager implements EventListener
     private function dispatchCommands($commands): void
     {
         foreach ($commands as $command) {
-            if($command instanceof AddLabel) {
+            if ($command instanceof AddLabel) {
                 $labelName = (string) $command->getLabel();
-            } else if($command instanceof RemoveLabel) {
+            } elseif ($command instanceof RemoveLabel) {
                 $labelName = $command->getLabelName();
             } else {
                 return;
