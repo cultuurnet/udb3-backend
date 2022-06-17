@@ -28,10 +28,10 @@ final class RemoveLabelHandler implements CommandHandler
             return;
         }
 
-        $visible = $command->getLabel()->isVisible();
+        $visible = $command->isVisible();
 
         $readModelLabelEntity = $this->labelRepository->getByName(
-            $command->getLabel()->getName()->toString()
+            $command->getLabelName()
         );
         if ($readModelLabelEntity) {
             $visible = $readModelLabelEntity->getVisibility()->sameAs(Visibility::VISIBLE());
