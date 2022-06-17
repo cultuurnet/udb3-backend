@@ -482,7 +482,8 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $addedLabels = new Labels();
         /** @var Label $importedLabel */
         foreach ($importLabelsCollection->toArray() as $importedLabel) {
-            if (!$this->labels->containsLabel($importedLabel->getName()->toString())) {
+            $existingLabel = $this->labels->getLabel($importedLabel->getName()->toString());
+            if ($existingLabel === null || $existingLabel['isVisible'] !== $importedLabel->isVisible()) {
                 $addedLabels = $addedLabels->with($importedLabel);
             }
         }
