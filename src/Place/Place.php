@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
@@ -46,8 +47,6 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
-use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
@@ -192,32 +191,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         $this->addresses[$addressTranslated->getLanguage()->getCode()] = $addressTranslated->getAddress();
     }
 
-    public function markAsDuplicateOf(string $placeIdOfCanonical): void
-    {
-        if ($this->isDeleted()) {
-            throw CannotMarkPlaceAsDuplicate::becauseItIsDeleted($this->placeId);
-        }
-
-        if ($this->isDuplicate) {
-            throw CannotMarkPlaceAsDuplicate::becauseItIsAlreadyADuplicate($this->placeId);
-        }
-
-        $this->apply(new MarkedAsDuplicate($this->placeId, $placeIdOfCanonical));
-    }
-
-    public function markAsCanonicalFor(string $placeIdOfDuplicate, array $duplicatesOfDuplicate = []): void
-    {
-        if ($this->isDeleted()) {
-            throw CannotMarkPlaceAsCanonical::becauseItIsDeleted($this->placeId);
-        }
-
-        if ($this->isDuplicate) {
-            throw CannotMarkPlaceAsCanonical::becauseItIsAlreadyADuplicate($this->placeId);
-        }
-
-        $this->apply(new MarkedAsCanonical($this->placeId, $placeIdOfDuplicate, $duplicatesOfDuplicate));
-    }
-
     /**
      * @return string[]
      */
@@ -292,10 +265,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
         $this->importWorkflowStatus($udb2Actor);
 
-        $this->labels = [];
-        foreach ($udb2Actor->getKeywords(true) as $keyword) {
-            $this->keepLabel($keyword->getValue(), $keyword->isVisible());
-        }
+        $this->labels = LabelsArray::createFromKeywords($udb2Actor->getKeywords(true));
     }
 
     protected function applyPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2): void
@@ -327,10 +297,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
 
         $this->importWorkflowStatus($udb2Actor);
 
-        $this->labels = [];
-        foreach ($udb2Actor->getKeywords(true) as $keyword) {
-            $this->keepLabel($keyword->getValue(), $keyword->isVisible());
-        }
+        $this->labels = LabelsArray::createFromKeywords($udb2Actor->getKeywords(true));
 
         unset($this->addresses[$this->mainLanguage->getCode()]);
     }
@@ -338,20 +305,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyPlaceDeleted(PlaceDeleted $event): void
     {
         $this->workflowStatus = WorkflowStatus::DELETED();
-    }
-
-    protected function applyMarkedAsDuplicate(MarkedAsDuplicate $event): void
-    {
-        $this->isDuplicate = true;
-        $this->canonicalPlaceId = $event->getDuplicateOf();
-    }
-
-    protected function applyMarkedAsCanonical(MarkedAsCanonical $event): void
-    {
-        $this->duplicates[] = $event->getDuplicatedBy();
-        foreach ($event->getDuplicatesOfDuplicate() as $duplicateOfDuplicate) {
-            $this->duplicates[] = $duplicateOfDuplicate;
-        }
     }
 
     public function getCanonicalPlaceId(): ?string

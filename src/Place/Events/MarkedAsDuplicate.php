@@ -6,12 +6,10 @@ namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Place\PlaceEvent;
 
+// This event is no longer actively used but needs to stay because it is persisted inside the event store.
 final class MarkedAsDuplicate extends PlaceEvent
 {
-    /**
-     * @var string
-     */
-    private $duplicateOf;
+    private string $duplicateOf;
 
     public function __construct(string $placeId, string $duplicateOf)
     {

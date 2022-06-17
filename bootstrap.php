@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -62,7 +61,6 @@ use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
-use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
@@ -468,7 +466,6 @@ $app['event_bus'] = function ($app) {
             'organizer_geocoordinates_process_manager',
             'uitpas_event_process_manager',
             'curators_news_article_process_manager',
-            LocationMarkedAsDuplicateProcessManager::class,
             RelocateEventToCanonicalPlace::class,
             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
         ];
@@ -583,8 +580,6 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
                 $app['media_manager']
             )
         );
-
-        $commandBus->subscribe(new MarkAsDuplicateCommandHandler($app['place_repository']));
 
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Role\CommandHandler($app['real_role_repository'])

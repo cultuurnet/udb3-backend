@@ -29,8 +29,6 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
-use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
-use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
@@ -137,12 +135,6 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof MajorInfoUpdated:
                 $this->projectMajorInfoUpdated($domainMessage);
                 break;
-            case $event instanceof MarkedAsCanonical:
-                $this->projectMarkedAsCanonical($domainMessage);
-                break;
-            case $event instanceof MarkedAsDuplicate:
-                $this->projectMarkedAsDuplicate($domainMessage);
-                break;
             case $event instanceof OrganizerDeleted:
                 $this->projectOrganizerDeleted($domainMessage);
                 break;
@@ -208,26 +200,6 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Adres aangepast')
-        );
-    }
-
-    private function projectMarkedAsCanonical(DomainMessage $domainMessage): void
-    {
-        $this->writeHistory(
-            $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Locatie gemarkeerd als canonical')
-        );
-    }
-
-    private function projectMarkedAsDuplicate(DomainMessage $domainMessage): void
-    {
-        /* @var MarkedAsDuplicate $event */
-        $event = $domainMessage->getPayload();
-        $canonicalId = $event->getDuplicateOf();
-
-        $this->writeHistory(
-            $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Locatie gemarkeerd als duplicaat van '{$canonicalId}'")
         );
     }
 

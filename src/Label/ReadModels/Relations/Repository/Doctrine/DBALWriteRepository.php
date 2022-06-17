@@ -6,17 +6,15 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use Doctrine\DBAL\Query\QueryBuilder;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
     public function save(
-        LabelName $labelName,
+        string $labelName,
         RelationType $relationType,
-        StringLiteral $relationId,
+        string $relationId,
         bool $imported
     ): void {
         $queryBuilder = $this->createQueryBuilder()
@@ -28,9 +26,9 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
                 SchemaConfigurator::IMPORTED => '?',
             ])
             ->setParameters([
-                $labelName->toNative(),
+                $labelName,
                 $relationType->toString(),
-                $relationId->toNative(),
+                $relationId,
                 $imported ? 1 : 0,
             ]);
 
@@ -38,29 +36,19 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     }
 
     public function deleteByLabelNameAndRelationId(
-        LabelName $labelName,
-        StringLiteral $relationId
+        string $labelName,
+        string $relationId
     ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
             ->where(SchemaConfigurator::LABEL_NAME . ' = ?')
             ->andWhere(SchemaConfigurator::RELATION_ID . ' = ?')
-            ->setParameters([$labelName->toNative(), $relationId->toNative()]);
+            ->setParameters([$labelName, $relationId]);
 
         $this->executeTransactional($queryBuilder);
     }
 
-    public function deleteByRelationId(StringLiteral $relationId): void
-    {
-        $queryBuilder = $this->createQueryBuilder()
-            ->delete($this->getTableName())
-            ->where(SchemaConfigurator::RELATION_ID . ' = ?')
-            ->setParameters([$relationId->toNative()]);
-
-        $this->executeTransactional($queryBuilder);
-    }
-
-    public function deleteImportedByRelationId(StringLiteral $relationId): void
+    public function deleteImportedByRelationId(string $relationId): void
     {
         $queryBuilder = $this->createQueryBuilder()
             ->delete($this->getTableName())
@@ -68,7 +56,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
             ->andWhere(SchemaConfigurator::IMPORTED . ' = :imported')
             ->setParameters(
                 [
-                    ':relationId' => $relationId->toNative(),
+                    ':relationId' => $relationId,
                     ':imported' => true,
                 ]
             );

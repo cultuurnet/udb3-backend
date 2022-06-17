@@ -16,9 +16,6 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
-use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
-use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
-use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\EventType;
@@ -44,7 +41,6 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 use DateTimeInterface;
 use Money\Currency;
 use Money\Money;
-use Ramsey\Uuid\Uuid;
 use CultuurNet\UDB3\StringLiteral;
 
 class PlaceTest extends AggregateRootScenarioTestCase
@@ -675,147 +671,6 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_marked_as_duplicate(): void
-    {
-        $placeCreated = $this->createPlaceCreatedEvent();
-        $placeId = $placeCreated->getPlaceId();
-        $canonicalPlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
-        $this->scenario
-            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
-            ->given([$placeCreated])
-            ->when(
-                function (Place $place) use ($canonicalPlaceId) {
-                    $place->markAsDuplicateOf($canonicalPlaceId);
-                }
-            )
-            ->then([new MarkedAsDuplicate($placeId, $canonicalPlaceId)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_not_be_marked_as_duplicate_when_it_is_deleted(): void
-    {
-        $placeCreated = $this->createPlaceCreatedEvent();
-        $placeId = $placeCreated->getPlaceId();
-        $canonicalPlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
-        $this->expectException(CannotMarkPlaceAsDuplicate::class);
-        $this->scenario
-            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
-            ->given(
-                [
-                    $placeCreated,
-                    new PlaceDeleted($placeId),
-                ]
-            )
-            ->when(
-                function (Place $place) use ($canonicalPlaceId) {
-                    $place->markAsDuplicateOf($canonicalPlaceId);
-                }
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_not_be_marked_as_duplicate_when_it_is_already_marked_as_duplicate(): void
-    {
-        $placeCreated = $this->createPlaceCreatedEvent();
-        $placeId = $placeCreated->getPlaceId();
-        $canonicalPlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
-        $otherCanonicalPlaceId = 'd51440e5-f3bc-4dcb-8af1-a28d23031fbc';
-        $this->expectException(CannotMarkPlaceAsDuplicate::class);
-        $this->scenario
-            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
-            ->given(
-                [
-                    $placeCreated,
-                    new MarkedAsDuplicate($placeId, $canonicalPlaceId),
-                ]
-            )
-            ->when(
-                function (Place $place) use ($otherCanonicalPlaceId) {
-                    $place->markAsDuplicateOf($otherCanonicalPlaceId);
-                }
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_marked_as_canonical(): void
-    {
-        $placeCreated = $this->createPlaceCreatedEvent();
-        $placeId = $placeCreated->getPlaceId();
-        $duplicatePlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
-        $duplicateOfDuplicate1 = '1e15b874-2f08-4fd9-899e-b0cb14291ecf';
-        $duplicateOfDuplicate2 = '45fe650b-4be4-4246-8f5c-0a0398e724a4';
-        $duplicatesOfDuplicate = [$duplicateOfDuplicate1, $duplicateOfDuplicate2];
-        $this->scenario
-            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
-            ->given([$placeCreated])
-            ->when(
-                function (Place $place) use ($duplicatePlaceId, $duplicatesOfDuplicate) {
-                    $place->markAsCanonicalFor($duplicatePlaceId, $duplicatesOfDuplicate);
-                }
-            )
-            ->then(
-                [
-                    new MarkedAsCanonical($placeId, $duplicatePlaceId, $duplicatesOfDuplicate),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_not_be_marked_as_canonical_when_it_is_deleted()
-    {
-        $placeCreated = $this->createPlaceCreatedEvent();
-        $canonicalPlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
-        $this->expectException(CannotMarkPlaceAsCanonical::class);
-        $this->scenario
-            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
-            ->given(
-                [
-                    $placeCreated,
-                    new MarkedAsDuplicate($canonicalPlaceId, Uuid::uuid4()->toString()),
-                ]
-            )
-            ->when(
-                function (Place $place) use ($canonicalPlaceId) {
-                    $place->markAsCanonicalFor($canonicalPlaceId);
-                }
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_not_be_marked_as_canonical_when_it_is_already_a_duplicate(): void
-    {
-        $placeCreated = $this->createPlaceCreatedEvent();
-        $placeId = $placeCreated->getPlaceId();
-        $duplicatePlaceId = 'ef694e51-9ac6-4f45-be25-5207ba6ec9dc';
-        $this->expectException(CannotMarkPlaceAsCanonical::class);
-        $this->scenario
-            ->withAggregateId('c5c1b435-0f3c-4b75-9f28-94d93be7078b')
-            ->given(
-                [
-                    $placeCreated,
-                    new PlaceDeleted($placeId),
-                ]
-            )
-            ->when(
-                function (Place $place) use ($duplicatePlaceId) {
-                    $place->markAsCanonicalFor($duplicatePlaceId);
-                }
-            );
     }
 
     private function createPlaceCreatedEvent(): PlaceCreated
