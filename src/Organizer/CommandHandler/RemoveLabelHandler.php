@@ -40,7 +40,7 @@ final class RemoveLabelHandler implements CommandHandler
         $labelName = $command->getLabelName();
 
         $organizer = $this->organizerRepository->load($command->getItemId());
-        $organizer->removeLabel($labelName);
+        $organizer->removeLabel($labelName, $visible);
         $this->organizerRepository->save($organizer);
     }
 }
