@@ -295,13 +295,13 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     $this->organizerCreatedWithUniqueWebsite,
                     new LabelAdded($this->id, 'invalid;label'),
-                    new LabelAdded($this->id, "newlin\r\nLabel"),
+                    new LabelAdded($this->id, "newline\r\nLabel"),
                 ]
             )
             ->when(
                 function (Organizer $organizer) {
                     $organizer->removeLabel('invalid;label');
-                    $organizer->removeLabel("newlin\r\nLabel");
+                    $organizer->removeLabel("newline\r\nLabel");
                 }
             )
             ->then(
