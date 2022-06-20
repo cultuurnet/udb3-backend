@@ -45,7 +45,7 @@ class AbstractLabelCommandTest extends TestCase
     public function it_can_return_its_properties(): void
     {
         $label = $this->labelCommand->getLabel();
-        $expectedLabel = new LegacyLabel('LabelTest');
+        $expectedLabel = new Label(new LabelName('LabelTest'));
 
         $this->assertEquals($expectedLabel, $label);
 
