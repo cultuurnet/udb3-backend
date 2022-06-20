@@ -162,8 +162,7 @@ class EventProcessManager implements EventListener
             function (Label $label) use ($eventId) {
                 return new RemoveLabel(
                     $eventId,
-                    $label->getName()->toNative(),
-                    $label->isVisible()
+                    $label->getName()->toNative()
                 );
             },
             $labels

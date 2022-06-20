@@ -8,13 +8,10 @@ final class RemoveLabel extends AbstractCommand
 {
     protected string $labelName;
 
-    protected bool $isVisible;
-
-    public function __construct(string $itemId, string $labelName, bool $isVisible = true)
+    public function __construct(string $itemId, string $labelName)
     {
         parent::__construct($itemId);
         $this->labelName = $labelName;
-        $this->isVisible = $isVisible;
     }
 
     public function getLabelName(): string
@@ -24,6 +21,6 @@ final class RemoveLabel extends AbstractCommand
 
     public function isVisible(): bool
     {
-        return $this->isVisible;
+        return true;
     }
 }
