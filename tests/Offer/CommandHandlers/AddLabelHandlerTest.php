@@ -18,11 +18,13 @@ use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
@@ -80,14 +82,14 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->labelService
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'), false);
+            ->with(new LegacyLabelName('foo'), false);
 
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
 
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
-            ->when(new AddLabel($id, new LegacyLabel('foo', false)))
+            ->when(new AddLabel($id, new Label(new LabelName('foo'), false)))
             ->then([new LabelAdded($id, 'foo', true)]);
     }
 
@@ -98,20 +100,20 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('visible'), true);
+            ->with(new LegacyLabelName('visible'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('hidden'), false);
+            ->with(new LegacyLabelName('hidden'), false);
 
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
 
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
-            ->when(new AddLabel($id, new LegacyLabel('visible', true)))
+            ->when(new AddLabel($id, new Label(new LabelName('visible'), true)))
             ->then([new LabelAdded($id, 'visible', true)])
-            ->when(new AddLabel($id, new LegacyLabel('hidden', false)))
+            ->when(new AddLabel($id, new Label(new LabelName('hidden'), false)))
             ->then([new LabelAdded($id, 'hidden', false)]);
     }
 

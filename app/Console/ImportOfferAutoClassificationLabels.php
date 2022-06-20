@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use Doctrine\DBAL\Connection;
 use Exception;
@@ -74,7 +76,7 @@ final class ImportOfferAutoClassificationLabels extends Command
             $label = (string) $row['label'];
 
             try {
-                $this->commandBus->dispatch(new AddLabel($offerId, new LegacyLabel($label)));
+                $this->commandBus->dispatch(new AddLabel($offerId, new Label(new LabelName($label))));
             } catch (Exception $e) {
                 $errors[] = [
                     'offer_id' => $offerId,
