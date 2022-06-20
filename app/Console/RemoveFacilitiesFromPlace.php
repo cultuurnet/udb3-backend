@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
@@ -70,8 +71,9 @@ final class RemoveFacilitiesFromPlace extends AbstractCommand
         }
 
         foreach ($places as $place) {
-            $output->writeln('Dispatching UpdateFacilities for ' . $place);
-            $this->commandBus->dispatch(new UpdateFacilities($place, []));
+            $placeId = $place instanceof ItemIdentifier ? $place->getId() : $placeId;
+            $output->writeln('Dispatching UpdateFacilities for ' . $placeId);
+            $this->commandBus->dispatch(new UpdateFacilities($placeId, []));
         }
 
         return 0;

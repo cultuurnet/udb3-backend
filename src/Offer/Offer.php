@@ -114,7 +114,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected ?string $typeId = null;
 
-    protected array $facilities;
+    protected ?array $facilities = null;
 
     protected ?ContactPoint $contactPoint = null;
 
@@ -138,7 +138,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->labels = new LabelsArray();
         $this->images = new ImageCollection();
         $this->videos = new VideoCollection();
-        $this->facilities = [];
         $this->contactPoint = null;
         $this->calendar = null;
         $this->typicalAgeRange = null;
@@ -202,7 +201,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateFacilities(array $facilities): void
     {
-        if (!$this->sameFacilities($this->facilities, $facilities)) {
+        if ($this->facilities === null || !$this->sameFacilities($this->facilities, $facilities)) {
             $this->apply($this->createFacilitiesUpdatedEvent($facilities));
         }
     }
