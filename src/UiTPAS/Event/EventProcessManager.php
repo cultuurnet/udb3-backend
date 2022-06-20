@@ -18,20 +18,11 @@ use Psr\Log\LoggerInterface;
 
 class EventProcessManager implements EventListener
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var UiTPASLabelsRepository
-     */
-    private $uitPasLabelsRepository;
+    private UiTPASLabelsRepository $uitPasLabelsRepository;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,
@@ -47,7 +38,7 @@ class EventProcessManager implements EventListener
      *
      * @uses handleEventCardSystemsUpdated
      */
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $map = [
             EventCardSystemsUpdated::class => 'handleEventCardSystemsUpdated',
@@ -62,7 +53,7 @@ class EventProcessManager implements EventListener
     }
 
 
-    private function handleEventCardSystemsUpdated(EventCardSystemsUpdated $eventCardSystemsUpdated)
+    private function handleEventCardSystemsUpdated(EventCardSystemsUpdated $eventCardSystemsUpdated): void
     {
         $eventId = $eventCardSystemsUpdated->getId()->toNative();
 
@@ -149,10 +140,9 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param string $eventId
      * @param Label[] $labels
      */
-    private function removeLabelsFromEvent($eventId, array $labels): void
+    private function removeLabelsFromEvent(string $eventId, array $labels): void
     {
         $this->logger->info(
             'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
@@ -172,10 +162,9 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param string $eventId
      * @param Label[] $labels
      */
-    private function addLabelsToEvent($eventId, array $labels)
+    private function addLabelsToEvent(string $eventId, array $labels): void
     {
         if (count($labels) === 0) {
             return;
@@ -201,7 +190,7 @@ class EventProcessManager implements EventListener
     /**
      * @param AbstractCommand[] $commands
      */
-    private function dispatchCommands($commands): void
+    private function dispatchCommands(array $commands): void
     {
         foreach ($commands as $command) {
             if ($command instanceof AddLabel) {
