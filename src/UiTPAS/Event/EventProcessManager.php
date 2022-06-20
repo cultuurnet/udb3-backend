@@ -206,7 +206,7 @@ class EventProcessManager implements EventListener
     {
         foreach ($commands as $command) {
             if ($command instanceof AddLabel) {
-                $labelName = (string) $command->getLabel();
+                $labelName = $command->getLabel()->getName()->toString();
             } elseif ($command instanceof RemoveLabel) {
                 $labelName = $command->getLabelName();
             } else {
