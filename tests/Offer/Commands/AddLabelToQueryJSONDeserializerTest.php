@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -26,7 +28,7 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_a_valid_add_label_to_query_command()
     {
-        $expectedLabel = new Label('foo');
+        $expectedLabel = new Label(new LabelName('foo'));
         $expectedQuery = 'city:leuven';
 
         $json = new StringLiteral('{"label":"foo", "query":"city:leuven"}');

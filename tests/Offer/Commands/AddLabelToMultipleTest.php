@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
@@ -23,10 +25,7 @@ class AddLabelToMultipleTest extends TestCase
      */
     protected $offerIdentifiers;
 
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
     public function setUp()
     {
@@ -50,7 +49,7 @@ class AddLabelToMultipleTest extends TestCase
             ]
         );
 
-        $this->label = new Label('testlabel');
+        $this->label = new Label(new LabelName('testlabel'));
 
         $this->labelMultiple = new AddLabelToMultiple(
             $this->offerIdentifiers,

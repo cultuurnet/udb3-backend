@@ -8,6 +8,8 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
@@ -39,10 +41,7 @@ class BulkLabelCommandHandlerTest extends TestCase
      */
     private $query;
 
-    /**
-     * @var LegacyLabel
-     */
-    private $label;
+    private Label $label;
 
     /**
      * @var IriOfferIdentifier[]
@@ -73,7 +72,7 @@ class BulkLabelCommandHandlerTest extends TestCase
         $this->commandHandler->setLogger($this->logger);
 
         $this->query = 'city:leuven';
-        $this->label = new LegacyLabel('foo');
+        $this->label = new Label(new LabelName('foo'));
 
         $this->offerIdentifiers = [
             1 => new IriOfferIdentifier(
@@ -194,7 +193,7 @@ class BulkLabelCommandHandlerTest extends TestCase
     }
 
 
-    private function expectEventAndPlaceToBeLabelledWith(LegacyLabel $label): void
+    private function expectEventAndPlaceToBeLabelledWith(Label $label): void
     {
         $this->commandBus->expects($this->exactly(2))
             ->method('dispatch')
