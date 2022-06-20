@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer\Commands;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
-use CultuurNet\UDB3\StringLiteral;
 
 class RemoveLabel implements AuthorizableCommand, AuthorizableLabelCommand
 {
@@ -44,9 +43,7 @@ class RemoveLabel implements AuthorizableCommand, AuthorizableLabelCommand
 
     public function getLabelNames(): array
     {
-        return [
-            new StringLiteral($this->labelName),
-        ];
+        return [$this->labelName];
     }
 
     public function getPermission(): Permission

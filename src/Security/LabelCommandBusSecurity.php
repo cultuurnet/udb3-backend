@@ -35,11 +35,8 @@ class LabelCommandBusSecurity implements CommandBusSecurity
         }
 
         foreach ($command->getLabelNames() as $labelName) {
-            if (!$this->labelReadRepository->canUseLabel(
-                $this->userId,
-                $labelName->toNative()
-            )) {
-                throw ApiProblem::labelNotAllowed($labelName->toNative());
+            if (!$this->labelReadRepository->canUseLabel($this->userId, $labelName)) {
+                throw ApiProblem::labelNotAllowed($labelName);
             }
         }
         return true;
