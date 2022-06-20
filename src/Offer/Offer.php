@@ -247,11 +247,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function removeLabel(string $labelName, bool $isVisible = true): void
+    public function removeLabel(string $labelName): void
     {
         if ($this->labels->containsLabel($labelName)) {
             $this->apply(
-                $this->createLabelRemovedEvent($labelName, $isVisible)
+                $this->createLabelRemovedEvent($labelName, true)
             );
         }
     }
