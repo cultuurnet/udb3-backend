@@ -187,6 +187,21 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_has_an_initial_null_state_for_facilities(): void
+    {
+        $itemId = '0fd9a1e5-1406-43b5-a641-4b4d77fe980d';
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+            ])
+            ->when(fn (Item $item) => $item->updateFacilities([]))
+            ->then([new FacilitiesUpdated($itemId, [])]);
+    }
+
+    /**
+     * @test
+     */
     public function it_ignores_removing_facilities_when_facilities_already_empty(): void
     {
         $itemId = '0fd9a1e5-1406-43b5-a641-4b4d77fe980d';
@@ -194,6 +209,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
+                new FacilitiesUpdated($itemId, []),
             ])
             ->when(fn (Item $item) => $item->updateFacilities([]))
             ->then([]);
