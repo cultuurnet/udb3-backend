@@ -243,8 +243,8 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
             $placeImported->getCdbXml()
         );
 
-        // Just clear the facilities.
-        $this->facilities = [];
+        // Just reset the facilities.
+        $this->facilities = null;
 
         // Just clear the contact point.
         $this->contactPoint = null;
@@ -277,8 +277,8 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
             $placeUpdatedFromUDB2->getCdbXml()
         );
 
-        // Just clear the facilities.
-        $this->facilities = [];
+        // Just reset the facilities.
+        $this->facilities = null;
 
         // Just clear the contact point.
         $this->contactPoint = null;
