@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-final class RemoveLabel extends AbstractCommand
+use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
+
+final class RemoveLabel extends AbstractCommand implements AuthorizableLabelCommand
 {
     protected string $labelName;
 
@@ -22,5 +24,10 @@ final class RemoveLabel extends AbstractCommand
     public function isVisible(): bool
     {
         return true;
+    }
+
+    public function getLabelNames(): array
+    {
+        return [$this->labelName];
     }
 }
