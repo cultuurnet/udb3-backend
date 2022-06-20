@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractLabelCommand extends AbstractCommand implements AuthorizableLabelCommand
 {
-    /**
-     * @var LegacyLabel
-     */
-    protected $label;
+    protected Label $label;
 
-    public function __construct(string $itemId, LegacyLabel $label)
+    public function __construct(string $itemId, Label $label)
     {
         parent::__construct($itemId);
         $this->label = $label;
@@ -28,7 +26,7 @@ abstract class AbstractLabelCommand extends AbstractCommand implements Authoriza
 
     public function getLabel(): LegacyLabel
     {
-        return $this->label;
+        return new LegacyLabel($this->label->getName()->toString(), $this->label->isVisible());
     }
 
     public function getLabelNames(): array
