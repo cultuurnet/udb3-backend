@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\Label;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 
 interface UiTPASLabelsRepository
 {
