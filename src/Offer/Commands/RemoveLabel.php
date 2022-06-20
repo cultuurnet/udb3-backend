@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\StringLiteral;
-
 final class RemoveLabel extends AbstractCommand
 {
     protected string $labelName;
@@ -27,12 +25,5 @@ final class RemoveLabel extends AbstractCommand
     public function isVisible(): bool
     {
         return $this->isVisible;
-    }
-
-    public function getLabelNames(): array
-    {
-        return [
-            new StringLiteral($this->labelName),
-        ];
     }
 }
