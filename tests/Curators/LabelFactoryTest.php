@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -13,14 +15,14 @@ class LabelFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_will_create_label_for_known_publishers()
+    public function it_will_create_label_for_known_publishers():void
     {
         $labelFactory = new LabelFactory(
             [
                 'bruzz' => 'BRUZZ-redactioneel',
             ]
         );
-        $expected = new Label('BRUZZ-redactioneel', false);
+        $expected = new Label(new LabelName('BRUZZ-redactioneel'), false);
         $label = $labelFactory->forPublisher(new PublisherName('bruzz'));
 
         $this->assertEquals($expected, $label);
@@ -36,7 +38,7 @@ class LabelFactoryTest extends TestCase
                 'bruzz' => 'BRUZZ-redactioneel',
             ]
         );
-        $expected = new Label('BRUZZ-redactioneel', false);
+        $expected = new Label(new LabelName('BRUZZ-redactioneel'), false);
         $label = $labelFactory->forPublisher(new PublisherName('Bruzz'));
 
         $this->assertEquals($expected, $label);

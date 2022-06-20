@@ -8,6 +8,8 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
@@ -41,7 +43,7 @@ class EventProcessManagerTest extends TestCase
     private $eventProcessManager;
 
     /**
-     * @var LegacyLabel[]
+     * @var Label[]
      */
     private $uitpasLabels;
 
@@ -73,16 +75,16 @@ class EventProcessManagerTest extends TestCase
         );
 
         $this->uitpasLabels = [
-            'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new LegacyLabel('Paspartoe'),
-            'ebd91df0-8ed7-4522-8401-ef5508ad1426' => new LegacyLabel('UiTPAS'),
-            'f23ccb75-190a-4814-945e-c95e83101cc5' => new LegacyLabel('UiTPAS Gent'),
-            '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new LegacyLabel('UiTPAS Oostende'),
-            '68f849c0-bf55-4f73-b0f4-e0683bf0c807' => new LegacyLabel('UiTPAS regio Aalst'),
-            'cd6200cc-5b9d-43fd-9638-f6cc27f1c9b8' => new LegacyLabel('UiTPAS Dender'),
-            'd9cf96b6-1256-4760-b66b-1c31152d7db4' => new LegacyLabel('UiTPAS Zuidwest'),
-            'aaf3a58e-2aac-45b3-a9e9-3f3ebf467681' => new LegacyLabel('UiTPAS Mechelen'),
-            '47256d4c-47e8-4046-b9bb-acb166920f76' => new LegacyLabel('UiTPAS Kempen'),
-            '54b5273e-5e0b-4c1e-b33f-93eca55eb472' => new LegacyLabel('UiTPAS Maasmechelen'),
+            'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new Label(new LabelName('Paspartoe')),
+            'ebd91df0-8ed7-4522-8401-ef5508ad1426' => new Label(new LabelName('UiTPAS')),
+            'f23ccb75-190a-4814-945e-c95e83101cc5' => new Label(new LabelName('UiTPAS Gent')),
+            '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new Label(new LabelName('UiTPAS Oostende')),
+            '68f849c0-bf55-4f73-b0f4-e0683bf0c807' => new Label(new LabelName('UiTPAS regio Aalst')),
+            'cd6200cc-5b9d-43fd-9638-f6cc27f1c9b8' => new Label(new LabelName('UiTPAS Dender')),
+            'd9cf96b6-1256-4760-b66b-1c31152d7db4' => new Label(new LabelName('UiTPAS Zuidwest')),
+            'aaf3a58e-2aac-45b3-a9e9-3f3ebf467681' => new Label(new LabelName('UiTPAS Mechelen')),
+            '47256d4c-47e8-4046-b9bb-acb166920f76' => new Label(new LabelName('UiTPAS Kempen')),
+            '54b5273e-5e0b-4c1e-b33f-93eca55eb472' =>new Label(new LabelName('UiTPAS Maasmechelen')),
         ];
 
         $this->uitpasLabelsRepository->expects($this->any())
@@ -188,9 +190,9 @@ class EventProcessManagerTest extends TestCase
             new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Mechelen'),
             new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Kempen'),
             new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Maasmechelen'),
-            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new LegacyLabel('Paspartoe', true)),
-            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new LegacyLabel('UiTPAS Gent', true)),
-            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new LegacyLabel('UiTPAS Oostende', true)),
+            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('Paspartoe'), true)),
+            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('UiTPAS Gent'), true)),
+            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('UiTPAS Oostende'), true)),
         ];
 
         $this->eventProcessManager->handle($domainMessage);
