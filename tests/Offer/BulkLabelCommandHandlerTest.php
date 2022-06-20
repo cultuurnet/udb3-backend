@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -40,7 +40,7 @@ class BulkLabelCommandHandlerTest extends TestCase
     private $query;
 
     /**
-     * @var Label
+     * @var LegacyLabel
      */
     private $label;
 
@@ -73,7 +73,7 @@ class BulkLabelCommandHandlerTest extends TestCase
         $this->commandHandler->setLogger($this->logger);
 
         $this->query = 'city:leuven';
-        $this->label = new Label('foo');
+        $this->label = new LegacyLabel('foo');
 
         $this->offerIdentifiers = [
             1 => new IriOfferIdentifier(
@@ -194,7 +194,7 @@ class BulkLabelCommandHandlerTest extends TestCase
     }
 
 
-    private function expectEventAndPlaceToBeLabelledWith(Label $label): void
+    private function expectEventAndPlaceToBeLabelledWith(LegacyLabel $label): void
     {
         $this->commandBus->expects($this->exactly(2))
             ->method('dispatch')
