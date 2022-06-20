@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\UiTPAS\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
@@ -91,8 +91,8 @@ class EventProcessManager implements EventListener
 
     /**
      * @param CardSystem[] $cardSystems
-     * @param Label[] $uitPasLabels
-     * @return Label[]
+     * @param LegacyLabel[] $uitPasLabels
+     * @return LegacyLabel[]
      */
     private function determineApplicableLabelsForEvent(
         array $cardSystems,
@@ -117,15 +117,15 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param Label[] $applicableLabels
-     * @param Label[] $uitPasLabels
-     * @return Label[]
+     * @param LegacyLabel[] $applicableLabels
+     * @param LegacyLabel[] $uitPasLabels
+     * @return LegacyLabel[]
      */
     private function determineInapplicableLabelsForEvent(
         array $applicableLabels,
         array $uitPasLabels
     ): array {
-        $uitPasLabelDoesNotApply = function (Label $uitPasLabel) use ($applicableLabels) {
+        $uitPasLabelDoesNotApply = function (LegacyLabel $uitPasLabel) use ($applicableLabels) {
             return !$this->labelsContain($applicableLabels, $uitPasLabel);
         };
 
@@ -136,9 +136,9 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param Label[] $haystack
+     * @param LegacyLabel[] $haystack
      */
-    private function labelsContain(array $haystack, Label $needle): bool
+    private function labelsContain(array $haystack, LegacyLabel $needle): bool
     {
         foreach ($haystack as $label) {
             if ($needle->equals($label)) {
@@ -150,7 +150,7 @@ class EventProcessManager implements EventListener
 
     /**
      * @param string $eventId
-     * @param Label[] $labels
+     * @param LegacyLabel[] $labels
      */
     private function removeLabelsFromEvent($eventId, array $labels): void
     {
@@ -159,7 +159,7 @@ class EventProcessManager implements EventListener
         );
 
         $commands = array_map(
-            function (Label $label) use ($eventId) {
+            function (LegacyLabel $label) use ($eventId) {
                 return new RemoveLabel(
                     $eventId,
                     $label->getName()->toNative(),
@@ -174,7 +174,7 @@ class EventProcessManager implements EventListener
 
     /**
      * @param string $eventId
-     * @param Label[] $labels
+     * @param LegacyLabel[] $labels
      */
     private function addLabelsToEvent($eventId, array $labels)
     {
@@ -187,7 +187,7 @@ class EventProcessManager implements EventListener
         );
 
         $commands = array_map(
-            function (Label $label) use ($eventId) {
+            function (LegacyLabel $label) use ($eventId) {
                 return new AddLabel(
                     $eventId,
                     $label

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
@@ -67,7 +67,7 @@ class EditOfferRestController
 
     public function addLabel(string $cdbid, string $label): Response
     {
-        $this->commandBus->dispatch(new AddLabel($cdbid, new Label($label)));
+        $this->commandBus->dispatch(new AddLabel($cdbid, new LegacyLabel($label)));
         return new NoContent();
     }
 

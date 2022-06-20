@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractLabelCommand extends AbstractCommand implements AuthorizableLabelCommand
 {
     /**
-     * @var Label
+     * @var LegacyLabel
      */
     protected $label;
 
-    public function __construct(string $itemId, Label $label)
+    public function __construct(string $itemId, LegacyLabel $label)
     {
         parent::__construct($itemId);
         $this->label = $label;
@@ -26,7 +26,7 @@ abstract class AbstractLabelCommand extends AbstractCommand implements Authoriza
         return $this->itemId;
     }
 
-    public function getLabel(): Label
+    public function getLabel(): LegacyLabel
     {
         return $this->label;
     }

@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -87,7 +87,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
-            ->when(new AddLabel($id, new Label('foo', false)))
+            ->when(new AddLabel($id, new LegacyLabel('foo', false)))
             ->then([new LabelAdded($id, 'foo', true)]);
     }
 
@@ -109,9 +109,9 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
-            ->when(new AddLabel($id, new Label('visible', true)))
+            ->when(new AddLabel($id, new LegacyLabel('visible', true)))
             ->then([new LabelAdded($id, 'visible', true)])
-            ->when(new AddLabel($id, new Label('hidden', false)))
+            ->when(new AddLabel($id, new LegacyLabel('hidden', false)))
             ->then([new LabelAdded($id, 'hidden', false)]);
     }
 
