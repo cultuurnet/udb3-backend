@@ -101,6 +101,36 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_handles_empty_update_facilities_after_udb2_update(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');
+        $cdbXmlNamespace = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+
+        $this->scenario
+            ->given(
+                [
+                    $placeCreated,
+                    new PlaceUpdatedFromUDB2($placeId, $cdbXml, $cdbXmlNamespace),
+                ]
+            )
+            ->when(
+                function (Place $place) {
+                    $place->updateFacilities([]);
+                }
+            )
+            ->then(
+                [
+                    new FacilitiesUpdated($placeId, []),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_update_contact_point_after_udb2_import(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
