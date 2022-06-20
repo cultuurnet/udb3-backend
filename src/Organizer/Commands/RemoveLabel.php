@@ -25,11 +25,6 @@ class RemoveLabel implements AuthorizableCommand, AuthorizableLabelCommand
         return $this->labelName;
     }
 
-    public function isVisible(): bool
-    {
-        return true;
-    }
-
     public function getItemId(): string
     {
         return $this->organizerId;

@@ -21,11 +21,6 @@ final class RemoveLabel extends AbstractCommand implements AuthorizableLabelComm
         return $this->labelName;
     }
 
-    public function isVisible(): bool
-    {
-        return true;
-    }
-
     public function getLabelNames(): array
     {
         return [$this->labelName];
