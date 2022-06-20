@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label as LegacyLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 
 class AddLabelToQuery
 {
@@ -13,10 +14,7 @@ class AddLabelToQuery
      */
     protected $query;
 
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
     public function __construct($query, Label $label)
     {
@@ -32,10 +30,7 @@ class AddLabelToQuery
         return $this->query;
     }
 
-    /**
-     * @return Label
-     */
-    public function getLabel()
+    public function getLabel(): Label
     {
         return $this->label;
     }
