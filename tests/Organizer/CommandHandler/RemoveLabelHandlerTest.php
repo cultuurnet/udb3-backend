@@ -60,8 +60,8 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                 $this->organizerCreated($id),
                 new LabelAdded($id, 'bar', false),
             ])
-            ->when(new RemoveLabel($id, $label->getName()->toString(), false))
-            ->then([new LabelRemoved($id, 'bar', false)]);
+            ->when(new RemoveLabel($id, $label->getName()->toString()))
+            ->then([new LabelRemoved($id, 'bar', true)]);
     }
 
     /**

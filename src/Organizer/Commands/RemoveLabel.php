@@ -14,16 +14,10 @@ class RemoveLabel implements AuthorizableCommand, AuthorizableLabelCommand
 
     private string $labelName;
 
-    private bool $isVisible;
-
-    public function __construct(
-        string $organizerId,
-        string $labelName,
-        bool $isVisible = true
-    ) {
+    public function __construct(string $organizerId, string $labelName)
+    {
         $this->organizerId = $organizerId;
         $this->labelName = $labelName;
-        $this->isVisible = $isVisible;
     }
 
     public function getLabelName(): string
@@ -33,7 +27,7 @@ class RemoveLabel implements AuthorizableCommand, AuthorizableLabelCommand
 
     public function isVisible(): bool
     {
-        return $this->isVisible;
+        return true;
     }
 
     public function getItemId(): string
