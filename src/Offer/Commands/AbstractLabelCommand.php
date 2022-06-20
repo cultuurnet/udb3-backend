@@ -34,7 +34,7 @@ abstract class AbstractLabelCommand extends AbstractCommand implements Authoriza
     public function getLabelNames(): array
     {
         return [
-            new StringLiteral((string)$this->label),
+            new StringLiteral($this->label->getName()->toString()),
         ];
     }
 }
