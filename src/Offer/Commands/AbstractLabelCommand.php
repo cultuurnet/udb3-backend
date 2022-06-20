@@ -24,9 +24,9 @@ abstract class AbstractLabelCommand extends AbstractCommand implements Authoriza
         return $this->itemId;
     }
 
-    public function getLabel(): LegacyLabel
+    public function getLabel(): Label
     {
-        return new LegacyLabel($this->label->getName()->toString(), $this->label->isVisible());
+        return $this->label;
     }
 
     public function getLabelNames(): array
