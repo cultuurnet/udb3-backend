@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\UiTPAS\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;

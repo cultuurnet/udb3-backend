@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\Label;
 
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
@@ -38,7 +37,7 @@ final class InMemoryUiTPASLabelsRepository implements UiTPASLabelsRepository
     {
         $labelVOs = [];
         foreach ($labels as $cardSystemId => $label) {
-            $labelVOs[$cardSystemId] = new Label(new LabelName( $label));
+            $labelVOs[$cardSystemId] = new Label(new LabelName($label));
         }
 
         return new self($labelVOs);

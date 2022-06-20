@@ -26,6 +26,6 @@ class LabelJSONDeserializer extends JSONDeserializer
             throw new MissingValueException('Missing value "label"!');
         }
 
-        return new Label(new LabelName( $data->label));
+        return new Label(new LabelName($data->label));
     }
 }

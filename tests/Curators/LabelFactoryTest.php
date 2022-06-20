@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators;
 
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use InvalidArgumentException;
@@ -15,7 +14,7 @@ class LabelFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_will_create_label_for_known_publishers():void
+    public function it_will_create_label_for_known_publishers(): void
     {
         $labelFactory = new LabelFactory(
             [

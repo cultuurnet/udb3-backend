@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
