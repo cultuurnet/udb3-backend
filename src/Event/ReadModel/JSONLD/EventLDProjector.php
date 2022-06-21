@@ -341,24 +341,8 @@ class EventLDProjector extends OfferLDProjector implements
         unset($eventJsonLD->labels);
         unset($eventJsonLD->hiddenLabels);
 
-        $eventType = null;
-        foreach ($eventJsonLD->terms as $term) {
-            if ($term->domain === 'eventtype') {
-                $typeId = new StringLiteral($term->id);
-                // This is a workaround to allow copies of events that
-                // have a placeType instead of an eventType.
-                // These events could also be cleaned up in the future
-                // @see https://jira.uitdatabank.be/browse/III-3926
-                try {
-                    $eventType = $this->eventTypeResolver->byId($typeId);
-                } catch (\Exception $exception) {
-                    $eventType = $this->placeTypeResolver->byId($typeId);
-                }
-            }
-        }
-
         // Set available to and from.
-        $availableTo = AvailableTo::createFromCalendar($eventCopied->getCalendar(), $eventType);
+        $availableTo = AvailableTo::createFromCalendar($eventCopied->getCalendar(), $this->getEventType($eventJsonLD));
         $eventJsonLD->availableTo = (string) $availableTo;
         unset($eventJsonLD->availableFrom);
 
