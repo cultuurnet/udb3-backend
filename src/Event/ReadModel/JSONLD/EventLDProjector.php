@@ -71,6 +71,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\AvailableTo;
+use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
@@ -362,6 +363,18 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
+    protected function applyCalendarUpdated(AbstractCalendarUpdated $calendarUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($calendarUpdated)
+            ->apply(OfferUpdate::calendar($calendarUpdated->getCalendar()));
+
+        $offerLd = $document->getBody();
+
+        $availableTo = AvailableTo::createFromCalendar($calendarUpdated->getCalendar(), $this->getEventType($offerLd));
+        $offerLd->availableTo = (string)$availableTo;
+
+        return $document->withBody($offerLd);
+    }
 
     private function getEventType(\stdClass $eventJsonLD): ?EventType
     {
