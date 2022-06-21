@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use PHPUnit\Framework\TestCase;
 
 class LabelsImportedTest extends TestCase
@@ -19,10 +16,8 @@ class LabelsImportedTest extends TestCase
     {
         $this->labelsImported = new LabelsImported(
             '0e9fcb97-dd06-45e1-b32e-ff18967f3836',
-            new Labels(
-                new Label(new LabelName('foo'), true),
-                new Label(new LabelName('bar'), false)
-            )
+            ['foo'],
+            ['bar']
         );
 
         $this->labelsImportedAsArray = [

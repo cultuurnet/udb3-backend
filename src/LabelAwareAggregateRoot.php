@@ -11,5 +11,5 @@ interface LabelAwareAggregateRoot extends AggregateRoot
 {
     public function addLabel(Label $label): void;
 
-    public function removeLabel(Label $label): void;
+    public function removeLabel(string $labelName): void;
 }

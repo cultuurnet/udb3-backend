@@ -99,9 +99,9 @@ class Item extends Offer
         return new LabelAdded($this->id, $labelName, $isVisible);
     }
 
-    protected function createLabelRemovedEvent(string $labelName, bool $isVisible): LabelRemoved
+    protected function createLabelRemovedEvent(string $labelName): LabelRemoved
     {
-        return new LabelRemoved($this->id, $labelName, $isVisible);
+        return new LabelRemoved($this->id, $labelName);
     }
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported

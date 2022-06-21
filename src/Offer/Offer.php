@@ -250,11 +250,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function removeLabel(Label $label): void
+    public function removeLabel(string $labelName): void
     {
-        if ($this->labels->containsLabel($label->getName()->toString())) {
+        if ($this->labels->containsLabel($labelName)) {
             $this->apply(
-                $this->createLabelRemovedEvent($label->getName()->toString(), $label->isVisible())
+                $this->createLabelRemovedEvent($labelName)
             );
         }
     }
@@ -316,7 +316,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $labels->findByName(new LabelName($label->getName()->toNative()));
             $canBeRemoved = !$keepLabelsCollection->containsWithSameVisibility($label);
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply($this->createLabelRemovedEvent($label->getName()->toNative(), $label->isVisible()));
+                $this->apply($this->createLabelRemovedEvent($label->getName()->toNative()));
             }
         }
 
@@ -1025,7 +1025,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createLabelAddedEvent(string $labelName, bool $isVisible): AbstractLabelAdded;
 
-    abstract protected function createLabelRemovedEvent(string $labelName, bool $isVisible): AbstractLabelRemoved;
+    abstract protected function createLabelRemovedEvent(string $labelName): AbstractLabelRemoved;
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 

@@ -149,7 +149,7 @@ class EditOfferRestControllerTest extends TestCase
         $response = $this->controller
             ->removeLabel($cdbid, $label);
 
-        $this->assertEquals([new RemoveLabel($cdbid, new Label($label))], $this->commandBus->getRecordedCommands());
+        $this->assertEquals([new RemoveLabel($cdbid, $label)], $this->commandBus->getRecordedCommands());
 
         $this->assertEquals(204, $response->getStatusCode());
     }

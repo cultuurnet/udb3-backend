@@ -8,8 +8,6 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use PHPUnit\Framework\TestCase;
 
@@ -50,7 +48,7 @@ class DeleteLabelRequestHandlerTest extends TestCase
             [
                 new RemoveLabel(
                     'a088f396-ac96-45c4-b6b2-e2b6afe8af07',
-                    new Label(new LabelName('MyLabel'))
+                    'MyLabel'
                 ),
             ],
             $this->commandBus->getRecordedCommands()

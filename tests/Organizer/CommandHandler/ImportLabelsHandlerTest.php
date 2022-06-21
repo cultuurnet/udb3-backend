@@ -96,16 +96,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new LabelsImported(
                         $id,
-                        new Labels(
-                            new Label(
-                                new LabelName('foo'),
-                                true
-                            ),
-                            new Label(
-                                new LabelName('bar'),
-                                true
-                            )
-                        )
+                        ['foo', 'bar'],
+                        []
                     ),
                     new LabelAdded($id, 'foo'),
                     new LabelAdded($id, 'bar'),
@@ -161,9 +153,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     new LabelsImported(
                         $id,
-                        new Labels(
-                            new Label(new LabelName('allowed'))
-                        )
+                        ['allowed'],
+                        []
                     ),
                     new LabelAdded($id, 'allowed'),
                 ]
@@ -183,7 +174,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 [
                     $this->organizerCreated($id),
                     new LabelAdded($id, 'not_allowed'),
-                    new LabelsImported($id, new Labels(new Label(new LabelName('existing_to_be_removed')))),
+                    new LabelsImported($id, ['existing_to_be_removed'], []),
                     new LabelAdded($id, 'existing_to_be_removed'),
                 ]
             )
@@ -212,10 +203,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                     new LabelAdded($id, 'added_via_ui_1'),
                     new LabelsImported(
                         $id,
-                        new Labels(
-                            new Label(new LabelName('imported_1')),
-                            new Label(new LabelName('imported_2')),
-                        )
+                        ['imported_1', 'imported_2'],
+                        []
                     ),
                     new LabelAdded($id, 'imported_1'),
                     new LabelAdded($id, 'imported_2'),

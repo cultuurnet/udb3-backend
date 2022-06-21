@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractLabelCommand implements AuthorizableCommand, AuthorizableLabelCommand
 {
@@ -36,9 +35,7 @@ abstract class AbstractLabelCommand implements AuthorizableCommand, Authorizable
 
     public function getLabelNames(): array
     {
-        return [
-            new StringLiteral($this->label->getName()->toString()),
-        ];
+        return [$this->label->getName()->toString()];
     }
 
     public function getPermission(): Permission

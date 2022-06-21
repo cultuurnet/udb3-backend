@@ -347,7 +347,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     $item->addLabel(new Label(new LabelName('orange')));
                     $item->addLabel(new Label(new LabelName('green')));
 
-                    $item->removeLabel(new Label(new LabelName('purple')));
+                    $item->removeLabel('purple');
                     $item->addLabel(new Label(new LabelName('purple')));
                 }
             )
@@ -357,6 +357,31 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new LabelAdded($itemId, 'green'),
                 new LabelRemoved($itemId, 'purple'),
                 new LabelAdded($itemId, 'purple'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_be_able_to_remove_invalid_labels(): void
+    {
+        $itemId = '60257f64-46b3-4653-8599-e41487174744';
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new LabelAdded($itemId, 'invalid;label', true),
+                new LabelAdded($itemId, "newline\r\nlabel", false),
+            ])
+            ->when(
+                function (Item $item) {
+                    $item->removeLabel('invalid;label');
+                    $item->removeLabel("newline\r\nlabel");
+                }
+            )
+            ->then([
+                new LabelRemoved($itemId, 'invalid;label'),
+                new LabelRemoved($itemId, "newline\r\nlabel"),
             ]);
     }
 

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Organizer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,7 +28,7 @@ final class DeleteLabelRequestHandler implements RequestHandlerInterface
         $labelName = $routeParameters->getLabelName();
 
         $this->commandBus->dispatch(
-            new RemoveLabel($organizerId, new Label($labelName))
+            new RemoveLabel($organizerId, $labelName->toString())
         );
 
         return new NoContentResponse();

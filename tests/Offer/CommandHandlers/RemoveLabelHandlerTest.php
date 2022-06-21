@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -49,7 +48,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                     new LabelAdded($id, 'foo', true),
                 ]
             )
-            ->when(new RemoveLabel($id, new Label('foo', true)))
+            ->when(new RemoveLabel($id, 'foo'))
             ->then([new LabelRemoved($id, 'foo', true)]);
     }
 
@@ -68,8 +67,8 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                     new LabelAdded($id, 'foo', true),
                 ]
             )
-            ->when(new RemoveLabel($id, new Label('foo', false)))
-            ->then([new LabelRemoved($id, 'foo', false)]);
+            ->when(new RemoveLabel($id, 'foo'))
+            ->then([new LabelRemoved($id, 'foo', true)]);
     }
 
     /**
@@ -82,7 +81,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->eventCreated($id)])
-            ->when(new RemoveLabel($id, new Label('foo', false)))
+            ->when(new RemoveLabel($id, 'foo'))
             ->then([]);
     }
 

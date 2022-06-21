@@ -767,16 +767,13 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @dataProvider unlabelDataProvider
      */
-    public function it_can_be_unlabelled(
-        string $id,
-        Label $label,
-        array $givens
-    ): void {
+    public function it_can_be_unlabelled(string $id, Label $label, array $givens): void
+    {
         $this->scenario
             ->given($givens)
             ->when(
                 function (Event $event) use ($label) {
-                    $event->removeLabel($label);
+                    $event->removeLabel($label->getName()->toString());
                 }
             )
             ->then(
@@ -846,15 +843,13 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @dataProvider unlabelIgnoredDataProvider
      */
-    public function it_silently_ignores_unlabel_request_if_label_is_not_present(
-        Label $label,
-        array       $givens
-    ): void {
+    public function it_silently_ignores_unlabel_request_if_label_is_not_present(Label $label, array $givens): void
+    {
         $this->scenario
             ->given($givens)
             ->when(
                 function (Event $event) use ($label) {
-                    $event->removeLabel($label);
+                    $event->removeLabel($label->getName()->toString());
                 }
             )
             ->then([]);

@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
+use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
@@ -18,20 +18,11 @@ use Psr\Log\LoggerInterface;
 
 class EventProcessManager implements EventListener
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var UiTPASLabelsRepository
-     */
-    private $uitPasLabelsRepository;
+    private UiTPASLabelsRepository $uitPasLabelsRepository;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,
@@ -47,7 +38,7 @@ class EventProcessManager implements EventListener
      *
      * @uses handleEventCardSystemsUpdated
      */
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $map = [
             EventCardSystemsUpdated::class => 'handleEventCardSystemsUpdated',
@@ -62,7 +53,7 @@ class EventProcessManager implements EventListener
     }
 
 
-    private function handleEventCardSystemsUpdated(EventCardSystemsUpdated $eventCardSystemsUpdated)
+    private function handleEventCardSystemsUpdated(EventCardSystemsUpdated $eventCardSystemsUpdated): void
     {
         $eventId = $eventCardSystemsUpdated->getId()->toNative();
 
@@ -149,10 +140,9 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param string $eventId
      * @param Label[] $labels
      */
-    private function removeLabelsFromEvent($eventId, array $labels)
+    private function removeLabelsFromEvent(string $eventId, array $labels): void
     {
         $this->logger->info(
             'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
@@ -162,7 +152,7 @@ class EventProcessManager implements EventListener
             function (Label $label) use ($eventId) {
                 return new RemoveLabel(
                     $eventId,
-                    $label
+                    $label->getName()->toNative()
                 );
             },
             $labels
@@ -172,10 +162,9 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param string $eventId
      * @param Label[] $labels
      */
-    private function addLabelsToEvent($eventId, array $labels)
+    private function addLabelsToEvent(string $eventId, array $labels): void
     {
         if (count($labels) === 0) {
             return;
@@ -199,16 +188,23 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param AbstractLabelCommand[] $commands
+     * @param AbstractCommand[] $commands
      */
-    private function dispatchCommands($commands)
+    private function dispatchCommands(array $commands): void
     {
         foreach ($commands as $command) {
+            if ($command instanceof AddLabel) {
+                $labelName = (string) $command->getLabel();
+            } elseif ($command instanceof RemoveLabel) {
+                $labelName = $command->getLabelName();
+            } else {
+                return;
+            }
             $this->logger->info(
                 'Dispatching label command ' . get_class($command),
                 [
                     'item id' => $command->getItemId(),
-                    'label' => (string) $command->getLabel(),
+                    'label' => $labelName,
                 ]
             );
 
