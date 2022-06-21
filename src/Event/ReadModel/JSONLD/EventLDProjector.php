@@ -378,6 +378,32 @@ class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
+
+    private function getEventType(\stdClass $eventJsonLD): ?EventType
+    {
+        if (!isset($eventJsonLD->terms)) {
+            return null;
+        }
+
+        $eventType = null;
+        foreach ($eventJsonLD->terms as $term) {
+            if ($term->domain === 'eventtype') {
+                $typeId = new StringLiteral($term->id);
+                // This is a workaround to allow copies of events that
+                // have a placeType instead of an eventType.
+                // These events could also be cleaned up in the future
+                // @see https://jira.uitdatabank.be/browse/III-3926
+                try {
+                    $eventType = $this->eventTypeResolver->byId($typeId);
+                } catch (\Exception $exception) {
+                    $eventType = $this->placeTypeResolver->byId($typeId);
+                }
+            }
+        }
+
+        return $eventType;
+    }
+
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): JsonDocument
     {
         $document = $this
