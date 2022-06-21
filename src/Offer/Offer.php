@@ -114,7 +114,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected ?string $typeId = null;
 
-    protected array $facilities;
+    protected ?array $facilities = null;
 
     protected ?ContactPoint $contactPoint = null;
 
@@ -138,7 +138,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->labels = new LabelsArray();
         $this->images = new ImageCollection();
         $this->videos = new VideoCollection();
-        $this->facilities = [];
         $this->contactPoint = null;
         $this->calendar = null;
         $this->typicalAgeRange = null;
@@ -202,7 +201,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateFacilities(array $facilities): void
     {
-        if (empty($this->facilities) || !$this->sameFacilities($this->facilities, $facilities)) {
+        if ($this->facilities === null || !$this->sameFacilities($this->facilities, $facilities)) {
             $this->apply($this->createFacilitiesUpdatedEvent($facilities));
         }
     }
@@ -214,6 +213,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private function sameFacilities(array $facilities1, array $facilities2): bool
     {
+        if (empty($facilities1) && empty($facilities2)) {
+            return true;
+        }
+
         if (count($facilities1) !== count($facilities2)) {
             return false;
         }
@@ -247,11 +250,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function removeLabel(string $labelName, bool $isVisible = true): void
+    public function removeLabel(string $labelName): void
     {
         if ($this->labels->containsLabel($labelName)) {
             $this->apply(
-                $this->createLabelRemovedEvent($labelName, $isVisible)
+                $this->createLabelRemovedEvent($labelName)
             );
         }
     }
@@ -313,7 +316,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $labels->findByName(new LabelName($label->getName()->toNative()));
             $canBeRemoved = !$keepLabelsCollection->containsWithSameVisibility($label);
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply($this->createLabelRemovedEvent($label->getName()->toNative(), $label->isVisible()));
+                $this->apply($this->createLabelRemovedEvent($label->getName()->toNative()));
             }
         }
 
@@ -1022,7 +1025,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     abstract protected function createLabelAddedEvent(string $labelName, bool $isVisible): AbstractLabelAdded;
 
-    abstract protected function createLabelRemovedEvent(string $labelName, bool $isVisible): AbstractLabelRemoved;
+    abstract protected function createLabelRemovedEvent(string $labelName): AbstractLabelRemoved;
 
     abstract protected function createLabelsImportedEvent(Labels $labels): AbstractLabelsImported;
 

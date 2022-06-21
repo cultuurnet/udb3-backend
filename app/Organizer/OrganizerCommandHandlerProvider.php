@@ -51,12 +51,7 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
         );
 
         $app[RemoveLabelHandler::class] = $app->share(
-            function (Application $app) {
-                return new RemoveLabelHandler(
-                    $app['organizer_repository'],
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-                );
-            }
+            fn (Application $app) => new RemoveLabelHandler($app['organizer_repository'])
         );
 
         $app[ImportLabelsHandler::class] = $app->share(

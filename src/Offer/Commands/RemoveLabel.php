@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\StringLiteral;
+use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 
-final class RemoveLabel extends AbstractCommand
+final class RemoveLabel extends AbstractCommand implements AuthorizableLabelCommand
 {
     protected string $labelName;
 
-    protected bool $isVisible;
-
-    public function __construct(string $itemId, string $labelName, bool $isVisible = true)
+    public function __construct(string $itemId, string $labelName)
     {
         parent::__construct($itemId);
         $this->labelName = $labelName;
-        $this->isVisible = $isVisible;
     }
 
     public function getLabelName(): string
@@ -24,15 +21,8 @@ final class RemoveLabel extends AbstractCommand
         return $this->labelName;
     }
 
-    public function isVisible(): bool
-    {
-        return $this->isVisible;
-    }
-
     public function getLabelNames(): array
     {
-        return [
-            new StringLiteral($this->labelName),
-        ];
+        return [$this->labelName];
     }
 }

@@ -503,9 +503,9 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return new LabelAdded($this->eventId, $labelName, $isVisible);
     }
 
-    protected function createLabelRemovedEvent(string $labelName, bool $isVisible): LabelRemoved
+    protected function createLabelRemovedEvent(string $labelName): LabelRemoved
     {
-        return new LabelRemoved($this->eventId, $labelName, $isVisible);
+        return new LabelRemoved($this->eventId, $labelName);
     }
 
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported

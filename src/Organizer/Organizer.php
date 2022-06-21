@@ -452,14 +452,13 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    public function removeLabel(string $labelName, bool $isVisible = true): void
+    public function removeLabel(string $labelName): void
     {
         if ($this->labels->containsLabel(($labelName))) {
             $this->apply(
                 new LabelRemoved(
                     $this->actorId,
-                    $labelName,
-                    $isVisible
+                    $labelName
                 )
             );
         }

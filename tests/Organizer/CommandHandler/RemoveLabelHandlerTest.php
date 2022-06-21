@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
@@ -21,11 +20,7 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): RemoveLabelHandler
     {
         return new RemoveLabelHandler(
-            new OrganizerRepository(
-                $eventStore,
-                $eventBus
-            ),
-            $this->createMock(ReadRepositoryInterface::class)
+            new OrganizerRepository($eventStore, $eventBus)
         );
     }
 
@@ -60,8 +55,8 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
                 $this->organizerCreated($id),
                 new LabelAdded($id, 'bar', false),
             ])
-            ->when(new RemoveLabel($id, $label->getName()->toString(), false))
-            ->then([new LabelRemoved($id, 'bar', false)]);
+            ->when(new RemoveLabel($id, $label->getName()->toString()))
+            ->then([new LabelRemoved($id, 'bar', true)]);
     }
 
     /**

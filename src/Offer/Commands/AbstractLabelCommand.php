@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
-use CultuurNet\UDB3\StringLiteral;
 
 abstract class AbstractLabelCommand extends AbstractCommand implements AuthorizableLabelCommand
 {
@@ -18,11 +17,6 @@ abstract class AbstractLabelCommand extends AbstractCommand implements Authoriza
         $this->label = $label;
     }
 
-    public function getItemId(): string
-    {
-        return $this->itemId;
-    }
-
     public function getLabel(): Label
     {
         return $this->label;
@@ -30,8 +24,6 @@ abstract class AbstractLabelCommand extends AbstractCommand implements Authoriza
 
     public function getLabelNames(): array
     {
-        return [
-            new StringLiteral($this->label->getName()->toString()),
-        ];
+        return [$this->label->getName()->toString()];
     }
 }
