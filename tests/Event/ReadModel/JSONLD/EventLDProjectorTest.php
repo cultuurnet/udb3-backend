@@ -1488,6 +1488,54 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals($expectedTerms, $updatedItem->terms);
     }
 
+
+    /**
+     * @test
+     */
+    public function it_keeps_start_date_for_lessen_reeks_on_calendar_updated(): void
+    {
+        $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
+
+        $lessenReeksEvent = new JsonDocument(
+            $eventId,
+            Json::encode([
+                '@id' => $eventId,
+                '@type' => 'event',
+                'terms' => [
+                    (object) [
+                        'id' => '1.51.12.0.0',
+                        'label' => 'Omnisport en andere',
+                        'domain' => 'theme',
+                    ],
+                    (object) [
+                        'id' => '0.3.1.0.0',
+                        'label' => 'Lessenreeks',
+                        'domain' => 'eventtype',
+                    ],
+                ],
+            ])
+        );
+        $this->documentRepository->save($lessenReeksEvent);
+
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $calendarUpdated = new CalendarUpdated(
+            $eventId,
+            new Calendar(
+                CalendarType::SINGLE(),
+                $startDate,
+                $endDate,
+                [
+                    new Timestamp($startDate, $endDate),
+                ]
+            )
+        );
+
+        $updatedItem = $this->project($calendarUpdated, $eventId);
+
+        $this->assertEquals($startDate->format(DATE_ATOM), $updatedItem->availableTo);
+    }
+
     /**
      * @test
      */
