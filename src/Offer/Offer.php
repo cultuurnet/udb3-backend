@@ -261,9 +261,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function importLabels(Labels $labels): void
     {
-        // Convert the imported labels to label collection.
-        $importLabelsCollection = $labels;
-
         // Always keep non-imported labels that are already on the offer
         $keepLabelsCollection = new Labels();
         foreach ($this->labels->toArray() as $label) {
@@ -278,7 +275,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // Labels which are not inside the internal state but inside the imported labels
         $addedLabels = new Labels();
         /* @var Label $label */
-        foreach ($importLabelsCollection->toArray() as $label) {
+        foreach ($labels->toArray() as $label) {
             $existingLabel = $this->labels->getLabel($label->getName()->toString());
             if ($existingLabel === null || $existingLabel['isVisible'] !== $label->isVisible()) {
                 $addedLabels = $addedLabels->with($label);
@@ -302,7 +299,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // visibility into consideration.) For each deleted label fire a LabelDeleted event.
         foreach ($this->labels->toArray() as $label) {
             $label = new Label(new LabelName($label['labelName']), $label['isVisible']);
-            $inImportWithSameVisibility = $label->isVisible() ? $importLabelsCollection->getVisibleLabels()->findByName($label->getName()) : $importLabelsCollection->getHiddenLabels()->findByName($label->getName());
+            $inImportWithSameVisibility = $label->isVisible() ? $labels->getVisibleLabels()->findByName($label->getName()) : $labels->getHiddenLabels()->findByName($label->getName());
             $inImportWithDifferentVisibility = !$inImportWithSameVisibility && $labels->findByName(new LabelName($label->getName()->toString()));
             $canBeRemoved = !$keepLabelsCollection->findByName($label->getName());
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
