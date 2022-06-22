@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
-use CultuurNet\UDB3\LabelCollection;
+use CultuurNet\UDB3\LabelCollection as LegacyLabelCollection;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -261,33 +261,25 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function importLabels(Labels $labels): void
     {
-        $convertLabelClass = function (Label $label) {
-            return new LegacyLabel(
-                $label->getName()->toString(),
-                $label->isVisible()
-            );
-        };
-
         // Convert the imported labels to label collection.
-        $importLabelsCollection = new LabelCollection(
-            array_map($convertLabelClass, $labels->toArray())
-        );
+        $importLabelsCollection = $labels;
 
         // Always keep non-imported labels that are already on the offer
-        $keepLabelsCollection = new LabelCollection();
+        $keepLabelsCollection = new Labels();
         foreach ($this->labels->toArray() as $label) {
             if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
                 $keepLabelsCollection = $keepLabelsCollection->with(
-                    new LegacyLabel($label['labelName'], $label['isVisible'])
+                    new Label(new LabelName($label['labelName']), $label['isVisible'])
                 );
             }
         }
 
         // What are the added labels?
         // Labels which are not inside the internal state but inside the imported labels
-        $addedLabels = new LabelCollection();
-        foreach ($importLabelsCollection->asArray() as $label) {
-            $existingLabel = $this->labels->getLabel($label->getName()->toNative());
+        $addedLabels = new Labels();
+        /* @var Label $label */
+        foreach ($importLabelsCollection->toArray() as $label) {
+            $existingLabel = $this->labels->getLabel($label->getName()->toString());
             if ($existingLabel === null || $existingLabel['isVisible'] !== $label->isVisible()) {
                 $addedLabels = $addedLabels->with($label);
             }
@@ -295,12 +287,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         // Fire a LabelsImported for all new labels.
         $importLabels = new Labels();
-        foreach ($addedLabels->asArray() as $addedLabel) {
+        /* @var Label $addedLabel */
+        foreach ($addedLabels->toArray() as $addedLabel) {
             $importLabels = $importLabels->with(
-                new Label(
-                    new LabelName((string) $addedLabel),
-                    $addedLabel->isVisible()
-                )
+                $addedLabel
             );
         }
         if ($importLabels->count() > 0) {
@@ -311,18 +301,18 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         // Labels which are inside the internal state but not inside imported labels or labels to keep. (Taking
         // visibility into consideration.) For each deleted label fire a LabelDeleted event.
         foreach ($this->labels->toArray() as $label) {
-            $label = new LegacyLabel($label['labelName'], $label['isVisible']);
-            $inImportWithSameVisibility = $importLabelsCollection->containsWithSameVisibility($label);
-            $inImportWithDifferentVisibility = !$inImportWithSameVisibility && (bool) $labels->findByName(new LabelName($label->getName()->toNative()));
-            $canBeRemoved = !$keepLabelsCollection->containsWithSameVisibility($label);
+            $label = new Label(new LabelName($label['labelName']), $label['isVisible']);
+            $inImportWithSameVisibility = $label->isVisible() ? $importLabelsCollection->getVisibleLabels()->findByName($label->getName()) : $importLabelsCollection->getHiddenLabels()->findByName($label->getName());
+            $inImportWithDifferentVisibility = !$inImportWithSameVisibility && $labels->findByName(new LabelName($label->getName()->toString()));
+            $canBeRemoved = !$keepLabelsCollection->findByName($label->getName());
             if ((!$inImportWithSameVisibility && $canBeRemoved) || $inImportWithDifferentVisibility) {
-                $this->apply($this->createLabelRemovedEvent($label->getName()->toNative()));
+                $this->apply($this->createLabelRemovedEvent($label->getName()->toString()));
             }
         }
 
         // For each added label fire a LabelAdded event.
-        foreach ($addedLabels->asArray() as $label) {
-            $this->apply($this->createLabelAddedEvent($label->getName()->toNative(), $label->isVisible()));
+        foreach ($addedLabels->toArray() as $label) {
+            $this->apply($this->createLabelAddedEvent($label->getName()->toString(), $label->isVisible()));
         }
     }
 
