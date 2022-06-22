@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelsRelationsRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -110,7 +109,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
         $this->labelsRepository->expects($this->once())
             ->method('getByName')
             ->with(
-                new LegacyLabelName('2dotstwice')
+                '2dotstwice'
             )
             ->willReturn(
                 new Entity(
