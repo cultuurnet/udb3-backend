@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaObject;
@@ -25,6 +24,8 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
@@ -1098,7 +1099,7 @@ final class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, $originalFile);
 
-        $labelRemoved = new LabelRemoved($organizerId, (string) $label->getName(), $label->isVisible());
+        $labelRemoved = new LabelRemoved($organizerId, $label->getName()->toString(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, $finalFile);
@@ -1110,17 +1111,17 @@ final class OrganizerLDProjectorTest extends TestCase
     {
         return [
             [
-                new Label('labelName'),
+                new Label(new LabelName('labelName')),
                 'organizer_with_one_label.json',
                 'organizer_with_modified.json',
             ],
             [
-                new Label('anotherLabel'),
+                new Label(new LabelName('anotherLabel')),
                 'organizer_with_two_labels.json',
                 'organizer_with_one_label.json',
             ],
             [
-                new Label('yetAnotherLabel'),
+                new Label(new LabelName('yetAnotherLabel')),
                 'organizer_with_three_labels.json',
                 'organizer_with_two_labels.json',
             ],
@@ -1133,11 +1134,11 @@ final class OrganizerLDProjectorTest extends TestCase
     public function it_handles_invisible_label_removed(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $label = new Label('labelName', false);
+        $label = new Label(new LabelName('labelName'), false);
 
         $this->mockGet($organizerId, 'organizer_with_one_label_invisible.json');
 
-        $labelRemoved = new LabelRemoved($organizerId, (string) $label->getName(), $label->isVisible());
+        $labelRemoved = new LabelRemoved($organizerId, $label->getName()->toString(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, 'organizer_with_modified.json');
