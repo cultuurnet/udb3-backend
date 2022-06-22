@@ -76,7 +76,18 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
                     $app['amqp.publisher.exchange_name'],
                     $app['amqp.publisher.specification'],
                     $app['amqp.publisher.message_factory'],
-                    fn () => $app['api_name'] === ApiName::CLI ? 'cli' : 'api'
+                    function () use ($app) {
+                        // Send messages triggered by CultuurKuur to the CLI queue so the migration does not fill the
+                        // regular queue. Hardcoded for now as a quick fix, should be moved to config later so we can
+                        // easily use this workaround later for other planned migrations.
+                        if ($app['api_client_id'] === 'Nnx3vGNuVVX2KJdtzHhwnx15WlTqGCZ8' || // CultuurKuur prod
+                            $app['api_client_id'] === 'I0ozJs9wF2vHll9pB2TtGxazSsEKwjOw' || // CultuurKuur test
+                            $app['api_client_id'] === 'rLlc90TSFBDRQbZwzP5vm2niDXI1CZev' // CultuurKuur acc
+                        ) {
+                            return 'cli';
+                        }
+                        return $app['api_name'] === ApiName::CLI ? 'cli' : 'api';
+                    }
                 );
             }
         );
