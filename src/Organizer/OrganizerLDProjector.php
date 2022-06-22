@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
