@@ -79,7 +79,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->labelService
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('foo'), false);
+            ->with(new LabelName('foo'), false);
 
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
 
@@ -97,11 +97,11 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('visible'), true);
+            ->with(new LabelName('visible'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('hidden'), false);
+            ->with(new LabelName('hidden'), false);
 
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
 

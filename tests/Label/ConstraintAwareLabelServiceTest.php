@@ -55,8 +55,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
 
         $service = $this->createService($repository);
 
-        $legacyLabelName = new \CultuurNet\UDB3\Label\ValueObjects\LabelName($labelName->toString());
-        $returnValue = $service->createLabelAggregateIfNew($legacyLabelName, $visibility);
+        $returnValue = $service->createLabelAggregateIfNew($labelName, $visibility);
 
         $this->assertEquals($expectedUuid, $returnValue);
 
@@ -88,8 +87,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
 
         $service = $this->createService($repository);
 
-        $legacyLabelname = new \CultuurNet\UDB3\Label\ValueObjects\LabelName($labelName->toString());
-        $returnValue = $service->createLabelAggregateIfNew($legacyLabelname, false);
+        $returnValue = $service->createLabelAggregateIfNew($labelName, false);
 
         $this->assertNull($returnValue);
     }
