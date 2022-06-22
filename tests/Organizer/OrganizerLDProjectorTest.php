@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Label as LegacyLabel;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaObject;
@@ -1135,11 +1134,11 @@ final class OrganizerLDProjectorTest extends TestCase
     public function it_handles_invisible_label_removed(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
-        $label = new LegacyLabel('labelName', false);
+        $label = new Label(new LabelName('labelName'), false);
 
         $this->mockGet($organizerId, 'organizer_with_one_label_invisible.json');
 
-        $labelRemoved = new LabelRemoved($organizerId, (string) $label->getName(), $label->isVisible());
+        $labelRemoved = new LabelRemoved($organizerId, $label->getName()->toString(), $label->isVisible());
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, 'organizer_with_modified.json');
