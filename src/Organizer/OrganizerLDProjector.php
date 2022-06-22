@@ -520,13 +520,7 @@ class OrganizerLDProjector implements EventListener
                 $jsonLD->{$labelsProperty} = array_filter(
                     $jsonLD->{$labelsProperty},
                     function ($label) use ($labelRemoved) {
-                        $removedLabel = new Label(
-                            $labelRemoved->getLabelName(),
-                            $labelRemoved->isLabelVisible()
-                        );
-                        return !$removedLabel->equals(
-                            new Label($label)
-                        );
+                        return $labelRemoved->getLabelName() !== $label;
                     }
                 );
 
