@@ -116,7 +116,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
             ->willReturn(
                 new Entity(
                     new UUID('ecedf33c-d4ea-4f62-a6e8-a7bcdf839bbe'),
-                    new StringLiteral('2dotstwice'),
+                    new LabelName('2dotstwice'),
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PUBLIC()
                 )

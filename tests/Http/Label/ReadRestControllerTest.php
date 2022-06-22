@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,7 +44,7 @@ final class ReadRestControllerTest extends TestCase
     {
         $this->entity = new Entity(
             new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'),
-            new StringLiteral('labelName'),
+            new LabelName('labelName'),
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
@@ -102,7 +103,7 @@ final class ReadRestControllerTest extends TestCase
             ->method('getByUuid');
 
         $jsonResponse = $this->readRestController->get(
-            (string) $this->entity->getName()
+            $this->entity->getName()->toString()
         );
 
         $expectedJsonResponse = new JsonResponse(
@@ -177,7 +178,7 @@ final class ReadRestControllerTest extends TestCase
     private function mockGetByName(): void
     {
         $this->labelRepository->method('getByName')
-            ->with($this->entity->getName()->toNative())
+            ->with($this->entity->getName()->toString())
             ->willReturn($this->entity);
     }
 
@@ -206,7 +207,7 @@ final class ReadRestControllerTest extends TestCase
     {
         return [
             'uuid' => $entity->getUuid()->toString(),
-            'name' => $entity->getName()->toNative(),
+            'name' => $entity->getName()->toString(),
             'visibility' => $entity->getVisibility()->toString(),
             'privacy' => $entity->getPrivacy()->toString(),
             'excluded' => $entity->isExcluded(),

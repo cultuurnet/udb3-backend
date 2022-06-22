@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -57,7 +58,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         return [
             $entity->getUuid()->toString(),
-            $entity->getName()->toNative(),
+            $entity->getName()->toString(),
             $entity->getVisibility()->sameAs(Visibility::VISIBLE()),
             $entity->getPrivacy()->sameAs(Privacy::PRIVACY_PRIVATE()),
             $entity->getParentUuid() ? $entity->getParentUuid()->toString() : null,
@@ -85,7 +86,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
     {
         return new Entity(
             new UUID($row[SchemaConfigurator::UUID_COLUMN]),
-            new StringLiteral($row[SchemaConfigurator::NAME_COLUMN]),
+            new LabelName($row[SchemaConfigurator::NAME_COLUMN]),
             $row[SchemaConfigurator::VISIBLE_COLUMN]
                 ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
             $row[SchemaConfigurator::PRIVATE_COLUMN]

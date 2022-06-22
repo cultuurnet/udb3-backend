@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractExtendsTest extends TestCase
@@ -15,10 +15,7 @@ abstract class AbstractExtendsTest extends TestCase
      */
     protected $uuid;
 
-    /**
-     * @var LabelName
-     */
-    protected $name;
+    protected LabelName $name;
 
     /**
      * @var AbstractEvent
@@ -53,7 +50,7 @@ abstract class AbstractExtendsTest extends TestCase
         $actualEvent = $this->deserialize(
             [
                 'uuid' => $this->uuid->toString(),
-                'name' => $this->name->toNative(),
+                'name' => $this->name->toString(),
             ]
         );
 

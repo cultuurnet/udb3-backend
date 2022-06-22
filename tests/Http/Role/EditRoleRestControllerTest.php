@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
@@ -247,7 +248,7 @@ class EditRoleRestControllerTest extends TestCase
 
         $label = new Entity(
             new UUID($this->labelId),
-            new StringLiteral($labelName),
+            new LabelName($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
@@ -312,7 +313,7 @@ class EditRoleRestControllerTest extends TestCase
 
         $label = new Entity(
             new UUID($this->labelId),
-            new StringLiteral($labelName),
+            new LabelName($labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );

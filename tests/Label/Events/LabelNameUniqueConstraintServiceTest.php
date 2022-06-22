@@ -7,18 +7,15 @@ namespace CultuurNet\UDB3\Label\Events;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class LabelNameUniqueConstraintServiceTest extends TestCase
 {
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private LabelName $name;
 
     /**
      * @var DomainMessage
@@ -106,7 +103,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     public function it_can_get_unique_from_created()
     {
         $this->assertEquals(
-            $this->name,
+            $this->name->toString(),
             $this->uniqueHelper->getUniqueConstraintValue($this->created)
         );
     }
@@ -117,7 +114,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     public function it_can_get_unique_from_copy_created()
     {
         $this->assertEquals(
-            $this->name,
+            $this->name->toString(),
             $this->uniqueHelper->getUniqueConstraintValue($this->copyCreated)
         );
     }

@@ -74,7 +74,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->mockedLabelReadModels['foo'] = new Entity(
             new UUID('9702eec8-badd-43be-b4d0-19b016ad6ecb'),
-            new StringLiteral('foo'),
+            new LabelName('foo'),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );

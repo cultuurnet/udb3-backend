@@ -86,7 +86,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                 function ($labelName) {
                     return new Entity(
                         new UUID(\Ramsey\Uuid\Uuid::uuid4()->toString()),
-                        new StringLiteral($labelName),
+                        new LabelName($labelName),
                         $labelName !== 'bar' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
                         Privacy::PRIVACY_PUBLIC()
                     );

@@ -17,11 +17,12 @@ use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -708,7 +709,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var AbstractEvent $labelEvent */
         $labelEvent = $this->serializer->deserialize($decoded);
 
-        $this->assertEquals('2dotstwice', $labelEvent->getName()->toNative());
+        $this->assertEquals('2dotstwice', $labelEvent->getName()->toString());
     }
 
     private function assertOrganizerLabelEventFixed(string $sampleFile): void

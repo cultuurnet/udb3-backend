@@ -11,10 +11,10 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Label\Events\Created;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -55,7 +55,8 @@ class ConstraintAwareLabelServiceTest extends TestCase
 
         $service = $this->createService($repository);
 
-        $returnValue = $service->createLabelAggregateIfNew($labelName, $visibility);
+        $legacyLabelName = new \CultuurNet\UDB3\Label\ValueObjects\LabelName($labelName->toString());
+        $returnValue = $service->createLabelAggregateIfNew($legacyLabelName, $visibility);
 
         $this->assertEquals($expectedUuid, $returnValue);
 
@@ -87,7 +88,8 @@ class ConstraintAwareLabelServiceTest extends TestCase
 
         $service = $this->createService($repository);
 
-        $returnValue = $service->createLabelAggregateIfNew($labelName, false);
+        $legacyLabelname = new \CultuurNet\UDB3\Label\ValueObjects\LabelName($labelName->toString());
+        $returnValue = $service->createLabelAggregateIfNew($legacyLabelname, false);
 
         $this->assertNull($returnValue);
     }

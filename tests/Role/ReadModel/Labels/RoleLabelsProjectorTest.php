@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
@@ -275,7 +276,7 @@ class RoleLabelsProjectorTest extends TestCase
     {
         return new Entity(
             new UUID($uuid->toString()),
-            new StringLiteral('labelName'),
+            new LabelName('labelName'),
             new Visibility('invisible'),
             new Privacy('private')
         );

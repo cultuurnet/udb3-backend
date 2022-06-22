@@ -19,10 +19,11 @@ use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
@@ -80,7 +81,7 @@ class ProjectorTest extends TestCase
 
         $readRepository->method('getByName')
             ->willReturnCallback(function (string $value) {
-                if ($value === $this->labelName->toNative()) {
+                if ($value === $this->labelName->toString()) {
                     return $this->entity;
                 }
                 return null;
@@ -312,7 +313,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName->toString()
         );
 
         $this->handleAdding($labelAdded);
@@ -325,7 +326,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName->toString()
         );
 
         $this->handleDeleting($labelRemoved);
@@ -338,7 +339,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName->toString()
         );
 
         $this->handleAdding($labelAdded);
@@ -351,7 +352,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName->toString()
         );
 
         $this->handleDeleting($labelRemoved);

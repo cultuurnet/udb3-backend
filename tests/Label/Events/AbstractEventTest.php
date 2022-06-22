@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,10 +16,7 @@ class AbstractEventTest extends TestCase
      */
     protected $uuid;
 
-    /**
-     * @var LabelName
-     */
-    protected $name;
+    protected LabelName $name;
 
     /**
      * @var AbstractEvent|MockObject
@@ -55,7 +52,7 @@ class AbstractEventTest extends TestCase
 
         $expectedArray = [
             'uuid' => $this->uuid->toString(),
-            'name' => $this->name->toNative(),
+            'name' => $this->name->toString(),
         ];
 
         $this->assertEquals($expectedArray, $actualArray);

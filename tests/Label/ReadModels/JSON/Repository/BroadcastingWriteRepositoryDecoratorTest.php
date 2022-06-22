@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
@@ -46,7 +47,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     public function it_does_not_broadcast_on_save()
     {
         $uuid = new UUID('eea246d1-4f50-4879-8f52-42867ed51670');
-        $name = new StringLiteral('labelName');
+        $name = new LabelName('labelName');
         $visibility = new Visibility('invisible');
         $privacy = new Privacy('private');
 

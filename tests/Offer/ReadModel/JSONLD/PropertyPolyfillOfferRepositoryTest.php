@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -558,7 +559,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
             ->willReturn(
                 new Entity(
                     new UUID('7ba9e0e6-f1b5-4931-a00a-cd660c990e57'),
-                    new StringLiteral('UiTPAS Mechelen'),
+                    new LabelName('UiTPAS Mechelen'),
                     Visibility::VISIBLE(),
                     Privacy::PRIVACY_PUBLIC()
                 )

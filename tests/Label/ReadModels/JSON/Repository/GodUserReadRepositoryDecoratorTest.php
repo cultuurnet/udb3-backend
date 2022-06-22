@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
@@ -40,13 +41,13 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
         $this->labels = [
             'c7a73397-a210-4126-8fa0-a9f822c2a356' => new Entity(
                 new UUID('c7a73397-a210-4126-8fa0-a9f822c2a356'),
-                new StringLiteral('foo'),
+                new LabelName('foo'),
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PRIVATE()
             ),
             'fa285cf6-314c-42cc-99ee-94030127954d' => new Entity(
                 new UUID('fa285cf6-314c-42cc-99ee-94030127954d'),
-                new StringLiteral('bar'),
+                new LabelName('bar'),
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PUBLIC()
             ),
@@ -71,7 +72,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
                     $labels = array_filter(
                         $this->labels,
                         function (Entity $label) use ($name) {
-                            return $label->getName()->toNative() === $name;
+                            return $label->getName()->toString() === $name;
                         }
                     );
 
