@@ -47,7 +47,7 @@ class AbstractLabelEventTest extends TestCase
         $expectedLabel = new Label(new LabelName('LabelTest'));
 
         $this->assertEquals($expectedItemId, $this->labelEvent->getItemId());
-        $this->assertEquals($expectedLabel, $this->labelEvent->getLabelName());
+        $this->assertEquals($expectedLabel->getName()->toString(), $this->labelEvent->getLabelName());
     }
 
     /**
