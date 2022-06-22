@@ -70,7 +70,7 @@ final class LabelImportPreProcessor
         /** @var Label $importLabel */
         foreach ($importLabels as $importLabel) {
             $this->labelService->createLabelAggregateIfNew(
-                new LegacyLabelName($importLabel->getName()->toString()),
+                $importLabel->getName(),
                 $importLabel->isVisible()
             );
         }
