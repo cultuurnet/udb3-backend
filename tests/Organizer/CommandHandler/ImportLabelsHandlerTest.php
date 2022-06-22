@@ -62,11 +62,11 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('foo'), true);
+            ->with(new LabelName('foo'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('bar'), true);
+            ->with(new LabelName('bar'), true);
 
         $id = '86a51894-e18e-4a6a-b7c5-d774e8c81074';
 
