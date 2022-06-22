@@ -46,7 +46,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
 
                 if ($label) {
                     $this->logger->info(
-                        'Found udb3 label ' . $label->getName()->toNative()
+                        'Found udb3 label ' . $label->getName()->toString()
                         . ' for aggregate ' . $aggregateRoot->getAggregateRootId()
                     );
 

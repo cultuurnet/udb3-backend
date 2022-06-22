@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\StringLiteral;
 
 class Label extends EventSourcedAggregateRoot
@@ -23,10 +24,7 @@ class Label extends EventSourcedAggregateRoot
      */
     private $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private LabelName $name;
 
     /**
      * @var Visibility
@@ -54,7 +52,7 @@ class Label extends EventSourcedAggregateRoot
      */
     public static function create(
         UUID $uuid,
-        StringLiteral $name,
+        LabelName $name,
         Visibility $visibility,
         Privacy $privacy
     ) {
@@ -75,7 +73,7 @@ class Label extends EventSourcedAggregateRoot
      */
     public static function createCopy(
         UUID $uuid,
-        StringLiteral $name,
+        LabelName $name,
         Visibility $visibility,
         Privacy $privacy,
         UUID $parentUuid

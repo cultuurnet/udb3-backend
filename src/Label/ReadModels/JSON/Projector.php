@@ -35,7 +35,7 @@ class Projector extends AbstractProjector
     public function applyCreated(Created $created): void
     {
         $labelWithSameUuid = $this->readRepository->getByUuid($created->getUuid());
-        $labelWithSameName = $this->readRepository->getByName($created->getName()->toNative());
+        $labelWithSameName = $this->readRepository->getByName($created->getName()->toString());
 
         if ($labelWithSameUuid ||  $labelWithSameName) {
             return;
@@ -51,7 +51,7 @@ class Projector extends AbstractProjector
     public function applyCopyCreated(CopyCreated $copyCreated): void
     {
         $labelWithSameUuid = $this->readRepository->getByUuid($copyCreated->getUuid());
-        $labelWithSameName = $this->readRepository->getByName($copyCreated->getName()->toNative());
+        $labelWithSameName = $this->readRepository->getByName($copyCreated->getName()->toString());
 
         if ($labelWithSameUuid ||  $labelWithSameName) {
             return;

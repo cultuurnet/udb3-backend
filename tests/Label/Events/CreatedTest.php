@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class CreatedTest extends TestCase
@@ -17,10 +17,7 @@ class CreatedTest extends TestCase
      */
     protected $uuid;
 
-    /**
-     * @var LabelName
-     */
-    protected $name;
+    protected LabelName $name;
 
     /**
      * @var Visibility
@@ -125,7 +122,7 @@ class CreatedTest extends TestCase
     {
         return [
             Created::UUID => $this->created->getUuid()->toString(),
-            Created::NAME => $this->created->getName()->toNative(),
+            Created::NAME => $this->created->getName()->toString(),
             Created::VISIBILITY => $this->created->getVisibility()->toString(),
             Created::PRIVACY => $this->created->getPrivacy()->toString(),
         ];

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use InvalidArgumentException;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -23,10 +24,7 @@ class Entity implements \JsonSerializable
      */
     private $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private LabelName $name;
 
     /**
      * @var Visibility
@@ -49,7 +47,7 @@ class Entity implements \JsonSerializable
 
     public function __construct(
         UUID $uuid,
-        StringLiteral $name,
+        LabelName $name,
         Visibility $visibility,
         Privacy $privacy,
         UUID $parentUuid = null,
@@ -77,10 +75,7 @@ class Entity implements \JsonSerializable
         return $this->uuid;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): LabelName
     {
         return $this->name;
     }
@@ -126,7 +121,7 @@ class Entity implements \JsonSerializable
     {
         return [
             self::ID => $this->uuid->toString(),
-            self::NAME => $this->name->toNative(),
+            self::NAME => $this->name->toString(),
             self::VISIBILITY => $this->visibility->toString(),
             self::PRIVACY => $this->privacy->toString(),
             self::EXCLUDED => $this->excluded,

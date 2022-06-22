@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelR
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\SchemaConfigurator as PermissionsSchemaConfigurator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -93,7 +94,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         if ($foundLabels) {
             $nameLowerCase = mb_strtolower($name);
             foreach ($foundLabels as $foundLabel) {
-                $foundLabelLowerCase = mb_strtolower($foundLabel->getName()->toNative());
+                $foundLabelLowerCase = mb_strtolower($foundLabel->getName()->toString());
                 if ($nameLowerCase === $foundLabelLowerCase) {
                     return true;
                 }
@@ -271,7 +272,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
     {
         $uuid = new UUID($row[SchemaConfigurator::UUID_COLUMN]);
 
-        $name = new StringLiteral($row[SchemaConfigurator::NAME_COLUMN]);
+        $name = new LabelName($row[SchemaConfigurator::NAME_COLUMN]);
 
         $visibility = $row[SchemaConfigurator::VISIBLE_COLUMN]
             ? Visibility::VISIBLE() : Visibility::INVISIBLE();

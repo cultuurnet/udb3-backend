@@ -11,10 +11,10 @@ use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class LabelTest extends AggregateRootScenarioTestCase
 {
@@ -23,10 +23,7 @@ class LabelTest extends AggregateRootScenarioTestCase
      */
     private $uuid;
 
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private LabelName $name;
 
     /**
      * @var Visibility
