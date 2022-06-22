@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 
 final class LabelImportPreProcessor
@@ -70,7 +71,7 @@ final class LabelImportPreProcessor
         /** @var Label $importLabel */
         foreach ($importLabels as $importLabel) {
             $this->labelService->createLabelAggregateIfNew(
-                new LegacyLabelName($importLabel->getName()->toString()),
+                new LabelName($importLabel->getName()->toString()),
                 $importLabel->isVisible()
             );
         }

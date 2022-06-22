@@ -40,7 +40,7 @@ final class AddLabelHandler implements CommandHandler
         }
 
         $this->labelService->createLabelAggregateIfNew(
-            new LegacyLabelName($command->getLabel()->getName()->toString()),
+            $command->getLabel()->getName(),
             $command->getLabel()->isVisible()
         );
 

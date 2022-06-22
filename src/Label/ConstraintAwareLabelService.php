@@ -36,12 +36,12 @@ class ConstraintAwareLabelService implements LabelServiceInterface
     /**
      * @inheritdoc
      */
-    public function createLabelAggregateIfNew(LegacyLabelName $labelName, bool $visible): ?UUID
+    public function createLabelAggregateIfNew(LabelName $labelName, bool $visible): ?UUID
     {
         try {
             $labelAggregate = Label::create(
                 new UUID($this->uuidGenerator->generate()),
-                new LabelName($labelName->toNative()),
+                $labelName,
                 $visible ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
                 Privacy::PRIVACY_PUBLIC()
             );
