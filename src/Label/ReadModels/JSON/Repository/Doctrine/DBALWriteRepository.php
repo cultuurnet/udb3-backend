@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {

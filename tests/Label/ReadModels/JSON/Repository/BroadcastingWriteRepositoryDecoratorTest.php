@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class BroadcastingWriteRepositoryDecoratorTest extends TestCase
 {

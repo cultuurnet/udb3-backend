@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class EntityTest extends TestCase
 {

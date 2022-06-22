@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 
