@@ -9,7 +9,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Label as LegacyLabel;
-use CultuurNet\UDB3\LabelCollection;
+use CultuurNet\UDB3\LabelCollection as LegacyLabelCollection;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -65,7 +65,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 {
     protected Item $offer;
 
-    protected LabelCollection $labels;
+    protected Labels $labels;
 
     protected Image $image;
 
@@ -76,10 +76,12 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->offer = new Item();
         $this->offer->apply(new ItemCreated('foo'));
 
-        $this->labels = (new LabelCollection())
-            ->with(new LegacyLabel('test'))
-            ->with(new LegacyLabel('label'))
-            ->with(new LegacyLabel('cultuurnet'));
+        $this->labels = new Labels(
+            new Label(new LabelName('test')),
+            new Label(new LabelName('label')),
+            new Label(new LabelName('cultuurnet')),
+        );
+
         $this->image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/gif'),
