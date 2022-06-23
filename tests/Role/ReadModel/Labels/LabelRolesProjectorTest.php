@@ -9,7 +9,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -48,7 +47,7 @@ class LabelRolesProjectorTest extends TestCase
     {
         $labelCreated = new LabelCreated(
             new UUID('32574fe8-e752-49dd-9dc1-6856372f5f2f'),
-            new LabelName('labelName'),
+            'labelName',
             new Visibility('invisible'),
             new Privacy('private')
         );

@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelAdded as LabelAddedToPlace;
 use CultuurNet\UDB3\Place\Events\LabelRemoved as LabelRemovedFromPlace;
+use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -37,9 +38,9 @@ class ProjectorTest extends TestCase
 
     private UUID $unknownId;
 
-    private LabelName $labelName;
+    private string $labelName;
 
-    private LabelName $unknownLabelName;
+    private string $unknownLabelName;
 
     /**
      * @var WriteRepositoryInterface|MockObject
@@ -55,14 +56,14 @@ class ProjectorTest extends TestCase
         $this->uuid = new UUID('EC1697B7-7E2B-4462-A901-EC20E2A0AAFC');
         $this->unknownId = new UUID('ACFCFE56-3D16-48FB-A053-FAA9950720DC');
 
-        $this->labelName = new LabelName('labelName');
-        $this->unknownLabelName = new LabelName('unknownLabelName');
+        $this->labelName = 'labelName';
+        $this->unknownLabelName = 'unknownLabelName';
 
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
 
         $this->entity = new Entity(
             $this->uuid,
-            $this->labelName,
+            new StringLiteral($this->labelName),
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE(),
             new UUID('e7dd8377-b697-4ba1-a688-164daaf961b5')
@@ -80,7 +81,7 @@ class ProjectorTest extends TestCase
 
         $readRepository->method('getByName')
             ->willReturnCallback(function (string $value) {
-                if ($value === $this->labelName->toNative()) {
+                if ($value === $this->labelName) {
                     return $this->entity;
                 }
                 return null;
@@ -108,7 +109,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                $this->unknownLabelName,
+                new LabelName($this->unknownLabelName),
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy()
             );
@@ -175,7 +176,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                $this->unknownLabelName,
+                new LabelName($this->unknownLabelName),
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy(),
                 $this->entity->getParentUuid()
@@ -312,7 +313,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName
         );
 
         $this->handleAdding($labelAdded);
@@ -325,7 +326,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromEvent(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName
         );
 
         $this->handleDeleting($labelRemoved);
@@ -338,7 +339,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName
         );
 
         $this->handleAdding($labelAdded);
@@ -351,7 +352,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromPlace(
             '350bd67a-814a-4be0-acc8-f92395830e94',
-            $this->labelName->toNative()
+            $this->labelName
         );
 
         $this->handleDeleting($labelRemoved);
