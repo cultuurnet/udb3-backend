@@ -158,19 +158,14 @@ class Projector extends AbstractProjector
         // Never delete the UDB3 labels on an update.
         $this->writeRepository->deleteImportedByRelationId($relationId);
 
-        $keywords = $cdbItem->getKeywords();
-
         $labelsArray = new LabelsArray();
-        foreach ($keywords as $keyword) {
+        foreach ($cdbItem->getKeywords() as $keyword) {
             $labelsArray->addLabel($keyword, true);
         }
 
-
         // Calculate the UDB2 imported labels.
         $udb3Labels = array_map(
-            function (LabelRelation $labelRelation) {
-                return $labelRelation->getLabelName();
-            },
+            static fn (LabelRelation $labelRelation) => $labelRelation->getLabelName(),
             $this->readRepository->getLabelRelationsForItem($relationId)
         );
         $udb2Labels = array_udiff(

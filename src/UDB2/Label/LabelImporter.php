@@ -26,11 +26,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
     use LoggerAwareTrait;
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    /**
-     * @var LabelServiceInterface
-     */
-    private $labelService;
-
+    private LabelServiceInterface $labelService;
 
     public function __construct(
         LabelServiceInterface $labelService
@@ -39,10 +35,9 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-
     public function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
-    ) {
+    ): void {
         $event = EventItemFactory::createEventFromCdbXml(
             $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
             $eventImportedFromUDB2->getCdbXml()
@@ -51,10 +46,9 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($event);
     }
 
-
     public function applyPlaceImportedFromUDB2(
         PlaceImportedFromUDB2 $placeImportedFromUDB2
-    ) {
+    ): void {
         $place = ActorItemFactory::createActorFromCdbXml(
             $placeImportedFromUDB2->getCdbXmlNamespaceUri(),
             $placeImportedFromUDB2->getCdbXml()
@@ -63,10 +57,9 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($place);
     }
 
-
     public function applyOrganizerImportedFromUDB2(
         OrganizerImportedFromUDB2 $organizerImportedFromUDB2
-    ) {
+    ): void {
         $organizer = ActorItemFactory::createActorFromCdbXml(
             $organizerImportedFromUDB2->getCdbXmlNamespaceUri(),
             $organizerImportedFromUDB2->getCdbXml()
@@ -75,10 +68,9 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($organizer);
     }
 
-
     public function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-    ) {
+    ): void {
         $event = EventItemFactory::createEventFromCdbXml(
             $eventUpdatedFromUDB2->getCdbXmlNamespaceUri(),
             $eventUpdatedFromUDB2->getCdbXml()
@@ -87,10 +79,9 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($event);
     }
 
-
     public function applyPlaceUpdatedFromUDB2(
         PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
-    ) {
+    ): void {
         $place = ActorItemFactory::createActorFromCdbXml(
             $placeUpdatedFromUDB2->getCdbXmlNamespaceUri(),
             $placeUpdatedFromUDB2->getCdbXml()
@@ -99,10 +90,9 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($place);
     }
 
-
     public function applyOrganizerUpdatedFromUDB2(
         OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
-    ) {
+    ): void {
         $organizer = ActorItemFactory::createActorFromCdbXml(
             $organizerUpdatedFromUDB2->getCdbXmlNamespaceUri(),
             $organizerUpdatedFromUDB2->getCdbXml()
@@ -111,8 +101,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($organizer);
     }
 
-
-    private function createLabelAggregatesFromCdbItem(\CultureFeed_Cdb_Item_Base $cdbItem)
+    private function createLabelAggregatesFromCdbItem(\CultureFeed_Cdb_Item_Base $cdbItem): void
     {
         $labelsArray = LabelsArray::createFromKeywords($cdbItem->getKeywords(true));
 
