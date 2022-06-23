@@ -114,14 +114,12 @@ class LabelImporter implements EventListener, LoggerAwareInterface
 
     private function createLabelAggregatesFromCdbItem(\CultureFeed_Cdb_Item_Base $cdbItem)
     {
-        $labelCollection = LabelCollection::fromKeywords(
-            $cdbItem->getKeywords(true)
-        );
+        $labelsArray = LabelsArray::createFromKeywords($cdbItem->getKeywords(true));
 
-        foreach ($labelCollection->asArray() as $label) {
+        foreach ($labelsArray->toArray() as $label) {
             $this->labelService->createLabelAggregateIfNew(
-                new LabelName((string) $label),
-                $label->isVisible()
+                new LabelName($label['labelName']),
+                $label['isVisible']
             );
         }
     }
