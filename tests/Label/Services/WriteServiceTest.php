@@ -13,39 +13,26 @@ use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class WriteServiceTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var Create
-     */
-    private $create;
+    private Create $create;
 
     /**
      * @var CommandBus|MockObject
      */
     private $commandBus;
 
-    /**
-     * @var UuidGeneratorInterface|MockObject
-     */
-    private $uuidGenerator;
+    private WriteService $writeService;
 
-    /**
-     * @var WriteService
-     */
-    private $writeService;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('91a6cfb3-f556-48cd-91ef-b0675b827728');
 
@@ -58,27 +45,27 @@ class WriteServiceTest extends TestCase
 
         $this->commandBus = $this->createMock(CommandBus::class);
 
-        $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->uuidGenerator->method('generate')
+        $uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $uuidGenerator->method('generate')
             ->willReturn($this->create->getUuid()->toString());
 
         $this->writeService = new WriteService(
             $this->commandBus,
-            $this->uuidGenerator
+            $uuidGenerator
         );
     }
 
     /**
      * @test
      */
-    public function it_calls_dispatch_with_create_command_for_create()
+    public function it_calls_dispatch_with_create_command_for_create(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
             ->with($this->create);
 
         $uuid = $this->writeService->create(
-            $this->create->getName(),
+            new LegacyLabelName($this->create->getName()->toString()),
             $this->create->getVisibility(),
             $this->create->getPrivacy()
         );
@@ -89,7 +76,7 @@ class WriteServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_dispatch_with_make_visible_command_for_make_visible()
+    public function it_calls_dispatch_with_make_visible_command_for_make_visible(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -101,7 +88,7 @@ class WriteServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_dispatch_with_make_invisible_command_for_make_invisible()
+    public function it_calls_dispatch_with_make_invisible_command_for_make_invisible(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -113,7 +100,7 @@ class WriteServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_dispatch_with_make_public_command_for_make_public()
+    public function it_calls_dispatch_with_make_public_command_for_make_public(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -125,7 +112,7 @@ class WriteServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_calls_dispatch_with_make_private_command_for_make_private()
+    public function it_calls_dispatch_with_make_private_command_for_make_private(): void
     {
         $this->commandBus->expects($this->once())
             ->method('dispatch')

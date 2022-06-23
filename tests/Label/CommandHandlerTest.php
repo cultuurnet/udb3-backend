@@ -21,86 +21,59 @@ use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var UUID
-     */
-    private $extraUuid;
+    private LabelName $name;
 
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private LegacyLabelName $legacyName;
 
-    /**
-     * @var Visibility
-     */
-    private $visibility;
+    private Visibility $visibility;
 
-    /**
-     * @var Privacy
-     */
-    private $privacy;
+    private Privacy $privacy;
 
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private UUID $parentUuid;
 
-    /**
-     * @var Created
-     */
-    private $created;
+    private Created $created;
 
-    /**
-     * @var CopyCreated
-     */
-    private $copyCreated;
+    private CopyCreated $copyCreated;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->uuid = new UUID('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
-        $this->extraUuid = new UUID('04568db8-a137-44d8-a7eb-d7a00ae545bf');
         $this->name = new LabelName('labelName');
+        $this->legacyName = new LegacyLabelName('labelName');
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
         $this->parentUuid = new UUID('f4e5608b-348d-4321-86f7-567891bf33b7');
 
         $this->created = new Created(
             $this->uuid,
-            $this->name,
+            $this->legacyName,
             $this->visibility,
             $this->privacy
         );
 
         $this->copyCreated = new CopyCreated(
             $this->uuid,
-            $this->name,
+            $this->legacyName,
             $this->visibility,
             $this->privacy,
             $this->parentUuid
         );
 
-        // Ensure all members are created before createCommandHandler is called.
         parent::setUp();
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function createCommandHandler(
         EventStore $eventStore,
         EventBus $eventBus
-    ) {
+    ): CommandHandler {
         return new CommandHandler(
             new LabelRepository($eventStore, $eventBus)
         );
@@ -109,7 +82,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_create()
+    public function it_handles_create(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
@@ -126,7 +99,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_create_copy()
+    public function it_handles_create_copy(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
@@ -144,23 +117,23 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_make_visible_when_invisible()
+    public function it_handles_make_visible_when_invisible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakeVisible($this->uuid))
-            ->then([new MadeVisible($this->uuid, $this->name)]);
+            ->then([new MadeVisible($this->uuid, $this->legacyName)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_handle_make_visible_when_already_visible()
+    public function it_does_not_handle_make_visible_when_already_visible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
+            ->given([$this->created, new MadeVisible($this->uuid, $this->legacyName)])
             ->when(new MakeVisible($this->uuid))
             ->then([]);
     }
@@ -168,19 +141,19 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_make_invisible_when_visible()
+    public function it_handles_make_invisible_when_visible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
+            ->given([$this->created, new MadeVisible($this->uuid, $this->legacyName)])
             ->when(new MakeInvisible($this->uuid))
-            ->then([new MadeInvisible($this->uuid, $this->name)]);
+            ->then([new MadeInvisible($this->uuid, $this->legacyName)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_handle_make_invisible_when_already_invisible()
+    public function it_does_not_handle_make_invisible_when_already_invisible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
@@ -192,23 +165,23 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_make_public_when_private()
+    public function it_handles_make_public_when_private(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakePublic($this->uuid))
-            ->then([new MadePublic($this->uuid, $this->name)]);
+            ->then([new MadePublic($this->uuid, $this->legacyName)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_handle_make_public_when_already_public()
+    public function it_does_not_handle_make_public_when_already_public(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadePublic($this->uuid, $this->name)])
+            ->given([$this->created, new MadePublic($this->uuid, $this->legacyName)])
             ->when(new MakePublic($this->uuid))
             ->then([]);
     }
@@ -216,19 +189,19 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_make_private_when_public()
+    public function it_handles_make_private_when_public(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadePublic($this->uuid, $this->name)])
+            ->given([$this->created, new MadePublic($this->uuid, $this->legacyName)])
             ->when(new MakePrivate($this->uuid))
-            ->then([new MadePrivate($this->uuid, $this->name)]);
+            ->then([new MadePrivate($this->uuid, $this->legacyName)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_handle_make_private_when_already_private()
+    public function it_does_not_handle_make_private_when_already_private(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())

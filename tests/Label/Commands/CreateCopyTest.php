@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
-class CreateCopyTest extends CreateTest
+final class CreateCopyTest extends CreateTest
 {
     /**
      * @var UUID
@@ -16,9 +16,9 @@ class CreateCopyTest extends CreateTest
     /**
      * @var CreateCopy
      */
-    protected $create;
+    protected Create $create;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class CreateCopyTest extends CreateTest
     /**
      * @test
      */
-    public function it_stores_a_parent_uuid()
+    public function it_stores_a_parent_uuid(): void
     {
         $this->assertEquals($this->parentUuid, $this->create->getParentUuid());
     }
@@ -44,7 +44,7 @@ class CreateCopyTest extends CreateTest
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualCreate = unserialize(serialize($this->create));
 
