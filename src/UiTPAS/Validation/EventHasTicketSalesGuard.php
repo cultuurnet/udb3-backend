@@ -6,11 +6,8 @@ namespace CultuurNet\UDB3\UiTPAS\Validation;
 
 use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Uitpas;
-use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
-use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
 use Psr\Log\LoggerInterface;
 
 final class EventHasTicketSalesGuard
@@ -33,28 +30,12 @@ final class EventHasTicketSalesGuard
 
     public function guard(AbstractCommand $command): void
     {
-        if (!($command instanceof UpdateOrganizer) &&
-            !($command instanceof DeleteOrganizer)) {
-            return;
-        }
-
         $eventId = $command->getItemId();
 
         try {
-            /** @var Event $event */
-            $event = $this->eventRepository->load($eventId);
+            $this->eventRepository->load($eventId);
         } catch (AggregateNotFoundException $exception) {
             // The command is for a place which can not have ticket sales.
-            return;
-        }
-
-        $equalOrganizers = $event->getOrganizerId() === $command->getOrganizerId();
-        if ($command instanceof UpdateOrganizer && $equalOrganizers) {
-            // A change only happens when a different organizer is updated
-            return;
-        }
-        if ($command instanceof DeleteOrganizer && !$equalOrganizers) {
-            // A change only happens when the existing organizer is deleted
             return;
         }
 

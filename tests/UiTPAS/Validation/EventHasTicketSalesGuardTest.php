@@ -75,10 +75,6 @@ final class EventHasTicketSalesGuardTest extends TestCase
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('6a6ea6d2-24e5-42d0-880b-5c7f62c73658');
-
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
             ->with($this->eventId)
@@ -97,10 +93,6 @@ final class EventHasTicketSalesGuardTest extends TestCase
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('596c4837-6239-47e3-bf33-2bb11dc6adc7');
-
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
             ->with($this->eventId)
@@ -118,10 +110,6 @@ final class EventHasTicketSalesGuardTest extends TestCase
             $this->eventId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
-
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('6a6ea6d2-24e5-42d0-880b-5c7f62c73658');
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
@@ -143,10 +131,6 @@ final class EventHasTicketSalesGuardTest extends TestCase
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
 
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('596c4837-6239-47e3-bf33-2bb11dc6adc7');
-
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
             ->with($this->eventId)
@@ -166,10 +150,6 @@ final class EventHasTicketSalesGuardTest extends TestCase
             $this->eventId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
-
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('6a6ea6d2-24e5-42d0-880b-5c7f62c73658');
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
@@ -194,10 +174,6 @@ final class EventHasTicketSalesGuardTest extends TestCase
             $this->eventId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
-
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('6a6ea6d2-24e5-42d0-880b-5c7f62c73658');
 
         $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
@@ -225,46 +201,6 @@ final class EventHasTicketSalesGuardTest extends TestCase
             $this->placeId,
             '596c4837-6239-47e3-bf33-2bb11dc6adc7'
         );
-
-        $this->eventHasTicketSalesGuard->guard($organizerCommand);
-    }
-
-    /**
-     * @test
-     */
-    public function it_ignores_update_organizer_with_no_change(): void
-    {
-        $this->uitpas->expects($this->never())
-            ->method('eventHasTicketSales');
-
-        $organizerCommand = new UpdateOrganizer(
-            $this->eventId,
-            '596c4837-6239-47e3-bf33-2bb11dc6adc7'
-        );
-
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('596c4837-6239-47e3-bf33-2bb11dc6adc7');
-
-        $this->eventHasTicketSalesGuard->guard($organizerCommand);
-    }
-
-    /**
-     * @test
-     */
-    public function it_ignores_delete_organizer_with_no_change(): void
-    {
-        $this->uitpas->expects($this->never())
-            ->method('eventHasTicketSales');
-
-        $organizerCommand = new DeleteOrganizer(
-            $this->eventId,
-            '596c4837-6239-47e3-bf33-2bb11dc6adc7'
-        );
-
-        $this->event->expects($this->once())
-            ->method('getOrganizerId')
-            ->willReturn('6a6ea6d2-24e5-42d0-880b-5c7f62c73658');
 
         $this->eventHasTicketSalesGuard->guard($organizerCommand);
     }
