@@ -65,7 +65,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 {
     protected Item $offer;
 
-    protected LabelCollection $labels;
+    protected Labels $labels;
 
     protected Image $image;
 
@@ -76,10 +76,10 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->offer = new Item();
         $this->offer->apply(new ItemCreated('foo'));
 
-        $this->labels = (new LabelCollection())
-            ->with(new LegacyLabel('test'))
-            ->with(new LegacyLabel('label'))
-            ->with(new LegacyLabel('cultuurnet'));
+        $this->labels = (new Labels())
+            ->with(new Label(new LabelName('test')))
+            ->with(new Label(new LabelName('label')))
+            ->with(new Label(new LabelName('cultuurnet')));
         $this->image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/gif'),
