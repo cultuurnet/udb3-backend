@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -41,7 +40,7 @@ class ConstraintAwareLabelService implements LabelServiceInterface
         try {
             $labelAggregate = Label::create(
                 new UUID($this->uuidGenerator->generate()),
-                new LegacyLabelName($labelName->toString()),
+                $labelName->toString(),
                 $visible ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
                 Privacy::PRIVACY_PUBLIC()
             );

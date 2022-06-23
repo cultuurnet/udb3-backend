@@ -11,7 +11,6 @@ use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Label\Events\Created;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -40,7 +39,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
      */
     public function it_creates_a_new_label_aggregate_for_a_given_label_name_and_visibility()
     {
-        $labelName = new LabelName('foo');
+        $labelName = 'foo';
         $visibility = false;
         $expectedUuid = new UUID('b67d6f8b-fe08-44c9-a0a7-8e6b47dab0ff');
 
@@ -56,7 +55,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
 
         $service = $this->createService($repository);
 
-        $returnValue = $service->createLabelAggregateIfNew($labelName, $visibility);
+        $returnValue = $service->createLabelAggregateIfNew(new LabelName($labelName), $visibility);
 
         $this->assertEquals($expectedUuid, $returnValue);
 
@@ -64,7 +63,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
             [
                 new Created(
                     $expectedUuid,
-                    new LegacyLabelName($labelName->toString()),
+                    $labelName,
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PUBLIC()
                 ),
