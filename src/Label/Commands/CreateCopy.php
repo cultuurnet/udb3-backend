@@ -11,14 +11,8 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class CreateCopy extends Create
 {
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private UUID $parentUuid;
 
-    /**
-     * CreateCopy constructor.
-     */
     public function __construct(
         UUID $uuid,
         LabelName $name,
@@ -31,10 +25,7 @@ class CreateCopy extends Create
         $this->parentUuid = $parentUuid;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getParentUuid()
+    public function getParentUuid(): UUID
     {
         return $this->parentUuid;
     }

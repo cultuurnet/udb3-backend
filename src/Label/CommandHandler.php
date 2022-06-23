@@ -17,10 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CommandHandler extends AbstractCommandHandler
 {
-    /**
-     * @var Repository
-     */
-    private $repository;
+    private Repository $repository;
 
     public function __construct(
         Repository $repository
@@ -28,7 +25,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->repository = $repository;
     }
 
-    public function handleCreate(Create $create)
+    public function handleCreate(Create $create): void
     {
         $label = Label::create(
             $create->getUuid(),
@@ -40,7 +37,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    public function handleCreateCopy(CreateCopy $createCopy)
+    public function handleCreateCopy(CreateCopy $createCopy): void
     {
         $label = Label::createCopy(
             $createCopy->getUuid(),
@@ -53,7 +50,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    public function handleMakeVisible(MakeVisible $makeVisible)
+    public function handleMakeVisible(MakeVisible $makeVisible): void
     {
         $label = $this->load($makeVisible->getUuid());
 
@@ -62,7 +59,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    public function handleMakeInvisible(MakeInvisible $makeInvisible)
+    public function handleMakeInvisible(MakeInvisible $makeInvisible): void
     {
         $label = $this->load($makeInvisible->getUuid());
 
@@ -71,7 +68,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    public function handleMakePublic(MakePublic $makePublic)
+    public function handleMakePublic(MakePublic $makePublic): void
     {
         $label = $this->load($makePublic->getUuid());
 
@@ -80,7 +77,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    public function handleMakePrivate(MakePrivate $makePrivate)
+    public function handleMakePrivate(MakePrivate $makePrivate): void
     {
         $label = $this->load($makePrivate->getUuid());
 
@@ -97,7 +94,7 @@ class CommandHandler extends AbstractCommandHandler
         return $label;
     }
 
-    private function save(Label $label)
+    private function save(Label $label): void
     {
         $this->repository->save($label);
     }

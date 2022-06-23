@@ -13,19 +13,10 @@ class Create extends AbstractCommand
 {
     private LabelName $name;
 
-    /**
-     * @var string
-     */
-    private $visibility;
+    private string $visibility;
 
-    /**
-     * @var string
-     */
-    private $privacy;
+    private string $privacy;
 
-    /**
-     * Create constructor.
-     */
     public function __construct(
         UUID $uuid,
         LabelName $name,
@@ -47,18 +38,12 @@ class Create extends AbstractCommand
         return $this->name;
     }
 
-    /**
-     * @return Visibility
-     */
-    public function getVisibility()
+    public function getVisibility(): Visibility
     {
         return new Visibility($this->visibility);
     }
 
-    /**
-     * @return Privacy
-     */
-    public function getPrivacy()
+    public function getPrivacy(): Privacy
     {
         return new Privacy($this->privacy);
     }

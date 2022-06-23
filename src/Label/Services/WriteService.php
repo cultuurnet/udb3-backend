@@ -19,15 +19,9 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class WriteService implements WriteServiceInterface
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var UuidGeneratorInterface
-     */
-    private $uuidGenerator;
+    private UuidGeneratorInterface $uuidGenerator;
 
     public function __construct(
         CommandBus $commandBus,

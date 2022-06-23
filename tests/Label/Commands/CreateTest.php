@@ -12,29 +12,17 @@ use PHPUnit\Framework\TestCase;
 
 class CreateTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
     protected LabelName $name;
 
-    /**
-     * @var Visibility
-     */
-    protected $visibility;
+    protected Visibility $visibility;
 
-    /**
-     * @var Privacy
-     */
-    protected $privacy;
+    protected Privacy $privacy;
 
-    /**
-     * @var Create
-     */
-    protected $create;
+    private Create $create;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('fec0c4d7-80e1-4713-98f9-4c436af6e650');
 
@@ -55,7 +43,7 @@ class CreateTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_command()
+    public function it_extends_an_abstract_command(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->create,
@@ -66,7 +54,7 @@ class CreateTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->create->getUuid());
     }
@@ -74,7 +62,7 @@ class CreateTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_name()
+    public function it_stores_a_name(): void
     {
         $this->assertEquals($this->name, $this->create->getName());
     }
@@ -82,7 +70,7 @@ class CreateTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_visibility()
+    public function it_stores_a_visibility(): void
     {
         $this->assertEquals($this->visibility, $this->create->getVisibility());
     }
@@ -90,7 +78,7 @@ class CreateTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_privacy()
+    public function it_stores_a_privacy(): void
     {
         $this->assertEquals($this->privacy, $this->create->getPrivacy());
     }
@@ -98,7 +86,7 @@ class CreateTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualCreate = unserialize(serialize($this->create));
 
