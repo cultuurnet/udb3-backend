@@ -60,7 +60,7 @@ final class EventHasTicketSalesGuard
 
         try {
             $hasTicketSales = $this->uitpas->eventHasTicketSales($eventId);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             // By design to catch all exceptions and map an exception to no ticket sales.
             // This is done to allow changing an organizer even when UiTPAS has issues.
             // All exceptions will be logged.

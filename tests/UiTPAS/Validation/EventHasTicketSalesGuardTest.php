@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\Offer;
+use Error;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -179,6 +180,34 @@ final class EventHasTicketSalesGuardTest extends TestCase
             ->method('warning')
             ->with('Ticket call sales failed with exception message'
                 . ' "The reponse for the HTTP request was not 200. result message" and exception code "404".'
+                . ' Assuming no ticket sales for event 5e75970e-43d8-481f-88db-9a61dd087cbb');
+
+        $this->eventHasTicketSalesGuard->guard($command);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_error_exception_as_no_ticket_sales(): void
+    {
+        $command = new UpdateOrganizer(
+            $this->eventId,
+            '596c4837-6239-47e3-bf33-2bb11dc6adc7'
+        );
+
+        $this->event->expects($this->once())
+            ->method('getOrganizerId')
+            ->willReturn('6a6ea6d2-24e5-42d0-880b-5c7f62c73658');
+
+        $this->uitpas->expects($this->once())
+            ->method('eventHasTicketSales')
+            ->with($this->eventId)
+            ->willThrowException(new Error('parser error'));
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with('Ticket call sales failed with exception message'
+                . ' "parser error" and exception code "0".'
                 . ' Assuming no ticket sales for event 5e75970e-43d8-481f-88db-9a61dd087cbb');
 
         $this->eventHasTicketSalesGuard->guard($command);
