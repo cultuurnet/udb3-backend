@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
@@ -81,7 +80,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->labelService
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('foo'), false);
+            ->with(new LabelName('foo'), false);
 
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
 
@@ -99,11 +98,11 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->labelService->expects($this->at(0))
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('visible'), true);
+            ->with(new LabelName('visible'), true);
 
         $this->labelService->expects($this->at(1))
             ->method('createLabelAggregateIfNew')
-            ->with(new LegacyLabelName('hidden'), false);
+            ->with(new LabelName('hidden'), false);
 
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
 

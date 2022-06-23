@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -40,7 +39,7 @@ final class AddLabelHandler implements CommandHandler
         }
 
         $this->labelService->createLabelAggregateIfNew(
-            new LegacyLabelName($command->getLabel()->getName()->toString()),
+            new LabelName($command->getLabel()->getName()->toString()),
             $command->getLabel()->isVisible()
         );
 
