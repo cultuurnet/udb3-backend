@@ -15,9 +15,10 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -158,7 +159,15 @@ class Projector extends AbstractProjector
         $this->writeRepository->deleteImportedByRelationId($relationId);
 
         $keywords = $cdbItem->getKeywords();
-        $labelCollection = LabelCollection::fromStrings($keywords);
+
+        $labelsArray = new LabelsArray();
+        foreach ($keywords as $keyword) {
+            $labelsArray->addLabel($keyword, true);
+        }
+        $cdbKeywords = [];
+        foreach ($labelsArray->toArray() as $label) {
+            $cdbKeywords[] = $label['labelName'];
+        }
 
         // Calculate the UDB2 imported labels.
         $udb3Labels = array_map(
@@ -168,7 +177,7 @@ class Projector extends AbstractProjector
             $this->readRepository->getLabelRelationsForItem($relationId)
         );
         $udb2Labels = array_udiff(
-            $labelCollection->asArray(),
+            $cdbKeywords,
             $udb3Labels,
             'strcasecmp'
         );
@@ -176,7 +185,7 @@ class Projector extends AbstractProjector
         // Only save the UDB2 labels, because the UDB3 labels are still present.
         foreach ($udb2Labels as $label) {
             $this->writeRepository->save(
-                $label->getName()->toNative(),
+                $label,
                 $relationType,
                 $relationId,
                 true
