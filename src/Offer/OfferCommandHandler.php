@@ -9,12 +9,10 @@ use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractImportImages;
@@ -134,16 +132,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      * @return string
      */
     abstract protected function getDeleteTypicalAgeRangeClassName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getUpdateOrganizerClassName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getDeleteOrganizerClassName();
 
     /**
      * @return string
@@ -274,36 +262,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
         $this->offerRepository->save($offer);
     }
-
-    /**
-     * Handle an update command to update organizer of a place.
-     */
-    public function handleUpdateOrganizer(AbstractUpdateOrganizer $updateOrganizer)
-    {
-        $offer = $this->load($updateOrganizer->getItemId());
-        $this->loadOrganizer($updateOrganizer->getOrganizerId());
-
-        $offer->updateOrganizer(
-            $updateOrganizer->getOrganizerId()
-        );
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * Handle an update command to delete the organizer.
-     */
-    public function handleDeleteOrganizer(AbstractDeleteOrganizer $deleteOrganizer)
-    {
-        $offer = $this->load($deleteOrganizer->getItemId());
-
-        $offer->deleteOrganizer(
-            $deleteOrganizer->getOrganizerId()
-        );
-
-        $this->offerRepository->save($offer);
-    }
-
 
     public function handleDeleteCurrentOrganizer(AbstractDeleteCurrentOrganizer $deleteCurrentOrganizer)
     {

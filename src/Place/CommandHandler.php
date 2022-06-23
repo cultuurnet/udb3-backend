@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Place\Commands\RemoveImage;
-use CultuurNet\UDB3\Place\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Place\Commands\SelectMainImage;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
@@ -24,7 +23,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateImage;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
-use CultuurNet\UDB3\Place\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -98,22 +96,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     protected function getDeleteTypicalAgeRangeClassName()
     {
         return DeleteTypicalAgeRange::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUpdateOrganizerClassName()
-    {
-        return UpdateOrganizer::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDeleteOrganizerClassName()
-    {
-        return DeleteOrganizer::class;
     }
 
     /**
