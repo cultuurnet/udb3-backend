@@ -8,8 +8,6 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Label as LegacyLabel;
-use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
