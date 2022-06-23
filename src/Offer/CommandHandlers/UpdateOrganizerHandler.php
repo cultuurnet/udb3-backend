@@ -29,9 +29,12 @@ final class UpdateOrganizerHandler implements CommandHandler
             return;
         }
 
-        $this->organizerChangeAllowedBasedOnTicketSales->guard($command);
-
         $offer = $this->offerRepository->load($command->getItemId());
+
+        if ($offer->getOrganizerId() !== $command->getOrganizerId()) {
+            $this->organizerChangeAllowedBasedOnTicketSales->guard($command);
+        }
+
         $offer->updateOrganizer($command->getOrganizerId());
         $this->offerRepository->save($offer);
     }

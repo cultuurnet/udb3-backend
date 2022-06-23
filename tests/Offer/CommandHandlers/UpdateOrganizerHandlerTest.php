@@ -111,6 +111,27 @@ final class UpdateOrganizerHandlerTest extends CommandHandlerScenarioTestCase
             ->then([]);
     }
 
+    /**
+     * @test
+     */
+    public function it_does_not_check_ticket_sales_when_organizer_is_the_same(): void
+    {
+        $eventId = '39007d2d-acec-438d-a687-f2d8400d4c1e';
+        $organizerId = '30145054-1af7-4b08-8502-9b38e38e97ac';
+
+        $this->cultureFeedUitpas->expects($this->never())
+            ->method('eventHasTicketSales');
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given([
+                $this->eventCreated($eventId),
+                new OrganizerUpdated($eventId, $organizerId),
+            ])
+            ->when(new UpdateOrganizer($eventId, $organizerId))
+            ->then([]);
+    }
+
     private function eventCreated(string $id): EventCreated
     {
         return new EventCreated(
