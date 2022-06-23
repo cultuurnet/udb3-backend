@@ -31,7 +31,7 @@ class CommandHandler extends AbstractCommandHandler
     {
         $label = Label::create(
             $create->getUuid(),
-            $create->getName(),
+            new LegacyLabelName($create->getName()->toString()),
             $create->getVisibility(),
             $create->getPrivacy()
         );
@@ -43,7 +43,7 @@ class CommandHandler extends AbstractCommandHandler
     {
         $label = Label::createCopy(
             $createCopy->getUuid(),
-            $createCopy->getName(),
+            new LegacyLabelName($createCopy->getName()->toString()),
             $createCopy->getVisibility(),
             $createCopy->getPrivacy(),
             $createCopy->getParentUuid()
