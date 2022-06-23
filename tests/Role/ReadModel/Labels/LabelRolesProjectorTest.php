@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -21,17 +22,14 @@ use PHPUnit\Framework\TestCase;
 
 class LabelRolesProjectorTest extends TestCase
 {
-    /**
-     * @var LabelRolesProjector
-     */
-    private $labelRolesProjector;
+    private LabelRolesProjector $labelRolesProjector;
 
     /**
      * @var DocumentRepository|MockObject
      */
     private $labelRolesRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->labelRolesRepository = $this->createMock(DocumentRepository::class);
 
@@ -43,7 +41,7 @@ class LabelRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_projection_with_empty_list_of_roles_on_label_created_event()
+    public function it_creates_projection_with_empty_list_of_roles_on_label_created_event(): void
     {
         $labelCreated = new LabelCreated(
             new UUID('32574fe8-e752-49dd-9dc1-6856372f5f2f'),
@@ -70,7 +68,7 @@ class LabelRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_projection_with_role_id_on_label_added_event()
+    public function it_updates_projection_with_role_id_on_label_added_event(): void
     {
         $labelAdded = new LabelAdded(
             new UUID('99ddb83f-5e5c-4204-8e6b-cb5c6ebb668d'),
@@ -104,7 +102,7 @@ class LabelRolesProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_role_id_from_projection_on_label_removed_event()
+    public function it_removes_role_id_from_projection_on_label_removed_event(): void
     {
         $labelRemoved = new LabelRemoved(
             new UUID('ba67ffc1-52a2-4065-817f-e0505c2736c0'),
@@ -148,30 +146,23 @@ class LabelRolesProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
-    private function createEmptyJsonDocument(UUID $uuid)
+    private function createEmptyJsonDocument(UUID $uuid): JsonDocument
     {
         return new JsonDocument(
             $uuid->toString(),
-            json_encode([])
+            Json::encode([])
         );
     }
 
-    /**
-     * @return JsonDocument
-     */
-    public function createJsonDocument(UUID $labelId, UUID $roleId)
+    public function createJsonDocument(UUID $labelId, UUID $roleId): JsonDocument
     {
         return new JsonDocument(
             $labelId->toString(),
-            json_encode([$roleId->toString() => $roleId->toString()])
+            Json::encode([$roleId->toString() => $roleId->toString()])
         );
     }
 
-
-    private function mockLabelRolesGet(UUID $labelId, JsonDocument $jsonDocument)
+    private function mockLabelRolesGet(UUID $labelId, JsonDocument $jsonDocument): void
     {
         $this->labelRolesRepository
             ->method('fetch')

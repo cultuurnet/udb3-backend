@@ -17,43 +17,27 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class Label extends EventSourcedAggregateRoot
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
     private string $name;
 
-    /**
-     * @var Visibility
-     */
-    private $visibility;
+    private Visibility $visibility;
 
-    /**
-     * @var Privacy
-     */
-    private $privacy;
+    private Privacy $privacy;
 
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
-
+    private UUID $parentUuid;
 
     public function getAggregateRootId(): string
     {
         return $this->uuid->toString();
     }
 
-    /**
-     * @return Label
-     */
     public static function create(
         UUID $uuid,
         string $name,
         Visibility $visibility,
         Privacy $privacy
-    ) {
+    ): Label {
         $label = new Label();
 
         $label->apply(new Created(
@@ -66,16 +50,13 @@ class Label extends EventSourcedAggregateRoot
         return $label;
     }
 
-    /**
-     * @return Label
-     */
     public static function createCopy(
         UUID $uuid,
         string $name,
         Visibility $visibility,
         Privacy $privacy,
         UUID $parentUuid
-    ) {
+    ): Label {
         $label = new Label();
 
         $label->apply(new CopyCreated(
@@ -89,36 +70,35 @@ class Label extends EventSourcedAggregateRoot
         return $label;
     }
 
-    public function makeVisible()
+    public function makeVisible(): void
     {
         if (!$this->visibility->sameAs(Visibility::VISIBLE())) {
             $this->apply(new MadeVisible($this->uuid, $this->name));
         }
     }
 
-    public function makeInvisible()
+    public function makeInvisible(): void
     {
         if (!$this->visibility->sameAs(Visibility::INVISIBLE())) {
             $this->apply(new MadeInvisible($this->uuid, $this->name));
         }
     }
 
-    public function makePublic()
+    public function makePublic(): void
     {
         if (!$this->privacy->sameAs(Privacy::PRIVACY_PUBLIC())) {
             $this->apply(new MadePublic($this->uuid, $this->name));
         }
     }
 
-    public function makePrivate()
+    public function makePrivate(): void
     {
         if (!$this->privacy->sameAs(Privacy::PRIVACY_PRIVATE())) {
             $this->apply(new MadePrivate($this->uuid, $this->name));
         }
     }
 
-
-    public function applyCreated(Created $created)
+    public function applyCreated(Created $created): void
     {
         $this->uuid = $created->getUuid();
         $this->name = $created->getName();
@@ -126,34 +106,29 @@ class Label extends EventSourcedAggregateRoot
         $this->privacy = $created->getPrivacy();
     }
 
-
-    public function applyCopyCreated(CopyCreated $copyCreated)
+    public function applyCopyCreated(CopyCreated $copyCreated): void
     {
         $this->applyCreated($copyCreated);
 
         $this->parentUuid = $copyCreated->getParentUuid();
     }
 
-
-    public function applyMadeVisible(MadeVisible $madeVisible)
+    public function applyMadeVisible(MadeVisible $madeVisible): void
     {
         $this->visibility = Visibility::VISIBLE();
     }
 
-
-    public function applyMadeInvisible(MadeInvisible $madeInvisible)
+    public function applyMadeInvisible(MadeInvisible $madeInvisible): void
     {
         $this->visibility = Visibility::INVISIBLE();
     }
 
-
-    public function applyMadePublic(MadePublic $madePublic)
+    public function applyMadePublic(MadePublic $madePublic): void
     {
         $this->privacy = Privacy::PRIVACY_PUBLIC();
     }
 
-
-    public function applyMadePrivate(MadePrivate $madePrivate)
+    public function applyMadePrivate(MadePrivate $madePrivate): void
     {
         $this->privacy = Privacy::PRIVACY_PRIVATE();
     }

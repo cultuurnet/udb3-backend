@@ -14,15 +14,9 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class ConstraintAwareLabelService implements LabelServiceInterface
 {
-    /**
-     * @var Repository
-     */
-    private $labelRepository;
+    private Repository $labelRepository;
 
-    /**
-     * @var UuidGeneratorInterface
-     */
-    private $uuidGenerator;
+    private UuidGeneratorInterface $uuidGenerator;
 
     public function __construct(
         Repository $labelRepository,
@@ -32,9 +26,6 @@ class ConstraintAwareLabelService implements LabelServiceInterface
         $this->uuidGenerator = $uuidGenerator;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function createLabelAggregateIfNew(LabelName $labelName, bool $visible): ?UUID
     {
         try {
