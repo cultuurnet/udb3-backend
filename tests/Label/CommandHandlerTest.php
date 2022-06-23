@@ -21,8 +21,9 @@ use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -36,10 +37,9 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     private $extraUuid;
 
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private LabelName $name;
+
+    private LegacyLabelName $legacyName;
 
     /**
      * @var Visibility
@@ -71,20 +71,21 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->uuid = new UUID('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
         $this->extraUuid = new UUID('04568db8-a137-44d8-a7eb-d7a00ae545bf');
         $this->name = new LabelName('labelName');
+        $this->legacyName = new LegacyLabelName('labelName');
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
         $this->parentUuid = new UUID('f4e5608b-348d-4321-86f7-567891bf33b7');
 
         $this->created = new Created(
             $this->uuid,
-            $this->name,
+            $this->legacyName,
             $this->visibility,
             $this->privacy
         );
 
         $this->copyCreated = new CopyCreated(
             $this->uuid,
-            $this->name,
+            $this->legacyName,
             $this->visibility,
             $this->privacy,
             $this->parentUuid
@@ -150,7 +151,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakeVisible($this->uuid))
-            ->then([new MadeVisible($this->uuid, $this->name)]);
+            ->then([new MadeVisible($this->uuid, $this->legacyName)]);
     }
 
     /**
@@ -160,7 +161,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
+            ->given([$this->created, new MadeVisible($this->uuid, $this->legacyName)])
             ->when(new MakeVisible($this->uuid))
             ->then([]);
     }
@@ -172,9 +173,9 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
+            ->given([$this->created, new MadeVisible($this->uuid, $this->legacyName)])
             ->when(new MakeInvisible($this->uuid))
-            ->then([new MadeInvisible($this->uuid, $this->name)]);
+            ->then([new MadeInvisible($this->uuid, $this->legacyName)]);
     }
 
     /**
@@ -198,7 +199,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakePublic($this->uuid))
-            ->then([new MadePublic($this->uuid, $this->name)]);
+            ->then([new MadePublic($this->uuid, $this->legacyName)]);
     }
 
     /**
@@ -208,7 +209,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadePublic($this->uuid, $this->name)])
+            ->given([$this->created, new MadePublic($this->uuid, $this->legacyName)])
             ->when(new MakePublic($this->uuid))
             ->then([]);
     }
@@ -220,9 +221,9 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadePublic($this->uuid, $this->name)])
+            ->given([$this->created, new MadePublic($this->uuid, $this->legacyName)])
             ->when(new MakePrivate($this->uuid))
-            ->then([new MadePrivate($this->uuid, $this->name)]);
+            ->then([new MadePrivate($this->uuid, $this->legacyName)]);
     }
 
     /**

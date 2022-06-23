@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class CreateTest extends TestCase
@@ -17,10 +17,7 @@ class CreateTest extends TestCase
      */
     protected $uuid;
 
-    /**
-     * @var LabelName
-     */
-    protected $name;
+    protected LabelName $name;
 
     /**
      * @var Visibility
