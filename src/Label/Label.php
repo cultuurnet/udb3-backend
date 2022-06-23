@@ -54,7 +54,7 @@ class Label extends EventSourcedAggregateRoot
      */
     public static function create(
         UUID $uuid,
-        StringLiteral $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy
     ) {
@@ -75,7 +75,7 @@ class Label extends EventSourcedAggregateRoot
      */
     public static function createCopy(
         UUID $uuid,
-        StringLiteral $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy,
         UUID $parentUuid
@@ -96,28 +96,28 @@ class Label extends EventSourcedAggregateRoot
     public function makeVisible()
     {
         if (!$this->visibility->sameAs(Visibility::VISIBLE())) {
-            $this->apply(new MadeVisible($this->uuid, $this->name));
+            $this->apply(new MadeVisible($this->uuid, $this->name->toNative()));
         }
     }
 
     public function makeInvisible()
     {
         if (!$this->visibility->sameAs(Visibility::INVISIBLE())) {
-            $this->apply(new MadeInvisible($this->uuid, $this->name));
+            $this->apply(new MadeInvisible($this->uuid, $this->name->toNative()));
         }
     }
 
     public function makePublic()
     {
         if (!$this->privacy->sameAs(Privacy::PRIVACY_PUBLIC())) {
-            $this->apply(new MadePublic($this->uuid, $this->name));
+            $this->apply(new MadePublic($this->uuid, $this->name->toNative()));
         }
     }
 
     public function makePrivate()
     {
         if (!$this->privacy->sameAs(Privacy::PRIVACY_PRIVATE())) {
-            $this->apply(new MadePrivate($this->uuid, $this->name));
+            $this->apply(new MadePrivate($this->uuid, $this->name->toNative()));
         }
     }
 
