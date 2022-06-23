@@ -164,10 +164,7 @@ class Projector extends AbstractProjector
         foreach ($keywords as $keyword) {
             $labelsArray->addLabel($keyword, true);
         }
-        $cdbKeywords = [];
-        foreach ($labelsArray->toArray() as $label) {
-            $cdbKeywords[] = $label['labelName'];
-        }
+
 
         // Calculate the UDB2 imported labels.
         $udb3Labels = array_map(
@@ -177,7 +174,7 @@ class Projector extends AbstractProjector
             $this->readRepository->getLabelRelationsForItem($relationId)
         );
         $udb2Labels = array_udiff(
-            $cdbKeywords,
+            $labelsArray->toArrayOfStringNames(),
             $udb3Labels,
             'strcasecmp'
         );
