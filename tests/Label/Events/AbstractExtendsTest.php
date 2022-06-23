@@ -4,32 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractExtendsTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var LabelName
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var AbstractEvent
-     */
-    protected $event;
+    protected AbstractEvent $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('c69f924a-fdea-487d-a938-183adbe2d594');
 
-        $this->name = new LabelName('2dotstwice');
+        $this->name = '2dotstwice';
 
         $this->event = $this->createEvent($this->uuid, $this->name);
     }
@@ -37,7 +27,7 @@ abstract class AbstractExtendsTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_abstract_event()
+    public function it_extends_an_abstract_event(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->event,
@@ -48,25 +38,19 @@ abstract class AbstractExtendsTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $actualEvent = $this->deserialize(
             [
                 'uuid' => $this->uuid->toString(),
-                'name' => $this->name->toNative(),
+                'name' => $this->name,
             ]
         );
 
         $this->assertEquals($this->event, $actualEvent);
     }
 
-    /**
-     * @return AbstractEvent
-     */
-    abstract public function createEvent(UUID $uuid, LabelName $name);
+    abstract public function createEvent(UUID $uuid, string $name): AbstractEvent;
 
-    /**
-     * @return AbstractEvent
-     */
-    abstract public function deserialize(array $array);
+    abstract public function deserialize(array $array): AbstractEvent;
 }

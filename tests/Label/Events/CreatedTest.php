@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -12,36 +11,22 @@ use PHPUnit\Framework\TestCase;
 
 class CreatedTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var LabelName
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var Visibility
-     */
-    protected $visibility;
+    protected Visibility $visibility;
 
-    /**
-     * @var Privacy
-     */
-    protected $privacy;
+    protected Privacy $privacy;
 
-    /**
-     * @var Created
-     */
+    /** @var Created */
     protected $created;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('41bf85c1-b9b3-4f21-b7b3-e8276de506a4');
 
-        $this->name = new LabelName('labelName');
+        $this->name = 'labelName';
 
         $this->visibility = Visibility::INVISIBLE();
 
@@ -58,7 +43,7 @@ class CreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_extends_an_event()
+    public function it_extends_an_event(): void
     {
         $this->assertTrue(is_subclass_of(
             $this->created,
@@ -69,7 +54,7 @@ class CreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->created->getUuid());
     }
@@ -77,7 +62,7 @@ class CreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_name()
+    public function it_stores_a_name(): void
     {
         $this->assertEquals($this->name, $this->created->getName());
     }
@@ -85,7 +70,7 @@ class CreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_visibility()
+    public function it_stores_a_visibility(): void
     {
         $this->assertEquals($this->visibility, $this->created->getVisibility());
     }
@@ -93,7 +78,7 @@ class CreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_privacy()
+    public function it_stores_a_privacy(): void
     {
         $this->assertEquals($this->privacy, $this->created->getPrivacy());
     }
@@ -101,7 +86,7 @@ class CreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $created = Created::deserialize($this->createdAsArray());
 
@@ -111,17 +96,14 @@ class CreatedTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $createdAsArray = $this->created->serialize();
 
         $this->assertEquals($this->createdAsArray(), $createdAsArray);
     }
 
-    /**
-     * @return array
-     */
-    protected function createdAsArray()
+    protected function createdAsArray(): array
     {
         return [
             Created::UUID => $this->created->getUuid()->toString(),

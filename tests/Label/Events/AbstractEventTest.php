@@ -4,33 +4,26 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractEventTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    protected $uuid;
+    protected UUID $uuid;
 
-    /**
-     * @var LabelName
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * @var AbstractEvent|MockObject
      */
     protected $event;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('87b3452e-0b52-4802-a7f4-430ff3640536');
 
-        $this->name = new LabelName('2dotstwice');
+        $this->name = '2dotstwice';
 
         $this->event = $this->getMockForAbstractClass(
             AbstractEvent::class,
@@ -41,7 +34,7 @@ class AbstractEventTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals($this->uuid, $this->event->getUuid());
     }
@@ -49,13 +42,13 @@ class AbstractEventTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $actualArray = $this->event->serialize();
 
         $expectedArray = [
             'uuid' => $this->uuid->toString(),
-            'name' => $this->name->toNative(),
+            'name' => $this->name,
         ];
 
         $this->assertEquals($expectedArray, $actualArray);

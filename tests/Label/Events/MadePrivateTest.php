@@ -4,28 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
-class MadePrivateTestAbstract extends AbstractExtendsTest
+class MadePrivateTest extends AbstractExtendsTest
 {
-    /**
-     * @inheritdoc
-     */
-    public function createEvent(UUID $uuid, LabelName $name)
+    public function createEvent(UUID $uuid, string $name): MadePrivate
     {
         return new MadePrivate($uuid, $name);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deserialize(array $array)
+    public function deserialize(array $array): MadePrivate
     {
         return MadePrivate::deserialize(
             [
                 'uuid' => $this->uuid->toString(),
-                'name' => $this->name->toNative(),
+                'name' => $this->name,
             ]
         );
     }
