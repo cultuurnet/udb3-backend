@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -13,14 +12,11 @@ final class CopyCreated extends Created
 {
     public const PARENT_UUID = 'parentUuid';
 
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private UUID $parentUuid;
 
     public function __construct(
         UUID $uuid,
-        LabelName $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy,
         UUID $parentUuid
@@ -39,7 +35,7 @@ final class CopyCreated extends Created
     {
         return new self(
             new UUID($data[self::UUID]),
-            new LabelName($data[self::NAME]),
+            $data[self::NAME],
             new Visibility($data[self::VISIBILITY]),
             new Privacy($data[self::PRIVACY]),
             new UUID($data[self::PARENT_UUID])

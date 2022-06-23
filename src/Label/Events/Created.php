@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -14,19 +13,13 @@ class Created extends AbstractEvent
     public const VISIBILITY = 'visibility';
     public const PRIVACY = 'privacy';
 
-    /**
-     * @var Visibility
-     */
-    private $visibility;
+    private Visibility $visibility;
 
-    /**
-     * @var Privacy
-     */
-    private $privacy;
+    private Privacy $privacy;
 
     public function __construct(
         UUID $uuid,
-        LabelName $name,
+        string $name,
         Visibility $visibility,
         Privacy $privacy
     ) {
@@ -46,14 +39,11 @@ class Created extends AbstractEvent
         return $this->privacy;
     }
 
-    /**
-     * @return Created
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): Created
     {
         return new self(
             new UUID($data[self::UUID]),
-            new LabelName($data[self::NAME]),
+            $data[self::NAME],
             new Visibility($data[self::VISIBILITY]),
             new Privacy($data[self::PRIVACY])
         );

@@ -13,17 +13,11 @@ abstract class AbstractEvent implements Serializable
     public const UUID = 'uuid';
     public const NAME = 'name';
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private string $name;
 
-    public function __construct(UUID $uuid, LabelName $name)
+    public function __construct(UUID $uuid, string $name)
     {
         $this->uuid = $uuid;
         $this->name = $name;
@@ -36,7 +30,7 @@ abstract class AbstractEvent implements Serializable
 
     public function getName(): LabelName
     {
-        return $this->name;
+        return new LabelName($this->name);
     }
 
     public function serialize(): array

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class MadePublic extends AbstractEvent
@@ -13,7 +12,7 @@ final class MadePublic extends AbstractEvent
     {
         return new self(
             new UUID($data[self::UUID]),
-            new LabelName($data[self::NAME])
+            $data[self::NAME]
         );
     }
 }
