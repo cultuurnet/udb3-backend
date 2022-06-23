@@ -31,6 +31,6 @@ class LabelNameUniqueConstraintService implements UniqueConstraintService
         /** @var Created|CopyCreated $event */
         $event = $domainMessage->getPayload();
 
-        return $event->getName()->toNative();
+        return $event->getName();
     }
 }

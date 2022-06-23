@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -109,7 +108,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                new LabelName($this->unknownLabelName),
+                new StringLiteral($this->unknownLabelName),
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy()
             );
@@ -176,7 +175,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                new LabelName($this->unknownLabelName),
+                new StringLiteral($this->unknownLabelName),
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy(),
                 $this->entity->getParentUuid()

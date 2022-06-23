@@ -107,7 +107,7 @@ class CreatedTest extends TestCase
     {
         return [
             Created::UUID => $this->created->getUuid()->toString(),
-            Created::NAME => $this->created->getName()->toNative(),
+            Created::NAME => $this->created->getName(),
             Created::VISIBILITY => $this->created->getVisibility()->toString(),
             Created::PRIVACY => $this->created->getPrivacy()->toString(),
         ];

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 abstract class AbstractEvent implements Serializable
@@ -28,16 +27,16 @@ abstract class AbstractEvent implements Serializable
         return $this->uuid;
     }
 
-    public function getName(): LabelName
+    public function getName(): string
     {
-        return new LabelName($this->name);
+        return $this->name;
     }
 
     public function serialize(): array
     {
         return [
             self::UUID => $this->getUuid()->toString(),
-            self::NAME => $this->getName()->toNative(),
+            self::NAME => $this->getName(),
         ];
     }
 }

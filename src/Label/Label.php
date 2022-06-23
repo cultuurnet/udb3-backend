@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 class Label extends EventSourcedAggregateRoot
 {
@@ -23,10 +22,7 @@ class Label extends EventSourcedAggregateRoot
      */
     private $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var Visibility
@@ -96,28 +92,28 @@ class Label extends EventSourcedAggregateRoot
     public function makeVisible()
     {
         if (!$this->visibility->sameAs(Visibility::VISIBLE())) {
-            $this->apply(new MadeVisible($this->uuid, $this->name->toNative()));
+            $this->apply(new MadeVisible($this->uuid, $this->name));
         }
     }
 
     public function makeInvisible()
     {
         if (!$this->visibility->sameAs(Visibility::INVISIBLE())) {
-            $this->apply(new MadeInvisible($this->uuid, $this->name->toNative()));
+            $this->apply(new MadeInvisible($this->uuid, $this->name));
         }
     }
 
     public function makePublic()
     {
         if (!$this->privacy->sameAs(Privacy::PRIVACY_PUBLIC())) {
-            $this->apply(new MadePublic($this->uuid, $this->name->toNative()));
+            $this->apply(new MadePublic($this->uuid, $this->name));
         }
     }
 
     public function makePrivate()
     {
         if (!$this->privacy->sameAs(Privacy::PRIVACY_PRIVATE())) {
-            $this->apply(new MadePrivate($this->uuid, $this->name->toNative()));
+            $this->apply(new MadePrivate($this->uuid, $this->name));
         }
     }
 

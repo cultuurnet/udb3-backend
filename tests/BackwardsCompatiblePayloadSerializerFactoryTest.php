@@ -708,7 +708,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var AbstractEvent $labelEvent */
         $labelEvent = $this->serializer->deserialize($decoded);
 
-        $this->assertEquals('2dotstwice', $labelEvent->getName()->toNative());
+        $this->assertEquals('2dotstwice', $labelEvent->getName());
     }
 
     private function assertOrganizerLabelEventFixed(string $sampleFile): void
