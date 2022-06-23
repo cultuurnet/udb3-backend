@@ -11,54 +11,32 @@ use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadePrivate;
 use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class LabelTest extends AggregateRootScenarioTestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var Visibility
-     */
-    private $visibility;
+    private Visibility $visibility;
 
-    /**
-     * @var Privacy
-     */
-    private $privacy;
+    private Privacy $privacy;
 
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private UUID $parentUuid;
 
-    /**
-     * @var Created
-     */
-    private $created;
+    private Created $created;
 
-    /**
-     * @var CopyCreated
-     */
-    private $copyCreated;
+    private CopyCreated $copyCreated;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->uuid = new UUID('b36ec769-2ec1-4a13-96cd-27d7a1f1e963');
-        $this->name = new LabelName('labelName');
+        $this->name = 'labelName';
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
         $this->parentUuid = new UUID('efaddd1d-837c-49ea-81d0-f4882fdf4123');
@@ -79,10 +57,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getAggregateRootClass()
+    protected function getAggregateRootClass(): string
     {
         return Label::class;
     }
@@ -90,7 +65,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_create_a_new_label()
+    public function it_can_create_a_new_label(): void
     {
         $this->scenario
             ->when(function () {
@@ -107,7 +82,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_create_a_copied_label()
+    public function it_can_create_a_copied_label(): void
     {
         $this->scenario
             ->when(function () {
@@ -125,7 +100,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_make_a_label_visible_when_invisible()
+    public function it_can_make_a_label_visible_when_invisible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -140,7 +115,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_make_a_label_visible_after_a_make_invisible()
+    public function it_can_make_a_label_visible_after_a_make_invisible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -159,7 +134,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_make_a_label_invisible_when_already_visible()
+    public function it_does_not_make_a_label_invisible_when_already_visible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -174,7 +149,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_make_a_label_invisible_when_visible()
+    public function it_can_make_a_label_invisible_when_visible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -189,7 +164,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_make_a_label_invisible_when_already_invisible()
+    public function it_does_not_make_a_label_invisible_when_already_invisible(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -204,7 +179,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_make_a_label_public_when_private()
+    public function it_can_make_a_label_public_when_private(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -219,7 +194,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_make_a_label_public_after_a_make_private()
+    public function it_can_make_a_label_public_after_a_make_private(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -238,7 +213,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_make_a_label_public_when_already_public()
+    public function it_does_not_make_a_label_public_when_already_public(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -253,7 +228,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_make_a_label_private_when_public()
+    public function it_can_make_a_label_private_when_public(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
@@ -268,7 +243,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_make_a_label_private_when_already_private()
+    public function it_does_not_make_a_label_private_when_already_private(): void
     {
         $this->scenario
             ->withAggregateId($this->uuid)
