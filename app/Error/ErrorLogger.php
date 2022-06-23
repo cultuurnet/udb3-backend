@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
-use CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation\EventHasTicketSalesException;
+use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
 use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
@@ -48,7 +48,7 @@ final class ErrorLogger
         MissingValueException::class,
         AggregateNotFoundException::class,
         MethodNotAllowedHttpException::class,
-        EventHasTicketSalesException::class,
+        ChangeNotAllowedByTicketSales::class,
         MediaObjectNotFoundException::class,
         DocumentDoesNotExist::class,
         NotWellFormedException::class,

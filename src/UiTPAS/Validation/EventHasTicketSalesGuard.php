@@ -2,24 +2,21 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
+namespace CultuurNet\UDB3\UiTPAS\Validation;
 
 use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Uitpas;
-use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CommandValidatorInterface;
-use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
-use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\EventRepository;
-use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use Psr\Log\LoggerInterface;
 
-class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
+final class EventHasTicketSalesGuard
 {
     private CultureFeed_Uitpas $uitpas;
 
-    private LoggerInterface $logger;
-
     private EventRepository $eventRepository;
+
+    private LoggerInterface $logger;
 
     public function __construct(
         CultureFeed_Uitpas $uitpas,
@@ -31,17 +28,8 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function validate($command)
+    public function guard(AbstractCommand $command): void
     {
-        if (!($command instanceof UpdateOrganizer) &&
-            !($command instanceof UpdatePriceInfo) &&
-            !($command instanceof DeleteOrganizer)) {
-            return;
-        }
-
         $eventId = $command->getItemId();
 
         try {
@@ -53,9 +41,9 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
 
         try {
             $hasTicketSales = $this->uitpas->eventHasTicketSales($eventId);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             // By design to catch all exceptions and map an exception to no ticket sales.
-            // This is done to allow setting price and organizer even when UiTPAS has issues.
+            // This is done to allow changing an organizer even when UiTPAS has issues.
             // All exceptions will be logged.
             $this->logger->warning(
                 'Ticket call sales failed with exception message "'
@@ -67,7 +55,7 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
         }
 
         if ($hasTicketSales) {
-            throw new EventHasTicketSalesException($eventId);
+            throw new ChangeNotAllowedByTicketSales($eventId);
         }
     }
 }
