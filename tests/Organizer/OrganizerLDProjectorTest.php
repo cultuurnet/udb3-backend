@@ -1091,7 +1091,7 @@ final class OrganizerLDProjectorTest extends TestCase
      * @dataProvider labelRemovedDataProvider
      */
     public function it_handles_label_removed(
-        Label $label,
+        string $labelName,
         string $originalFile,
         string $finalFile
     ): void {
@@ -1099,7 +1099,7 @@ final class OrganizerLDProjectorTest extends TestCase
 
         $this->mockGet($organizerId, $originalFile);
 
-        $labelRemoved = new LabelRemoved($organizerId, $label->getName()->toString(), $label->isVisible());
+        $labelRemoved = new LabelRemoved($organizerId, $labelName);
         $domainMessage = $this->createDomainMessage($labelRemoved);
 
         $this->expectSave($organizerId, $finalFile);
@@ -1111,17 +1111,17 @@ final class OrganizerLDProjectorTest extends TestCase
     {
         return [
             [
-                new Label(new LabelName('labelName')),
+                'labelName',
                 'organizer_with_one_label.json',
                 'organizer_with_modified.json',
             ],
             [
-                new Label(new LabelName('anotherLabel')),
+                'anotherLabel',
                 'organizer_with_two_labels.json',
                 'organizer_with_one_label.json',
             ],
             [
-                new Label(new LabelName('yetAnotherLabel')),
+                'yetAnotherLabel',
                 'organizer_with_three_labels.json',
                 'organizer_with_two_labels.json',
             ],
