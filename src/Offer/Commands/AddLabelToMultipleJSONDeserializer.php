@@ -8,7 +8,8 @@ use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Deserializer\NotWellFormedException;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -47,7 +48,7 @@ class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
             throw new MissingValueException('Missing value "offers".');
         }
 
-        $label = new Label($data->label);
+        $label = new Label(new LabelName($data->label));
         $offers = new OfferIdentifierCollection();
 
         foreach ($data->offers as $offer) {

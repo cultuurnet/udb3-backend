@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 
 class AddLabelToMultiple
@@ -14,10 +14,7 @@ class AddLabelToMultiple
      */
     protected $offerIdentifiers;
 
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
 
     public function __construct(OfferIdentifierCollection $offerIdentifiers, Label $label)
@@ -34,10 +31,7 @@ class AddLabelToMultiple
         return $this->offerIdentifiers;
     }
 
-    /**
-     * @return Label
-     */
-    public function getLabel()
+    public function getLabel(): Label
     {
         return $this->label;
     }

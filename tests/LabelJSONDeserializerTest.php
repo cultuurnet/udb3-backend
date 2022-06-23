@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class LabelJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var Label
-     */
-    private $label;
+    private Label $label;
 
-    /**
-     * @var LabelJSONDeserializer
-     */
-    private $deserializer;
+    private LabelJSONDeserializer $deserializer;
 
     public function setUp()
     {
-        $this->label = new Label('test-label');
+        $this->label = new Label(new LabelName('test-label'));
         $this->deserializer = new LabelJSONDeserializer();
     }
 

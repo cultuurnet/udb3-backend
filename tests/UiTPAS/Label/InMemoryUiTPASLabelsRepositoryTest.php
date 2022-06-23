@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPAS\Label;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -30,16 +31,16 @@ final class InMemoryUiTPASLabelsRepositoryTest extends TestCase
         ];
 
         $expected = [
-            'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new Label('Paspartoe'),
-            'ebd91df0-8ed7-4522-8401-ef5508ad1426' => new Label('UiTPAS'),
-            'f23ccb75-190a-4814-945e-c95e83101cc5' => new Label('UiTPAS Gent'),
-            '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new Label('UiTPAS Oostende'),
-            '68f849c0-bf55-4f73-b0f4-e0683bf0c807' => new Label('UiTPAS regio Aalst'),
-            'cd6200cc-5b9d-43fd-9638-f6cc27f1c9b8' => new Label('UiTPAS Dender'),
-            'd9cf96b6-1256-4760-b66b-1c31152d7db4' => new Label('UiTPAS Zuidwest'),
-            'aaf3a58e-2aac-45b3-a9e9-3f3ebf467681' => new Label('UiTPAS Mechelen'),
-            '47256d4c-47e8-4046-b9bb-acb166920f76' => new Label('UiTPAS Kempen'),
-            '54b5273e-5e0b-4c1e-b33f-93eca55eb472' => new Label('UiTPAS Maasmechelen'),
+            'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new Label(new LabelName('Paspartoe')),
+            'ebd91df0-8ed7-4522-8401-ef5508ad1426' => new Label(new LabelName('UiTPAS')),
+            'f23ccb75-190a-4814-945e-c95e83101cc5' => new Label(new LabelName('UiTPAS Gent')),
+            '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new Label(new LabelName('UiTPAS Oostende')),
+            '68f849c0-bf55-4f73-b0f4-e0683bf0c807' => new Label(new LabelName('UiTPAS regio Aalst')),
+            'cd6200cc-5b9d-43fd-9638-f6cc27f1c9b8' => new Label(new LabelName('UiTPAS Dender')),
+            'd9cf96b6-1256-4760-b66b-1c31152d7db4' => new Label(new LabelName('UiTPAS Zuidwest')),
+            'aaf3a58e-2aac-45b3-a9e9-3f3ebf467681' => new Label(new LabelName('UiTPAS Mechelen')),
+            '47256d4c-47e8-4046-b9bb-acb166920f76' => new Label(new LabelName('UiTPAS Kempen')),
+            '54b5273e-5e0b-4c1e-b33f-93eca55eb472' => new Label(new LabelName('UiTPAS Maasmechelen')),
         ];
 
         $repository = InMemoryUiTPASLabelsRepository::fromStrings($given);
