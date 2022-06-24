@@ -67,7 +67,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     private $copyCreated;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->uuid = new UUID('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
         $this->extraUuid = new UUID('04568db8-a137-44d8-a7eb-d7a00ae545bf');

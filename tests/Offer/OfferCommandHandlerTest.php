@@ -75,7 +75,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     protected $mediaManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
