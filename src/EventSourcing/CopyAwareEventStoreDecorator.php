@@ -9,10 +9,7 @@ use Broadway\Domain\DomainMessage;
 
 class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
 {
-    /**
-     * @inheritdoc
-     */
-    public function load($id)
+    public function load($id): DomainEventStream
     {
         return $this->loadCompleteStream(parent::load($id));
     }

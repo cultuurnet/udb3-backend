@@ -19,26 +19,17 @@ abstract class AbstractEventStoreDecorator implements EventStore
         $this->eventStore = $eventStore;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function load($id)
+    public function load($id): DomainEventStream
     {
         return $this->eventStore->load($id);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function loadFromPlayhead($id, $playhead)
+    public function loadFromPlayhead($id, int $playhead): DomainEventStream
     {
         return $this->eventStore->loadFromPlayhead($id, $playhead);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function append($id, DomainEventStream $eventStream)
+    public function append($id, DomainEventStream $eventStream): void
     {
         $this->eventStore->append($id, $eventStream);
     }
