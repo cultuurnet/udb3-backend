@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Label\Events;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -15,29 +14,17 @@ use PHPUnit\Framework\TestCase;
 
 class LabelNameUniqueConstraintServiceTest extends TestCase
 {
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var DomainMessage
-     */
-    private $created;
+    private DomainMessage $created;
 
-    /**
-     * @var DomainMessage
-     */
-    private $copyCreated;
+    private DomainMessage $copyCreated;
 
-    /**
-     * @var LabelNameUniqueConstraintService
-     */
-    private $uniqueHelper;
+    private LabelNameUniqueConstraintService $uniqueHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->name = new LabelName('labelName');
+        $this->name = 'labelName';
 
         $this->created = $this->createDomainMessage(new Created(
             new UUID('23ad437f-b6f0-4fc4-95c0-0c6faf13050f'),
@@ -60,7 +47,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_unique_for_created()
+    public function it_requires_unique_for_created(): void
     {
         $this->assertTrue($this->uniqueHelper->hasUniqueConstraint($this->created));
     }
@@ -68,7 +55,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_requires_unique_for_copy_created()
+    public function it_requires_unique_for_copy_created(): void
     {
         $this->assertTrue($this->uniqueHelper->hasUniqueConstraint(
             $this->copyCreated
@@ -78,13 +65,13 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_require_unique_for_made_invisible()
+    public function it_does_not_require_unique_for_made_invisible(): void
     {
         $this->assertFalse($this->uniqueHelper->hasUniqueConstraint(
             $this->createDomainMessage(
                 new MadeInvisible(
                     new UUID('f9b74707-5d2d-4dbb-886b-b149786a94c5'),
-                    new LabelName('2dotstwice')
+                    '2dotstwice'
                 )
             )
         ));
@@ -93,7 +80,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_never_allows_update_of_unique_constraint()
+    public function it_never_allows_update_of_unique_constraint(): void
     {
         $this->assertFalse($this->uniqueHelper->needsUpdateUniqueConstraint(
             $this->copyCreated
@@ -103,7 +90,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_unique_from_created()
+    public function it_can_get_unique_from_created(): void
     {
         $this->assertEquals(
             $this->name,
@@ -114,7 +101,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_unique_from_copy_created()
+    public function it_can_get_unique_from_copy_created(): void
     {
         $this->assertEquals(
             $this->name,
@@ -122,10 +109,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
         );
     }
 
-    /**
-     * @return DomainMessage
-     */
-    private function createDomainMessage(AbstractEvent $event)
+    private function createDomainMessage(AbstractEvent $event): DomainMessage
     {
         return new DomainMessage(
             $event->getUuid()->toString(),

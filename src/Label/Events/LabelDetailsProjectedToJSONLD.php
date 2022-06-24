@@ -11,10 +11,7 @@ final class LabelDetailsProjectedToJSONLD implements Serializable
 {
     public const UUID = 'uuid';
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
     public function __construct(UUID $uuid)
     {

@@ -8,17 +8,12 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CopyCreatedTest extends CreatedTest
 {
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private UUID $parentUuid;
 
-    /**
-     * @var CopyCreated
-     */
+    /** @var CopyCreated */
     protected $created;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +31,7 @@ class CopyCreatedTest extends CreatedTest
     /**
      * @test
      */
-    public function it_stores_a_parent_uuid()
+    public function it_stores_a_parent_uuid(): void
     {
         $this->assertEquals($this->parentUuid, $this->created->getParentUuid());
     }
@@ -44,7 +39,7 @@ class CopyCreatedTest extends CreatedTest
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $created = CopyCreated::deserialize($this->createdAsArray());
 
@@ -54,17 +49,14 @@ class CopyCreatedTest extends CreatedTest
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $createdAsArray = $this->created->serialize();
 
         $this->assertEquals($this->createdAsArray(), $createdAsArray);
     }
 
-    /**
-     * @return array
-     */
-    protected function createdAsArray()
+    protected function createdAsArray(): array
     {
         $createdAsArray = parent::createdAsArray();
 

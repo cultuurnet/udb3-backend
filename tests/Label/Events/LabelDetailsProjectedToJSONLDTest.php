@@ -9,17 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class LabelDetailsProjectedToJSONLDTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var LabelDetailsProjectedToJSONLD
-     */
-    private $labelDetailsProjectedToJSONLD;
+    private LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('3960ff99-ceab-4b44-aa51-dc7a187b77e0');
 
@@ -31,7 +25,7 @@ class LabelDetailsProjectedToJSONLDTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_uuid()
+    public function it_stores_a_uuid(): void
     {
         $this->assertEquals(
             $this->uuid,
@@ -42,7 +36,7 @@ class LabelDetailsProjectedToJSONLDTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $asArray = ['uuid' => $this->uuid->toString()];
 
@@ -55,7 +49,7 @@ class LabelDetailsProjectedToJSONLDTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $expectedArray = ['uuid' => $this->uuid->toString()];
 

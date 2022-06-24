@@ -52,12 +52,12 @@ class LabelVisibilityOnRelatedDocumentsProjector implements EventListener, Logge
 
     public function applyMadeVisible(MadeVisible $madeVisible): void
     {
-        $this->updateLabels($madeVisible->getName()->toNative(), true);
+        $this->updateLabels($madeVisible->getName(), true);
     }
 
     public function applyMadeInvisible(MadeInvisible $madeInvisible): void
     {
-        $this->updateLabels($madeInvisible->getName()->toNative(), false);
+        $this->updateLabels($madeInvisible->getName(), false);
     }
 
     private function getDocumentRepositoryForRelationType(RelationType $relationType): ?DocumentRepository

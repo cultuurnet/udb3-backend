@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -131,7 +130,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $labelId = new UUID('3960ff99-ceab-4b44-aa51-dc7a187b77e0');
         $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeVisible($labelId, new LabelName($labelName));
+        $madeVisibleEvent = new MadeVisible($labelId, $labelName);
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
@@ -194,7 +193,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $labelId = new UUID('3e6aa636-ec87-4f66-b6a5-4f8135120b28');
         $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeInvisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
+        $madeInvisibleEvent = new MadeInvisible($labelId, $labelName);
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
@@ -239,7 +238,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $labelId = new UUID('0b8f148e-713f-4986-9170-bdb23f3ff0d7');
         $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeVisible($labelId, new LabelName($labelName));
+        $madeVisibleEvent = new MadeVisible($labelId, $labelName);
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
@@ -284,7 +283,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $labelId = new UUID('aabf18cd-00dd-4327-9d8b-8179b4a7c36a');
         $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
+        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
@@ -330,7 +329,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $labelId = new UUID('b2b756eb-09aa-4c03-b284-008a2b1cd8f7');
         $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
+        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
@@ -375,7 +374,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $labelId = new UUID('2bc515a3-4aea-4457-999d-f3822b601651');
         $labelName = 'black';
         $documentId = new StringLiteral('B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A');
-        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
+        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
 
         $existingDocument = new JsonDocument(
             (string) $documentId,
@@ -421,7 +420,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
         $labelId = new UUID('1d9a5bb0-3c57-4d9c-af3e-e7978d5b737f');
         $labelName = 'foo';
         $documentId = 'B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A';
-        $madeVisibleEvent = new MadeInvisible($labelId, new LabelName($labelName));
+        $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
 
         /** @var LoggerInterface|MockObject $logger */
         $logger = $this->createMock(AbstractLogger::class);
