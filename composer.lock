@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4de21a40fdcb22e445b1dc9801c0740",
+    "content-hash": "48621df794cc6cce57cd15f7106fa003",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -197,34 +197,42 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.9.9",
+            "version": "v3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "124317de301b7c91d5fce34c98bba2c6925bec95"
+                "reference": "cb70015c04be1baee6f5f5c953703347c0ac1655"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/124317de301b7c91d5fce34c98bba2c6925bec95",
-                "reference": "124317de301b7c91d5fce34c98bba2c6925bec95",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/cb70015c04be1baee6f5f5c953703347c0ac1655",
+                "reference": "cb70015c04be1baee6f5f5c953703347c0ac1655",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": ">=5.3"
+                "ext-simplexml": "*",
+                "php": "^7.0 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.1.1",
-                "phpunit/phpunit": "^4.8.35|^5.7"
+                "friendsofphp/php-cs-fixer": "*",
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": ">=6.0.0",
+                "yoast/phpunit-polyfills": "^0.1.0"
+            },
+            "suggest": {
+                "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Assert\\": "lib/Assert"
-                },
                 "files": [
                     "lib/Assert/functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -248,32 +256,37 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2019-05-28T15:27:37+00:00"
+            "support": {
+                "issues": "https://github.com/beberlei/assert/issues",
+                "source": "https://github.com/beberlei/assert/tree/v3.3.2"
+            },
+            "time": "2021-12-16T21:41:27+00:00"
         },
         {
             "name": "broadway/broadway",
-            "version": "1.0.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/broadway/broadway.git",
-                "reference": "02e0d40335df855f5f0648a95751c48dd35003af"
+                "reference": "d2e54aec3c01cf4025f93a85c7176e990bd67a5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/broadway/broadway/zipball/02e0d40335df855f5f0648a95751c48dd35003af",
-                "reference": "02e0d40335df855f5f0648a95751c48dd35003af",
+                "url": "https://api.github.com/repos/broadway/broadway/zipball/d2e54aec3c01cf4025f93a85c7176e990bd67a5d",
+                "reference": "d2e54aec3c01cf4025f93a85c7176e990bd67a5d",
                 "shasum": ""
             },
             "require": {
-                "beberlei/assert": "~2.0",
-                "broadway/uuid-generator": "~0.4.0",
-                "php": ">=5.5.9"
+                "beberlei/assert": "^3.0",
+                "broadway/uuid-generator": "^1.0",
+                "php": ">=7.2"
             },
             "require-dev": {
-                "instaclick/base-test-bundle": "~0.5",
-                "monolog/monolog": "~1.8",
-                "phpunit/phpunit": "^4.8",
-                "ramsey/uuid": "^3.0"
+                "broadway/coding-standard": "^1.0",
+                "monolog/monolog": "~2.0",
+                "phpstan/phpstan": "@stable",
+                "phpunit/phpunit": "^8.0",
+                "ramsey/uuid": "^4.0"
             },
             "suggest": {
                 "broadway/broadway-bundle": "Symfony bundle for broadway/broadway",
@@ -285,12 +298,12 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Broadway\\": "src/"
+                "psr-4": {
+                    "Broadway\\": "src/Broadway/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -299,20 +312,8 @@
             ],
             "authors": [
                 {
-                    "name": "othillo",
-                    "email": "othillo@othillo.nl"
-                },
-                {
                     "name": "Alexander",
                     "email": "iam.asm89@gmail.com"
-                },
-                {
-                    "name": "Qandidate.com",
-                    "homepage": "http://labs.qandidate.com/"
-                },
-                {
-                    "name": "Willem-Jan",
-                    "email": "wjzijderveld@gmail.com"
                 },
                 {
                     "name": "Emil",
@@ -321,6 +322,18 @@
                 {
                     "name": "Fritsjan",
                     "email": "fritsjan@qandidate.com"
+                },
+                {
+                    "name": "othillo",
+                    "email": "othillo@othillo.nl"
+                },
+                {
+                    "name": "Willem-Jan",
+                    "email": "wjzijderveld@gmail.com"
+                },
+                {
+                    "name": "Qandidate.com",
+                    "homepage": "http://labs.qandidate.com/"
                 }
             ],
             "description": "Infrastructure and testing helpers for creating CQRS and event sourced applications.",
@@ -330,33 +343,44 @@
                 "domain-driven design",
                 "event sourcing"
             ],
-            "time": "2017-03-06T11:33:17+00:00"
+            "support": {
+                "issues": "https://github.com/broadway/broadway/issues",
+                "source": "https://github.com/broadway/broadway/tree/2.4.0"
+            },
+            "time": "2020-12-29T11:52:48+00:00"
         },
         {
             "name": "broadway/uuid-generator",
-            "version": "0.4.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/broadway/broadway-uuid-generator.git",
-                "reference": "3c5307e62975113d370d18d36c9fcd792b21032a"
+                "reference": "908de6999cdb77f1b323abd3e64e8ce6f86db3e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/broadway/broadway-uuid-generator/zipball/3c5307e62975113d370d18d36c9fcd792b21032a",
-                "reference": "3c5307e62975113d370d18d36c9fcd792b21032a",
+                "url": "https://api.github.com/repos/broadway/broadway-uuid-generator/zipball/908de6999cdb77f1b323abd3e64e8ce6f86db3e5",
+                "reference": "908de6999cdb77f1b323abd3e64e8ce6f86db3e5",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=7.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8",
+                "broadway/coding-standard": "^1.0",
+                "phpstan/phpstan": "@stable",
+                "phpunit/phpunit": "^8.0",
                 "ramsey/uuid": "^3.0"
             },
             "suggest": {
                 "ramsey/uuid": "Allows creating UUIDs"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Broadway\\UuidGenerator\\": "src/Broadway/UuidGenerator"
@@ -367,7 +391,11 @@
                 "MIT"
             ],
             "description": "UUID generator for broadway/broadway.",
-            "time": "2016-12-14T10:47:27+00:00"
+            "support": {
+                "issues": "https://github.com/broadway/broadway-uuid-generator/issues",
+                "source": "https://github.com/broadway/broadway-uuid-generator/tree/master"
+            },
+            "time": "2020-03-06T10:09:30+00:00"
         },
         {
             "name": "cakephp/chronos",
