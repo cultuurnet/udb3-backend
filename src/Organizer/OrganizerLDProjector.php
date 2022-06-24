@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -520,13 +519,7 @@ class OrganizerLDProjector implements EventListener
                 $jsonLD->{$labelsProperty} = array_filter(
                     $jsonLD->{$labelsProperty},
                     function ($label) use ($labelRemoved) {
-                        $removedLabel = new Label(
-                            $labelRemoved->getLabelName(),
-                            $labelRemoved->isLabelVisible()
-                        );
-                        return !$removedLabel->equals(
-                            new Label($label)
-                        );
+                        return strcasecmp($labelRemoved->getLabelName(), $label) !== 0;
                     }
                 );
 

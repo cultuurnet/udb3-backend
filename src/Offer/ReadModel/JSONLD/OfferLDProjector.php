@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -318,11 +317,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 $offerLd->{$labelsProperty} = array_filter(
                     $offerLd->{$labelsProperty},
                     function ($label) use ($labelRemoved) {
-                        $removedLabel = new Label(
-                            $labelRemoved->getLabelName(),
-                            $labelRemoved->isLabelVisible()
-                        );
-                        return !$removedLabel->equals(new Label($label));
+                        return strcasecmp($labelRemoved->getLabelName(), $label) !== 0;
                     }
                 );
                 // Ensure array keys start with 0 so json_encode() does encode it
