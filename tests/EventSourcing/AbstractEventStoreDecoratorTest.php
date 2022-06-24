@@ -40,7 +40,8 @@ class AbstractEventStoreDecoratorTest extends TestCase
 
         $this->eventStore->expects($this->once())
             ->method('load')
-            ->with($id);
+            ->with($id)
+            ->willReturn(new DomainEventStream([]));
 
         $this->abstractEventStoreDecorator->load($id);
     }
@@ -68,8 +69,7 @@ class AbstractEventStoreDecoratorTest extends TestCase
     public function it_calls_append_on_event_store()
     {
         $id = 'id';
-        /** @var DomainEventStream $eventStream */
-        $eventStream = $this->createMock(DomainEventStream::class);
+        $eventStream = new DomainEventStream([]);
 
         $this->eventStore->expects($this->once())
             ->method('append')
