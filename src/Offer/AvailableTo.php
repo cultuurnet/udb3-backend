@@ -17,10 +17,7 @@ use DateTimeInterface;
  */
 class AvailableTo
 {
-    /**
-     * @var DateTimeInterface
-     */
-    private $availableTo;
+    private DateTimeInterface $availableTo;
 
     private function __construct(DateTimeInterface $availableTo)
     {

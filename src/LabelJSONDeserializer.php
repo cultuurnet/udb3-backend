@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 /**
  * @deprecated
@@ -24,6 +26,6 @@ class LabelJSONDeserializer extends JSONDeserializer
             throw new MissingValueException('Missing value "label"!');
         }
 
-        return new Label($data->label);
+        return new Label(new LabelName($data->label));
     }
 }

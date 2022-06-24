@@ -6,29 +6,17 @@ namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class Create extends AbstractCommand
 {
-    /**
-     * @var LabelName
-     */
-    private $name;
+    private LabelName $name;
 
-    /**
-     * @var string
-     */
-    private $visibility;
+    private string $visibility;
 
-    /**
-     * @var string
-     */
-    private $privacy;
+    private string $privacy;
 
-    /**
-     * Create constructor.
-     */
     public function __construct(
         UUID $uuid,
         LabelName $name,
@@ -45,26 +33,17 @@ class Create extends AbstractCommand
         $this->privacy = $privacy->toString();
     }
 
-    /**
-     * @return LabelName
-     */
-    public function getName()
+    public function getName(): LabelName
     {
         return $this->name;
     }
 
-    /**
-     * @return Visibility
-     */
-    public function getVisibility()
+    public function getVisibility(): Visibility
     {
         return new Visibility($this->visibility);
     }
 
-    /**
-     * @return Privacy
-     */
-    public function getPrivacy()
+    public function getPrivacy(): Privacy
     {
         return new Privacy($this->privacy);
     }

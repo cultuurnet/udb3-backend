@@ -72,6 +72,14 @@ final class LabelsArray
         return $this->labels;
     }
 
+    public function toArrayOfStringNames(): array
+    {
+        return array_map(
+            fn ($label) => $label['labelName'],
+            $this->toArray()
+        );
+    }
+
     private function labelNameToLowerCase(string $labelName): string
     {
         return mb_strtolower($labelName, 'UTF-8');

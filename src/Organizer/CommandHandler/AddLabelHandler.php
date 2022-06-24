@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
@@ -41,7 +40,7 @@ final class AddLabelHandler implements CommandHandler
         $name = $label->getName();
         $visible = $label->isVisible();
 
-        $this->labelService->createLabelAggregateIfNew(new LabelName($name->toString()), $visible);
+        $this->labelService->createLabelAggregateIfNew($name, $visible);
 
         $readModelLabelEntity = $this->labelRepository->getByName($name->toString());
         if ($readModelLabelEntity) {

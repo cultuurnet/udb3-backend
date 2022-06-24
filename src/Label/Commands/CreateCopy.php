@@ -6,19 +6,13 @@ namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class CreateCopy extends Create
 {
-    /**
-     * @var UUID
-     */
-    private $parentUuid;
+    private UUID $parentUuid;
 
-    /**
-     * CreateCopy constructor.
-     */
     public function __construct(
         UUID $uuid,
         LabelName $name,
@@ -31,10 +25,7 @@ class CreateCopy extends Create
         $this->parentUuid = $parentUuid;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getParentUuid()
+    public function getParentUuid(): UUID
     {
         return $this->parentUuid;
     }

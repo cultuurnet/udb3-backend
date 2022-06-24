@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
@@ -39,10 +40,7 @@ class BulkLabelCommandHandlerTest extends TestCase
      */
     private $query;
 
-    /**
-     * @var Label
-     */
-    private $label;
+    private Label $label;
 
     /**
      * @var IriOfferIdentifier[]
@@ -73,7 +71,7 @@ class BulkLabelCommandHandlerTest extends TestCase
         $this->commandHandler->setLogger($this->logger);
 
         $this->query = 'city:leuven';
-        $this->label = new Label('foo');
+        $this->label = new Label(new LabelName('foo'));
 
         $this->offerIdentifiers = [
             1 => new IriOfferIdentifier(

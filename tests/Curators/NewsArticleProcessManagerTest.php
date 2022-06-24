@@ -8,7 +8,8 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumer;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\SimpleEventBus;
 use InvalidArgumentException;
@@ -109,7 +110,7 @@ final class NewsArticleProcessManagerTest extends TestCase
         );
         $message->delivery_info = $this->messageDeliveryInfo;
 
-        $expectedLabel = new Label('TEST_LABEL', false);
+        $expectedLabel = new Label(new LabelName('TEST_LABEL'), false);
 
         $this->labelFactory->expects($this->once())
             ->method('forPublisher')

@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOfferHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
@@ -19,6 +20,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
@@ -32,7 +34,10 @@ use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessMan
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -105,6 +110,14 @@ class OfferServiceProvider implements ServiceProviderInterface
                     $app['place_repository']
                 );
             }
+        );
+
+        $app[EventHasTicketSalesGuard::class] = $app->share(
+            fn (Application $app) => new EventHasTicketSalesGuard(
+                $app['uitpas'],
+                $app['event_repository'],
+                LoggerFactory::create($app, LoggerName::forService('uitpas', 'ticket-sales'))
+            )
         );
 
         $app[UpdateTitleHandler::class] = $app->share(
@@ -209,6 +222,20 @@ class OfferServiceProvider implements ServiceProviderInterface
 
         $app[UpdatePriceInfoHandler::class] = $app->share(
             fn (Application $application) => new UpdatePriceInfoHandler($app[OfferRepository::class])
+        );
+
+        $app[UpdateOrganizerHandler::class] = $app->share(
+            fn (Application $application) => new UpdateOrganizerHandler(
+                $app[OfferRepository::class],
+                $app[EventHasTicketSalesGuard::class]
+            )
+        );
+
+        $app[DeleteOrganizerHandler::class] = $app->share(
+            fn (Application $application) => new DeleteOrganizerHandler(
+                $app[OfferRepository::class],
+                $app[EventHasTicketSalesGuard::class]
+            )
         );
     }
 

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 
 class AddLabelToMultiple implements AsyncCommand
@@ -18,10 +18,7 @@ class AddLabelToMultiple implements AsyncCommand
      */
     protected $offerIdentifiers;
 
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
 
     public function __construct(OfferIdentifierCollection $offerIdentifiers, Label $label)
@@ -38,10 +35,7 @@ class AddLabelToMultiple implements AsyncCommand
         return $this->offerIdentifiers;
     }
 
-    /**
-     * @return Label
-     */
-    public function getLabel()
+    public function getLabel(): Label
     {
         return $this->label;
     }

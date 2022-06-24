@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class AddLabelToQueryTest extends TestCase
@@ -18,7 +19,7 @@ class AddLabelToQueryTest extends TestCase
     {
         $this->labelQuery = new AddLabelToQuery(
             'query',
-            new Label('testlabel')
+            new Label(new LabelName('testlabel'))
         );
     }
 
@@ -28,7 +29,7 @@ class AddLabelToQueryTest extends TestCase
     public function it_returns_the_correct_property_values()
     {
         $expectedQuery = 'query';
-        $expectedLabel = new Label('testlabel');
+        $expectedLabel = new Label(new LabelName('testlabel'));
 
         $this->assertEquals($expectedQuery, $this->labelQuery->getQuery());
         $this->assertEquals($expectedLabel, $this->labelQuery->getLabel());

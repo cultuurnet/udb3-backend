@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Events;
 
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,7 @@ class AbstractLabelEventTest extends TestCase
     {
         $this->organizerId = 'organizerId';
 
-        $this->label = new Label('foo', false);
+        $this->label = new Label(new LabelName('foo'), false);
 
         $this->abstractLabelEvent = $this->getMockForAbstractClass(
             AbstractLabelEvent::class,
@@ -48,7 +49,7 @@ class AbstractLabelEventTest extends TestCase
     public function it_stores_a_label(): void
     {
         $this->assertEquals(
-            $this->label->getName(),
+            $this->label->getName()->toString(),
             $this->abstractLabelEvent->getLabelName()
         );
 
@@ -65,7 +66,7 @@ class AbstractLabelEventTest extends TestCase
     {
         $expectedArray = [
             'organizer_id' => $this->organizerId,
-            'label' => (string) $this->label,
+            'label' => $this->label->getName()->toString(),
             'visibility' => false,
         ];
 

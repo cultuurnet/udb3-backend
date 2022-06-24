@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\UiTPAS\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
@@ -132,7 +132,7 @@ class EventProcessManager implements EventListener
     private function labelsContain(array $haystack, Label $needle): bool
     {
         foreach ($haystack as $label) {
-            if ($needle->equals($label)) {
+            if ($needle->getName()->sameAs($label->getName())) {
                 return true;
             }
         }
@@ -152,7 +152,7 @@ class EventProcessManager implements EventListener
             function (Label $label) use ($eventId) {
                 return new RemoveLabel(
                     $eventId,
-                    $label->getName()->toNative()
+                    $label->getName()->toString()
                 );
             },
             $labels
@@ -194,7 +194,7 @@ class EventProcessManager implements EventListener
     {
         foreach ($commands as $command) {
             if ($command instanceof AddLabel) {
-                $labelName = (string) $command->getLabel();
+                $labelName = $command->getLabel()->getName()->toString();
             } elseif ($command instanceof RemoveLabel) {
                 $labelName = $command->getLabelName();
             } else {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -67,9 +67,9 @@ class UpdateUniqueLabels extends Command
 
                 try {
                     $this->updateLabel($labelUuid, $labelName);
-                    $messages[] = 'Added label ' . $labelName->toNative() . ' with uuid ' . $labelUuid->toString();
+                    $messages[] = 'Added label ' . $labelName->toString() . ' with uuid ' . $labelUuid->toString();
                 } catch (UniqueConstraintViolationException $exception) {
-                    $messages[] = 'Unique exception for label ' . $labelName->toNative() . ' with uuid ' . $labelUuid->toString();
+                    $messages[] = 'Unique exception for label ' . $labelName->toString() . ' with uuid ' . $labelUuid->toString();
                 }
 
                 $progressBar->advance();
@@ -129,7 +129,7 @@ class UpdateUniqueLabels extends Command
                 'labels_unique',
                 [
                     'uuid_col' => $labelUuid->toString(),
-                    'unique_col' => $labelName->toNative(),
+                    'unique_col' => $labelName->toString(),
                 ]
             );
     }

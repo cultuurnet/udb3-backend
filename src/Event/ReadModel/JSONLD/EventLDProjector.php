@@ -71,6 +71,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\AvailableTo;
+use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
@@ -341,24 +342,8 @@ class EventLDProjector extends OfferLDProjector implements
         unset($eventJsonLD->labels);
         unset($eventJsonLD->hiddenLabels);
 
-        $eventType = null;
-        foreach ($eventJsonLD->terms as $term) {
-            if ($term->domain === 'eventtype') {
-                $typeId = new StringLiteral($term->id);
-                // This is a workaround to allow copies of events that
-                // have a placeType instead of an eventType.
-                // These events could also be cleaned up in the future
-                // @see https://jira.uitdatabank.be/browse/III-3926
-                try {
-                    $eventType = $this->eventTypeResolver->byId($typeId);
-                } catch (\Exception $exception) {
-                    $eventType = $this->placeTypeResolver->byId($typeId);
-                }
-            }
-        }
-
         // Set available to and from.
-        $availableTo = AvailableTo::createFromCalendar($eventCopied->getCalendar(), $eventType);
+        $availableTo = AvailableTo::createFromCalendar($eventCopied->getCalendar(), $this->getEventType($eventJsonLD));
         $eventJsonLD->availableTo = (string) $availableTo;
         unset($eventJsonLD->availableFrom);
 
@@ -376,6 +361,44 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->workflowStatus = WorkflowStatus::DELETED()->toString();
 
         return $document->withBody($jsonLD);
+    }
+
+    protected function applyCalendarUpdated(AbstractCalendarUpdated $calendarUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($calendarUpdated)
+            ->apply(OfferUpdate::calendar($calendarUpdated->getCalendar()));
+
+        $offerLd = $document->getBody();
+
+        $availableTo = AvailableTo::createFromCalendar($calendarUpdated->getCalendar(), $this->getEventType($offerLd));
+        $offerLd->availableTo = (string)$availableTo;
+
+        return $document->withBody($offerLd);
+    }
+
+    private function getEventType(\stdClass $eventJsonLD): ?EventType
+    {
+        if (!isset($eventJsonLD->terms)) {
+            return null;
+        }
+
+        $eventType = null;
+        foreach ($eventJsonLD->terms as $term) {
+            if ($term->domain === 'eventtype') {
+                $typeId = new StringLiteral($term->id);
+                // This is a workaround to allow copies of events that
+                // have a placeType instead of an eventType.
+                // These events could also be cleaned up in the future
+                // @see https://jira.uitdatabank.be/browse/III-3926
+                try {
+                    $eventType = $this->eventTypeResolver->byId($typeId);
+                } catch (\Exception $exception) {
+                    $eventType = $this->placeTypeResolver->byId($typeId);
+                }
+            }
+        }
+
+        return $eventType;
     }
 
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): JsonDocument

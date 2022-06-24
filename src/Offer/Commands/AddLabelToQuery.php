@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 
 class AddLabelToQuery implements AsyncCommand
 {
@@ -17,10 +17,7 @@ class AddLabelToQuery implements AsyncCommand
      */
     protected $query;
 
-    /**
-     * @var Label
-     */
-    protected $label;
+    protected Label $label;
 
     public function __construct($query, Label $label)
     {
@@ -36,10 +33,7 @@ class AddLabelToQuery implements AsyncCommand
         return $this->query;
     }
 
-    /**
-     * @return Label
-     */
-    public function getLabel()
+    public function getLabel(): Label
     {
         return $this->label;
     }

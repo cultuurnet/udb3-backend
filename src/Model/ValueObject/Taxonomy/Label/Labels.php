@@ -45,11 +45,28 @@ class Labels extends Collection
         return null;
     }
 
+    public function findLabel(Label $label): ?Label
+    {
+        /** @var Label $currentLabel */
+        foreach ($this->toArray() as $currentLabel) {
+            if ($currentLabel->isVisible() === $label->isVisible() && $currentLabel->getName()->sameAs($label->getName())) {
+                return $label;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return Label[]|Labels
+     */
     public function getVisibleLabels(): Labels
     {
         return $this->filter(fn (Label $label) => $label->isVisible());
     }
 
+    /**
+     * @return Label[]|Labels
+     */
     public function getHiddenLabels(): Labels
     {
         return $this->filter(fn (Label $label) => !$label->isVisible());
