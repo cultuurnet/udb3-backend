@@ -29,20 +29,13 @@ class SimpleContextAwareCommandBus implements CommandBus, ContextAwareInterface,
         $this->context = $context;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function subscribe(CommandHandler $handler)
+    public function subscribe(CommandHandler $handler): void
     {
         $this->commandHandlers[] = $handler;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function dispatch($command)
+    public function dispatch($command): void
     {
-
         /** @var CommandHandler|ContextAwareInterface|LoggerAwareInterface $handler */
         foreach ($this->commandHandlers as $handler) {
             if ($this->logger && $handler instanceof LoggerAwareInterface) {

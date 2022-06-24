@@ -27,23 +27,13 @@ class ValidatingCommandBusDecorator implements CommandBus
         $this->commandValidator = $commandValidator;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function dispatch($command)
+    public function dispatch($command): void
     {
         $this->commandValidator->validate($command);
-
-        // Normally a CommandBus shouldn't return anything, but we
-        // return whatever the decoratee might return for compatibility
-        // reasons as long as we cannot enforce a void return type.
-        return $this->commandBus->dispatch($command);
+        $this->commandBus->dispatch($command);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function subscribe(CommandHandler $handler)
+    public function subscribe(CommandHandler $handler): void
     {
         $this->commandBus->subscribe($handler);
     }

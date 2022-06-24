@@ -19,19 +19,12 @@ abstract class CommandBusDecoratorBase implements CommandBus
         $this->decoratee = $decoratee;
     }
 
-    /**
-     * Dispatches the command $command to the proper CommandHandler
-     *
-     */
-    public function dispatch($command)
+    public function dispatch($command): void
     {
         $this->decoratee->dispatch($command);
     }
 
-    /**
-     * Subscribes the command handler to this CommandBus
-     */
-    public function subscribe(CommandHandler $handler)
+    public function subscribe(CommandHandler $handler): void
     {
         $this->decoratee->subscribe($handler);
     }

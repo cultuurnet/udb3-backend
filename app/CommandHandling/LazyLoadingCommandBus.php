@@ -34,7 +34,7 @@ class LazyLoadingCommandBus implements CommandBus
         $this->beforeFirstDispatch = $beforeFirstDispatch;
     }
 
-    public function dispatch($command)
+    public function dispatch($command): void
     {
         if ($this->first) {
             $this->first = false;
@@ -44,7 +44,7 @@ class LazyLoadingCommandBus implements CommandBus
         $this->commandBus->dispatch($command);
     }
 
-    public function subscribe(CommandHandler $handler)
+    public function subscribe(CommandHandler $handler): void
     {
         $this->commandBus->subscribe($handler);
     }

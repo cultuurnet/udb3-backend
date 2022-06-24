@@ -11,12 +11,12 @@ class RetryingCommandBus extends CommandBusDecoratorBase
 {
     public const MAX_RETRIES = 3;
 
-    public function dispatch($command)
+    public function dispatch($command): void
     {
         $attempt = 1;
         do {
             try {
-                return $this->decoratee->dispatch($command);
+                $this->decoratee->dispatch($command);
             } catch (DBALEventStoreException $e) {
                 $lastException = $e;
             }
