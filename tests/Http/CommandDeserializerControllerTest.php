@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Offer\Commands\AddLabelToQuery;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -47,7 +47,7 @@ class CommandDeserializerControllerTest extends TestCase
     public function it_deserializes_a_command_and_dispatches_it_on_the_command_bus()
     {
         $json = new StringLiteral('{"foo": "bar"}');
-        $command = $this->createMock(AsyncCommand::class);
+        $command = new AddLabelToQuery('foo:bar', new Label('foo'));
 
         $request = new Request([], [], [], [], [], [], $json->toNative());
 
@@ -59,9 +59,7 @@ class CommandDeserializerControllerTest extends TestCase
         $this->commandBus->expects($this->once())
             ->method('dispatch')
             ->willReturnCallback(function ($command) {
-                if ($command instanceof AsyncCommand) {
-                    $command->setAsyncCommandId('i-command-id');
-                }
+                $command->setAsyncCommandId('i-command-id');
             });
 
         $response = $this->controller->handle($request);
