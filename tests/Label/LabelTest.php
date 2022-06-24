@@ -125,7 +125,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_make_a_label_visible_when_invisible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -140,7 +140,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_make_a_label_visible_after_a_make_invisible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -159,7 +159,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_does_not_make_a_label_invisible_when_already_visible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -174,7 +174,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_make_a_label_invisible_when_visible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -189,7 +189,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_does_not_make_a_label_invisible_when_already_invisible()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -204,7 +204,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_make_a_label_public_when_private()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -219,7 +219,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_make_a_label_public_after_a_make_private()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -238,7 +238,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_does_not_make_a_label_public_when_already_public()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -253,7 +253,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_can_make_a_label_private_when_public()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created, new MadePublic($this->uuid, $this->name)])
             ->when(function ($label) {
                 /** @var Label $label */
@@ -268,7 +268,7 @@ class LabelTest extends AggregateRootScenarioTestCase
     public function it_does_not_make_a_label_private_when_already_private()
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(function ($label) {
                 /** @var Label $label */

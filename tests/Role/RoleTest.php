@@ -110,7 +110,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $name = $this->name;
 
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(function (Role $role) use ($uuid, $name) {
                 $role->rename(
@@ -130,7 +130,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $permission = $this->permission;
 
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(function (Role $role) use ($uuid, $permission) {
                 $role->addPermission(
@@ -150,7 +150,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $permission = $this->permission;
 
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, new PermissionAdded($this->uuid, Permission::aanbodBewerken())])
             ->when(function (Role $role) use ($uuid, $permission) {
                 $role->addPermission(
@@ -170,7 +170,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $permission = $this->permission;
 
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated, $this->permissionAdded])
             ->when(function (Role $role) use ($uuid, $permission) {
                 $role->removePermission(
@@ -190,7 +190,7 @@ class RoleTest extends AggregateRootScenarioTestCase
         $permission = $this->permission;
 
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(function (Role $role) use ($uuid, $permission) {
                 $role->removePermission(
@@ -207,7 +207,7 @@ class RoleTest extends AggregateRootScenarioTestCase
     public function it_can_add_a_constraint(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(function (Role $role) {
                 $role->addConstraint($this->query);
@@ -221,7 +221,7 @@ class RoleTest extends AggregateRootScenarioTestCase
     public function it_can_not_add_a_constraint_twice(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([
                 $this->roleCreated,
                 $this->constraintAdded,
@@ -238,7 +238,7 @@ class RoleTest extends AggregateRootScenarioTestCase
     public function it_does_not_update_an_empty_constraint(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([$this->roleCreated])
             ->when(function (Role $role) {
                 $role->updateConstraint($this->query);
@@ -252,7 +252,7 @@ class RoleTest extends AggregateRootScenarioTestCase
     public function it_can_update_a_constraint(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([
                 $this->roleCreated,
                 $this->constraintAdded,
@@ -269,7 +269,7 @@ class RoleTest extends AggregateRootScenarioTestCase
     public function it_does_not_update_a_constraint_with_same_query(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([
                 $this->roleCreated,
                 $this->constraintAdded,
@@ -287,7 +287,7 @@ class RoleTest extends AggregateRootScenarioTestCase
     public function it_can_remove_a_constraint(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([
                 $this->roleCreated,
                 $this->constraintAdded,
@@ -304,7 +304,7 @@ class RoleTest extends AggregateRootScenarioTestCase
     public function it_does_not_remove_a_constraint_when_there_is_none(): void
     {
         $this->scenario
-            ->withAggregateId($this->uuid)
+            ->withAggregateId($this->uuid->toString())
             ->given([
                 $this->roleCreated,
             ])
