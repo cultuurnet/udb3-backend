@@ -32,7 +32,6 @@ final class NewsArticleProcessManager implements EventListener
     }
 
     /**
-     *
      * @uses handleNewsArticleAboutEventAdded
      */
     public function handle(DomainMessage $domainMessage): void
