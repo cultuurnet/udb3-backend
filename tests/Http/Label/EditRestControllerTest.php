@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Label;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -60,7 +61,7 @@ class EditRestControllerTest extends TestCase
         ];
 
         $jsonResponse = $this->editRestController->create($request);
-        $actualJson = json_decode($jsonResponse->getContent(), true);
+        $actualJson = Json::decodeAssociatively($jsonResponse->getContent());
 
         $this->assertEquals($expectedJson, $actualJson);
     }
