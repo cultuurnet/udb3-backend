@@ -56,10 +56,7 @@ class PriceInfo implements Serializable
         return $this->tariffs;
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         $serialized = [
             'base' => $this->basePrice->serialize(),
