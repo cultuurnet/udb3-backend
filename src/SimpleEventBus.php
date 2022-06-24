@@ -29,7 +29,7 @@ class SimpleEventBus implements EventBus
         $this->eventBus = new BroadwaySimpleEventBus();
     }
 
-    public function subscribe(EventListener $eventListener)
+    public function subscribe(EventListener $eventListener): void
     {
         $this->eventBus->subscribe($eventListener);
     }
@@ -37,12 +37,12 @@ class SimpleEventBus implements EventBus
     /**
      * @param callable $callback
      */
-    public function beforeFirstPublication($callback)
+    public function beforeFirstPublication($callback): void
     {
         $this->beforeFirstPublicationCallback = $callback;
     }
 
-    private function callBeforeFirstPublicationCallback()
+    private function callBeforeFirstPublicationCallback(): void
     {
         if ($this->beforeFirstPublicationCallback) {
             $callback = $this->beforeFirstPublicationCallback;
