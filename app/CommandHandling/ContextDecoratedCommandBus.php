@@ -24,16 +24,12 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
         $this->application = $application;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function dispatch($command)
+    public function dispatch($command): void
     {
         if ($this->decoratee instanceof ContextAwareInterface) {
             $context = ContextFactory::createFromGlobals($this->application);
             $this->decoratee->setContext($context);
         }
-
-        return $this->decoratee->dispatch($command);
+        $this->decoratee->dispatch($command);
     }
 }

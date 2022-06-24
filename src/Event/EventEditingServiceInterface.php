@@ -14,68 +14,13 @@ use CultuurNet\UDB3\StringLiteral;
 
 interface EventEditingServiceInterface
 {
-    /**
-     * Update the title of an event.
-     *
-     * @param string $id
-     */
-    public function updateTitle($id, Language $language, StringLiteral $title);
-
-    /**
-     * Update the description of an event.
-     *
-     * @param string $id
-     */
-    public function updateDescription($id, Language $language, Description $description);
-
-    /**
-     * Update the typical age range of an event.
-     *
-     * @param string $id
-     */
-    public function updateTypicalAgeRange($id, AgeRange $ageRange);
-
-    /**
-     * Delete the typical age range of a place.
-     *
-     * @param string $id
-     */
-    public function deleteTypicalAgeRange($id);
-
-    /**
-     * Update the organizer of an event.
-     *
-     * @param string $id
-     * @param string $organizerId
-     */
-    public function updateOrganizer($id, $organizerId);
-
-    /**
-     * Update the organizer of an event.
-     *
-     * @param string $id
-     * @param string $organizerId
-     */
-    public function deleteOrganizer($id, $organizerId);
-
-    /**
-     * Update the contact point of an event.
-     *
-     * @param string $id
-     */
-    public function updateContactPoint($id, ContactPoint $contactPoint);
-
-    /**
-     * Add an image to the event.
-     *
-     * @param string $id
-     */
-    public function addImage($id, UUID $imageId);
-
-    /**
-     * Remove an image from an event.
-     *
-     * @param string $id
-     */
-    public function removeImage($id, Image $image);
+    public function updateTitle(string $id, Language $language, StringLiteral $title): void;
+    public function updateDescription(string $id, Language $language, Description $description): void;
+    public function updateTypicalAgeRange(string $id, AgeRange $ageRange): void;
+    public function deleteTypicalAgeRange(string $id): void;
+    public function updateOrganizer(string $id, string $organizerId): void;
+    public function deleteOrganizer(string $id, string $organizerId): void;
+    public function updateContactPoint(string $id, ContactPoint $contactPoint): void;
+    public function addImage(string $id, UUID $imageId): void;
+    public function removeImage(string $id, Image $image): void;
 }

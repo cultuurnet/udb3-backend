@@ -29,10 +29,7 @@ abstract class AbstractActorEvent implements Serializable
         $this->setUrl($url);
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return $this->serializeActorId() +
             $this->serializeAuthoringMetadata() +

@@ -40,7 +40,7 @@ abstract class AbstractGeoCoordinatesProcessManager implements EventListener
     abstract protected function getEventHandlers();
 
 
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $payload = $domainMessage->getPayload();
         $className = get_class($payload);

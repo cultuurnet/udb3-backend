@@ -15,78 +15,16 @@ use CultuurNet\UDB3\StringLiteral;
 
 interface OfferEditingServiceInterface
 {
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateTitle($id, Language $language, StringLiteral $title);
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateDescription($id, Language $language, Description $description);
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function addImage($id, UUID $imageId);
-
-    public function updateImage($id, Image $image, StringLiteral $description, CopyrightHolder $copyrightHolder): void;
-
-    /**
-     * @param string $id
-     *  Id of the offer to remove the image from.
-     *
-     * @param Image $image
-     *  The image that should be removed.
-     *
-     * @return string
-     */
-    public function removeImage($id, Image $image);
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function selectMainImage($id, Image $image);
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateTypicalAgeRange($id, AgeRange $ageRange);
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function deleteTypicalAgeRange($id);
-
-    /**
-     * @param string $id
-     * @param string $organizerId
-     * @return string
-     */
-    public function updateOrganizer($id, $organizerId);
-
-    /**
-     * @param string $id
-     * @param string $organizerId
-     * @return string
-     */
-    public function deleteOrganizer($id, $organizerId);
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateContactPoint($id, ContactPoint $contactPoint);
-
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateBookingInfo($id, BookingInfo $bookingInfo);
+    public function updateTitle(string $id, Language $language, StringLiteral $title): void;
+    public function updateDescription(string $id, Language $language, Description $description): void;
+    public function addImage(string $id, UUID $imageId): void;
+    public function updateImage(string $id, Image $image, StringLiteral $description, CopyrightHolder $copyrightHolder): void;
+    public function removeImage(string $id, Image $image): void;
+    public function selectMainImage(string $id, Image $image): void;
+    public function updateTypicalAgeRange(string $id, AgeRange $ageRange): void;
+    public function deleteTypicalAgeRange(string $id): void;
+    public function updateOrganizer(string $id, string $organizerId): void;
+    public function deleteOrganizer(string $id, string $organizerId): void;
+    public function updateContactPoint(string $id, ContactPoint $contactPoint): void;
+    public function updateBookingInfo(string $id, BookingInfo $bookingInfo): void;
 }

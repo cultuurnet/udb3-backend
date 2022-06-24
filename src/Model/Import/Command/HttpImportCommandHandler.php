@@ -47,7 +47,7 @@ class HttpImportCommandHandler implements CommandHandler
     /**
      * @param ImportDocument $command
      */
-    public function handle($command)
+    public function handle($command): void
     {
         if (get_class($command) !== $this->commandClassName) {
             return;

@@ -96,16 +96,13 @@ class DefaultOfferEditingServiceTest extends TestCase
                     new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('en'),
                     new \CultuurNet\UDB3\Model\ValueObject\Text\Title('English title')
                 )
-            )
-            ->willReturn($this->expectedCommandId);
+            );
 
-        $commandId = $this->offerEditingService->updateTitle(
+        $this->offerEditingService->updateTitle(
             'foo',
             new Language('en'),
             new Title('English title')
         );
-
-        $this->assertEquals($this->expectedCommandId, $commandId);
     }
 
     /**
@@ -127,13 +124,11 @@ class DefaultOfferEditingServiceTest extends TestCase
             ->method('dispatch')
             ->willReturn($this->expectedCommandId);
 
-        $commandId = $this->offerEditingService->updateDescription(
+        $this->offerEditingService->updateDescription(
             'foo',
             new Language('fr'),
             new Description('La description')
         );
-
-        $this->assertEquals($this->expectedCommandId, $commandId);
     }
 
     /**

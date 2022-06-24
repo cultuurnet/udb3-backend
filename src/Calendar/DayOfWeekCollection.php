@@ -75,10 +75,7 @@ class DayOfWeekCollection implements Serializable
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return $this->daysOfWeek;
     }

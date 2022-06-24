@@ -74,15 +74,11 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         return $c;
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateTitle($id, Language $language, StringLiteral $title)
+    public function updateTitle(string $id, Language $language, StringLiteral $title): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             new UpdateTitle(
                 $id,
                 new \CultuurNet\UDB3\Model\ValueObject\Translation\Language($language->getCode()),
@@ -91,15 +87,11 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateDescription($id, Language $language, Description $description)
+    public function updateDescription(string $id, Language $language, Description $description): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createUpdateDescriptionCommand(
                 $id,
                 $language,
@@ -108,21 +100,17 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function addImage($id, UUID $imageId)
+    public function addImage(string $id, UUID $imageId): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createAddImageCommand($id, $imageId)
         );
     }
 
     public function updateImage(
-        $id,
+        string $id,
         Image $image,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder
@@ -139,119 +127,73 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    /**
-     * @param string $id
-     *  Id of the offer to remove the image from.
-     *
-     * @param Image $image
-     *  The image that should be removed.
-     *
-     * @return string
-     */
-    public function removeImage($id, Image $image)
+    public function removeImage(string $id, Image $image): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createRemoveImageCommand($id, $image)
         );
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function selectMainImage($id, Image $image)
+    public function selectMainImage(string $id, Image $image): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createSelectMainImageCommand($id, $image)
         );
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateTypicalAgeRange($id, AgeRange $ageRange)
+    public function updateTypicalAgeRange(string $id, AgeRange $ageRange): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createUpdateTypicalAgeRangeCommand($id, $ageRange)
         );
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function deleteTypicalAgeRange($id)
+    public function deleteTypicalAgeRange(string $id): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createDeleteTypicalAgeRangeCommand($id)
         );
     }
 
-    /**
-     * @param string $id
-     * @param string $organizerId
-     * @return string
-     */
-    public function updateOrganizer($id, $organizerId)
+    public function updateOrganizer(string $id, string $organizerId): void
     {
         $this->guardId($id);
-
-        return $this->commandBus->dispatch(new UpdateOrganizer($id, $organizerId));
+        $this->commandBus->dispatch(new UpdateOrganizer($id, $organizerId));
     }
 
-    /**
-     * @param string $id
-     * @param string $organizerId
-     * @return string
-     */
-    public function deleteOrganizer($id, $organizerId)
+    public function deleteOrganizer(string $id, string $organizerId): void
     {
         $this->guardId($id);
-
-        return $this->commandBus->dispatch(new DeleteOrganizer($id, $organizerId));
+        $this->commandBus->dispatch(new DeleteOrganizer($id, $organizerId));
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateContactPoint($id, ContactPoint $contactPoint)
+    public function updateContactPoint(string $id, ContactPoint $contactPoint): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createUpdateContactPointCommand($id, $contactPoint)
         );
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateBookingInfo($id, BookingInfo $bookingInfo)
+    public function updateBookingInfo(string $id, BookingInfo $bookingInfo): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createUpdateBookingInfoCommand($id, $bookingInfo)
         );
     }
 
-    /**
-     * @param string $id
-     *
-     * @throws EntityNotFoundException
-     */
-    public function guardId($id)
+    public function guardId(string $id): void
     {
         try {
             $this->readRepository->fetch($id);

@@ -29,10 +29,7 @@ abstract class AbstractEventEvent implements Serializable
         $this->setUrl($url);
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return $this->serializeEventId() +
             $this->serializeAuthoringMetadata() +

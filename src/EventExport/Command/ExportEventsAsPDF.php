@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Command;
 
+use CultuurNet\UDB3\CommandHandling\AsyncCommand;
+use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveTemplate;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
@@ -12,8 +14,10 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
-class ExportEventsAsPDF implements ExportEventsInterface
+class ExportEventsAsPDF implements ExportEventsInterface, AsyncCommand
 {
+    use AsyncCommandTrait;
+
     private EventExportQuery $query;
 
     private ?EmailAddress $address;

@@ -11,14 +11,11 @@ use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 
 class DefaultPlaceEditingService extends DefaultOfferEditingService implements PlaceEditingServiceInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function updateAddress($id, Address $address, Language $language)
+    public function updateAddress($id, Address $address, Language $language): void
     {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             new UpdateAddress($id, $address, $language)
         );
     }

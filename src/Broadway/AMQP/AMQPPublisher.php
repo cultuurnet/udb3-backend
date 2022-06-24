@@ -54,10 +54,7 @@ class AMQPPublisher implements EventListener
         $this->determineRoutingKey = $determineRoutingKey ?? static fn () => '';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         if ($this->domainMessageSpecification->isSatisfiedBy($domainMessage)) {
             $this->publishWithAMQP($domainMessage);

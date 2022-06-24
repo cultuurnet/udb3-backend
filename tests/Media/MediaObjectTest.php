@@ -15,10 +15,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class MediaObjectTest extends AggregateRootScenarioTestCase
 {
-    /**
-     * @inheritdoc
-     */
-    protected function getAggregateRootClass()
+    protected function getAggregateRootClass(): string
     {
         return MediaObject::class;
     }

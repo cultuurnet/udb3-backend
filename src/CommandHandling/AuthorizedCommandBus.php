@@ -41,10 +41,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         $this->security = $security;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function dispatch($command)
+    public function dispatch($command): void
     {
         if ($command instanceof AuthorizableCommand) {
             $authorized = $this->isAuthorized($command);

@@ -79,15 +79,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
         return $this->context;
     }
 
-
-    /**
-     * Dispatches the command $command to a queue.
-     *
-     * @return string the command id
-     *
-     * @throws CommandAuthorizationException
-     */
-    public function dispatch($command)
+    public function dispatch($command): void
     {
         if ($this->decoratee instanceof AuthorizedCommandBusInterface &&
             $command instanceof AuthorizableCommand) {
@@ -104,7 +96,9 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
         $args['context'] = base64_encode(serialize($this->context));
         $id = \Resque::enqueue($this->queueName, QueueJob::class, $args, true);
 
-        return $id;
+        if ($command instanceof AsyncCommand) {
+            $command->setAsyncCommandId($id);
+        }
     }
 
     /**

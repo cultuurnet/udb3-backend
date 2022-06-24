@@ -31,7 +31,7 @@ final class RelocateEventToCanonicalPlace implements EventListener
         $this->canonicalPlaceRepository = $canonicalPlaceRepository;
     }
 
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
         switch (true) {

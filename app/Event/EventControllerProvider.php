@@ -107,7 +107,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                     ),
                     new OnlineLocationPolyfillRequestBodyParser($app['place_iri_generator'])
                 ),
-                $app['imports_command_bus'],
+                $app['event_command_bus'],
                 $app['import_image_collection_factory'],
                 $app['place_jsonld_repository']
             )

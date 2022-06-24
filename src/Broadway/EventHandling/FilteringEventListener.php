@@ -28,8 +28,7 @@ class FilteringEventListener implements EventListener
         $this->domainMessageSpecification = $domainMessageSpecification;
     }
 
-
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         if ($this->domainMessageSpecification->isSatisfiedBy($domainMessage)) {
             $this->eventListener->handle($domainMessage);

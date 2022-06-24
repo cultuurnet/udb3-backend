@@ -55,10 +55,7 @@ class ItemCreated implements Serializable
         return new self($data['itemId'], $data['main_language']);
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return [
             'itemId' => $this->itemId,

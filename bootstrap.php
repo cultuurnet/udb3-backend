@@ -1144,7 +1144,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServi
 $app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Import\ImportServiceProvider($subscribeCoreCommandHandlers));
 $app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 

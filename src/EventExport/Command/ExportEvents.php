@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Command;
 
+use CultuurNet\UDB3\CommandHandling\AsyncCommand;
+use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 /**
  * Base class for event export commands.
  */
-abstract class ExportEvents implements ExportEventsInterface
+abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
 {
+    use AsyncCommandTrait;
+
     /**
      * @var EventExportQuery
      */

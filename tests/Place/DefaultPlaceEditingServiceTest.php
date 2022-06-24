@@ -96,15 +96,10 @@ class DefaultPlaceEditingServiceTest extends TestCase
         );
         $language = new Language('nl');
 
-        $expectedCommandId = '98994a85-f0d9-4862-a91e-02f116bd609b';
-
         $this->commandBus->expects($this->once())
             ->method('dispatch')
-            ->with(new UpdateAddress($id, $address, $language))
-            ->willReturn($expectedCommandId);
+            ->with(new UpdateAddress($id, $address, $language));
 
-        $actualCommandId = $this->placeEditingService->updateAddress($id, $address, $language);
-
-        $this->assertEquals($expectedCommandId, $actualCommandId);
+        $this->placeEditingService->updateAddress($id, $address, $language);
     }
 }

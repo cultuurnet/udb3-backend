@@ -47,11 +47,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         $this->uniqueConstraintService = $uniqueConstraintService;
     }
 
-    /**
-     * @inheritdoc
-     * @throws UniqueConstraintException
-     */
-    public function append($id, DomainEventStream $eventStream)
+    public function append($id, DomainEventStream $eventStream): void
     {
         $this->connection->beginTransaction();
 
