@@ -15,22 +15,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EditRestControllerTest extends TestCase
 {
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
     /**
      * @var WriteServiceInterface|MockObject
      */
     private $writeService;
 
-    /**
-     * @var EditRestController
-     */
-    private $editRestController;
+    private EditRestController $editRestController;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->uuid = new UUID('3b76d445-5302-4c6a-9194-94632bc4d91f');
 
@@ -42,7 +36,7 @@ class EditRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_json_response_for_create()
+    public function it_returns_json_response_for_create(): void
     {
         $contentAsArray = [
             'name' => 'labelName',
@@ -78,7 +72,7 @@ class EditRestControllerTest extends TestCase
     public function it_handles_patch(
         array $contentAsArray,
         string $method
-    ) {
+    ): void {
         $request = $this->createRequestWithContent($contentAsArray);
 
         $this->writeService->expects($this->once())
@@ -89,10 +83,7 @@ class EditRestControllerTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
     }
 
-    /**
-     * @return array
-     */
-    public function patchProvider()
+    public function patchProvider(): array
     {
         return [
             [['command' => 'MakeVisible'], 'makeVisible'],
@@ -102,10 +93,7 @@ class EditRestControllerTest extends TestCase
         ];
     }
 
-    /**
-     * @return Request
-     */
-    private function createRequestWithContent(array $contentAsArray)
+    private function createRequestWithContent(array $contentAsArray): Request
     {
         return new Request(
             [],
