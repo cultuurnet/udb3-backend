@@ -14,18 +14,17 @@ class RetryingCommandBus extends CommandBusDecoratorBase
     public function dispatch($command): void
     {
         $attempt = 1;
-        $lastException = null;
+
         do {
             try {
                 $this->decoratee->dispatch($command);
+                return;
             } catch (DBALEventStoreException $e) {
                 $lastException = $e;
             }
             $attempt++;
         } while ($attempt <= self::MAX_RETRIES);
 
-        if ($lastException) {
-            throw $lastException;
-        }
+        throw $lastException;
     }
 }
