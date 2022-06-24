@@ -104,7 +104,9 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
         $args['context'] = base64_encode(serialize($this->context));
         $id = \Resque::enqueue($this->queueName, QueueJob::class, $args, true);
 
-        return $id;
+        if ($command instanceof AsyncCommand) {
+            $command->setAsyncCommandId($id);
+        }
     }
 
     /**

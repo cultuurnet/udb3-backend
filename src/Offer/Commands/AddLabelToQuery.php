@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
+use CultuurNet\UDB3\CommandHandling\AsyncCommand;
+use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
 use CultuurNet\UDB3\Label;
 
-class AddLabelToQuery
+class AddLabelToQuery implements AsyncCommand
 {
+    use AsyncCommandTrait;
+
     /**
      * @var string
      */
