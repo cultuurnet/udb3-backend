@@ -8,10 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 trait DelegateEventHandlingToSpecificMethodTrait
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $event  = $domainMessage->getPayload();
         $method = $this->getHandleMethodName($event);
