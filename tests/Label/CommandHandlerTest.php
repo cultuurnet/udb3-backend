@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label;
 
+use Broadway\CommandHandling\CommandHandler as BroadwayCommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
@@ -94,13 +95,10 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         parent::setUp();
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function createCommandHandler(
         EventStore $eventStore,
         EventBus $eventBus
-    ) {
+    ): BroadwayCommandHandler {
         return new CommandHandler(
             new LabelRepository($eventStore, $eventBus)
         );
