@@ -14,6 +14,7 @@ class RetryingCommandBus extends CommandBusDecoratorBase
     public function dispatch($command): void
     {
         $attempt = 1;
+        $lastException = null;
         do {
             try {
                 $this->decoratee->dispatch($command);
@@ -23,6 +24,8 @@ class RetryingCommandBus extends CommandBusDecoratorBase
             $attempt++;
         } while ($attempt <= self::MAX_RETRIES);
 
-        throw $lastException;
+        if ($lastException) {
+            throw $lastException;
+        }
     }
 }

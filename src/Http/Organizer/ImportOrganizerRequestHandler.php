@@ -172,7 +172,6 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
 
         $lastCommandId = null;
         foreach ($commands as $command) {
-            /** @var string|null $commandId */
             try {
                 $this->commandBus->dispatch($command);
             } catch (UniqueConstraintException $e) {
