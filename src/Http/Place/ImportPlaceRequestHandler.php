@@ -228,24 +228,17 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         foreach ($commands as $command) {
             try {
-                $commandId = $this->commandBus->dispatch($command);
+                $this->commandBus->dispatch($command);
             } catch (InvalidWorkflowStatusTransition $notAllowedToPublish) {
             }
-            $lastCommandId = $commandId ?? null;
-        }
-
-        if ($lastCommandId === null) {
-            $lastCommandId = Uuid::NIL;
         }
 
         $responseBody = [
             'id' => $placeId,
             'placeId' => $placeId,
             'url' => $this->iriGenerator->iri($placeId),
+            'commandId' => Uuid::NIL,
         ];
-        if ($lastCommandId) {
-            $responseBody['commandId'] = $lastCommandId;
-        }
         return new JsonResponse($responseBody, $responseStatus);
     }
 }

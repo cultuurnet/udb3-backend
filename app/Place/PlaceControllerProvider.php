@@ -89,7 +89,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                     )
                 ),
                 $app['place_iri_generator'],
-                $app['imports_command_bus'],
+                $app['event_command_bus'],
                 $app['import_image_collection_factory']
             )
         );

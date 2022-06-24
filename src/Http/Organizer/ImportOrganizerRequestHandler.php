@@ -174,28 +174,19 @@ final class ImportOrganizerRequestHandler implements RequestHandlerInterface
         foreach ($commands as $command) {
             /** @var string|null $commandId */
             try {
-                $commandId = $this->commandBus->dispatch($command);
+                $this->commandBus->dispatch($command);
             } catch (UniqueConstraintException $e) {
                 // Is only catched when synchronous_imports is set to true inside config.yml
                 throw ApiProblem::duplicateUrl($url->toString(), $e->getDuplicateValue());
             }
-            if ($commandId) {
-                $lastCommandId = $commandId;
-            }
-        }
-
-        if ($lastCommandId === null) {
-            $lastCommandId = Uuid::NIL;
         }
 
         $responseBody = [
             'id' => $organizerId,
             'organizerId' => $organizerId,
             'url' => $this->iriGenerator->iri($organizerId),
+            'commandId' => Uuid::NIL,
         ];
-        if ($lastCommandId) {
-            $responseBody['commandId'] = $lastCommandId;
-        }
         return new JsonResponse($responseBody, $responseStatus);
     }
 }
