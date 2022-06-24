@@ -53,7 +53,7 @@ class LabelTest extends AggregateRootScenarioTestCase
      */
     private $copyCreated;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
