@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
@@ -29,9 +28,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     private UUID $uuid;
 
-    private LabelName $name;
-
-    private LegacyLabelName $legacyName;
+    private string $name;
 
     private Visibility $visibility;
 
@@ -46,34 +43,37 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     public function setUp(): void
     {
         $this->uuid = new UUID('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
-        $this->name = new LabelName('labelName');
-        $this->legacyName = new LegacyLabelName('labelName');
+        $this->name = 'labelName';
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
         $this->parentUuid = new UUID('f4e5608b-348d-4321-86f7-567891bf33b7');
 
         $this->created = new Created(
             $this->uuid,
-            $this->legacyName,
+            $this->name,
             $this->visibility,
             $this->privacy
         );
 
         $this->copyCreated = new CopyCreated(
             $this->uuid,
-            $this->legacyName,
+            $this->name,
             $this->visibility,
             $this->privacy,
             $this->parentUuid
         );
 
+        // Ensure all members are created before createCommandHandler is called.
         parent::setUp();
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function createCommandHandler(
         EventStore $eventStore,
         EventBus $eventBus
-    ): CommandHandler {
+    ) {
         return new CommandHandler(
             new LabelRepository($eventStore, $eventBus)
         );
@@ -89,7 +89,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([])
             ->when(new Create(
                 $this->uuid,
-                $this->name,
+                new LabelName($this->name),
                 $this->visibility,
                 $this->privacy
             ))
@@ -106,7 +106,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([])
             ->when(new CreateCopy(
                 $this->uuid,
-                $this->name,
+                new LabelName($this->name),
                 $this->visibility,
                 $this->privacy,
                 $this->parentUuid
@@ -123,7 +123,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakeVisible($this->uuid))
-            ->then([new MadeVisible($this->uuid, $this->legacyName)]);
+            ->then([new MadeVisible($this->uuid, $this->name)]);
     }
 
     /**
@@ -133,7 +133,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadeVisible($this->uuid, $this->legacyName)])
+            ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
             ->when(new MakeVisible($this->uuid))
             ->then([]);
     }
@@ -145,9 +145,9 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadeVisible($this->uuid, $this->legacyName)])
+            ->given([$this->created, new MadeVisible($this->uuid, $this->name)])
             ->when(new MakeInvisible($this->uuid))
-            ->then([new MadeInvisible($this->uuid, $this->legacyName)]);
+            ->then([new MadeInvisible($this->uuid, $this->name)]);
     }
 
     /**
@@ -171,7 +171,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId($this->uuid->toString())
             ->given([$this->created])
             ->when(new MakePublic($this->uuid))
-            ->then([new MadePublic($this->uuid, $this->legacyName)]);
+            ->then([new MadePublic($this->uuid, $this->name)]);
     }
 
     /**
@@ -181,7 +181,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadePublic($this->uuid, $this->legacyName)])
+            ->given([$this->created, new MadePublic($this->uuid, $this->name)])
             ->when(new MakePublic($this->uuid))
             ->then([]);
     }
@@ -193,9 +193,9 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         $this->scenario
             ->withAggregateId($this->uuid->toString())
-            ->given([$this->created, new MadePublic($this->uuid, $this->legacyName)])
+            ->given([$this->created, new MadePublic($this->uuid, $this->name)])
             ->when(new MakePrivate($this->uuid))
-            ->then([new MadePrivate($this->uuid, $this->legacyName)]);
+            ->then([new MadePrivate($this->uuid, $this->name)]);
     }
 
     /**

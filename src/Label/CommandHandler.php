@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CommandHandler extends AbstractCommandHandler
@@ -29,7 +28,7 @@ class CommandHandler extends AbstractCommandHandler
     {
         $label = Label::create(
             $create->getUuid(),
-            new LegacyLabelName($create->getName()->toString()),
+            $create->getName()->toString(),
             $create->getVisibility(),
             $create->getPrivacy()
         );
@@ -41,7 +40,7 @@ class CommandHandler extends AbstractCommandHandler
     {
         $label = Label::createCopy(
             $createCopy->getUuid(),
-            new LegacyLabelName($createCopy->getName()->toString()),
+            $createCopy->getName()->toString(),
             $createCopy->getVisibility(),
             $createCopy->getPrivacy(),
             $createCopy->getParentUuid()
