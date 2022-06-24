@@ -6,7 +6,8 @@ namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
-use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToQuery;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +48,7 @@ class CommandDeserializerControllerTest extends TestCase
     public function it_deserializes_a_command_and_dispatches_it_on_the_command_bus()
     {
         $json = new StringLiteral('{"foo": "bar"}');
-        $command = new AddLabelToQuery('foo:bar', new Label('foo'));
+        $command = new AddLabelToQuery('foo:bar', new Label(new LabelName('foo')));
 
         $request = new Request([], [], [], [], [], [], $json->toNative());
 
