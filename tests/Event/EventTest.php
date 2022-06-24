@@ -65,10 +65,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
     public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
-    /**
-     * @inheritdoc
-     */
-    protected function getAggregateRootClass()
+    protected function getAggregateRootClass(): string
     {
         return Event::class;
     }

@@ -45,12 +45,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 class PlaceTest extends AggregateRootScenarioTestCase
 {
-    /**
-     * Returns a string representing the aggregate root
-     *
-     * @return string AggregateRoot
-     */
-    protected function getAggregateRootClass()
+    protected function getAggregateRootClass(): string
     {
         return Place::class;
     }

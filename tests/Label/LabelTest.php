@@ -79,10 +79,7 @@ class LabelTest extends AggregateRootScenarioTestCase
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getAggregateRootClass()
+    protected function getAggregateRootClass(): string
     {
         return Label::class;
     }
