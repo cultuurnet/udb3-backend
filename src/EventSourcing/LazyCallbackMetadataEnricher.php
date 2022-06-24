@@ -19,7 +19,7 @@ final class LazyCallbackMetadataEnricher implements MetadataEnricher
         $this->metadataCallback = $metadataCallback;
     }
 
-    public function enrich(Metadata $metadata)
+    public function enrich(Metadata $metadata): Metadata
     {
         $extraMetadata = call_user_func($this->metadataCallback);
         if ($extraMetadata instanceof Metadata) {
