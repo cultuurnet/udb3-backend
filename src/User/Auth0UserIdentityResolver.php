@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User;
 
-use Auth0\SDK\API\Management;
+use Auth0\SDK\Contract\API\ManagementInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\StringLiteral;
 
 final class Auth0UserIdentityResolver implements UserIdentityResolver
 {
-    /**
-     * @var Management
-     */
-    private $auth0;
+    private ManagementInterface $auth0;
 
-    public function __construct(Management $auth0)
+    public function __construct(ManagementInterface $auth0)
     {
         $this->auth0 = $auth0;
     }
