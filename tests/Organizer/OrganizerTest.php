@@ -226,6 +226,10 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 true
             ),
             new Label(
+                new LabelName('initially_hidden_label_1'),
+                true
+            ),
+            new Label(
                 new LabelName('new_hidden_label_1'),
                 false
             ),
@@ -236,9 +240,6 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             new Label(
                 new LabelName('initially_visible_label_1'),
                 false
-            ),
-            new Label(
-                new LabelName('initially_hidden_label_1')
             )
         );
 
@@ -289,9 +290,9 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new LabelRemoved($this->id, 'existing_hidden_label_2', false),
                     new LabelRemoved($this->id, 'initially_hidden_label_1', false),
                     new LabelAdded($this->id, 'new_label_1'),
+                    new LabelAdded($this->id, 'initially_hidden_label_1'),
                     new LabelAdded($this->id, 'new_hidden_label_1', false),
                     new LabelAdded($this->id, 'initially_visible_label_1', false),
-                    new LabelAdded($this->id, 'initially_hidden_label_1'),
                 ]
             );
     }
