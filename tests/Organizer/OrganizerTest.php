@@ -224,6 +224,20 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             new Label(
                 new LabelName('existing_label_1'),
                 true
+            ),
+            new Label(
+                new LabelName('new_hidden_label_1'),
+                false
+            ),
+            new Label(
+                new LabelName('existing_hidden_label_1')
+            ),
+            new Label(
+                new LabelName('initially_visible_label_1'),
+                false
+            ),
+            new Label(
+                new LabelName('initially_hidden_label_1')
             )
         );
 
@@ -238,12 +252,21 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                             'existing_label_1',
                             'existing_label_2',
                             'existing_label_3',
+                            'initially_visible_label_1',
                         ],
-                        []
+                        [
+                            'existing_hidden_label_1',
+                            'existing_hidden_label_2',
+                            'initially_hidden_label_1',
+                        ]
                     ),
                     new LabelAdded($this->id, 'existing_label_1'),
                     new LabelAdded($this->id, 'existing_label_2'),
                     new LabelAdded($this->id, 'existing_label_3'),
+                    new LabelAdded($this->id, 'initially_visible_label_1'),
+                    new LabelAdded($this->id, 'existing_hidden_label_1', false),
+                    new LabelAdded($this->id, 'existing_hidden_label_2', false),
+                    new LabelAdded($this->id, 'initially_hidden_label_1', false),
                 ]
             )
             ->when(
@@ -256,12 +279,20 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     new LabelsImported(
                         $this->id,
-                        ['new_label_1'],
-                        []
+                        ['new_label_1', 'existing_hidden_label_1', 'initially_hidden_label_1'],
+                        ['new_hidden_label_1', 'initially_visible_label_1'],
                     ),
                     new LabelRemoved($this->id, 'existing_label_2'),
                     new LabelRemoved($this->id, 'existing_label_3'),
+                    new LabelRemoved($this->id, 'initially_visible_label_1'),
+                    new LabelRemoved($this->id, 'existing_hidden_label_1', false),
+                    new LabelRemoved($this->id, 'existing_hidden_label_2', false),
+                    new LabelRemoved($this->id, 'initially_hidden_label_1', false),
                     new LabelAdded($this->id, 'new_label_1'),
+                    new LabelAdded($this->id, 'new_hidden_label_1', false),
+                    new LabelAdded($this->id, 'existing_hidden_label_1'),
+                    new LabelAdded($this->id, 'initially_visible_label_1', false),
+                    new LabelAdded($this->id, 'initially_hidden_label_1'),
                 ]
             );
     }
