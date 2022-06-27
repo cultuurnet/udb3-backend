@@ -77,8 +77,7 @@ class HttpImportCommandHandlerTest extends TestCase
         $command->apiKey = '24b5bebe-d369-4e17-aaab-6d6b5ff6ad06';
 
         $this->httpClient->expects($this->never())
-            ->method('__call')
-            ->with('put');
+            ->method('put');
 
         $this->commandHandler->handle($command);
     }
@@ -113,30 +112,22 @@ class HttpImportCommandHandlerTest extends TestCase
 
         $getResponse = $this->createMock(ResponseInterface::class);
 
-        $this->httpClient->expects($this->exactly(2))
-            ->method('__call')
-            ->withConsecutive(
+        $this->httpClient->expects($this->once())
+            ->method('get')
+            ->with($documentUrl)
+            ->willReturn($getResponse);
+
+        $this->httpClient->expects($this->once())
+            ->method('put')
+            ->with(
+                'https://io.uitdatabank.be/events/f9aec59a-8f70-41ac-bcd5-16020de59afd',
                 [
-                    'get',
-                    [
-                        $documentUrl,
-                    ],
-                ],
-                [
-                    'put',
-                    [
-                        'https://io.uitdatabank.be/events/f9aec59a-8f70-41ac-bcd5-16020de59afd',
-                        [
-                            'Authorization' => 'Bearer ' . $jwt,
-                            'X-Api-Key' => $apiKey,
-                            'body' => $json,
-                        ],
-                    ],
+                    'Authorization' => 'Bearer ' . $jwt,
+                    'X-Api-Key' => $apiKey,
+                    'body' => $json,
                 ]
             )
-            ->willReturnOnConsecutiveCalls(
-                $getResponse
-            );
+            ->willReturn($getResponse);
 
         $getResponse->expects($this->once())
             ->method('getBody')
