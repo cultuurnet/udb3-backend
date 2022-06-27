@@ -37,9 +37,9 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
 
         $app[Auth0UserIdentityResolver::class] = $app::share(
             function (Application $app) {
-                $config = new SdkConfiguration();
-                $config->setManagementToken($app['auth0.management-token']);
+                $config = new SdkConfiguration(null, SdkConfiguration::STRATEGY_NONE);
                 $config->setDomain($app['config']['auth0']['domain']);
+                $config->setManagementToken($app['auth0.management-token']);
                 return new Auth0UserIdentityResolver(new Management($config));
             }
         );
