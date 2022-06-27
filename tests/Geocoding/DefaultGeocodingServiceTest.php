@@ -7,10 +7,11 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use Geocoder\Exception\NoResult;
+use Geocoder\Exception\CollectionIsEmpty;
 use Geocoder\Geocoder;
 use Geocoder\Model\Address;
 use Geocoder\Model\AddressCollection;
+use Geocoder\Model\AdminLevelCollection;
 use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -53,6 +54,8 @@ class DefaultGeocodingServiceTest extends TestCase
 
         $result = new AddressCollection([
             new Address(
+                'google',
+                new AdminLevelCollection(),
                 new GeocoderCoordinates($latFloat, $longFloat)
             ),
         ]);
@@ -83,7 +86,7 @@ class DefaultGeocodingServiceTest extends TestCase
             ->method('geocode')
             ->with($address)
             ->willThrowException(
-                new NoResult('Could not execute query')
+                new CollectionIsEmpty('Could not execute query')
             );
 
         $this->logger->expects($this->once())
