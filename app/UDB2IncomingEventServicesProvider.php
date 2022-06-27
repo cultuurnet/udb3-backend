@@ -34,7 +34,7 @@ use CultuurNet\UDB3\UDB2\XSD\XSDAwareXMLValidationService;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
-use Http\Adapter\Guzzle6\Client as ClientAdapter;
+use Http\Adapter\Guzzle7\Client as ClientAdapter;
 use Monolog\Handler\StreamHandler;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;

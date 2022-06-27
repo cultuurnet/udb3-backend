@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Http\Adapter\Guzzle6\Client as Guzzle6ClientAdapter;
+use Http\Adapter\Guzzle7\Client as Guzzle6ClientAdapter;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
