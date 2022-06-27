@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\User;
 
-use Auth0\SDK\API\Management;
 use Auth0\SDK\API\Management\Users;
 use Auth0\SDK\Contract\API\Management\UsersInterface;
 use Auth0\SDK\Contract\API\ManagementInterface;
