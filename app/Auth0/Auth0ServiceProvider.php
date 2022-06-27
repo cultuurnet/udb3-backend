@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Auth0;
 
 use Auth0\SDK\API\Management;
+use Auth0\SDK\Configuration\SdkConfiguration;
 use CultuurNet\UDB3\User\Auth0ManagementTokenGenerator;
 use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -36,12 +37,10 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
 
         $app[Auth0UserIdentityResolver::class] = $app::share(
             function (Application $app) {
-                return new Auth0UserIdentityResolver(
-                    new Management(
-                        $app['auth0.management-token'],
-                        $app['config']['auth0']['domain']
-                    )
-                );
+                $config = new SdkConfiguration();
+                $config->setManagementToken($app['auth0.management-token']);
+                $config->setDomain($app['config']['auth0']['domain']);
+                return new Auth0UserIdentityResolver(new Management($config));
             }
         );
     }
