@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\User;
 
 use Auth0\SDK\Contract\API\ManagementInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -37,10 +38,10 @@ final class Auth0UserIdentityResolver implements UserIdentityResolver
 
     private function fetchUser(string $query): ?UserIdentityDetails
     {
-        $users = $this->auth0->users()->getAll(
+        $response = $this->auth0->users()->getAll(
             ['q' => $query]
         );
-
+        $users = Json::decodeAssociatively($response->getBody()->getContents());
         return $this->normalizeResult($users);
     }
 

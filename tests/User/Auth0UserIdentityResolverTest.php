@@ -10,6 +10,7 @@ use Auth0\SDK\Contract\API\Management\UsersInterface;
 use Auth0\SDK\Contract\API\ManagementInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -36,7 +37,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->any())
             ->method('getAll')
             ->with(['q' => 'user_id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09" OR app_metadata.uitidv1id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09"'])
-            ->willReturn([$user]);
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -63,7 +64,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->any())
             ->method('getAll')
             ->with(['q' => 'user_id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09" OR app_metadata.uitidv1id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09"'])
-            ->willReturn([]);
+            ->willReturn(new Response(200, [], json_encode([])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -92,7 +93,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->atLeast(1))
             ->method('getAll')
             ->with(['q' => 'email:"ivo%40hdz.com"'])
-            ->willReturn([$user]);
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -120,7 +121,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->atLeast(1))
             ->method('getAll')
             ->with(['q' => 'email:"ivo%40hdz.com"'])
-            ->willReturn([]);
+            ->willReturn(new Response(200, [], json_encode([])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -148,8 +149,8 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-                ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
-            ->willReturn([$user]);
+            ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -177,7 +178,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->atLeast(1))
             ->method('getAll')
             ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
-            ->willReturn([]);
+            ->willReturn(new Response(200, [], json_encode([])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -205,7 +206,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->willReturn([$user]);
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
