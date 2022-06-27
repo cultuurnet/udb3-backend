@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -65,7 +64,7 @@ class WriteServiceTest extends TestCase
             ->with($this->create);
 
         $uuid = $this->writeService->create(
-            new LegacyLabelName($this->create->getName()->toString()),
+            $this->create->getName(),
             $this->create->getVisibility(),
             $this->create->getPrivacy()
         );

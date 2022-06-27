@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName as LegacyLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
@@ -32,7 +31,7 @@ class WriteService implements WriteServiceInterface
     }
 
     public function create(
-        LegacyLabelName $name,
+        LabelName $name,
         Visibility $visibility,
         Privacy $privacy
     ): UUID {
@@ -40,7 +39,7 @@ class WriteService implements WriteServiceInterface
 
         $command = new Create(
             $uuid,
-            new LabelName($name->toNative()),
+            $name,
             $visibility,
             $privacy
         );

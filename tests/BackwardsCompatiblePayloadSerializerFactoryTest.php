@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -56,7 +55,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
             ->willReturn(
                 new Entity(
                     new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'),
-                    new LabelName('2dotstwice'),
+                    new StringLiteral('2dotstwice'),
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PRIVATE()
                 )
