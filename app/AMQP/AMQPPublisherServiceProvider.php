@@ -23,9 +23,9 @@ use PhpAmqpLib\Message\AMQPMessage;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class AMQPPublisherServiceProvider implements ServiceProviderInterface
+final class AMQPPublisherServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['amqp.publisher'] = $app->share(
             function (Application $app) {
