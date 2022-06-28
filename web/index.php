@@ -33,11 +33,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
+use Treblle\Factory\TreblleFactory;
 
 const API_NAME = ApiName::JSONLD;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
+
+// Enable treblle for easy request/response logging.
+$treblleEnabled = $app['config']['treblle']['enabled'] ?? false;
+$treblleApiKey = $app['config']['treblle']['api_key'] ?? '';
+$treblleProjectId = $app['config']['treblle']['project_id'] ?? '';
+if ($treblleEnabled && $treblleApiKey && $treblleProjectId) {
+    error_reporting(E_ALL);
+    ob_start();
+    TreblleFactory::create($treblleApiKey, $treblleProjectId);
+    function fastcgi_finish_request(): void {
+        // If this function is defined, Symfony HttpFoundation will call it instead of flushing the output buffer.
+        // This is a workaround to prevent Symfony HttpFoundation from flushing the output buffer before the Treblle SDK
+        // can send the response data to their logs. The Treblle SDK will flush the output buffer itself.
+        // NOTE: When we switch to another router, this workaround should not be necessary anymore (or a different one might
+        // be necessary.)
+    }
+}
 
 // Register our own ControllerCollection as controllers_factory so every route automatically gets a trailing slash.
 $app['controllers_factory'] = function () use ($app) {
