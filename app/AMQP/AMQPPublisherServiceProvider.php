@@ -27,23 +27,19 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['amqp.publisher.content_type_map'] = $app->share(
-            function () {
-                return [
-                    EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
-                    PlaceProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
-                    OrganizerProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
-                ];
-            }
-        );
-
         $app['amqp.publisher'] = $app->share(
             function (Application $app) {
                 $connection = $app['amqp.connection'];
                 $channel = $connection->channel();
 
+                $contentTypeMapping = [
+                    EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
+                    PlaceProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
+                    OrganizerProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
+                ];
+
                 $specificationCollection = new SpecificationCollection();
-                foreach (array_keys($app['amqp.publisher.content_type_map']) as $className) {
+                foreach (array_keys($contentTypeMapping) as $className) {
                     $specificationCollection = $specificationCollection->with(
                         new PayloadIsInstanceOf($className)
                     );
@@ -57,7 +53,7 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
                         ->with(new DeliveryModePropertiesFactory(AMQPMessage::DELIVERY_MODE_PERSISTENT))
                         ->with(
                             new ContentTypePropertiesFactory(
-                                new ContentTypeLookup($app['amqp.publisher.content_type_map'])
+                                new ContentTypeLookup($contentTypeMapping)
                             )
                         )
                 );
