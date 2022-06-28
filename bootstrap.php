@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -57,10 +58,12 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
@@ -1041,10 +1044,11 @@ $app['impersonator'] = $app->share(
 
 $app['amqp.content_type_map'] = $app->share(
     function () {
-        return \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Label\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
+        return [
+            EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
+            PlaceProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
+            OrganizerProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
+        ];
     }
 );
 
