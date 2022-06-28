@@ -27,7 +27,7 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['amqp.publisher'] = $app->share(
+        $app[AMQPPublisher::class] = $app->share(
             function (Application $app) {
                 $connection = $app['amqp.connection'];
                 $channel = $connection->channel();

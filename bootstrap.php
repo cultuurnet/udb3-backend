@@ -2,6 +2,7 @@
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
@@ -443,7 +444,7 @@ $app['event_bus'] = function ($app) {
             'event_permission.projector',
             'place_permission.projector',
             OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
-            'amqp.publisher',
+            AMQPPublisher::class,
             'udb2_events_cdbxml_enricher',
             'udb2_actor_events_cdbxml_enricher',
             'udb2_events_to_udb3_event_applier',
