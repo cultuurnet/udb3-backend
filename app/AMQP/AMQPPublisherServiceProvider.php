@@ -37,20 +37,6 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['amqp.publisher.specification'] = $app->share(
-            function (Application $app) {
-                $classes = new SpecificationCollection();
-
-                foreach (array_keys($app['amqp.publisher.content_type_map']) as $className) {
-                    $classes = $classes->with(
-                        new PayloadIsInstanceOf($className)
-                    );
-                }
-
-                return new AnyOf($classes);
-            }
-        );
-
         $app['amqp.publisher.body_factory'] = $app->share(
             function (Application $app) {
                 return new EntireDomainMessageBodyFactory();
@@ -84,10 +70,18 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
                 $connection = $app['amqp.connection'];
                 $channel = $connection->channel();
 
+                $specificationCollection = new SpecificationCollection();
+                foreach (array_keys($app['amqp.publisher.content_type_map']) as $className) {
+                    $specificationCollection = $specificationCollection->with(
+                        new PayloadIsInstanceOf($className)
+                    );
+                }
+                $anyOfSpecification = new AnyOf($specificationCollection);
+
                 return new AMQPPublisher(
                     $channel,
                     $app['amqp.publisher.exchange_name'],
-                    $app['amqp.publisher.specification'],
+                    $anyOfSpecification,
                     $app['amqp.publisher.message_factory'],
                     function () use ($app) {
                         // Send messages triggered by CultuurKuur to the CLI queue so the migration does not fill the
