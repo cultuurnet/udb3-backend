@@ -37,24 +37,18 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['amqp.publisher.properties_factory'] = $app->share(
-            function (Application $app) {
-                return (new CompositePropertiesFactory())
-                    ->with(new CorrelationIdPropertiesFactory())
-                    ->with(new DeliveryModePropertiesFactory(AMQPMessage::DELIVERY_MODE_PERSISTENT))
-                    ->with(
-                        new ContentTypePropertiesFactory(
-                            new ContentTypeLookup($app['amqp.publisher.content_type_map'])
-                        )
-                    );
-            }
-        );
-
         $app['amqp.publisher.message_factory'] = $app->share(
             function (Application $app) {
                 return new DelegatingAMQPMessageFactory(
                     new EntireDomainMessageBodyFactory(),
-                    $app['amqp.publisher.properties_factory']
+                    (new CompositePropertiesFactory())
+                        ->with(new CorrelationIdPropertiesFactory())
+                        ->with(new DeliveryModePropertiesFactory(AMQPMessage::DELIVERY_MODE_PERSISTENT))
+                        ->with(
+                            new ContentTypePropertiesFactory(
+                                new ContentTypeLookup($app['amqp.publisher.content_type_map'])
+                            )
+                        )
                 );
             }
         );
