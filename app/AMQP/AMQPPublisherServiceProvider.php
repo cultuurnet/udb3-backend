@@ -37,12 +37,6 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['amqp.publisher.body_factory'] = $app->share(
-            function (Application $app) {
-                return new EntireDomainMessageBodyFactory();
-            }
-        );
-
         $app['amqp.publisher.properties_factory'] = $app->share(
             function (Application $app) {
                 return (new CompositePropertiesFactory())
@@ -59,7 +53,7 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
         $app['amqp.publisher.message_factory'] = $app->share(
             function (Application $app) {
                 return new DelegatingAMQPMessageFactory(
-                    $app['amqp.publisher.body_factory'],
+                    new EntireDomainMessageBodyFactory(),
                     $app['amqp.publisher.properties_factory']
                 );
             }
