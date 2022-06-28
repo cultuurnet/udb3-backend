@@ -37,22 +37,6 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['amqp.publisher.message_factory'] = $app->share(
-            function (Application $app) {
-                return new DelegatingAMQPMessageFactory(
-                    new EntireDomainMessageBodyFactory(),
-                    (new CompositePropertiesFactory())
-                        ->with(new CorrelationIdPropertiesFactory())
-                        ->with(new DeliveryModePropertiesFactory(AMQPMessage::DELIVERY_MODE_PERSISTENT))
-                        ->with(
-                            new ContentTypePropertiesFactory(
-                                new ContentTypeLookup($app['amqp.publisher.content_type_map'])
-                            )
-                        )
-                );
-            }
-        );
-
         $app['amqp.publisher'] = $app->share(
             function (Application $app) {
                 $connection = $app['amqp.connection'];
@@ -66,11 +50,23 @@ class AMQPPublisherServiceProvider implements ServiceProviderInterface
                 }
                 $anyOfSpecification = new AnyOf($specificationCollection);
 
+                $messageFactory = new DelegatingAMQPMessageFactory(
+                    new EntireDomainMessageBodyFactory(),
+                    (new CompositePropertiesFactory())
+                        ->with(new CorrelationIdPropertiesFactory())
+                        ->with(new DeliveryModePropertiesFactory(AMQPMessage::DELIVERY_MODE_PERSISTENT))
+                        ->with(
+                            new ContentTypePropertiesFactory(
+                                new ContentTypeLookup($app['amqp.publisher.content_type_map'])
+                            )
+                        )
+                );
+
                 return new AMQPPublisher(
                     $channel,
                     $app['amqp.publisher.exchange_name'],
                     $anyOfSpecification,
-                    $app['amqp.publisher.message_factory'],
+                    $messageFactory,
                     function () use ($app) {
                         // Send messages triggered by CultuurKuur to the CLI queue so the migration does not fill the
                         // regular queue. Hardcoded for now as a quick fix, should be moved to config later so we can
