@@ -75,6 +75,7 @@
     "symfony/security": "~2.8.52",
     "symfony/serializer": "^v3.1.10",
     "symfony/yaml": "^4.4",
+    "treblle/treblle-php": "^2.0",
     "twig/extensions": "^1.5",
     "twig/twig": "~1.0",
     "webmozart/assert": "^1.2",

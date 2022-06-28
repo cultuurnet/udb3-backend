@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f99b2736ddcaab57c3a49c7cb561d73",
+    "content-hash": "e6f40238c1cce67e48be9dea4ea9ae42",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -7680,6 +7680,210 @@
                 }
             ],
             "time": "2021-01-27T09:09:26+00:00"
+        },
+        {
+            "name": "thecodingmachine/safe",
+            "version": "v1.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/safe.git",
+                "reference": "a8ab0876305a4cdaef31b2350fcb9811b5608dbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/safe/zipball/a8ab0876305a4cdaef31b2350fcb9811b5608dbc",
+                "reference": "a8ab0876305a4cdaef31b2350fcb9811b5608dbc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "squizlabs/php_codesniffer": "^3.2",
+                "thecodingmachine/phpstan-strict-rules": "^0.12"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "deprecated/apc.php",
+                    "deprecated/libevent.php",
+                    "deprecated/mssql.php",
+                    "deprecated/stats.php",
+                    "lib/special_cases.php",
+                    "generated/apache.php",
+                    "generated/apcu.php",
+                    "generated/array.php",
+                    "generated/bzip2.php",
+                    "generated/calendar.php",
+                    "generated/classobj.php",
+                    "generated/com.php",
+                    "generated/cubrid.php",
+                    "generated/curl.php",
+                    "generated/datetime.php",
+                    "generated/dir.php",
+                    "generated/eio.php",
+                    "generated/errorfunc.php",
+                    "generated/exec.php",
+                    "generated/fileinfo.php",
+                    "generated/filesystem.php",
+                    "generated/filter.php",
+                    "generated/fpm.php",
+                    "generated/ftp.php",
+                    "generated/funchand.php",
+                    "generated/gmp.php",
+                    "generated/gnupg.php",
+                    "generated/hash.php",
+                    "generated/ibase.php",
+                    "generated/ibmDb2.php",
+                    "generated/iconv.php",
+                    "generated/image.php",
+                    "generated/imap.php",
+                    "generated/info.php",
+                    "generated/ingres-ii.php",
+                    "generated/inotify.php",
+                    "generated/json.php",
+                    "generated/ldap.php",
+                    "generated/libxml.php",
+                    "generated/lzf.php",
+                    "generated/mailparse.php",
+                    "generated/mbstring.php",
+                    "generated/misc.php",
+                    "generated/msql.php",
+                    "generated/mysql.php",
+                    "generated/mysqli.php",
+                    "generated/mysqlndMs.php",
+                    "generated/mysqlndQc.php",
+                    "generated/network.php",
+                    "generated/oci8.php",
+                    "generated/opcache.php",
+                    "generated/openssl.php",
+                    "generated/outcontrol.php",
+                    "generated/password.php",
+                    "generated/pcntl.php",
+                    "generated/pcre.php",
+                    "generated/pdf.php",
+                    "generated/pgsql.php",
+                    "generated/posix.php",
+                    "generated/ps.php",
+                    "generated/pspell.php",
+                    "generated/readline.php",
+                    "generated/rpminfo.php",
+                    "generated/rrd.php",
+                    "generated/sem.php",
+                    "generated/session.php",
+                    "generated/shmop.php",
+                    "generated/simplexml.php",
+                    "generated/sockets.php",
+                    "generated/sodium.php",
+                    "generated/solr.php",
+                    "generated/spl.php",
+                    "generated/sqlsrv.php",
+                    "generated/ssdeep.php",
+                    "generated/ssh2.php",
+                    "generated/stream.php",
+                    "generated/strings.php",
+                    "generated/swoole.php",
+                    "generated/uodbc.php",
+                    "generated/uopz.php",
+                    "generated/url.php",
+                    "generated/var.php",
+                    "generated/xdiff.php",
+                    "generated/xml.php",
+                    "generated/xmlrpc.php",
+                    "generated/yaml.php",
+                    "generated/yaz.php",
+                    "generated/zip.php",
+                    "generated/zlib.php"
+                ],
+                "psr-4": {
+                    "Safe\\": [
+                        "lib/",
+                        "deprecated/",
+                        "generated/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP core functions that throw exceptions instead of returning FALSE on error",
+            "support": {
+                "issues": "https://github.com/thecodingmachine/safe/issues",
+                "source": "https://github.com/thecodingmachine/safe/tree/v1.3.3"
+            },
+            "time": "2020-10-28T17:51:34+00:00"
+        },
+        {
+            "name": "treblle/treblle-php",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Treblle/treblle-php.git",
+                "reference": "a21df828cfdac3836709fbdca5a8eb8ba60d5512"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Treblle/treblle-php/zipball/a21df828cfdac3836709fbdca5a8eb8ba60d5512",
+                "reference": "a21df828cfdac3836709fbdca5a8eb8ba60d5512",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^3.3",
+                "guzzlehttp/guzzle": "^7.4.3|^8.0",
+                "php": "^7.4|^8.0",
+                "thecodingmachine/safe": "^1.3.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.1",
+                "justinrainbow/json-schema": "^5.2",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpstan/phpstan": "^0.12.99",
+                "phpstan/phpstan-beberlei-assert": "^0.12.6",
+                "phpstan/phpstan-phpunit": "^0.12.22",
+                "phpunit/phpunit": "^9.5",
+                "rector/rector": "^0.11.56",
+                "thecodingmachine/phpstan-safe-rule": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Treblle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vedran Cindrić",
+                    "email": "vedran@treblle.com",
+                    "homepage": "https://treblle.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Stay in tune with your APIs",
+            "homepage": "https://treblle.com/",
+            "keywords": [
+                "api",
+                "debuging",
+                "documentation",
+                "monitoring",
+                "phpunit",
+                "treblle"
+            ],
+            "support": {
+                "issues": "https://github.com/Treblle/treblle-php/issues",
+                "source": "https://github.com/Treblle/treblle-php/tree/2.0.1"
+            },
+            "time": "2022-06-01T19:44:11+00:00"
         },
         {
             "name": "twig/extensions",
