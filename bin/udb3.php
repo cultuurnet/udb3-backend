@@ -2,6 +2,7 @@
 <?php
 
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Silex\ApiName;
@@ -109,7 +110,7 @@ $consoleApp->add(
         $app['event_command_bus'],
         $app['duplicate_place_repository'],
         $app['canonical_service'],
-        $app['amqp.publisher'],
+        $app[AMQPPublisher::class],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
         $app['event_relations_repository'],
         $app['dbal_connection']
@@ -119,7 +120,7 @@ $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::event(),
         $app['dbal_connection'],
-        $app['amqp.publisher'],
+        $app[AMQPPublisher::class],
         $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
@@ -127,14 +128,14 @@ $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::place(),
         $app['dbal_connection'],
-        $app['amqp.publisher'],
+        $app[AMQPPublisher::class],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
 $consoleApp->add(
     new ReindexEventsWithRecommendations(
         $app['dbal_connection'],
-        $app['amqp.publisher'],
+        $app[AMQPPublisher::class],
         $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
