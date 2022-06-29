@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex\Search;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 use GuzzleHttp\Psr7\Uri;
-use Http\Adapter\Guzzle6\Client;
+use Http\Adapter\Guzzle7\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

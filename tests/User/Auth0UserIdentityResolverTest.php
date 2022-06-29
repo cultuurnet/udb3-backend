@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\User;
 
-use Auth0\SDK\API\Management;
 use Auth0\SDK\API\Management\Users;
+use Auth0\SDK\Contract\API\Management\UsersInterface;
+use Auth0\SDK\Contract\API\ManagementInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -24,8 +26,8 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $user = $this->aUser($userId, $email, $name);
 
-        $client = $this->createMock(Management::class);
-        $users = $this->createMock(Users::class);
+        $client = $this->createMock(ManagementInterface::class);
+        $users = $this->createMock(UsersInterface::class);
 
         $client->expects($this->any())
             ->method('users')
@@ -34,7 +36,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->any())
             ->method('getAll')
             ->with(['q' => 'user_id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09" OR app_metadata.uitidv1id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09"'])
-            ->willReturn([$user]);
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -51,8 +53,8 @@ class Auth0UserIdentityResolverTest extends TestCase
     {
         $userId = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
 
-        $client = $this->createMock(Management::class);
-        $users = $this->createMock(Users::class);
+        $client = $this->createMock(ManagementInterface::class);
+        $users = $this->createMock(UsersInterface::class);
 
         $client->expects($this->any())
             ->method('users')
@@ -61,7 +63,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->any())
             ->method('getAll')
             ->with(['q' => 'user_id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09" OR app_metadata.uitidv1id:"9f3e9228-4eca-40ad-982f-4420bf4bbf09"'])
-            ->willReturn([]);
+            ->willReturn(new Response(200, [], json_encode([])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -80,8 +82,8 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $user = $this->aUser($userId, $email, $name);
 
-        $client = $this->createMock(Management::class);
-        $users = $this->createMock(Users::class);
+        $client = $this->createMock(ManagementInterface::class);
+        $users = $this->createMock(UsersInterface::class);
 
         $client->expects($this->any())
             ->method('users')
@@ -89,8 +91,8 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->with(['q' => 'email:"ivo%40hdz.com"'])
-            ->willReturn([$user]);
+            ->with(['q' => 'email:"ivo@hdz.com"'])
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -108,8 +110,8 @@ class Auth0UserIdentityResolverTest extends TestCase
     {
         $email = 'ivo@hdz.com';
 
-        $client = $this->createMock(Management::class);
-        $users = $this->createMock(Users::class);
+        $client = $this->createMock(ManagementInterface::class);
+        $users = $this->createMock(UsersInterface::class);
 
         $client->expects($this->any())
             ->method('users')
@@ -117,8 +119,8 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->with(['q' => 'email:"ivo%40hdz.com"'])
-            ->willReturn([]);
+            ->with(['q' => 'email:"ivo@hdz.com"'])
+            ->willReturn(new Response(200, [], json_encode([])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -137,8 +139,8 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $user = $this->aUser($userId, $email, $name);
 
-        $client = $this->createMock(Management::class);
-        $users = $this->createMock(Users::class);
+        $client = $this->createMock(ManagementInterface::class);
+        $users = $this->createMock(UsersInterface::class);
 
         $client->expects($this->atLeast(1))
             ->method('users')
@@ -146,8 +148,8 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-                ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
-            ->willReturn([$user]);
+            ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -165,8 +167,8 @@ class Auth0UserIdentityResolverTest extends TestCase
     {
         $name = 'Caca';
 
-        $client = $this->createMock(Management::class);
-        $users = $this->createMock(Users::class);
+        $client = $this->createMock(ManagementInterface::class);
+        $users = $this->createMock(UsersInterface::class);
 
         $client->expects($this->atLeast(1))
             ->method('users')
@@ -175,7 +177,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $users->expects($this->atLeast(1))
             ->method('getAll')
             ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
-            ->willReturn([]);
+            ->willReturn(new Response(200, [], json_encode([])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
@@ -194,8 +196,8 @@ class Auth0UserIdentityResolverTest extends TestCase
         $oldUuid = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
         $user['app_metadata']['uitidv1id'] = $oldUuid;
 
-        $client = $this->createMock(Management::class);
-        $users = $this->createMock(Users::class);
+        $client = $this->createMock(ManagementInterface::class);
+        $users = $this->createMock(UsersInterface::class);
 
         $client->expects($this->atLeast(1))
             ->method('users')
@@ -203,7 +205,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->willReturn([$user]);
+            ->willReturn(new Response(200, [], json_encode([$user])));
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 

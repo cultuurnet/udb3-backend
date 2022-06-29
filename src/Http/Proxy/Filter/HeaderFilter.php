@@ -29,8 +29,8 @@ class HeaderFilter implements FilterInterface
     {
         $value = new StringLiteral('');
 
-        if ($request->getHeaderLine($this->header)) {
-            $value = new StringLiteral($request->getHeaderLine($this->header));
+        if ($request->getHeaderLine($this->header->toNative())) {
+            $value = new StringLiteral($request->getHeaderLine($this->header->toNative()));
         }
 
         return $this->expectedValue->sameValueAs($value);

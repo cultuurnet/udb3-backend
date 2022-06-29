@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User;
 
-use Auth0\SDK\API\Management;
+use Auth0\SDK\Contract\API\ManagementInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\StringLiteral;
 
 final class Auth0UserIdentityResolver implements UserIdentityResolver
 {
-    /**
-     * @var Management
-     */
-    private $auth0;
+    private ManagementInterface $auth0;
 
-    public function __construct(Management $auth0)
+    public function __construct(ManagementInterface $auth0)
     {
         $this->auth0 = $auth0;
     }
@@ -30,20 +28,20 @@ final class Auth0UserIdentityResolver implements UserIdentityResolver
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        return $this->fetchUser('email:"' . urlencode($email->toString()) . '"');
+        return $this->fetchUser('email:"' . $email->toString() . '"');
     }
 
     public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
     {
-        return $this->fetchUser('email:"' . urlencode($nick->toNative()) . '" OR nickname:"' . urlencode($nick->toNative()) . '"');
+        return $this->fetchUser('email:"' . $nick->toNative() . '" OR nickname:"' . $nick->toNative() . '"');
     }
 
     private function fetchUser(string $query): ?UserIdentityDetails
     {
-        $users = $this->auth0->users()->getAll(
+        $response = $this->auth0->users()->getAll(
             ['q' => $query]
         );
-
+        $users = Json::decodeAssociatively($response->getBody()->getContents());
         return $this->normalizeResult($users);
     }
 

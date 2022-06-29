@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use CultuurNet\UDB3\Silex\ApiName;
 use GuzzleHttp\Psr7\Uri;
-use Http\Adapter\Guzzle6\Client;
+use Http\Adapter\Guzzle7\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
