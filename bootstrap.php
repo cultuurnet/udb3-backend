@@ -2,6 +2,7 @@
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
@@ -442,7 +443,7 @@ $app['event_bus'] = function ($app) {
             'event_permission.projector',
             'place_permission.projector',
             OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
-            'amqp.publisher',
+            AMQPPublisher::class,
             'udb2_events_cdbxml_enricher',
             'udb2_actor_events_cdbxml_enricher',
             'udb2_events_to_udb3_event_applier',
@@ -1038,15 +1039,6 @@ $app['impersonator'] = $app->share(
     }
 );
 
-$app['amqp.content_type_map'] = $app->share(
-    function () {
-        return \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Label\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
-    }
-);
-
 $app->register(
     new AMQPConnectionServiceProvider(),
     [
@@ -1061,7 +1053,6 @@ $app->register(
 $app->register(
     new AMQPPublisherServiceProvider(),
     [
-        'amqp.publisher.content_type_map' => $app['amqp.content_type_map'],
         'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
     ]
 );

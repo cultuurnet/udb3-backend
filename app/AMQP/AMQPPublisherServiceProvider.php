@@ -15,67 +15,54 @@ use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypeLookup;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypePropertiesFactory;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CorrelationIdPropertiesFactory;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\DeliveryModePropertiesFactory;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Silex\ApiName;
 use PhpAmqpLib\Message\AMQPMessage;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class AMQPPublisherServiceProvider implements ServiceProviderInterface
+final class AMQPPublisherServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
-        $app['amqp.publisher.specification'] = $app->share(
-            function (Application $app) {
-                $classes = new SpecificationCollection();
-
-                foreach (array_keys($app['amqp.publisher.content_type_map']) as $className) {
-                    $classes = $classes->with(
-                        new PayloadIsInstanceOf($className)
-                    );
-                }
-
-                return new AnyOf($classes);
-            }
-        );
-
-        $app['amqp.publisher.body_factory'] = $app->share(
-            function (Application $app) {
-                return new EntireDomainMessageBodyFactory();
-            }
-        );
-
-        $app['amqp.publisher.properties_factory'] = $app->share(
-            function (Application $app) {
-                return (new CompositePropertiesFactory())
-                    ->with(new CorrelationIdPropertiesFactory())
-                    ->with(new DeliveryModePropertiesFactory(AMQPMessage::DELIVERY_MODE_PERSISTENT))
-                    ->with(
-                        new ContentTypePropertiesFactory(
-                            new ContentTypeLookup($app['amqp.publisher.content_type_map'])
-                        )
-                    );
-            }
-        );
-
-        $app['amqp.publisher.message_factory'] = $app->share(
-            function (Application $app) {
-                return new DelegatingAMQPMessageFactory(
-                    $app['amqp.publisher.body_factory'],
-                    $app['amqp.publisher.properties_factory']
-                );
-            }
-        );
-
-        $app['amqp.publisher'] = $app->share(
+        $app[AMQPPublisher::class] = $app->share(
             function (Application $app) {
                 $connection = $app['amqp.connection'];
                 $channel = $connection->channel();
 
+                $contentTypeMapping = [
+                    EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
+                    PlaceProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
+                    OrganizerProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
+                ];
+
+                $specificationCollection = new SpecificationCollection();
+                foreach (array_keys($contentTypeMapping) as $className) {
+                    $specificationCollection = $specificationCollection->with(
+                        new PayloadIsInstanceOf($className)
+                    );
+                }
+                $anyOfSpecification = new AnyOf($specificationCollection);
+
+                $messageFactory = new DelegatingAMQPMessageFactory(
+                    new EntireDomainMessageBodyFactory(),
+                    (new CompositePropertiesFactory())
+                        ->with(new CorrelationIdPropertiesFactory())
+                        ->with(new DeliveryModePropertiesFactory(AMQPMessage::DELIVERY_MODE_PERSISTENT))
+                        ->with(
+                            new ContentTypePropertiesFactory(
+                                new ContentTypeLookup($contentTypeMapping)
+                            )
+                        )
+                );
+
                 return new AMQPPublisher(
                     $channel,
                     $app['amqp.publisher.exchange_name'],
-                    $app['amqp.publisher.specification'],
-                    $app['amqp.publisher.message_factory'],
+                    $anyOfSpecification,
+                    $messageFactory,
                     function () use ($app) {
                         // Send messages triggered by CultuurKuur to the CLI queue so the migration does not fill the
                         // regular queue. Hardcoded for now as a quick fix, should be moved to config later so we can
