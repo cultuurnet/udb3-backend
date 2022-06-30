@@ -14,7 +14,7 @@ class RemoveLabelOrganizer extends AbstractRemoveLabel
     public function configure(): void
     {
         $this->setName('organizer:remove-label');
-        $this->setDescription('Removes invalid labels');
+        $this->setDescription('Removes a label with the uuid');
         $this->addArgument('organizerId', InputArgument::REQUIRED, 'Uuid of the organizer');
         $this->addArgument('labelId', InputArgument::REQUIRED, 'Uuid of the label');
     }
