@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\Has3Taaliconen;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\Has4Taaliconen;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\HasUiTPASBrand;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\HasVliegBrand;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
@@ -136,6 +137,9 @@ class HTMLEventFormatter
             $address['isDummyAddress'] = false;
             if (isset($event->location->isDummyPlaceForEducationEvents)) {
                 $address['isDummyAddress'] = (bool) $event->location->isDummyPlaceForEducationEvents;
+            }
+            if ((new LocationId($event->location->{'@id'}))->isNilLocation()) {
+                $address['isDummyAddress'] = true;
             }
         }
 
