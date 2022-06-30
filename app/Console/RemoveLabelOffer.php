@@ -14,7 +14,7 @@ class RemoveLabelOffer extends AbstractRemoveLabel
     public function configure(): void
     {
         $this->setName('offer:remove-label');
-        $this->setDescription('Removes a label with the uuid');
+        $this->setDescription('Removes a label with the given uuid');
         $this->addArgument('offerId', InputArgument::REQUIRED, 'Uuid of the offer');
         $this->addArgument('labelId', InputArgument::REQUIRED, 'Uuid of the label');
     }
