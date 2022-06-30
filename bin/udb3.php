@@ -26,6 +26,8 @@ use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Silex\Console\RemoveFacilitiesFromPlace;
+use CultuurNet\UDB3\Silex\Console\RemoveLabelOffer;
+use CultuurNet\UDB3\Silex\Console\RemoveLabelOrganizer;
 use CultuurNet\UDB3\Silex\Console\ReplaceNewsArticlePublisher;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateBookingAvailabilityCommand;
@@ -150,6 +152,8 @@ $consoleApp->add(new ChangeOrganizerOwnerInBulk($app['event_command_bus'], $app[
 $consoleApp->add(new UpdateUniqueLabels($app['dbal_connection']));
 $consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection'], new WebsiteNormalizer()));
 $consoleApp->add(new RemoveFacilitiesFromPlace($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
+$consoleApp->add(new RemoveLabelOffer($app['dbal_connection'], $app['event_command_bus']));
+$consoleApp->add(new RemoveLabelOrganizer($app['dbal_connection'], $app['event_command_bus']));
 
 $consoleApp->add(new ImportOfferAutoClassificationLabels($app['dbal_connection'], $app['event_command_bus']));
 
