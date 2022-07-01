@@ -24,8 +24,13 @@ final class RemoveLabelOrganizer extends AbstractRemoveLabel
         $organizerId = $input->getArgument('organizerId');
         $labelId = $input->getArgument('labelId');
 
+        $label = $this->getLabel($labelId);
+        if (!$label) {
+            $output->writeln('Label with Id ' . $labelId . ' does not exist.');
+            return 1;
+        }
         $this->commandBus->dispatch(
-            new RemoveLabel($organizerId, $this->getLabel($labelId))
+            new RemoveLabel($organizerId, $label)
         );
 
         return 0;

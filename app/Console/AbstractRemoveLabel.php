@@ -33,9 +33,10 @@ abstract class AbstractRemoveLabel extends Command
         parent::__construct();
     }
 
-    protected function getLabel(string $labelId): string
+    protected function getLabel(string $labelId): ?string
     {
         $uuid = new UUID($labelId);
-        return $this->readRepository->getByUuid($uuid)->getName()->toNative();
+        $entity = $this->readRepository->getByUuid($uuid);
+        return isset($entity) ? $entity->getName()->toNative() : null;
     }
 }

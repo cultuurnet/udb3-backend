@@ -24,8 +24,13 @@ final class RemoveLabelOffer extends AbstractRemoveLabel
         $offerId = $input->getArgument('offerId');
         $labelId = $input->getArgument('labelId');
 
+        $label = $this->getLabel($labelId);
+        if (!$label) {
+            $output->writeln('Label with Id ' . $labelId . ' does not exist.');
+            return 1;
+        }
         $this->commandBus->dispatch(
-            new RemoveLabel($offerId, $this->getLabel($labelId))
+            new RemoveLabel($offerId, $label)
         );
 
         return 0;
