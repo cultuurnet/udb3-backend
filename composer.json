@@ -109,6 +109,10 @@
     }
   },
   "config": {
+    "allow-plugins": {
+      "kylekatarnls/update-helper": true,
+      "icanhazstring/composer-unused": true
+    },
     "preferred-install": {
       "cultuurnet/*": "source",
       "2dotstwice/*": "source",
