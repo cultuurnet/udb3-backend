@@ -118,6 +118,33 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
+    public function it_marks_the_address_as_dummy_for_nil_location(): void
+    {
+        $freeEvent = $this->getFormattedEventFromJSONFile('event_with_nil_location.json');
+        $expectedFormattedFreeEvent = [
+            'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
+            'image' => 'http://media.uitdatabank.be/20141211/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
+            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. ' . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis ' . 'van de godsdienst uit de doeken...',
+            'address' => [
+                'name' => 'Online',
+                'street' => '___ ',
+                'postcode' => '0000',
+                'municipality' => '___',
+                'country' => 'BE',
+                'concatenated' => '___  0000 ___ BE',
+                'isDummyAddress' => true,
+            ],
+            'type' => 'Cursus of workshop',
+            'price' => 'Gratis',
+            'brands' => [],
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ' . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+        ];
+        $this->assertEventFormatting($expectedFormattedFreeEvent, $freeEvent);
+    }
+
+    /**
+     * @test
+     */
     public function it_indicates_if_price_is_unknown(): void
     {
         $eventWithoutBookingInfo = $this->getFormattedEventFromJSONFile('event_without_priceinfo.json');
