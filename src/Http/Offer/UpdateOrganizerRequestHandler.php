@@ -30,7 +30,7 @@ final class UpdateOrganizerRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
-        $organizerId = $routeParameters->get('organizerId');
+        $organizerId = $routeParameters->getOrganizerId();
 
         try {
             $this->organizerDocumentRepository->fetch($organizerId);
