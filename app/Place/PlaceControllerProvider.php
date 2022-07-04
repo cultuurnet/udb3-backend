@@ -34,7 +34,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'place_editing_controller:updateContactPoint');
         $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->put('/{cdbid}/organizer/{organizerId}/', 'place_editing_controller:updateOrganizer');
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'place_editing_controller:deleteOrganizer');
         $controllers->delete('/{cdbid}/typical-age-range/', 'place_editing_controller:deleteTypicalAgeRange');
         $controllers->put('/{cdbid}/typical-age-range/', 'place_editing_controller:updateTypicalAgeRange');
