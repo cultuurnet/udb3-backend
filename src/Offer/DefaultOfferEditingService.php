@@ -163,12 +163,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    public function updateOrganizer(string $id, string $organizerId): void
-    {
-        $this->guardId($id);
-        $this->commandBus->dispatch(new UpdateOrganizer($id, $organizerId));
-    }
-
     public function deleteOrganizer(string $id, string $organizerId): void
     {
         $this->guardId($id);
