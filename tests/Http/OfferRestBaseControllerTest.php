@@ -83,27 +83,6 @@ class OfferRestBaseControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_an_offer_organization()
-    {
-        $this->offerEditingService
-            ->expects($this->once())
-            ->method('updateOrganizer')
-            ->with(
-                '301A7905-D329-49DD-8F2F-19CE6C3C10D4',
-                '28AB9364-D650-4C6A-BCF5-E918A49025DF'
-            );
-
-        $response = $this->offerRestBaseController->updateOrganizer(
-            '301A7905-D329-49DD-8F2F-19CE6C3C10D4',
-            '28AB9364-D650-4C6A-BCF5-E918A49025DF'
-        );
-
-        $this->assertEquals(204, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_should_update_booking_info()
     {
         $givenOfferId = 'b125e7b8-08ac-4740-80e1-b502ff716048';
