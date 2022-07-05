@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Broadway\CommandHandling;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
+use CultuurNet\UDB3\Silex\CommandHandling\RetriedCommandFailed;
 use CultuurNet\UDB3\Silex\CommandHandling\RetryingCommandBus;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +42,7 @@ class RetryingCommandBusTest extends TestCase
             ->with($command)
             ->willThrowException(new DBALEventStoreException());
 
-        $this->expectException(DBALEventStoreException::class);
+        $this->expectException(RetriedCommandFailed::class);
         $this->commandBus->dispatch($command);
     }
 
