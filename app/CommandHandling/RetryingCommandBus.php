@@ -9,7 +9,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 
 class RetryingCommandBus extends CommandBusDecoratorBase
 {
-    public const MAX_RETRIES = 3;
+    public const MAX_RETRIES = 15;
 
     public function dispatch($command): void
     {
