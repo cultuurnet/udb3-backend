@@ -25,6 +25,14 @@ class RetryingCommandBus extends CommandBusDecoratorBase
             $attempt++;
         } while ($attempt <= self::MAX_RETRIES);
 
-        throw $lastException;
+        throw new RetriedCommandFailed(
+            sprintf(
+                'Command %s failed due to a DBAL event store exception after %s retries',
+                get_class($command),
+                $attempt
+            ),
+            0,
+            $lastException
+        );
     }
 }
