@@ -10,6 +10,7 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -17,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
+use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -39,6 +41,8 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
      */
     protected $readRepository;
 
+    private DocumentRepository $organizerDocumentRepository;
+
     /**
      * @var OfferCommandFactoryInterface
      */
@@ -53,11 +57,13 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
+        DocumentRepository $organizerDocumentRepository,
         OfferCommandFactoryInterface $commandFactory
     ) {
         $this->commandBus = $commandBus;
         $this->uuidGenerator = $uuidGenerator;
         $this->readRepository = $readRepository;
+        $this->organizerDocumentRepository = $organizerDocumentRepository;
         $this->commandFactory = $commandFactory;
         $this->publicationDate = null;
     }
@@ -160,6 +166,17 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $this->commandBus->dispatch(
             $this->commandFactory->createDeleteTypicalAgeRangeCommand($id)
         );
+    }
+
+    public function updateOrganizer(string $id, string $organizerId): void
+    {
+        $this->guardId($id);
+        try {
+            $this->organizerDocumentRepository->fetch($id);
+        } catch (DocumentDoesNotExist $e) {
+            throw ApiProblem::urlNotFound('Organizer with id "' . $organizerId . '" does not exist.');
+        }
+        $this->commandBus->dispatch(new UpdateOrganizer($id, $organizerId));
     }
 
     public function deleteOrganizer(string $id, string $organizerId): void
