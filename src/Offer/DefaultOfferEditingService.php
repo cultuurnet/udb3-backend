@@ -168,7 +168,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    public function updateOrganizer(string $id, string $organizerId): void
+    public function updateOrganizerFromJsonBody(string $id, string $organizerId): void
     {
         $this->guardId($id);
         try {
