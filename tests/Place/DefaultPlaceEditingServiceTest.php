@@ -49,6 +49,11 @@ class DefaultPlaceEditingServiceTest extends TestCase
     protected $readRepository;
 
     /**
+     * @var DocumentRepository|MockObject
+     */
+    private $organizerDocumentRepository;
+
+    /**
      * @var TraceableEventStore
      */
     protected $eventStore;
@@ -65,6 +70,8 @@ class DefaultPlaceEditingServiceTest extends TestCase
 
         $this->readRepository = $this->createMock(DocumentRepository::class);
 
+        $this->organizerDocumentRepository = $this->createMock(DocumentRepository::class);
+
         $this->eventStore = new TraceableEventStore(
             new InMemoryEventStore()
         );
@@ -78,6 +85,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
             $this->commandBus,
             $this->uuidGenerator,
             $this->readRepository,
+            $this->organizerDocumentRepository,
             $this->commandFactory
         );
     }

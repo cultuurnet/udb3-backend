@@ -37,6 +37,11 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $offerRepository;
 
     /**
+     * @var DocumentRepository|MockObject
+     */
+    private $organizerDocumentRepository;
+
+    /**
      * @var OfferCommandFactoryInterface|MockObject
      */
     private $commandFactory;
@@ -61,6 +66,7 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->offerRepository = $this->createMock(DocumentRepository::class);
+        $this->organizerDocumentRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
 
         $this->translateTitleCommand = $this->getMockForAbstractClass(
@@ -72,6 +78,7 @@ class DefaultOfferEditingServiceTest extends TestCase
             $this->commandBus,
             $this->uuidGenerator,
             $this->offerRepository,
+            $this->organizerDocumentRepository,
             $this->commandFactory
         );
 
