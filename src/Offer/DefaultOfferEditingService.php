@@ -172,7 +172,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     {
         $this->guardId($id);
         try {
-            $this->organizerDocumentRepository->fetch($id);
+            $this->organizerDocumentRepository->fetch($organizerId);
         } catch (DocumentDoesNotExist $e) {
             throw ApiProblem::urlNotFound('Organizer with id "' . $organizerId . '" does not exist.');
         }
