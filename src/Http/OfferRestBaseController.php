@@ -82,6 +82,23 @@ abstract class OfferRestBaseController
         return new NoContent();
     }
 
+    /**
+     * @deprecated
+     */
+    public function updateOrganizerFromJsonBody(Request $request, string $cdbid): Response
+    {
+        $bodyContent = json_decode($request->getContent());
+
+        // @todo Use a data validator and change to an exception so it can be converted to an API problem
+        if (empty($bodyContent->organizer)) {
+            return new JsonResponse(['error' => 'organizer required'], 400);
+        }
+
+        $this->editor->updateOrganizer($cdbid, $bodyContent->organizer);
+
+        return new NoContent();
+    }
+
     public function deleteOrganizer(string $cdbid, string $organizerId): Response
     {
         $this->editor->deleteOrganizer($cdbid, $organizerId);
