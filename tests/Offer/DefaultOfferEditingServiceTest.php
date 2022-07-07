@@ -40,11 +40,6 @@ class DefaultOfferEditingServiceTest extends TestCase
 
     private string $expectedCommandId;
 
-    /**
-     * @var AbstractUpdateTitle|MockObject
-     */
-    private $translateTitleCommand;
-
     public function setUp()
     {
         $this->commandBus = $this->createMock(CommandBus::class);
@@ -52,11 +47,6 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->offerRepository = $this->createMock(DocumentRepository::class);
         $organizerDocumentRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
-
-        $this->translateTitleCommand = $this->getMockForAbstractClass(
-            AbstractUpdateTitle::class,
-            ['foo', new Language('en'), new Title('English title')]
-        );
 
         $this->offerEditingService = new DefaultOfferEditingService(
             $this->commandBus,
