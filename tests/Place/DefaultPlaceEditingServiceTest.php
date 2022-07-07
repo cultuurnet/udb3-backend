@@ -23,10 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 class DefaultPlaceEditingServiceTest extends TestCase
 {
-    /**
-     * @var DefaultPlaceEditingService
-     */
-    protected $placeEditingService;
+    protected DefaultPlaceEditingService $placeEditingService;
 
     /**
      * @var CommandBus|MockObject
@@ -85,7 +82,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_the_address_of_a_place_by_dispatching_a_relevant_command()
+    public function it_should_update_the_address_of_a_place_by_dispatching_a_relevant_command(): void
     {
         $id = 'ad93103d-1395-4af7-a52a-2829d466c232';
         $address = new Address(

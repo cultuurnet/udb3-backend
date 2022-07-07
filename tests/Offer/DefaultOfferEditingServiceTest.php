@@ -36,15 +36,9 @@ class DefaultOfferEditingServiceTest extends TestCase
      */
     private $commandFactory;
 
-    /**
-     * @var DefaultOfferEditingService
-     */
-    private $offerEditingService;
+    private DefaultOfferEditingService $offerEditingService;
 
-    /**
-     * @var string
-     */
-    private $expectedCommandId;
+    private string $expectedCommandId;
 
     /**
      * @var AbstractUpdateTitle|MockObject
@@ -78,7 +72,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_title_in_a_given_language()
+    public function it_can_update_a_title_in_a_given_language(): void
     {
         $this->offerRepository->expects($this->once())
             ->method('fetch')
@@ -105,7 +99,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_the_description_in_a_given_language()
+    public function it_can_update_the_description_in_a_given_language(): void
     {
         $this->offerRepository->expects($this->once())
             ->method('fetch')
@@ -131,7 +125,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_guard_that_a_document_exists_for_a_given_id()
+    public function it_should_guard_that_a_document_exists_for_a_given_id(): void
     {
         $unknownId = '8FEFDA81-993D-4F33-851F-C19F8CB90712';
 
