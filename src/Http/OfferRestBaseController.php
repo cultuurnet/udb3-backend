@@ -94,7 +94,7 @@ abstract class OfferRestBaseController
             return new JsonResponse(['error' => 'organizer required'], 400);
         }
 
-        $this->editor->updateOrganizerFromJsonBody($cdbid, $bodyContent->organizer);
+        $this->editor->updateOrganizer($cdbid, $bodyContent->organizer);
 
         return new NoContent();
     }

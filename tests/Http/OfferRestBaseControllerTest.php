@@ -92,7 +92,7 @@ class OfferRestBaseControllerTest extends TestCase
 
         $this->offerEditingService
             ->expects($this->once())
-            ->method('updateOrganizerFromJsonBody')
+            ->method('updateOrganizer')
             ->with(
                 $cdbid,
                 $organizerCdbid

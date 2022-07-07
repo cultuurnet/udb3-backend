@@ -23,7 +23,7 @@ interface OfferEditingServiceInterface
     public function selectMainImage(string $id, Image $image): void;
     public function updateTypicalAgeRange(string $id, AgeRange $ageRange): void;
     public function deleteTypicalAgeRange(string $id): void;
-    public function updateOrganizerFromJsonBody(string $id, string $organizerId): void;
+    public function updateOrganizer(string $id, string $organizerId): void;
     public function deleteOrganizer(string $id, string $organizerId): void;
     public function updateContactPoint(string $id, ContactPoint $contactPoint): void;
     public function updateBookingInfo(string $id, BookingInfo $bookingInfo): void;
