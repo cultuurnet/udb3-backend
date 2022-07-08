@@ -18,7 +18,6 @@ interface EventEditingServiceInterface
     public function updateDescription(string $id, Language $language, Description $description): void;
     public function updateTypicalAgeRange(string $id, AgeRange $ageRange): void;
     public function deleteTypicalAgeRange(string $id): void;
-    public function updateOrganizer(string $id, string $organizerId): void;
     public function deleteOrganizer(string $id, string $organizerId): void;
     public function updateContactPoint(string $id, ContactPoint $contactPoint): void;
     public function addImage(string $id, UUID $imageId): void;

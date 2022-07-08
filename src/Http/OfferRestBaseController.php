@@ -82,13 +82,6 @@ abstract class OfferRestBaseController
         return new NoContent();
     }
 
-    public function updateOrganizer(string $cdbid, string $organizerId): Response
-    {
-        $this->editor->updateOrganizer($cdbid, $organizerId);
-
-        return new NoContent();
-    }
-
     /**
      * @deprecated
      */

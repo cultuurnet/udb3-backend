@@ -23,10 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 class DefaultPlaceEditingServiceTest extends TestCase
 {
-    /**
-     * @var DefaultPlaceEditingService
-     */
-    protected $placeEditingService;
+    protected DefaultPlaceEditingService $placeEditingService;
 
     /**
      * @var CommandBus|MockObject
@@ -48,12 +45,9 @@ class DefaultPlaceEditingServiceTest extends TestCase
      */
     protected $readRepository;
 
-    /**
-     * @var TraceableEventStore
-     */
-    protected $eventStore;
+    protected TraceableEventStore $eventStore;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
 
@@ -64,6 +58,8 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
 
         $this->readRepository = $this->createMock(DocumentRepository::class);
+
+        $organizerDocumentRepository = $this->createMock(DocumentRepository::class);
 
         $this->eventStore = new TraceableEventStore(
             new InMemoryEventStore()
@@ -78,6 +74,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
             $this->commandBus,
             $this->uuidGenerator,
             $this->readRepository,
+            $organizerDocumentRepository,
             $this->commandFactory
         );
     }
@@ -85,7 +82,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_the_address_of_a_place_by_dispatching_a_relevant_command()
+    public function it_should_update_the_address_of_a_place_by_dispatching_a_relevant_command(): void
     {
         $id = 'ad93103d-1395-4af7-a52a-2829d466c232';
         $address = new Address(

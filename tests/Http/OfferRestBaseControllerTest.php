@@ -38,7 +38,7 @@ class OfferRestBaseControllerTest extends TestCase
      */
     private $offerRestBaseController;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->offerEditingService = $this->createMock(
             OfferEditingServiceInterface::class
@@ -60,7 +60,7 @@ class OfferRestBaseControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_typical_age_range()
+    public function it_can_update_typical_age_range(): void
     {
         $cdbid = 'f636ae50-ac26-48f0-ac1f-929e361ae403';
         $content = '{"typicalAgeRange":"2-12"}';
@@ -83,28 +83,31 @@ class OfferRestBaseControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_an_offer_organization()
+    public function it_should_update_an_offer_organization_with_json_body(): void
     {
+        $cdbid = 'f636ae50-ac26-48f0-ac1f-929e361ae403';
+        $organizerCdbid = '8fabb313-020a-4093-ba9a-69cca96c63fc';
+        $content = '{"organizer":"' . $organizerCdbid . '"}';
+        $request = new Request([], [], [], [], [], [], $content);
+
         $this->offerEditingService
             ->expects($this->once())
             ->method('updateOrganizer')
             ->with(
-                '301A7905-D329-49DD-8F2F-19CE6C3C10D4',
-                '28AB9364-D650-4C6A-BCF5-E918A49025DF'
+                $cdbid,
+                $organizerCdbid
             );
 
-        $response = $this->offerRestBaseController->updateOrganizer(
-            '301A7905-D329-49DD-8F2F-19CE6C3C10D4',
-            '28AB9364-D650-4C6A-BCF5-E918A49025DF'
+        $this->offerRestBaseController->updateOrganizerFromJsonBody(
+            $request,
+            $cdbid
         );
-
-        $this->assertEquals(204, $response->getStatusCode());
     }
 
     /**
      * @test
      */
-    public function it_should_update_booking_info()
+    public function it_should_update_booking_info(): void
     {
         $givenOfferId = 'b125e7b8-08ac-4740-80e1-b502ff716048';
         $givenJson = json_encode(

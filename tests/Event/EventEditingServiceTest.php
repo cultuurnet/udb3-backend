@@ -21,24 +21,21 @@ final class EventEditingServiceTest extends TestCase
     private EventEditingService $eventEditingService;
 
     /**
-     * @var UuidGeneratorInterface|MockObject
-     */
-    private $uuidGenerator;
-
-    /**
      * @var DocumentRepository|MockObject
      */
     private $readRepository;
 
     protected function setUp(): void
     {
-        $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->readRepository = $this->createMock(DocumentRepository::class);
+        $organizerDocumentRepository = $this->createMock(DocumentRepository::class);
 
         $this->eventEditingService = new EventEditingService(
             $this->createMock(CommandBus::class),
-            $this->uuidGenerator,
+            $uuidGenerator,
             $this->readRepository,
+            $organizerDocumentRepository,
             $this->createMock(OfferCommandFactoryInterface::class)
         );
     }

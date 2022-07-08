@@ -24,6 +24,7 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
                     $app['event_command_bus'],
                     new Version4Generator(),
                     $app['place_jsonld_repository'],
+                    $app['organizer_jsonld_repository'],
                     new PlaceCommandFactory()
                 );
             }

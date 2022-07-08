@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
@@ -58,6 +59,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/videos/{videoId}/', DeleteVideoRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
+
         return $controllers;
     }
 
@@ -84,6 +87,13 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
                 $app['event_history_repository'],
                 $app['places_history_repository'],
                 $app['current_user_is_god_user']
+            )
+        );
+
+        $app[UpdateOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateOrganizerRequestHandler(
+                $app['event_command_bus'],
+                $app['organizer_jsonld_repository']
             )
         );
 
