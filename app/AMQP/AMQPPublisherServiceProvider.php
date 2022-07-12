@@ -64,14 +64,10 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                     $anyOfSpecification,
                     $messageFactory,
                     function () use ($app) {
-                        if (in_array($app['api_client_id'], $app['amqp.publisher.cli.client_ids'], true)) {
+                        if (in_array($app['api_client_id'], $app['amqp.publisher.cli.client_ids'], true) ||
+                            in_array($app['api_key']->toString(), $app['amqp.publisher.cli.api_keys'], true)) {
                             return 'cli';
                         }
-
-                        if (in_array($app['api_key']->toString(), $app['amqp.publisher.cli.api_keys'], true)) {
-                            return 'cli';
-                        }
-
                         return $app['api_name'] === ApiName::CLI ? 'cli' : 'api';
                     }
                 );
