@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\AMQP;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\AnyOf;
 use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\PayloadIsInstanceOf;
@@ -64,8 +65,11 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                     $anyOfSpecification,
                     $messageFactory,
                     function () use ($app) {
+                        $apiKey = $app['api_key'];
+                        $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;
+
                         if (in_array($app['api_client_id'], $app['amqp.publisher.cli.client_ids'], true) ||
-                            in_array($app['api_key']->toString(), $app['amqp.publisher.cli.api_keys'], true)) {
+                            in_array($apiKey, $app['amqp.publisher.cli.api_keys'], true)) {
                             return 'cli';
                         }
                         return $app['api_name'] === ApiName::CLI ? 'cli' : 'api';
