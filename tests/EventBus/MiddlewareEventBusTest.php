@@ -8,11 +8,10 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventHandling\TraceableEventBus;
-use CultuurNet\UDB3\SimpleEventBus;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use stdClass;
 
 class MiddlewareEventBusTest extends TestCase
 {
