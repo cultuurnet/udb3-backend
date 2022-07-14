@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
+use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
@@ -30,6 +31,12 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                         'application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json'
                     ),
                     new EventCardSystemsUpdatedDeserializer()
+                );
+                $deserializerLocator->registerDeserializer(
+                    new StringLiteral(
+                        'application/vnd.cultuurnet.uitpas-events.event-uitpas-prices-updated+json'
+                    ),
+                    new PricesUpdatedDeserializer()
                 );
                 return $deserializerLocator;
             }
