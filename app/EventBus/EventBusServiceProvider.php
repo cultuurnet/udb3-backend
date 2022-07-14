@@ -26,83 +26,85 @@ final class EventBusServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['event_bus'] = function ($app) {
-            $eventBus = new MiddlewareEventBus();
+        $app['event_bus'] = $app::share(
+            function ($app) {
+                $eventBus = new MiddlewareEventBus();
 
-            $callbackMiddleware = new CallbackOnFirstPublicationMiddleware(
-                function () use (&$eventBus, $app): void {
-                    $subscribers = [
-                        'event_relations_projector',
-                        'place_relations_projector',
-                        EventJSONLDServiceProvider::PROJECTOR,
-                        EventJSONLDServiceProvider::RELATED_PROJECTOR,
-                        \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector::class,
-                        \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,
-                        PlaceJSONLDServiceProvider::PROJECTOR,
-                        PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
-                        OrganizerJSONLDServiceProvider::PROJECTOR,
-                        'event_calendar_projector',
-                        'event_permission.projector',
-                        'place_permission.projector',
-                        OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
-                        AMQPPublisher::class,
-                        'udb2_events_cdbxml_enricher',
-                        'udb2_actor_events_cdbxml_enricher',
-                        'udb2_events_to_udb3_event_applier',
-                        'udb2_actor_events_to_udb3_place_applier',
-                        'udb2_actor_events_to_udb3_organizer_applier',
-                        'udb2_label_importer',
-                        LabelServiceProvider::JSON_PROJECTOR,
-                        LabelServiceProvider::RELATIONS_PROJECTOR,
-                        LabelServiceProvider::LABEL_ROLES_PROJECTOR,
-                        LabelVisibilityOnRelatedDocumentsProjector::class,
-                        'role_detail_projector',
-                        'role_labels_projector',
-                        'label_roles_projector',
-                        'role_search_v3_projector',
-                        'role_users_projector',
-                        'user_roles_projector',
-                        UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
-                        OfferMetadataProjector::class,
-                        'place_geocoordinates_process_manager',
-                        'event_geocoordinates_process_manager',
-                        'organizer_geocoordinates_process_manager',
-                        'uitpas_event_process_manager',
-                        'curators_news_article_process_manager',
-                        RelocateEventToCanonicalPlace::class,
-                        AutoApproveForUiTIDv1ApiKeysProcessManager::class,
-                    ];
-
-                    $initialSubscribersCount = count($subscribers);
-                    $subscribers = array_unique($subscribers);
-                    if ($initialSubscribersCount != count($subscribers)) {
-                        throw new \Exception('Some projectors are subscribed more then once!');
-                    }
-
-                    // Allow to override event bus subscribers through configuration.
-                    // The event replay command line utility uses this.
-                    if (isset($app['config']['event_bus']['subscribers'])) {
-                        $subscribers = $app['config']['event_bus']['subscribers'];
-                    }
-
-                    $disableRelatedOfferSubscribers = $app['config']['event_bus']['disable_related_offer_subscribers'] ?? false;
-                    if ($disableRelatedOfferSubscribers === true) {
-                        $subscribersToDisable = [
+                $callbackMiddleware = new CallbackOnFirstPublicationMiddleware(
+                    function () use (&$eventBus, $app): void {
+                        $subscribers = [
+                            'event_relations_projector',
+                            'place_relations_projector',
+                            EventJSONLDServiceProvider::PROJECTOR,
                             EventJSONLDServiceProvider::RELATED_PROJECTOR,
+                            \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector::class,
+                            \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,
+                            PlaceJSONLDServiceProvider::PROJECTOR,
                             PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
+                            OrganizerJSONLDServiceProvider::PROJECTOR,
+                            'event_calendar_projector',
+                            'event_permission.projector',
+                            'place_permission.projector',
+                            OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
+                            AMQPPublisher::class,
+                            'udb2_events_cdbxml_enricher',
+                            'udb2_actor_events_cdbxml_enricher',
+                            'udb2_events_to_udb3_event_applier',
+                            'udb2_actor_events_to_udb3_place_applier',
+                            'udb2_actor_events_to_udb3_organizer_applier',
+                            'udb2_label_importer',
+                            LabelServiceProvider::JSON_PROJECTOR,
+                            LabelServiceProvider::RELATIONS_PROJECTOR,
+                            LabelServiceProvider::LABEL_ROLES_PROJECTOR,
+                            LabelVisibilityOnRelatedDocumentsProjector::class,
+                            'role_detail_projector',
+                            'role_labels_projector',
+                            'label_roles_projector',
+                            'role_search_v3_projector',
+                            'role_users_projector',
+                            'user_roles_projector',
+                            UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
+                            OfferMetadataProjector::class,
+                            'place_geocoordinates_process_manager',
+                            'event_geocoordinates_process_manager',
+                            'organizer_geocoordinates_process_manager',
+                            'uitpas_event_process_manager',
+                            'curators_news_article_process_manager',
+                            RelocateEventToCanonicalPlace::class,
+                            AutoApproveForUiTIDv1ApiKeysProcessManager::class,
                         ];
-                        $subscribers = array_diff($subscribers, $subscribersToDisable);
-                    }
 
-                    foreach ($subscribers as $subscriberServiceId) {
-                        $eventBus->subscribe($app[$subscriberServiceId]);
-                    }
-                }
-            );
+                        $initialSubscribersCount = count($subscribers);
+                        $subscribers = array_unique($subscribers);
+                        if ($initialSubscribersCount != count($subscribers)) {
+                            throw new \Exception('Some projectors are subscribed more then once!');
+                        }
 
-            $eventBus->registerMiddleware($callbackMiddleware);
-            return $eventBus;
-        };
+                        // Allow to override event bus subscribers through configuration.
+                        // The event replay command line utility uses this.
+                        if (isset($app['config']['event_bus']['subscribers'])) {
+                            $subscribers = $app['config']['event_bus']['subscribers'];
+                        }
+
+                        $disableRelatedOfferSubscribers = $app['config']['event_bus']['disable_related_offer_subscribers'] ?? false;
+                        if ($disableRelatedOfferSubscribers === true) {
+                            $subscribersToDisable = [
+                                EventJSONLDServiceProvider::RELATED_PROJECTOR,
+                                PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
+                            ];
+                            $subscribers = array_diff($subscribers, $subscribersToDisable);
+                        }
+
+                        foreach ($subscribers as $subscriberServiceId) {
+                            $eventBus->subscribe($app[$subscriberServiceId]);
+                        }
+                    }
+                );
+
+                $eventBus->registerMiddleware($callbackMiddleware);
+                return $eventBus;
+            }
+        );
 
         $app->extend(
             'event_bus',
