@@ -102,13 +102,6 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                 );
 
                 $eventBus->registerMiddleware($callbackMiddleware);
-                return $eventBus;
-            }
-        );
-
-        $app->extend(
-            'event_bus',
-            function (EventBus $eventBus) {
                 return new ReplayFlaggingEventBus($eventBus);
             }
         );
