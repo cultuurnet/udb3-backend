@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOfferHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
@@ -48,7 +49,6 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler;
@@ -626,7 +626,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[CopyEventHandler::class]);
 
         // Organizer command handlers
-        $commandBus->subscribe($app[DeleteOrganizerHandler::class]);
+        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler::class]);
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class]);
