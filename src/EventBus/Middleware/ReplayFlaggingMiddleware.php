@@ -14,11 +14,17 @@ final class ReplayFlaggingMiddleware implements EventBusMiddleware
 {
     private static bool $replaying = false;
 
+    /**
+     * Static so that if multiple instances of the middleware are created accidentally, they are all in sync.
+     */
     public static function startReplayMode(): void
     {
         self::$replaying = true;
     }
 
+    /**
+     * Static so that if multiple instances of the middleware are created accidentally, they are all in sync.
+     */
     public static function stopReplayMode(): void
     {
         self::$replaying = false;
