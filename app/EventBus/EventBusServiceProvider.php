@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\EventBus;
 
+use Broadway\Domain\DomainMessage;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
+use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventBus\MiddlewareEventBus;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -102,6 +108,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
 
                 $eventBus->registerMiddleware($callbackMiddleware);
                 $eventBus->registerMiddleware(new ReplayFlaggingMiddleware());
+                $eventBus->registerMiddleware(new InterceptingMiddleware());
                 return $eventBus;
             }
         );
@@ -109,5 +116,36 @@ final class EventBusServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app): void
     {
+        // Limit the amount of "ProjectedToJSONLD" messages on the AMQP queues by intercepting them on the event bus
+        // during the request handling, and only (re)publishing the unique ones after the request handler is done.
+        // Note that before() and after() callbacks are only called in the context of HTTP requests, so not in CLI
+        // commands where we don't want this behavior.
+        // Some examples where this is useful:
+        // - New event, place, organizer imports that contain one or more non-required fields which results in extra ProjectedToJSONLD messages
+        // - Event, place, organizer updates via imports that edit multiple fields which results in multiple ProjectedToJSONLD messages
+        // - Place creation that also does a geocoding which results in 2 PlaceProjectedToJSONLD messages
+        // - Organizer address update that also does a geocoding which results in 2 OrganizerProjectedToJSONLD messages
+        $app->before(
+            function () {
+                InterceptingMiddleware::startIntercepting(
+                    function (DomainMessage $message): bool {
+                        $payload = $message->getPayload();
+                        return $payload instanceof EventProjectedToJSONLD ||
+                            $payload instanceof PlaceProjectedToJSONLD ||
+                            $payload instanceof OrganizerProjectedToJSONLD;
+                    }
+                );
+            }
+        );
+        $app->after(
+            function () use ($app) {
+                InterceptingMiddleware::stopIntercepting();
+                $interceptedWithUniquePayload = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
+
+                /** @var EventBus $eventBus */
+                $eventBus = $app['event_bus'];
+                $eventBus->publish($interceptedWithUniquePayload);
+            }
+        );
     }
 }
