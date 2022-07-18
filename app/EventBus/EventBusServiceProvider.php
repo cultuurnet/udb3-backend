@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\EventBus;
 
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
-use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
+use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventBus\MiddlewareEventBus;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
@@ -101,7 +101,8 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                 );
 
                 $eventBus->registerMiddleware($callbackMiddleware);
-                return new ReplayFlaggingEventBus($eventBus);
+                $eventBus->registerMiddleware(new ReplayFlaggingMiddleware());
+                return $eventBus;
             }
         );
     }

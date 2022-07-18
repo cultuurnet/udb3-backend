@@ -8,6 +8,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Knp\Command\Command;
@@ -54,26 +55,9 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
         InputInterface $input,
         OutputInterface $output
     ) {
-        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
-            $this->eventBus->startReplayMode();
-        } else {
-            $helper = $this->getHelper('question');
-            $question = new ConfirmationQuestion(
-                'Warning! The current event bus does not flag replay messages. '
-                . 'This might trigger unintended changes. Continue anyway? [y/N] ',
-                false
-            );
-
-            if (!$helper->ask($input, $output, $question)) {
-                return;
-            }
-        }
-
+        ReplayFlaggingMiddleware::startReplayMode();
         $callback($this->eventBus, $input, $output);
-
-        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
-            $this->eventBus->stopReplayMode();
-        }
+        ReplayFlaggingMiddleware::stopReplayMode();
     }
 
     protected function fireEvent(

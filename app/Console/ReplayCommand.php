@@ -11,6 +11,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayModeEventBusInterface;
+use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\ConfigWriter;
@@ -131,20 +132,7 @@ class ReplayCommand extends AbstractCommand
 
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
-        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
-            $this->eventBus->startReplayMode();
-        } else {
-            $helper = $this->getHelper('question');
-            $question = new ConfirmationQuestion(
-                'Warning! The current event bus does not flag replay messages. '
-                . 'This might trigger unintended changes. Continue anyway? [y/N] ',
-                false
-            );
-
-            if (!$helper->ask($input, $output, $question)) {
-                return 0;
-            }
-        }
+        ReplayFlaggingMiddleware::startReplayMode();
 
         foreach ($stream() as $eventStream) {
             if ($delay > 0) {
@@ -164,9 +152,7 @@ class ReplayCommand extends AbstractCommand
             $this->logStream($eventStream, $output, $stream, 'after_publish');
         }
 
-        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
-            $this->eventBus->stopReplayMode();
-        }
+        ReplayFlaggingMiddleware::stopReplayMode();
 
         return 0;
     }
