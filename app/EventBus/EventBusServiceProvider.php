@@ -142,9 +142,15 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                 InterceptingMiddleware::stopIntercepting();
                 $interceptedWithUniquePayload = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
 
-                /** @var EventBus $eventBus */
-                $eventBus = $app[EventBus::class];
-                $eventBus->publish($interceptedWithUniquePayload);
+                // Important! Only publish the intercepted messages if there are actually any. Otherwise the EventBus
+                // service will be instantiated for requests that do not require it, which in turn will trigger the
+                // command bus to be instantiated. And the command bus requires the current user id to work, which is
+                // not available on all requests (for example OPTIONS requests, or public GET requests).
+                if ($interceptedWithUniquePayload->getIterator()->count() > 0) {
+                    /** @var EventBus $eventBus */
+                    $eventBus = $app[EventBus::class];
+                    $eventBus->publish($interceptedWithUniquePayload);
+                }
             }
         );
     }
