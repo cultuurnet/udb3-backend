@@ -2,6 +2,7 @@
 <?php
 
 use Broadway\Domain\Metadata;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -97,16 +98,16 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app['event_bus'], new ConfigWriter($app)));
+$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app[EventBus::class], new ConfigWriter($app)));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
 $consoleApp->add(new PurgeModelCommand($app['dbal_connection']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES], $app['place_jsonld_repository']));
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS], $app['event_jsonld_repository']));
 $consoleApp->add(new GeocodeOrganizerCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_ORGANIZERS], $app['organizer_jsonld_repository']));
-$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
-$consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
-$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
-$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
+$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app[EventBus::class], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
+$consoleApp->add(new FireProjectedToJSONLDCommand($app[EventBus::class], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
+$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app[EventBus::class], $app['system_user_id']));
+$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app[EventBus::class], $app['system_user_id']));
 $consoleApp->add(
     new ProcessDuplicatePlaces(
         $app['event_command_bus'],

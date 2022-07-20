@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Place;
 
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
+use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventHandling\TraceableEventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Address\Address;
@@ -21,7 +22,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\SimpleEventBus;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
