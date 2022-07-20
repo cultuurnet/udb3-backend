@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use Broadway\EventHandling\EventBus;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
@@ -132,7 +133,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     $app[self::JSONLD_PROJECTED_EVENT_FACTORY]
                 );
             }

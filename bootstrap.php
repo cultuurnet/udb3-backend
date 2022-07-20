@@ -440,7 +440,7 @@ $app['event_repository'] = $app->share(
     function ($app) {
         $repository = new \CultuurNet\UDB3\Event\EventRepository(
             $app['event_store'],
-            $app['event_bus'],
+            $app[EventBus::class],
             [
                 $app['event_stream_metadata_enricher'],
                 $app['events_locator_event_stream_decorator']
@@ -623,7 +623,7 @@ $app['place_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
             $app['place_store'],
-            $app['event_bus'],
+            $app[EventBus::class],
             array(
                 $app['event_stream_metadata_enricher'],
                 $app['places_locator_event_stream_decorator']
@@ -715,7 +715,7 @@ $app['organizer_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
-            $app['event_bus'],
+            $app[EventBus::class],
             array(
                 $app['event_stream_metadata_enricher'],
                 $app['organizers_locator_event_stream_decorator']
@@ -760,7 +760,7 @@ $app['real_role_repository'] = $app->share(
     function ($app) {
         $repository = new \CultuurNet\UDB3\Role\RoleRepository(
             $app['role_store'],
-            $app['event_bus']
+            $app[EventBus::class]
         );
 
         return $repository;
@@ -787,7 +787,7 @@ $app['role_read_repository'] = $app->share(
             new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
                 $app['role_detail_cache']
             ),
-            $app['event_bus'],
+            $app[EventBus::class],
             new \CultuurNet\UDB3\Role\ReadModel\Detail\EventFactory()
         );
     }

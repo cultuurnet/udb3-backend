@@ -31,7 +31,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['event_bus'] = $app::share(
+        $app[EventBus::class] = $app::share(
             function ($app) {
                 $eventBus = new MiddlewareEventBus();
 
@@ -143,7 +143,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                 $interceptedWithUniquePayload = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
 
                 /** @var EventBus $eventBus */
-                $eventBus = $app['event_bus'];
+                $eventBus = $app[EventBus::class];
                 $eventBus->publish($interceptedWithUniquePayload);
             }
         );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Labels;
 
+use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
@@ -122,7 +123,7 @@ class LabelServiceProvider implements ServiceProviderInterface
                         $app['dbal_connection'],
                         new StringLiteral(self::JSON_TABLE)
                     ),
-                    $app['event_bus']
+                    $app[EventBus::class]
                 );
             }
         );
@@ -204,7 +205,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new LabelRepository(
                     $app[self::UNIQUE_EVENT_STORE],
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     [$app['event_stream_metadata_enricher']]
                 );
             }

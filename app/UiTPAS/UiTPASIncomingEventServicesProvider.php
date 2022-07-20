@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPAS;
 
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\ApiName;
@@ -42,7 +43,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                     $app['amqp.connection'],
                     LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas')),
                     $app['uitpas_deserializer_locator'],
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new UuidFactory()
                 );
