@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\UiTPAS\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Event\Commands\UpdateUiTPASPrices;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
@@ -85,6 +86,9 @@ class EventProcessManager implements EventListener
     private function handleUiTPASPricesUpdated(PricesUpdated $pricesUpdated): void
     {
         $this->logger->info('Update UiTPAS prices for event ' . $pricesUpdated->getEventId() . ' (if applied)');
+
+        $this->commandBus->dispatch(
+            new UpdateUiTPASPrices($pricesUpdated->getEventId(), $pricesUpdated->getTariffs())
         );
     }
 
