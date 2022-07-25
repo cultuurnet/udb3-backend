@@ -84,9 +84,7 @@ class EventProcessManager implements EventListener
 
     private function handleUiTPASPricesUpdated(PricesUpdated $pricesUpdated): void
     {
-        $eventId = $pricesUpdated->getId();
-        $this->logger->info(
-            'Update UiTPAS prices for event ' . $eventId . ' (if applied)'
+        $this->logger->info('Update UiTPAS prices for event ' . $pricesUpdated->getEventId() . ' (if applied)');
         );
     }
 

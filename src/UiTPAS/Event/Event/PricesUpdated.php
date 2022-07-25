@@ -8,21 +8,19 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 
 final class PricesUpdated
 {
-    private string $id;
+    private string $eventId;
 
     private Tariffs $tariffs;
 
-    public function __construct(
-        string $id,
-        Tariffs $tariffs
-    ) {
-        $this->id = $id;
+    public function __construct(string $id, Tariffs $tariffs)
+    {
+        $this->eventId = $id;
         $this->tariffs = $tariffs;
     }
 
-    public function getId(): string
+    public function getEventId(): string
     {
-        return $this->id;
+        return $this->eventId;
     }
 
     public function getTariffs(): Tariffs
