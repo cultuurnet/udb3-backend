@@ -23,32 +23,27 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['uitpas_deserializer_locator'] = $app->share(
-            function () {
-                $deserializerLocator = new SimpleDeserializerLocator();
-                $deserializerLocator->registerDeserializer(
+        $app['uitpas_event_bus_forwarding_consumer_factory'] = $app->share(
+            function (Application $app) {
+                $uitpasDeserializerLocator = new SimpleDeserializerLocator();
+                $uitpasDeserializerLocator->registerDeserializer(
                     new StringLiteral(
                         'application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json'
                     ),
                     new EventCardSystemsUpdatedDeserializer()
                 );
-                $deserializerLocator->registerDeserializer(
+                $uitpasDeserializerLocator->registerDeserializer(
                     new StringLiteral(
                         'application/vnd.cultuurnet.uitpas-events.event-uitpas-prices-updated+json'
                     ),
                     new PricesUpdatedDeserializer()
                 );
-                return $deserializerLocator;
-            }
-        );
 
-        $app['uitpas_event_bus_forwarding_consumer_factory'] = $app->share(
-            function (Application $app) {
                 return new EventBusForwardingConsumerFactory(
                     0,
                     $app['amqp.connection'],
                     LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas')),
-                    $app['uitpas_deserializer_locator'],
+                    $uitpasDeserializerLocator,
                     $app['event_bus'],
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new UuidFactory()
