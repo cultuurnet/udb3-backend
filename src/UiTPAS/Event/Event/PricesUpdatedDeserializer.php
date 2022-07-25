@@ -45,7 +45,7 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
             $price = (int) $tariff->price * 100;
 
             $tariffs[] = new Tariff(
-                new TranslatedTariffName(new Language('nl'), $name),
+                new TranslatedTariffName(new Language('nl'), new TariffName($name)),
                 new Money(
                     $price,
                     new Currency('EUR')
