@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class UpdateUiTPASPrices
+final class UpdateUiTPASPrices implements AuthorizableCommand
 {
     private string $eventId;
 
@@ -18,7 +20,7 @@ final class UpdateUiTPASPrices
         $this->tariffs = $tariffs;
     }
 
-    public function getEventId(): string
+    public function getItemId(): string
     {
         return $this->eventId;
     }
@@ -26,5 +28,10 @@ final class UpdateUiTPASPrices
     public function getTariffs(): Tariffs
     {
         return $this->tariffs;
+    }
+
+    public function getPermission(): Permission
+    {
+        return Permission::aanbodBewerken();
     }
 }
