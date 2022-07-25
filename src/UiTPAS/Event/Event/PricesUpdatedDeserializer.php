@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -35,7 +36,7 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
 
         $tariffs = [];
         foreach ($dto->tariffs as $tariff) {
-            if (!isset($tariff->name) || empty($tariff->name)) {
+            if (empty($tariff->name)) {
                 throw new \InvalidArgumentException('Encountered tariff entry without valid name.');
             }
             $name = $tariff->name;
