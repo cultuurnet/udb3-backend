@@ -13,7 +13,6 @@ use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
-use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
