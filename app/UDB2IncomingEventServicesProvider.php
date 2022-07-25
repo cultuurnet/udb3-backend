@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex;
 
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
@@ -90,7 +91,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['amqp.connection'],
                     $logger,
                     $app['udb2_deserializer_locator'],
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new UuidFactory()
                 );
@@ -179,7 +180,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_events_cdbxml_enricher'] = $app->share(
             function (Application $app) {
                 $enricher = new EventCdbXmlEnricher(
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     $app['cdbxml_enricher_http_client_adapter'],
                     new UuidFactory(),
                     $app['event_cdbxml_enricher_xml_validation_service']
@@ -194,7 +195,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_actor_events_cdbxml_enricher'] = $app->share(
             function (Application $app) {
                 $enricher = new ActorEventCdbXmlEnricher(
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     $app['cdbxml_enricher_http_client_adapter'],
                     new UuidFactory(),
                     $app['actor_cdbxml_enricher_xml_validation_service']

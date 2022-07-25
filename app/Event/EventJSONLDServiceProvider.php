@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use Broadway\EventHandling\EventBus;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
@@ -95,7 +96,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     new EventFactory(
                         $app['event_iri_generator']
                     )

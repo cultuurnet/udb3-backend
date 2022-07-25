@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Curators;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use Broadway\EventHandling\SimpleEventBus;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumer;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\SimpleEventBus;
 use InvalidArgumentException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;

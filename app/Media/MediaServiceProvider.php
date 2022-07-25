@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Media;
 
+use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
@@ -46,7 +47,7 @@ class MediaServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new MediaObjectRepository(
                     $app['media_object_store'],
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     [
                         $app['event_stream_metadata_enricher'],
                     ]

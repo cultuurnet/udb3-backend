@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
@@ -60,7 +61,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     $app[self::JSONLD_PROJECTED_EVENT_FACTORY]
                 );
             }

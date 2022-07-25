@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Curators;
 
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Curators\DBALNewsArticleRepository;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
@@ -37,7 +38,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
 
                 $consumer = new EventBusForwardingConsumer(
                     $app['amqp.connection'],
-                    $app['event_bus'],
+                    $app[EventBus::class],
                     $deserializerLocator,
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['exchange']),
