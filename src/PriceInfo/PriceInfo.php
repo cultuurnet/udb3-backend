@@ -13,16 +13,12 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo as Udb3ModelPriceInfo;
  */
 class PriceInfo implements Serializable
 {
-    /**
-     * @var BasePrice
-     */
-    private $basePrice;
+    private BasePrice $basePrice;
 
     /**
      * @var Tariff[]
      */
-    private $tariffs;
-
+    private array $tariffs;
 
     public function __construct(BasePrice $basePrice)
     {
@@ -30,20 +26,14 @@ class PriceInfo implements Serializable
         $this->tariffs = [];
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public function withExtraTariff(Tariff $tariff)
+    public function withExtraTariff(Tariff $tariff): PriceInfo
     {
         $c = clone $this;
         $c->tariffs[] = $tariff;
         return $c;
     }
 
-    /**
-     * @return BasePrice
-     */
-    public function getBasePrice()
+    public function getBasePrice(): BasePrice
     {
         return $this->basePrice;
     }
@@ -51,7 +41,7 @@ class PriceInfo implements Serializable
     /**
      * @return Tariff[]
      */
-    public function getTariffs()
+    public function getTariffs(): array
     {
         return $this->tariffs;
     }
@@ -70,10 +60,7 @@ class PriceInfo implements Serializable
         return $serialized;
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): PriceInfo
     {
         $basePriceInfo = BasePrice::deserialize($data['base']);
 
@@ -88,10 +75,7 @@ class PriceInfo implements Serializable
         return $priceInfo;
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public static function fromUdb3ModelPriceInfo(Udb3ModelPriceInfo $udb3ModelPriceInfo)
+    public static function fromUdb3ModelPriceInfo(Udb3ModelPriceInfo $udb3ModelPriceInfo): PriceInfo
     {
         $basePrice = BasePrice::fromUdb3ModelTariff($udb3ModelPriceInfo->getBasePrice());
         $priceInfo = new PriceInfo($basePrice);
