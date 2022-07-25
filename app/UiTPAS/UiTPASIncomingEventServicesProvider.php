@@ -60,19 +60,13 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
             }
         );
 
-        $app[UiTPASLabelsRepository::class] = $app->share(
-            function (Application $app) {
-                return InMemoryUiTPASLabelsRepository::fromStrings(
-                    $app['config']['uitpas']['labels']
-                );
-            }
-        );
-
         $app['uitpas_event_process_manager'] = $app->share(
             function (Application $app) {
                 return new EventProcessManager(
                     $app['event_command_bus'],
-                    $app[UiTPASLabelsRepository::class],
+                    InMemoryUiTPASLabelsRepository::fromStrings(
+                        $app['config']['uitpas']['labels']
+                    ),
                     LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas'))
                 );
             }
