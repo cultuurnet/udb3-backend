@@ -23,8 +23,16 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['uitpas_event_bus_forwarding_consumer_factory'] = $app->share(
+        $app['amqp.uitpas_event_bus_forwarding_consumer'] = $app->share(
             function (Application $app) {
+                // If this service gets instantiated, it's because we're running the AMQP listener for UiTPAS messages
+                // so we should set the API name to UiTPAS listener.
+                $app['api_name'] = ApiName::UITPAS_LISTENER;
+
+                $consumerConfig = $app['config']['amqp']['consumers']['uitpas'];
+                $exchange = new StringLiteral($consumerConfig['exchange']);
+                $queue = new StringLiteral($consumerConfig['queue']);
+
                 $uitpasDeserializerLocator = new SimpleDeserializerLocator();
                 $uitpasDeserializerLocator->registerDeserializer(
                     new StringLiteral(
@@ -39,7 +47,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                     new PricesUpdatedDeserializer()
                 );
 
-                return new EventBusForwardingConsumerFactory(
+                $consumerFactory = new EventBusForwardingConsumerFactory(
                     0,
                     $app['amqp.connection'],
                     LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas')),
@@ -48,21 +56,6 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new UuidFactory()
                 );
-            }
-        );
-
-        $app['amqp.uitpas_event_bus_forwarding_consumer'] = $app->share(
-            function (Application $app) {
-                // If this service gets instantiated, it's because we're running the AMQP listener for UiTPAS messages
-                // so we should set the API name to UiTPAS listener.
-                $app['api_name'] = ApiName::UITPAS_LISTENER;
-
-                $consumerConfig = $app['config']['amqp']['consumers']['uitpas'];
-                $exchange = new StringLiteral($consumerConfig['exchange']);
-                $queue = new StringLiteral($consumerConfig['queue']);
-
-                /** @var EventBusForwardingConsumerFactory $consumerFactory */
-                $consumerFactory = $app['uitpas_event_bus_forwarding_consumer_factory'];
 
                 return $consumerFactory->create($exchange, $queue);
             }
