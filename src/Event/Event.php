@@ -74,6 +74,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
@@ -470,6 +471,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyThemeRemoved(ThemeRemoved $themeRemoved): void
     {
         $this->themeId = null;
+    }
+
+    public function updateUiTPASPrices(Tariffs $tariffs): void
+    {
+        // TODO
     }
 
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
