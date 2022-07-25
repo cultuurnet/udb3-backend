@@ -29,10 +29,6 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 // so we should set the API name to UiTPAS listener.
                 $app['api_name'] = ApiName::UITPAS_LISTENER;
 
-                $consumerConfig = $app['config']['amqp']['consumers']['uitpas'];
-                $exchange = new StringLiteral($consumerConfig['exchange']);
-                $queue = new StringLiteral($consumerConfig['queue']);
-
                 $uitpasDeserializerLocator = new SimpleDeserializerLocator();
                 $uitpasDeserializerLocator->registerDeserializer(
                     new StringLiteral(
@@ -57,6 +53,9 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                     new UuidFactory()
                 );
 
+                $consumerConfig = $app['config']['amqp']['consumers']['uitpas'];
+                $exchange = new StringLiteral($consumerConfig['exchange']);
+                $queue = new StringLiteral($consumerConfig['queue']);
                 return $consumerFactory->create($exchange, $queue);
             }
         );
