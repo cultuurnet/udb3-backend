@@ -20,10 +20,16 @@ class PriceInfo implements Serializable
      */
     private array $tariffs;
 
+    /**
+     * @var Tariff[]
+     */
+    private array $uitpasTariffs;
+
     public function __construct(BasePrice $basePrice)
     {
         $this->basePrice = $basePrice;
         $this->tariffs = [];
+        $this->uitpasTariffs = [];
     }
 
     public function withExtraTariff(Tariff $tariff): PriceInfo
@@ -33,6 +39,13 @@ class PriceInfo implements Serializable
         return $c;
     }
 
+
+    public function withExtraUiTPASTariff(Tariff $tariff): PriceInfo
+    {
+        $c = clone $this;
+        $c->uitpasTariffs[] = $tariff;
+        return $c;
+    }
     public function getBasePrice(): BasePrice
     {
         return $this->basePrice;
@@ -46,15 +59,25 @@ class PriceInfo implements Serializable
         return $this->tariffs;
     }
 
+    public function getUiTPASTariffs(): array
+    {
+        return $this->uitpasTariffs;
+    }
+
     public function serialize(): array
     {
         $serialized = [
             'base' => $this->basePrice->serialize(),
             'tariffs' => [],
+            'uitpas_tariffs' => [],
         ];
 
         foreach ($this->tariffs as $tariff) {
             $serialized['tariffs'][] = $tariff->serialize();
+        }
+
+        foreach ($this->uitpasTariffs as $uitpasTariff) {
+            $serialized['uitpas_tariffs'][] = $uitpasTariff->serialize();
         }
 
         return $serialized;
@@ -70,6 +93,14 @@ class PriceInfo implements Serializable
             $priceInfo = $priceInfo->withExtraTariff(
                 Tariff::deserialize($tariffData)
             );
+        }
+
+        if (isset($data['uitpas_tariffs'])) {
+            foreach ($data['uitpas_tariffs'] as $uitpasTariffData) {
+                $priceInfo = $priceInfo->withExtraUiTPASTariff(
+                    Tariff::deserialize($uitpasTariffData)
+                );
+            }
         }
 
         return $priceInfo;
