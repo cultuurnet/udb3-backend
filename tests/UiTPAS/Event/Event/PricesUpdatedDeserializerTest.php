@@ -77,111 +77,68 @@ final class PricesUpdatedDeserializerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider invalidDataProvider
      */
-    public function it_throws_an_exception_when_the_cdbid_is_missing(): void
+    public function it_throws_on_invalid_data(array $invalidData, string $exceptionMessage): void
     {
-        $pricesUpdatedAsArray = [
-            'tariffs' => [
-                [
-                    'name' => 'Tariff 1',
-                    'price' => 1.99,
-                ],
-                [
-                    'name' => 'Tariff 2',
-                    'price' => 2.99,
-                ],
-            ]
-        ];
-
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Missing cdbid property.');
+        $this->expectExceptionMessage($exceptionMessage);
 
         $this->pricesUpdatedDeserializer->deserialize(
-            new StringLiteral(Json::encode($pricesUpdatedAsArray))
+            new StringLiteral(Json::encode($invalidData))
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_throws_an_exception_when_the_tariffs_is_missing(): void
+    public function invalidDataProvider(): array
     {
-        $pricesUpdatedAsArray = [
-            'cdbid' => '12345',
-        ];
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Missing tariffs property.');
-
-        $this->pricesUpdatedDeserializer->deserialize(
-            new StringLiteral(Json::encode($pricesUpdatedAsArray))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_exception_when_the_tariffs_is_not_an_array(): void
-    {
-        $pricesUpdatedAsArray = [
-            'cdbid' => '12345',
-            'tariffs' => 'not an array',
-        ];
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Tariffs property must be an array.');
-
-        $this->pricesUpdatedDeserializer->deserialize(
-            new StringLiteral(Json::encode($pricesUpdatedAsArray))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_exception_when_tariff_has_no_valid_name(): void
-    {
-        $pricesUpdatedAsArray = [
-            'cdbid' => '12345',
-            'tariffs' => [
+        return [
+            'missing cdbid' => [
                 [
-                    'name' => 'Tariff 1',
-                    'price' => 1.99,
+                    'tariffs' => [
+                        [
+                            'name' => 'Tariff 1',
+                            'price' => 1.99,
+                        ],
+                    ]
                 ],
+                'Missing cdbid property.',
+            ],
+            'missing tariffs' => [
                 [
-                    'price' => 2.99,
+                    'cdbid' => '12345',
                 ],
-            ]
-        ];
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Tariff must have a name.');
-
-        $this->pricesUpdatedDeserializer->deserialize(
-            new StringLiteral(Json::encode($pricesUpdatedAsArray))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_exception_when_tariff_has_no_valid_price(): void
-    {
-        $pricesUpdatedAsArray = [
-            'cdbid' => '12345',
-            'tariffs' => [
+                'Missing tariffs property.',
+            ],
+            'tariffs not an array' => [
                 [
-                    'name' => 'Tariff 1',
-                    'price' => 'not a number',
+                    'cdbid' => '12345',
+                    'tariffs' => 'not an array',
                 ],
-            ]
+                'Tariffs property must be an array.',
+            ],
+            'tariff missing name' => [
+                [
+                    'cdbid' => '12345',
+                    'tariffs' => [
+                        [
+                            'price' => 1.99,
+                        ],
+                    ],
+                ],
+                'Tariff must have a name.',
+            ],
+            'tariff price not a number' => [
+                [
+                    'cdbid' => '12345',
+                    'tariffs' => [
+                        [
+                            'name' => 'Tariff 1',
+                            'price' => 'not a number',
+                        ],
+                    ],
+                ],
+                'Tariff price must be a number.',
+            ],
         ];
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Tariff price must be a number.');
-
-        $this->pricesUpdatedDeserializer->deserialize(
-            new StringLiteral(Json::encode($pricesUpdatedAsArray))
-        );
     }
 }
