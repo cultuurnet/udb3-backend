@@ -31,17 +31,17 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
         }
 
         if (!is_array($dto->tariffs)) {
-            throw new \InvalidArgumentException('Expected tariffs property to be an array.');
+            throw new \InvalidArgumentException('Tariffs property must be an array.');
         }
 
         $tariffs = [];
         foreach ($dto->tariffs as $tariff) {
             if (empty($tariff->name)) {
-                throw new \InvalidArgumentException('Encountered tariff entry without valid name.');
+                throw new \InvalidArgumentException('Tariff must have a name.');
             }
             $name = $tariff->name;
             if (!isset($tariff->price) || !is_numeric($tariff->price)) {
-                throw new \InvalidArgumentException('Encountered tariff entry without valid price.');
+                throw new \InvalidArgumentException('Tariff price must be a number.');
             }
             $price = (int) ($tariff->price * 100);
 
