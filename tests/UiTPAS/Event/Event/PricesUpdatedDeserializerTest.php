@@ -40,7 +40,7 @@ final class PricesUpdatedDeserializerTest extends TestCase
                     'name' => 'Tariff 2',
                     'price' => 2.99,
                 ],
-            ]
+            ],
         ];
 
         $this->assertEquals(
@@ -99,7 +99,7 @@ final class PricesUpdatedDeserializerTest extends TestCase
                             'name' => 'Tariff 1',
                             'price' => 1.99,
                         ],
-                    ]
+                    ],
                 ],
                 'Missing cdbid property.',
             ],
