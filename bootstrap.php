@@ -80,6 +80,7 @@ use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventOSLOServiceProvider;
 use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -374,6 +375,7 @@ $app['cdbxml_contact_info_importer'] = $app->share(
     }
 );
 
+$app->register(new EventOSLOServiceProvider());
 $app->register(new EventJSONLDServiceProvider());
 
 $app['event_calendar_repository'] = $app->share(

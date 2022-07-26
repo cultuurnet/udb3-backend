@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
+use CultuurNet\UDB3\Http\Event\GetOsloDetailRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
@@ -40,6 +41,8 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
         $controllers->post('/', ImportEventRequestHandler::class);
         $controllers->put('/{eventId}/', ImportEventRequestHandler::class);
+
+        $controllers->get('/{eventId}/oslo/', GetOsloDetailRequestHandler::class);
 
         $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
@@ -109,6 +112,12 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
                 $app['event_command_bus'],
                 $app['import_image_collection_factory'],
                 $app['place_jsonld_repository']
+            )
+        );
+
+        $app[GetOsloDetailRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetOsloDetailRequestHandler(
+                $app['event_oslo_repository']
             )
         );
 

@@ -80,6 +80,8 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/(events|event|places|place)/$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/oslo$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/oslo/$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/(calendar-summary|calsum)', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
