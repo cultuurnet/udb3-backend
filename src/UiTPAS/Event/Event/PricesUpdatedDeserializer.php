@@ -43,7 +43,7 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
             if (!isset($tariff->price) || !is_numeric($tariff->price)) {
                 throw new \InvalidArgumentException('Encountered tariff entry without valid price.');
             }
-            $price = (int) $tariff->price * 100;
+            $price = (int) ($tariff->price * 100);
 
             $tariffs[] = new Tariff(
                 new TranslatedTariffName(new Language('nl'), new TariffName($name)),
