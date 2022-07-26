@@ -87,6 +87,7 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
@@ -475,7 +476,19 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     public function updateUiTPASPrices(Tariffs $tariffs): void
     {
-        // TODO
+        if ($this->priceInfo === null) {
+            return;
+        }
+
+        $legacyUiTPASTariffs = [];
+        foreach ($tariffs as $tariff) {
+            $legacyUiTPASTariffs[] = Tariff::fromUdb3ModelTariff($tariff);
+        }
+        $newPriceInfo = $this->priceInfo->withUiTPASTariffs($legacyUiTPASTariffs);
+
+        if ($this->priceInfo->serialize() !== $newPriceInfo->serialize()) {
+            $this->apply(new PriceInfoUpdated($this->eventId, $newPriceInfo));
+        }
     }
 
     protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
