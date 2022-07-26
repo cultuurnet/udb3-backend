@@ -39,6 +39,12 @@ class PriceInfo implements Serializable
         return $c;
     }
 
+    public function withTariffs(array $tariffs): PriceInfo
+    {
+        $c = clone $this;
+        $c->tariffs = $tariffs;
+        return $c;
+    }
 
     public function withExtraUiTPASTariff(Tariff $tariff): PriceInfo
     {
@@ -46,6 +52,14 @@ class PriceInfo implements Serializable
         $c->uitpasTariffs[] = $tariff;
         return $c;
     }
+
+    public function withUiTPASTariffs(array $tariffs): PriceInfo
+    {
+        $c = clone $this;
+        $c->uitpasTariffs = $tariffs;
+        return $c;
+    }
+
     public function getBasePrice(): BasePrice
     {
         return $this->basePrice;
