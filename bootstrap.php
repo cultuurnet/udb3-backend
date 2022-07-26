@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -539,6 +540,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[UpdateOnlineUrlHandler::class]);
         $commandBus->subscribe($app[DeleteOnlineUrlHandler::class]);
         $commandBus->subscribe($app[UpdateAudienceHandler::class]);
+        $commandBus->subscribe($app[UpdateUiTPASPricesHandler::class]);
         $commandBus->subscribe($app[CopyEventHandler::class]);
 
         // Organizer command handlers
