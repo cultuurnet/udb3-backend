@@ -1559,6 +1559,79 @@ class EventTest extends AggregateRootScenarioTestCase
             )
             ->then([]);
     }
+
+    /**
+     * @test
+     */
+    public function it_triggers_price_info_updated_when_uitpas_prices_are_different(): void
+    {
+        $this->scenario
+            ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
+            ->given([
+                $this->getCreationEvent(),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                ),
+            ])
+            ->when(
+                function (Event $event) {
+                    $event->updateUiTPASPrices(
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            )
+                        )
+                    );
+                }
+            )
+            ->then([
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ]);
+    }
+
     protected function getSample(string $file): string
     {
         return file_get_contents(
