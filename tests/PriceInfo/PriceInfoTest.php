@@ -23,6 +23,11 @@ class PriceInfoTest extends TestCase
      */
     private array $tariffs;
 
+    /**
+     * @var Tariff[]
+     */
+    private array $uitpasTariffs;
+
     private PriceInfo $priceInfo;
 
     public function setUp(): void
@@ -35,14 +40,25 @@ class PriceInfoTest extends TestCase
             new Tariff(
                 new MultilingualString(
                     new Language('nl'),
-                    new StringLiteral('Werkloze dodo kwekers')
+                    new StringLiteral('Tarief inwoners')
                 ),
-                new Money(0, new Currency('EUR'))
+                new Money(950, new Currency('EUR'))
+            ),
+        ];
+
+        $this->uitpasTariffs = [
+            new Tariff(
+                new MultilingualString(
+                    new Language('nl'),
+                    new StringLiteral('UiTPAS tarief')
+                ),
+                new Money(650, new Currency('EUR'))
             ),
         ];
 
         $this->priceInfo = (new PriceInfo($this->basePrice))
-            ->withExtraTariff($this->tariffs[0]);
+            ->withExtraTariff($this->tariffs[0])
+            ->withExtraUiTPASTariff($this->uitpasTariffs[0]);
     }
 
     /**
@@ -59,6 +75,14 @@ class PriceInfoTest extends TestCase
     public function it_returns_any_extra_tariffs(): void
     {
         $this->assertEquals($this->tariffs, $this->priceInfo->getTariffs());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_any_extra_uitpas_tariffs(): void
+    {
+        $this->assertEquals($this->uitpasTariffs, $this->priceInfo->getUiTPASTariffs());
     }
 
     /**
