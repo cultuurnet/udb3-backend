@@ -34,7 +34,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -78,7 +78,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $this->event = Event::create(
             'foo',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
@@ -90,7 +90,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
@@ -102,7 +102,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
@@ -267,7 +267,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $event = Event::create(
             $eventUuid,
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId($locationUuid),
@@ -503,7 +503,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new Language('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
             '02 123 45 67',
             'info@publiq.be'
         );
@@ -863,7 +863,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $cdbXml = file_get_contents(
@@ -910,7 +910,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $this->scenario
@@ -960,7 +960,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $this->scenario
@@ -1361,7 +1361,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event) {
                     $event->updateTitle(
-                        new Language('en'),
+                        new LegacyLanguage('en'),
                         new Title('some representative title')
                     );
                 }
