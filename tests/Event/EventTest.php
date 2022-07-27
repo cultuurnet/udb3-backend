@@ -43,10 +43,15 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -1449,6 +1454,44 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
+    /**
+     * @test
+     */
+    public function it_ignores_uitpas_tariffs_when_price_info_is_missing(): void
+    {
+        $this->scenario
+            ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
+            ->given([$this->getCreationEvent()])
+            ->when(
+                function (Event $event) {
+                    $event->updateUiTPASPrices(
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            )
+                        )
+                    );
+                }
+            )
+            ->then([]);
+    }
     protected function getSample(string $file): string
     {
         return file_get_contents(
