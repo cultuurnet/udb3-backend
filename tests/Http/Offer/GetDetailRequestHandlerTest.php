@@ -94,6 +94,90 @@ class GetDetailRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_include_uitpas_prices(): void
+    {
+        $this->mockEventDocumentWithPriceInfo('c09b7a51-b17c-4121-b278-eef71ef04e47');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/events/c09b7a51-b17c-4121-b278-eef71ef04e47')
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
+            ->build('GET');
+
+        $response = $this->getDetailRequestHandler->handle($request);
+        $responseBody = $response->getBody()->getContents();
+        $decodedResponseBody = Json::decodeAssociatively($responseBody);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('@id', $decodedResponseBody);
+        $this->assertArrayNotHasKey('metadata', $decodedResponseBody);
+        $this->assertEquals(
+            [
+                [
+                    'category' => 'base',
+                    'name' => 'Base price',
+                    'price' => '10',
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => 'Inwoner Leuven',
+                    'price' => '950',
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+            $decodedResponseBody['priceInfo']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_includes_uitpas_prices_when_enabled(): void
+    {
+        $this->mockEventDocumentWithPriceInfo('c09b7a51-b17c-4121-b278-eef71ef04e47');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/events/c09b7a51-b17c-4121-b278-eef71ef04e47?embedUitpasPrices=true')
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
+            ->build('GET');
+
+        $response = $this->getDetailRequestHandler->handle($request);
+        $responseBody = $response->getBody()->getContents();
+        $decodedResponseBody = Json::decodeAssociatively($responseBody);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('@id', $decodedResponseBody);
+        $this->assertArrayNotHasKey('metadata', $decodedResponseBody);
+        $this->assertEquals(
+            [
+                [
+                    'category' => 'base',
+                    'name' => 'Base price',
+                    'price' => '10',
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => 'Inwoner Leuven',
+                    'price' => '950',
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'uitpas',
+                    'name' => 'UitPAS Leuven',
+                    'price' => '750',
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+            $decodedResponseBody['priceInfo']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_includes_place_metadata_if_the_parameter_is_set_to_true(): void
     {
         $this->mockPlaceDocument('1ec8604a-000a-4620-8e49-091bb866f773');
@@ -197,6 +281,38 @@ class GetDetailRequestHandlerTest extends TestCase
             [
                 '@id' => '/events/' . $eventId,
                 'metadata' => ['foo' => 'bar'],
+            ]
+        );
+        $document = new JsonDocument($eventId, $jsonLd);
+        $this->mockRepositoryFactory->expectEventDocument($document);
+    }
+
+    private function mockEventDocumentWithPriceInfo(string $eventId): void
+    {
+        $jsonLd = Json::encode(
+            [
+                '@id' => '/events/' . $eventId,
+                'metadata' => ['foo' => 'bar'],
+                'priceInfo'=> [
+                    [
+                        'category' => 'base',
+                        'name' => 'Base price',
+                        'price' => '10',
+                        'priceCurrency' => 'EUR',
+                    ],
+                    [
+                        'category' => 'tariff',
+                        'name' => 'Inwoner Leuven',
+                        'price' => '950',
+                        'priceCurrency' => 'EUR',
+                    ],
+                    [
+                        'category' => 'uitpas',
+                        'name' => 'UitPAS Leuven',
+                        'price' => '750',
+                        'priceCurrency' => 'EUR',
+                    ],
+                ],
             ]
         );
         $document = new JsonDocument($eventId, $jsonLd);
