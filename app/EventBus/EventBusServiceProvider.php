@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Event\ReadModel\OSLO\EventOSLOProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
@@ -38,6 +39,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                 $callbackMiddleware = new CallbackOnFirstPublicationMiddleware(
                     function () use (&$eventBus, $app): void {
                         $subscribers = [
+                            EventOSLOProjector::class,
                             'event_relations_projector',
                             'place_relations_projector',
                             EventJSONLDServiceProvider::PROJECTOR,
