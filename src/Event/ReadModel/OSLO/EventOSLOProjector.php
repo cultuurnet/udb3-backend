@@ -58,7 +58,6 @@ final class EventOSLOProjector implements EventListener
     /**
      * @uses handleEventCreated
      * @uses handleTitleUpdated
-     * @uses handleMajorInfoUpdated
      */
     private function handleEvent(object $event): void
     {
@@ -115,12 +114,6 @@ final class EventOSLOProjector implements EventListener
         );
 
         $this->saveGraph($eventId, $graph);
-    }
-
-    private function handleMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
-    {
-        $titleUpdated = $majorInfoUpdated->toTitleUpdated();
-        $this->handleTitleUpdated($titleUpdated);
     }
 
     private function saveGraph(string $eventId, Graph $graph): void
