@@ -109,11 +109,6 @@ final class EventOSLOProjector implements EventListener
 
         // @todo Why do we need to wrap the property URI in a Resource class here to make it work?
         $lang = $activity->getLiteral(new Resource(self::PROPERTY_ACTIVITEIT_TAAL));
-        if ($lang === null) {
-            // @todo handle better but for now it's good to see this immediately when it happens
-            throw new Exception('Could not determine "taal" of the "Activiteit"!');
-            return;
-        }
 
         $activity->set(
             self::PROPERTY_ACTIVITEIT_NAAM,
