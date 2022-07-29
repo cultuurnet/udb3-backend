@@ -8,10 +8,11 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
+use CultuurNet\UDB3\Offer\Events\ConvertsToGranularEvents;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
-final class MajorInfoUpdated extends AbstractEvent
+final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranularEvents
 {
     /**
      * @var Title
@@ -53,6 +54,13 @@ final class MajorInfoUpdated extends AbstractEvent
         $this->location = $location;
         $this->calendar = $calendar;
         $this->theme = $theme;
+    }
+
+    public function toGranularEvents(): array
+    {
+        return [
+            $this->toTitleUpdated(),
+        ];
     }
 
     public function toTitleUpdated(): TitleUpdated

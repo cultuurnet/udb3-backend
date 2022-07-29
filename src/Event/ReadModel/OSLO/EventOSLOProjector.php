@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Offer\Events\ConvertsToGranularEvents;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -43,25 +44,35 @@ final class EventOSLOProjector implements EventListener
         $this->eventIriGenerator = $eventIriGenerator;
     }
 
+    public function handle(DomainMessage $domainMessage): void
+    {
+        $event = $domainMessage->getPayload();
+        $this->handleEvent($event);
+
+        if ($event instanceof ConvertsToGranularEvents) {
+            foreach ($event->toGranularEvents() as $event) {
+                $this->handleEvent($event);
+            }
+        }
+    }
+
     /**
      * @uses handleEventCreated
      * @uses handleTitleUpdated
      * @uses handleMajorInfoUpdated
      */
-    public function handle(DomainMessage $domainMessage): void
+    private function handleEvent(object $event): void
     {
         $handlers = [
             EventCreated::class => 'handleEventCreated',
             TitleUpdated::class => 'handleTitleUpdated',
-            MajorInfoUpdated::class => 'handleMajorInfoUpdated',
         ];
 
-        $payload = $domainMessage->getPayload();
-        $payloadClassName = get_class($payload);
+        $eventClassName = get_class($event);
 
-        if (isset($handlers[$payloadClassName])) {
-            $handler = $handlers[$payloadClassName];
-            $this->{$handler}($payload);
+        if (isset($handlers[$eventClassName])) {
+            $handler = $handlers[$eventClassName];
+            $this->{$handler}($event);
         }
     }
 
