@@ -18,7 +18,6 @@ use EasyRdf\Graph;
 use EasyRdf\Parser\JsonLd as JsonLdParser;
 use EasyRdf\Resource;
 use EasyRdf\Serialiser\JsonLd as JsonLdSerializer;
-use Exception;
 
 final class EventOSLOProjector implements EventListener
 {
