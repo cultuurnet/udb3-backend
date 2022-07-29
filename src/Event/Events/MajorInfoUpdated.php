@@ -55,6 +55,11 @@ final class MajorInfoUpdated extends AbstractEvent
         $this->theme = $theme;
     }
 
+    public function toTitleUpdated(): TitleUpdated
+    {
+        return new TitleUpdated($this->itemId, $this->title);
+    }
+
     public function getTitle(): Title
     {
         return $this->title;

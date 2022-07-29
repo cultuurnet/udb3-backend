@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\OSLO;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -52,6 +53,7 @@ final class EventOSLOProjector implements EventListener
         $handlers = [
             EventCreated::class => 'handleEventCreated',
             TitleUpdated::class => 'handleTitleUpdated',
+            MajorInfoUpdated::class => 'handleMajorInfoUpdated',
         ];
 
         $payload = $domainMessage->getPayload();
@@ -108,6 +110,12 @@ final class EventOSLOProjector implements EventListener
         );
 
         $this->saveGraph($eventId, $graph);
+    }
+
+    private function handleMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
+    {
+        $titleUpdated = $majorInfoUpdated->toTitleUpdated();
+        $this->handleTitleUpdated($titleUpdated);
     }
 
     private function saveGraph(string $eventId, Graph $graph): void
