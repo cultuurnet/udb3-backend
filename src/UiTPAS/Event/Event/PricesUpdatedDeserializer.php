@@ -16,6 +16,7 @@ use Money\Currency;
 use Money\Money;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Validator;
+use stdClass;
 
 final class PricesUpdatedDeserializer extends JSONDeserializer
 {
@@ -54,6 +55,7 @@ final class PricesUpdatedDeserializer extends JSONDeserializer
 
     public function deserialize(StringLiteral $data): PricesUpdated
     {
+        /** @var stdClass $dto */
         $dto = parent::deserialize($data);
 
         $validator = new Validator();
