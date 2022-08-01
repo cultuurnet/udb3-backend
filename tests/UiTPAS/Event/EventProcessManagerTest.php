@@ -7,14 +7,23 @@ namespace CultuurNet\UDB3\UiTPAS\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Event\Commands\UpdateUiTPASPrices;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
+use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use CultuurNet\UDB3\StringLiteral;
@@ -198,5 +207,53 @@ class EventProcessManagerTest extends TestCase
             'Could not find UiTPAS label for card system 7',
             $this->warningLogs
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_prices_updated(): void
+    {
+        $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
+
+        $tariffs = new Tariffs(
+            new Tariff(
+                new TranslatedTariffName(
+                    new Language('nl'),
+                    new TariffName('Tariff 1')
+                ),
+                new Money(
+                    199,
+                    new Currency('EUR')
+                )
+            ),
+            new Tariff(
+                new TranslatedTariffName(
+                    new Language('nl'),
+                    new TariffName('Tariff 2')
+                ),
+                new Money(
+                    299,
+                    new Currency('EUR')
+                )
+            )
+        );
+
+        $pricesUpdated = new PricesUpdated('cbee7413-ac1e-4dfb-8004-34767eafb8b7', $tariffs);
+
+        $domainMessage = DomainMessage::recordNow(
+            $eventId->toNative(),
+            8,
+            new Metadata([]),
+            $pricesUpdated
+        );
+
+        $expectedCommands = [
+            new UpdateUiTPASPrices('cbee7413-ac1e-4dfb-8004-34767eafb8b7', $tariffs),
+        ];
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
     }
 }

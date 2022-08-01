@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -33,9 +34,30 @@ final class GetDetailRequestHandler implements RequestHandlerInterface
 
         $queryParameters = new QueryParameters($request);
         $includeMetadata = $queryParameters->getAsBoolean('includeMetadata');
+        $embedUiTPASPrices = $queryParameters->getAsBoolean('embedUitpasPrices');
 
         $jsonDocument = $this->offerJsonDocumentReadRepository->fetch($offerType, $offerId, $includeMetadata);
 
+        if (!$embedUiTPASPrices) {
+            $jsonDocument = $this->removeUiTPASPrices($jsonDocument);
+        }
+
         return new JsonLdResponse($jsonDocument->getAssocBody());
+    }
+
+    private function removeUiTPASPrices(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['priceInfo'])) {
+                    return $json;
+                }
+                $json['priceInfo'] = array_filter(
+                    $json['priceInfo'],
+                    static fn (array $price) => $price['category'] !== 'uitpas'
+                );
+                return $json;
+            }
+        );
     }
 }
