@@ -101,20 +101,20 @@ final class PricesUpdatedDeserializerTest extends TestCase
                         ],
                     ],
                 ],
-                'Missing cdbid property.',
+                'The required properties (cdbid) are missing (JsonPointer: /).',
             ],
             'missing tariffs' => [
                 [
                     'cdbid' => '12345',
                 ],
-                'Missing tariffs property.',
+                'The required properties (tariffs) are missing (JsonPointer: /).',
             ],
             'tariffs not an array' => [
                 [
                     'cdbid' => '12345',
                     'tariffs' => 'not an array',
                 ],
-                'Tariffs property must be an array.',
+                'The data (string) must match the type: array (JsonPointer: /tariffs).',
             ],
             'tariff missing name' => [
                 [
@@ -125,7 +125,18 @@ final class PricesUpdatedDeserializerTest extends TestCase
                         ],
                     ],
                 ],
-                'Tariff must have a name.',
+                'The required properties (name) are missing (JsonPointer: /tariffs/0).',
+            ],
+            'tariff missing price' => [
+                [
+                    'cdbid' => '12345',
+                    'tariffs' => [
+                        [
+                            'name' => 'Tariff 1',
+                        ],
+                    ],
+                ],
+                'The required properties (price) are missing (JsonPointer: /tariffs/0).',
             ],
             'tariff price not a number' => [
                 [
@@ -137,7 +148,7 @@ final class PricesUpdatedDeserializerTest extends TestCase
                         ],
                     ],
                 ],
-                'Tariff price must be a number.',
+                'The data (string) must match the type: number (JsonPointer: /tariffs/0/price).',
             ],
         ];
     }
