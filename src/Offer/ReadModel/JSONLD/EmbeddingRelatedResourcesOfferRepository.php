@@ -11,7 +11,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 final class EmbeddingRelatedResourcesOfferRepository extends DocumentRepositoryDecorator
 {
-    private array $repositoryMapping;
+    private array $repositoryMapping = [];
 
     public static function createForEventRepository(
         DocumentRepository $sourceRepository,
