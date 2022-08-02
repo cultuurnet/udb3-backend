@@ -20,7 +20,7 @@ class EmbeddingRelatedResourcesOfferRepositoryTest extends TestCase
         $this->placeRepository = new InMemoryDocumentRepository();
         $this->organizerRepository = new InMemoryDocumentRepository();
 
-        $this->embeddingRelatedResourcesOfferRepository = new EmbeddingRelatedResourcesOfferRepository(
+        $this->embeddingRelatedResourcesOfferRepository = EmbeddingRelatedResourcesOfferRepository::createForEventRepository(
             new InMemoryDocumentRepository(),
             $this->placeRepository,
             $this->organizerRepository

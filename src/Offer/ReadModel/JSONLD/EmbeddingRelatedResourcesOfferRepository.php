@@ -11,24 +11,36 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 final class EmbeddingRelatedResourcesOfferRepository extends DocumentRepositoryDecorator
 {
-    private DocumentRepository $placeDocumentRepository;
-    private DocumentRepository $organizerDocumentRepository;
+    private array $repositoryMapping;
 
-    public function __construct(
-        DocumentRepository $sourceDocumentRepository,
-        DocumentRepository $placeDocumentRepository,
-        DocumentRepository $organizerDocumentRepository
-    ) {
-        parent::__construct($sourceDocumentRepository);
-        $this->placeDocumentRepository = $placeDocumentRepository;
-        $this->organizerDocumentRepository = $organizerDocumentRepository;
+    public static function createForEventRepository(
+        DocumentRepository $sourceRepository,
+        DocumentRepository $placeRepository,
+        DocumentRepository $organizerRepository
+    ): self {
+        $repository = new self($sourceRepository);
+        $repository->repositoryMapping['location'] = $placeRepository;
+        $repository->repositoryMapping['organizer'] = $organizerRepository;
+        return $repository;
+    }
+
+    public static function createForPlaceRepository(
+        DocumentRepository $sourceRepository,
+        DocumentRepository $organizerRepository
+    ): self {
+        $repository = new self($sourceRepository);
+        $repository->repositoryMapping['organizer'] = $organizerRepository;
+        return $repository;
     }
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
         $document = parent::fetch($id, $includeMetadata);
-        $document = $this->embedRelatedResource($document, 'location', $this->placeDocumentRepository);
-        $document = $this->embedRelatedResource($document, 'organizer', $this->organizerDocumentRepository);
+
+        foreach ($this->repositoryMapping as $propertyName => $repository) {
+            $document = $this->embedRelatedResource($document, $propertyName, $repository);
+        }
+
         return $document;
     }
 
