@@ -13,37 +13,54 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo as Udb3ModelPriceInfo;
  */
 class PriceInfo implements Serializable
 {
-    /**
-     * @var BasePrice
-     */
-    private $basePrice;
+    private BasePrice $basePrice;
 
     /**
      * @var Tariff[]
      */
-    private $tariffs;
+    private array $tariffs;
 
+    /**
+     * @var Tariff[]
+     */
+    private array $uitpasTariffs;
 
     public function __construct(BasePrice $basePrice)
     {
         $this->basePrice = $basePrice;
         $this->tariffs = [];
+        $this->uitpasTariffs = [];
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public function withExtraTariff(Tariff $tariff)
+    public function withExtraTariff(Tariff $tariff): PriceInfo
     {
         $c = clone $this;
         $c->tariffs[] = $tariff;
         return $c;
     }
 
-    /**
-     * @return BasePrice
-     */
-    public function getBasePrice()
+    public function withTariffs(array $tariffs): PriceInfo
+    {
+        $c = clone $this;
+        $c->tariffs = $tariffs;
+        return $c;
+    }
+
+    public function withExtraUiTPASTariff(Tariff $tariff): PriceInfo
+    {
+        $c = clone $this;
+        $c->uitpasTariffs[] = $tariff;
+        return $c;
+    }
+
+    public function withUiTPASTariffs(array $tariffs): PriceInfo
+    {
+        $c = clone $this;
+        $c->uitpasTariffs = $tariffs;
+        return $c;
+    }
+
+    public function getBasePrice(): BasePrice
     {
         return $this->basePrice;
     }
@@ -51,9 +68,14 @@ class PriceInfo implements Serializable
     /**
      * @return Tariff[]
      */
-    public function getTariffs()
+    public function getTariffs(): array
     {
         return $this->tariffs;
+    }
+
+    public function getUiTPASTariffs(): array
+    {
+        return $this->uitpasTariffs;
     }
 
     public function serialize(): array
@@ -61,19 +83,21 @@ class PriceInfo implements Serializable
         $serialized = [
             'base' => $this->basePrice->serialize(),
             'tariffs' => [],
+            'uitpas_tariffs' => [],
         ];
 
         foreach ($this->tariffs as $tariff) {
             $serialized['tariffs'][] = $tariff->serialize();
         }
 
+        foreach ($this->uitpasTariffs as $uitpasTariff) {
+            $serialized['uitpas_tariffs'][] = $uitpasTariff->serialize();
+        }
+
         return $serialized;
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): PriceInfo
     {
         $basePriceInfo = BasePrice::deserialize($data['base']);
 
@@ -85,13 +109,18 @@ class PriceInfo implements Serializable
             );
         }
 
+        if (isset($data['uitpas_tariffs'])) {
+            foreach ($data['uitpas_tariffs'] as $uitpasTariffData) {
+                $priceInfo = $priceInfo->withExtraUiTPASTariff(
+                    Tariff::deserialize($uitpasTariffData)
+                );
+            }
+        }
+
         return $priceInfo;
     }
 
-    /**
-     * @return PriceInfo
-     */
-    public static function fromUdb3ModelPriceInfo(Udb3ModelPriceInfo $udb3ModelPriceInfo)
+    public static function fromUdb3ModelPriceInfo(Udb3ModelPriceInfo $udb3ModelPriceInfo): PriceInfo
     {
         $basePrice = BasePrice::fromUdb3ModelTariff($udb3ModelPriceInfo->getBasePrice());
         $priceInfo = new PriceInfo($basePrice);

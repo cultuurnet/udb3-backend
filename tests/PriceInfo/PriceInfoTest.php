@@ -16,22 +16,21 @@ use CultuurNet\UDB3\StringLiteral;
 
 class PriceInfoTest extends TestCase
 {
-    /**
-     * @var BasePrice
-     */
-    private $basePrice;
+    private BasePrice $basePrice;
 
     /**
      * @var Tariff[]
      */
-    private $tariffs;
+    private array $tariffs;
 
     /**
-     * @var PriceInfo
+     * @var Tariff[]
      */
-    private $priceInfo;
+    private array $uitpasTariffs;
 
-    public function setUp()
+    private PriceInfo $priceInfo;
+
+    public function setUp(): void
     {
         $this->basePrice = new BasePrice(
             new Money(1050, new Currency('EUR'))
@@ -41,20 +40,31 @@ class PriceInfoTest extends TestCase
             new Tariff(
                 new MultilingualString(
                     new Language('nl'),
-                    new StringLiteral('Werkloze dodo kwekers')
+                    new StringLiteral('Tarief inwoners')
                 ),
-                new Money(0, new Currency('EUR'))
+                new Money(950, new Currency('EUR'))
+            ),
+        ];
+
+        $this->uitpasTariffs = [
+            new Tariff(
+                new MultilingualString(
+                    new Language('nl'),
+                    new StringLiteral('UiTPAS tarief')
+                ),
+                new Money(650, new Currency('EUR'))
             ),
         ];
 
         $this->priceInfo = (new PriceInfo($this->basePrice))
-            ->withExtraTariff($this->tariffs[0]);
+            ->withExtraTariff($this->tariffs[0])
+            ->withExtraUiTPASTariff($this->uitpasTariffs[0]);
     }
 
     /**
      * @test
      */
-    public function it_returns_the_base_price()
+    public function it_returns_the_base_price(): void
     {
         $this->assertEquals($this->basePrice, $this->priceInfo->getBasePrice());
     }
@@ -62,7 +72,7 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_any_extra_tariffs()
+    public function it_returns_any_extra_tariffs(): void
     {
         $this->assertEquals($this->tariffs, $this->priceInfo->getTariffs());
     }
@@ -70,7 +80,15 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_serialized_and_deserialized()
+    public function it_returns_any_extra_uitpas_tariffs(): void
+    {
+        $this->assertEquals($this->uitpasTariffs, $this->priceInfo->getUiTPASTariffs());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_serialized_and_deserialized(): void
     {
         $serialized = $this->priceInfo->serialize();
         $deserialized = PriceInfo::deserialize($serialized);
@@ -81,7 +99,7 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_price_info_without_tariffs()
+    public function it_should_be_creatable_from_an_udb3_model_price_info_without_tariffs(): void
     {
         $udb3ModelPriceInfo = new \CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo(
             new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
@@ -89,7 +107,7 @@ class PriceInfoTest extends TestCase
                     new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
                     new TariffName('Basistarief')
                 ),
-                new Money(1000, new \Money\Currency('EUR'))
+                new Money(1000, new Currency('EUR'))
             ),
             new Tariffs()
         );
@@ -108,7 +126,7 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_price_info_with_tariffs()
+    public function it_should_be_creatable_from_an_udb3_model_price_info_with_tariffs(): void
     {
         $udb3ModelPriceInfo = new \CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo(
             new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
@@ -116,7 +134,7 @@ class PriceInfoTest extends TestCase
                     new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
                     new TariffName('Basistarief')
                 ),
-                new Money(1000, new \Money\Currency('EUR'))
+                new Money(1000, new Currency('EUR'))
             ),
             new Tariffs(
                 new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
@@ -124,7 +142,7 @@ class PriceInfoTest extends TestCase
                         new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
                         new TariffName('Senioren')
                     ),
-                    new Money(500, new \Money\Currency('EUR'))
+                    new Money(500, new Currency('EUR'))
                 )
             )
         );

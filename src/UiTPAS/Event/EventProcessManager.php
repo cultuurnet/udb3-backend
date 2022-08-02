@@ -7,12 +7,14 @@ namespace CultuurNet\UDB3\UiTPAS\Event;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Event\Commands\UpdateUiTPASPrices;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
+use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Psr\Log\LoggerInterface;
 
@@ -35,13 +37,14 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     *
      * @uses handleEventCardSystemsUpdated
+     * @uses handleUiTPASPricesUpdated
      */
     public function handle(DomainMessage $domainMessage): void
     {
         $map = [
             EventCardSystemsUpdated::class => 'handleEventCardSystemsUpdated',
+            PricesUpdated::class => 'handleUiTPASPricesUpdated',
         ];
 
         $payload = $domainMessage->getPayload();
@@ -78,6 +81,15 @@ class EventProcessManager implements EventListener
         // Dispatch commands to add the labels that are supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelAdded event if it was not.
         $this->addLabelsToEvent($eventId, $applicableLabelsForEvent);
+    }
+
+    private function handleUiTPASPricesUpdated(PricesUpdated $pricesUpdated): void
+    {
+        $this->logger->info('Update UiTPAS prices for event ' . $pricesUpdated->getEventId() . ' (if applied)');
+
+        $this->commandBus->dispatch(
+            new UpdateUiTPASPrices($pricesUpdated->getEventId(), $pricesUpdated->getTariffs())
+        );
     }
 
     /**

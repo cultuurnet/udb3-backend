@@ -618,6 +618,15 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             ];
         }
 
+        foreach ($priceInfoUpdated->getPriceInfo()->getUiTPASTariffs() as $tariff) {
+            $offerLd->priceInfo[] = [
+                'category' => 'uitpas',
+                'name' => $tariff->getName()->serialize(),
+                'price' => $tariff->getPrice()->getAmount() / 100,
+                'priceCurrency' => $tariff->getCurrency()->getName(),
+            ];
+        }
+
         return $document->withBody($offerLd);
     }
 

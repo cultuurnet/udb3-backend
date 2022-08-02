@@ -34,7 +34,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Facility;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -43,10 +43,15 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -78,7 +83,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $this->event = Event::create(
             'foo',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d70f5d94-7072-423d-9144-9354cb794c62'),
@@ -90,7 +95,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
@@ -102,7 +107,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         return new EventCreated(
             'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('59400d1e-6f98-4da9-ab08-f58adceb7204'),
@@ -267,7 +272,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $event = Event::create(
             $eventUuid,
-            new Language('en'),
+            new LegacyLanguage('en'),
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId($locationUuid),
@@ -503,7 +508,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $bookingInfo = new BookingInfo(
             'www.publiq.be',
-            new MultilingualString(new Language('nl'), new StringLiteral('publiq')),
+            new MultilingualString(new LegacyLanguage('nl'), new StringLiteral('publiq')),
             '02 123 45 67',
             'info@publiq.be'
         );
@@ -863,7 +868,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $cdbXml = file_get_contents(
@@ -910,7 +915,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $this->scenario
@@ -960,7 +965,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new LegacyLanguage('en')
         );
 
         $this->scenario
@@ -1361,7 +1366,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event) {
                     $event->updateTitle(
-                        new Language('en'),
+                        new LegacyLanguage('en'),
                         new Title('some representative title')
                     );
                 }
@@ -1447,6 +1452,184 @@ class EventTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_uitpas_tariffs_when_price_info_is_missing(): void
+    {
+        $this->scenario
+            ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
+            ->given([$this->getCreationEvent()])
+            ->when(
+                function (Event $event) {
+                    $event->updateUiTPASPrices(
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            )
+                        )
+                    );
+                }
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_equal_uitpas_prices(): void
+    {
+        $this->scenario
+            ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
+            ->given([
+                $this->getCreationEvent(),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ])
+            ->when(
+                function (Event $event) {
+                    $event->updateUiTPASPrices(
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            )
+                        )
+                    );
+                }
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_triggers_price_info_updated_when_uitpas_prices_are_different(): void
+    {
+        $this->scenario
+            ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
+            ->given([
+                $this->getCreationEvent(),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                ),
+            ])
+            ->when(
+                function (Event $event) {
+                    $event->updateUiTPASPrices(
+                        new Tariffs(
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new Tariff(
+                                new TranslatedTariffName(
+                                    new Language('nl'),
+                                    new TariffName('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            )
+                        )
+                    );
+                }
+            )
+            ->then([
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 2')
+                                ),
+                                new Money(
+                                    299,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ]);
     }
 
     protected function getSample(string $file): string

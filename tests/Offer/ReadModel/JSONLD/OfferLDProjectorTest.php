@@ -454,9 +454,19 @@ class OfferLDProjectorTest extends TestCase
             new Tariff(
                 new MultilingualString(
                     new LegacyLanguage('nl'),
-                    new StringLiteral('Werkloze dodo kwekers')
+                    new StringLiteral('Tarief inwoners')
                 ),
-                new Money(0, new Currency('EUR'))
+                new Money(950, new Currency('EUR'))
+            )
+        );
+
+        $priceInfo = $priceInfo->withExtraUiTPASTariff(
+            new Tariff(
+                new MultilingualString(
+                    new LegacyLanguage('nl'),
+                    new StringLiteral('UiTPAS tarief')
+                ),
+                new Money(650, new Currency('EUR'))
             )
         );
 
@@ -485,8 +495,14 @@ class OfferLDProjectorTest extends TestCase
                 ],
                 (object) [
                     'category' => 'tariff',
-                    'name' => (object) ['nl' => 'Werkloze dodo kwekers'],
-                    'price' => 0,
+                    'name' => (object) ['nl' => 'Tarief inwoners'],
+                    'price' => 9.50,
+                    'priceCurrency' => 'EUR',
+                ],
+                (object) [
+                    'category' => 'uitpas',
+                    'name' => (object) ['nl' => 'UiTPAS tarief'],
+                    'price' => 6.50,
                     'priceCurrency' => 'EUR',
                 ],
             ],
