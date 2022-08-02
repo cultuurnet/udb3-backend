@@ -29,7 +29,6 @@ use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector;
-use CultuurNet\UDB3\Place\ReadModel\JSONLD\RelatedPlaceLDProjector;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -40,8 +39,6 @@ use Silex\ServiceProviderInterface;
 class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'place_jsonld_projector';
-    public const RELATED_PROJECTOR = 'related_place_jsonld_projector';
-
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'place_jsonld_projected_event_factory';
 
     public function register(Application $app)
@@ -59,18 +56,6 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     ),
                     $app['config']['base_price_translations'],
                     new VideoNormalizer($app['config']['media']['video_default_copyright'])
-                );
-
-                return $projector;
-            }
-        );
-
-        $app[self::RELATED_PROJECTOR] = $app->share(
-            function ($app) {
-                $projector = new RelatedPlaceLDProjector(
-                    $app['place_jsonld_repository'],
-                    $app['organizer_service'],
-                    $app['place_relations_repository']
                 );
 
                 return $projector;

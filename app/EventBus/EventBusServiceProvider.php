@@ -41,11 +41,9 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                             'event_relations_projector',
                             'place_relations_projector',
                             EventJSONLDServiceProvider::PROJECTOR,
-                            EventJSONLDServiceProvider::RELATED_PROJECTOR,
                             \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector::class,
                             \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,
                             PlaceJSONLDServiceProvider::PROJECTOR,
-                            PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
                             OrganizerJSONLDServiceProvider::PROJECTOR,
                             'event_calendar_projector',
                             'event_permission.projector',
@@ -93,10 +91,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
 
                         $disableRelatedOfferSubscribers = $app['config']['event_bus']['disable_related_offer_subscribers'] ?? false;
                         if ($disableRelatedOfferSubscribers === true) {
-                            $subscribersToDisable = [
-                                EventJSONLDServiceProvider::RELATED_PROJECTOR,
-                                PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
-                            ];
+                            $subscribersToDisable = [];
                             $subscribers = array_diff($subscribers, $subscribersToDisable);
                         }
 
