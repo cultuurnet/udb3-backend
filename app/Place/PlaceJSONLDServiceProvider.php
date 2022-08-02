@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\EmbeddingRelatedResourcesOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
@@ -95,6 +96,11 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                         $app['place_jsonld_cache']
                     ),
                     $dummyPlaceIds
+                );
+
+                $repository = EmbeddingRelatedResourcesOfferRepository::createForPlaceRepository(
+                    $repository,
+                    $app['organizer_jsonld_repository']
                 );
 
                 $repository = new NilLocationEnrichedPlaceRepository(

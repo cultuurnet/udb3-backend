@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CuratorEnrichedOfferRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\EmbeddingRelatedResourcesOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
@@ -53,6 +54,12 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
             function ($app) {
                 $repository = new CacheDocumentRepository(
                     $app['event_jsonld_cache']
+                );
+
+                $repository = EmbeddingRelatedResourcesOfferRepository::createForEventRepository(
+                    $repository,
+                    $app['place_jsonld_repository'],
+                    $app['organizer_jsonld_repository']
                 );
 
                 $repository = new ProductionEnrichedEventRepository(
