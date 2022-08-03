@@ -8,6 +8,7 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\DefaultPlaceEditingService;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -34,7 +35,7 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new PlaceOrganizerRelationService(
                     $app['place_editing_service'],
-                    $app['place_relations_repository']
+                    $app[PlaceRelationsRepository::class]
                 );
             }
         );

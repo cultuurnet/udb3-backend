@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -52,7 +53,7 @@ final class OfferServiceProvider implements ServiceProviderInterface
             fn (Application $app) => new RelatedDocumentProjectedToJSONLDDispatcher(
                 $app[EventBus::class],
                 $app[EventRelationsRepository::class],
-                $app['place_relations_repository'],
+                $app[PlaceRelationsRepository::class],
                 $app['event_iri_generator'],
                 $app['place_iri_generator'],
             )

@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
@@ -426,7 +427,7 @@ $app['event_relations_projector'] = $app->share(
 $app['place_relations_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Place\ReadModel\Relations\Projector(
-            $app['place_relations_repository']
+            $app[PlaceRelationsRepository::class]
         );
     }
 );
@@ -602,7 +603,7 @@ $app[EventRelationsRepository::class] = $app->share(
     }
 );
 
-$app['place_relations_repository'] = $app->share(
+$app[PlaceRelationsRepository::class] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALPlaceRelationsRepository(
             $app['dbal_connection']
@@ -642,7 +643,7 @@ $app['place_service'] = $app->share(
         return new LocalPlaceService(
             $app['place_jsonld_repository'],
             $app['place_repository'],
-            $app['place_relations_repository'],
+            $app[PlaceRelationsRepository::class],
             $app['place_iri_generator']
         );
     }
