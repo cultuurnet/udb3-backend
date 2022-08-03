@@ -595,14 +595,6 @@ $app['place_iri_generator'] = $app->share(
 
 $app->register(new PlaceJSONLDServiceProvider());
 
-$app[PlaceRelationsRepository::class] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALPlaceRelationsRepository(
-            $app['dbal_connection']
-        );
-    }
-);
-
 $app['place_store'] = $app->share(
     function ($app) {
         return $app['event_store_factory'](AggregateType::place());
