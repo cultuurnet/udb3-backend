@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
@@ -416,7 +417,7 @@ $app['event_calendar_projector'] = $app->share(
 $app['event_relations_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
-            $app['event_relations_repository'],
+            $app[EventRelationsRepository::class],
             $app['udb2_event_cdbid_extractor']
         );
     }
@@ -593,7 +594,7 @@ $app['place_iri_generator'] = $app->share(
 
 $app->register(new PlaceJSONLDServiceProvider());
 
-$app['event_relations_repository'] = $app->share(
+$app[EventRelationsRepository::class] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository(
             $app['dbal_connection']
@@ -660,7 +661,7 @@ $app['canonical_service'] = $app->share(
         return new CanonicalService(
             $app['config']['museumpas']['label'],
             $app['duplicate_place_repository'],
-            $app['event_relations_repository'],
+            $app[EventRelationsRepository::class],
             new DBALReadRepository(
                 $app['dbal_connection'],
                 new StringLiteral('labels_relations')

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
@@ -50,7 +51,7 @@ final class OfferServiceProvider implements ServiceProviderInterface
         $app[RelatedDocumentProjectedToJSONLDDispatcher::class] = $app::share(
             fn (Application $app) => new RelatedDocumentProjectedToJSONLDDispatcher(
                 $app[EventBus::class],
-                $app['event_relations_repository'],
+                $app[EventRelationsRepository::class],
                 $app['place_relations_repository'],
                 $app['event_iri_generator'],
                 $app['place_iri_generator'],

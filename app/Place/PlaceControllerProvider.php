@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
@@ -66,7 +67,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
             function (Application $app) {
                 return new EditPlaceRestController(
                     $app['place_editing_service'],
-                    $app['event_relations_repository'],
+                    $app[EventRelationsRepository::class],
                     $app['media_manager']
                 );
             }
