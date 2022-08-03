@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
-use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 
 class PlaceOrganizerRelationService implements OrganizerRelationServiceInterface
 {
@@ -15,14 +15,14 @@ class PlaceOrganizerRelationService implements OrganizerRelationServiceInterface
     private $editingService;
 
     /**
-     * @var RepositoryInterface
+     * @var PlaceRelationsRepository
      */
     private $relationsRepository;
 
 
     public function __construct(
         PlaceEditingServiceInterface $editingService,
-        RepositoryInterface $relationsRepository
+        PlaceRelationsRepository $relationsRepository
     ) {
         $this->editingService = $editingService;
         $this->relationsRepository = $relationsRepository;

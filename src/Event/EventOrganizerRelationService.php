@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 
 class EventOrganizerRelationService implements OrganizerRelationServiceInterface
 {
@@ -15,14 +15,14 @@ class EventOrganizerRelationService implements OrganizerRelationServiceInterface
     private $editingService;
 
     /**
-     * @var RepositoryInterface
+     * @var EventRelationsRepository
      */
     private $relationsRepository;
 
 
     public function __construct(
         EventEditingServiceInterface $editingService,
-        RepositoryInterface $relationsRepository
+        EventRelationsRepository $relationsRepository
     ) {
         $this->editingService = $editingService;
         $this->relationsRepository = $relationsRepository;

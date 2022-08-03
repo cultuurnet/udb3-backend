@@ -10,11 +10,11 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface as EventRelationsRepository;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface as PlaceRelationsRepository;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 
 final class RelatedDocumentProjectedToJSONLDDispatcher implements EventListener
 {

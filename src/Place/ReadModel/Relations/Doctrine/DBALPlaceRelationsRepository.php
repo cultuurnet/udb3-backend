@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine;
 
-use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement as DriverStatement;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
-final class DBALRepository implements RepositoryInterface
+final class DBALPlaceRelationsRepository implements PlaceRelationsRepository
 {
     private string $tableName = 'place_relations';
     private Connection $connection;

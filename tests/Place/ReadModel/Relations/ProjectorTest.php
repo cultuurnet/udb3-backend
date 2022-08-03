@@ -24,7 +24,7 @@ class ProjectorTest extends TestCase
     public const ORGANIZER_ID = 'organizerId';
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var PlaceRelationsRepository|MockObject
      */
     private $repository;
 
@@ -35,7 +35,7 @@ class ProjectorTest extends TestCase
 
     protected function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(PlaceRelationsRepository::class);
 
         $this->projector = new Projector(
             $this->repository

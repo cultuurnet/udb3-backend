@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Canonical;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
@@ -208,7 +208,7 @@ class CanonicalServiceTest extends TestCase
         $this->canonicalService = new CanonicalService(
             'museumPASSmusees',
             new DBALDuplicatePlaceRepository($this->getConnection()),
-            new DBALRepository(
+            new DBALEventRelationsRepository(
                 $this->getConnection()
             ),
             new DBALReadRepository(

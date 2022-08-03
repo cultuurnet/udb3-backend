@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement as DriverStatement;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
-final class DBALRepository implements RepositoryInterface
+final class DBALEventRelationsRepository implements EventRelationsRepository
 {
     private string $tableName = 'event_relations';
     private Connection $connection;

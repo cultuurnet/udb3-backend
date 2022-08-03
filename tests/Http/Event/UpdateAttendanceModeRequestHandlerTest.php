@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -25,13 +25,13 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
 
     private UpdateAttendanceModeRequestHandler $updateAttendanceModeRequestHandler;
 
-    /** @var RepositoryInterface|MockObject  */
+    /** @var EventRelationsRepository|MockObject  */
     private $eventRelationsRepository;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->eventRelationsRepository = $this->createMock(RepositoryInterface::class);
+        $this->eventRelationsRepository = $this->createMock(EventRelationsRepository::class);
         $this->updateAttendanceModeRequestHandler = new UpdateAttendanceModeRequestHandler(
             $this->commandBus,
             $this->eventRelationsRepository

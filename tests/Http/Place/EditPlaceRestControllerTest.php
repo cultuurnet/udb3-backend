@@ -12,7 +12,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification;
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -35,7 +35,7 @@ class EditPlaceRestControllerTest extends TestCase
     private $placeEditingService;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var EventRelationsRepository|MockObject
      */
     private $relationsRepository;
 
@@ -72,7 +72,7 @@ class EditPlaceRestControllerTest extends TestCase
     public function setUp()
     {
         $this->placeEditingService  = $this->createMock(PlaceEditingServiceInterface::class);
-        $this->relationsRepository  = $this->createMock(RepositoryInterface::class);
+        $this->relationsRepository  = $this->createMock(EventRelationsRepository::class);
         $this->mediaManager  = $this->createMock(MediaManagerInterface::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->consumerRepository = new InMemoryConsumerRepository();

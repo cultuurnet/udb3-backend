@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\Relations;
 
-interface RepositoryInterface
+interface EventRelationsRepository
 {
     public function storeRelations(string $eventId, ?string $placeId, ?string $organizerId): void;
     public function storeOrganizer(string $eventId, ?string $organizerId): void;

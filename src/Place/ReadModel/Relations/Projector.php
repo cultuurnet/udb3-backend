@@ -16,7 +16,7 @@ class Projector implements EventListener
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
-     * @var RepositoryInterface
+     * @var PlaceRelationsRepository
      */
     protected $repository;
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ReadModel\Relations;
 
 /**
- * In-memory implementation of CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface, mostly useful in tests
- * to avoid having to mock complex data sets.
+ * In-memory implementation of CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository, mostly useful in
+ * tests to avoid having to mock complex data sets.
  */
-final class InMemoryEventRelationsRepository implements RepositoryInterface
+final class InMemoryEventRelationsRepository implements EventRelationsRepository
 {
     private array $places = [];
     private array $organizers = [];

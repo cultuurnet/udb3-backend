@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\Relations;
 
 /**
- * In-memory implementation of CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface, mostly useful in tests
- * to avoid having to mock complex data sets.
+ * In-memory implementation of CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository, mostly useful in
+ * tests to avoid having to mock complex data sets.
  */
-final class InMemoryPlaceRelationsRepository implements RepositoryInterface
+final class InMemoryPlaceRelationsRepository implements PlaceRelationsRepository
 {
     private array $organizers = [];
 

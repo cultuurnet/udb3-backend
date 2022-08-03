@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
@@ -27,7 +27,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
     private CanonicalService $canonicalService;
 
-    private RepositoryInterface $eventRelationsRepository;
+    private EventRelationsRepository $eventRelationsRepository;
 
     private AMQPPublisher $amqpPublisher;
 
@@ -41,7 +41,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         CanonicalService $canonicalService,
         AMQPPublisher $amqpPublisher,
         DocumentEventFactory $placeEventFactory,
-        RepositoryInterface $eventRelationsRepository,
+        EventRelationsRepository $eventRelationsRepository,
         Connection $connection
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;

@@ -28,7 +28,7 @@ class ProjectorTest extends TestCase
     public const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var EventRelationsRepository|MockObject
      */
     private $repository;
 
@@ -39,7 +39,7 @@ class ProjectorTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(EventRelationsRepository::class);
 
         $this->projector = new Projector(
             $this->repository,

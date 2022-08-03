@@ -23,7 +23,7 @@ class Projector implements EventListener
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
-     * @var RepositoryInterface
+     * @var EventRelationsRepository
      */
     protected $repository;
 
@@ -34,7 +34,7 @@ class Projector implements EventListener
 
 
     public function __construct(
-        RepositoryInterface $repository,
+        EventRelationsRepository $repository,
         EventCdbIdExtractorInterface $cdbIdExtractor
     ) {
         $this->repository = $repository;

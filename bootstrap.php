@@ -595,7 +595,7 @@ $app->register(new PlaceJSONLDServiceProvider());
 
 $app['event_relations_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository(
+        return new \CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository(
             $app['dbal_connection']
         );
     }
@@ -603,7 +603,7 @@ $app['event_relations_repository'] = $app->share(
 
 $app['place_relations_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALRepository(
+        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALPlaceRelationsRepository(
             $app['dbal_connection']
         );
     }

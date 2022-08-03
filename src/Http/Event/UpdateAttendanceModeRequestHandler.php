@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\Serializer\AttendanceModeWithLocation;
 use CultuurNet\UDB3\Event\Serializer\AttendanceModeWithLocationDenormalizer;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -28,9 +28,9 @@ final class UpdateAttendanceModeRequestHandler implements RequestHandlerInterfac
 {
     private CommandBus $commandBus;
 
-    private RepositoryInterface $eventRelationsRepository;
+    private EventRelationsRepository $eventRelationsRepository;
 
-    public function __construct(CommandBus $commandBus, RepositoryInterface $eventRelationsRepository)
+    public function __construct(CommandBus $commandBus, EventRelationsRepository $eventRelationsRepository)
     {
         $this->commandBus = $commandBus;
         $this->eventRelationsRepository = $eventRelationsRepository;
@@ -77,7 +77,7 @@ final class UpdateAttendanceModeRequestHandler implements RequestHandlerInterfac
 
     private function guardLocation(
         string $eventId,
-        RepositoryInterface $eventRelationsRepository,
+        EventRelationsRepository $eventRelationsRepository,
         AttendanceModeWithLocation $attendanceModeWithLocation
     ): void {
         if ($attendanceModeWithLocation->getLocationId() === null &&

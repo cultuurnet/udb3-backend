@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
@@ -22,7 +22,7 @@ class EditPlaceRestController extends OfferRestBaseController
     /**
      * The event relations repository.
      *
-     * @var RepositoryInterface
+     * @var EventRelationsRepository
      */
     private $eventRelationsRepository;
 
@@ -37,7 +37,7 @@ class EditPlaceRestController extends OfferRestBaseController
      */
     public function __construct(
         PlaceEditingServiceInterface $placeEditor,
-        RepositoryInterface $eventRelationsRepository,
+        EventRelationsRepository $eventRelationsRepository,
         MediaManagerInterface $mediaManager
     ) {
         parent::__construct($placeEditor, $mediaManager);
