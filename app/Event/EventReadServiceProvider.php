@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
+use CultuurNet\UDB3\Event\ReadModel\Relations\Projector;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\JSONLDMainLanguageQuery;
 use Silex\Application;
@@ -15,6 +16,15 @@ final class EventReadServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app['event_relations_projector'] = $app->share(
+            function ($app) {
+                return new Projector(
+                    $app[EventRelationsRepository::class],
+                    $app['udb2_event_cdbid_extractor']
+                );
+            }
+        );
+
         $app[EventRelationsRepository::class] = $app::share(
             function ($app) {
                 return new DBALEventRelationsRepository(
