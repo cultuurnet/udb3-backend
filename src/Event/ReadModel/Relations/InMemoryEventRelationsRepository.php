@@ -62,5 +62,4 @@ final class InMemoryEventRelationsRepository implements RepositoryInterface
     {
         unset($this->places[$eventId], $this->organizers[$eventId]);
     }
-
 }
