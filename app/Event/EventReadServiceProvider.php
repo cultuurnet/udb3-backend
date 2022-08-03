@@ -16,7 +16,7 @@ final class EventReadServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['event_relations_projector'] = $app->share(
+        $app[EventRelationsProjector::class] = $app->share(
             function ($app) {
                 return new EventRelationsProjector(
                     $app[EventRelationsRepository::class],
