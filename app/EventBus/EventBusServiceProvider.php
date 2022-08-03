@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -41,7 +42,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                     function () use (&$eventBus, $app): void {
                         $subscribers = [
                             EventRelationsProjector::class,
-                            'place_relations_projector',
+                            PlaceRelationsProjector::class,
                             EventJSONLDServiceProvider::PROJECTOR,
                             \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector::class,
                             \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,

@@ -16,7 +16,7 @@ final class PlaceReadServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['place_relations_projector'] = $app->share(
+        $app[PlaceRelationsProjector::class] = $app->share(
             function ($app) {
                 return new PlaceRelationsProjector(
                     $app[PlaceRelationsRepository::class]
