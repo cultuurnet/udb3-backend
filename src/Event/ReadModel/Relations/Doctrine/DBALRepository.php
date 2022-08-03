@@ -20,7 +20,7 @@ final class DBALRepository implements RepositoryInterface
         $this->connection = $connection;
     }
 
-    public function storeRelations(string $eventId, string $placeId, string $organizerId): void
+    public function storeRelations(string $eventId, ?string $placeId, ?string $organizerId): void
     {
         $this->connection->beginTransaction();
 
@@ -44,12 +44,12 @@ final class DBALRepository implements RepositoryInterface
         $this->connection->transactional($transaction);
     }
 
-    public function storeOrganizer(string $eventId, string $organizerId): void
+    public function storeOrganizer(string $eventId, ?string $organizerId): void
     {
         $this->storeRelation($eventId, 'organizer', $organizerId);
     }
 
-    public function storePlace(string $eventId, string $placeId): void
+    public function storePlace(string $eventId, ?string $placeId): void
     {
         $this->storeRelation($eventId, 'place', $placeId);
     }
@@ -92,7 +92,7 @@ final class DBALRepository implements RepositoryInterface
         Connection $connection,
         string $eventId,
         string $relationType,
-        string $itemId
+        ?string $itemId
     ): void {
         $q = $connection
             ->createQueryBuilder()

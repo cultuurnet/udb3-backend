@@ -20,7 +20,7 @@ final class DBALRepository implements RepositoryInterface
         $this->connection = $connection;
     }
 
-    public function storeRelations(string $placeId, string $organizerId): void
+    public function storeRelations(string $placeId, ?string $organizerId): void
     {
         $this->connection->beginTransaction();
 

@@ -13,20 +13,24 @@ final class InMemoryEventRelationsRepository implements RepositoryInterface
     private array $places = [];
     private array $organizers = [];
 
-    public function storeRelations(string $eventId, string $placeId, string $organizerId): void
+    public function storeRelations(string $eventId, ?string $placeId, ?string $organizerId): void
     {
         $this->places[$eventId] = $placeId;
         $this->organizers[$eventId] = $organizerId;
+        $this->places = array_filter($this->places);
+        $this->organizers = array_filter($this->organizers);
     }
 
-    public function storeOrganizer(string $eventId, string $organizerId): void
+    public function storeOrganizer(string $eventId, ?string $organizerId): void
     {
         $this->organizers[$eventId] = $organizerId;
+        $this->organizers = array_filter($this->organizers);
     }
 
-    public function storePlace(string $eventId, string $placeId): void
+    public function storePlace(string $eventId, ?string $placeId): void
     {
         $this->places[$eventId] = $placeId;
+        $this->places = array_filter($this->places);
     }
 
     public function removeOrganizer(string $eventId): void

@@ -12,9 +12,10 @@ final class InMemoryPlaceRelationsRepository implements RepositoryInterface
 {
     private array $organizers = [];
 
-    public function storeRelations(string $placeId, string $organizerId): void
+    public function storeRelations(string $placeId, ?string $organizerId): void
     {
         $this->organizers[$placeId] = $organizerId;
+        $this->organizers = array_filter($this->organizers);
     }
 
     public function removeRelations(string $placeId): void
