@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 
-class Projector implements EventListener
+final class EventRelationsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
