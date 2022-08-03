@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\JSONLDMainLanguageQuery;
 use CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALPlaceRelationsRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use CultuurNet\UDB3\Place\ReadModel\Relations\Projector;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -18,7 +18,7 @@ final class PlaceReadServiceProvider implements ServiceProviderInterface
     {
         $app['place_relations_projector'] = $app->share(
             function ($app) {
-                return new Projector(
+                return new PlaceRelationsProjector(
                     $app[PlaceRelationsRepository::class]
                 );
             }
