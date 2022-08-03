@@ -75,7 +75,7 @@ class AMQPPublisher implements EventListener
         $this->channel->basic_publish(
             $this->messageFactory->createAMQPMessage($domainMessage),
             $this->exchange,
-            ($this->determineRoutingKey)()
+            ($this->determineRoutingKey)($domainMessage)
         );
     }
 }
