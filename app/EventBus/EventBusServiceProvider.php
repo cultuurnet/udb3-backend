@@ -15,6 +15,7 @@ use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventBus\MiddlewareEventBus;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
+use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
@@ -45,6 +46,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                             \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,
                             PlaceJSONLDServiceProvider::PROJECTOR,
                             OrganizerJSONLDServiceProvider::PROJECTOR,
+                            RelatedDocumentProjectedToJSONLDDispatcher::class,
                             'event_calendar_projector',
                             'event_permission.projector',
                             'place_permission.projector',
