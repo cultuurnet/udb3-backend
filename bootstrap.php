@@ -424,15 +424,6 @@ $app['event_relations_projector'] = $app->share(
     }
 );
 
-$app['place_relations_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Projector(
-            $app[PlaceRelationsRepository::class]
-        );
-    }
-);
-
-
 $app['events_locator_event_stream_decorator'] = $app->share(
     function (Application $app) {
         return new OfferLocator($app['event_iri_generator']);
