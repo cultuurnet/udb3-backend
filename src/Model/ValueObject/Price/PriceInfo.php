@@ -36,6 +36,11 @@ class PriceInfo
         return $this->tariffs;
     }
 
+    public function getUiTPASTariffs(): Tariffs
+    {
+        return $this->UiTPASTariffs;
+    }
+
     public function withTariffs(Tariffs $tariffs): PriceInfo
     {
         $c = clone $this;
