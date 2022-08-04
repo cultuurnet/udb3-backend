@@ -466,9 +466,10 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updatePriceInfo(PriceInfo $priceInfo): void
     {
-        if (is_null($this->priceInfo) || $priceInfo->serialize() !== $this->priceInfo->serialize()) {
+        if (is_null($this->priceInfo) || $priceInfo->withoutUiTPASTariffs()->serialize() !== $this->priceInfo->withoutUiTPASTariffs()->serialize()) {
+            $priceInfoWithUiTPAS = is_null($this->priceInfo) ? $priceInfo : $priceInfo->withoutUiTPASTariffs()->withUiTPASTariffs($this->priceInfo->getUiTPASTariffs());
             $this->apply(
-                $this->createPriceInfoUpdatedEvent($priceInfo)
+                $this->createPriceInfoUpdatedEvent($priceInfoWithUiTPAS)
             );
         }
     }
