@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement as DriverStatement;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 
-class DBALRepository implements RepositoryInterface
+final class DBALEventRelationsRepository implements EventRelationsRepository
 {
-    protected $tableName = 'event_relations';
-
-    /**
-     * @var Connection
-     */
-    protected $connection;
-
+    private string $tableName = 'event_relations';
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
 
-    public function storeRelations($eventId, $placeId, $organizerId)
+    public function storeRelations(string $eventId, ?string $placeId, ?string $organizerId): void
     {
         $this->connection->beginTransaction();
 
@@ -36,7 +33,7 @@ class DBALRepository implements RepositoryInterface
         $this->connection->commit();
     }
 
-    public function removeOrganizer($eventId)
+    public function removeOrganizer(string $eventId): void
     {
         $transaction = function ($connection) use ($eventId) {
             if ($this->eventHasRelations($connection, $eventId)) {
@@ -47,22 +44,17 @@ class DBALRepository implements RepositoryInterface
         $this->connection->transactional($transaction);
     }
 
-    public function storeOrganizer($eventId, $organizerId)
+    public function storeOrganizer(string $eventId, ?string $organizerId): void
     {
         $this->storeRelation($eventId, 'organizer', $organizerId);
     }
 
-    public function storePlace($eventId, $placeId)
+    public function storePlace(string $eventId, ?string $placeId): void
     {
         $this->storeRelation($eventId, 'place', $placeId);
     }
 
-    /**
-     * @param string $eventId
-     * @param string $relationType either 'place' or 'organizer'
-     * @param string $itemId
-     */
-    private function storeRelation($eventId, $relationType, $itemId)
+    private function storeRelation(string $eventId, string $relationType, string $itemId): void
     {
         $transaction = function ($connection) use ($eventId, $relationType, $itemId) {
             if ($this->eventHasRelations($connection, $eventId)) {
@@ -75,17 +67,12 @@ class DBALRepository implements RepositoryInterface
         $this->connection->transactional($transaction);
     }
 
-    /**
-     * @param string $eventId
-     * @param string $relationType
-     * @param string $itemId
-     */
     private function createEventRelation(
         Connection $connection,
-        $eventId,
-        $relationType,
-        $itemId
-    ) {
+        string $eventId,
+        string $relationType,
+        string $itemId
+    ): void {
         $q = $connection
             ->createQueryBuilder()
             ->insert($this->tableName)
@@ -101,17 +88,12 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    /**
-     * @param string $eventId
-     * @param string $relationType
-     * @param string $itemId
-     */
     private function updateEventRelation(
         Connection $connection,
-        $eventId,
-        $relationType,
-        $itemId
-    ) {
+        string $eventId,
+        string $relationType,
+        ?string $itemId
+    ): void {
         $q = $connection
             ->createQueryBuilder()
             ->update($this->tableName)
@@ -123,14 +105,10 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    /**
-     * @param string $id
-     * @return bool
-     */
     private function eventHasRelations(
         Connection $connection,
-        $id
-    ) {
+        string $id
+    ): bool {
         $q = $connection->createQueryBuilder();
 
         $q->select('1')
@@ -144,7 +122,7 @@ class DBALRepository implements RepositoryInterface
         return count($relations) > 0;
     }
 
-    private function prepareInsertStatement()
+    private function prepareInsertStatement(): DriverStatement
     {
         $table = $this->connection->quoteIdentifier($this->tableName);
         return $this->connection->prepare(
@@ -158,7 +136,7 @@ class DBALRepository implements RepositoryInterface
         );
     }
 
-    public function getEventsLocatedAtPlace($placeId)
+    public function getEventsLocatedAtPlace(string $placeId): array
     {
         $q = $this->connection->createQueryBuilder();
         $q->select('event')
@@ -176,7 +154,7 @@ class DBALRepository implements RepositoryInterface
         return $events;
     }
 
-    public function getEventsOrganizedByOrganizer($organizerId)
+    public function getEventsOrganizedByOrganizer(string $organizerId): array
     {
         $q = $this->connection->createQueryBuilder();
         $q
@@ -195,28 +173,17 @@ class DBALRepository implements RepositoryInterface
         return $events;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPlaceOfEvent($eventId)
+    public function getPlaceOfEvent(string $eventId): ?string
     {
         return $this->getRelationOfEvent($eventId, 'place');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getOrganizerOfEvent($eventId)
+    public function getOrganizerOfEvent(string $eventId): ?string
     {
         return $this->getRelationOfEvent($eventId, 'organizer');
     }
 
-    /**
-     * @param string $eventId
-     * @param string $eventType
-     * @return string|null
-     */
-    private function getRelationOfEvent($eventId, $eventType)
+    private function getRelationOfEvent(string $eventId, string $eventType): ?string
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -232,7 +199,7 @@ class DBALRepository implements RepositoryInterface
         return isset($rows[0][$eventType]) ? $rows[0][$eventType] : null;
     }
 
-    public function removeRelations($eventId)
+    public function removeRelations(string $eventId): void
     {
         $q = $this->connection->createQueryBuilder();
         $q->delete($this->tableName)
@@ -242,10 +209,7 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    /**
-     * @return \Doctrine\DBAL\Schema\Table|null
-     */
-    public function configureSchema(Schema $schema)
+    public function configureSchema(Schema $schema): ?Table
     {
         if ($schema->hasTable($this->tableName)) {
             return null;
@@ -254,7 +218,7 @@ class DBALRepository implements RepositoryInterface
         return $this->configureTable();
     }
 
-    public function configureTable()
+    public function configureTable(): ?Table
     {
         $schema = new Schema();
 

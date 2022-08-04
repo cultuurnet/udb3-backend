@@ -18,12 +18,12 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 
-class Projector implements EventListener
+final class EventRelationsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
-     * @var RepositoryInterface
+     * @var EventRelationsRepository
      */
     protected $repository;
 
@@ -34,7 +34,7 @@ class Projector implements EventListener
 
 
     public function __construct(
-        RepositoryInterface $repository,
+        EventRelationsRepository $repository,
         EventCdbIdExtractorInterface $cdbIdExtractor
     ) {
         $this->repository = $repository;

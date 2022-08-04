@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical;
 
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
@@ -16,7 +16,7 @@ class CanonicalService
 
     private DuplicatePlaceRepository $duplicatePlaceRepository;
 
-    private RepositoryInterface $eventRelationsRepository;
+    private EventRelationsRepository $eventRelationsRepository;
 
     private ReadRepositoryInterface $labelRelationsRepository;
 
@@ -25,7 +25,7 @@ class CanonicalService
     public function __construct(
         string $museumpasLabel,
         DuplicatePlaceRepository $duplicatePlaceRepository,
-        RepositoryInterface $eventRelationsRepository,
+        EventRelationsRepository $eventRelationsRepository,
         ReadRepositoryInterface $labelRelationsRepository,
         DocumentRepository $placeRepository
     ) {

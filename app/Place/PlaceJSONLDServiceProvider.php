@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\EmbeddingRelatedResourcesOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
@@ -28,7 +29,6 @@ use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector;
-use CultuurNet\UDB3\Place\ReadModel\JSONLD\RelatedPlaceLDProjector;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -39,9 +39,6 @@ use Silex\ServiceProviderInterface;
 class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'place_jsonld_projector';
-    public const RELATED_PROJECTOR = 'related_place_jsonld_projector';
-
-    public const JSONLD_REPOSITORY = 'place_jsonld_repository';
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'place_jsonld_projected_event_factory';
 
     public function register(Application $app)
@@ -49,7 +46,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
         $app[self::PROJECTOR] = $app->share(
             function ($app) {
                 $projector = new PlaceLDProjector(
-                    $app[self::JSONLD_REPOSITORY],
+                    $app['place_jsonld_repository'],
                     $app['place_iri_generator'],
                     $app['organizer_service'],
                     $app['media_object_serializer'],
@@ -65,18 +62,6 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[self::RELATED_PROJECTOR] = $app->share(
-            function ($app) {
-                $projector = new RelatedPlaceLDProjector(
-                    $app[self::JSONLD_REPOSITORY],
-                    $app['organizer_service'],
-                    $app['place_relations_repository']
-                );
-
-                return $projector;
-            }
-        );
-
         $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
             function ($app) {
                 return new EventFactory(
@@ -85,7 +70,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[self::JSONLD_REPOSITORY] = $app->share(
+        $app['place_jsonld_repository'] = $app->share(
             function ($app) {
                 $dummyPlaceIds = [];
                 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
@@ -96,6 +81,11 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                         $app['place_jsonld_cache']
                     ),
                     $dummyPlaceIds
+                );
+
+                $repository = EmbeddingRelatedResourcesOfferRepository::createForPlaceRepository(
+                    $repository,
+                    $app['organizer_jsonld_repository']
                 );
 
                 $repository = new NilLocationEnrichedPlaceRepository(

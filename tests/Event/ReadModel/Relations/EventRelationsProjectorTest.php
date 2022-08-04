@@ -23,25 +23,25 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ProjectorTest extends TestCase
+class EventRelationsProjectorTest extends TestCase
 {
     public const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var EventRelationsRepository|MockObject
      */
     private $repository;
 
     /**
-     * @var Projector
+     * @var EventRelationsProjector
      */
     private $projector;
 
     public function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(EventRelationsRepository::class);
 
-        $this->projector = new Projector(
+        $this->projector = new EventRelationsProjector(
             $this->repository,
             new EventCdbIdExtractor()
         );

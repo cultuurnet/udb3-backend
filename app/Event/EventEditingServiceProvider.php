@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\EventEditingService;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 use Silex\Application;
@@ -37,7 +38,7 @@ class EventEditingServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new EventOrganizerRelationService(
                     $app['event_editor'],
-                    $app['event_relations_repository']
+                    $app[EventRelationsRepository::class]
                 );
             }
         );

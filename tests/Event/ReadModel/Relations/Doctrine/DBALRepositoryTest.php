@@ -13,7 +13,7 @@ class DBALRepositoryTest extends TestCase
     use DBALTestConnectionTrait;
 
     /**
-     * @var DBALRepository
+     * @var DBALEventRelationsRepository
      */
     private $repository;
 
@@ -24,7 +24,7 @@ class DBALRepositoryTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = new DBALRepository(
+        $this->repository = new DBALEventRelationsRepository(
             $this->getConnection()
         );
 

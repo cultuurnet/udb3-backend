@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +16,7 @@ class PlaceOrganizerRelationServiceTest extends TestCase
     private $editService;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var PlaceRelationsRepository|MockObject
      */
     private $relationRepository;
 
@@ -28,7 +28,7 @@ class PlaceOrganizerRelationServiceTest extends TestCase
     public function setUp()
     {
         $this->editService = $this->createMock(PlaceEditingServiceInterface::class);
-        $this->relationRepository = $this->createMock(RepositoryInterface::class);
+        $this->relationRepository = $this->createMock(PlaceRelationsRepository::class);
 
         $this->organizerRelationService = new PlaceOrganizerRelationService(
             $this->editService,

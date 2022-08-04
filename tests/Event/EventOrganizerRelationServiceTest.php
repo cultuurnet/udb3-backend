@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +16,7 @@ class EventOrganizerRelationServiceTest extends TestCase
     private $editService;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var EventRelationsRepository|MockObject
      */
     private $relationRepository;
 
@@ -28,7 +28,7 @@ class EventOrganizerRelationServiceTest extends TestCase
     public function setUp()
     {
         $this->editService = $this->createMock(EventEditingServiceInterface::class);
-        $this->relationRepository = $this->createMock(RepositoryInterface::class);
+        $this->relationRepository = $this->createMock(EventRelationsRepository::class);
 
         $this->organizerRelationService = new EventOrganizerRelationService(
             $this->editService,

@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
@@ -66,6 +67,7 @@ use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
@@ -413,24 +415,6 @@ $app['event_calendar_projector'] = $app->share(
     }
 );
 
-$app['event_relations_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
-            $app['event_relations_repository'],
-            $app['udb2_event_cdbid_extractor']
-        );
-    }
-);
-
-$app['place_relations_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Projector(
-            $app['place_relations_repository']
-        );
-    }
-);
-
-
 $app['events_locator_event_stream_decorator'] = $app->share(
     function (Application $app) {
         return new OfferLocator($app['event_iri_generator']);
@@ -593,22 +577,6 @@ $app['place_iri_generator'] = $app->share(
 
 $app->register(new PlaceJSONLDServiceProvider());
 
-$app['event_relations_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository(
-            $app['dbal_connection']
-        );
-    }
-);
-
-$app['place_relations_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALRepository(
-            $app['dbal_connection']
-        );
-    }
-);
-
 $app['place_store'] = $app->share(
     function ($app) {
         return $app['event_store_factory'](AggregateType::place());
@@ -641,7 +609,7 @@ $app['place_service'] = $app->share(
         return new LocalPlaceService(
             $app['place_jsonld_repository'],
             $app['place_repository'],
-            $app['place_relations_repository'],
+            $app[PlaceRelationsRepository::class],
             $app['place_iri_generator']
         );
     }
@@ -660,7 +628,7 @@ $app['canonical_service'] = $app->share(
         return new CanonicalService(
             $app['config']['museumpas']['label'],
             $app['duplicate_place_repository'],
-            $app['event_relations_repository'],
+            $app[EventRelationsRepository::class],
             new DBALReadRepository(
                 $app['dbal_connection'],
                 new StringLiteral('labels_relations')

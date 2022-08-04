@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +14,7 @@ class DBALRepositoryTest extends TestCase
     use DBALTestConnectionTrait;
 
     /**
-     * @var DBALRepository
+     * @var DBALPlaceRelationsRepository
      */
     private $repository;
 
@@ -25,7 +25,7 @@ class DBALRepositoryTest extends TestCase
 
     protected function setUp()
     {
-        $this->repository = new DBALRepository($this->getConnection());
+        $this->repository = new DBALPlaceRelationsRepository($this->getConnection());
 
         $schemaManager = $this->getConnection()->getSchemaManager();
         $schema = $schemaManager->createSchema();
@@ -84,7 +84,7 @@ class DBALRepositoryTest extends TestCase
     /**
      * @return array
      */
-    private function seedPlaceRelations(RepositoryInterface $repository)
+    private function seedPlaceRelations(PlaceRelationsRepository $repository)
     {
         $relations = [
             ['place' => 'placeId1', 'organizer' => 'organizerId1'],

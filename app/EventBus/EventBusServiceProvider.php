@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
@@ -15,9 +16,11 @@ use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventBus\MiddlewareEventBus;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
+use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -38,15 +41,14 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                 $callbackMiddleware = new CallbackOnFirstPublicationMiddleware(
                     function () use (&$eventBus, $app): void {
                         $subscribers = [
-                            'event_relations_projector',
-                            'place_relations_projector',
+                            EventRelationsProjector::class,
+                            PlaceRelationsProjector::class,
                             EventJSONLDServiceProvider::PROJECTOR,
-                            EventJSONLDServiceProvider::RELATED_PROJECTOR,
                             \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector::class,
                             \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,
                             PlaceJSONLDServiceProvider::PROJECTOR,
-                            PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
                             OrganizerJSONLDServiceProvider::PROJECTOR,
+                            RelatedDocumentProjectedToJSONLDDispatcher::class,
                             'event_calendar_projector',
                             'event_permission.projector',
                             'place_permission.projector',
@@ -93,10 +95,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
 
                         $disableRelatedOfferSubscribers = $app['config']['event_bus']['disable_related_offer_subscribers'] ?? false;
                         if ($disableRelatedOfferSubscribers === true) {
-                            $subscribersToDisable = [
-                                EventJSONLDServiceProvider::RELATED_PROJECTOR,
-                                PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
-                            ];
+                            $subscribersToDisable = [];
                             $subscribers = array_diff($subscribers, $subscribersToDisable);
                         }
 

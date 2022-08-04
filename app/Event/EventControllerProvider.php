@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
@@ -134,7 +135,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $app[UpdateAttendanceModeRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateAttendanceModeRequestHandler(
                 $app['event_command_bus'],
-                $app['event_relations_repository']
+                $app[EventRelationsRepository::class]
             )
         );
 

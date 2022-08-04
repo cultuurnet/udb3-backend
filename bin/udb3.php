@@ -4,6 +4,7 @@
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Silex\ApiName;
@@ -115,7 +116,7 @@ $consoleApp->add(
         $app['canonical_service'],
         $app[AMQPPublisher::class],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
-        $app['event_relations_repository'],
+        $app[EventRelationsRepository::class],
         $app['dbal_connection']
     )
 );

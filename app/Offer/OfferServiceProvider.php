@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
@@ -31,9 +33,11 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
+use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -41,10 +45,20 @@ use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class OfferServiceProvider implements ServiceProviderInterface
+final class OfferServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app[RelatedDocumentProjectedToJSONLDDispatcher::class] = $app::share(
+            fn (Application $app) => new RelatedDocumentProjectedToJSONLDDispatcher(
+                $app[EventBus::class],
+                $app[EventRelationsRepository::class],
+                $app[PlaceRelationsRepository::class],
+                $app['event_iri_generator'],
+                $app['place_iri_generator'],
+            )
+        );
+
         $app[OfferJsonDocumentReadRepository::class] = $app->share(
             fn (Application $app) => new OfferJsonDocumentReadRepository(
                 $app['event_jsonld_repository'],

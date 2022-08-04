@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ProjectorTest extends TestCase
+final class PlaceRelationsProjectorTest extends TestCase
 {
     public const CDBXML_NAMESPACE_32 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
@@ -24,20 +24,20 @@ class ProjectorTest extends TestCase
     public const ORGANIZER_ID = 'organizerId';
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var PlaceRelationsRepository|MockObject
      */
     private $repository;
 
     /**
-     * @var Projector
+     * @var PlaceRelationsProjector
      */
     private $projector;
 
     protected function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(PlaceRelationsRepository::class);
 
-        $this->projector = new Projector(
+        $this->projector = new PlaceRelationsProjector(
             $this->repository
         );
     }

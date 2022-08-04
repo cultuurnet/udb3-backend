@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine;
 
-use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement as DriverStatement;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 
-class DBALRepository implements RepositoryInterface
+final class DBALPlaceRelationsRepository implements PlaceRelationsRepository
 {
-    protected $tableName = 'place_relations';
-
-    /**
-     * @var Connection
-     */
-    protected $connection;
-
+    private string $tableName = 'place_relations';
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
 
-    public function storeRelations($placeId, $organizerId)
+    public function storeRelations(string $placeId, ?string $organizerId): void
     {
         $this->connection->beginTransaction();
 
@@ -35,7 +32,7 @@ class DBALRepository implements RepositoryInterface
         $this->connection->commit();
     }
 
-    private function prepareInsertStatement()
+    private function prepareInsertStatement(): DriverStatement
     {
         $table = $this->connection->quoteIdentifier($this->tableName);
 
@@ -46,7 +43,7 @@ class DBALRepository implements RepositoryInterface
         );
     }
 
-    public function getPlacesOrganizedByOrganizer($organizerId)
+    public function getPlacesOrganizedByOrganizer(string $organizerId): array
     {
         $q = $this->connection->createQueryBuilder();
         $q
@@ -65,7 +62,7 @@ class DBALRepository implements RepositoryInterface
         return $places;
     }
 
-    public function removeRelations($placeId)
+    public function removeRelations(string $placeId): void
     {
         $q = $this->connection->createQueryBuilder();
         $q->delete($this->tableName)
@@ -75,10 +72,7 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    /**
-     * @return \Doctrine\DBAL\Schema\Table|null
-     */
-    public function configureSchema(Schema $schema)
+    public function configureSchema(Schema $schema): ?Table
     {
         if ($schema->hasTable($this->tableName)) {
             return null;
@@ -87,7 +81,7 @@ class DBALRepository implements RepositoryInterface
         return $this->configureTable();
     }
 
-    public function configureTable()
+    public function configureTable(): ?Table
     {
         $schema = new Schema();
 

@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector;
-use CultuurNet\UDB3\Event\ReadModel\JSONLD\RelatedEventLDProjector;
 use CultuurNet\UDB3\Event\Recommendations\DBALRecommendationsRepository;
 use CultuurNet\UDB3\Event\Recommendations\RecommendationForEnrichedOfferRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -27,6 +26,7 @@ use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CuratorEnrichedOfferRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\EmbeddingRelatedResourcesOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\MediaUrlOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
@@ -44,7 +44,6 @@ use Silex\ServiceProviderInterface;
 class EventJSONLDServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'event_jsonld_projector';
-    public const RELATED_PROJECTOR = 'related_event_jsonld_projector';
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'event_jsonld_projected_event_factory';
 
     public function register(Application $app): void
@@ -53,6 +52,12 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
             function ($app) {
                 $repository = new CacheDocumentRepository(
                     $app['event_jsonld_cache']
+                );
+
+                $repository = EmbeddingRelatedResourcesOfferRepository::createForEventRepository(
+                    $repository,
+                    $app['place_jsonld_repository'],
+                    $app['organizer_jsonld_repository']
                 );
 
                 $repository = new ProductionEnrichedEventRepository(
@@ -135,18 +140,6 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new EventFactory(
                     $app['event_iri_generator']
-                );
-            }
-        );
-
-        $app[self::RELATED_PROJECTOR] = $app->share(
-            function ($app) {
-                return new RelatedEventLDProjector(
-                    $app['event_jsonld_repository'],
-                    $app['event_relations_repository'],
-                    $app['place_service'],
-                    $app['organizer_service'],
-                    $app['iri_offer_identifier_factory']
                 );
             }
         );

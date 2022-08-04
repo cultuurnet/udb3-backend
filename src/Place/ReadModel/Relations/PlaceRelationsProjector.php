@@ -11,12 +11,12 @@ use CultuurNet\UDB3\Place\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 
-class Projector implements EventListener
+final class PlaceRelationsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
-     * @var RepositoryInterface
+     * @var PlaceRelationsRepository
      */
     protected $repository;
 
