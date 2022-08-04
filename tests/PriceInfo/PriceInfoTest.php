@@ -180,4 +180,50 @@ class PriceInfoTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_be_creatable_from_an_udb3_model_price_info_with_uitpas_tariffs(): void
+    {
+        $udb3ModelPriceInfo = new \CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo(
+            new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
+                new TranslatedTariffName(
+                    new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
+                    new TariffName('Basistarief')
+                ),
+                new Money(1000, new Currency('EUR'))
+            ),
+            new Tariffs(),
+            new Tariffs(
+                new \CultuurNet\UDB3\Model\ValueObject\Price\Tariff(
+                    new TranslatedTariffName(
+                        new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('nl'),
+                        new TariffName('UiTPAS Regio Gent')
+                    ),
+                    new Money(500, new Currency('EUR'))
+                )
+            )
+        );
+
+        $expected = new PriceInfo(
+            new BasePrice(
+                new Money(1000, new Currency('EUR'))
+            )
+        );
+        $expected = $expected
+            ->withExtraUiTPASTariff(
+                new Tariff(
+                    new MultilingualString(
+                        new Language('nl'),
+                        new StringLiteral('UiTPAS Regio Gent')
+                    ),
+                    new Money(500, new Currency('EUR'))
+                )
+            );
+
+        $actual = PriceInfo::fromUdb3ModelPriceInfo($udb3ModelPriceInfo);
+
+        $this->assertEquals($expected, $actual);
+    }
 }
