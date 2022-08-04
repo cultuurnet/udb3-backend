@@ -81,17 +81,14 @@ use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class EventDenormalizerTest extends TestCase
 {
-    /**
-     * @var EventDenormalizer
-     */
-    private $denormalizer;
+    private EventDenormalizer $denormalizer;
 
     /**
      * @var MockObject|UuidFactoryInterface
      */
     private $uuidFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
 
@@ -116,7 +113,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_only_the_required_properties()
+    public function it_should_denormalize_event_data_with_only_the_required_properties(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -161,7 +158,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_status()
+    public function it_should_denormalize_event_data_with_status(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -224,7 +221,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_status_without_reason()
+    public function it_should_denormalize_event_data_with_status_without_reason(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -276,7 +273,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_title_translations()
+    public function it_should_denormalize_event_data_with_title_translations(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -325,7 +322,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_single_date_range_calendar()
+    public function it_should_denormalize_event_data_with_a_single_date_range_calendar(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -390,7 +387,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_single_date_range_calendar_and_status_and_reason()
+    public function it_should_denormalize_event_data_with_a_single_date_range_calendar_and_status_and_reason(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -467,7 +464,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_single_date_range_calendar_and_no_sub_event()
+    public function it_should_denormalize_event_data_with_a_single_date_range_calendar_and_no_sub_event(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -525,7 +522,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_multiple_date_ranges_calendar()
+    public function it_should_denormalize_event_data_with_a_multiple_date_ranges_calendar(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -622,7 +619,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_multiple_date_ranges_calendar_and_status_and_reason()
+    public function it_should_denormalize_event_data_with_a_multiple_date_ranges_calendar_and_status_and_reason(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -850,7 +847,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_single_date_range_and_apply_status_to_sub_event_with_no_status()
+    public function it_should_denormalize_event_data_with_single_date_range_and_apply_status_to_sub_event_with_no_status(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -927,7 +924,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_single_sub_event_and_apply_status_to_sub_event_with_no_status()
+    public function it_should_denormalize_event_data_with_single_sub_event_and_apply_status_to_sub_event_with_no_status(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1011,7 +1008,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_multiple_date_ranges_and_apply_status_to_sub_events_with_no_status()
+    public function it_should_denormalize_event_data_with_multiple_date_ranges_and_apply_status_to_sub_events_with_no_status(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1124,7 +1121,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_periodic_calendar_and_no_opening_hours()
+    public function it_should_denormalize_event_data_with_a_periodic_calendar_and_no_opening_hours(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1177,7 +1174,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_periodic_calendar_and_opening_hours()
+    public function it_should_denormalize_event_data_with_a_periodic_calendar_and_opening_hours(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1263,7 +1260,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_permanent_calendar_and_opening_hours()
+    public function it_should_denormalize_event_data_with_a_permanent_calendar_and_opening_hours(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1343,7 +1340,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_terms_with_labels_and_domains()
+    public function it_should_denormalize_event_data_with_terms_with_labels_and_domains(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1402,7 +1399,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_typical_age_range_starting_without_number()
+    public function it_should_denormalize_event_data_with_typical_age_range_starting_without_number(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1448,7 +1445,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_optional_properties()
+    public function it_should_denormalize_event_data_with_optional_properties(): void
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -1496,6 +1493,14 @@ class EventDenormalizerTest extends TestCase
                         'en' => 'Seniors',
                     ],
                     'price' => 10.5,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'uitpas',
+                    'name' => [
+                        'nl' => 'UiTPAS Regio Gent',
+                    ],
+                    'price' => 5.5,
                     'priceCurrency' => 'EUR',
                 ],
                 [
@@ -1642,7 +1647,18 @@ class EventDenormalizerTest extends TestCase
                             )
                         )
                     ),
-                    new Tariffs()
+                    new Tariffs(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('UiTPAS Regio Gent')
+                            ),
+                            new Money(
+                                550,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
                 )
             )
             ->withBookingInfo(
@@ -1734,7 +1750,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class()
+    public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class(): void
     {
         $this->expectException(UnsupportedException::class);
         $this->denormalizer->denormalize([], ImmutablePlace::class);
@@ -1743,7 +1759,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_denormalize_data_that_is_not_an_array()
+    public function it_should_throw_an_exception_when_trying_to_denormalize_data_that_is_not_an_array(): void
     {
         $this->expectException(UnsupportedException::class);
         $this->denormalizer->denormalize(new \stdClass(), ImmutableEvent::class);
@@ -1752,7 +1768,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_support_denormalization_to_immutable_event()
+    public function it_should_support_denormalization_to_immutable_event(): void
     {
         $this->assertTrue(
             $this->denormalizer->supportsDenormalization([], ImmutableEvent::class)
