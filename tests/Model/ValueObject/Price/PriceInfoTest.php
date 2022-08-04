@@ -14,7 +14,7 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_combine_a_base_price_and_optional_extra_tariffs()
+    public function it_should_combine_a_base_price_and_optional_extra_tariffs(): void
     {
         $basePrice = Tariff::createBasePrice(
             new Money(1000, new Currency('EUR'))
@@ -30,7 +30,7 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_base_price()
+    public function it_should_return_a_copy_with_an_updated_base_price(): void
     {
         $basePrice = Tariff::createBasePrice(
             new Money(1000, new Currency('EUR'))
@@ -52,7 +52,7 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_tariffs()
+    public function it_should_return_a_copy_with_updated_tariffs(): void
     {
         $basePrice = Tariff::createBasePrice(
             new Money(1000, new Currency('EUR'))
