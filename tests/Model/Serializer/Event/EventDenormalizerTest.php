@@ -1641,7 +1641,8 @@ class EventDenormalizerTest extends TestCase
                                 new Currency('EUR')
                             )
                         )
-                    )
+                    ),
+                    new Tariffs()
                 )
             )
             ->withBookingInfo(

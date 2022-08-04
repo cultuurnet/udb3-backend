@@ -713,6 +713,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                             ),
                             new Money(1050, new Currency('EUR'))
                         ),
+                        new Tariffs(),
                         new Tariffs()
                     )
                 ),
@@ -4817,6 +4818,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                             ),
                             new Money(1050, new Currency('EUR'))
                         ),
+                        new Tariffs(),
                         new Tariffs()
                     )
                 ),

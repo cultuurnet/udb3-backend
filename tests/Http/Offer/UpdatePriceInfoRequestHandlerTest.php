@@ -99,7 +99,8 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                     ),
                     new Money(500, new Currency('EUR'))
                 )
-            )
+            ),
+            new Tariffs()
         );
 
         $expected = new UpdatePriceInfo(

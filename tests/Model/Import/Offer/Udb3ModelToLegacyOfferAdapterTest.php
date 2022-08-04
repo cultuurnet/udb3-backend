@@ -130,7 +130,8 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
                             ),
                             new Money(1050, new Currency('EUR'))
                         )
-                    )
+                    ),
+                    new Tariffs()
                 )
             )
             ->withBookingInfo(

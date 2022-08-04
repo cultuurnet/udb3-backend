@@ -58,6 +58,7 @@ final class UpdatePriceInfoHandlerTest extends CommandHandlerScenarioTestCase
                     ),
                     new Money(1499, new Currency('EUR'))
                 ),
+                new Tariffs(),
                 new Tariffs()
             )
         );

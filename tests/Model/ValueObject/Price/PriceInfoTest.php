@@ -20,7 +20,8 @@ class PriceInfoTest extends TestCase
             new Money(1000, new Currency('EUR'))
         );
         $tariffs = new Tariffs();
-        $priceInfo = new PriceInfo($basePrice, $tariffs);
+        $UiTPASTariffs = new Tariffs();
+        $priceInfo = new PriceInfo($basePrice, $tariffs, $UiTPASTariffs);
 
         $this->assertEquals($basePrice, $priceInfo->getBasePrice());
         $this->assertEquals($tariffs, $priceInfo->getTariffs());
@@ -35,7 +36,8 @@ class PriceInfoTest extends TestCase
             new Money(1000, new Currency('EUR'))
         );
         $tariffs = new Tariffs();
-        $priceInfo = new PriceInfo($basePrice, $tariffs);
+        $UiTPASTariffs = new Tariffs();
+        $priceInfo = new PriceInfo($basePrice, $tariffs, $UiTPASTariffs);
 
         $updatedBasePrice = Tariff::createBasePrice(
             new Money(2000, new Currency('EUR'))
@@ -56,7 +58,8 @@ class PriceInfoTest extends TestCase
             new Money(1000, new Currency('EUR'))
         );
         $tariffs = new Tariffs();
-        $priceInfo = new PriceInfo($basePrice, $tariffs);
+        $UiTPASTariffs = new Tariffs();
+        $priceInfo = new PriceInfo($basePrice, $tariffs, $UiTPASTariffs);
 
         $updatedTariffs = new Tariffs(
             new Tariff(

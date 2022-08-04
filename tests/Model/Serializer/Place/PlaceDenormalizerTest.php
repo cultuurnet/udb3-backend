@@ -888,7 +888,8 @@ class PlaceDenormalizerTest extends TestCase
                                 new Currency('EUR')
                             )
                         )
-                    )
+                    ),
+                    new Tariffs()
                 )
             )
             ->withBookingInfo(

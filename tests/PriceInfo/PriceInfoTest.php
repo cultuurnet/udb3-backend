@@ -28,6 +28,8 @@ class PriceInfoTest extends TestCase
      */
     private array $uitpasTariffs;
 
+    private PriceInfo $priceInfoWithoutUiTPAS;
+
     private PriceInfo $priceInfo;
 
     public function setUp(): void
@@ -56,9 +58,10 @@ class PriceInfoTest extends TestCase
             ),
         ];
 
-        $this->priceInfo = (new PriceInfo($this->basePrice))
-            ->withExtraTariff($this->tariffs[0])
-            ->withExtraUiTPASTariff($this->uitpasTariffs[0]);
+        $this->priceInfoWithoutUiTPAS = (new PriceInfo($this->basePrice))
+            ->withExtraTariff($this->tariffs[0]);
+
+        $this->priceInfo = $this->priceInfoWithoutUiTPAS->withExtraUiTPASTariff($this->uitpasTariffs[0]);
     }
 
     /**
@@ -144,7 +147,8 @@ class PriceInfoTest extends TestCase
                     ),
                     new Money(500, new Currency('EUR'))
                 )
-            )
+            ),
+            new Tariffs()
         );
 
         $expected = new PriceInfo(
