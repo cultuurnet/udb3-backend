@@ -60,6 +60,13 @@ class PriceInfo implements Serializable
         return $c;
     }
 
+    public function withoutUiTPASTariffs(): PriceInfo
+    {
+        $c = clone $this;
+        $c->uitpasTariffs = [];
+        return $c;
+    }
+
     public function getBasePrice(): BasePrice
     {
         return $this->basePrice;
