@@ -137,6 +137,11 @@ class PriceInfo implements Serializable
             $priceInfo = $priceInfo->withExtraTariff($tariff);
         }
 
+        foreach ($udb3ModelPriceInfo->getUiTPASTariffs() as $udb3ModelUiTPASTariff) {
+            $tariff = Tariff::fromUdb3ModelTariff($udb3ModelUiTPASTariff);
+            $priceInfo = $priceInfo->withExtraUiTPASTariff($tariff);
+        }
+
         return $priceInfo;
     }
 }
