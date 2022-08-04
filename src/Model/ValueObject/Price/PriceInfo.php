@@ -10,10 +10,13 @@ class PriceInfo
 
     private Tariffs $tariffs;
 
-    public function __construct(Tariff $basePrice, Tariffs $tariffs)
+    private Tariffs $UiTPASTariffs;
+
+    public function __construct(Tariff $basePrice, Tariffs $tariffs, Tariffs $UiTPASTariffs)
     {
         $this->basePrice = $basePrice;
         $this->tariffs = $tariffs;
+        $this->UiTPASTariffs = $UiTPASTariffs;
     }
 
     public function getBasePrice(): Tariff
