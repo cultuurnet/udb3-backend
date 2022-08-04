@@ -91,6 +91,14 @@ class PriceInfoTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_without_uitpas_tariffs(): void
+    {
+        $this->assertEquals($this->priceInfoWithoutUiTPAS, $this->priceInfo->withoutUiTPASTariffs());
+    }
+
+    /**
+     * @test
+     */
     public function it_can_be_serialized_and_deserialized(): void
     {
         $serialized = $this->priceInfo->serialize();
@@ -112,6 +120,7 @@ class PriceInfoTest extends TestCase
                 ),
                 new Money(1000, new Currency('EUR'))
             ),
+            new Tariffs(),
             new Tariffs()
         );
 
