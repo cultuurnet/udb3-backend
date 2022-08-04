@@ -20,11 +20,23 @@ class PriceInfoTest extends TestCase
             new Money(1000, new Currency('EUR'))
         );
         $tariffs = new Tariffs();
-        $UiTPASTariffs = new Tariffs();
+        $UiTPASTariffs = new Tariffs(
+            new Tariff(
+                new TranslatedTariffName(
+                    new Language('nl'),
+                    new TariffName('UiTPAS Regio Gent')
+                ),
+                new Money(
+                    100,
+                    new Currency('EUR')
+                )
+            )
+        );
         $priceInfo = new PriceInfo($basePrice, $tariffs, $UiTPASTariffs);
 
         $this->assertEquals($basePrice, $priceInfo->getBasePrice());
         $this->assertEquals($tariffs, $priceInfo->getTariffs());
+        $this->assertEquals($UiTPASTariffs, $priceInfo->getUiTPASTariffs());
     }
 
     /**
