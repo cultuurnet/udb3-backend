@@ -338,6 +338,7 @@ class ImmutableOfferTest extends TestCase
             Tariff::createBasePrice(
                 new Money(1000, new Currency('EUR'))
             ),
+            new Tariffs(),
             new Tariffs()
         );
 
