@@ -45,10 +45,16 @@ class PriceInfoDenormalizer implements DenormalizerInterface
 
         $basePriceData = [];
         $tariffsData = [];
+        $UiTPASTariffsData = [];
 
         foreach ($data as $tariffData) {
             if ($tariffData['category'] === 'base') {
                 $basePriceData = $tariffData;
+                continue;
+            }
+
+            if ($tariffData['category'] === 'uitpas') {
+                $UiTPASTariffsData[] = $tariffData;
                 continue;
             }
 
@@ -64,7 +70,14 @@ class PriceInfoDenormalizer implements DenormalizerInterface
             $tariffsData
         );
 
-        return new PriceInfo($basePrice, new Tariffs(...$tariffs));
+        $UiTPASTariffs = array_map(
+            function ($UiTPASTariffData) use ($context) {
+                return $this->denormalizeTariff($UiTPASTariffData, $context);
+            },
+            $UiTPASTariffsData
+        );
+
+        return new PriceInfo($basePrice, new Tariffs(...$tariffs), new Tariffs(...$UiTPASTariffs));
     }
 
     /**
