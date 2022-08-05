@@ -54,7 +54,7 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
         $this->storeRelation($eventId, 'place', $placeId);
     }
 
-    private function storeRelation(string $eventId, string $relationType, string $itemId): void
+    private function storeRelation(string $eventId, ?string $relationType, ?string $itemId): void
     {
         $transaction = function ($connection) use ($eventId, $relationType, $itemId) {
             if ($this->eventHasRelations($connection, $eventId)) {
