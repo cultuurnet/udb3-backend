@@ -10,8 +10,12 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBus;
 use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Silex\AggregateType;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputArgument;
@@ -96,6 +100,11 @@ class ReplayCommand extends AbstractCommand
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
         ReplayFlaggingMiddleware::startReplayMode();
+        InterceptingMiddleware::startIntercepting(
+            fn (DomainMessage $message) => $message instanceof EventProjectedToJSONLD ||
+                $message instanceof PlaceProjectedToJSONLD ||
+                $message instanceof OrganizerProjectedToJSONLD
+        );
 
         foreach ($stream() as $eventStream) {
             if ($delay > 0) {
@@ -112,6 +121,9 @@ class ReplayCommand extends AbstractCommand
         }
 
         ReplayFlaggingMiddleware::stopReplayMode();
+
+        $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
+        $this->eventBus->publish($intercepted);
 
         return 0;
     }
