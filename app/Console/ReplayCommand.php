@@ -22,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReplayCommand extends AbstractCommand
 {
-    public const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
     public const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
@@ -75,12 +74,6 @@ class ReplayCommand extends AbstractCommand
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
-            )
-            ->addOption(
-                self::OPTION_DISABLE_PUBLISHING,
-                null,
-                InputOption::VALUE_NONE,
-                'Disable publishing to the event bus.'
             )
             ->addOption(
                 self::OPTION_START_ID,
@@ -142,11 +135,7 @@ class ReplayCommand extends AbstractCommand
             }
 
             $this->logStream($eventStream, $output, $stream, 'before_publish');
-
-            if (!$this->isPublishDisabled($input)) {
-                $this->eventBus->publish($eventStream);
-            }
-
+            $this->eventBus->publish($eventStream);
             $this->logStream($eventStream, $output, $stream, 'after_publish');
         }
 
@@ -250,10 +239,5 @@ class ReplayCommand extends AbstractCommand
         }
 
         return $aggregateType;
-    }
-
-    private function isPublishDisabled(InputInterface $input): bool
-    {
-        return $input->getOption(self::OPTION_DISABLE_PUBLISHING);
     }
 }
