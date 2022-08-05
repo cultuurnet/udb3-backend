@@ -149,7 +149,7 @@ class ReplayCommand extends AbstractCommand
                 )
             );
 
-            $output->writeln('Publishing ' . $interceptedCount  . ' ProjectedToJSONLD message(s) to the internal event bus (and AMQP)...');
+            $output->writeln('Publishing ' . $interceptedCount . ' ProjectedToJSONLD message(s) to the internal event bus (and AMQP)...');
             $this->eventBus->publish($intercepted);
             $output->writeln($interceptedCount . ' ProjectedToJSONLD message(s) published!');
             $output->writeln('Note: Extra ProjectedToJSONLD messages for related events/places are published indirectly.');
