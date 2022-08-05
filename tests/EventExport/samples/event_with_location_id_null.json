@@ -6,16 +6,17 @@
   "image": "http:\/\/media.uitdatabank.be\/20141211\/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg",
   "calendarSummary": "ma 02\/03\/15 van 13:30 tot 16:30  ma 09\/03\/15 van 13:30 tot 16:30  ma 16\/03\/15 van 13:30 tot 16:30  ma 23\/03\/15 van 13:30 tot 16:30  ma 30\/03\/15 van 13:30 tot 16:30 ",
   "location": {
-    "@id": null,
     "@type": "Place",
+    "@id": null,
     "@context": "\/api\/1.0\/place.jsonld",
-    "name": {"nl": "Online"},
+    "description": "Voor een boeiend avondje cultuur, is er in Tienen cultuurcentrum De Kruisboog.",
+    "name": {"nl": "Cultuurcentrum De Kruisboog"},
     "address": {
       "nl": {
         "addressCountry": "BE",
-        "addressLocality": "___",
-        "postalCode": "0000",
-        "streetAddress": "___ "
+        "addressLocality": "Tienen",
+        "postalCode": "3300",
+        "streetAddress": "Sint-Jorisplein 20 "
       }
     }
   },

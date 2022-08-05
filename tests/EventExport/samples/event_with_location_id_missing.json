@@ -8,13 +8,14 @@
   "location": {
     "@type": "Place",
     "@context": "\/api\/1.0\/place.jsonld",
-    "name": {"nl": "Online"},
+    "description": "Voor een boeiend avondje cultuur, is er in Tienen cultuurcentrum De Kruisboog.",
+    "name": {"nl": "Cultuurcentrum De Kruisboog"},
     "address": {
       "nl": {
         "addressCountry": "BE",
-        "addressLocality": "___",
-        "postalCode": "0000",
-        "streetAddress": "___ "
+        "addressLocality": "Tienen",
+        "postalCode": "3300",
+        "streetAddress": "Sint-Jorisplein 20 "
       }
     }
   },
