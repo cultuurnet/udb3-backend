@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypeLookup;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypePropertiesFactory;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CorrelationIdPropertiesFactory;
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\DeliveryModePropertiesFactory;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
@@ -61,7 +62,7 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                         )
                 );
 
-                return new AMQPPublisher(
+                $publisher = new AMQPPublisher(
                     $channel,
                     $app['amqp.publisher.exchange_name'],
                     $anyOfSpecification,
@@ -88,6 +89,8 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                         return $app['api_name'] === ApiName::CLI ? 'cli' : 'api';
                     }
                 );
+
+                return new ReplayFilteringEventListener($publisher);
             }
         );
     }
