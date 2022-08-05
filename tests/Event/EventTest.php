@@ -538,7 +538,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_keeps_uitpas_prices(): void
+    public function it_keeps_existing_uitpas_prices_on_price_info_update(): void
     {
         $this->scenario
             ->given([
@@ -685,7 +685,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_ignores_an_update_with_equal_prices_on_uitpas_prices(): void
+    public function it_ignores_an_update_with_equal_prices_without_uitpas(): void
     {
         $this->scenario
             ->given([
@@ -736,7 +736,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_ignores_an_update_with_equal_prices_with_uitpas_on_uitpas_prices(): void
+    public function it_ignores_an_update_with_only_different_uitpas_prices(): void
     {
         $this->scenario
             ->given([
