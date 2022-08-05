@@ -108,9 +108,9 @@ class ReplayCommand extends AbstractCommand
 
         ReplayFlaggingMiddleware::startReplayMode();
         InterceptingMiddleware::startIntercepting(
-            fn (DomainMessage $message) => $message instanceof EventProjectedToJSONLD ||
-                $message instanceof PlaceProjectedToJSONLD ||
-                $message instanceof OrganizerProjectedToJSONLD
+            fn (DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD ||
+                $message->getPayload() instanceof PlaceProjectedToJSONLD ||
+                $message->getPayload() instanceof OrganizerProjectedToJSONLD
         );
 
         foreach ($stream() as $eventStream) {
