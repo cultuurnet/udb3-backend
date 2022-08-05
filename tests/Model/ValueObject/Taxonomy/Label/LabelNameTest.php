@@ -77,11 +77,11 @@ class LabelNameTest extends TestCase
             ],
             [
                 "Hard\r\nRock",
-                true,
+                false,
             ],
             [
                 "\r\nTechno",
-                true,
+                false,
             ],
         ];
     }
@@ -149,9 +149,13 @@ class LabelNameTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_a_newline_label_value(): void
+    public function it_throws_on_newlines_in_label(): void
     {
-        $labelName = new LabelName("New\nWave");
-        $this->assertEquals("New\nWave", $labelName->toString());
+        $newLineLabel = "New\nWave";
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'String \'' . $newLineLabel . '\' does not match regex pattern ' . LabelName::REGEX . '.'
+        );
+        new LabelName($newLineLabel);
     }
 }
