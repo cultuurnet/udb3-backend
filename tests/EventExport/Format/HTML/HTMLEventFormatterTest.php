@@ -145,7 +145,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_marks_the_address_as_dummy_location_with_missing_id(): void
+    public function it_handles_event_with_location_with_missing_id(): void
     {
         $freeEvent = $this->getFormattedEventFromJSONFile('event_with_location_id_missing.json');
         $expectedFormattedFreeEvent = [
@@ -153,12 +153,12 @@ class HTMLEventFormatterTest extends TestCase
             'image' => 'http://media.uitdatabank.be/20141211/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
             'description' => 'De islam is niet meer weg te denken uit onze maatschappij. ' . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis ' . 'van de godsdienst uit de doeken...',
             'address' => [
-                'name' => 'Online',
-                'street' => '___ ',
-                'postcode' => '0000',
-                'municipality' => '___',
+                'name' => 'Cultuurcentrum De Kruisboog',
+                'street' => 'Sint-Jorisplein 20 ',
+                'postcode' => '3300',
+                'municipality' => 'Tienen',
                 'country' => 'BE',
-                'concatenated' => '___  0000 ___ BE',
+                'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
                 'isDummyAddress' => false,
             ],
             'type' => 'Cursus of workshop',
@@ -172,7 +172,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_marks_the_address_as_dummy_location_with_id_null(): void
+    public function it_handles_event_with_location_with_id_null(): void
     {
         $freeEvent = $this->getFormattedEventFromJSONFile('event_with_location_id_null.json');
         $expectedFormattedFreeEvent = [
@@ -180,12 +180,12 @@ class HTMLEventFormatterTest extends TestCase
             'image' => 'http://media.uitdatabank.be/20141211/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
             'description' => 'De islam is niet meer weg te denken uit onze maatschappij. ' . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis ' . 'van de godsdienst uit de doeken...',
             'address' => [
-                'name' => 'Online',
-                'street' => '___ ',
-                'postcode' => '0000',
-                'municipality' => '___',
+                'name' => 'Cultuurcentrum De Kruisboog',
+                'street' => 'Sint-Jorisplein 20 ',
+                'postcode' => '3300',
+                'municipality' => 'Tienen',
                 'country' => 'BE',
-                'concatenated' => '___  0000 ___ BE',
+                'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
                 'isDummyAddress' => false,
             ],
             'type' => 'Cursus of workshop',
