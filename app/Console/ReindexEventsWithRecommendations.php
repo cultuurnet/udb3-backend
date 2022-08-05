@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
+use Broadway\Domain\DomainEventStream;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
@@ -19,17 +20,17 @@ final class ReindexEventsWithRecommendations extends Command
 {
     private Connection $connection;
 
-    private AMQPPublisher $amqpPublisher;
+    private EventBus $eventBus;
 
     private DocumentEventFactory $eventFactoryForEvents;
 
     public function __construct(
         Connection $connection,
-        AMQPPublisher $amqpPublisher,
+        EventBus $eventBus,
         DocumentEventFactory $eventFactoryForEvents
     ) {
         $this->connection = $connection;
-        $this->amqpPublisher = $amqpPublisher;
+        $this->eventBus = $eventBus;
         $this->eventFactoryForEvents = $eventFactoryForEvents;
 
         // It's important to call the parent constructor after setting the properties.
@@ -98,8 +99,10 @@ final class ReindexEventsWithRecommendations extends Command
     {
         $projectedEvent = $this->eventFactoryForEvents->createEvent($eventId);
 
-        $this->amqpPublisher->handle(
-            (new DomainMessageBuilder())->create($projectedEvent)
+        $this->eventBus->publish(
+            new DomainEventStream(
+                [(new DomainMessageBuilder())->create($projectedEvent)]
+            )
         );
     }
 }

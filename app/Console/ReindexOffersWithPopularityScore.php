@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
+use Broadway\Domain\DomainEventStream;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
@@ -22,19 +23,19 @@ class ReindexOffersWithPopularityScore extends Command
 
     private Connection $connection;
 
-    private AMQPPublisher $amqpPublisher;
+    private EventBus $eventBus;
 
     private DocumentEventFactory $eventFactoryForEvents;
 
     public function __construct(
         OfferType $type,
         Connection $connection,
-        AMQPPublisher $AMQPPublisher,
+        EventBus $eventBus,
         DocumentEventFactory $eventFactoryForEvents
     ) {
         $this->type = \strtolower($type->toString());
         $this->connection = $connection;
-        $this->amqpPublisher = $AMQPPublisher;
+        $this->eventBus = $eventBus;
         $this->eventFactoryForEvents = $eventFactoryForEvents;
 
         // It's important to call the parent constructor after setting the properties.
@@ -105,8 +106,10 @@ class ReindexOffersWithPopularityScore extends Command
     {
         $projectedEvent = $this->eventFactoryForEvents->createEvent($id);
 
-        $this->amqpPublisher->handle(
-            (new DomainMessageBuilder())->create($projectedEvent)
+        $this->eventBus->publish(
+            new DomainEventStream(
+                [(new DomainMessageBuilder())->create($projectedEvent)]
+            )
         );
     }
 }
