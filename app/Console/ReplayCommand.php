@@ -25,7 +25,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReplayCommand extends AbstractCommand
+final class ReplayCommand extends AbstractCommand
 {
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
