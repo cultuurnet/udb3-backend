@@ -71,7 +71,7 @@ final class DBALEventRelationsRepository implements EventRelationsRepository
         Connection $connection,
         string $eventId,
         string $relationType,
-        string $itemId
+        ?string $itemId
     ): void {
         $q = $connection
             ->createQueryBuilder()
