@@ -28,6 +28,7 @@ class ReplayCommand extends AbstractCommand
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
+    public const OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY = 'disable-amqp-publication-post-replay';
 
     private Connection $connection;
 
@@ -85,6 +86,12 @@ class ReplayCommand extends AbstractCommand
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'An array of cdbids of the aggregates to be replayed.'
+            )
+            ->addOption(
+                self::OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY,
+                null,
+                InputOption::VALUE_NONE,
+                'Disables the publication of EventProjectedToJSONLD, PlaceProjectedToJSONLD and OrganizerProjectedToJSONLD messages to the AMQP exchange that normally happens at the end of the replay.'
             );
     }
 
@@ -122,8 +129,10 @@ class ReplayCommand extends AbstractCommand
 
         ReplayFlaggingMiddleware::stopReplayMode();
 
-        $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
-        $this->eventBus->publish($intercepted);
+        if ((bool) $input->getOption(self::OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY) !== true) {
+            $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
+            $this->eventBus->publish($intercepted);
+        }
 
         return 0;
     }
