@@ -138,7 +138,9 @@ class HTMLEventFormatter
             if (isset($event->location->isDummyPlaceForEducationEvents)) {
                 $address['isDummyAddress'] = (bool) $event->location->isDummyPlaceForEducationEvents;
             }
-            if ((new LocationId($event->location->{'@id'}))->isNilLocation()) {
+            if (isset($event->location->{'@id'}) &&
+                $event->location->{'@id'} !== null &&
+                (new LocationId($event->location->{'@id'}))->isNilLocation()) {
                 $address['isDummyAddress'] = true;
             }
         }
