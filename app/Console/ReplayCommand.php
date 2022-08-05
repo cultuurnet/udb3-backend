@@ -136,6 +136,8 @@ class ReplayCommand extends AbstractCommand
             // Remove replay flag from intercepted ProjectedToJSONLD domain messages before publishing to the event bus,
             // so the AMQPPublisher will actually get to process them.
             $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
+            $interceptedAsArray = $intercepted->getIterator()->getArrayCopy();
+            $interceptedCount = count($interceptedAsArray);
             $intercepted = new DomainEventStream(
                 array_map(
                     function (DomainMessage $domainMessage): DomainMessage {
@@ -143,10 +145,14 @@ class ReplayCommand extends AbstractCommand
                             new Metadata([DomainMessageIsReplayed::METADATA_REPLAY_KEY => false])
                         );
                     },
-                    $intercepted->getIterator()->getArrayCopy()
+                    $interceptedAsArray
                 )
             );
+
+            $output->writeln('Publishing ' . $interceptedCount  . ' ProjectedToJSONLD message(s) to the internal event bus (and AMQP)...');
             $this->eventBus->publish($intercepted);
+            $output->writeln($interceptedCount . ' ProjectedToJSONLD message(s) published!');
+            $output->writeln('Note: Extra ProjectedToJSONLD messages for related events/places are published indirectly.');
         }
 
         return 0;
