@@ -7,9 +7,11 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
+use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
@@ -131,7 +133,19 @@ class ReplayCommand extends AbstractCommand
         InterceptingMiddleware::stopIntercepting();
 
         if ((bool) $input->getOption(self::OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY) !== true) {
+            // Remove replay flag from intercepted ProjectedToJSONLD domain messages before publishing to the event bus,
+            // so the AMQPPublisher will actually get to process them.
             $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
+            $intercepted = new DomainEventStream(
+                array_map(
+                    function (DomainMessage $domainMessage): DomainMessage {
+                        return $domainMessage->andMetadata(
+                            new Metadata([DomainMessageIsReplayed::METADATA_REPLAY_KEY => false])
+                        );
+                    },
+                    $intercepted->getIterator()->getArrayCopy()
+                )
+            );
             $this->eventBus->publish($intercepted);
         }
 
