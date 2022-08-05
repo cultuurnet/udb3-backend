@@ -69,12 +69,6 @@ class ReplayCommand extends AbstractCommand
                 null
             )
             ->addOption(
-                'subscriber',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-                'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
-            )
-            ->addOption(
                 self::OPTION_START_ID,
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -98,11 +92,6 @@ class ReplayCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $delay = (int) $input->getOption(self::OPTION_DELAY);
-
-        $subscribers = $input->getOption('subscriber');
-        if (!empty($subscribers)) {
-            $this->setSubscribers($subscribers, $output);
-        }
 
         $aggregateType = $this->getAggregateType($input);
 
@@ -155,21 +144,6 @@ class ReplayCommand extends AbstractCommand
             $message->getRecordedOn()->toString() . ' ' .
             $message->getType() .
             ' (' . $message->getId() . ') ' . $marker
-        );
-    }
-
-    private function setSubscribers(array $subscribers, OutputInterface $output): void
-    {
-        $subscribersString = implode(', ', $subscribers);
-        $msg = 'Registering the following subscribers with the event bus: %s';
-        $output->writeln(sprintf($msg, $subscribersString));
-
-        $this->configWriter->merge(
-            [
-                'event_bus' => [
-                    'subscribers' => $subscribers,
-                ],
-            ]
         );
     }
 

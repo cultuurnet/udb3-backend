@@ -87,12 +87,6 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                             throw new \Exception('Some projectors are subscribed more then once!');
                         }
 
-                        // Allow to override event bus subscribers through configuration.
-                        // The event replay command line utility uses this.
-                        if (isset($app['config']['event_bus']['subscribers'])) {
-                            $subscribers = $app['config']['event_bus']['subscribers'];
-                        }
-
                         foreach ($subscribers as $subscriberServiceId) {
                             $eventBus->subscribe($app[$subscriberServiceId]);
                         }
