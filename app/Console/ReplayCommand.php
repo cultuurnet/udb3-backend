@@ -13,7 +13,6 @@ use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
-use CultuurNet\UDB3\Silex\ConfigWriter;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,8 +31,6 @@ class ReplayCommand extends AbstractCommand
 
     private EventBus $eventBus;
 
-    private ConfigWriter $configWriter;
-
     /**
      * Note that we pass $config by reference here.
      * We need this because the replay command overrides configuration properties for active subscribers.
@@ -42,14 +39,12 @@ class ReplayCommand extends AbstractCommand
         CommandBus $commandBus,
         Connection $connection,
         Serializer $payloadSerializer,
-        EventBus $eventBus,
-        ConfigWriter $configWriter
+        EventBus $eventBus
     ) {
         parent::__construct($commandBus);
         $this->connection = $connection;
         $this->payloadSerializer = $payloadSerializer;
         $this->eventBus = $eventBus;
-        $this->configWriter = $configWriter;
     }
 
     protected function configure(): void
