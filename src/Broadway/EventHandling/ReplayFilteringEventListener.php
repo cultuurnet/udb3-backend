@@ -12,12 +12,6 @@ use Psr\Log\LoggerInterface;
 
 class ReplayFilteringEventListener extends FilteringEventListener implements LoggerAwareInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-
     public function __construct(EventListener $eventListener)
     {
         parent::__construct(
