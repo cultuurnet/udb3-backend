@@ -22,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReplayCommand extends AbstractCommand
 {
-    public const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
@@ -93,12 +92,6 @@ class ReplayCommand extends AbstractCommand
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'An array of cdbids of the aggregates to be replayed.'
-            )
-            ->addOption(
-                self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS,
-                null,
-                InputOption::VALUE_NONE,
-                'Disables the event bus subscribers that react on relations between organizers, places and events'
             );
     }
 
@@ -112,11 +105,6 @@ class ReplayCommand extends AbstractCommand
         }
 
         $aggregateType = $this->getAggregateType($input);
-
-        $disableRelatedOfferSubscribers = $input->getOption(self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS);
-        if ($disableRelatedOfferSubscribers) {
-            $this->disableRelatedOfferSubscribers();
-        }
 
         $startId = $input->getOption(self::OPTION_START_ID);
         $cdbids = $input->getOption(self::OPTION_CDBID);
@@ -180,17 +168,6 @@ class ReplayCommand extends AbstractCommand
             [
                 'event_bus' => [
                     'subscribers' => $subscribers,
-                ],
-            ]
-        );
-    }
-
-    private function disableRelatedOfferSubscribers(): void
-    {
-        $this->configWriter->merge(
-            [
-                'event_bus' => [
-                    'disable_related_offer_subscribers' => true,
                 ],
             ]
         );
