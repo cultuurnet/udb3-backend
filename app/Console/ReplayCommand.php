@@ -128,6 +128,7 @@ class ReplayCommand extends AbstractCommand
         }
 
         ReplayFlaggingMiddleware::stopReplayMode();
+        InterceptingMiddleware::stopIntercepting();
 
         if ((bool) $input->getOption(self::OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY) !== true) {
             $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
