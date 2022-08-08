@@ -538,6 +538,267 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_keeps_existing_uitpas_prices_on_price_info_update(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                100,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                ),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updatePriceInfo(
+                    new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                90,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                )
+            )
+            ->then([
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_an_update_of_uitpas_prices(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                100,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                ),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updatePriceInfo(
+                    (new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                90,
+                                new Currency('EUR')
+                            )
+                        )
+                    ))->withUiTPASTariffs([
+                        new \CultuurNet\UDB3\PriceInfo\Tariff(
+                            new MultilingualString(
+                                new LegacyLanguage('nl'),
+                                new StringLiteral('Tariff 1')
+                            ),
+                            new Money(
+                                80,
+                                new Currency('EUR')
+                            )
+                        ),
+                    ])
+                )
+            )
+            ->then([
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(90, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_an_update_with_equal_prices_without_uitpas(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                100,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                ),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updatePriceInfo(
+                    new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                100,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                )
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_an_update_with_only_different_uitpas_prices(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                100,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                ),
+                new PriceInfoUpdated(
+                    'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+                    (new PriceInfo(new BasePrice(new Money(100, new Currency('EUR')))))
+                        ->withUiTPASTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Tariff 1')
+                                ),
+                                new Money(
+                                    199,
+                                    new Currency('EUR')
+                                )
+                            ),
+                        ])
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updatePriceInfo(
+                    (new PriceInfo(
+                        new BasePrice(
+                            new Money(
+                                100,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                    )->withUiTPASTariffs([
+                        new \CultuurNet\UDB3\PriceInfo\Tariff(
+                            new MultilingualString(
+                                new LegacyLanguage('nl'),
+                                new StringLiteral('Tariff 1')
+                            ),
+                            new Money(
+                                80,
+                                new Currency('EUR')
+                            )
+                        ),
+                    ])
+                )
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_update_price_info_after_udb2_import(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';

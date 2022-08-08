@@ -52,6 +52,10 @@ class PriceInfoDenormalizer implements DenormalizerInterface
                 continue;
             }
 
+            if ($tariffData['category'] === 'uitpas') {
+                continue;
+            }
+
             $tariffsData[] = $tariffData;
         }
 
