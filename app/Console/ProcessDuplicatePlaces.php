@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
+use Broadway\Domain\DomainEventStream;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -29,7 +30,7 @@ final class ProcessDuplicatePlaces extends AbstractCommand
 
     private EventRelationsRepository $eventRelationsRepository;
 
-    private AMQPPublisher $amqpPublisher;
+    private EventBus $eventBus;
 
     private DocumentEventFactory $placeEventFactory;
 
@@ -39,14 +40,14 @@ final class ProcessDuplicatePlaces extends AbstractCommand
         CommandBus $commandBus,
         DuplicatePlaceRepository $duplicatePlaceRepository,
         CanonicalService $canonicalService,
-        AMQPPublisher $amqpPublisher,
+        EventBus $eventBus,
         DocumentEventFactory $placeEventFactory,
         EventRelationsRepository $eventRelationsRepository,
         Connection $connection
     ) {
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->canonicalService = $canonicalService;
-        $this->amqpPublisher = $amqpPublisher;
+        $this->eventBus = $eventBus;
         $this->placeEventFactory = $placeEventFactory;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->connection = $connection;
@@ -104,7 +105,9 @@ final class ProcessDuplicatePlaces extends AbstractCommand
                 $placeProjected = $this->placeEventFactory->createEvent($placeToReIndex);
                 $output->writeln('Dispatching PlaceProjectedToJSONLD for place with id ' . $placeToReIndex);
                 if (!$dryRun) {
-                    $this->amqpPublisher->handle((new DomainMessageBuilder())->create($placeProjected));
+                    $this->eventBus->publish(
+                        new DomainEventStream([(new DomainMessageBuilder())->create($placeProjected)])
+                    );
                 }
             }
 

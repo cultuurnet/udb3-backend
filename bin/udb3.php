@@ -3,12 +3,10 @@
 
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwner;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Silex\Console\ChangeOrganizerOwner;
@@ -99,7 +97,7 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app[EventBus::class], new ConfigWriter($app)));
+$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app[EventBus::class]));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
 $consoleApp->add(new PurgeModelCommand($app['dbal_connection']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES], $app['place_jsonld_repository']));
@@ -114,7 +112,7 @@ $consoleApp->add(
         $app['event_command_bus'],
         $app['duplicate_place_repository'],
         $app['canonical_service'],
-        $app[AMQPPublisher::class],
+        $app[EventBus::class],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
         $app[EventRelationsRepository::class],
         $app['dbal_connection']
@@ -124,7 +122,7 @@ $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::event(),
         $app['dbal_connection'],
-        $app[AMQPPublisher::class],
+        $app[EventBus::class],
         $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
@@ -132,14 +130,14 @@ $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::place(),
         $app['dbal_connection'],
-        $app[AMQPPublisher::class],
+        $app[EventBus::class],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
 $consoleApp->add(
     new ReindexEventsWithRecommendations(
         $app['dbal_connection'],
-        $app[AMQPPublisher::class],
+        $app[EventBus::class],
         $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );

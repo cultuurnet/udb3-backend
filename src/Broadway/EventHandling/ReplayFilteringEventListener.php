@@ -10,14 +10,8 @@ use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
-class ReplayFilteringEventListener extends FilteringEventListener implements LoggerAwareInterface
+final class ReplayFilteringEventListener extends FilteringEventListener implements LoggerAwareInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-
     public function __construct(EventListener $eventListener)
     {
         parent::__construct(
@@ -28,10 +22,7 @@ class ReplayFilteringEventListener extends FilteringEventListener implements Log
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         if ($this->eventListener instanceof LoggerAwareInterface) {
             $this->eventListener->setLogger($logger);

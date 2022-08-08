@@ -7,34 +7,36 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
+use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Silex\AggregateType;
-use CultuurNet\UDB3\Silex\ConfigWriter;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReplayCommand extends AbstractCommand
+final class ReplayCommand extends AbstractCommand
 {
-    public const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
-    public const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
+    public const OPTION_NO_AMQP_MESSAGES_AFTER_REPLAY = 'no-amqp-messages-after-replay';
 
     private Connection $connection;
 
     private Serializer $payloadSerializer;
 
     private EventBus $eventBus;
-
-    private ConfigWriter $configWriter;
 
     /**
      * Note that we pass $config by reference here.
@@ -44,14 +46,12 @@ class ReplayCommand extends AbstractCommand
         CommandBus $commandBus,
         Connection $connection,
         Serializer $payloadSerializer,
-        EventBus $eventBus,
-        ConfigWriter $configWriter
+        EventBus $eventBus
     ) {
         parent::__construct($commandBus);
         $this->connection = $connection;
         $this->payloadSerializer = $payloadSerializer;
         $this->eventBus = $eventBus;
-        $this->configWriter = $configWriter;
     }
 
     protected function configure(): void
@@ -69,18 +69,6 @@ class ReplayCommand extends AbstractCommand
                 InputArgument::OPTIONAL,
                 'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.',
                 null
-            )
-            ->addOption(
-                'subscriber',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-                'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
-            )
-            ->addOption(
-                self::OPTION_DISABLE_PUBLISHING,
-                null,
-                InputOption::VALUE_NONE,
-                'Disable publishing to the event bus.'
             )
             ->addOption(
                 self::OPTION_START_ID,
@@ -102,10 +90,10 @@ class ReplayCommand extends AbstractCommand
                 'An array of cdbids of the aggregates to be replayed.'
             )
             ->addOption(
-                self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS,
+                self::OPTION_NO_AMQP_MESSAGES_AFTER_REPLAY,
                 null,
                 InputOption::VALUE_NONE,
-                'Disables the event bus subscribers that react on relations between organizers, places and events'
+                'Disables the publication of EventProjectedToJSONLD, PlaceProjectedToJSONLD and OrganizerProjectedToJSONLD messages to the AMQP exchange that normally happens at the end of the replay.'
             );
     }
 
@@ -113,17 +101,7 @@ class ReplayCommand extends AbstractCommand
     {
         $delay = (int) $input->getOption(self::OPTION_DELAY);
 
-        $subscribers = $input->getOption('subscriber');
-        if (!empty($subscribers)) {
-            $this->setSubscribers($subscribers, $output);
-        }
-
         $aggregateType = $this->getAggregateType($input);
-
-        $disableRelatedOfferSubscribers = $input->getOption(self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS);
-        if ($disableRelatedOfferSubscribers) {
-            $this->disableRelatedOfferSubscribers();
-        }
 
         $startId = $input->getOption(self::OPTION_START_ID);
         $cdbids = $input->getOption(self::OPTION_CDBID);
@@ -131,6 +109,11 @@ class ReplayCommand extends AbstractCommand
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
         ReplayFlaggingMiddleware::startReplayMode();
+        InterceptingMiddleware::startIntercepting(
+            fn (DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD ||
+                $message->getPayload() instanceof PlaceProjectedToJSONLD ||
+                $message->getPayload() instanceof OrganizerProjectedToJSONLD
+        );
 
         foreach ($stream() as $eventStream) {
             if ($delay > 0) {
@@ -142,15 +125,35 @@ class ReplayCommand extends AbstractCommand
             }
 
             $this->logStream($eventStream, $output, $stream, 'before_publish');
-
-            if (!$this->isPublishDisabled($input)) {
-                $this->eventBus->publish($eventStream);
-            }
-
+            $this->eventBus->publish($eventStream);
             $this->logStream($eventStream, $output, $stream, 'after_publish');
         }
 
         ReplayFlaggingMiddleware::stopReplayMode();
+        InterceptingMiddleware::stopIntercepting();
+
+        if ((bool) $input->getOption(self::OPTION_NO_AMQP_MESSAGES_AFTER_REPLAY) !== true) {
+            // Remove replay flag from intercepted ProjectedToJSONLD domain messages before publishing to the event bus,
+            // so the AMQPPublisher will actually get to process them.
+            $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
+            $interceptedAsArray = $intercepted->getIterator()->getArrayCopy();
+            $interceptedCount = count($interceptedAsArray);
+            $intercepted = new DomainEventStream(
+                array_map(
+                    function (DomainMessage $domainMessage): DomainMessage {
+                        return $domainMessage->andMetadata(
+                            new Metadata([DomainMessageIsReplayed::METADATA_REPLAY_KEY => false])
+                        );
+                    },
+                    $interceptedAsArray
+                )
+            );
+
+            $output->writeln('Publishing ' . $interceptedCount . ' ProjectedToJSONLD message(s) to the internal event bus (and AMQP)...');
+            $this->eventBus->publish($intercepted);
+            $output->writeln($interceptedCount . ' ProjectedToJSONLD message(s) published!');
+            $output->writeln('Note: Extra ProjectedToJSONLD messages for related events/places are published indirectly.');
+        }
 
         return 0;
     }
@@ -178,32 +181,6 @@ class ReplayCommand extends AbstractCommand
             $message->getRecordedOn()->toString() . ' ' .
             $message->getType() .
             ' (' . $message->getId() . ') ' . $marker
-        );
-    }
-
-    private function setSubscribers(array $subscribers, OutputInterface $output): void
-    {
-        $subscribersString = implode(', ', $subscribers);
-        $msg = 'Registering the following subscribers with the event bus: %s';
-        $output->writeln(sprintf($msg, $subscribersString));
-
-        $this->configWriter->merge(
-            [
-                'event_bus' => [
-                    'subscribers' => $subscribers,
-                ],
-            ]
-        );
-    }
-
-    private function disableRelatedOfferSubscribers(): void
-    {
-        $this->configWriter->merge(
-            [
-                'event_bus' => [
-                    'disable_related_offer_subscribers' => true,
-                ],
-            ]
         );
     }
 
@@ -250,10 +227,5 @@ class ReplayCommand extends AbstractCommand
         }
 
         return $aggregateType;
-    }
-
-    private function isPublishDisabled(InputInterface $input): bool
-    {
-        return $input->getOption(self::OPTION_DISABLE_PUBLISHING);
     }
 }
