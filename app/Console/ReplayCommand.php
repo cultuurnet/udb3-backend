@@ -30,7 +30,7 @@ final class ReplayCommand extends AbstractCommand
     public const OPTION_START_ID = 'start-id';
     public const OPTION_DELAY = 'delay';
     public const OPTION_CDBID = 'cdbid';
-    public const OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY = 'disable-amqp-publication-post-replay';
+    public const OPTION_NO_AMQP_MESSAGES_AFTER_REPLAY = 'no-amqp-messages-after-replay';
 
     private Connection $connection;
 
@@ -90,7 +90,7 @@ final class ReplayCommand extends AbstractCommand
                 'An array of cdbids of the aggregates to be replayed.'
             )
             ->addOption(
-                self::OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY,
+                self::OPTION_NO_AMQP_MESSAGES_AFTER_REPLAY,
                 null,
                 InputOption::VALUE_NONE,
                 'Disables the publication of EventProjectedToJSONLD, PlaceProjectedToJSONLD and OrganizerProjectedToJSONLD messages to the AMQP exchange that normally happens at the end of the replay.'
@@ -132,7 +132,7 @@ final class ReplayCommand extends AbstractCommand
         ReplayFlaggingMiddleware::stopReplayMode();
         InterceptingMiddleware::stopIntercepting();
 
-        if ((bool) $input->getOption(self::OPTION_DISABLE_AMQP_PUBLICATION_POST_REPLAY) !== true) {
+        if ((bool) $input->getOption(self::OPTION_NO_AMQP_MESSAGES_AFTER_REPLAY) !== true) {
             // Remove replay flag from intercepted ProjectedToJSONLD domain messages before publishing to the event bus,
             // so the AMQPPublisher will actually get to process them.
             $intercepted = InterceptingMiddleware::getInterceptedMessagesWithUniquePayload();
