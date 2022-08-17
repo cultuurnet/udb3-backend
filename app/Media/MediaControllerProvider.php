@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Media;
 
 use CultuurNet\UDB3\Http\Media\ReadMediaRestController;
-use CultuurNet\UDB3\Http\Media\EditMediaRestController;
+use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -24,9 +24,9 @@ class MediaControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app['media_editing_controller'] = $app->share(
+        $app[UploadMediaRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new EditMediaRestController(
+                return new UploadMediaRequestHandler(
                     $app['image_uploader'],
                     $app['media_object_iri_generator']
                 );
@@ -36,7 +36,7 @@ class MediaControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/images/', 'media_editing_controller:upload');
+        $controllers->post('/images/', UploadMediaRequestHandler::class);
         $controllers->get('/images/{id}/', 'media_controller:get');
 
         /* @deprecated */
