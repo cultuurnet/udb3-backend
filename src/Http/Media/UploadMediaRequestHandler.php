@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Http\Media;
+
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\ImageUploaderInterface;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\StringLiteral;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+
+final class UploadMediaRequestHandler implements RequestHandlerInterface
+{
+    private ImageUploaderInterface $imageUploader;
+    private IriGeneratorInterface $iriGenerator;
+
+    public function __construct(ImageUploaderInterface $imageUploader, IriGeneratorInterface $iriGenerator)
+    {
+        $this->imageUploader = $imageUploader;
+        $this->iriGenerator = $iriGenerator;
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        if (empty($request->getUploadedFiles())) {
+            throw ApiProblem::fileMissing('The file property is required');
+        }
+
+        if (count($request->getUploadedFiles()) > 1) {
+            throw ApiProblem::fileMissing('Only one file is allowed');
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $description = $parsedBody['description'] ?? null;
+        $copyrightHolder = $parsedBody['copyrightHolder'] ?? null;
+        $language = $parsedBody['language'] ?? null;
+
+        if (!$description) {
+            return new JsonResponse(['error' => 'description required'], 400);
+        }
+
+        if (!$copyrightHolder) {
+            return new JsonResponse(['error' => 'copyright holder required'], 400);
+        }
+
+        if (!$language) {
+            return new JsonResponse(['error' => 'language required'], 400);
+        }
+
+        $httpFoundationFactory = new HttpFoundationFactory();
+        $httpRequest = $httpFoundationFactory->createRequest($request);
+        $file = $httpRequest->files->get('file');
+
+        $imageId = $this->imageUploader->upload(
+            $file,
+            new StringLiteral($description),
+            new CopyrightHolder($copyrightHolder),
+            new Language($language)
+        );
+
+        return new JsonResponse(
+            [
+                '@id' => $this->iriGenerator->iri($imageId->toString()),
+                'imageId' => $imageId->toString(),
+            ],
+            201
+        );
+    }
+}
