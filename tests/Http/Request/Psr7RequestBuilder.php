@@ -26,6 +26,8 @@ final class Psr7RequestBuilder
 
     private ?StreamInterface $body = null;
 
+    private array $files = [];
+
     private array $routeParameters = [];
 
     /**
@@ -81,6 +83,13 @@ final class Psr7RequestBuilder
         return $c;
     }
 
+    public function withFiles(array $files): self
+    {
+        $c = clone $this;
+        $c->files = $files;
+        return $c;
+    }
+
     public function withRouteParameter(string $parameterName, string $parameterValue): self
     {
         $c = clone $this;
@@ -97,7 +106,8 @@ final class Psr7RequestBuilder
                 $this->headers ?? new Headers(),
                 [],
                 [],
-                $this->body ?? self::getStreamFactory()->createStream()
+                $this->body ?? self::getStreamFactory()->createStream(),
+                $this->files,
             )
         )
             ->withAttribute('_route_params', $this->routeParameters)
