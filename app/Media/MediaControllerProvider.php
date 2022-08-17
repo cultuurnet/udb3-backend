@@ -12,10 +12,7 @@ use Silex\ControllerProviderInterface;
 
 class MediaControllerProvider implements ControllerProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         $app['media_controller'] = $app->share(
             function (Application $app) {
