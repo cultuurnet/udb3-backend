@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Media;
 
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
@@ -15,12 +16,12 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
+use PHPUnit\Framework\TestCase;
 
-class ReadMediaRestControllerTest extends TestCase
+final class GetMediaRequestHandlerTest extends TestCase
 {
-    private ReadMediaRestController $readMediaRestController;
+    private GetMediaRequestHandler $getMediaRequestHandler;
 
     protected function setUp(): void
     {
@@ -54,7 +55,7 @@ class ReadMediaRestControllerTest extends TestCase
             ->with($id)
             ->willReturn('https://io.uitdatabank.be/images/5624b810-c340-40a4-8f38-0393eca59bfe');
 
-        $this->readMediaRestController = new ReadMediaRestController(
+        $this->getMediaRequestHandler = new GetMediaRequestHandler(
             $mediaManager,
             new MediaObjectSerializer($iriGenerator),
             new MediaUrlMapping($mapping)
@@ -64,9 +65,13 @@ class ReadMediaRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_gets_a_media_object(): void
+    public function it_can_get_a_media_object(): void
     {
-        $response = $this->readMediaRestController->get('5624b810-c340-40a4-8f38-0393eca59bfe');
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('id', '5624b810-c340-40a4-8f38-0393eca59bfe')
+            ->build('GET');
+
+        $response = $this->getMediaRequestHandler->handle($request);
 
         $this->assertEquals(
             Json::encode([
@@ -79,7 +84,7 @@ class ReadMediaRestControllerTest extends TestCase
                 'copyrightHolder' => 'publiq',
                 'inLanguage' => 'nl',
             ]),
-            $response->getContent()
+            $response->getBody()->getContents()
         );
     }
 }
