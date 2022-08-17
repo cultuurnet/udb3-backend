@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use CultuurNet\UDB3\StringLiteral;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
-class EditMediaRestController
+final class UploadMediaRequestHandler implements RequestHandlerInterface
 {
     private ImageUploaderInterface $imageUploader;
     private IriGeneratorInterface $iriGenerator;
@@ -24,15 +27,20 @@ class EditMediaRestController
         $this->iriGenerator = $iriGenerator;
     }
 
-    public function upload(Request $request): JsonResponse
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if (!$request->files->has('file')) {
+        if (empty($request->getUploadedFiles())) {
             throw ApiProblem::fileMissing('The file property is required');
         }
 
-        $description = $request->request->get('description');
-        $copyrightHolder = $request->request->get('copyrightHolder');
-        $language = $request->request->get('language');
+        if (count($request->getUploadedFiles()) > 1) {
+            throw ApiProblem::fileMissing('Only one file is allowed');
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $description = $parsedBody['description'] ?? null;
+        $copyrightHolder = $parsedBody['copyrightHolder'] ?? null;
+        $language = $parsedBody['language'] ?? null;
 
         if (!$description) {
             return new JsonResponse(['error' => 'description required'], 400);
@@ -46,7 +54,9 @@ class EditMediaRestController
             return new JsonResponse(['error' => 'language required'], 400);
         }
 
-        $file = $request->files->get('file');
+        $httpFoundationFactory = new HttpFoundationFactory();
+        $httpRequest = $httpFoundationFactory->createRequest($request);
+        $file = $httpRequest->files->get('file');
 
         $imageId = $this->imageUploader->upload(
             $file,
