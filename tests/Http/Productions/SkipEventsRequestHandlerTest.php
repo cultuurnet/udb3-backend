@@ -55,6 +55,6 @@ final class SkipEventsRequestHandlerTest extends TestCase
             $this->commandBus->getRecordedCommands()
         );
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 }
