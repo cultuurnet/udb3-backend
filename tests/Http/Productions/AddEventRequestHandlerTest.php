@@ -8,14 +8,11 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
 final class AddEventRequestHandlerTest extends TestCase
 {
-    use AssertJsonResponseTrait;
-
     private TraceableCommandBus $commandBus;
 
     private AddEventRequestHandler $addEventRequestHandler;

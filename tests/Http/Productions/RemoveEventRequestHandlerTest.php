@@ -8,14 +8,11 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
 final class RemoveEventRequestHandlerTest extends TestCase
 {
-    use AssertJsonResponseTrait;
-
     private TraceableCommandBus $commandBus;
 
     private RemoveEventRequestHandler $removeEventRequestHandler;
