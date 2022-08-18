@@ -65,4 +65,39 @@ final class CreateProductionRequestHandlerTest extends TestCase
             $response
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_create_production_with_single_event(): void
+    {
+        $eventId1 = Uuid::uuid4()->toString();
+        $name = 'Singing in the drain';
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray(
+                [
+                    'name' => $name,
+                    'eventIds' => [
+                        $eventId1,
+                    ],
+                ]
+            )
+            ->build('POST');
+
+        $this->commandBus->record();
+
+        $response = $this->createProductionRequestHandler->handle($request);
+
+        $this->assertCount(1, $this->commandBus->getRecordedCommands());
+        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
+        $this->assertInstanceOf(GroupEventsAsProduction::class, $recordedCommand);
+        $this->assertEquals($name, $recordedCommand->getName());
+        $this->assertEquals([$eventId1], $recordedCommand->getEventIds());
+
+        $this->assertJsonResponse(
+            new JsonLdResponse(['productionId' => $recordedCommand->getItemId()], 201),
+            $response
+        );
+    }
 }
