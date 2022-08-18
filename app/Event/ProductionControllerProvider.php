@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
 use CultuurNet\UDB3\Http\Productions\RemoveEventRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionValidator;
+use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsValidator;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -79,6 +80,14 @@ class ProductionControllerProvider implements ControllerProviderInterface
             )
         );
 
+        $app[SkipEventsRequestHandler::class] = $app->share(
+            fn (Application $app) => new SkipEventsRequestHandler(
+                $app['event_command_bus'],
+                new SkipEventsValidator()
+            )
+        );
+
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -90,7 +99,7 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers->post('/{productionId}/merge/{fromProductionId}/', MergeProductionsRequestHandler::class);
         $controllers->put('/{productionId}/name/', RenameProductionRequestHandler::class);
 
-        $controllers->post('/skip/', ProductionsWriteController::class . ':skipEvents');
+        $controllers->post('/skip/', SkipEventsRequestHandler::class);
 
         $controllers->get('/suggestion/', ProductionSuggestionController::class . ':nextSuggestion');
 
