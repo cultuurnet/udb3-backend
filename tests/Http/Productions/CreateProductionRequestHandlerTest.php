@@ -117,7 +117,7 @@ final class CreateProductionRequestHandlerTest extends TestCase
 
         $this->assertDataValidationException(
             $dataValidationException,
-            fn() => $this->createProductionRequestHandler->handle($request),
+            fn () => $this->createProductionRequestHandler->handle($request),
         );
     }
 
