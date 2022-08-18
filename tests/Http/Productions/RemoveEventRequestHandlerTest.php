@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Http\Productions;
+
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Event\Productions\ProductionId;
+use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
+
+final class RemoveEventRequestHandlerTest extends TestCase
+{
+    use AssertJsonResponseTrait;
+
+    private TraceableCommandBus $commandBus;
+
+    private RemoveEventRequestHandler $removeEventRequestHandler;
+
+    protected function setUp(): void
+    {
+        $this->commandBus = new TraceableCommandBus();
+
+        $this->removeEventRequestHandler = new RemoveEventRequestHandler($this->commandBus);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_add_an_event_to_an_existing_production(): void
+    {
+        $productionId = ProductionId::generate();
+        $eventId = Uuid::uuid4()->toString();
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('productionId', $productionId->toNative())
+            ->withRouteParameter('eventId', $eventId)
+            ->build('DELETE');
+
+        $this->commandBus->record();
+
+        $response = $this->removeEventRequestHandler->handle($request);
+
+        $this->assertEquals(
+            [new RemoveEventFromProduction($eventId, $productionId)],
+            $this->commandBus->getRecordedCommands()
+        );
+
+        $this->assertEquals(204, $response->getStatusCode());
+    }
+}
