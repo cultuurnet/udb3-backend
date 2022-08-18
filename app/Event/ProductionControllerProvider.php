@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
 use CultuurNet\UDB3\Http\Productions\ProductionSuggestionController;
-use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
 use CultuurNet\UDB3\Http\Productions\RemoveEventRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionValidator;
@@ -26,17 +25,6 @@ class ProductionControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app[ProductionsWriteController::class] = $app->share(
-            function (Application $app) {
-                return new ProductionsWriteController(
-                    $app['event_command_bus'],
-                    new CreateProductionValidator(),
-                    new SkipEventsValidator(),
-                    new RenameProductionValidator()
-                );
-            }
-        );
-
         $app[ProductionsSearchController::class] = $app->share(
             function (Application $app) {
                 return new ProductionsSearchController(
