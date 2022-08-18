@@ -26,7 +26,7 @@ final class MergeProductionsRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_add_an_event_to_an_existing_production(): void
+    public function it_can_merge_productions(): void
     {
         $productionId = ProductionId::generate();
         $fromProductionId = ProductionId::generate();

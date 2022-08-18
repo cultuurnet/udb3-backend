@@ -27,7 +27,7 @@ final class RemoveEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_add_an_event_to_an_existing_production(): void
+    public function it_can_remove_an_event_from_a_production(): void
     {
         $productionId = ProductionId::generate();
         $eventId = Uuid::uuid4()->toString();
