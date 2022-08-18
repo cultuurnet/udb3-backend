@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
+use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
 use CultuurNet\UDB3\Http\Productions\ProductionSuggestionController;
@@ -48,10 +49,19 @@ class ProductionControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[CreateProductionRequestHandler::class] = $app->share(
+            fn (Application $app) => new CreateProductionRequestHandler(
+                $app['event_command_bus'],
+                new CreateProductionValidator()
+            )
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
+
         $controllers->get('/', ProductionsSearchController::class . ':search');
-        $controllers->post('/', ProductionsWriteController::class . ':create');
+
+        $controllers->post('/', CreateProductionRequestHandler::class);
         $controllers->put('/{productionId}/events/{eventId}/', ProductionsWriteController::class . ':addEventToProduction');
         $controllers->delete('/{productionId}/events/{eventId}/', ProductionsWriteController::class . ':removeEventFromProduction');
         $controllers->post('/{productionId}/merge/{fromProductionId}/', ProductionsWriteController::class . ':mergeProductions');
