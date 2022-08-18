@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Http\Productions\AddEventRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
+use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
 use CultuurNet\UDB3\Http\Productions\ProductionSuggestionController;
 use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
@@ -73,6 +74,10 @@ class ProductionControllerProvider implements ControllerProviderInterface
             fn (Application $app) => new RemoveEventRequestHandler($app['event_command_bus'])
         );
 
+        $app[MergeProductionsRequestHandler::class] = $app->share(
+            fn (Application $app) => new MergeProductionsRequestHandler($app['event_command_bus'])
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -81,7 +86,7 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers->post('/', CreateProductionRequestHandler::class);
         $controllers->put('/{productionId}/events/{eventId}/', AddEventRequestHandler::class);
         $controllers->delete('/{productionId}/events/{eventId}/', RemoveEventRequestHandler::class);
-        $controllers->post('/{productionId}/merge/{fromProductionId}/', ProductionsWriteController::class . ':mergeProductions');
+        $controllers->post('/{productionId}/merge/{fromProductionId}/', MergeProductionsRequestHandler::class);
         $controllers->put('/{productionId}/name/', ProductionsWriteController::class . ':renameProduction');
 
         $controllers->post('/skip/', ProductionsWriteController::class . ':skipEvents');
