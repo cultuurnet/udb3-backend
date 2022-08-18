@@ -59,13 +59,6 @@ class ProductionControllerProvider implements ControllerProviderInterface
             )
         );
 
-        $app[CreateProductionRequestHandler::class] = $app->share(
-            fn (Application $app) => new CreateProductionRequestHandler(
-                $app['event_command_bus'],
-                new CreateProductionValidator()
-            )
-        );
-
         $app[AddEventRequestHandler::class] = $app->share(
             fn (Application $app) => new AddEventRequestHandler($app['event_command_bus'])
         );
