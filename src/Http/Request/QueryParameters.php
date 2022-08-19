@@ -35,9 +35,17 @@ final class QueryParameters
         return (bool) filter_var($valueAsString, FILTER_VALIDATE_BOOL);
     }
 
+    public function getAsInt(string $parameterName, ?int $default = null): int
+    {
+        $defaultAsString = $default === null ? null : (string) $default;
+        $valueAsString = $this->get($parameterName, $defaultAsString);
+
+        return (int) filter_var($valueAsString, FILTER_VALIDATE_INT);
+    }
+
     public function guardEnum(string $parameterName, array $allowedValues): void
     {
-        $value = $this->get($parameterName, null);
+        $value = $this->get($parameterName);
         if ($value !== null && !in_array($value, $allowedValues, true)) {
             throw ApiProblem::queryParameterInvalidValue($parameterName, $value, $allowedValues);
         }
