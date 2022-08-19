@@ -10,11 +10,11 @@ use CultuurNet\UDB3\Http\Productions\AddEventRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
-use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
 use CultuurNet\UDB3\Http\Productions\ProductionSuggestionController;
 use CultuurNet\UDB3\Http\Productions\RemoveEventRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionValidator;
+use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsValidator;
 use Silex\Application;
@@ -23,14 +23,10 @@ use Silex\ControllerProviderInterface;
 
 class ProductionControllerProvider implements ControllerProviderInterface
 {
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
-        $app[ProductionsSearchController::class] = $app->share(
-            function (Application $app) {
-                return new ProductionsSearchController(
-                    $app[ProductionRepository::class]
-                );
-            }
+        $app[SearchProductionsRequestHandler::class] = $app->share(
+            fn (Application $app) => new SearchProductionsRequestHandler($app[ProductionRepository::class])
         );
 
         $app[ProductionSuggestionController::class] = $app->share(
@@ -79,7 +75,7 @@ class ProductionControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', ProductionsSearchController::class . ':search');
+        $controllers->get('/', SearchProductionsRequestHandler::class);
 
         $controllers->post('/', CreateProductionRequestHandler::class);
         $controllers->put('/{productionId}/events/{eventId}/', AddEventRequestHandler::class);
