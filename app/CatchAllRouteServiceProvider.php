@@ -60,9 +60,6 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 
                         // Convert old "news_articles" path to "news-articles"
                         '/news_articles/' => 'news-articles',
-
-                        // Add trailing slash if missing
-                        '/^(.*)(?<!\/)$/' => '${1}/',
                     ];
                     return preg_replace(array_keys($rewrites), array_values($rewrites), $originalPath);
                 };
@@ -98,7 +95,11 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return (new HttpFoundationFactory())->createResponse($psrResponse);
                 }
 
+                // If the path has not been rewritten before, rewrite it and dispatch the request again to the Silex
+                // router. Note that the Silex router also requires us to append a trailing slash if it's missing,
+                // whereas the PSR router treats paths with or without trailing slash the same.
                 $rewrittenPath = $rewritePath($path);
+                $rewrittenPath = preg_replace('/^(.*)(?<!\/)$/', '${1}/', $rewrittenPath);
                 $pathHasBeenRewrittenBefore = true;
                 $originalRequest = $request;
 
