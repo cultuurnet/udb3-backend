@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
-use CultuurNet\UDB3\Silex\LegacyRoutesServiceProvider;
+use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
 use CultuurNet\UDB3\Silex\Offer\DeprecatedOfferControllerProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
@@ -273,7 +273,7 @@ $app->after(
     }
 );
 
-$app->register(new LegacyRoutesServiceProvider());
+$app->register(new CatchAllRouteServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
 

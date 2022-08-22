@@ -11,7 +11,7 @@ use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-final class LegacyRoutesServiceProvider implements ServiceProviderInterface
+final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
