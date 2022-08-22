@@ -34,7 +34,6 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{offerType}/{offerId}/', GetDetailRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/', DeleteRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/name/{language}/', UpdateTitleRequestHandler::class);
