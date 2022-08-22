@@ -28,7 +28,7 @@ final class LegacyPathRewriter
         '/news_articles/' => 'news-articles',
     ];
 
-    public function rewrite(string $path): string
+    public function rewritePath(string $path): string
     {
         return preg_replace(array_keys(self::REWRITES), array_values(self::REWRITES), $path);
     }

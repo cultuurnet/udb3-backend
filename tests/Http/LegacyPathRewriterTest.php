@@ -16,7 +16,7 @@ class LegacyPathRewriterTest extends TestCase
         string $originalPath,
         string $expectedRewrite
     ): void {
-        $actualRewrite = (new LegacyPathRewriter())->rewrite($originalPath);
+        $actualRewrite = (new LegacyPathRewriter())->rewritePath($originalPath);
         $this->assertEquals($expectedRewrite, $actualRewrite);
     }
 

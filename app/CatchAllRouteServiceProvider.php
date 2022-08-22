@@ -45,7 +45,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     // If the path has not been rewritten before, rewrite it and dispatch the request again to the Silex
                     // router. Note that the Silex router also requires us to append a trailing slash if it's missing,
                     // whereas the PSR router treats paths with or without trailing slash the same.
-                    $rewrittenPath = (new LegacyPathRewriter())->rewrite($path);
+                    $rewrittenPath = (new LegacyPathRewriter())->rewritePath($path);
                     $rewrittenPath = preg_replace('/^(.*)(?<!\/)$/', '${1}/', $rewrittenPath);
                     $pathHasBeenRewrittenForSilex = true;
                     $originalRequest = $request;

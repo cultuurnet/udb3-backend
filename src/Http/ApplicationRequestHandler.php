@@ -44,7 +44,7 @@ final class ApplicationRequestHandler implements RequestHandlerInterface
     private function rewriteRequestUri(ServerRequestInterface $request): ServerRequestInterface
     {
         $path = $request->getUri()->getPath();
-        $rewrittenPath = (new LegacyPathRewriter())->rewrite($path);
+        $rewrittenPath = (new LegacyPathRewriter())->rewritePath($path);
         $rewrittenUri = (new UriFactory())->createUri($rewrittenPath);
         return $request->withUri($rewrittenUri);
     }
