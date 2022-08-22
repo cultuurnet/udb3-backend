@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Jobs;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\StringLiteral;
 
 class ReadRestController
 {
@@ -23,9 +22,7 @@ class ReadRestController
         if ($jobId === Uuid::NIL) {
             $jobStatus = JobStatus::complete();
         } else {
-            $jobStatus = $this->jobStatusFactory->createFromJobId(
-                new StringLiteral($jobId)
-            );
+            $jobStatus = $this->jobStatusFactory->createFromJobId($jobId);
         }
 
         if (!$jobStatus) {
