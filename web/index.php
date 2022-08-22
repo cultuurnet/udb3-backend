@@ -255,6 +255,7 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 // Add CORS headers to every request. We explicitly allow everything, because we don't use cookies and our API is not on
 // an internal network, so CORS requests are never a security issue in our case. This greatly reduces the risk of CORS
 // bugs in our frontend and other integrations.
+// @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
 $app->after(
     function (Request $request, Response $response) {
         // Allow any known method regardless of the URL.
