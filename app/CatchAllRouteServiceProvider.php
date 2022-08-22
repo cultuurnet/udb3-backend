@@ -31,11 +31,11 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
         // NOTE: THIS CATCH-ALL ROUTE HAS TO BE REGISTERED INSIDE boot() SO THAT (DYNAMICALLY GENERATED) OPTIONS ROUTES
         // FOR CORS GET REGISTERED FIRST BEFORE THIS ONE.
         // Matches any path that does not match a registered route, and rewrites it using a set of predefined pattern
-        // replacements and sends an internal sub-request to try and match an existing route. If the sub-request does
-        // not return a response either an error response will be returned.
+        // replacements and sends an internal sub-request to try and match an existing route.
         // This makes it possible to support old endpoint names without having to register controllers/request handlers
-        // twice. When we have a router with support for PSR-15 middlewares, we should refactor this URL rewriting to a
-        // PSR-15 middleware instead.
+        // twice.
+        // If the sub-request does not return a response either, it will be converted to a PSR request and dispatched on
+        // a new PSR router.
         $app->match(
             '/{path}',
             function (Request $request, string $path) use ($app, &$pathHasBeenRewrittenBefore, &$originalRequest) {
