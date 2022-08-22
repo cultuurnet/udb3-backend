@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;
@@ -39,36 +40,11 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
         $app->match(
             '/{path}',
             function (Request $request, string $path) use ($app, &$pathHasBeenRewrittenForSilex, &$originalRequest) {
-                $rewritePath = static function (string $originalPath): string {
-                    $rewrites = [
-                        // Pluralize /event and /place
-                        '/^(\/)?(event|place)($|\/.*)/' => '${1}${2}s${3}',
-
-                        // Convert known legacy camelCase resource/collection names to kebab-case
-                        '/bookingAvailability/' => 'booking-availability',
-                        '/bookingInfo/' => 'booking-info',
-                        '/cardSystems/' => 'card-systems',
-                        '/contactPoint/' => 'contact-point',
-                        '/distributionKey/' => 'distribution-key',
-                        '/majorInfo/' => 'major-info',
-                        '/priceInfo/' => 'price-info',
-                        '/subEvents/' => 'sub-events',
-                        '/typicalAgeRange/' => 'typical-age-range',
-
-                        // Convert old "calsum" path to "calendar-summary"
-                        '/\/calsum/' => '/calendar-summary',
-
-                        // Convert old "news_articles" path to "news-articles"
-                        '/news_articles/' => 'news-articles',
-                    ];
-                    return preg_replace(array_keys($rewrites), array_values($rewrites), $originalPath);
-                };
-
                 if (!$pathHasBeenRewrittenForSilex) {
                     // If the path has not been rewritten before, rewrite it and dispatch the request again to the Silex
                     // router. Note that the Silex router also requires us to append a trailing slash if it's missing,
                     // whereas the PSR router treats paths with or without trailing slash the same.
-                    $rewrittenPath = $rewritePath($path);
+                    $rewrittenPath = (new LegacyPathRewriter())->rewrite($path);
                     $rewrittenPath = preg_replace('/^(.*)(?<!\/)$/', '${1}/', $rewrittenPath);
                     $pathHasBeenRewrittenForSilex = true;
                     $originalRequest = $request;
@@ -107,7 +83,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                 // use the newer names when registering the routes on the new router.
                 $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
                 $path = $psrRequest->getUri()->getPath();
-                $rewrittenPath = $rewritePath($path);
+                $rewrittenPath = (new LegacyPathRewriter())->rewrite($path);
                 $rewrittenUri = (new UriFactory())->createUri($rewrittenPath);
                 $rewrittenPsrRequest = $psrRequest->withUri($rewrittenUri);
 
