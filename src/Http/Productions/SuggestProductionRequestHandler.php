@@ -6,23 +6,20 @@ namespace CultuurNet\UDB3\Http\Productions;
 
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
-use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ProductionSuggestionController
+final class SuggestProductionRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var SimilarEventsRepository
-     */
-    private $similarEventsRepository;
+    private SimilarEventsRepository $similarEventsRepository;
 
-    /**
-     * @var DocumentRepository
-     */
-    private $enrichedEventRepository;
+    private DocumentRepository $enrichedEventRepository;
 
     public function __construct(
         SimilarEventsRepository $similarEventsRepository,
@@ -32,12 +29,12 @@ class ProductionSuggestionController
         $this->enrichedEventRepository = $enrichedEventRepository;
     }
 
-    public function nextSuggestion(): Response
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
             $suggestion = $this->similarEventsRepository->findNextSuggestion();
         } catch (SuggestionsNotFound $e) {
-            return new NoContent();
+            return new NoContentResponse();
         }
 
         return new JsonResponse(
@@ -59,6 +56,6 @@ class ProductionSuggestionController
             throw new SuggestedEventNotFoundException($eventId);
         }
 
-        return json_decode($event->getRawBody(), true);
+        return Json::decodeAssociatively($event->getRawBody());
     }
 }

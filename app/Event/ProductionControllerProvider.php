@@ -10,13 +10,13 @@ use CultuurNet\UDB3\Http\Productions\AddEventRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
-use CultuurNet\UDB3\Http\Productions\ProductionSuggestionController;
 use CultuurNet\UDB3\Http\Productions\RemoveEventRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionValidator;
 use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsValidator;
+use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -29,13 +29,11 @@ class ProductionControllerProvider implements ControllerProviderInterface
             fn (Application $app) => new SearchProductionsRequestHandler($app[ProductionRepository::class])
         );
 
-        $app[ProductionSuggestionController::class] = $app->share(
-            function (Application $app) {
-                return new ProductionSuggestionController(
-                    $app[SimilarEventsRepository::class],
-                    $app['event_jsonld_repository']
-                );
-            }
+        $app[SuggestProductionRequestHandler::class] = $app->share(
+            fn (Application $app) => new SuggestProductionRequestHandler(
+                $app[SimilarEventsRepository::class],
+                $app['event_jsonld_repository']
+            )
         );
 
         $app[CreateProductionRequestHandler::class] = $app->share(
@@ -85,7 +83,7 @@ class ProductionControllerProvider implements ControllerProviderInterface
 
         $controllers->post('/skip/', SkipEventsRequestHandler::class);
 
-        $controllers->get('/suggestion/', ProductionSuggestionController::class . ':nextSuggestion');
+        $controllers->get('/suggestion/', SuggestProductionRequestHandler::class);
 
         return $controllers;
     }
