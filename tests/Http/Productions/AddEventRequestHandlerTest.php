@@ -15,13 +15,13 @@ final class AddEventRequestHandlerTest extends TestCase
 {
     private TraceableCommandBus $commandBus;
 
-    private AddEventRequestHandler $addEventRequestHandler;
+    private AddEventToProductionRequestHandler $addEventToProductionRequestHandler;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->addEventRequestHandler = new AddEventRequestHandler($this->commandBus);
+        $this->addEventToProductionRequestHandler = new AddEventToProductionRequestHandler($this->commandBus);
     }
 
     /**
@@ -39,7 +39,7 @@ final class AddEventRequestHandlerTest extends TestCase
 
         $this->commandBus->record();
 
-        $response = $this->addEventRequestHandler->handle($request);
+        $response = $this->addEventToProductionRequestHandler->handle($request);
 
         $this->assertEquals(
             [new AddEventToProduction($eventId, $productionId)],

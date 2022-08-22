@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class AddEventRequestHandler implements RequestHandlerInterface
+final class AddEventToProductionRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
