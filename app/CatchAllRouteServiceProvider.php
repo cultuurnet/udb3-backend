@@ -6,8 +6,12 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
+use League\Route\Http\Exception\NotFoundException;
+use League\Route\Router;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -34,7 +38,17 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
             '/{path}',
             function (Request $request, string $path) use ($app, &$pathHasBeenRewritten, &$originalRequest) {
                 if ($pathHasBeenRewritten) {
-                    return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
+                    /** @var Router $router */
+                    $router = $app[Router::class];
+                    $psrRequest = (new DiactorosFactory())->createRequest($request);
+
+                    try {
+                        $psrResponse = $router->handle($psrRequest);
+                    } catch (NotFoundException $e) {
+                        return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
+                    }
+
+                    return (new HttpFoundationFactory())->createResponse($psrResponse);
                 }
 
                 $rewrites = [
