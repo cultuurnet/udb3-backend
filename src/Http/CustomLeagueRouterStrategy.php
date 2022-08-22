@@ -54,8 +54,7 @@ final class CustomLeagueRouterStrategy extends AbstractStrategy implements
 
     public function getThrowableHandler(): MiddlewareInterface
     {
-        return new class implements MiddlewareInterface
-        {
+        return new class() implements MiddlewareInterface {
             public function process(
                 ServerRequestInterface $request,
                 RequestHandlerInterface $handler
@@ -78,8 +77,7 @@ final class CustomLeagueRouterStrategy extends AbstractStrategy implements
 
     protected function throwThrowableMiddleware(Throwable $error): MiddlewareInterface
     {
-        return new class ($error) implements MiddlewareInterface
-        {
+        return new class($error) implements MiddlewareInterface {
             protected $error;
 
             public function __construct(Throwable $error)
