@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Http;
 
-use CultuurNet\UDB3\Http\ApplicationRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use League\Route\Router;

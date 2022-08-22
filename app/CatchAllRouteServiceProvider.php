@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\ApplicationRequestHandler;
 use CultuurNet\UDB3\Http\LegacyPathRewriter;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
-use League\Route\Http\Exception\MethodNotAllowedException;
-use League\Route\Http\Exception\NotFoundException;
 use League\Route\Router;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Slim\Psr7\Factory\UriFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
