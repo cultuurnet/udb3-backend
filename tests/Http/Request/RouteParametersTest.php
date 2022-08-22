@@ -18,10 +18,10 @@ class RouteParametersTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_existing_route_parameter_from_the_request_as_string(): void
+    public function it_should_return_an_existing_route_parameter_from_the_psr_request_as_string(): void
     {
         $request = (new Psr7RequestBuilder())->build('PUT');
-        $request = $request->withAttribute('_route_params', ['foo' => 'bar']);
+        $request = $request->withAttribute('foo', 'bar');
         $routeParameters = new RouteParameters($request);
 
         $this->assertEquals('bar', $routeParameters->get('foo'));
@@ -30,14 +30,13 @@ class RouteParametersTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_a_runtime_exception_if_a_parameter_is_requested_that_is_not_set(): void
+    public function it_should_return_an_existing_route_parameter_from_the_silex_request_as_string(): void
     {
         $request = (new Psr7RequestBuilder())->build('PUT');
-        $request = $request->withAttribute('_route_params', []);
+        $request = $request->withAttribute('_route_params', ['foo' => 'bar']);
         $routeParameters = new RouteParameters($request);
 
-        $this->expectException(RuntimeException::class);
-        $routeParameters->get('foo');
+        $this->assertEquals('bar', $routeParameters->get('foo'));
     }
 
     /**
