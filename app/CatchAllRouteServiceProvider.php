@@ -64,7 +64,36 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return preg_replace(array_keys($rewrites), array_values($rewrites), $originalPath);
                 };
 
-                if ($pathHasBeenRewrittenBefore) {
+                if (!$pathHasBeenRewrittenBefore) {
+                    // If the path has not been rewritten before, rewrite it and dispatch the request again to the Silex
+                    // router. Note that the Silex router also requires us to append a trailing slash if it's missing,
+                    // whereas the PSR router treats paths with or without trailing slash the same.
+                    $rewrittenPath = $rewritePath($path);
+                    $rewrittenPath = preg_replace('/^(.*)(?<!\/)$/', '${1}/', $rewrittenPath);
+                    $pathHasBeenRewrittenBefore = true;
+                    $originalRequest = $request;
+
+                    // Create a new Request object with the rewritten path, because it's basically impossible to overwrite
+                    // the path of an existing Request object even with initialize() or duplicate(). Approach copied from
+                    // https://github.com/graze/silex-trailing-slash-handler/blob/1.x/src/TrailingSlashControllerProvider.php
+                    $rewrittenRequest = Request::create(
+                        $rewrittenPath,
+                        $request->getMethod(),
+                        [],
+                        $request->cookies->all(),
+                        $request->files->all(),
+                        $request->server->all(),
+                        $request->getContent()
+                    );
+                    $rewrittenRequest = $rewrittenRequest->duplicate(
+                        $request->query->all(),
+                        $request->request->all()
+                    );
+                    $rewrittenRequest->headers->replace($app['request']->headers->all());
+
+                    // Handle the request with the rewritten path.
+                    return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
+                } else {
                     /** @var Router $router */
                     $router = $app[Router::class];
                     $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
@@ -94,35 +123,6 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 
                     return (new HttpFoundationFactory())->createResponse($psrResponse);
                 }
-
-                // If the path has not been rewritten before, rewrite it and dispatch the request again to the Silex
-                // router. Note that the Silex router also requires us to append a trailing slash if it's missing,
-                // whereas the PSR router treats paths with or without trailing slash the same.
-                $rewrittenPath = $rewritePath($path);
-                $rewrittenPath = preg_replace('/^(.*)(?<!\/)$/', '${1}/', $rewrittenPath);
-                $pathHasBeenRewrittenBefore = true;
-                $originalRequest = $request;
-
-                // Create a new Request object with the rewritten path, because it's basically impossible to overwrite
-                // the path of an existing Request object even with initialize() or duplicate(). Approach copied from
-                // https://github.com/graze/silex-trailing-slash-handler/blob/1.x/src/TrailingSlashControllerProvider.php
-                $rewrittenRequest = Request::create(
-                    $rewrittenPath,
-                    $request->getMethod(),
-                    [],
-                    $request->cookies->all(),
-                    $request->files->all(),
-                    $request->server->all(),
-                    $request->getContent()
-                );
-                $rewrittenRequest = $rewrittenRequest->duplicate(
-                    $request->query->all(),
-                    $request->request->all()
-                );
-                $rewrittenRequest->headers->replace($app['request']->headers->all());
-
-                // Handle the request with the rewritten path.
-                return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
             }
         )->assert('path', '^.+$');
     }
