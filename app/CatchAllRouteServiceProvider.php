@@ -69,6 +69,8 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
                 }
 
+                // If the request is still not matched with a route after it has been rewritten and dispatched on the
+                // Silex router a second time, convert it to a PSR request and dispatch it on the PSR router instead.
                 /** @var Router $psrRouter */
                 $psrRouter = $app[Router::class];
                 $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
