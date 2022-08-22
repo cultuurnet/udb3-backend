@@ -41,7 +41,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                 if ($pathHasBeenRewritten) {
                     /** @var Router $router */
                     $router = $app[Router::class];
-                    $psrRequest = (new DiactorosFactory())->createRequest($request);
+                    $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
 
                     try {
                         $psrResponse = $router->handle($psrRequest);
