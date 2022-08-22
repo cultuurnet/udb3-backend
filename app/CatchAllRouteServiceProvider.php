@@ -25,7 +25,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app): void
     {
-        $pathHasBeenRewrittenBefore = false;
+        $pathHasBeenRewrittenForSilex = false;
         $originalRequest = null;
 
         // NOTE: THIS CATCH-ALL ROUTE HAS TO BE REGISTERED INSIDE boot() SO THAT (DYNAMICALLY GENERATED) OPTIONS ROUTES
@@ -38,7 +38,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
         // a new PSR router.
         $app->match(
             '/{path}',
-            function (Request $request, string $path) use ($app, &$pathHasBeenRewrittenBefore, &$originalRequest) {
+            function (Request $request, string $path) use ($app, &$pathHasBeenRewrittenForSilex, &$originalRequest) {
                 $rewritePath = static function (string $originalPath): string {
                     $rewrites = [
                         // Pluralize /event and /place
@@ -64,13 +64,13 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return preg_replace(array_keys($rewrites), array_values($rewrites), $originalPath);
                 };
 
-                if (!$pathHasBeenRewrittenBefore) {
+                if (!$pathHasBeenRewrittenForSilex) {
                     // If the path has not been rewritten before, rewrite it and dispatch the request again to the Silex
                     // router. Note that the Silex router also requires us to append a trailing slash if it's missing,
                     // whereas the PSR router treats paths with or without trailing slash the same.
                     $rewrittenPath = $rewritePath($path);
                     $rewrittenPath = preg_replace('/^(.*)(?<!\/)$/', '${1}/', $rewrittenPath);
-                    $pathHasBeenRewrittenBefore = true;
+                    $pathHasBeenRewrittenForSilex = true;
                     $originalRequest = $request;
 
                     // Create a new Request object with the rewritten path, because it's basically impossible to overwrite
@@ -93,8 +93,8 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 
                     // Handle the request with the rewritten path.
                     // If the Silex app still cannot match the new path to a route, this catch-all route will be matched
-                    // again and that time we will dispatch it to the new PSR router because $pathHasBeenRewrittenBefore
-                    // will be set to true.
+                    // again and that time we will dispatch it to the new PSR router because
+                    // $pathHasBeenRewrittenForSilex will be set to true.
                     return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
                 }
 
