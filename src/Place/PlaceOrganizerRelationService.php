@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 
 class PlaceOrganizerRelationService implements OrganizerRelationServiceInterface
 {
-    /**
-     * @var PlaceEditingServiceInterface
-     */
-    private $editingService;
+    private OfferEditingServiceInterface $editingService;
 
     /**
      * @var PlaceRelationsRepository
@@ -21,7 +19,7 @@ class PlaceOrganizerRelationService implements OrganizerRelationServiceInterface
 
 
     public function __construct(
-        PlaceEditingServiceInterface $editingService,
+        OfferEditingServiceInterface $editingService,
         PlaceRelationsRepository $relationsRepository
     ) {
         $this->editingService = $editingService;
