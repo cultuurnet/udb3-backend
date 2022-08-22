@@ -20,6 +20,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
     public function boot(Application $app): void
     {
         $pathHasBeenRewritten = false;
+        $originalRequest = null;
 
         // NOTE: THIS CATCH-ALL ROUTE HAS TO BE REGISTERED INSIDE boot() SO THAT (DYNAMICALLY GENERATED) OPTIONS ROUTES
         // FOR CORS GET REGISTERED FIRST BEFORE THIS ONE.
@@ -31,7 +32,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
         // PSR-15 middleware instead.
         $app->match(
             '/{path}',
-            function (Request $originalRequest, string $path) use ($app, &$pathHasBeenRewritten) {
+            function (Request $request, string $path) use ($app, &$pathHasBeenRewritten, &$originalRequest) {
                 if ($pathHasBeenRewritten) {
                     return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
                 }
@@ -63,27 +64,28 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                 $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
 
                 $pathHasBeenRewritten = true;
+                $originalRequest = $request;
 
                 // Create a new Request object with the rewritten path, because it's basically impossible to overwrite
                 // the path of an existing Request object even with initialize() or duplicate(). Approach copied from
                 // https://github.com/graze/silex-trailing-slash-handler/blob/1.x/src/TrailingSlashControllerProvider.php
-                $request = Request::create(
+                $rewrittenRequest = Request::create(
                     $rewrittenPath,
-                    $originalRequest->getMethod(),
+                    $request->getMethod(),
                     [],
-                    $originalRequest->cookies->all(),
-                    $originalRequest->files->all(),
-                    $originalRequest->server->all(),
-                    $originalRequest->getContent()
+                    $request->cookies->all(),
+                    $request->files->all(),
+                    $request->server->all(),
+                    $request->getContent()
                 );
-                $request = $request->duplicate(
-                    $originalRequest->query->all(),
-                    $originalRequest->request->all()
+                $rewrittenRequest = $rewrittenRequest->duplicate(
+                    $request->query->all(),
+                    $request->request->all()
                 );
-                $request->headers->replace($app['request']->headers->all());
+                $rewrittenRequest->headers->replace($app['request']->headers->all());
 
                 // Handle the request with the rewritten path.
-                return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
+                return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
             }
         )->assert('path', '^.+$');
     }
