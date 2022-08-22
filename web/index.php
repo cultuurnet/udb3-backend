@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
+use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
@@ -56,6 +57,13 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
  * The class name still needs to be registered as a service!
  */
 $app->register(new RequestHandlerControllerServiceProvider());
+
+/**
+ * Register a PSR-7 / PSR-15 compatible router.
+ * Will be used in CatchAllRouteServiceProvider to route unmatched requests from Silex to the PSR router, until we can
+ * completely by-pass the Silex router.
+ */
+$app->register(new PsrRouterServiceProvider());
 
 /**
  * Firewall configuration.
