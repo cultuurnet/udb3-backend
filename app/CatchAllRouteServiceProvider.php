@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApplicationRequestHandler;
 use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use League\Route\Http\Exception\MethodNotAllowedException;
@@ -74,33 +75,10 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
                 }
 
-                /** @var Router $router */
-                $router = $app[Router::class];
-
-                // Always start from the original request and rewrite the path before dispatching it on the PSR router.
-                // The only case that this could be a problem is if there is a route that is registered with an
-                // outdated name in the PSR router, but it makes the logic a lot easier. So we should just make sure to
-                // use the newer names when registering the routes on the new router.
+                /** @var ApplicationRequestHandler $applicationRequestHandler */
+                $psrApplicationRequestHandler = $app[ApplicationRequestHandler::class];
                 $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
-                $path = $psrRequest->getUri()->getPath();
-                $rewrittenPath = (new LegacyPathRewriter())->rewrite($path);
-                $rewrittenUri = (new UriFactory())->createUri($rewrittenPath);
-                $rewrittenPsrRequest = $psrRequest->withUri($rewrittenUri);
-
-                try {
-                    $psrResponse = $router->handle($rewrittenPsrRequest);
-                } catch (NotFoundException $e) {
-                    return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
-                } catch (MethodNotAllowedException $e) {
-                    $details = null;
-                    $headers = $e->getHeaders();
-                    $allowed = $headers['Allow'] ?? null;
-                    if ($allowed !== null) {
-                        $details = 'Allowed: ' . $allowed;
-                    }
-                    return new ApiProblemJsonResponse(ApiProblem::methodNotAllowed($details));
-                }
-
+                $psrResponse = $psrApplicationRequestHandler->handle($psrRequest);
                 return (new HttpFoundationFactory())->createResponse($psrResponse);
             }
         )->assert('path', '^.+$');
