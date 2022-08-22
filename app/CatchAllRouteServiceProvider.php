@@ -24,7 +24,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app): void
     {
-        $pathHasBeenRewritten = false;
+        $pathHasBeenRewrittenBefore = false;
         $originalRequest = null;
 
         // NOTE: THIS CATCH-ALL ROUTE HAS TO BE REGISTERED INSIDE boot() SO THAT (DYNAMICALLY GENERATED) OPTIONS ROUTES
@@ -37,7 +37,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
         // PSR-15 middleware instead.
         $app->match(
             '/{path}',
-            function (Request $request, string $path) use ($app, &$pathHasBeenRewritten, &$originalRequest) {
+            function (Request $request, string $path) use ($app, &$pathHasBeenRewrittenBefore, &$originalRequest) {
                 $rewritePath = static function (string $originalPath): string {
                     $rewrites = [
                         // Pluralize /event and /place
@@ -66,7 +66,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return preg_replace(array_keys($rewrites), array_values($rewrites), $originalPath);
                 };
 
-                if ($pathHasBeenRewritten) {
+                if ($pathHasBeenRewrittenBefore) {
                     /** @var Router $router */
                     $router = $app[Router::class];
                     $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
@@ -89,7 +89,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                 }
 
                 $rewrittenPath = $rewritePath($path);
-                $pathHasBeenRewritten = true;
+                $pathHasBeenRewrittenBefore = true;
                 $originalRequest = $request;
 
                 // Create a new Request object with the rewritten path, because it's basically impossible to overwrite
