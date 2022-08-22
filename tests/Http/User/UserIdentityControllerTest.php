@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -13,19 +14,16 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Headers;
 use CultuurNet\UDB3\StringLiteral;
 use Zend\Diactoros\ServerRequest;
 
 class UserIdentityControllerTest extends TestCase
 {
+    use AssertJsonResponseTrait;
     use AssertApiProblemTrait;
 
-    /**
-     * @var UserIdentityController
-     */
-    private $userIdentityController;
+    private UserIdentityController $userIdentityController;
 
     /**
      * @var UserIdentityResolver|MockObject
@@ -206,12 +204,5 @@ class UserIdentityControllerTest extends TestCase
             ApiProblem::unauthorized('No user found for the given token.'),
             fn () => $this->userIdentityController->getCurrentUser()
         );
-    }
-
-    private function assertJsonResponse(ResponseInterface $expectedResponse, ResponseInterface $actualResponse): void
-    {
-        $this->assertEquals($expectedResponse->getStatusCode(), $actualResponse->getStatusCode());
-        $this->assertEquals($expectedResponse->getHeaders(), $actualResponse->getHeaders());
-        $this->assertEquals($expectedResponse->getBody()->getContents(), $actualResponse->getBody()->getContents());
     }
 }
