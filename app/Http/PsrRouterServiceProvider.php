@@ -28,12 +28,6 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 return $router;
             }
         );
-
-        $app[ApplicationRequestHandler::class] = $app::share(
-            function (Application $app) {
-                return new ApplicationRequestHandler($app[Router::class]);
-            }
-        );
     }
 
     public function boot(Application $app): void

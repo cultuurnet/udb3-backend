@@ -75,10 +75,11 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
                 }
 
-                /** @var ApplicationRequestHandler $applicationRequestHandler */
-                $psrApplicationRequestHandler = $app[ApplicationRequestHandler::class];
+                /** @var Router $psrRouter */
+                $psrRouter = $app[Router::class];
                 $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
-                $psrResponse = $psrApplicationRequestHandler->handle($psrRequest);
+                $psrRequest = (new LegacyPathRewriter())->rewriteRequest($psrRequest);
+                $psrResponse = $psrRouter->handle($psrRequest);
                 return (new HttpFoundationFactory())->createResponse($psrResponse);
             }
         )->assert('path', '^.+$');
