@@ -92,6 +92,9 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     $rewrittenRequest->headers->replace($app['request']->headers->all());
 
                     // Handle the request with the rewritten path.
+                    // If the Silex app still cannot match the new path to a route, this catch-all route will be matched
+                    // again and that time we will dispatch it to the new PSR router because $pathHasBeenRewrittenBefore
+                    // will be set to true.
                     return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
                 }
 
