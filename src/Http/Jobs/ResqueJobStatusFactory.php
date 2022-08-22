@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Jobs;
 
 use Resque_Job_Status;
 
-class ResqueJobStatusFactory implements JobsStatusFactoryInterface
+class ResqueJobStatusFactory implements JobsStatusFactory
 {
     public function createFromJobId(string $jobId): ?JobStatus
     {
