@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Jobs;
 
-use CultuurNet\UDB3\Http\Jobs\ReadRestController;
+use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Jobs\ResqueJobStatusFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -12,20 +12,15 @@ use Silex\ControllerProviderInterface;
 
 class JobsControllerProvider implements ControllerProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
-        $app['jobs.read_rest_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadRestController(new ResqueJobStatusFactory());
-            }
+        $app[GetJobStatusRequestHandler::class] = $app->share(
+            fn () => new GetJobStatusRequestHandler(new ResqueJobStatusFactory())
         );
 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
-        $controllers->get('/{jobId}/', 'jobs.read_rest_controller:get');
+        $controllers->get('/{jobId}/', GetJobStatusRequestHandler::class);
 
         return $controllers;
     }
