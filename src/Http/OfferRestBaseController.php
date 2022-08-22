@@ -20,10 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use CultuurNet\UDB3\StringLiteral;
 
-/**
- * Base class for offer reset callbacks.
- */
-abstract class OfferRestBaseController
+class OfferRestBaseController
 {
     /**
      * TODO: Create a shared interface for event and places
