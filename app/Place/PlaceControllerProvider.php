@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Place\LegacyPlaceRequestBodyParser;
+use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
@@ -31,7 +32,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/', ImportPlaceRequestHandler::class);
         $controllers->put('/{placeId}', ImportPlaceRequestHandler::class);
 
-        $controllers->put('/{cdbid}/address/{lang}/', 'place_editing_controller:updateAddress');
+        $controllers->put('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
         $controllers->put('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'place_editing_controller:updateContactPoint');
         $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
@@ -51,7 +52,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->get('/{cdbid}/events/', 'place_editing_controller:getEvents');
         $controllers->post('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
-        $controllers->post('/{cdbid}/address/{lang}/', 'place_editing_controller:updateAddress');
+        $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
         $controllers->post('/{cdbid}/typical-age-range/', 'place_editing_controller:updateTypicalAgeRange');
         $controllers->post('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->post('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');
@@ -71,6 +72,13 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
                     $app['media_manager']
                 );
             }
+        );
+
+        $app[UpdateAddressRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateAddressRequestHandler(
+                $app['event_command_bus'],
+                $app['place_jsonld_repository']
+            )
         );
 
         $app[ImportPlaceRequestHandler::class] = $app->share(
