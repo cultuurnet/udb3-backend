@@ -93,36 +93,36 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 
                     // Handle the request with the rewritten path.
                     return $app->handle($rewrittenRequest, HttpKernelInterface::SUB_REQUEST);
-                } else {
-                    /** @var Router $router */
-                    $router = $app[Router::class];
-                    $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
-
-                    // Always rewrite the request before dispatching the request on the PSR router.
-                    // The only case that this could be a problem is if there is a route that is registered with an
-                    // outdated name, but it makes the logic a lot easier. So we should just make sure to use the newer
-                    // names when registering the routes on the new router.
-                    $path = $psrRequest->getUri()->getPath();
-                    $rewrittenPath = $rewritePath($path);
-                    $rewrittenUri = (new UriFactory())->createUri($rewrittenPath);
-                    $rewrittenPsrRequest = $psrRequest->withUri($rewrittenUri);
-
-                    try {
-                        $psrResponse = $router->handle($rewrittenPsrRequest);
-                    } catch (NotFoundException $e) {
-                        return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
-                    } catch (MethodNotAllowedException $e) {
-                        $details = null;
-                        $headers = $e->getHeaders();
-                        $allowed = $headers['Allow'] ?? null;
-                        if ($allowed !== null) {
-                            $details = 'Allowed: ' . $allowed;
-                        }
-                        return new ApiProblemJsonResponse(ApiProblem::methodNotAllowed($details));
-                    }
-
-                    return (new HttpFoundationFactory())->createResponse($psrResponse);
                 }
+
+                /** @var Router $router */
+                $router = $app[Router::class];
+                $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
+
+                // Always rewrite the request before dispatching the request on the PSR router.
+                // The only case that this could be a problem is if there is a route that is registered with an
+                // outdated name, but it makes the logic a lot easier. So we should just make sure to use the newer
+                // names when registering the routes on the new router.
+                $path = $psrRequest->getUri()->getPath();
+                $rewrittenPath = $rewritePath($path);
+                $rewrittenUri = (new UriFactory())->createUri($rewrittenPath);
+                $rewrittenPsrRequest = $psrRequest->withUri($rewrittenUri);
+
+                try {
+                    $psrResponse = $router->handle($rewrittenPsrRequest);
+                } catch (NotFoundException $e) {
+                    return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
+                } catch (MethodNotAllowedException $e) {
+                    $details = null;
+                    $headers = $e->getHeaders();
+                    $allowed = $headers['Allow'] ?? null;
+                    if ($allowed !== null) {
+                        $details = 'Allowed: ' . $allowed;
+                    }
+                    return new ApiProblemJsonResponse(ApiProblem::methodNotAllowed($details));
+                }
+
+                return (new HttpFoundationFactory())->createResponse($psrResponse);
             }
         )->assert('path', '^.+$');
     }
