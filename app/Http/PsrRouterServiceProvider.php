@@ -22,7 +22,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 // The necessary CORS headers will be added by a Middleware that adds them for every response.
                 $router->options('/{path:.*}', fn () => new NoContentResponse());
 
-                $router->get('/{offerType}/{offerId}', [$app[GetDetailRequestHandler::class], 'handle']);
+                $router->get('/{offerType}/{offerId}/', [$app[GetDetailRequestHandler::class], 'handle']);
 
                 return $router;
             }

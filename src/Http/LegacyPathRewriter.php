@@ -28,6 +28,9 @@ final class LegacyPathRewriter
 
         // Convert old "news_articles" path to "news-articles"
         '/news_articles/' => 'news-articles',
+
+        // Add trailing slash if missing
+        '/^(.*)(?<!\/)$/' => '${1}/',
     ];
 
     public function rewritePath(string $path): string
