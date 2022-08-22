@@ -12,10 +12,7 @@ use Silex\ControllerProviderInterface;
 
 class JobsControllerProvider implements ControllerProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         $app['jobs.read_rest_controller'] = $app->share(
             function (Application $app) {
