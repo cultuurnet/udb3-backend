@@ -38,6 +38,34 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
         $app->match(
             '/{path}',
             function (Request $request, string $path) use ($app, &$pathHasBeenRewritten, &$originalRequest) {
+                $rewritePath = static function (string $originalPath): string {
+                    $rewrites = [
+                        // Pluralize /event and /place
+                        '/^(event|place)($|\/.*)/' => '${1}s${2}',
+
+                        // Convert known legacy camelCase resource/collection names to kebab-case
+                        '/bookingAvailability/' => 'booking-availability',
+                        '/bookingInfo/' => 'booking-info',
+                        '/cardSystems/' => 'card-systems',
+                        '/contactPoint/' => 'contact-point',
+                        '/distributionKey/' => 'distribution-key',
+                        '/majorInfo/' => 'major-info',
+                        '/priceInfo/' => 'price-info',
+                        '/subEvents/' => 'sub-events',
+                        '/typicalAgeRange/' => 'typical-age-range',
+
+                        // Convert old "calsum" path to "calendar-summary"
+                        '/\/calsum/' => '/calendar-summary',
+
+                        // Convert old "news_articles" path to "news-articles"
+                        '/news_articles/' => 'news-articles',
+
+                        // Add trailing slash if missing
+                        '/^(.*)(?<!\/)$/' => '${1}/',
+                    ];
+                    return preg_replace(array_keys($rewrites), array_values($rewrites), $originalPath);
+                };
+
                 if ($pathHasBeenRewritten) {
                     /** @var Router $router */
                     $router = $app[Router::class];
@@ -60,32 +88,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                     return (new HttpFoundationFactory())->createResponse($psrResponse);
                 }
 
-                $rewrites = [
-                    // Pluralize /event and /place
-                    '/^(event|place)($|\/.*)/' => '${1}s${2}',
-
-                    // Convert known legacy camelCase resource/collection names to kebab-case
-                    '/bookingAvailability/' => 'booking-availability',
-                    '/bookingInfo/' => 'booking-info',
-                    '/cardSystems/' => 'card-systems',
-                    '/contactPoint/' => 'contact-point',
-                    '/distributionKey/' => 'distribution-key',
-                    '/majorInfo/' => 'major-info',
-                    '/priceInfo/' => 'price-info',
-                    '/subEvents/' => 'sub-events',
-                    '/typicalAgeRange/' => 'typical-age-range',
-
-                    // Convert old "calsum" path to "calendar-summary"
-                    '/\/calsum/' => '/calendar-summary',
-
-                    // Convert old "news_articles" path to "news-articles"
-                    '/news_articles/' => 'news-articles',
-
-                    // Add trailing slash if missing
-                    '/^(.*)(?<!\/)$/' => '${1}/',
-                ];
-                $rewrittenPath = preg_replace(array_keys($rewrites), array_values($rewrites), $path);
-
+                $rewrittenPath = $rewritePath($path);
                 $pathHasBeenRewritten = true;
                 $originalRequest = $request;
 
