@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ReadRestController
 {
-    private JobsStatusFactoryInterface $jobStatusFactory;
+    private JobsStatusFactory $jobStatusFactory;
 
-    public function __construct(JobsStatusFactoryInterface $jobStatusFactory)
+    public function __construct(JobsStatusFactory $jobStatusFactory)
     {
         $this->jobStatusFactory = $jobStatusFactory;
     }

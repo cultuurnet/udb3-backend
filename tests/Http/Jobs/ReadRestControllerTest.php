@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ReadRestControllerTest extends TestCase
 {
     /**
-     * @var JobsStatusFactoryInterface|MockObject
+     * @var JobsStatusFactory|MockObject
      */
     private $jobsStatusFactory;
 
@@ -21,7 +21,7 @@ class ReadRestControllerTest extends TestCase
     protected function setUp(): void
     {
         $this->jobsStatusFactory = $this->createMock(
-            JobsStatusFactoryInterface::class
+            JobsStatusFactory::class
         );
 
         $this->readRestController = new ReadRestController(
