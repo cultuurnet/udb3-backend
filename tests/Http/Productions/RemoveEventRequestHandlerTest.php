@@ -15,13 +15,13 @@ final class RemoveEventRequestHandlerTest extends TestCase
 {
     private TraceableCommandBus $commandBus;
 
-    private RemoveEventRequestHandler $removeEventRequestHandler;
+    private RemoveEventFromProductionRequestHandler $removeEventFromProductionRequestHandler;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->removeEventRequestHandler = new RemoveEventRequestHandler($this->commandBus);
+        $this->removeEventFromProductionRequestHandler = new RemoveEventFromProductionRequestHandler($this->commandBus);
     }
 
     /**
@@ -39,7 +39,7 @@ final class RemoveEventRequestHandlerTest extends TestCase
 
         $this->commandBus->record();
 
-        $response = $this->removeEventRequestHandler->handle($request);
+        $response = $this->removeEventFromProductionRequestHandler->handle($request);
 
         $this->assertEquals(
             [new RemoveEventFromProduction($eventId, $productionId)],

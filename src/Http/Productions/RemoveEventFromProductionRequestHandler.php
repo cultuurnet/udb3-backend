@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class RemoveEventRequestHandler implements RequestHandlerInterface
+final class RemoveEventFromProductionRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
