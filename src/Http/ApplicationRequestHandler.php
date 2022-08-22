@@ -11,7 +11,6 @@ use League\Route\Http\Exception\NotFoundException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Factory\UriFactory;
 use Throwable;
 
 /**
@@ -32,21 +31,13 @@ final class ApplicationRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $request = $this->rewriteRequestUri($request);
+        $request = (new LegacyPathRewriter())->rewriteRequest($request);
 
         try {
             return $this->router->handle($request);
         } catch (Throwable $e) {
             return $this->handleError($e);
         }
-    }
-
-    private function rewriteRequestUri(ServerRequestInterface $request): ServerRequestInterface
-    {
-        $path = $request->getUri()->getPath();
-        $rewrittenPath = (new LegacyPathRewriter())->rewritePath($path);
-        $rewrittenUri = (new UriFactory())->createUri($rewrittenPath);
-        return $request->withUri($rewrittenUri);
     }
 
     private function handleError(Throwable $e): ResponseInterface

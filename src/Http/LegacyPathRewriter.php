@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 final class LegacyPathRewriter
 {
     private const REWRITES = [
@@ -31,5 +33,14 @@ final class LegacyPathRewriter
     public function rewritePath(string $path): string
     {
         return preg_replace(array_keys(self::REWRITES), array_values(self::REWRITES), $path);
+    }
+
+    public function rewriteRequest(ServerRequestInterface $request): ServerRequestInterface
+    {
+        $uri = $request->getUri();
+        $path = $uri->getPath();
+        $rewrittenPath = $this->rewritePath($path);
+        $rewrittenUri = $uri->withPath($rewrittenPath);
+        return $request->withUri($rewrittenUri);
     }
 }
