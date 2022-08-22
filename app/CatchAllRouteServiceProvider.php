@@ -100,12 +100,12 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
 
                 /** @var Router $router */
                 $router = $app[Router::class];
-                $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
 
-                // Always rewrite the request before dispatching the request on the PSR router.
+                // Always start from the original request and rewrite the path before dispatching it on the PSR router.
                 // The only case that this could be a problem is if there is a route that is registered with an
-                // outdated name, but it makes the logic a lot easier. So we should just make sure to use the newer
-                // names when registering the routes on the new router.
+                // outdated name in the PSR router, but it makes the logic a lot easier. So we should just make sure to
+                // use the newer names when registering the routes on the new router.
+                $psrRequest = (new DiactorosFactory())->createRequest($originalRequest);
                 $path = $psrRequest->getUri()->getPath();
                 $rewrittenPath = $rewritePath($path);
                 $rewrittenUri = (new UriFactory())->createUri($rewrittenPath);
