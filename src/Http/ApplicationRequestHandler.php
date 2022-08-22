@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
-use League\Route\Http\Exception\MethodNotAllowedException;
-use League\Route\Http\Exception\NotFoundException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Throwable;
 
 /**
  * Request handler that handles any incoming request by delegating it to a router that implements
@@ -32,31 +27,6 @@ final class ApplicationRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $request = (new LegacyPathRewriter())->rewriteRequest($request);
-
-        try {
-            return $this->router->handle($request);
-        } catch (Throwable $e) {
-            return $this->handleError($e);
-        }
-    }
-
-    private function handleError(Throwable $e): ResponseInterface
-    {
-        switch (true) {
-            case $e instanceof NotFoundException:
-                return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
-
-            case $e instanceof MethodNotAllowedException:
-                $details = null;
-                $headers = $e->getHeaders();
-                $allowed = $headers['Allow'] ?? null;
-                if ($allowed !== null) {
-                    $details = 'Allowed: ' . $allowed;
-                }
-                return new ApiProblemJsonResponse(ApiProblem::methodNotAllowed($details));
-
-            default:
-                throw $e;
-        }
+        return $this->router->handle($request);
     }
 }
