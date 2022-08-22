@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
+use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;
 use League\Route\Router;
 use Silex\Application;
@@ -46,6 +47,14 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                         $psrResponse = $router->handle($psrRequest);
                     } catch (NotFoundException $e) {
                         return new ApiProblemJsonResponse(ApiProblem::urlNotFound());
+                    } catch (MethodNotAllowedException $e) {
+                        $details = null;
+                        $headers = $e->getHeaders();
+                        $allowed = $headers['Allow'] ?? null;
+                        if ($allowed !== null) {
+                            $details = 'Allowed: ' . $allowed;
+                        }
+                        return new ApiProblemJsonResponse(ApiProblem::methodNotAllowed($details));
                     }
 
                     return (new HttpFoundationFactory())->createResponse($psrResponse);
