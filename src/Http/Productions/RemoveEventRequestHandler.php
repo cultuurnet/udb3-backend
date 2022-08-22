@@ -26,7 +26,7 @@ final class RemoveEventRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $eventId = $routeParameters->getEventId();
-        $productionId = $routeParameters->get('productionId');
+        $productionId = $routeParameters->getProductionId();
 
         $command = new RemoveEventFromProduction(
             $eventId,

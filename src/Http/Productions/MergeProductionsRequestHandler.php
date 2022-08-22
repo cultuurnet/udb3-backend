@@ -26,7 +26,7 @@ final class MergeProductionsRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $fromProductionId = $routeParameters->get('fromProductionId');
-        $productionId = $routeParameters->get('productionId');
+        $productionId = $routeParameters->getProductionId();
 
         $command = new MergeProductions(
             ProductionId::fromNative($fromProductionId),
