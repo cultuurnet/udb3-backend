@@ -6,30 +6,31 @@ namespace CultuurNet\UDB3\Http\Productions;
 
 use CultuurNet\UDB3\Event\Productions\Production;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
+use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Response\PagedCollectionResponse;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ProductionsSearchController
+final class SearchProductionsRequestHandler implements RequestHandlerInterface
 {
     private const DEFAULT_START = 0;
     private const DEFAULT_LIMIT = 30;
 
-    /**
-     * @var ProductionRepository
-     */
-    private $repository;
+    private ProductionRepository $repository;
 
     public function __construct(ProductionRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function search(Request $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $keyword = $request->get('name', '');
-        $start = (int) $request->get('start', self::DEFAULT_START);
-        $limit = (int) $request->get('limit', self::DEFAULT_LIMIT);
+        $queryParameters = new QueryParameters($request);
+
+        $keyword = $queryParameters->get('name', '');
+        $start = $queryParameters->getAsInt('start', self::DEFAULT_START);
+        $limit = $queryParameters->getAsInt('limit', self::DEFAULT_LIMIT);
 
         $count = $this->repository->count($keyword);
 
