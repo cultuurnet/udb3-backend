@@ -41,7 +41,7 @@ final class CatchAllRouteServiceProvider implements ServiceProviderInterface
                 $rewritePath = static function (string $originalPath): string {
                     $rewrites = [
                         // Pluralize /event and /place
-                        '/^(event|place)($|\/.*)/' => '${1}s${2}',
+                        '/^(\/)?(event|place)($|\/.*)/' => '${1}${2}s${3}',
 
                         // Convert known legacy camelCase resource/collection names to kebab-case
                         '/bookingAvailability/' => 'booking-availability',
