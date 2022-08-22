@@ -31,7 +31,7 @@ final class RenameProductionRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $productionId = $routeParameters->get('productionId');
+        $productionId = $routeParameters->getProductionId();
 
         $data = Json::decodeAssociatively($request->getBody()->getContents());
         $this->renameProductionValidator->validate($data);

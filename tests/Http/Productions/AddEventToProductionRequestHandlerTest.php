@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Productions;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
-use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-final class RemoveEventRequestHandlerTest extends TestCase
+final class AddEventToProductionRequestHandlerTest extends TestCase
 {
     private TraceableCommandBus $commandBus;
 
-    private RemoveEventRequestHandler $removeEventRequestHandler;
+    private AddEventToProductionRequestHandler $addEventToProductionRequestHandler;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->removeEventRequestHandler = new RemoveEventRequestHandler($this->commandBus);
+        $this->addEventToProductionRequestHandler = new AddEventToProductionRequestHandler($this->commandBus);
     }
 
     /**
      * @test
      */
-    public function it_can_remove_an_event_from_a_production(): void
+    public function it_can_add_an_event_to_an_existing_production(): void
     {
         $productionId = ProductionId::generate();
         $eventId = Uuid::uuid4()->toString();
@@ -35,14 +35,14 @@ final class RemoveEventRequestHandlerTest extends TestCase
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('productionId', $productionId->toNative())
             ->withRouteParameter('eventId', $eventId)
-            ->build('DELETE');
+            ->build('POST');
 
         $this->commandBus->record();
 
-        $response = $this->removeEventRequestHandler->handle($request);
+        $response = $this->addEventToProductionRequestHandler->handle($request);
 
         $this->assertEquals(
-            [new RemoveEventFromProduction($eventId, $productionId)],
+            [new AddEventToProduction($eventId, $productionId)],
             $this->commandBus->getRecordedCommands()
         );
 

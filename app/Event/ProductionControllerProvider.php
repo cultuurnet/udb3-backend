@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
-use CultuurNet\UDB3\Http\Productions\AddEventRequestHandler;
+use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
-use CultuurNet\UDB3\Http\Productions\RemoveEventRequestHandler;
+use CultuurNet\UDB3\Http\Productions\RemoveEventFromProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\RenameProductionValidator;
 use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
@@ -43,12 +43,12 @@ class ProductionControllerProvider implements ControllerProviderInterface
             )
         );
 
-        $app[AddEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new AddEventRequestHandler($app['event_command_bus'])
+        $app[AddEventToProductionRequestHandler::class] = $app->share(
+            fn (Application $app) => new AddEventToProductionRequestHandler($app['event_command_bus'])
         );
 
-        $app[RemoveEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new RemoveEventRequestHandler($app['event_command_bus'])
+        $app[RemoveEventFromProductionRequestHandler::class] = $app->share(
+            fn (Application $app) => new RemoveEventFromProductionRequestHandler($app['event_command_bus'])
         );
 
         $app[MergeProductionsRequestHandler::class] = $app->share(
@@ -76,8 +76,8 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers->get('/', SearchProductionsRequestHandler::class);
 
         $controllers->post('/', CreateProductionRequestHandler::class);
-        $controllers->put('/{productionId}/events/{eventId}/', AddEventRequestHandler::class);
-        $controllers->delete('/{productionId}/events/{eventId}/', RemoveEventRequestHandler::class);
+        $controllers->put('/{productionId}/events/{eventId}/', AddEventToProductionRequestHandler::class);
+        $controllers->delete('/{productionId}/events/{eventId}/', RemoveEventFromProductionRequestHandler::class);
         $controllers->post('/{productionId}/merge/{fromProductionId}/', MergeProductionsRequestHandler::class);
         $controllers->put('/{productionId}/name/', RenameProductionRequestHandler::class);
 

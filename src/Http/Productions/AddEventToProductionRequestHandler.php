@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class AddEventRequestHandler implements RequestHandlerInterface
+final class AddEventToProductionRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -26,7 +26,7 @@ final class AddEventRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $eventId = $routeParameters->getEventId();
-        $productionId = $routeParameters->get('productionId');
+        $productionId = $routeParameters->getProductionId();
 
         $command = new AddEventToProduction(
             $eventId,

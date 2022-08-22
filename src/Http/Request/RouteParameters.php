@@ -75,6 +75,11 @@ final class RouteParameters
         return $this->get('organizerId');
     }
 
+    public function getProductionId(): string
+    {
+        return $this->get('productionId');
+    }
+
     public function hasLanguage(): bool
     {
         return $this->has('language');
