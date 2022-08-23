@@ -80,7 +80,7 @@ final class RequestAuthenticator
         return $request->getMethod() === 'OPTIONS' && $request->hasHeader('access-control-request-method');
     }
 
-    private function isPublicRoute(ServerRequestInterface $request): bool
+    public function isPublicRoute(ServerRequestInterface $request): bool
     {
         $method = $request->getMethod();
         $path = $request->getUri()->getPath();

@@ -39,6 +39,8 @@ use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 const API_NAME = ApiName::JSONLD;
@@ -71,64 +73,10 @@ $app->register(new RequestHandlerControllerServiceProvider());
  */
 $app->register(new PsrRouterServiceProvider());
 
-/**
- * Firewall configuration.
- *
- * We can not expect the UUID of events, places and organizers
- * to be correctly formatted, because there is no exhaustive documentation
- * about how this is handled in UDB2. Therefore we take a rather liberal
- * approach and allow all alphanumeric characters and a dash.
- */
-$app['cors_preflight_request_matcher'] = $app->share(
-    function () {
-        return new PreflightRequestMatcher();
+$app['security.token_storage'] = $app::share(
+    static function (): TokenStorageInterface {
+        return new TokenStorage();
     }
-);
-
-$app['id_pattern'] = '[\w\-]+';
-$app['security.firewalls'] = array(
-    'public' => [
-        'pattern' => (new AnyOfRequestMatcher())
-            ->with(new RequestMatcher('^/(events|event|places|place)$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/(calendar-summary|calsum)', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
-            ->with(new RequestMatcher('^/label/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
-            ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/images/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(labels)$', null, 'GET'))
-            ->with(new RequestMatcher('^/jobs/', null, 'GET'))
-            ->with(new RequestMatcher('^/uitpas/.*', null, 'GET'))
-            ->with(new RequestMatcher('^/(news_articles|news-articles)', null, ['GET', 'DELETE', 'POST', 'PUT']))
-    ],
-    'cors-preflight' => array(
-        'pattern' => $app['cors_preflight_request_matcher'],
-    ),
-    'secured' => array(
-        'pattern' => '^.*$',
-        'jwt' => [
-            'v1' => [
-                'valid_issuers' => $app['config']['jwt']['v1']['valid_issuers'],
-                'required_claims' => [
-                    'uid',
-                ],
-                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v1']['keys']['public']['file']
-            ],
-            'v2' => [
-                'valid_issuers' => $app['config']['jwt']['v2']['valid_issuers'],
-                'required_claims' => [
-                    'sub',
-                ],
-                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v2']['keys']['public']['file']
-            ],
-        ],
-        'stateless' => true,
-    ),
 );
 
 $app[RequestAuthenticator::class] = $app::share(
@@ -193,52 +141,6 @@ $app->before(
         return null;
     },
     Application::EARLY_EVENT
-);
-
-/**
- * Security services.
- */
-$app->register(new \Silex\Provider\SecurityServiceProvider());
-$app->register(new JwtServiceProvider());
-
-$app['permissions_voter'] = $app->share(function($app) {
-    return new PermissionsVoter($app['config']['user_permissions']);
-});
-
-$app['user_permissions_voter'] = $app->share(function($app) {
-    return new UserPermissionsVoter($app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]);
-});
-
-$app['security.voters'] = $app->extend('security.voters', function($voters) use ($app){
-    return array_merge(
-        $voters,
-        [
-            $app['permissions_voter'],
-            $app['user_permissions_voter'],
-        ]
-    );
-});
-
-$app['security.access_manager'] = $app->share(function($app) {
-    return new AccessDecisionManager($app['security.voters'], AccessDecisionManager::STRATEGY_AFFIRMATIVE);
-});
-
-$app['security.access_rules'] = array(
-    array(
-        new RequestMatcher('^/labels/.*', null, ['POST', 'DELETE', 'PATCH']),
-        Permission::labelsBeheren()->toString()
-    ),
-    array('^/(roles|permissions|users)/.*', Permission::gebruikersBeheren()->toString()),
-);
-
-$app['security.entry_point.form._proto'] = $app::protect(
-    function () use ($app) {
-        return $app->share(
-            function () {
-                return new JwtAuthenticationEntryPoint();
-            }
-        );
-    }
 );
 
 if (isset($app['config']['cdbxml_proxy']) &&

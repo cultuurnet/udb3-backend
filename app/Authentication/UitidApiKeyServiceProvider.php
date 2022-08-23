@@ -16,14 +16,13 @@ use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class UitidApiKeyServiceProvider implements ServiceProviderInterface
 {
@@ -77,26 +76,19 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     return null;
                 }
 
-                /** @var AuthorizationChecker $security */
-                $security = $app['security.authorization_checker'];
+                /** @var RequestAuthenticator $requestAuthenticator */
+                $requestAuthenticator = $app[RequestAuthenticator::class];
                 /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
                 $apiKeyAuthenticator = $app['auth.request_authenticator'];
 
                 $psr7Request = (new DiactorosFactory())->createRequest($request);
-
-                // Also store the ApiKey for later use in the impersonator.
-                $app['auth.api_key'] = $app['auth.api_key_reader']->read($psr7Request);
-
-                try {
-                    if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
-                        // The request is not authenticated so we don't need to do additional checks since the
-                        // firewall will return an unauthorized error response.
-                        return null;
-                    }
-                } catch (AuthenticationCredentialsNotFoundException $exception) {
+                if ($requestAuthenticator->isPublicRoute($psr7Request)) {
                     // The request is for a public URL so we can skip any checks.
                     return null;
                 }
+
+                // Also store the ApiKey for later use in the impersonator.
+                $app['auth.api_key'] = $app['auth.api_key_reader']->read($psr7Request);
 
                 try {
                     $apiKeyAuthenticator->authenticate($psr7Request);
