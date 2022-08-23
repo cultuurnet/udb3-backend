@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
@@ -213,17 +214,9 @@ $app['current_user_id'] = $app::share(
             return $impersonator->getUserId();
         }
 
-        try {
-            /* @var TokenStorageInterface $tokenStorage */
-            $tokenStorage = $app['security.token_storage'];
-        } catch (\InvalidArgumentException $e) {
-            // Running from CLI or unauthorized (will be further handled by the firewall).
-            return null;
-        }
-
-        $token = $tokenStorage->getToken();
+        $token = $app['jwt'];
         if (!($token instanceof JsonWebToken)) {
-            // The token in the firewall storage is not supported.
+            // The token in the current request is missing (for example because it's a public route)
             return null;
         }
         return $token->getUserId();
@@ -250,20 +243,14 @@ $app['jwt'] = $app::share(
         }
 
         try {
-            /* @var TokenStorageInterface $tokenStorage */
-            $tokenStorage = $app['security.token_storage'];
+            /* @var RequestAuthenticator $requestAuthenticator */
+            $requestAuthenticator = $app[RequestAuthenticator::class];
         } catch (\InvalidArgumentException $e) {
-            // Running from CLI.
+            // Running from CLI or unauthorized (will be further handled by the auth middleware)
             return null;
         }
 
-        $token = $tokenStorage->getToken();
-
-        if ($token instanceof JsonWebToken) {
-            return $token;
-        }
-
-        return null;
+        return $requestAuthenticator->getToken();
     }
 );
 

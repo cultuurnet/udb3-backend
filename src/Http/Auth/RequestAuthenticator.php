@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class RequestAuthenticator
@@ -19,15 +18,12 @@ final class RequestAuthenticator
     private const BEARER = 'Bearer ';
 
     private array $publicRoutes = [];
+    private ?JsonWebToken $token = null;
     private JwtAuthenticationProvider $jwtAuthenticator;
-    private TokenStorageInterface $tokenStorage;
 
-    public function __construct(
-        JwtAuthenticationProvider $jwtAuthenticator,
-        TokenStorageInterface $tokenStorage
-    ) {
+    public function __construct(JwtAuthenticationProvider $jwtAuthenticator)
+    {
         $this->jwtAuthenticator = $jwtAuthenticator;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
@@ -58,7 +54,7 @@ final class RequestAuthenticator
 
         $tokenString = substr($authorizationHeader, strlen(self::BEARER));
         try {
-            $token = new JsonWebToken($tokenString, false);
+            $this->token = new JsonWebToken($tokenString, false);
         } catch (InvalidArgumentException $e) {
             return new ApiProblemJsonResponse(
                 ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.')
@@ -66,13 +62,16 @@ final class RequestAuthenticator
         }
 
         try {
-            $token = $this->jwtAuthenticator->authenticate($token);
+            $this->token = $this->jwtAuthenticator->authenticate($this->token);
         } catch (AuthenticationException $authenticationException) {
             return new ApiProblemJsonResponse(ApiProblem::unauthorized($authenticationException->getMessage()));
         }
-
-        $this->tokenStorage->setToken($token);
         return null;
+    }
+
+    public function getToken(): ?JsonWebToken
+    {
+        return $this->token;
     }
 
     private function isCorsPreflightRequest(ServerRequestInterface $request): bool

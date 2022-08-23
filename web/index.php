@@ -63,12 +63,6 @@ $app->register(new RequestHandlerControllerServiceProvider());
  */
 $app->register(new PsrRouterServiceProvider());
 
-$app['security.token_storage'] = $app::share(
-    static function (): TokenStorageInterface {
-        return new TokenStorage();
-    }
-);
-
 $app[RequestAuthenticator::class] = $app::share(
     function (Application $app): RequestAuthenticator {
         $authenticator = new RequestAuthenticator(
@@ -86,8 +80,7 @@ $app[RequestAuthenticator::class] = $app::share(
                     ),
                     $app['config']['jwt']['v2']['jwt_provider_client_id']
                 )
-            ),
-            $app['security.token_storage']
+            )
         );
 
         // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs, because there
