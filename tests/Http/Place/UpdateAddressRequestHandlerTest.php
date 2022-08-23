@@ -243,23 +243,61 @@ class UpdateAddressRequestHandlerTest extends TestCase
         $this->updateAddressRequestHandler->handle($updateAddressRequest);
     }
 
-    public function it_throws_on_empty_values(): void
+    /**
+     * @test
+     * @dataProvider emptyValueDataProvider
+     */
+    public function it_throws_on_empty_values(array $emptyValueAddress): void
     {
         $updateAddressRequest = $this->psr7RequestBuilder
             ->withRouteParameter('placeId', self::PLACE_ID)
             ->withRouteParameter('language', 'nl')
             ->withBodyFromString(
-                '{
-                    "streetAddress": "",
-                    "postalCode": "9000",
-                    "addressLocality": "Gent",
-                    "addressCountry": "BE"
-                }'
+                Json::encode($emptyValueAddress)
             )
             ->build('PUT');
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DataValidationException::class);
 
         $this->updateAddressRequestHandler->handle($updateAddressRequest);
+    }
+
+
+    public function emptyValueDataProvider(): array
+    {
+        return [
+            [
+                [
+                    'streetAddress' => '',
+                    'postalCode' => '9000',
+                    'addressLocality' => 'Gent',
+                    'addressCountry' => 'BE',
+                    ],
+                ],
+            [
+                [
+                    'streetAddress' => 'Veldstraat 11',
+                    'postalCode' => '',
+                    'addressLocality' => 'Gent',
+                    'addressCountry' => 'BE',
+                    ],
+                ],
+            [
+                [
+                    'streetAddress' => 'Veldstraat 11',
+                    'postalCode' => '9000',
+                    'addressLocality' => '',
+                    'addressCountry' => 'BE',
+                    ],
+                ],
+            [
+                [
+                    'streetAddress' => 'Veldstraat 11',
+                    'postalCode' => '9000',
+                    'addressLocality' => 'Gent',
+                    'addressCountry' => '',
+                ],
+            ],
+        ];
     }
 }
