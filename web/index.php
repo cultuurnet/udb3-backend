@@ -7,8 +7,11 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
+use CultuurNet\UDB3\Jwt\JwtBaseValidator;
+use CultuurNet\UDB3\Jwt\JwtV2Validator;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\ApiName;
@@ -129,8 +132,25 @@ $app['security.firewalls'] = array(
 );
 
 $app[RequestAuthenticator::class] = $app::share(
-    function (): RequestAuthenticator {
-        $authenticator = new RequestAuthenticator();
+    function (Application $app): RequestAuthenticator {
+        $authenticator = new RequestAuthenticator(
+            new JwtAuthenticationProvider(
+                new JwtBaseValidator(
+                    'file://' . __DIR__ . '/../' . $app['config']['jwt']['v1']['keys']['public']['file'],
+                    ['uid'],
+                    $app['config']['jwt']['v1']['valid_issuers']
+                ),
+                new JwtV2Validator(
+                    new JwtBaseValidator(
+                        'file://' . __DIR__ . '/../' . $app['config']['jwt']['v2']['keys']['public']['file'],
+                        ['sub'],
+                        $app['config']['jwt']['v2']['valid_issuers']
+                    ),
+                    $app['config']['jwt']['v2']['jwt_provider_client_id']
+                )
+            ),
+            $app['security.token_storage']
+        );
 
         // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs, because there
         // is no exhaustive documentation about how this is handled in UDB2. Therefore we take a rather liberal approach

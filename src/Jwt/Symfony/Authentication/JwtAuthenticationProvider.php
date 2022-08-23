@@ -40,7 +40,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function authenticate(TokenInterface $token)
+    public function authenticate(TokenInterface $token): JsonWebToken
     {
         /** @var JsonWebToken $token */
         if (!$this->supports($token)) {
