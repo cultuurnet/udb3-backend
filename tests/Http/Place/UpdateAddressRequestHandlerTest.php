@@ -9,8 +9,12 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
@@ -22,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 class UpdateAddressRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
+    use AssertJsonResponseTrait;
 
     private const PLACE_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
 
@@ -69,7 +74,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
             )
             ->build('PUT');
 
-        $this->updateAddressRequestHandler->handle($updateAddressRequest);
+        $response = $this->updateAddressRequestHandler->handle($updateAddressRequest);
 
         $this->assertEquals(
             [
@@ -85,6 +90,11 @@ class UpdateAddressRequestHandlerTest extends TestCase
                 ),
             ],
             $this->commandBus->getRecordedCommands()
+        );
+
+        $this->assertJsonResponse(
+            new NoContentResponse(),
+            $response
         );
     }
 
