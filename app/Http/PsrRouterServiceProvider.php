@@ -19,7 +19,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $router = new Router();
                 $router->setStrategy(new CustomLeagueRouterStrategy());
 
-                $router->get('/{offerType}/{offerId}/', [$app[GetDetailRequestHandler::class], 'handle']);
+                $router->get('/{offerType:events|places}/{offerId}/', [$app[GetDetailRequestHandler::class], 'handle']);
 
                 return $router;
             }
