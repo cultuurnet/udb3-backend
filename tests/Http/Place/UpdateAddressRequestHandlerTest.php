@@ -154,7 +154,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
      */
     public function it_supports_multiple_languages(): void
     {
-        $updateAddressRequest = $this->psr7RequestBuilder
+        $updateAddressRequestInDutch = $this->psr7RequestBuilder
             ->withRouteParameter('placeId', self::PLACE_ID)
             ->withRouteParameter('language', 'nl')
             ->withBodyFromString(
@@ -167,7 +167,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
             )
             ->build('PUT');
 
-        $updateAddressRequest2 = $this->psr7RequestBuilder
+        $updateAddressRequestInFrench = $this->psr7RequestBuilder
             ->withRouteParameter('placeId', self::PLACE_ID)
             ->withRouteParameter('language', 'fr')
             ->withBodyFromString(
@@ -180,8 +180,8 @@ class UpdateAddressRequestHandlerTest extends TestCase
             )
             ->build('PUT');
 
-        $this->updateAddressRequestHandler->handle($updateAddressRequest);
-        $this->updateAddressRequestHandler->handle($updateAddressRequest2);
+        $this->updateAddressRequestHandler->handle($updateAddressRequestInDutch);
+        $this->updateAddressRequestHandler->handle($updateAddressRequestInFrench);
 
         $this->assertEquals(
             [
