@@ -132,6 +132,9 @@ $app[RequestAuthenticator::class] = $app::share(
     function (): RequestAuthenticator {
         $authenticator = new RequestAuthenticator();
 
+        // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs, because there
+        // is no exhaustive documentation about how this is handled in UDB2. Therefore we take a rather liberal approach
+        // and allow all alphanumeric characters and a dash as ids.
         $authenticator->addPublicRoute('~^/(events?|places?)/?$~', ['GET']);
         $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/?$~', ['GET']);
         $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
