@@ -51,16 +51,19 @@ final class PatchOfferRequestHandlerTest extends TestCase
         array $body,
         AbstractCommand $expectedCommand
     ): void {
-        $request = (new Psr7RequestBuilder())
+        $requestBuilder = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', $this->offerId)
             ->withJsonBodyFromArray($body)
-            ->withHeader('Content-Type', $header)
-            ->build('PATCH');
+            ->withHeader('Content-Type', $header);
+
+        if (!empty($body)) {
+            $requestBuilder = $requestBuilder->withJsonBodyFromArray($body);
+        }
 
         $this->commandBus->record();
 
-        $response = $this->patchOfferRequestHandler->handle($request);
+        $response = $this->patchOfferRequestHandler->handle($requestBuilder->build('PATCH'));
 
         $this->assertEquals(
             [$expectedCommand],
