@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
@@ -30,6 +31,8 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
 use Silex\Application;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,6 +126,50 @@ $app['security.firewalls'] = array(
         ],
         'stateless' => true,
     ),
+);
+
+$app[RequestAuthenticator::class] = $app::share(
+    function (): RequestAuthenticator {
+        $authenticator = new RequestAuthenticator();
+
+        $authenticator->addPublicRoute('~^/(events?|places?)/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/permissions?/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/organizers/[\w\-]+/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/organizers/[\w\-]+/permissions/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/labels/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/label/[\w\-]+/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/media/[\w\-]+/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/images/[\w\-]+/?$~', ['GET']);
+        $authenticator->addPublicRoute('~^/jobs~', ['GET']);
+        $authenticator->addPublicRoute('~^/uitpas~', ['GET']);
+        $authenticator->addPublicRoute('~^/news-articles~', ['GET', 'DELETE', 'POST', 'PUT']);
+
+        // Legacy URLs that get rewritten. Still needed when we're still using the Silex router because in Silex the
+        // rewrite happens after the auth check. But can be removed once we use the new PSR router for all routes
+        // because on the new router the rewrite will happen before the auth check.
+        $authenticator->addPublicRoute('^/(events|event|places|place)/[\w\-]+/calsum/?$', ['GET']);
+        $authenticator->addPublicRoute('~^/news_articles~', ['GET', 'DELETE', 'POST', 'PUT']);
+
+        return $authenticator;
+    }
+);
+
+$app->before(
+    static function (Request $request, Application $app): ?Response {
+        $psrRequest = (new DiactorosFactory())->createRequest($request);
+
+        /** @var RequestAuthenticator $authenticator */
+        $authenticator = $app[RequestAuthenticator::class];
+        $psrResponse = $authenticator->authenticate($psrRequest);
+
+        if ($psrResponse !== null) {
+            return (new HttpFoundationFactory())->createResponse($psrResponse);
+        }
+        return null;
+    },
+    Application::EARLY_EVENT
 );
 
 /**
