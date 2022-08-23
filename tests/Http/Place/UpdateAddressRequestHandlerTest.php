@@ -47,8 +47,7 @@ class UpdateAddressRequestHandlerTest extends TestCase
         );
 
         $this->updateAddressRequestHandler = new UpdateAddressRequestHandler(
-            $this->commandBus,
-            $placeDocumentRepository
+            $this->commandBus
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();

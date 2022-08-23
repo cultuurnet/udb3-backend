@@ -76,8 +76,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
         $app[UpdateAddressRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateAddressRequestHandler(
-                $app['event_command_bus'],
-                $app['place_jsonld_repository']
+                $app['event_command_bus']
             )
         );
 
