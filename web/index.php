@@ -83,7 +83,6 @@ $app['id_pattern'] = '[\w\-]+';
 $app['security.firewalls'] = array(
     'public' => [
         'pattern' => (new AnyOfRequestMatcher())
-            ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/$', null, 'GET'))
             ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
