@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Auth;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use InvalidArgumentException;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -31,24 +29,22 @@ final class RequestAuthenticator
         $this->publicRoutes[$pathPattern] = $methods;
     }
 
-    public function authenticate(ServerRequestInterface $request): ?ResponseInterface
+    public function authenticate(ServerRequestInterface $request): void
     {
         if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
-            return null;
+            return;
         }
 
         $authorizationHeader = $request->getHeader('authorization');
         if (empty($authorizationHeader)) {
-            return new ApiProblemJsonResponse(ApiProblem::unauthorized('Authorization header missing.'));
+            throw ApiProblem::unauthorized('Authorization header missing.');
         }
 
         $authorizationHeader = $authorizationHeader[0];
         $startsWithBearer = strpos($authorizationHeader, self::BEARER) === 0;
         if (!$startsWithBearer) {
-            return new ApiProblemJsonResponse(
-                ApiProblem::unauthorized(
-                    'Authorization header must start with "' . self::BEARER . '", followed by your token.'
-                )
+            throw ApiProblem::unauthorized(
+                'Authorization header must start with "' . self::BEARER . '", followed by your token.'
             );
         }
 
@@ -56,17 +52,14 @@ final class RequestAuthenticator
         try {
             $this->token = new JsonWebToken($tokenString, false);
         } catch (InvalidArgumentException $e) {
-            return new ApiProblemJsonResponse(
-                ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.')
-            );
+            throw ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.');
         }
 
         try {
             $this->token = $this->jwtAuthenticator->authenticate($this->token);
         } catch (AuthenticationException $authenticationException) {
-            return new ApiProblemJsonResponse(ApiProblem::unauthorized($authenticationException->getMessage()));
+            throw ApiProblem::unauthorized($authenticationException->getMessage());
         }
-        return null;
     }
 
     public function getToken(): ?JsonWebToken

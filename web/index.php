@@ -111,17 +111,12 @@ $app[RequestAuthenticator::class] = $app::share(
 );
 
 $app->before(
-    static function (Request $request, Application $app): ?Response {
+    static function (Request $request, Application $app): void {
         $psrRequest = (new DiactorosFactory())->createRequest($request);
 
         /** @var RequestAuthenticator $authenticator */
         $authenticator = $app[RequestAuthenticator::class];
-        $psrResponse = $authenticator->authenticate($psrRequest);
-
-        if ($psrResponse !== null) {
-            return (new HttpFoundationFactory())->createResponse($psrResponse);
-        }
-        return null;
+        $authenticator->authenticate($psrRequest);
     },
     Application::EARLY_EVENT
 );
