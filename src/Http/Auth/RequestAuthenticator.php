@@ -20,13 +20,18 @@ final class RequestAuthenticator
 
     public function authenticate(ServerRequestInterface $request): ?ResponseInterface
     {
-        if ($this->isPublicRoute($request)) {
+        if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
             return null;
         }
 
         return new ApiProblemJsonResponse(
             ApiProblem::unauthorized('Route is not public')
         );
+    }
+
+    private function isCorsPreflightRequest(ServerRequestInterface $request): bool
+    {
+        return $request->getMethod() === 'OPTIONS' && $request->hasHeader('access-control-request-method');
     }
 
     private function isPublicRoute(ServerRequestInterface $request): bool
