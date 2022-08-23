@@ -14,9 +14,9 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class UpdateAddressRequestHandlerTest extends TestCase
@@ -29,23 +29,21 @@ class UpdateAddressRequestHandlerTest extends TestCase
 
     private UpdateAddressRequestHandler $updateAddressRequestHandler;
 
-    private DocumentRepository $placeDocumentRepository;
-
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->placeDocumentRepository = new InMemoryDocumentRepository();
+        $placeDocumentRepository = new InMemoryDocumentRepository();
 
-        $this->placeDocumentRepository->save(
+        $placeDocumentRepository->save(
             new JsonDocument(self::PLACE_ID, '{}')
         );
 
         $this->updateAddressRequestHandler = new UpdateAddressRequestHandler(
             $this->commandBus,
-            $this->placeDocumentRepository
+            $placeDocumentRepository
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
@@ -88,5 +86,170 @@ class UpdateAddressRequestHandlerTest extends TestCase
             ],
             $this->commandBus->getRecordedCommands()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_changing_the_address(): void
+    {
+        $updateAddressRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('placeId', self::PLACE_ID)
+            ->withRouteParameter('language', 'nl')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "Veldstraat 11",
+                    "postalCode": "9000",
+                    "addressLocality": "Gent",
+                    "addressCountry": "BE"
+                }'
+            )
+            ->build('PUT');
+
+        $updateAddressRequest2 = $this->psr7RequestBuilder
+            ->withRouteParameter('placeId', self::PLACE_ID)
+            ->withRouteParameter('language', 'nl')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "Meir 12",
+                    "postalCode": "2000",
+                    "addressLocality": "Antwerpen",
+                    "addressCountry": "BE"
+                }'
+            )
+            ->build('PUT');
+
+        $this->updateAddressRequestHandler->handle($updateAddressRequest);
+        $this->updateAddressRequestHandler->handle($updateAddressRequest2);
+
+        $this->assertEquals(
+            [
+                new UpdateAddress(
+                    self::PLACE_ID,
+                    new Address(
+                        new Street('Veldstraat 11'),
+                        new PostalCode('9000'),
+                        new Locality('Gent'),
+                        new CountryCode('BE')
+                    ),
+                    new Language('nl')
+                ),
+                new UpdateAddress(
+                    self::PLACE_ID,
+                    new Address(
+                        new Street('Meir 12'),
+                        new PostalCode('2000'),
+                        new Locality('Antwerpen'),
+                        new CountryCode('BE')
+                    ),
+                    new Language('nl')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_supports_multiple_languages(): void
+    {
+        $updateAddressRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('placeId', self::PLACE_ID)
+            ->withRouteParameter('language', 'nl')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "Veldstraat 11",
+                    "postalCode": "9000",
+                    "addressLocality": "Gent",
+                    "addressCountry": "BE"
+                }'
+            )
+            ->build('PUT');
+
+        $updateAddressRequest2 = $this->psr7RequestBuilder
+            ->withRouteParameter('placeId', self::PLACE_ID)
+            ->withRouteParameter('language', 'fr')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "Rue du champ 11",
+                    "postalCode": "9000",
+                    "addressLocality": "Gand",
+                    "addressCountry": "BE"
+                }'
+            )
+            ->build('PUT');
+
+        $this->updateAddressRequestHandler->handle($updateAddressRequest);
+        $this->updateAddressRequestHandler->handle($updateAddressRequest2);
+
+        $this->assertEquals(
+            [
+                new UpdateAddress(
+                    self::PLACE_ID,
+                    new Address(
+                        new Street('Veldstraat 11'),
+                        new PostalCode('9000'),
+                        new Locality('Gent'),
+                        new CountryCode('BE')
+                    ),
+                    new Language('nl')
+                ),
+                new UpdateAddress(
+                    self::PLACE_ID,
+                    new Address(
+                        new Street('Rue du champ 11'),
+                        new PostalCode('9000'),
+                        new Locality('Gand'),
+                        new CountryCode('BE')
+                    ),
+                    new Language('fr')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_invalid_country(): void
+    {
+        $updateAddressRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('placeId', self::PLACE_ID)
+            ->withRouteParameter('language', 'nl')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "Veldstraat 11",
+                    "postalCode": "9000",
+                    "addressLocality": "Gent",
+                    "addressCountry": "BEL"
+                }'
+            )
+            ->build('PUT');
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->updateAddressRequestHandler->handle($updateAddressRequest);
+    }
+
+    public function it_throws_on_empty_values(): void
+    {
+        $updateAddressRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('placeId', self::PLACE_ID)
+            ->withRouteParameter('language', 'nl')
+            ->withBodyFromString(
+                '{
+                    "streetAddress": "",
+                    "postalCode": "9000",
+                    "addressLocality": "Gent",
+                    "addressCountry": "BE"
+                }'
+            )
+            ->build('PUT');
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->updateAddressRequestHandler->handle($updateAddressRequest);
     }
 }
