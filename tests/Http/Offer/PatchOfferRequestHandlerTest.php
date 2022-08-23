@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve as ApprovePlace;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate as FlagAsDuplicatePlace;
@@ -142,5 +141,4 @@ final class PatchOfferRequestHandlerTest extends TestCase
             ],
         ];
     }
-
 }
