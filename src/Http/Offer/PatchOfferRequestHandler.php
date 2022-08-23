@@ -28,8 +28,8 @@ final class PatchOfferRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->getOfferId();
         $offerType = $routeParameters->getOfferType();
+        $offerId = $routeParameters->getOfferId();
 
         $domainModel = $this->parseDomainModelNameFromRequest($request);
         $commandClass = 'CultuurNet\UDB3\\' . $offerType->toString() . '\Commands\Moderation\\' . $domainModel;

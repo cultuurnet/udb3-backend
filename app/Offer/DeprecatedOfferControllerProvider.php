@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
-use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -45,7 +44,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $controllers->put('/{cdbid}/labels/{label}/', "{$controllerName}:addLabel");
 
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
-        $controllers->patch('/{offerId}/', PatchOfferRequestHandler::class);
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
         $controllers->get('/{offerId}/permissions/{userId}/', "{$permissionsControllerName}:getPermissionsForGivenUser");
 
@@ -87,10 +85,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
             }
         );
 
-        $app[PatchOfferRequestHandler::class] = $app->share(
-            fn (Application $app) => new PatchOfferRequestHandler($app['event_command_bus'])
-        );
-
         $app[$this->getPermissionsControllerName()] = $app->share(
             function (Application $app) {
                 $permissionsToCheck = [
@@ -121,11 +115,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     private function getEditControllerName(): string
     {
         return "{$this->offerType}_offer_controller";
-    }
-
-    private function getPatchControllerName(): string
-    {
-        return "patch_{$this->offerType}_controller";
     }
 
     private function getPermissionsControllerName(): string
