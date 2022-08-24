@@ -9,16 +9,13 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class JwtBaseValidatorTest extends TestCase
+final class GenericJwtValidatorTest extends TestCase
 {
-    /**
-     * @var JwtBaseValidator
-     */
-    private $validator;
+    private GenericJwtValidator $validator;
 
     public function setUp()
     {
-        $this->validator = new JwtBaseValidator(
+        $this->validator = new GenericJwtValidator(
             JsonWebTokenFactory::getPublicKey(),
             ['sub'],
             ['valid-issuer-1', 'valid-issuer-2']
