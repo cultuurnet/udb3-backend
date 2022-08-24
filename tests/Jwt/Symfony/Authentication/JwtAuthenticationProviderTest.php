@@ -54,40 +54,6 @@ class JwtAuthenticationProviderTest extends TestCase
         return $this->v1JwtValidator;
     }
 
-    /**
-     * @test
-     */
-    public function it_can_detect_which_token_it_supports()
-    {
-        $this->assertFalse(
-            $this->authenticationProvider->supports(
-                new AnonymousToken('key', 'user')
-            )
-        );
-
-        $this->assertTrue(
-            $this->authenticationProvider->supports(
-                JsonWebTokenFactory::createWithClaims([])
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_exception_when_authenticating_an_unsupported_token()
-    {
-        $token = new AnonymousToken('key', 'user');
-
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage(
-            'Token type Symfony\\Component\\Security\\Core\\Authentication\\Token\\AnonymousToken not supported.'
-        );
-
-        $this->authenticationProvider->authenticate($token);
-    }
-
-
     public function tokenDataProvider(): array
     {
         return [
@@ -147,7 +113,7 @@ class JwtAuthenticationProviderTest extends TestCase
      * @test
      * @dataProvider tokenDataProvider
      */
-    public function it_returns_an_authenticated_token_when_the_jwt_is_valid(
+    public function it_does_not_throw_when_the_jwt_is_valid(
         JsonWebToken $token
     ): void {
         $this->getExpectedValidatorForTokenType($token)->expects($this->once())
@@ -164,9 +130,8 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->getUnusedValidatorForTokenType($token)->expects($this->never())
             ->method('validateClaims');
 
-        $authToken = $this->authenticationProvider->authenticate($token);
+        $this->authenticationProvider->authenticate($token);
 
-        $this->assertEquals($token->getCredentials(), $authToken->getCredentials());
-        $this->assertTrue($authToken->isAuthenticated());
+        $this->addToAssertionCount(1);
     }
 }

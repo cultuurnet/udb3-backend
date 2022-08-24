@@ -101,7 +101,7 @@ final class RequestAuthenticator
         }
 
         try {
-            $this->token = $this->jwtAuthenticator->authenticate($this->token);
+            $this->jwtAuthenticator->authenticate($this->token);
         } catch (AuthenticationException $authenticationException) {
             throw ApiProblem::unauthorized($authenticationException->getMessage());
         }
