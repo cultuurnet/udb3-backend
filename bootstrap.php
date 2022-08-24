@@ -66,6 +66,7 @@ use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
+use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
@@ -889,7 +890,11 @@ $app['predis.client'] = $app->share(function ($app) {
 $app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider());
+// Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
+// provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
+// access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
+// user who triggered the job is being impersonated.
+$app->register(new AuthServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
