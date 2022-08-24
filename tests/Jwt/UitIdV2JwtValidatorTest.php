@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use PHPUnit\Framework\TestCase;
 
-class JwtV2ValidatorTest extends TestCase
+class UitIdV2JwtValidatorTest extends TestCase
 {
     private UitIdV2JwtValidator $v2Validator;
 
