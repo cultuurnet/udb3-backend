@@ -9,20 +9,9 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 
 class JwtBaseValidator implements JwtValidator
 {
-    /**
-     * @var string
-     */
-    private $publicKey;
-
-    /**
-     * @var string[]
-     */
-    private $requiredClaims;
-
-    /**
-     * @var string[]
-     */
-    private $validIssuers;
+    private string $publicKey;
+    private array $requiredClaims;
+    private array $validIssuers;
 
     /**
      * @param string[] $requiredClaims

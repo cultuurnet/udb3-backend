@@ -9,15 +9,8 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 
 final class JwtV2Validator implements JwtValidator
 {
-    /**
-     * @var JwtValidator
-     */
-    private $baseValidator;
-
-    /**
-     * @var string
-     */
-    private $v2JwtProviderAuth0ClientId;
+    private JwtValidator $baseValidator;
+    private string $v2JwtProviderAuth0ClientId;
 
     public function __construct(JwtValidator $baseValidator, string $v2JwtProviderAuth0ClientId)
     {
