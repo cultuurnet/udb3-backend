@@ -54,15 +54,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['auth.request_authenticator'] = $app->share(
-            function (Application $app) {
-                return new ApiKeyRequestAuthenticator(
-                    $app['auth.api_key_reader'],
-                    $app['auth.api_key_authenticator']
-                );
-            }
-        );
-
         $app['consumer'] = null;
 
         $app->before(
@@ -78,8 +69,11 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                 /** @var RequestAuthenticator $requestAuthenticator */
                 $requestAuthenticator = $app[RequestAuthenticator::class];
-                /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
-                $apiKeyAuthenticator = $app['auth.request_authenticator'];
+
+                $apiKeyRequestAuthenticator = new ApiKeyRequestAuthenticator(
+                    $app['auth.api_key_reader'],
+                    $app['auth.api_key_authenticator']
+                );
 
                 $psr7Request = (new DiactorosFactory())->createRequest($request);
                 if ($requestAuthenticator->isPublicRoute($psr7Request)) {
@@ -91,7 +85,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 $app['auth.api_key'] = $app['auth.api_key_reader']->read($psr7Request);
 
                 try {
-                    $apiKeyAuthenticator->authenticate($psr7Request);
+                    $apiKeyRequestAuthenticator->authenticate($psr7Request);
                 } catch (RequestAuthenticationException $e) {
                     return (new ApiProblemJsonResponse(ApiProblem::unauthorized($e->getMessage())))
                         ->toHttpFoundationResponse();
