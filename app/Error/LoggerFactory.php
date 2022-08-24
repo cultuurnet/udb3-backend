@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use Monolog\Handler\GroupHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -67,7 +68,7 @@ final class LoggerFactory
             self::$sentryHandler = new SentryHandlerScopeDecorator(
                 new SentryHandler($app[HubInterface::class], Logger::ERROR),
                 $app['jwt'] ?? null,
-                $app['api_key'] ?? null,
+                $app[ApiKey::class] ?? null,
                 $app['api_name'] ?? null
             );
         }

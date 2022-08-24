@@ -67,7 +67,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['api_key'] = $app->share(
+        $app[ApiKey::class] = $app->share(
             function (Application $app): ?ApiKey {
                 // Check first if we're impersonating someone.
                 // This is done when handling commands.
@@ -106,7 +106,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
             static function (Application $app) {
                 /** @var ConsumerReadRepository $consumerReadRepository */
                 $consumerReadRepository = $app[ConsumerReadRepository::class];
-                return $consumerReadRepository->getConsumer($app['api_key']);
+                return $consumerReadRepository->getConsumer($app[ApiKey::class]);
             }
         );
     }

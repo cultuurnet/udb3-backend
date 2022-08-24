@@ -77,7 +77,7 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                         // Check if the API key or Client ID is in the list of keys / ids that should have their
                         // messages routed to the "cli" queue to offload the API queue if the API key or Client ID is
                         // sending A LOT of requests. (Configured manually in config.yml)
-                        $apiKey = $app['api_key'];
+                        $apiKey = $app[ApiKey::class];
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;
                         if (in_array($app['api_client_id'], $app['amqp.publisher.cli.client_ids'], true) ||
                             in_array($apiKey, $app['amqp.publisher.cli.api_keys'], true)) {

@@ -71,7 +71,7 @@ final class ContextFactory
         return self::createContext(
             $application['current_user_id'],
             $application['jwt'],
-            $application['api_key'],
+            $application[ApiKey::class],
             $application['api_name'],
             $request,
             $application[Consumer::class]
