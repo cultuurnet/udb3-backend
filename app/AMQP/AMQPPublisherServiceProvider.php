@@ -78,7 +78,7 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                         // Check if the API key or Client ID is in the list of keys / ids that should have their
                         // messages routed to the "cli" queue to offload the API queue if the API key or Client ID is
                         // sending A LOT of requests. (Configured manually in config.yml)
-                        $jwt = $app['jwt'];
+                        $jwt = $app[JsonWebToken::class];
                         $clientId = $jwt instanceof JsonWebToken ? $jwt->getClientId() : null;
                         $apiKey = $app[ApiKey::class];
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;

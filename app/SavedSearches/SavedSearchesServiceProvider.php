@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
@@ -34,7 +35,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CombinedSavedSearchRepository(
                     new Sapi3FixedSavedSearchRepository(
-                        $app['jwt'],
+                        $app[JsonWebToken::class],
                         $app[Auth0UserIdentityResolver::class],
                         $this->getCreatedByQueryMode($app)
                     ),

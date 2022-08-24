@@ -27,7 +27,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
                     return $impersonator->getUserId();
                 }
 
-                $token = $app['jwt'];
+                $token = $app[JsonWebToken::class];
                 if (!($token instanceof JsonWebToken)) {
                     // The token in the current request is missing (for example because it's a public route)
                     return null;
@@ -46,7 +46,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['jwt'] = $app::share(
+        $app[JsonWebToken::class] = $app::share(
             function (Application $app): ?JsonWebToken {
                 // Check first if we're impersonating someone.
                 /* @var Impersonator $impersonator */

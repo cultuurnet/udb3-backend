@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Error;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Monolog\Handler\GroupHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -67,7 +68,7 @@ final class LoggerFactory
         if (!isset(self::$sentryHandler)) {
             self::$sentryHandler = new SentryHandlerScopeDecorator(
                 new SentryHandler($app[HubInterface::class], Logger::ERROR),
-                $app['jwt'] ?? null,
+                $app[JsonWebToken::class] ?? null,
                 $app[ApiKey::class] ?? null,
                 $app['api_name'] ?? null
             );

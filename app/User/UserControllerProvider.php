@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\User;
 
 use CultuurNet\UDB3\Http\User\UserIdentityController;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -18,7 +19,7 @@ class UserControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new UserIdentityController(
                     $app[Auth0UserIdentityResolver::class],
-                    $app['jwt']
+                    $app[JsonWebToken::class]
                 );
             }
         );

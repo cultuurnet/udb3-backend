@@ -70,7 +70,7 @@ final class ContextFactory
 
         return self::createContext(
             $application['current_user_id'],
-            $application['jwt'],
+            $application[JsonWebToken::class],
             $application[ApiKey::class],
             $application['api_name'],
             $request,
