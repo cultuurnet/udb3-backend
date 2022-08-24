@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
-use CultuurNet\UDB3\Http\Offer\PatchOfferRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -35,7 +34,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     public function connect(Application $app): ControllerCollection
     {
         $controllerName = $this->getEditControllerName();
-        $patchControllerName = $this->getPatchControllerName();
         $permissionsControllerName = $this->getPermissionsControllerName();
         $deprecatedPermissionControllerName = $this->getDeprecatedPermissionControllerName();
 
@@ -46,7 +44,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $controllers->put('/{cdbid}/labels/{label}/', "{$controllerName}:addLabel");
 
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
-        $controllers->patch('/{cdbid}/', "{$patchControllerName}:handle");
         $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
         $controllers->get('/{offerId}/permissions/{userId}/', "{$permissionsControllerName}:getPermissionsForGivenUser");
 
@@ -88,15 +85,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
             }
         );
 
-        $app[$this->getPatchControllerName()] = $app->share(
-            function (Application $app) {
-                return new PatchOfferRestController(
-                    OfferType::fromCaseInsensitiveValue($this->offerType),
-                    $app['event_command_bus']
-                );
-            }
-        );
-
         $app[$this->getPermissionsControllerName()] = $app->share(
             function (Application $app) {
                 $permissionsToCheck = [
@@ -127,11 +115,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     private function getEditControllerName(): string
     {
         return "{$this->offerType}_offer_controller";
-    }
-
-    private function getPatchControllerName(): string
-    {
-        return "patch_{$this->offerType}_controller";
     }
 
     private function getPermissionsControllerName(): string
