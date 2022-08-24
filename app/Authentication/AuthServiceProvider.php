@@ -84,16 +84,6 @@ final class AuthServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['api_client_id'] = $app::share(
-            function (Application $app) {
-                $token = $app['jwt'];
-                if ($token instanceof JsonWebToken) {
-                    return $token->getClientId();
-                }
-                return null;
-            }
-        );
-
         $app[ConsumerReadRepository::class] = $app->share(
             function (Application $app): ConsumerReadRepository {
                 return new InMemoryConsumerRepository(
