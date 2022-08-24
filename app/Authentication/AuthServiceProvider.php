@@ -20,8 +20,6 @@ use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Component\HttpFoundation\Request;
 
 final class AuthServiceProvider implements ServiceProviderInterface
 {
