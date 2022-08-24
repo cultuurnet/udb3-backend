@@ -34,11 +34,8 @@ final class AuthServiceProvider implements ServiceProviderInterface
                         $app['config']['jwt']['v1']['valid_issuers']
                     ),
                     new UitIdV2JwtValidator(
-                        new GenericJwtValidator(
-                            'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v2']['keys']['public']['file'],
-                            ['sub'],
-                            $app['config']['jwt']['v2']['valid_issuers']
-                        ),
+                        'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v2']['keys']['public']['file'],
+                        $app['config']['jwt']['v2']['valid_issuers'],
                         $app['config']['jwt']['v2']['jwt_provider_client_id']
                     ),
                     new CultureFeedApiKeyAuthenticator($app[ConsumerReadRepository::class]),

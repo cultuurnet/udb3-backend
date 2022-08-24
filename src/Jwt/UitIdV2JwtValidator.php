@@ -12,9 +12,9 @@ final class UitIdV2JwtValidator implements JwtValidator
     private JwtValidator $baseValidator;
     private string $v2JwtProviderAuth0ClientId;
 
-    public function __construct(JwtValidator $baseValidator, string $v2JwtProviderAuth0ClientId)
+    public function __construct(string $publicKey, array $validIssuers, string $v2JwtProviderAuth0ClientId)
     {
-        $this->baseValidator = $baseValidator;
+        $this->baseValidator = new GenericJwtValidator($publicKey, ['sub'], $validIssuers);
         $this->v2JwtProviderAuth0ClientId = $v2JwtProviderAuth0ClientId;
     }
 
