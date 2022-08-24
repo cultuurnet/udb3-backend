@@ -14,7 +14,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository as ApiKeyConsumerRe
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification as ApiKeyConsumerSpecification;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Jwt\JwtValidator;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\JsonWebToken;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 

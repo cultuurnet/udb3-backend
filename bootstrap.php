@@ -20,7 +20,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;

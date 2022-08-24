@@ -14,7 +14,7 @@ use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Jwt\UitIdV2JwtValidator;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;

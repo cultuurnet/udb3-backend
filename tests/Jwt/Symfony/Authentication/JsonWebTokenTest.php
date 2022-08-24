@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
+use CultuurNet\UDB3\Jwt\JsonWebToken;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;

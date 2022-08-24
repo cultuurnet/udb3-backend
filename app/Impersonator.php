@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\JsonWebToken;
 
 class Impersonator
 {
