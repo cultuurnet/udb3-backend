@@ -24,7 +24,7 @@ class RoleControllerProvider implements ControllerProviderInterface
                     $app['role_service'],
                     $app['role_reading_service'],
                     $app[CurrentUser::class]->getId(),
-                    $app['current_user_is_god_user'],
+                    $app[CurrentUser::class]->isGodUser(),
                     $app['role_search_v3_repository'],
                     $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]
                 );

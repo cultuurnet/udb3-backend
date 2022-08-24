@@ -277,7 +277,9 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::QUERY_FACTORY] = $app->share(
             function (Application $app) {
-                return new QueryFactory($app['current_user_is_god_user'] ? null : $app[CurrentUser::class]->getId());
+                /** @var CurrentUser $currentUser */
+                $currentUser = $app[CurrentUser::class];
+                return new QueryFactory($currentUser->isGodUser() ? null : $currentUser->getId());
             }
         );
     }
