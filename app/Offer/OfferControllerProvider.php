@@ -61,7 +61,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
 
-        $controllers->patch('/{offerType}/{offerId}', PatchOfferRequestHandler::class);
+        $controllers->patch('/{offerType}/{offerId}/', PatchOfferRequestHandler::class);
 
         return $controllers;
     }
