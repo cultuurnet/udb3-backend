@@ -28,18 +28,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['auth.api_key_reader'] = $app->share(
-            function () {
-                $queryReader = new QueryParameterApiKeyReader('apiKey');
-                $headerReader = new CustomHeaderApiKeyReader('X-Api-Key');
-
-                return new CompositeApiKeyReader(
-                    $queryReader,
-                    $headerReader
-                );
-            }
-        );
-
         $app['auth.consumer_repository'] = $app->share(
             function (Application $app): ConsumerReadRepository {
                 return new InMemoryConsumerRepository(
@@ -64,8 +52,13 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 /** @var RequestAuthenticator $requestAuthenticator */
                 $requestAuthenticator = $app[RequestAuthenticator::class];
 
+                $apiKeyReader = new CompositeApiKeyReader(
+                    new QueryParameterApiKeyReader('apiKey'),
+                    new CustomHeaderApiKeyReader('X-Api-Key')
+                );
+
                 $apiKeyRequestAuthenticator = new ApiKeyRequestAuthenticator(
-                    $app['auth.api_key_reader'],
+                    $apiKeyReader,
                     new CultureFeedApiKeyAuthenticator($app['auth.consumer_repository'])
                 );
 
@@ -75,8 +68,8 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     return null;
                 }
 
-                // Also store the ApiKey for later use in the impersonator.
-                $app['auth.api_key'] = $app['auth.api_key_reader']->read($psr7Request);
+                // Also store the ApiKey in the service container for later use in the impersonator.
+                $app['auth.api_key'] = $apiKeyReader->read($psr7Request);
 
                 try {
                     $apiKeyRequestAuthenticator->authenticate($psr7Request);
