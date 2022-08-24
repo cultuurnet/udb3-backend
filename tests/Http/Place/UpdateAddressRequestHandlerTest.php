@@ -18,8 +18,6 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
-use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -39,12 +37,6 @@ class UpdateAddressRequestHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-
-        $placeDocumentRepository = new InMemoryDocumentRepository();
-
-        $placeDocumentRepository->save(
-            new JsonDocument(self::PLACE_ID, '{}')
-        );
 
         $this->updateAddressRequestHandler = new UpdateAddressRequestHandler(
             $this->commandBus

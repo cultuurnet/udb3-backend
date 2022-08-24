@@ -99,19 +99,22 @@ final class Psr7RequestBuilder
 
     public function build(string $method): ServerRequestInterface
     {
-        return (
-            new Request(
-                $method,
-                $this->uri ?? self::getUriFactory()->createUri(),
-                $this->headers ?? new Headers(),
-                [],
-                [],
-                $this->body ?? self::getStreamFactory()->createStream(),
-                $this->files,
-            )
-        )
-            ->withAttribute('_route_params', $this->routeParameters)
-            ->withParsedBody($this->parsedBody);
+        $request = new Request(
+            $method,
+            $this->uri ?? self::getUriFactory()->createUri(),
+            $this->headers ?? new Headers(),
+            [],
+            [],
+            $this->body ?? self::getStreamFactory()->createStream(),
+            $this->files,
+        );
+
+        foreach ($this->routeParameters as $routeParameter => $value) {
+            $request = $request->withAttribute($routeParameter, $value);
+        }
+
+        $request = $request->withParsedBody($this->parsedBody);
+        return $request;
     }
 
     private static function getUriFactory(): UriFactory

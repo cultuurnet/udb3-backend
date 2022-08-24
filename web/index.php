@@ -12,13 +12,14 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
+use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
-use CultuurNet\UDB3\Silex\LegacyRoutesServiceProvider;
+use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
 use CultuurNet\UDB3\Silex\Offer\DeprecatedOfferControllerProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
@@ -56,6 +57,13 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
  * The class name still needs to be registered as a service!
  */
 $app->register(new RequestHandlerControllerServiceProvider());
+
+/**
+ * Register a PSR-7 / PSR-15 compatible router.
+ * Will be used in CatchAllRouteServiceProvider to route unmatched requests from Silex to the PSR router, until we can
+ * completely by-pass the Silex router.
+ */
+$app->register(new PsrRouterServiceProvider());
 
 /**
  * Firewall configuration.
@@ -247,11 +255,15 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 // Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
 // ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
 // the needed CORS headers).
+// Note that the new PSR router in PsrRouterServiceProvider already supports OPTIONS requests for all routes registered
+// in the new router, so this can be removed completely once all route definitions and handlers are moved to the new
+// router.
 $app->options('/{path}', fn () => new NoContentResponse())->assert('path', '^.+$');
 
 // Add CORS headers to every request. We explicitly allow everything, because we don't use cookies and our API is not on
 // an internal network, so CORS requests are never a security issue in our case. This greatly reduces the risk of CORS
 // bugs in our frontend and other integrations.
+// @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
 $app->after(
     function (Request $request, Response $response) {
         // Allow any known method regardless of the URL.
@@ -272,7 +284,7 @@ $app->after(
     }
 );
 
-$app->register(new LegacyRoutesServiceProvider());
+$app->register(new CatchAllRouteServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
 
