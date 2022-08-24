@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class UitidApiKeyServiceProvider implements ServiceProviderInterface
+final class AuthServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
