@@ -48,12 +48,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['auth.api_key_authenticator'] = $app->share(
-            function (Application $app) {
-                return new CultureFeedApiKeyAuthenticator($app['auth.consumer_repository']);
-            }
-        );
-
         $app['consumer'] = null;
 
         $app->before(
@@ -72,7 +66,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                 $apiKeyRequestAuthenticator = new ApiKeyRequestAuthenticator(
                     $app['auth.api_key_reader'],
-                    $app['auth.api_key_authenticator']
+                    new CultureFeedApiKeyAuthenticator($app['auth.consumer_repository'])
                 );
 
                 $psr7Request = (new DiactorosFactory())->createRequest($request);
