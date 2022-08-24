@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 
 final class UitIdV1JwtValidator implements JwtValidator
