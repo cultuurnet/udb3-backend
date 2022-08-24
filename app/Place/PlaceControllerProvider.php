@@ -8,11 +8,11 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
+use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Place\LegacyPlaceRequestBodyParser;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler;
-use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
@@ -49,7 +49,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
-        $controllers->get('/{cdbid}/events/', 'place_editing_controller:getEvents');
+        $controllers->get('/{cdbid}/events/', GetEventsRequestHandler::class);
         $controllers->post('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
         $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
@@ -64,12 +64,10 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
-        $app['place_editing_controller'] = $app->share(
+        $app[GetEventsRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new EditPlaceRestController(
-                    $app['place_editing_service'],
+                return new GetEventsRequestHandler(
                     $app[EventRelationsRepository::class],
-                    $app['media_manager']
                 );
             }
         );
