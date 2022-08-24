@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\UDB3\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class GenericJwtValidatorTest extends TestCase
 {
@@ -48,7 +47,7 @@ final class GenericJwtValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -65,7 +64,7 @@ final class GenericJwtValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -83,7 +82,7 @@ final class GenericJwtValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -101,7 +100,7 @@ final class GenericJwtValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -130,7 +129,7 @@ final class GenericJwtValidatorTest extends TestCase
     public function it_throws_if_the_signature_is_invalid(): void
     {
         $token = JsonWebTokenFactory::createWithInvalidSignature();
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->verifySignature($token);
     }
 
