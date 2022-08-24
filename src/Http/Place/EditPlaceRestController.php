@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
+use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -24,7 +24,7 @@ class EditPlaceRestController extends OfferRestBaseController
      *
      */
     public function __construct(
-        PlaceEditingServiceInterface $placeEditor,
+        DefaultOfferEditingService $placeEditor,
         EventRelationsRepository $eventRelationsRepository,
         MediaManagerInterface $mediaManager
     ) {
