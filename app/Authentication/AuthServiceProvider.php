@@ -11,6 +11,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Silex\Impersonator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
