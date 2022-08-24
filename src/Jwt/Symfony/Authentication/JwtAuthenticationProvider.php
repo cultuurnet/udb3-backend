@@ -8,15 +8,8 @@ use CultuurNet\UDB3\Jwt\JwtValidator;
 
 final class JwtAuthenticationProvider
 {
-    /**
-     * @var JwtValidator
-     */
-    private $v1JwtValidator;
-
-    /**
-     * @var JwtValidator
-     */
-    private $v2JwtValidator;
+    private JwtValidator $v1JwtValidator;
+    private JwtValidator $v2JwtValidator;
 
     public function __construct(
         JwtValidator $v1JwtValidator,
