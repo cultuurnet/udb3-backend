@@ -11,7 +11,7 @@ final class GenericJwtValidatorTest extends TestCase
 {
     private GenericJwtValidator $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->validator = new GenericJwtValidator(
             JsonWebTokenFactory::getPublicKey(),

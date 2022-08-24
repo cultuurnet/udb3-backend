@@ -11,7 +11,7 @@ class UitIdV2JwtValidatorTest extends TestCase
 {
     private UitIdV2JwtValidator $v2Validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->v2Validator = new UitIdV2JwtValidator(
             file_get_contents(__DIR__ . '/samples/public.pem'),
