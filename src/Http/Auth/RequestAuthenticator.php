@@ -29,12 +29,20 @@ final class RequestAuthenticator
         $this->publicRoutes[$pathPattern] = $methods;
     }
 
+    /**
+     * @throws ApiProblem
+     */
     public function authenticate(ServerRequestInterface $request): void
     {
         if ($this->isCorsPreflightRequest($request) || $this->isPublicRoute($request)) {
             return;
         }
 
+        $this->authenticateToken($request);
+    }
+
+    private function authenticateToken(ServerRequestInterface $request): void
+    {
         $authorizationHeader = $request->getHeader('authorization');
         if (empty($authorizationHeader)) {
             throw ApiProblem::unauthorized('Authorization header missing.');
