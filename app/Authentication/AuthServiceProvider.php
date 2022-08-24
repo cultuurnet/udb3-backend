@@ -103,10 +103,15 @@ final class AuthServiceProvider implements ServiceProviderInterface
         );
 
         $app[Consumer::class] = $app->share(
-            static function (Application $app) {
+            static function (Application $app): ?Consumer {
+                $apiKey = $app[ApiKey::class];
+                if ($apiKey === null) {
+                    return null;
+                }
+
                 /** @var ConsumerReadRepository $consumerReadRepository */
                 $consumerReadRepository = $app[ConsumerReadRepository::class];
-                return $consumerReadRepository->getConsumer($app[ApiKey::class]);
+                return $consumerReadRepository->getConsumer($apiKey);
             }
         );
     }
