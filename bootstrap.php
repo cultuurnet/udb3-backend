@@ -964,13 +964,7 @@ $app['predis.client'] = $app->share(function ($app) {
 $app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider(),
-    [
-        'auth.api_key.group_id' => $app['config']['api_key']['group_id'],
-        'auth.api_key_bypass' => $app['config']['bypass_api_key_check'] ?? false,
-    ]
-);
+$app->register(new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),

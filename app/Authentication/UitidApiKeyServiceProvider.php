@@ -46,7 +46,8 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
         $app->before(
             function (Request $request, Application $app): ?Response {
-                if ($app['auth.api_key_bypass']) {
+                $bypassApiKeyCheck = $app['config']['bypass_api_key_check'] ?? false;
+                if ($bypassApiKeyCheck === true) {
                     return null;
                 }
 
@@ -86,7 +87,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                 // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
                 $permissionCheck = new ConsumerIsInPermissionGroup(
-                    (string) $app['auth.api_key.group_id']
+                    (string) $app['config']['api_key']['group_id']
                 );
 
                 /* @var ConsumerReadRepository $consumerRepository */
