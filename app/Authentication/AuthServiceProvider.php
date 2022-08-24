@@ -12,6 +12,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Silex\Impersonator;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -19,6 +20,12 @@ final class AuthServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app[CurrentUser::class] = $app->share(
+            static function (Application $app): CurrentUser {
+                return new CurrentUser($app['current_user_id'], $app['current_user_is_god_user']);
+            }
+        );
+
         $app['current_user_id'] = $app::share(
             function (Application $app): ?string {
                 /* @var Impersonator $impersonator */
