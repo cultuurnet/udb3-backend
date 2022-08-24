@@ -77,6 +77,8 @@ final class AuthServiceProvider implements ServiceProviderInterface
 
         $app[CurrentUser::class] = $app->share(
             static function (Application $app): CurrentUser {
+                // Check first if we're impersonating someone.
+                // This is done when handling async commands via a CLI worker.
                 /* @var Impersonator $impersonator */
                 $impersonator = $app['impersonator'];
                 $token = $app[JsonWebToken::class];
@@ -98,6 +100,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
         $app[JsonWebToken::class] = $app::share(
             function (Application $app): ?JsonWebToken {
                 // Check first if we're impersonating someone.
+                // This is done when handling async commands via a CLI worker.
                 /* @var Impersonator $impersonator */
                 $impersonator = $app['impersonator'];
                 if ($impersonator->getJwt()) {
@@ -119,7 +122,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
         $app[ApiKey::class] = $app->share(
             function (Application $app): ?ApiKey {
                 // Check first if we're impersonating someone.
-                // This is done when handling commands.
+                // This is done when handling async commands via a CLI worker.
                 /* @var Impersonator $impersonator */
                 $impersonator = $app['impersonator'];
                 if ($impersonator->getApiKey()) {
