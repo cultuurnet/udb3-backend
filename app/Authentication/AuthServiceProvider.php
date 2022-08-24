@@ -32,13 +32,13 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 $authenticator = new RequestAuthenticator(
                     new JwtAuthenticationProvider(
                         new JwtBaseValidator(
-                            'file://' . __DIR__ . '/../' . $app['config']['jwt']['v1']['keys']['public']['file'],
+                            'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v1']['keys']['public']['file'],
                             ['uid'],
                             $app['config']['jwt']['v1']['valid_issuers']
                         ),
                         new JwtV2Validator(
                             new JwtBaseValidator(
-                                'file://' . __DIR__ . '/../' . $app['config']['jwt']['v2']['keys']['public']['file'],
+                                'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v2']['keys']['public']['file'],
                                 ['sub'],
                                 $app['config']['jwt']['v2']['valid_issuers']
                             ),
