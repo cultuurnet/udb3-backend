@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
@@ -86,7 +87,7 @@ final class OfferServiceProvider implements ServiceProviderInterface
                 return new ReplayFilteringEventListener(
                     new AutoApproveForUiTIDv1ApiKeysProcessManager(
                         $app[OfferRepository::class],
-                        $app['auth.consumer_repository'],
+                        $app[ConsumerReadRepository::class],
                         $app['should_auto_approve_new_offer']
                     )
                 );

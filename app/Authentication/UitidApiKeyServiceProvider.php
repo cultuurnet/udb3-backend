@@ -28,7 +28,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['auth.consumer_repository'] = $app->share(
+        $app[ConsumerReadRepository::class] = $app->share(
             function (Application $app): ConsumerReadRepository {
                 return new InMemoryConsumerRepository(
                     new CultureFeedConsumerReadRepository($app['culturefeed'], true)
@@ -59,7 +59,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                 $apiKeyRequestAuthenticator = new ApiKeyRequestAuthenticator(
                     $apiKeyReader,
-                    new CultureFeedApiKeyAuthenticator($app['auth.consumer_repository'])
+                    new CultureFeedApiKeyAuthenticator($app[ConsumerReadRepository::class])
                 );
 
                 $psr7Request = (new DiactorosFactory())->createRequest($request);
@@ -84,7 +84,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 );
 
                 /* @var ConsumerReadRepository $consumerRepository */
-                $consumerRepository = $app['auth.consumer_repository'];
+                $consumerRepository = $app[ConsumerReadRepository::class];
                 /** @var Consumer $consumer */
                 $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
 
