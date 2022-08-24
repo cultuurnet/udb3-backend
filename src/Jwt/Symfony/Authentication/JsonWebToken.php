@@ -17,10 +17,10 @@ use CultuurNet\UDB3\StringLiteral;
 
 final class JsonWebToken
 {
-    public const V1_JWT_PROVIDER_TOKEN = 'v1_jwt_provider_token';
-    public const V2_JWT_PROVIDER_TOKEN = 'v2_jwt_provider_token';
-    public const V2_USER_ACCESS_TOKEN = 'v2_user_access_token';
-    public const V2_CLIENT_ACCESS_TOKEN = 'v2_client_access_token';
+    public const UIT_ID_V1_JWT_PROVIDER_TOKEN = 'uit_v1_jwt_provider_token';
+    public const UIT_ID_V2_JWT_PROVIDER_TOKEN = 'uit_v2_jwt_provider_token';
+    public const UIT_ID_V2_USER_ACCESS_TOKEN = 'uit_v2_user_access_token';
+    public const UIT_ID_V2_CLIENT_ACCESS_TOKEN = 'uit_v2_client_access_token';
 
     private const TIME_LEEWAY = 30;
 
@@ -52,22 +52,22 @@ final class JsonWebToken
     {
         // V1 tokens had a non-standardized "uid" claim
         if ($this->token->hasClaim('uid')) {
-            return self::V1_JWT_PROVIDER_TOKEN;
+            return self::UIT_ID_V1_JWT_PROVIDER_TOKEN;
         }
 
         // V2 tokens from the JWT provider are Auth0 ID tokens and do not have an azp claim
         if (!$this->token->hasClaim('azp')) {
-            return self::V2_JWT_PROVIDER_TOKEN;
+            return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
         }
 
         // V2 client access tokens are always requested using the client-credentials grant type (gty)
         // @see https://stackoverflow.com/questions/49492471/whats-the-meaning-of-the-gty-claim-in-a-jwt-token/49492971
         if ($this->token->getClaim('gty', '') === 'client-credentials') {
-            return self::V2_CLIENT_ACCESS_TOKEN;
+            return self::UIT_ID_V2_CLIENT_ACCESS_TOKEN;
         }
 
         // If all other checks fail it's a V2 user access token.
-        return self::V2_USER_ACCESS_TOKEN;
+        return self::UIT_ID_V2_USER_ACCESS_TOKEN;
     }
 
     public function getUserId(): string
@@ -85,7 +85,7 @@ final class JsonWebToken
 
     public function getUserIdentityDetails(UserIdentityResolver $userIdentityResolver): ?UserIdentityDetails
     {
-        if ($this->getType() === self::V2_CLIENT_ACCESS_TOKEN) {
+        if ($this->getType() === self::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
             return null;
         }
 

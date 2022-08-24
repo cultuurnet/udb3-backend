@@ -57,7 +57,7 @@ class UserIdentityController
 
     public function getCurrentUser(): ResponseInterface
     {
-        if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
+        if ($this->jwt->getType() === JsonWebToken::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
             throw ApiProblem::unauthorized(
                 'Client access tokens are not supported on this endpoint because a user is required to return user info.'
             );

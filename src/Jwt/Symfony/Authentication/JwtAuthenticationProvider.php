@@ -21,7 +21,7 @@ final class JwtAuthenticationProvider
 
     public function authenticate(JsonWebToken $token): void
     {
-        $isV1 = $token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN;
+        $isV1 = $token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN;
         $validator = $isV1 ? $this->v1JwtValidator : $this->v2JwtValidator;
 
         $validator->verifySignature($token);
