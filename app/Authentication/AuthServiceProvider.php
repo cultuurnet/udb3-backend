@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Authentication;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -17,7 +19,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
     public function register(Application $app): void
     {
         $app['current_user_id'] = $app::share(
-            function (Application $app) {
+            function (Application $app): ?string {
                 /* @var Impersonator $impersonator */
                 $impersonator = $app['impersonator'];
                 if ($impersonator->getUserId()) {
@@ -34,7 +36,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
         );
 
         $app['current_user_is_god_user'] = $app::share(
-            function (Application $app) {
+            function (Application $app): bool {
                 return in_array(
                     $app['current_user_id'],
                     $app['config']['user_permissions']['allow_all'],
@@ -44,7 +46,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
         );
 
         $app['jwt'] = $app::share(
-            function (Application $app) {
+            function (Application $app): ?JsonWebToken {
                 // Check first if we're impersonating someone.
                 /* @var Impersonator $impersonator */
                 $impersonator = $app['impersonator'];
@@ -65,7 +67,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
         );
 
         $app['api_key'] = $app->share(
-            function (Application $app) {
+            function (Application $app): ?ApiKey {
                 // Check first if we're impersonating someone.
                 // This is done when handling commands.
                 /* @var Impersonator $impersonator */
