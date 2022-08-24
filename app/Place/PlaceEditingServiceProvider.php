@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Place;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
-use CultuurNet\UDB3\Place\DefaultPlaceEditingService;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use Silex\Application;
@@ -21,7 +21,7 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
     {
         $app['place_editing_service'] = $app->share(
             function ($app) {
-                return new DefaultPlaceEditingService(
+                return new DefaultOfferEditingService(
                     $app['event_command_bus'],
                     new Version4Generator(),
                     $app['place_jsonld_repository'],
