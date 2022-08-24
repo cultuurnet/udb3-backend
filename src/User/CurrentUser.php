@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\User;
 
 final class CurrentUser
 {
-    private ?string $id = null;
-    private bool $isGodUser = false;
+    private ?string $id;
+    private bool $isGodUser;
 
     public function __construct(?string $id, bool $isGodUser)
     {
