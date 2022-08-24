@@ -13,8 +13,8 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository as ApiKeyConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification as ApiKeyConsumerSpecification;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Jwt\JwtValidator;
-use CultuurNet\UDB3\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 

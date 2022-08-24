@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
-use CultuurNet\UDB3\Jwt\JsonWebTokenFactory;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebTokenFactory;
 use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;

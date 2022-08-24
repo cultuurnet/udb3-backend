@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Jwt;
+namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
 final class UitIdV1JwtValidator implements JwtValidator
 {

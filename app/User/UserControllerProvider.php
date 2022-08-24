@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\User;
 
 use CultuurNet\UDB3\Http\User\UserIdentityController;
-use CultuurNet\UDB3\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Silex\ControllerCollection;

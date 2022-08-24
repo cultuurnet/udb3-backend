@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Jwt;
+namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
