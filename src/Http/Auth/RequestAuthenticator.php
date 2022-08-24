@@ -13,8 +13,8 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository as ApiKeyConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification as ApiKeyConsumerSpecification;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Jwt\JwtValidator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -25,18 +25,21 @@ final class RequestAuthenticator
     private array $publicRoutes = [];
     private ?JsonWebToken $token = null;
     private ?ApiKey $apiKey = null;
-    private JwtAuthenticationProvider $jwtAuthenticator;
+    private JwtValidator $uitIdV1JwtValidator;
+    private JwtValidator $uitIdV2JwtValidator;
     private ApiKeyAuthenticator $apiKeyAuthenticator;
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
 
     public function __construct(
-        JwtAuthenticationProvider $jwtAuthenticator,
+        JwtValidator $uitIdV1JwtValidator,
+        JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck
     ) {
-        $this->jwtAuthenticator = $jwtAuthenticator;
+        $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
+        $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
         $this->apiKeyAuthenticator = $apiKeyAuthenticator;
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
@@ -99,7 +102,11 @@ final class RequestAuthenticator
             throw ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.');
         }
 
-        $this->jwtAuthenticator->authenticate($this->token);
+        $isV1 = $this->token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN;
+        $validator = $isV1 ? $this->uitIdV1JwtValidator : $this->uitIdV2JwtValidator;
+
+        $validator->verifySignature($this->token);
+        $validator->validateClaims($this->token);
     }
 
     private function authenticateApiKey(ServerRequestInterface $request): void
