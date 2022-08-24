@@ -41,6 +41,11 @@ final class RequestAuthenticator
         $this->authenticateToken($request);
     }
 
+    public function getToken(): ?JsonWebToken
+    {
+        return $this->token;
+    }
+
     private function authenticateToken(ServerRequestInterface $request): void
     {
         $authorizationHeader = $request->getHeader('authorization');
@@ -68,11 +73,6 @@ final class RequestAuthenticator
         } catch (AuthenticationException $authenticationException) {
             throw ApiProblem::unauthorized($authenticationException->getMessage());
         }
-    }
-
-    public function getToken(): ?JsonWebToken
-    {
-        return $this->token;
     }
 
     private function isCorsPreflightRequest(ServerRequestInterface $request): bool
