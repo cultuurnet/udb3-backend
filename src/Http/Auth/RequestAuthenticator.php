@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class RequestAuthenticator
 {
