@@ -78,6 +78,11 @@ $app->before(
     Application::EARLY_EVENT
 );
 
+/**
+ * Middleware that proxies application/xml requests to the XML service.
+ * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
+ * (To be discussed if this is actually still needed now that all XML APIs are offline and no longer supported!)
+ */
 if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
@@ -91,6 +96,10 @@ if (isset($app['config']['cdbxml_proxy']) &&
     );
 }
 
+/**
+ * Middleware that proxies requests for GET /events, GET /places and GET /organizers to Search API.
+ * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
+ */
 if (isset($app['config']['search_proxy']) &&
     $app['config']['search_proxy']['enabled']) {
     $app->before(
