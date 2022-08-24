@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Auth;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKeyAuthenticationException;
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKeyAuthenticator;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository as ApiKeyConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification as ApiKeyConsumerSpecification;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
@@ -17,11 +25,22 @@ final class RequestAuthenticator
 
     private array $publicRoutes = [];
     private ?JsonWebToken $token = null;
+    private ?ApiKey $apiKey = null;
     private JwtAuthenticationProvider $jwtAuthenticator;
+    private ApiKeyAuthenticator $apiKeyAuthenticator;
+    private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
+    private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
 
-    public function __construct(JwtAuthenticationProvider $jwtAuthenticator)
-    {
+    public function __construct(
+        JwtAuthenticationProvider $jwtAuthenticator,
+        ApiKeyAuthenticator $apiKeyAuthenticator,
+        ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
+        ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck
+    ) {
         $this->jwtAuthenticator = $jwtAuthenticator;
+        $this->apiKeyAuthenticator = $apiKeyAuthenticator;
+        $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
+        $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
@@ -39,11 +58,24 @@ final class RequestAuthenticator
         }
 
         $this->authenticateToken($request);
+
+        // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
+        // Requests that use a token that they got directly from Auth0 do not require an API key.
+        // The difference can be checked by checking if the token has a client id, which is always missing in tokens
+        // from the JWT providers.
+        if ($this->token->getClientId() === null) {
+            $this->authenticateApiKey($request);
+        }
     }
 
     public function getToken(): ?JsonWebToken
     {
         return $this->token;
+    }
+
+    public function getApiKey(): ?ApiKey
+    {
+        return $this->apiKey;
     }
 
     private function authenticateToken(ServerRequestInterface $request): void
@@ -72,6 +104,37 @@ final class RequestAuthenticator
             $this->token = $this->jwtAuthenticator->authenticate($this->token);
         } catch (AuthenticationException $authenticationException) {
             throw ApiProblem::unauthorized($authenticationException->getMessage());
+        }
+    }
+
+    private function authenticateApiKey(ServerRequestInterface $request): void
+    {
+        $apiKeyReader = new CompositeApiKeyReader(
+            new QueryParameterApiKeyReader('apiKey'),
+            new CustomHeaderApiKeyReader('X-Api-Key')
+        );
+        $this->apiKey = $apiKeyReader->read($request);
+
+        if ($this->apiKey === null) {
+            throw ApiProblem::unauthorized(
+                'The given token requires an API key, but no x-api-key header or apiKey URL parameter found.'
+            );
+        }
+
+        try {
+            $this->apiKeyAuthenticator->authenticate($this->apiKey);
+        } catch (ApiKeyAuthenticationException $e) {
+            throw ApiProblem::unauthorized($e->getMessage());
+        }
+
+        $consumer = $this->apiKeyConsumerReadRepository->getConsumer($this->apiKey);
+        if ($consumer === null) {
+            throw ApiProblem::unauthorized('No consumer details could be found for the given API key.');
+        }
+
+        $canAccessEntryApi = $this->apiKeyConsumerPermissionCheck->satisfiedBy($consumer);
+        if (!$canAccessEntryApi) {
+            throw ApiProblem::forbidden('Given API key is not authorized to use Entry API.');
         }
     }
 

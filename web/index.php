@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
+use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -77,7 +80,10 @@ $app[RequestAuthenticator::class] = $app::share(
                     ),
                     $app['config']['jwt']['v2']['jwt_provider_client_id']
                 )
-            )
+            ),
+            new CultureFeedApiKeyAuthenticator($app[ConsumerReadRepository::class]),
+            $app[ConsumerReadRepository::class],
+            new ConsumerIsInPermissionGroup((string) $app['config']['api_key']['group_id'])
         );
 
         // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs, because there
