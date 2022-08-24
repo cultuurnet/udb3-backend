@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
@@ -60,6 +61,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->delete('/{offerType}/{offerId}/videos/{videoId}/', DeleteVideoRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
+
+        $controllers->patch('/{offerType}/{offerId}/', PatchOfferRequestHandler::class);
 
         return $controllers;
     }
@@ -142,6 +145,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new DeleteVideoRequestHandler(
                 $app['event_command_bus']
             )
+        );
+
+        $app[PatchOfferRequestHandler::class] = $app->share(
+            fn (Application $app) => new PatchOfferRequestHandler($app['event_command_bus'])
         );
     }
 

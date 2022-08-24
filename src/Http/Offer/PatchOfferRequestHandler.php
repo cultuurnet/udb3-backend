@@ -5,62 +5,60 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
-use DateTime;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringLiteral;
+use DateTime;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class PatchOfferRestController
+final class PatchOfferRequestHandler implements RequestHandlerInterface
 {
     public const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';
 
     private CommandBus $commandBus;
 
-    private OfferType $offerType;
-
-    public function __construct(
-        OfferType $offerType,
-        CommandBus $commandBus
-    ) {
-        $this->offerType = $offerType;
+    public function __construct(CommandBus $commandBus)
+    {
         $this->commandBus = $commandBus;
     }
 
-    public function handle(Request $request, string $cdbid): Response
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $routeParameters = new RouteParameters($request);
+        $offerType = $routeParameters->getOfferType();
+        $offerId = $routeParameters->getOfferId();
+
         $domainModel = $this->parseDomainModelNameFromRequest($request);
-        $commandClass = 'CultuurNet\UDB3\\' . $this->offerType->toString() . '\Commands\Moderation\\' . $domainModel;
+        $commandClass = 'CultuurNet\UDB3\\' . $offerType->toString() . '\Commands\Moderation\\' . $domainModel;
 
         if (!class_exists($commandClass)) {
             throw new \InvalidArgumentException('The command in content-type is not supported.');
         }
 
         if ($domainModel === 'Reject') {
-            $content = json_decode($request->getContent());
+            $content = Json::decode($request->getBody()->getContents());
             $reason = new StringLiteral($content->reason);
 
-            $command = new $commandClass($cdbid, $reason);
+            $command = new $commandClass($offerId, $reason);
         } elseif ($domainModel === 'Publish') {
             $publicationDate = $this->getPublicationDate($request);
 
-            $command = new $commandClass($cdbid, $publicationDate);
+            $command = new $commandClass($offerId, $publicationDate);
         } else {
-            $command = new $commandClass($cdbid);
+            $command = new $commandClass($offerId);
         }
 
         $this->commandBus->dispatch($command);
 
-        return new NoContent();
+        return new NoContentResponse();
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function parseDomainModelNameFromRequest(Request $request): string
+    private function parseDomainModelNameFromRequest(ServerRequestInterface $request): string
     {
-        $contentType = $request->headers->get('Content-Type');
+        $contentType = $request->getHeaderLine('Content-Type');
         preg_match(self::DOMAIN_MODEL_REGEX, $contentType, $matches);
 
         if (!is_array($matches) || !array_key_exists(1, $matches)) {
@@ -70,9 +68,9 @@ class PatchOfferRestController
         return $matches[1];
     }
 
-    private function getPublicationDate(Request $request): ?DateTime
+    private function getPublicationDate(ServerRequestInterface $request): ?DateTime
     {
-        $content = json_decode($request->getContent());
+        $content = Json::decode($request->getBody()->getContents());
 
         if (!isset($content->publicationDate)) {
             return null;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Language;
@@ -14,7 +13,6 @@ use CultuurNet\UDB3\Offer\AgeRange;
 
 interface PlaceEditingServiceInterface
 {
-    public function updateAddress(string $id, Address $address, Language $language): void;
     public function updateDescription(string $id, Language $language, Description $description): void;
     public function updateTypicalAgeRange(string $id, AgeRange $ageRange): void;
     public function deleteTypicalAgeRange(string $id): void;
