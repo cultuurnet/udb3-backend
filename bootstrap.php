@@ -99,7 +99,6 @@ use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\Psr7ServiceProvider;
 use SocketIO\Emitter;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
