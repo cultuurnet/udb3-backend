@@ -19,7 +19,7 @@ final class JsonWebTokenFactory
         return new JsonWebToken(
             (string) $builder->getToken(
                 new Sha256(),
-                new Key(file_get_contents(__DIR__ . '/../../samples/private.pem'), 'secret')
+                new Key(file_get_contents(__DIR__ . '/samples/private.pem'), 'secret')
             )
         );
     }
@@ -29,13 +29,13 @@ final class JsonWebTokenFactory
         return new JsonWebToken(
             (string) (new Builder())->getToken(
                 new Sha256(),
-                new Key(file_get_contents(__DIR__ . '/../../samples/private-invalid.pem'))
+                new Key(file_get_contents(__DIR__ . '/samples/private-invalid.pem'))
             )
         );
     }
 
     public static function getPublicKey(): string
     {
-        return file_get_contents(__DIR__ . '/../../samples/public.pem');
+        return file_get_contents(__DIR__ . '/samples/public.pem');
     }
 }
