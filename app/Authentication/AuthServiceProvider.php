@@ -75,9 +75,9 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 }
 
                 // If not impersonating then use the api key from the request.
-                // It is possible to work without api key then null is returned
-                // and will be handled with a pass through authorizer.
-                return isset($app['auth.api_key']) ? $app['auth.api_key'] : null;
+                /** @var RequestAuthenticator $requestAuthenticator */
+                $requestAuthenticator = $app[RequestAuthenticator::class];
+                return $requestAuthenticator->getApiKey();
             }
         );
 
@@ -103,15 +103,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
             static function (Application $app) {
                 /** @var ConsumerReadRepository $consumerReadRepository */
                 $consumerReadRepository = $app[ConsumerReadRepository::class];
-                return $consumerReadRepository->getConsumer($app['auth.api_key']);
-            }
-        );
-
-        $app['auth.api_key'] = $app->share(
-            static function (Application $app) {
-                /** @var RequestAuthenticator $requestAuthenticator */
-                $requestAuthenticator = $app[RequestAuthenticator::class];
-                return $requestAuthenticator->getApiKey();
+                return $consumerReadRepository->getConsumer($app['api_key']);
             }
         );
     }

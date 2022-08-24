@@ -67,7 +67,7 @@ final class LoggerFactory
             self::$sentryHandler = new SentryHandlerScopeDecorator(
                 new SentryHandler($app[HubInterface::class], Logger::ERROR),
                 $app['jwt'] ?? null,
-                $app['auth.api_key'] ?? null,
+                $app['api_key'] ?? null,
                 $app['api_name'] ?? null
             );
         }
