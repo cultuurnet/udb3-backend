@@ -74,7 +74,7 @@ final class ContextFactory
             $application['api_key'],
             $application['api_name'],
             $request,
-            $application['consumer']
+            $application[Consumer::class]
         );
     }
 

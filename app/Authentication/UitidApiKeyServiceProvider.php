@@ -36,7 +36,13 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['consumer'] = null;
+        $app[Consumer::class] = $app->share(
+            static function (Application $app) {
+                /** @var ConsumerReadRepository $consumerReadRepository */
+                $consumerReadRepository = $app[ConsumerReadRepository::class];
+                return $consumerReadRepository->getConsumer($app['auth.api_key']);
+            }
+        );
 
         $app->before(
             function (Request $request, Application $app): ?Response {
@@ -93,8 +99,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                         ApiProblem::forbidden('Given API key is not authorized to use EntryAPI.')
                     ))->toHttpFoundationResponse();
                 }
-
-                $app['consumer'] = $consumer;
                 return null;
             },
             Application::LATE_EVENT
