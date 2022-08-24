@@ -123,25 +123,15 @@ class DefaultRoleEditingServiceTest extends TestCase
      */
     public function it_can_create_a_role(): void
     {
-        $this->eventStore->trace();
+        $this->commandBus->expects($this->once())
+            ->method('dispatch')
+            ->with($this->createRole);
 
         $roleId = $this->roleEditingService->create(
             new StringLiteral('roleName')
         );
 
-        $expectedUuid = $this->uuid;
-
-        $this->assertEquals(
-            [
-                new RoleCreated(
-                    $this->uuid,
-                    new StringLiteral('roleName')
-                ),
-            ],
-            $this->eventStore->getEvents()
-        );
-
-        $this->assertEquals($expectedUuid, $roleId);
+        $this->assertEquals($this->uuid, $roleId);
     }
 
     /**
