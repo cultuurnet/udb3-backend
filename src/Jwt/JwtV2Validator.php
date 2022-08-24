@@ -26,13 +26,14 @@ final class JwtV2Validator implements JwtValidator
     public function validateClaims(JsonWebToken $token): void
     {
         $this->baseValidator->validateClaims($token);
+        $tokenType = $token->getType();
 
-        if ($token->getType() === JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN) {
+        if ($tokenType === JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN) {
             $this->validateIdTokenFromJwtProvider($token);
         }
 
-        if ($token->getType() === JsonWebToken::UIT_ID_V2_USER_ACCESS_TOKEN ||
-            $token->getType() === JsonWebToken::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
+        if ($tokenType === JsonWebToken::UIT_ID_V2_USER_ACCESS_TOKEN ||
+            $tokenType === JsonWebToken::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
             $this->validateAccessToken($token);
         }
     }
