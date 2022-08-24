@@ -13,7 +13,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Jwt\GenericJwtValidator;
-use CultuurNet\UDB3\Jwt\JwtV2Validator;
+use CultuurNet\UDB3\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -34,7 +34,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
                             ['uid'],
                             $app['config']['jwt']['v1']['valid_issuers']
                         ),
-                        new JwtV2Validator(
+                        new UitIdV2JwtValidator(
                             new GenericJwtValidator(
                                 'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v2']['keys']['public']['file'],
                                 ['sub'],

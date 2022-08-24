@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Jwt;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 
-final class JwtV2Validator implements JwtValidator
+final class UitIdV2JwtValidator implements JwtValidator
 {
     private JwtValidator $baseValidator;
     private string $v2JwtProviderAuth0ClientId;

@@ -17,14 +17,14 @@ class JwtV2ValidatorTest extends TestCase
     private $baseValidator;
 
     /**
-     * @var JwtV2Validator
+     * @var UitIdV2JwtValidator
      */
     private $v2Validator;
 
     protected function setUp()
     {
         $this->baseValidator = $this->createMock(JwtValidator::class);
-        $this->v2Validator = new JwtV2Validator(
+        $this->v2Validator = new UitIdV2JwtValidator(
             $this->baseValidator,
             'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'
         );
