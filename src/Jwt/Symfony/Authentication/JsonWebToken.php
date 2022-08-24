@@ -46,7 +46,7 @@ final class JsonWebToken
 
     /**
      * @return string
-     *   One of the V1/V2_..._TOKEN constants.
+     *   One of the UIT_ID_..._TOKEN constants.
      */
     public function getType(): string
     {
