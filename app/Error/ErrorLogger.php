@@ -20,6 +20,8 @@ use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
+use League\Route\Http\Exception\MethodNotAllowedException as LeagueRouterMethodNotAllowedException;
+use League\Route\Http\Exception\NotFoundException as LeagueRouterNotFoundException;
 use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
@@ -59,6 +61,8 @@ final class ErrorLogger
         AccessDeniedHttpException::class,
         AccessDeniedException::class,
         CalendarTypeNotSupported::class,
+        LeagueRouterNotFoundException::class,
+        LeagueRouterMethodNotAllowedException::class,
     ];
 
     /**
