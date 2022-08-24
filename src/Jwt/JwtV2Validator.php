@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class JwtV2Validator implements JwtValidator
 {
@@ -47,10 +47,7 @@ final class JwtV2Validator implements JwtValidator
     private function validateAccessToken(JsonWebToken $jwt): void
     {
         if (!$jwt->hasEntryApiInPubliqApisClaim()) {
-            throw new AuthenticationException(
-                'The given token and its related client are not allowed to access EntryAPI.',
-                403
-            );
+            throw ApiProblem::forbidden('The given token and its related client are not allowed to access EntryAPI.');
         }
     }
 
@@ -61,9 +58,7 @@ final class JwtV2Validator implements JwtValidator
         // Don't mention the JWT provider, we don't want to encourage any new usage of it, only support its tokens for
         // backward compatibility in existing integrations (who won't see this error then).
         if (!$jwt->hasAudience($this->v2JwtProviderAuth0ClientId)) {
-            throw new AuthenticationException(
-                'The given token is an id token. Please use an access token instead.'
-            );
+            throw ApiProblem::unauthorized('The given token is an id token. Please use an access token instead.');
         }
     }
 }

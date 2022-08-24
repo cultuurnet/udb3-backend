@@ -100,11 +100,7 @@ final class RequestAuthenticator
             throw ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.');
         }
 
-        try {
-            $this->jwtAuthenticator->authenticate($this->token);
-        } catch (AuthenticationException $authenticationException) {
-            throw ApiProblem::unauthorized($authenticationException->getMessage());
-        }
+        $this->jwtAuthenticator->authenticate($this->token);
     }
 
     private function authenticateApiKey(ServerRequestInterface $request): void
