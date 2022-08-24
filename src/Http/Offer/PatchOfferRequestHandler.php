@@ -70,7 +70,12 @@ final class PatchOfferRequestHandler implements RequestHandlerInterface
 
     private function getPublicationDate(ServerRequestInterface $request): ?DateTime
     {
-        $content = Json::decode($request->getBody()->getContents());
+        $content = $request->getBody()->getContents();
+        if (empty($content)) {
+            return null;
+        }
+
+        $content = Json::decode($content);
 
         if (!isset($content->publicationDate)) {
             return null;

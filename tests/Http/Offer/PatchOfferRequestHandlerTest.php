@@ -54,7 +54,6 @@ final class PatchOfferRequestHandlerTest extends TestCase
         $requestBuilder = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', $this->offerId)
-            ->withJsonBodyFromArray($body)
             ->withHeader('Content-Type', $header);
 
         if (!empty($body)) {
