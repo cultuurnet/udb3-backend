@@ -12,6 +12,7 @@ use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\StringLiteral;
@@ -26,7 +27,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                     $app['dbal_connection'],
                     new StringLiteral('saved_searches_sapi3'),
                     $app['uuid_generator'],
-                    new StringLiteral($app['current_user_id'])
+                    new StringLiteral($app[CurrentUser::class]->getId())
                 );
             }
         );

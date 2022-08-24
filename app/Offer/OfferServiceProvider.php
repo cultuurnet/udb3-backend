@@ -43,6 +43,7 @@ use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -209,7 +210,7 @@ final class OfferServiceProvider implements ServiceProviderInterface
                     new LabelImportPreProcessor(
                         $app['labels.constraint_aware_service'],
                         $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                        $app['current_user_id']
+                        $app[CurrentUser::class]->getId()
                     )
                 );
             }
