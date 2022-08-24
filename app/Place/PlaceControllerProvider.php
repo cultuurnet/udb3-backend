@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
+use CultuurNet\UDB3\Http\OfferRestBaseController;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Place\LegacyPlaceRequestBodyParser;
@@ -64,6 +65,15 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
+        $app['place_editing_controller'] = $app->share(
+            function (Application $app) {
+                return new OfferRestBaseController(
+                    $app['place_editing_service'],
+                    $app['media_manager']
+                );
+            }
+        );
+
         $app[GetEventsRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new GetEventsRequestHandler(
