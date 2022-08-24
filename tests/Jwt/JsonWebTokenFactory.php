@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
+namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\UDB3\Jwt\JsonWebToken;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;

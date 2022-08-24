@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
+use CultuurNet\UDB3\Jwt\JsonWebTokenFactory;
 use PHPUnit\Framework\TestCase;
 
 class ContextFactoryTest extends TestCase
