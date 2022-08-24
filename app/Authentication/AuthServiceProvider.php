@@ -12,7 +12,6 @@ use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
-use CultuurNet\UDB3\Jwt\GenericJwtValidator;
 use CultuurNet\UDB3\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
