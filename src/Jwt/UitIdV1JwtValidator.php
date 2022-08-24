@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\UDB3\Jwt\JsonWebToken;
-
 final class UitIdV1JwtValidator implements JwtValidator
 {
     private JwtValidator $baseValidator;
