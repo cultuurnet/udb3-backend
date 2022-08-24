@@ -40,33 +40,6 @@ final class AuthServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['current_user_id'] = $app::share(
-            function (Application $app): ?string {
-                /* @var Impersonator $impersonator */
-                $impersonator = $app['impersonator'];
-                if ($impersonator->getUserId()) {
-                    return $impersonator->getUserId();
-                }
-
-                $token = $app[JsonWebToken::class];
-                if (!($token instanceof JsonWebToken)) {
-                    // The token in the current request is missing (for example because it's a public route)
-                    return null;
-                }
-                return $token->getUserId();
-            }
-        );
-
-        $app['current_user_is_god_user'] = $app::share(
-            function (Application $app): bool {
-                return in_array(
-                    $app['current_user_id'],
-                    $app['config']['user_permissions']['allow_all'],
-                    true
-                );
-            }
-        );
-
         $app[JsonWebToken::class] = $app::share(
             function (Application $app): ?JsonWebToken {
                 // Check first if we're impersonating someone.
