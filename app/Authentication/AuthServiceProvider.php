@@ -77,18 +77,6 @@ final class AuthServiceProvider implements ServiceProviderInterface
             }
         );
 
-        // Middleware that authenticates every incoming request using the RequestAuthenticator class.
-        $app->before(
-            static function (Request $request, Application $app): void {
-                $psrRequest = (new DiactorosFactory())->createRequest($request);
-
-                /** @var RequestAuthenticator $authenticator */
-                $authenticator = $app[RequestAuthenticator::class];
-                $authenticator->authenticate($psrRequest);
-            },
-            Application::EARLY_EVENT
-        );
-
         $app[CurrentUser::class] = $app->share(
             static function (Application $app): CurrentUser {
                 /* @var Impersonator $impersonator */

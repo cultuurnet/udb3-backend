@@ -63,6 +63,21 @@ $app->register(new RequestHandlerControllerServiceProvider());
  */
 $app->register(new PsrRouterServiceProvider());
 
+/**
+ * Middleware that authenticates incoming HTTP requests using the RequestAuthenticator service.
+ * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
+ */
+$app->before(
+    static function (Request $request, Application $app): void {
+        $psrRequest = (new DiactorosFactory())->createRequest($request);
+
+        /** @var RequestAuthenticator $authenticator */
+        $authenticator = $app[RequestAuthenticator::class];
+        $authenticator->authenticate($psrRequest);
+    },
+    Application::EARLY_EVENT
+);
+
 if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
