@@ -22,7 +22,21 @@ final class AuthServiceProvider implements ServiceProviderInterface
     {
         $app[CurrentUser::class] = $app->share(
             static function (Application $app): CurrentUser {
-                return new CurrentUser($app['current_user_id'], $app['current_user_is_god_user']);
+                /* @var Impersonator $impersonator */
+                $impersonator = $app['impersonator'];
+                $token = $app[JsonWebToken::class];
+
+                $userId = null;
+                if ($impersonator->getUserId()) {
+                    $userId = $impersonator->getUserId();
+                } elseif ($token instanceof JsonWebToken) {
+                    $userId = $token->getUserId();
+                }
+
+                $isGodUser = $userId !== null &&
+                    in_array($userId, $app['config']['user_permissions']['allow_all'], true);
+
+                return new CurrentUser($userId, $isGodUser);
             }
         );
 
