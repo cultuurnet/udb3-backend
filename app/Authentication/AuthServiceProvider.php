@@ -14,7 +14,7 @@ use Silex\ServiceProviderInterface;
 
 final class AuthServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[ConsumerReadRepository::class] = $app->share(
             function (Application $app): ConsumerReadRepository {
@@ -41,8 +41,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
         );
     }
 
-
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
