@@ -9,17 +9,86 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
+use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
+use CultuurNet\UDB3\Jwt\JwtBaseValidator;
+use CultuurNet\UDB3\Jwt\JwtV2Validator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Component\HttpFoundation\Request;
 
 final class AuthServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app[RequestAuthenticator::class] = $app::share(
+            function (Application $app): RequestAuthenticator {
+                $authenticator = new RequestAuthenticator(
+                    new JwtAuthenticationProvider(
+                        new JwtBaseValidator(
+                            'file://' . __DIR__ . '/../' . $app['config']['jwt']['v1']['keys']['public']['file'],
+                            ['uid'],
+                            $app['config']['jwt']['v1']['valid_issuers']
+                        ),
+                        new JwtV2Validator(
+                            new JwtBaseValidator(
+                                'file://' . __DIR__ . '/../' . $app['config']['jwt']['v2']['keys']['public']['file'],
+                                ['sub'],
+                                $app['config']['jwt']['v2']['valid_issuers']
+                            ),
+                            $app['config']['jwt']['v2']['jwt_provider_client_id']
+                        )
+                    ),
+                    new CultureFeedApiKeyAuthenticator($app[ConsumerReadRepository::class]),
+                    $app[ConsumerReadRepository::class],
+                    new ConsumerIsInPermissionGroup((string) $app['config']['api_key']['group_id'])
+                );
+
+                // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs, because there
+                // is no exhaustive documentation about how this is handled in UDB2. Therefore we take a rather liberal approach
+                // and allow all alphanumeric characters and a dash as ids.
+                $authenticator->addPublicRoute('~^/(events?|places?)/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/permissions?/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/organizers/[\w\-]+/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/organizers/[\w\-]+/permissions/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/labels/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/label/[\w\-]+/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/media/[\w\-]+/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/images/[\w\-]+/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/jobs~', ['GET']);
+                $authenticator->addPublicRoute('~^/uitpas~', ['GET']);
+                $authenticator->addPublicRoute('~^/news-articles~', ['GET', 'DELETE', 'POST', 'PUT']);
+
+                // Legacy URLs that get rewritten. Still needed when we're still using the Silex router because in Silex the
+                // rewrite happens after the auth check. But can be removed once we use the new PSR router for all routes
+                // because on the new router the rewrite will happen before the auth check.
+                $authenticator->addPublicRoute('^/(events|event|places|place)/[\w\-]+/calsum/?$', ['GET']);
+                $authenticator->addPublicRoute('~^/news_articles~', ['GET', 'DELETE', 'POST', 'PUT']);
+
+                return $authenticator;
+            }
+        );
+
+        // Middleware that authenticates every incoming request using the RequestAuthenticator class.
+        $app->before(
+            static function (Request $request, Application $app): void {
+                $psrRequest = (new DiactorosFactory())->createRequest($request);
+
+                /** @var RequestAuthenticator $authenticator */
+                $authenticator = $app[RequestAuthenticator::class];
+                $authenticator->authenticate($psrRequest);
+            },
+            Application::EARLY_EVENT
+        );
+
         $app[CurrentUser::class] = $app->share(
             static function (Application $app): CurrentUser {
                 /* @var Impersonator $impersonator */
