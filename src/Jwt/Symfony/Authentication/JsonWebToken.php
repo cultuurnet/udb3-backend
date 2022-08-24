@@ -13,10 +13,9 @@ use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
-use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use CultuurNet\UDB3\StringLiteral;
 
-class JsonWebToken extends AbstractToken
+final class JsonWebToken
 {
     public const V1_JWT_PROVIDER_TOKEN = 'v1_jwt_provider_token';
     public const V2_JWT_PROVIDER_TOKEN = 'v2_jwt_provider_token';
@@ -39,17 +38,10 @@ class JsonWebToken extends AbstractToken
      * @throws InvalidArgumentException
      *   If the provided JWT string cannot be parsed
      */
-    public function __construct(string $jwt, bool $authenticated = false)
+    public function __construct(string $jwt)
     {
-        parent::__construct();
-        $this->setAuthenticated($authenticated);
         $this->jwt = $jwt;
         $this->token = (new Parser())->parse($jwt);
-    }
-
-    public function authenticate(): JsonWebToken
-    {
-        return new self($this->getCredentials(), true);
     }
 
     /**

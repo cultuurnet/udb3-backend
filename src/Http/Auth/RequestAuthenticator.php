@@ -95,7 +95,7 @@ final class RequestAuthenticator
 
         $tokenString = substr($authorizationHeader, strlen(self::BEARER));
         try {
-            $this->token = new JsonWebToken($tokenString, false);
+            $this->token = new JsonWebToken($tokenString);
         } catch (InvalidArgumentException $e) {
             throw ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.');
         }
