@@ -8,7 +8,7 @@ use RuntimeException;
 
 final class CurrentUser
 {
-    private static array $godUserIds;
+    private static ?array $godUserIds = null;
     private ?string $id;
 
     public function __construct(?string $id)
