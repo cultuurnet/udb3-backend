@@ -22,6 +22,7 @@ final class RequestAuthenticator
 {
     private const BEARER = 'Bearer ';
 
+    /** @var PublicRouteRule[] $publicRoutes */
     private array $publicRoutes = [];
     private ?JsonWebToken $token = null;
     private ?ApiKey $apiKey = null;
@@ -47,7 +48,7 @@ final class RequestAuthenticator
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
     {
-        $this->publicRoutes[$pathPattern] = $methods;
+        $this->publicRoutes[] = new PublicRouteRule($pathPattern, $methods);
     }
 
     /**
@@ -147,15 +148,11 @@ final class RequestAuthenticator
 
     private function isPublicRoute(ServerRequestInterface $request): bool
     {
-        $method = $request->getMethod();
-        $path = $request->getUri()->getPath();
-
-        foreach ($this->publicRoutes as $pathPattern => $methods) {
-            if (in_array($method, $methods, true) && preg_match($pathPattern, $path) === 1) {
+        foreach ($this->publicRoutes as $publicRouteRule) {
+            if ($publicRouteRule->matchesRequest($request)) {
                 return true;
             }
         }
-
         return false;
     }
 }
