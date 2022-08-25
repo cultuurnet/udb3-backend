@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Labels;
 
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\EditRestController;
 use CultuurNet\UDB3\Http\Label\ReadRestController;
 use Silex\Application;
@@ -17,10 +19,20 @@ class LabelsControllerProvider implements ControllerProviderInterface
 
     public function connect(Application $app): ControllerCollection
     {
+        $app[CreateLabelRequestHandler::class] = $app->share(
+            fn (Application $app) => new CreateLabelRequestHandler(
+                $app['event_command_bus'],
+                new Version4Generator()
+            )
+        );
+
+        $controllers = $app['controllers_factory'];
+        $controllers->post('/', CreateLabelRequestHandler::class);
+
         $this->setUpReadRestController($app);
         $this->setUpEditRestController($app);
 
-        return $this->setControllerPaths($app['controllers_factory']);
+        return $this->setControllerPaths($controllers);
     }
 
 
@@ -53,7 +65,6 @@ class LabelsControllerProvider implements ControllerProviderInterface
         $controllers->get('/{id}/', self::READ_REST_CONTROLLER . ':get');
         $controllers->patch('/{id}/', self::EDIT_REST_CONTROLLER . ':patch');
         $controllers->get('/', self::READ_REST_CONTROLLER . ':search');
-        $controllers->post('/', self::EDIT_REST_CONTROLLER . ':create');
 
         return $controllers;
     }
