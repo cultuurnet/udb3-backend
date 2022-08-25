@@ -65,7 +65,7 @@ class SaveSavedSearchesRequestHandlerTest extends TestCase
                     new StringLiteral(self::USER_ID),
                     new StringLiteral('Avondlessen in Gent'),
                     new QueryString('regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)')
-                )
+                ),
             ],
             $this->commandBus->getRecordedCommands()
         );
