@@ -50,7 +50,7 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
-        $controllers->get('/{cdbid}/events/', GetEventsRequestHandler::class);
+        $controllers->get('/{placeId}/events/', GetEventsRequestHandler::class);
         $controllers->post('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
         $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
