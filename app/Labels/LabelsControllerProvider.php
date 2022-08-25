@@ -31,7 +31,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
         $controllers->post('/', CreateLabelRequestHandler::class);
-        $controllers->patch('/{id}/', PatchLabelRequestHandler::class);
+        $controllers->patch('/{labelId}/', PatchLabelRequestHandler::class);
 
         $this->setUpReadRestController($app);
 
