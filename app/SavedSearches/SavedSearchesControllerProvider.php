@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchesRequestHandler;
-use CultuurNet\UDB3\Http\SavedSearches\EditSavedSearchesRestController;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesController;
 use CultuurNet\UDB3\Http\SavedSearches\SaveSavedSearchesRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
