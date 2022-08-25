@@ -15,7 +15,9 @@ use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Impersonator;
+use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -38,12 +40,14 @@ final class AuthServiceProvider implements ServiceProviderInterface
                     ),
                     new CultureFeedApiKeyAuthenticator($app[ConsumerReadRepository::class]),
                     $app[ConsumerReadRepository::class],
-                    new ConsumerIsInPermissionGroup((string) $app['config']['api_key']['group_id'])
+                    new ConsumerIsInPermissionGroup((string) $app['config']['api_key']['group_id']),
+                    $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY],
+                    $app['config']['user_permissions']['allow_all']
                 );
 
-                // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs, because there
-                // is no exhaustive documentation about how this is handled in UDB2. Therefore we take a rather liberal approach
-                // and allow all alphanumeric characters and a dash as ids.
+                // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
+                // because there is no exhaustive documentation about how this is handled in UDB2. Therefore we take a
+                // rather liberal approach and allow all alphanumeric characters and a dash as ids.
                 $authenticator->addPublicRoute('~^/(events?|places?)/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
@@ -58,11 +62,19 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 $authenticator->addPublicRoute('~^/uitpas~', ['GET']);
                 $authenticator->addPublicRoute('~^/news-articles~', ['GET', 'DELETE', 'POST', 'PUT']);
 
-                // Legacy URLs that get rewritten. Still needed when we're still using the Silex router because in Silex the
-                // rewrite happens after the auth check. But can be removed once we use the new PSR router for all routes
-                // because on the new router the rewrite will happen before the auth check.
+                // Legacy URLs that get rewritten. Still needed when we're still using the Silex router because in Silex
+                // the rewrite happens after the auth check. But can be removed once we use the new PSR router for all
+                // routes because on the new router the rewrite will happen before the auth check.
                 $authenticator->addPublicRoute('^/(events|event|places|place)/[\w\-]+/calsum/?$', ['GET']);
                 $authenticator->addPublicRoute('~^/news_articles~', ['GET', 'DELETE', 'POST', 'PUT']);
+
+                // Permission checks on routes that do not dispatch commands (commands already have permission checks
+                // built-in). In the future when all controllers are refactored to RequestHandlerInterface
+                // implementations we can move this to a RequestHandlerInterface decorator instead so we can put this
+                // logic on the RequestHandler itself, instead of having to work with (fragile) URL regexes.
+                $authenticator->addPermissionRestrictedRoute('~^/permissions~', ['GET'], Permission::gebruikersBeheren());
+                $authenticator->addPermissionRestrictedRoute('~^/roles~', ['GET'], Permission::gebruikersBeheren());
+                $authenticator->addPermissionRestrictedRoute('~^/users~', ['GET'], Permission::gebruikersBeheren());
 
                 return $authenticator;
             }

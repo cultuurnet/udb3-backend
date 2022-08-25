@@ -15,6 +15,8 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification as Api
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -24,31 +26,47 @@ final class RequestAuthenticator
 
     /** @var PublicRouteRule[] $publicRoutes */
     private array $publicRoutes = [];
+
+    /** @var PermissionRestrictedRouteRule[] $permissionRestrictedRoutes */
+    private array $permissionRestrictedRoutes = [];
+
     private ?JsonWebToken $token = null;
     private ?ApiKey $apiKey = null;
+
     private JwtValidator $uitIdV1JwtValidator;
     private JwtValidator $uitIdV2JwtValidator;
     private ApiKeyAuthenticator $apiKeyAuthenticator;
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
+    private UserPermissionsReadRepository $userPermissionReadRepository;
+    private array $godUserIds;
 
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
         JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
-        ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck
+        ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
+        UserPermissionsReadRepository $userPermissionsReadRepository,
+        array $godUserIds
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
         $this->apiKeyAuthenticator = $apiKeyAuthenticator;
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
+        $this->userPermissionReadRepository = $userPermissionsReadRepository;
+        $this->godUserIds = $godUserIds;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
     {
         $this->publicRoutes[] = new PublicRouteRule($pathPattern, $methods);
+    }
+
+    public function addPermissionRestrictedRoute(string $pathPattern, array $methods, Permission $permission): void
+    {
+        $this->permissionRestrictedRoutes[] = new PermissionRestrictedRouteRule($pathPattern, $methods, $permission);
     }
 
     /**
@@ -69,6 +87,8 @@ final class RequestAuthenticator
         if ($this->token->getClientId() === null) {
             $this->authenticateApiKey($request);
         }
+
+        $this->checkPermission($request);
     }
 
     public function getToken(): ?JsonWebToken
@@ -138,6 +158,21 @@ final class RequestAuthenticator
         $canAccessEntryApi = $this->apiKeyConsumerPermissionCheck->satisfiedBy($consumer);
         if (!$canAccessEntryApi) {
             throw ApiProblem::forbidden('Given API key is not authorized to use Entry API.');
+        }
+    }
+
+    private function checkPermission(ServerRequestInterface $request): void
+    {
+        foreach ($this->permissionRestrictedRoutes as $permissionRestrictedRoute) {
+            if (!$permissionRestrictedRoute->matchesRequest($request)) {
+                continue;
+            }
+
+            $permission = $permissionRestrictedRoute->getPermission();
+            if (!in_array($this->token->getUserId(), $this->godUserIds, true) &&
+                !$this->userPermissionReadRepository->hasPermission($this->token->getUserId(), $permission)) {
+                throw ApiProblem::forbidden('This request requires the "' . $permission->toString() . '" permission');
+            }
         }
     }
 
