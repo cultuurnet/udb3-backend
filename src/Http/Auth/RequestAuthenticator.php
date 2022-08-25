@@ -25,10 +25,10 @@ final class RequestAuthenticator
 {
     private const BEARER = 'Bearer ';
 
-    /** @var PublicRouteRule[] $publicRoutes */
+    /** @var PublicRouteRule[] */
     private array $publicRoutes = [];
 
-    /** @var PermissionRestrictedRouteRule[] $permissionRestrictedRoutes */
+    /** @var PermissionRestrictedRouteRule[] */
     private array $permissionRestrictedRoutes = [];
 
     private ?JsonWebToken $token = null;
