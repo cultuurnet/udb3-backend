@@ -19,9 +19,10 @@ final class SaveSavedSearchesRequestHandler implements RequestHandlerInterface
 
     private CommandBus $commandBus;
 
-    public function __construct(string $userId,
-        CommandBus $commandBus)
-    {
+    public function __construct(
+        string $userId,
+        CommandBus $commandBus
+    ) {
         $this->userId = $userId;
         $this->commandBus = $commandBus;
     }
