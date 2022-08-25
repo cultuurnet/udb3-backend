@@ -13,4 +13,6 @@ interface UserPermissionsReadRepositoryInterface
      * @return Permission[]
      */
     public function getPermissions(StringLiteral $userId);
+
+    public function hasPermission(string $userId, Permission $permission): bool;
 }
