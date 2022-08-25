@@ -24,16 +24,6 @@ class UserPermissionVoter implements PermissionVoter
         StringLiteral $itemId,
         StringLiteral $userId
     ): bool {
-        $permissions = $this->userPermissionsReadRepository->getPermissions(
-            $userId
-        );
-
-        foreach ($permissions as $currentPermission) {
-            if ($requiredPermission->sameAs($currentPermission)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->userPermissionsReadRepository->hasPermission($userId->toNative(), $requiredPermission);
     }
 }
