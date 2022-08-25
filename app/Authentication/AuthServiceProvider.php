@@ -112,14 +112,8 @@ final class AuthServiceProvider implements ServiceProviderInterface
                     return $impersonator->getJwt();
                 }
 
-                try {
-                    /* @var RequestAuthenticator $requestAuthenticator */
-                    $requestAuthenticator = $app[RequestAuthenticator::class];
-                } catch (\InvalidArgumentException $e) {
-                    // Running from CLI or unauthorized (will be further handled by the auth middleware)
-                    return null;
-                }
-
+                /* @var RequestAuthenticator $requestAuthenticator */
+                $requestAuthenticator = $app[RequestAuthenticator::class];
                 return $requestAuthenticator->getToken();
             }
         );
