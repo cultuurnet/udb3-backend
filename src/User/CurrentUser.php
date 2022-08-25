@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User;
 
+use RuntimeException;
+
 final class CurrentUser
 {
+    private static array $godUserIds;
     private ?string $id;
-    private bool $isGodUser;
 
-    public function __construct(?string $id, bool $isGodUser)
+    public function __construct(?string $id)
     {
         $this->id = $id;
-        $this->isGodUser = $isGodUser;
+    }
+
+    public static function configureGodUserIds(array $godUserIds): void
+    {
+        self::$godUserIds = $godUserIds;
     }
 
     public function getId(): ?string
@@ -22,7 +28,13 @@ final class CurrentUser
 
     public function isGodUser(): bool
     {
-        return $this->isGodUser;
+        if (self::$godUserIds === null) {
+            throw new RuntimeException(
+                'CurrentUser::configureGodUserIds() must be called before CurrentUser::isGodUser() can be called.'
+            );
+        }
+
+        return $this->id !== null && in_array($this->id, self::$godUserIds, true);
     }
 
     public function isAnonymous(): bool

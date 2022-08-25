@@ -26,6 +26,8 @@ final class AuthServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        CurrentUser::configureGodUserIds($app['config']['user_permissions']['allow_all']);
+
         $app[RequestAuthenticator::class] = $app::share(
             function (Application $app): RequestAuthenticator {
                 $authenticator = new RequestAuthenticator(
@@ -41,8 +43,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
                     new CultureFeedApiKeyAuthenticator($app[ConsumerReadRepository::class]),
                     $app[ConsumerReadRepository::class],
                     new ConsumerIsInPermissionGroup((string) $app['config']['api_key']['group_id']),
-                    $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY],
-                    $app['config']['user_permissions']['allow_all']
+                    $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]
                 );
 
                 // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
@@ -86,19 +87,13 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 // This is done when handling async commands via a CLI worker.
                 /* @var Impersonator $impersonator */
                 $impersonator = $app['impersonator'];
-                $token = $app[JsonWebToken::class];
-
-                $userId = null;
                 if ($impersonator->getUserId()) {
-                    $userId = $impersonator->getUserId();
-                } elseif ($token instanceof JsonWebToken) {
-                    $userId = $token->getUserId();
+                    return new CurrentUser($impersonator->getUserId());
                 }
 
-                $isGodUser = $userId !== null &&
-                    in_array($userId, $app['config']['user_permissions']['allow_all'], true);
-
-                return new CurrentUser($userId, $isGodUser);
+                /* @var RequestAuthenticator $requestAuthenticator */
+                $requestAuthenticator = $app[RequestAuthenticator::class];
+                return $requestAuthenticator->getCurrentUser();
             }
         );
 

@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\User\CurrentUser;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -39,7 +40,6 @@ final class RequestAuthenticator
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepository $userPermissionReadRepository;
-    private array $godUserIds;
 
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
@@ -47,8 +47,7 @@ final class RequestAuthenticator
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepository $userPermissionsReadRepository,
-        array $godUserIds
+        UserPermissionsReadRepository $userPermissionsReadRepository
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -56,7 +55,6 @@ final class RequestAuthenticator
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
-        $this->godUserIds = $godUserIds;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = []): void
@@ -99,6 +97,12 @@ final class RequestAuthenticator
     public function getApiKey(): ?ApiKey
     {
         return $this->apiKey;
+    }
+
+    public function getCurrentUser(): CurrentUser
+    {
+        $userId = $this->token ? $this->token->getUserId() : null;
+        return new CurrentUser($userId);
     }
 
     private function authenticateToken(ServerRequestInterface $request): void
@@ -168,9 +172,10 @@ final class RequestAuthenticator
                 continue;
             }
 
+            $user = $this->getCurrentUser();
             $permission = $permissionRestrictedRoute->getPermission();
-            if (!in_array($this->token->getUserId(), $this->godUserIds, true) &&
-                !$this->userPermissionReadRepository->hasPermission($this->token->getUserId(), $permission)) {
+            if (!$user->isGodUser() &&
+                !$this->userPermissionReadRepository->hasPermission($user->getId(), $permission)) {
                 throw ApiProblem::forbidden('This request requires the "' . $permission->toString() . '" permission');
             }
         }
