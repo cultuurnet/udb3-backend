@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
@@ -22,6 +24,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -43,6 +46,9 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 
         $controllers->get('/{offerType}/{offerId}/history/', GetHistoryRequestHandler::class);
+
+        $controllers->get('/{offerType}/{offerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
+        $controllers->get('/{offerType}//{offerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/calendar-summary/', GetCalendarSummaryRequestHandler::class);
@@ -89,6 +95,29 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
                 $app['event_history_repository'],
                 $app['places_history_repository'],
                 $app['current_user_is_god_user']
+            )
+        );
+
+        $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPermissionsForCurrentUserRequestHandler(
+                [
+                    Permission::aanbodBewerken(),
+                    Permission::aanbodModereren(),
+                    Permission::aanbodVerwijderen(),
+                ],
+                $app['offer_permission_voter'],
+                $app['current_user_id'] ?? null
+            )
+        );
+
+        $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPermissionsForGivenUserRequestHandler(
+                [
+                    Permission::aanbodBewerken(),
+                    Permission::aanbodModereren(),
+                    Permission::aanbodVerwijderen(),
+                ],
+                $app['offer_permission_voter'],
             )
         );
 
