@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionController;
-use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -34,7 +33,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     public function connect(Application $app): ControllerCollection
     {
         $controllerName = $this->getEditControllerName();
-        $permissionsControllerName = $this->getPermissionsControllerName();
         $deprecatedPermissionControllerName = $this->getDeprecatedPermissionControllerName();
 
         /** @var ControllerCollection $controllers */
@@ -44,8 +42,8 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $controllers->put('/{cdbid}/labels/{label}/', "{$controllerName}:addLabel");
 
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
-        $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
-        $controllers->get('/{offerId}/permissions/{userId}/', "{$permissionsControllerName}:getPermissionsForGivenUser");
+
+
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
@@ -85,21 +83,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
             }
         );
 
-        $app[$this->getPermissionsControllerName()] = $app->share(
-            function (Application $app) {
-                $permissionsToCheck = [
-                    Permission::aanbodBewerken(),
-                    Permission::aanbodModereren(),
-                    Permission::aanbodVerwijderen(),
-                ];
-                return new OfferPermissionsController(
-                    $permissionsToCheck,
-                    $app['offer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
-                );
-            }
-        );
-
         /* Only for legacy routes used for backward compatibility */
         $app[$this->getDeprecatedPermissionControllerName()] = $app->share(
             function (Application $app) {
@@ -115,11 +98,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     private function getEditControllerName(): string
     {
         return "{$this->offerType}_offer_controller";
-    }
-
-    private function getPermissionsControllerName(): string
-    {
-        return "permissions_{$this->offerType}_controller";
     }
 
     private function getDeprecatedPermissionControllerName(): string
