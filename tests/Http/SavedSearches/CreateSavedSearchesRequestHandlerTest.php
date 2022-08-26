@@ -15,7 +15,7 @@ use CultuurNet\UDB3\StringLiteral;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
-class SaveSavedSearchesRequestHandlerTest extends TestCase
+class CreateSavedSearchesRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
@@ -24,7 +24,7 @@ class SaveSavedSearchesRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private SaveSavedSearchesRequestHandler $savedSearchesRequestHandler;
+    private CreateSavedSearchesRequestHandler $createSavedSearchesRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -32,7 +32,7 @@ class SaveSavedSearchesRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->savedSearchesRequestHandler = new SaveSavedSearchesRequestHandler(
+        $this->createSavedSearchesRequestHandler = new CreateSavedSearchesRequestHandler(
             self::USER_ID,
             $this->commandBus
         );
@@ -48,7 +48,7 @@ class SaveSavedSearchesRequestHandlerTest extends TestCase
      */
     public function it_can_save_a_search(): void
     {
-        $saveSavedSearchRequest = $this->psr7RequestBuilder
+        $createSavedSearchRequest = $this->psr7RequestBuilder
             ->withBodyFromString(
                 '{
 	                "name": "Avondlessen in Gent",
@@ -57,7 +57,7 @@ class SaveSavedSearchesRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
-        $response = $this->savedSearchesRequestHandler->handle($saveSavedSearchRequest);
+        $response = $this->createSavedSearchesRequestHandler->handle($createSavedSearchRequest);
 
         $this->assertEquals(
             [

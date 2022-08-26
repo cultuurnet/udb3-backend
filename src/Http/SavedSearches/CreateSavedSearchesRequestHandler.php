@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class SaveSavedSearchesRequestHandler implements RequestHandlerInterface
+final class CreateSavedSearchesRequestHandler implements RequestHandlerInterface
 {
     private string $userId;
 

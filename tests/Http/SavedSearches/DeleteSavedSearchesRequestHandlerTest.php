@@ -46,11 +46,11 @@ class DeleteSavedSearchesRequestHandlerTest extends TestCase
      */
     public function it_can_delete_a_search(): void
     {
-        $saveSavedSearchRequest = $this->psr7RequestBuilder
+        $deleteSavedSearchRequest = $this->psr7RequestBuilder
             ->withRouteParameter('id', self::SEARCH_ID)
             ->build('DELETE');
 
-        $response = $this->deleteSavedSearchesRequestHandler->handle($saveSavedSearchRequest);
+        $response = $this->deleteSavedSearchesRequestHandler->handle($deleteSavedSearchRequest);
 
         $this->assertEquals(
             [
