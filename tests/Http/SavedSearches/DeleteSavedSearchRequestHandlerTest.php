@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -13,9 +12,8 @@ use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\TestCase;
 
-class DeleteSavedSearchesRequestHandlerTest extends TestCase
+class DeleteSavedSearchRequestHandlerTest extends TestCase
 {
-    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
     private const USER_ID = 'b9dc94df-c96b-4b71-8880-bd46e4e9a644';
@@ -23,7 +21,7 @@ class DeleteSavedSearchesRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private DeleteSavedSearchesRequestHandler $deleteSavedSearchesRequestHandler;
+    private DeleteSavedSearchRequestHandler $deleteSavedSearchRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -31,7 +29,7 @@ class DeleteSavedSearchesRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->deleteSavedSearchesRequestHandler = new DeleteSavedSearchesRequestHandler(
+        $this->deleteSavedSearchRequestHandler = new DeleteSavedSearchRequestHandler(
             self::USER_ID,
             $this->commandBus
         );
@@ -46,11 +44,11 @@ class DeleteSavedSearchesRequestHandlerTest extends TestCase
      */
     public function it_can_delete_a_search(): void
     {
-        $saveSavedSearchRequest = $this->psr7RequestBuilder
+        $deleteSavedSearchRequest = $this->psr7RequestBuilder
             ->withRouteParameter('id', self::SEARCH_ID)
             ->build('DELETE');
 
-        $response = $this->deleteSavedSearchesRequestHandler->handle($saveSavedSearchRequest);
+        $response = $this->deleteSavedSearchRequestHandler->handle($deleteSavedSearchRequest);
 
         $this->assertEquals(
             [

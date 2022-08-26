@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
-use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchesRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
-use CultuurNet\UDB3\Http\SavedSearches\SaveSavedSearchesRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -27,18 +27,18 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app[SaveSavedSearchesRequestHandler::class] = $app->share(
+        $app[CreateSavedSearchRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new SaveSavedSearchesRequestHandler(
+                return new CreateSavedSearchRequestHandler(
                     $app['current_user_id'],
                     $app['event_command_bus']
                 );
             }
         );
 
-        $app[DeleteSavedSearchesRequestHandler::class] = $app->share(
+        $app[DeleteSavedSearchRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new DeleteSavedSearchesRequestHandler(
+                return new DeleteSavedSearchRequestHandler(
                     $app['current_user_id'],
                     $app['event_command_bus']
                 );
@@ -50,8 +50,8 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/v3/', ReadSavedSearchesRequestHandler::class);
 
-        $controllers->post('/v3/', SaveSavedSearchesRequestHandler::class);
-        $controllers->delete('/v3/{id}/', DeleteSavedSearchesRequestHandler::class);
+        $controllers->post('/v3/', CreateSavedSearchRequestHandler::class);
+        $controllers->delete('/v3/{id}/', DeleteSavedSearchRequestHandler::class);
 
         return $controllers;
     }

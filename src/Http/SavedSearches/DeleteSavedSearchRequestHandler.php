@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\StringLiteral;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
-final class SaveSavedSearchesRequestHandler implements RequestHandlerInterface
+final class DeleteSavedSearchRequestHandler implements RequestHandlerInterface
 {
     private string $userId;
 
@@ -29,16 +29,16 @@ final class SaveSavedSearchesRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $commandDeserializer = new SubscribeToSavedSearchJSONDeserializer(
-            new StringLiteral($this->userId)
-        );
+        $routeParameters = new RouteParameters($request);
+        $id = $routeParameters->get('id');
 
-        $command = $commandDeserializer->deserialize(
-            new StringLiteral($request->getBody()->getContents())
+        $command = new UnsubscribeFromSavedSearch(
+            new StringLiteral($this->userId),
+            new StringLiteral($id)
         );
 
         $this->commandBus->dispatch($command);
 
-        return new Response(StatusCodeInterface::STATUS_CREATED);
+        return new NoContentResponse();
     }
 }
