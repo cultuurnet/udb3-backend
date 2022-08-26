@@ -16,7 +16,7 @@ use CultuurNet\UDB3\StringLiteral;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
-class CreateSavedSearchesRequestHandlerTest extends TestCase
+class CreateSavedSearchRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
@@ -25,7 +25,7 @@ class CreateSavedSearchesRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private CreateSavedSearchesRequestHandler $createSavedSearchesRequestHandler;
+    private CreateSavedSearchRequestHandler $createSavedSearchRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -33,7 +33,7 @@ class CreateSavedSearchesRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->createSavedSearchesRequestHandler = new CreateSavedSearchesRequestHandler(
+        $this->createSavedSearchRequestHandler = new CreateSavedSearchRequestHandler(
             self::USER_ID,
             $this->commandBus
         );
@@ -58,7 +58,7 @@ class CreateSavedSearchesRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
-        $response = $this->createSavedSearchesRequestHandler->handle($createSavedSearchRequest);
+        $response = $this->createSavedSearchRequestHandler->handle($createSavedSearchRequest);
 
         $this->assertEquals(
             [
@@ -93,7 +93,7 @@ class CreateSavedSearchesRequestHandlerTest extends TestCase
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('name is missing');
 
-        $this->createSavedSearchesRequestHandler->handle($createSavedSearchRequest);
+        $this->createSavedSearchRequestHandler->handle($createSavedSearchRequest);
     }
 
     /**
@@ -112,6 +112,6 @@ class CreateSavedSearchesRequestHandlerTest extends TestCase
         $this->expectException(MissingValueException::class);
         $this->expectExceptionMessage('query is missing');
 
-        $this->createSavedSearchesRequestHandler->handle($createSavedSearchRequest);
+        $this->createSavedSearchRequestHandler->handle($createSavedSearchRequest);
     }
 }

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesController;
-use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchesRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -27,9 +27,9 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app[CreateSavedSearchesRequestHandler::class] = $app->share(
+        $app[CreateSavedSearchRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new CreateSavedSearchesRequestHandler(
+                return new CreateSavedSearchRequestHandler(
                     $app['current_user_id'],
                     $app['event_command_bus']
                 );
@@ -50,7 +50,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/v3/', 'saved_searches_read_controller:ownedByCurrentUser');
 
-        $controllers->post('/v3/', CreateSavedSearchesRequestHandler::class);
+        $controllers->post('/v3/', CreateSavedSearchRequestHandler::class);
         $controllers->delete('/v3/{id}/', DeleteSavedSearchRequestHandler::class);
 
         return $controllers;
