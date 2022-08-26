@@ -15,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteSavedSearchRequestHandlerTest extends TestCase
 {
-    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
     private const USER_ID = 'b9dc94df-c96b-4b71-8880-bd46e4e9a644';
