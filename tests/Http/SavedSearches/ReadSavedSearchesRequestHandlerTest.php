@@ -4,30 +4,35 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\StringLiteral;
+use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\StringLiteral;
 
-class ReadSavedSearchesControllerTest extends TestCase
+class ReadSavedSearchesRequestHandlerTest extends TestCase
 {
+    use AssertJsonResponseTrait;
+
     /**
      * @var SavedSearchRepositoryInterface|MockObject
      */
     private $savedSearchRepository;
 
-    /**
-     * @var ReadSavedSearchesController
-     */
-    private $readSavedSearchesController;
+    private ReadSavedSearchesRequestHandler $readSavedSearchesRequestHandler;
+
+    private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->savedSearchRepository = $this->createMock(SavedSearchRepositoryInterface::class);
-        $this->readSavedSearchesController = new ReadSavedSearchesController($this->savedSearchRepository);
+        $this->readSavedSearchesRequestHandler = new ReadSavedSearchesRequestHandler($this->savedSearchRepository);
+        $this->psr7RequestBuilder = new Psr7RequestBuilder();
     }
 
     /**
@@ -42,7 +47,8 @@ class ReadSavedSearchesControllerTest extends TestCase
             ),
             new SavedSearch(
                 new StringLiteral('Saved search 1'),
-                new QueryString('city:herent')
+                new QueryString('city:herent'),
+                new StringLiteral('b706ca05-9139-422c-92e4-8aeb512466d6')
             ),
         ];
 
@@ -50,13 +56,14 @@ class ReadSavedSearchesControllerTest extends TestCase
             ->method('ownedByCurrentUser')
             ->willReturn($savedSearches);
 
-        $actualResponse = $this->readSavedSearchesController->ownedByCurrentUser();
+        $readSavedSearchesRequest = $this->psr7RequestBuilder
+            ->build('GET');
 
-        $this->assertEquals(
-            JsonResponse::create(
-                $savedSearches
-            ),
-            $actualResponse
+        $response = $this->readSavedSearchesRequestHandler->handle($readSavedSearchesRequest);
+
+        $this->assertJsonResponse(
+            new JsonResponse($savedSearches, StatusCodeInterface::STATUS_OK),
+            $response
         );
     }
 }

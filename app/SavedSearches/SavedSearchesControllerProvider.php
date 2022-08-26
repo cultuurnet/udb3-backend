@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
-use CultuurNet\UDB3\Http\SavedSearches\EditSavedSearchesRestController;
-use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesController;
+use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -18,17 +19,26 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['saved_searches_read_controller'] = $app->share(
+        $app[ReadSavedSearchesRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new ReadSavedSearchesController(
+                return new ReadSavedSearchesRequestHandler(
                     $app[SavedSearchRepositoryInterface::class]
                 );
             }
         );
 
-        $app['saved_searches_edit_controller'] = $app->share(
+        $app[CreateSavedSearchRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new EditSavedSearchesRestController(
+                return new CreateSavedSearchRequestHandler(
+                    $app['current_user_id'],
+                    $app['event_command_bus']
+                );
+            }
+        );
+
+        $app[DeleteSavedSearchRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new DeleteSavedSearchRequestHandler(
                     $app['current_user_id'],
                     $app['event_command_bus']
                 );
@@ -38,10 +48,10 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/v3/', 'saved_searches_read_controller:ownedByCurrentUser');
+        $controllers->get('/v3/', ReadSavedSearchesRequestHandler::class);
 
-        $controllers->post('/v3/', 'saved_searches_edit_controller:save');
-        $controllers->delete('/v3/{id}/', 'saved_searches_edit_controller:delete');
+        $controllers->post('/v3/', CreateSavedSearchRequestHandler::class);
+        $controllers->delete('/v3/{id}/', DeleteSavedSearchRequestHandler::class);
 
         return $controllers;
     }
