@@ -13,7 +13,7 @@ use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\StringLiteral;
 use PHPUnit\Framework\TestCase;
 
-class DeleteSavedSearchesRequestHandlerTest extends TestCase
+class DeleteSavedSearchRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
@@ -23,7 +23,7 @@ class DeleteSavedSearchesRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private DeleteSavedSearchesRequestHandler $deleteSavedSearchesRequestHandler;
+    private DeleteSavedSearchRequestHandler $deleteSavedSearchRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -31,7 +31,7 @@ class DeleteSavedSearchesRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->deleteSavedSearchesRequestHandler = new DeleteSavedSearchesRequestHandler(
+        $this->deleteSavedSearchRequestHandler = new DeleteSavedSearchRequestHandler(
             self::USER_ID,
             $this->commandBus
         );
@@ -50,7 +50,7 @@ class DeleteSavedSearchesRequestHandlerTest extends TestCase
             ->withRouteParameter('id', self::SEARCH_ID)
             ->build('DELETE');
 
-        $response = $this->deleteSavedSearchesRequestHandler->handle($deleteSavedSearchRequest);
+        $response = $this->deleteSavedSearchRequestHandler->handle($deleteSavedSearchRequest);
 
         $this->assertEquals(
             [

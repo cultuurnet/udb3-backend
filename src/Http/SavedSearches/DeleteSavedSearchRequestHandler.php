@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class DeleteSavedSearchesRequestHandler implements RequestHandlerInterface
+final class DeleteSavedSearchRequestHandler implements RequestHandlerInterface
 {
     private string $userId;
 
