@@ -28,13 +28,13 @@ final class GetLabelRequestHandlerTest extends TestCase
      */
     private $labelRepository;
 
-    private Entity $entity;
+    private Entity $label;
 
     private GetLabelRequestHandler $getLabelRequestHandler;
 
     protected function setUp(): void
     {
-        $this->entity = new Entity(
+        $this->label = new Entity(
             new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'),
             new StringLiteral('labelName'),
             Visibility::INVISIBLE(),
@@ -54,7 +54,7 @@ final class GetLabelRequestHandlerTest extends TestCase
         $this->labelRepository->expects($this->once())
             ->method('getByUuid')
             ->with(new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'))
-            ->willReturn($this->entity);
+            ->willReturn($this->label);
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('labelId', 'b88f2756-a1d8-4377-a36a-59662fc02d98')
@@ -63,7 +63,7 @@ final class GetLabelRequestHandlerTest extends TestCase
         $response = $this->getLabelRequestHandler->handle($request);
 
         $this->assertJsonResponse(
-            new JsonResponse($this->entity),
+            new JsonResponse($this->label),
             $response
         );
     }
@@ -80,7 +80,7 @@ final class GetLabelRequestHandlerTest extends TestCase
         $this->labelRepository->expects($this->once())
             ->method('getByName')
             ->with('labelName')
-            ->willReturn($this->entity);
+            ->willReturn($this->label);
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('labelId', 'labelName')
@@ -89,7 +89,7 @@ final class GetLabelRequestHandlerTest extends TestCase
         $response = $this->getLabelRequestHandler->handle($request);
 
         $this->assertJsonResponse(
-            new JsonResponse($this->entity),
+            new JsonResponse($this->label),
             $response
         );
     }
