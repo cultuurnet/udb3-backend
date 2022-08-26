@@ -8,12 +8,12 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\StringLiteral;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Response;
 
 class SaveSavedSearchesRequestHandlerTest extends TestCase
 {
@@ -71,7 +71,7 @@ class SaveSavedSearchesRequestHandlerTest extends TestCase
         );
 
         $this->assertJsonResponse(
-            new Response(StatusCodeInterface::STATUS_CREATED),
+            new JsonResponse(null, StatusCodeInterface::STATUS_CREATED),
             $response
         );
     }

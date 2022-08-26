@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
 use CultuurNet\UDB3\StringLiteral;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
 final class SaveSavedSearchesRequestHandler implements RequestHandlerInterface
 {
@@ -39,6 +39,6 @@ final class SaveSavedSearchesRequestHandler implements RequestHandlerInterface
 
         $this->commandBus->dispatch($command);
 
-        return new Response(StatusCodeInterface::STATUS_CREATED);
+        return new JsonResponse(null, StatusCodeInterface::STATUS_CREATED);
     }
 }
