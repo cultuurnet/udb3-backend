@@ -43,8 +43,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
 
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
 
-
-
         /**
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.

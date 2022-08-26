@@ -48,7 +48,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->get('/{offerType}/{offerId}/history/', GetHistoryRequestHandler::class);
 
         $controllers->get('/{offerType}/{offerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
-        $controllers->get('/{offerType}//{offerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
+        $controllers->get('/{offerType}/{offerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/calendar-summary/', GetCalendarSummaryRequestHandler::class);
