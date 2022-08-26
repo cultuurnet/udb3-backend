@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
@@ -74,5 +75,43 @@ class CreateSavedSearchesRequestHandlerTest extends TestCase
             new JsonResponse(null, StatusCodeInterface::STATUS_CREATED),
             $response
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_when_name_is_missing(): void
+    {
+        $createSavedSearchRequest = $this->psr7RequestBuilder
+            ->withJsonBodyFromArray(
+                [
+                    'query' => 'regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)',
+                ]
+            )
+            ->build('POST');
+
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('name is missing');
+
+        $this->createSavedSearchesRequestHandler->handle($createSavedSearchRequest);
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_when_query_is_missing(): void
+    {
+        $createSavedSearchRequest = $this->psr7RequestBuilder
+            ->withJsonBodyFromArray(
+                [
+                    'name' => 'Avondlessen in Gent',
+                ]
+            )
+            ->build('POST');
+
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('query is missing');
+
+        $this->createSavedSearchesRequestHandler->handle($createSavedSearchRequest);
     }
 }
