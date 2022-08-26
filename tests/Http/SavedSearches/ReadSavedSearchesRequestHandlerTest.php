@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\StringLiteral;
+use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ReadSavedSearchesRequestHandlerTest extends TestCase
 {
+    use AssertJsonResponseTrait;
+
     /**
      * @var SavedSearchRepositoryInterface|MockObject
      */
@@ -57,9 +61,9 @@ class ReadSavedSearchesRequestHandlerTest extends TestCase
 
         $response = $this->readSavedSearchesRequestHandler->handle($readSavedSearchesRequest);
 
-        $this->assertEquals(
-            Json::encode($savedSearches),
-            $response->getBody()->getContents()
+        $this->assertJsonResponse(
+            new JsonResponse($savedSearches, StatusCodeInterface::STATUS_OK),
+            $response
         );
     }
 }
