@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Labels;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\PatchLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\ReadRestController;
 use Silex\Application;
@@ -29,9 +30,15 @@ class LabelsControllerProvider implements ControllerProviderInterface
             fn (Application $app) => new PatchLabelRequestHandler($app['event_command_bus'])
         );
 
+        $app[GetLabelRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetLabelRequestHandler($app[LabelServiceProvider::JSON_READ_REPOSITORY])
+        );
+
         $controllers = $app['controllers_factory'];
         $controllers->post('/', CreateLabelRequestHandler::class);
         $controllers->patch('/{labelId}/', PatchLabelRequestHandler::class);
+
+        $controllers->get('/{labelId}/', GetLabelRequestHandler::class);
 
         $this->setUpReadRestController($app);
 
@@ -53,7 +60,6 @@ class LabelsControllerProvider implements ControllerProviderInterface
 
     private function setControllerPaths(ControllerCollection $controllers): ControllerCollection
     {
-        $controllers->get('/{id}/', self::READ_REST_CONTROLLER . ':get');
         $controllers->get('/', self::READ_REST_CONTROLLER . ':search');
 
         return $controllers;
