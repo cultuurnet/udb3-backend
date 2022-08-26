@@ -49,11 +49,11 @@ class CreateSavedSearchesRequestHandlerTest extends TestCase
     public function it_can_save_a_search(): void
     {
         $createSavedSearchRequest = $this->psr7RequestBuilder
-            ->withBodyFromString(
-                '{
-	                "name": "Avondlessen in Gent",
-	                "query": "regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)"
-                }'
+            ->withJsonBodyFromArray(
+                [
+                    'name' => 'Avondlessen in Gent',
+                    'query' => 'regions:nis-44021 AND (typicalAgeRange:[18 TO *] AND name.*:Avondlessen)',
+                ]
             )
             ->build('POST');
 
