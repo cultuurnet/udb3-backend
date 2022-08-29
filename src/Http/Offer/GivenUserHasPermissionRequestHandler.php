@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class GivenUserHasPermissionRequestHandler extends HasPermissionRequestHandler implements RequestHandlerInterface
+final class GivenUserHasPermissionRequestHandler extends HasPermissionRequestHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

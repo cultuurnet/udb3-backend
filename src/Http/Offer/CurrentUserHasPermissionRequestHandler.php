@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class CurrentUserHasPermissionRequestHandler extends HasPermissionRequestHandler implements RequestHandlerInterface
+final class CurrentUserHasPermissionRequestHandler extends HasPermissionRequestHandler implements RequestHandlerInterface
 {
     private ?string $currentUserId;
 
