@@ -28,23 +28,23 @@ final class PatchLabelRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $uuid = new UUID((new RouteParameters($request))->get('id'));
+        $labelId = new UUID((new RouteParameters($request))->getLabelId());
 
         $body = Json::decodeAssociatively($request->getBody()->getContents());
         $commandType = new CommandType($body['command']);
 
         switch ($commandType) {
             case CommandType::makeVisible():
-                $this->commandBus->dispatch(new MakeVisible($uuid));
+                $this->commandBus->dispatch(new MakeVisible($labelId));
                 break;
             case CommandType::makeInvisible():
-                $this->commandBus->dispatch(new MakeInvisible($uuid));
+                $this->commandBus->dispatch(new MakeInvisible($labelId));
                 break;
             case CommandType::makePublic():
-                $this->commandBus->dispatch(new MakePublic($uuid));
+                $this->commandBus->dispatch(new MakePublic($labelId));
                 break;
             case CommandType::makePrivate():
-                $this->commandBus->dispatch(new MakePrivate($uuid));
+                $this->commandBus->dispatch(new MakePrivate($labelId));
                 break;
         }
 

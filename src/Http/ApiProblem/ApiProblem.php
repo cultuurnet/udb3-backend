@@ -284,6 +284,11 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('Image', $imageId);
     }
 
+    public static function labelNotFound(string $labelId): self
+    {
+        return self::resourceNotFound('Label', $labelId);
+    }
+
     public static function bodyMissing(): self
     {
         return self::create(

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Label\Query;
 
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 final class QueryFactoryTest extends TestCase
 {
@@ -27,11 +27,19 @@ final class QueryFactoryTest extends TestCase
      */
     public function it_can_get_query_from_request(): void
     {
-        $request = new Request([
-            QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::START => self::START_VALUE,
-            QueryFactory::LIMIT => self::LIMIT_VALUE,
-        ]);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s&%s=%s&%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                    QueryFactory::START,
+                    self::START_VALUE,
+                    QueryFactory::LIMIT,
+                    self::LIMIT_VALUE
+                )
+            )
+            ->build('GET');
 
         $query = $this->queryFactory->createFromRequest($request);
 
@@ -50,10 +58,17 @@ final class QueryFactoryTest extends TestCase
      */
     public function it_can_get_query_from_request_no_start(): void
     {
-        $request = new Request([
-            QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::LIMIT => self::LIMIT_VALUE,
-        ]);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s&&%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                    QueryFactory::LIMIT,
+                    self::LIMIT_VALUE
+                )
+            )
+            ->build('GET');
 
         $query = $this->queryFactory->createFromRequest($request);
 
@@ -72,10 +87,17 @@ final class QueryFactoryTest extends TestCase
      */
     public function it_can_get_query_from_request_no_limit(): void
     {
-        $request = new Request([
-            QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::START => self::START_VALUE,
-        ]);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s&%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                    QueryFactory::START,
+                    self::START_VALUE
+                )
+            )
+            ->build('GET');
 
         $query = $this->queryFactory->createFromRequest($request);
 
@@ -94,9 +116,15 @@ final class QueryFactoryTest extends TestCase
      */
     public function it_can_get_query_from_request_no_start_and_no_limit(): void
     {
-        $request = new Request([
-            QueryFactory::QUERY => self::QUERY_VALUE,
-        ]);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                )
+            )
+            ->build('GET');
 
         $query = $this->queryFactory->createFromRequest($request);
 
@@ -115,11 +143,19 @@ final class QueryFactoryTest extends TestCase
      */
     public function it_can_get_query_from_request_with_zero_start_and_zero_limit(): void
     {
-        $request = new Request([
-            QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::START => 0,
-            QueryFactory::LIMIT => 0,
-        ]);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s&%s=%s&%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                    QueryFactory::START,
+                    0,
+                    QueryFactory::LIMIT,
+                    0
+                )
+            )
+            ->build('GET');
 
         $query = $this->queryFactory->createFromRequest($request);
 
@@ -140,11 +176,19 @@ final class QueryFactoryTest extends TestCase
     {
         $queryFactory = new QueryFactory(null);
 
-        $request = new Request([
-            QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::START => self::START_VALUE,
-            QueryFactory::LIMIT => self::LIMIT_VALUE,
-        ]);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s&%s=%s&%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                    QueryFactory::START,
+                    self::START_VALUE,
+                    QueryFactory::LIMIT,
+                    self::LIMIT_VALUE
+                )
+            )
+            ->build('GET');
 
         $query = $queryFactory->createFromRequest($request);
 
@@ -166,12 +210,21 @@ final class QueryFactoryTest extends TestCase
     {
         $queryFactory = new QueryFactory(null);
 
-        $request = new Request([
-            QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::START => self::START_VALUE,
-            QueryFactory::LIMIT => self::LIMIT_VALUE,
-            QueryFactory::SUGGESTION => $queryValue,
-        ]);
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s&%s=%s&%s=%s&%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                    QueryFactory::START,
+                    self::START_VALUE,
+                    QueryFactory::LIMIT,
+                    self::LIMIT_VALUE,
+                    QueryFactory::SUGGESTION,
+                    $queryValue
+                )
+            )
+            ->build('GET');
 
         $query = $queryFactory->createFromRequest($request);
 
