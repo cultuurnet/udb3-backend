@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
@@ -25,12 +27,10 @@ use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class OrganizerControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
@@ -66,8 +66,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
         $controllers->delete('/{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
-        $controllers->get('/{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
-        $controllers->get('/{offerId}/permissions/{userId}/', 'organizer_permissions_controller:getPermissionsForGivenUser');
+        $controllers->get('/{offerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
+        $controllers->get('/{offerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
 
         return $controllers;
     }
@@ -154,12 +154,21 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             fn (Application $application) => new DeleteLabelRequestHandler($app['event_command_bus'])
         );
 
-        $app['organizer_permissions_controller'] = $app->share(
+        $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new OfferPermissionsController(
+                return new GetPermissionsForCurrentUserRequestHandler(
                     [Permission::organisatiesBewerken()],
                     $app['organizer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                    $app['current_user_id'] ?? null
+                );
+            }
+        );
+
+        $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new GetPermissionsForGivenUserRequestHandler(
+                    [Permission::organisatiesBewerken()],
+                    $app['organizer_permission_voter']
                 );
             }
         );
