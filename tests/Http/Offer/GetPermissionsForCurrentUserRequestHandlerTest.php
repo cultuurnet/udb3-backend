@@ -30,8 +30,6 @@ class GetPermissionsForCurrentUserRequestHandlerTest extends TestCase
      */
     private $voter;
 
-    private string $currentUserId;
-
     private GetPermissionsForCurrentUserRequestHandler $getPermissionsForCurrentUserRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
@@ -48,12 +46,12 @@ class GetPermissionsForCurrentUserRequestHandlerTest extends TestCase
         $this->permissions = $permissionsToCheck;
         $this->voter = $this->createMock(PermissionVoter::class);
 
-        $this->currentUserId = 'cd8d2005-e978-4f4c-9eb6-a0c0104fd8d0';
+        $currentUserId = 'cd8d2005-e978-4f4c-9eb6-a0c0104fd8d0';
 
         $this->getPermissionsForCurrentUserRequestHandler = new GetPermissionsForCurrentUserRequestHandler(
             $this->permissions,
             $this->voter,
-            $this->currentUserId
+            $currentUserId
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
