@@ -14,7 +14,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Headers;
 
-class GivenUserHasPermissionRequestHandlerTest extends TestCase
+final class GivenUserHasPermissionRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
 
