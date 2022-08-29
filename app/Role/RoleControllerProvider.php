@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
 use CultuurNet\UDB3\Http\Role\EditRoleRestController;
 use CultuurNet\UDB3\Http\Role\ReadRoleRestController;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -22,8 +23,8 @@ class RoleControllerProvider implements ControllerProviderInterface
                 return new ReadRoleRestController(
                     $app['role_service'],
                     $app['role_reading_service'],
-                    $app['current_user_id'],
-                    $app['current_user_is_god_user'],
+                    $app[CurrentUser::class]->getId(),
+                    $app[CurrentUser::class]->isGodUser(),
                     $app['role_search_v3_repository'],
                     $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]
                 );

@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
+use CultuurNet\UDB3\User\CurrentUser;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -88,7 +89,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new GetHistoryRequestHandler(
                 $app['event_history_repository'],
                 $app['places_history_repository'],
-                $app['current_user_is_god_user']
+                $app[CurrentUser::class]->isGodUser()
             )
         );
 

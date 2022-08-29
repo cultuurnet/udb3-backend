@@ -23,8 +23,6 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
@@ -76,10 +74,6 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
             case $e instanceof ConvertsToApiProblem:
                 return $e->toApiProblem();
-
-            case $e instanceof AccessDeniedException:
-            case $e instanceof AccessDeniedHttpException:
-                return ApiProblem::forbidden();
 
             case $e instanceof CommandAuthorizationException:
                 return ApiProblem::forbidden(

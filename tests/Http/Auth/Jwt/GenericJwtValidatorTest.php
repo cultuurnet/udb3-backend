@@ -2,23 +2,18 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Jwt;
+namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class JwtBaseValidatorTest extends TestCase
+final class GenericJwtValidatorTest extends TestCase
 {
-    /**
-     * @var JwtBaseValidator
-     */
-    private $validator;
+    private GenericJwtValidator $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->validator = new JwtBaseValidator(
+        $this->validator = new GenericJwtValidator(
             JsonWebTokenFactory::getPublicKey(),
             ['sub'],
             ['valid-issuer-1', 'valid-issuer-2']
@@ -51,7 +46,7 @@ class JwtBaseValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -68,7 +63,7 @@ class JwtBaseValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -86,7 +81,7 @@ class JwtBaseValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -104,7 +99,7 @@ class JwtBaseValidatorTest extends TestCase
             ]
         );
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->validateClaims($token);
     }
 
@@ -133,7 +128,7 @@ class JwtBaseValidatorTest extends TestCase
     public function it_throws_if_the_signature_is_invalid(): void
     {
         $token = JsonWebTokenFactory::createWithInvalidSignature();
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->validator->verifySignature($token);
     }
 

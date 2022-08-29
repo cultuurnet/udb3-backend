@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -27,7 +28,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
             function ($app) {
                 // Set up security to check permissions of AuthorizableCommand commands.
                 $security = new PermissionVoterCommandBusSecurity(
-                    $app['current_user_id'],
+                    $app[CurrentUser::class]->getId(),
                     // Either allow everything for god users, or use a voter based on the specific permission
                     new AnyOfVoter(
                         $app['god_user_voter'],
@@ -61,7 +62,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                 // AuthorizableLabelCommand (skipped otherwise).
                 return new LabelCommandBusSecurity(
                     $security,
-                    $app['current_user_id'],
+                    $app[CurrentUser::class]->getId(),
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
             }
@@ -71,7 +72,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
             function () use ($app) {
                 return new AuthorizedCommandBus(
                     new SimpleContextAwareCommandBus(),
-                    $app['current_user_id'],
+                    $app[CurrentUser::class]->getId(),
                     $app['command_bus.security']
                 );
             }

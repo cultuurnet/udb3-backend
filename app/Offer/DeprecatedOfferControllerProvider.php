@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -92,10 +93,11 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                     Permission::aanbodModereren(),
                     Permission::aanbodVerwijderen(),
                 ];
+                $currentUserId = $app[CurrentUser::class]->getId();
                 return new OfferPermissionsController(
                     $permissionsToCheck,
                     $app['offer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                    $currentUserId ? new StringLiteral($currentUserId) : null
                 );
             }
         );
@@ -103,10 +105,11 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         /* Only for legacy routes used for backward compatibility */
         $app[$this->getDeprecatedPermissionControllerName()] = $app->share(
             function (Application $app) {
+                $currentUserId = $app[CurrentUser::class]->getId();
                 return new OfferPermissionController(
                     Permission::aanbodBewerken(),
                     $app['offer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                    $currentUserId ? new StringLiteral($currentUserId) : null
                 );
             }
         );

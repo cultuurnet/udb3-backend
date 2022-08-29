@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Role\Commands\RemoveLabel;
 use CultuurNet\UDB3\Role\Commands\RemovePermission;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
-use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\RoleRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
@@ -123,25 +122,15 @@ class DefaultRoleEditingServiceTest extends TestCase
      */
     public function it_can_create_a_role(): void
     {
-        $this->eventStore->trace();
+        $this->commandBus->expects($this->once())
+            ->method('dispatch')
+            ->with($this->createRole);
 
         $roleId = $this->roleEditingService->create(
             new StringLiteral('roleName')
         );
 
-        $expectedUuid = $this->uuid;
-
-        $this->assertEquals(
-            [
-                new RoleCreated(
-                    $this->uuid,
-                    new StringLiteral('roleName')
-                ),
-            ],
-            $this->eventStore->getEvents()
-        );
-
-        $this->assertEquals($expectedUuid, $roleId);
+        $this->assertEquals($this->uuid, $roleId);
     }
 
     /**

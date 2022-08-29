@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -30,7 +31,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         $app[CreateSavedSearchRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new CreateSavedSearchRequestHandler(
-                    $app['current_user_id'],
+                    $app[CurrentUser::class]->getId(),
                     $app['event_command_bus']
                 );
             }
@@ -39,7 +40,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         $app[DeleteSavedSearchRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new DeleteSavedSearchRequestHandler(
-                    $app['current_user_id'],
+                    $app[CurrentUser::class]->getId(),
                     $app['event_command_bus']
                 );
             }

@@ -119,4 +119,76 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $otherUserPermissions = $this->repository->getPermissions(new StringLiteral('otherUserId'));
         $this->assertEmpty($otherUserPermissions);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_check_if_a_user_has_a_specific_permission_in_its_roles(): void
+    {
+        $userId = '7D23021B-C9AA-4B64-97A5-ECA8168F4A27';
+        $otherUserId = '7e51485a-adab-443f-b9c5-3cf735572f7c';
+        $roleId = '7B6A161E-987B-4069-8BB2-9956B01782CB';
+        $otherRoleId = '8B6A161E-987B-8069-8BB2-9856B01782CB';
+
+        // Add a role for the user
+        $this->getConnection()->insert(
+            $this->userRoleTableName,
+            [
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
+                SchemaConfigurator::USER_ID_COLUMN => $userId,
+            ]
+        );
+
+        // Add another role for the user
+        $this->getConnection()->insert(
+            $this->userRoleTableName,
+            [
+                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
+                SchemaConfigurator::USER_ID_COLUMN => $userId,
+            ]
+        );
+
+        // Add some permissions to the role we just assigned to the user
+        $this->getConnection()->insert(
+            $this->rolePermissionTableName,
+            [
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::labelsBeheren()->toString(),
+            ]
+        );
+        $this->getConnection()->insert(
+            $this->rolePermissionTableName,
+            [
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
+            ]
+        );
+
+        // Add a permission to the other role
+        $this->getConnection()->insert(
+            $this->rolePermissionTableName,
+            [
+                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::gebruikersBeheren()->toString(),
+            ]
+        );
+        $this->getConnection()->insert(
+            $this->rolePermissionTableName,
+            [
+                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
+                SchemaConfigurator::PERMISSION_COLUMN => Permission::aanbodModereren()->toString(),
+            ]
+        );
+
+        $this->assertTrue($this->repository->hasPermission($userId, Permission::gebruikersBeheren()));
+        $this->assertTrue($this->repository->hasPermission($userId, Permission::aanbodModereren()));
+        $this->assertTrue($this->repository->hasPermission($userId, Permission::labelsBeheren()));
+
+        $this->assertFalse($this->repository->hasPermission($userId, Permission::aanbodBewerken()));
+        $this->assertFalse($this->repository->hasPermission($userId, Permission::aanbodVerwijderen()));
+        $this->assertFalse($this->repository->hasPermission($userId, Permission::organisatiesBewerken()));
+        $this->assertFalse($this->repository->hasPermission($userId, Permission::organisatiesBeheren()));
+
+        $this->assertFalse($this->repository->hasPermission($otherUserId, Permission::gebruikersBeheren()));
+    }
 }

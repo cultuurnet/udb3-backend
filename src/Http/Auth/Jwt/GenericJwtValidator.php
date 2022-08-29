@@ -2,27 +2,15 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Jwt;
+namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 
-class JwtBaseValidator implements JwtValidator
+final class GenericJwtValidator implements JwtValidator
 {
-    /**
-     * @var string
-     */
-    private $publicKey;
-
-    /**
-     * @var string[]
-     */
-    private $requiredClaims;
-
-    /**
-     * @var string[]
-     */
-    private $validIssuers;
+    private string $publicKey;
+    private array $requiredClaims;
+    private array $validIssuers;
 
     /**
      * @param string[] $requiredClaims
@@ -60,7 +48,7 @@ class JwtBaseValidator implements JwtValidator
     private function validateTimeSensitiveClaims(JsonWebToken $token): void
     {
         if (!$token->isUsableAtCurrentTime()) {
-            throw new AuthenticationException(
+            throw ApiProblem::unauthorized(
                 'Token expired (or not yet usable).'
             );
         }
@@ -69,7 +57,7 @@ class JwtBaseValidator implements JwtValidator
     private function validateRequiredClaims(JsonWebToken $token): void
     {
         if (!$token->hasClaims($this->requiredClaims)) {
-            throw new AuthenticationException(
+            throw ApiProblem::unauthorized(
                 'Token is missing one of its required claims.'
             );
         }
@@ -78,7 +66,7 @@ class JwtBaseValidator implements JwtValidator
     private function validateIssuer(JsonWebToken $token): void
     {
         if (!$token->hasValidIssuer($this->validIssuers)) {
-            throw new AuthenticationException(
+            throw ApiProblem::unauthorized(
                 'Token is not issued by a valid issuer.'
             );
         }
@@ -87,7 +75,7 @@ class JwtBaseValidator implements JwtValidator
     public function verifySignature(JsonWebToken $token): void
     {
         if (!$token->verifyRsaSha256Signature($this->publicKey)) {
-            throw new AuthenticationException(
+            throw ApiProblem::unauthorized(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );
         }
