@@ -33,7 +33,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     public function connect(Application $app): ControllerCollection
     {
         $controllerName = $this->getEditControllerName();
-        $deprecatedPermissionControllerName = $this->getDeprecatedPermissionControllerName();
 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
@@ -49,8 +48,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
          */
         $controllers->post('/{cdbid}/labels/', "{$controllerName}:addLabelFromJsonBody");
         $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
-        $controllers->get('/{offerId}/permission/', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
-        $controllers->get('/{offerId}/permission/{userId}/', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
 
         return $controllers;
     }
@@ -96,11 +93,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     private function getEditControllerName(): string
     {
         return "{$this->offerType}_offer_controller";
-    }
-
-    private function getDeprecatedPermissionControllerName(): string
-    {
-        return "permission_{$this->offerType}_controller";
     }
 
     public function boot(Application $app): void

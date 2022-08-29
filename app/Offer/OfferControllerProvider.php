@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
@@ -12,6 +13,7 @@ use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
@@ -69,6 +71,14 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->patch('/{offerType}/{offerId}/', PatchOfferRequestHandler::class);
 
+        /**
+         * Legacy routes that we need to keep for backward compatibility.
+         * These routes usually used an incorrect HTTP method.
+         */
+        $controllers->get('/{offerType}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
+        $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
+
+
         return $controllers;
     }
 
@@ -118,6 +128,21 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
                     Permission::aanbodVerwijderen(),
                 ],
                 $app['offer_permission_voter'],
+            )
+        );
+
+        $app[CurrentUserHasPermissionRequestHandler::class] = $app->share(
+            fn (Application $app) => new CurrentUserHasPermissionRequestHandler(
+                Permission::aanbodBewerken(),
+                $app['offer_permission_voter'],
+                $app['current_user_id'] ?? null
+            )
+        );
+
+        $app[GivenUserHasPermissionRequestHandler::class] = $app->share(
+            fn (Application $app) => new GivenUserHasPermissionRequestHandler(
+                Permission::aanbodBewerken(),
+                $app['offer_permission_voter']
             )
         );
 
