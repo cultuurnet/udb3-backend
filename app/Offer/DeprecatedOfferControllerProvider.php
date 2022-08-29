@@ -77,17 +77,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                 );
             }
         );
-
-        /* Only for legacy routes used for backward compatibility */
-        $app[$this->getDeprecatedPermissionControllerName()] = $app->share(
-            function (Application $app) {
-                return new OfferPermissionController(
-                    Permission::aanbodBewerken(),
-                    $app['offer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
-                );
-            }
-        );
     }
 
     private function getEditControllerName(): string
