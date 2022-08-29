@@ -58,21 +58,6 @@ $app->register(new RequestHandlerControllerServiceProvider());
 $app->register(new PsrRouterServiceProvider());
 
 /**
- * Middleware that authenticates incoming HTTP requests using the RequestAuthenticator service.
- * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
- */
-$app->before(
-    static function (Request $request, Application $app): void {
-        $psrRequest = (new DiactorosFactory())->createRequest($request);
-
-        /** @var RequestAuthenticator $authenticator */
-        $authenticator = $app[RequestAuthenticator::class];
-        $authenticator->authenticate($psrRequest);
-    },
-    Application::EARLY_EVENT
-);
-
-/**
  * Middleware that proxies application/xml requests to the XML service.
  * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
  * (To be discussed if this is actually still needed now that all XML APIs are offline and no longer supported!)
@@ -106,6 +91,21 @@ if (isset($app['config']['search_proxy']) &&
         Application::EARLY_EVENT
     );
 }
+
+/**
+ * Middleware that authenticates incoming HTTP requests using the RequestAuthenticator service.
+ * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
+ */
+$app->before(
+    static function (Request $request, Application $app): void {
+        $psrRequest = (new DiactorosFactory())->createRequest($request);
+
+        /** @var RequestAuthenticator $authenticator */
+        $authenticator = $app[RequestAuthenticator::class];
+        $authenticator->authenticate($psrRequest);
+    },
+    Application::EARLY_EVENT
+);
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
