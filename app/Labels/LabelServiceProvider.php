@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepos
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
-use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
@@ -163,15 +162,6 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ConstraintAwareLabelService(
                     $app[self::REPOSITORY],
-                    new Version4Generator()
-                );
-            }
-        );
-
-        $app[self::WRITE_SERVICE] = $app->share(
-            function (Application $app) {
-                return new WriteService(
-                    $app['event_command_bus'],
                     new Version4Generator()
                 );
             }
