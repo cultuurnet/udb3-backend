@@ -52,9 +52,9 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 $authenticator->addPublicRoute('~^/(events?|places?)/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/calendar-summary/?$~', ['GET']);
-                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/permissions?/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/(events?|places?)/[\w\-]+/permissions?/.+$~', ['GET']);
                 $authenticator->addPublicRoute('~^/organizers/[\w\-]+/?$~', ['GET']);
-                $authenticator->addPublicRoute('~^/organizers/[\w\-]+/permissions/?$~', ['GET']);
+                $authenticator->addPublicRoute('~^/organizers/[\w\-]+/permissions/.+$~', ['GET']);
                 $authenticator->addPublicRoute('~^/labels/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/label/[\w\-]+/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/media/[\w\-]+/?$~', ['GET']);
