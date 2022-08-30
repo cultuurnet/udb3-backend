@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Http\Response\UncacheableJsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use Fig\Http\Message\StatusCodeInterface;
@@ -38,8 +39,6 @@ final class GetPermissionsForGivenUserRequestHandlerTest extends TestCase
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
-    private Headers $headers;
-
     public function setUp(): void
     {
         $permissionsToCheck = [
@@ -56,9 +55,6 @@ final class GetPermissionsForGivenUserRequestHandlerTest extends TestCase
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
-
-        $this->headers = new Headers();
-        $this->headers->setHeader('Cache-Control', 'private');
     }
 
     /**
@@ -76,13 +72,13 @@ final class GetPermissionsForGivenUserRequestHandlerTest extends TestCase
         $response = $this->getPermissionsForGivenUserRequestHandler->handle($getPermissionsForGivenUserRequest);
 
         $this->assertJsonResponse(
-            new JsonResponse([
+            new UncacheableJsonResponse([
                 'permissions' => [
                     'Aanbod bewerken',
                     'Aanbod modereren',
                     'Aanbod verwijderen',
                 ],
-            ], StatusCodeInterface::STATUS_OK, $this->headers),
+            ], StatusCodeInterface::STATUS_OK),
             $response
         );
     }

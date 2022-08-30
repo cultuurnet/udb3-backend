@@ -46,11 +46,4 @@ abstract class GetPermissionsRequestHandler
 
         return ['permissions' => $permissionsToReturn];
     }
-
-    protected function getPrivateHeaders(): Headers
-    {
-        $headers = new Headers();
-        $headers->setHeader('Cache-Control', 'private');
-        return $headers;
-    }
 }

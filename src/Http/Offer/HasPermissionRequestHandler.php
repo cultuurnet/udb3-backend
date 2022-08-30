@@ -37,11 +37,4 @@ abstract class HasPermissionRequestHandler
 
         return ['hasPermission' => $hasPermission];
     }
-
-    protected function getPrivateHeaders(): Headers
-    {
-        $headers = new Headers();
-        $headers->setHeader('Cache-Control', 'private');
-        return $headers;
-    }
 }

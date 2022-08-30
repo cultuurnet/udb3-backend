@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Http\Response\UncacheableJsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use Fig\Http\Message\StatusCodeInterface;
@@ -33,6 +34,6 @@ final class CurrentUserHasPermissionRequestHandler extends HasPermissionRequestH
 
         $hasPermission = $this->hasPermission($offerId, $this->currentUserId);
 
-        return new JsonResponse($hasPermission, StatusCodeInterface::STATUS_OK, $this->getPrivateHeaders());
+        return new UncacheableJsonResponse($hasPermission, StatusCodeInterface::STATUS_OK);
     }
 }
