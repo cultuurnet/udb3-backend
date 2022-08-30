@@ -19,10 +19,10 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
     {
         $app[GetUiTPASDetailRequestHandler::class] = $app->share(
             fn (Application $app) => new GetUiTPASDetailRequestHandler(
-                    $app['uitpas'],
-                    $app['url_generator'],
-                    self::EVENT_DETAIL,
-                    self::EVENT_CARD_SYSTEMS
+                $app['uitpas'],
+                $app['url_generator'],
+                self::EVENT_DETAIL,
+                self::EVENT_CARD_SYSTEMS
             )
         );
 
