@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
@@ -57,7 +57,7 @@ class UserIdentityController
 
     public function getCurrentUser(): ResponseInterface
     {
-        if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
+        if ($this->jwt->getType() === JsonWebToken::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
             throw ApiProblem::unauthorized(
                 'Client access tokens are not supported on this endpoint because a user is required to return user info.'
             );

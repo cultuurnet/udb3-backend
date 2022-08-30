@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CorrelationIdPropertiesFact
 use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\DeliveryModePropertiesFactory;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
@@ -77,9 +78,11 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                         // Check if the API key or Client ID is in the list of keys / ids that should have their
                         // messages routed to the "cli" queue to offload the API queue if the API key or Client ID is
                         // sending A LOT of requests. (Configured manually in config.yml)
-                        $apiKey = $app['api_key'];
+                        $jwt = $app[JsonWebToken::class];
+                        $clientId = $jwt instanceof JsonWebToken ? $jwt->getClientId() : null;
+                        $apiKey = $app[ApiKey::class];
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;
-                        if (in_array($app['api_client_id'], $app['amqp.publisher.cli.client_ids'], true) ||
+                        if (in_array($clientId, $app['amqp.publisher.cli.client_ids'], true) ||
                             in_array($apiKey, $app['amqp.publisher.cli.api_keys'], true)) {
                             return 'cli';
                         }

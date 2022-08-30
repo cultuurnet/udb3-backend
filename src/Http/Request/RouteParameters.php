@@ -81,6 +81,11 @@ final class RouteParameters
         return $this->get('organizerId');
     }
 
+    public function getLabelId(): string
+    {
+        return $this->get('labelId');
+    }
+
     public function getProductionId(): string
     {
         return $this->get('productionId');

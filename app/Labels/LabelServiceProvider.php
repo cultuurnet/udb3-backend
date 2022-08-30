@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
+use CultuurNet\UDB3\User\CurrentUser;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -266,7 +267,9 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::QUERY_FACTORY] = $app->share(
             function (Application $app) {
-                return new QueryFactory($app['current_user_is_god_user'] ? null : $app['current_user_id']);
+                /** @var CurrentUser $currentUser */
+                $currentUser = $app[CurrentUser::class];
+                return new QueryFactory($currentUser->isGodUser() ? null : $currentUser->getId());
             }
         );
     }

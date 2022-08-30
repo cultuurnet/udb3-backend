@@ -2,30 +2,20 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Jwt;
+namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
-use PHPUnit\Framework\MockObject\MockObject;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class JwtV2ValidatorTest extends TestCase
+class UitIdV2JwtValidatorTest extends TestCase
 {
-    /**
-     * @var JwtValidator|MockObject
-     */
-    private $baseValidator;
+    private UitIdV2JwtValidator $v2Validator;
 
-    /**
-     * @var JwtV2Validator
-     */
-    private $v2Validator;
-
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->baseValidator = $this->createMock(JwtValidator::class);
-        $this->v2Validator = new JwtV2Validator(
-            $this->baseValidator,
+        $this->v2Validator = new UitIdV2JwtValidator(
+            file_get_contents(__DIR__ . '/samples/public.pem'),
+            ['mock-issuer'],
             'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'
         );
     }
@@ -35,14 +25,8 @@ class JwtV2ValidatorTest extends TestCase
      */
     public function it_verifies_the_signature_via_the_decoratee(): void
     {
-        $token = JsonWebTokenFactory::createWithClaims([]);
-
-        $this->baseValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($token)
-            ->willThrowException(new AuthenticationException());
-
-        $this->expectException(AuthenticationException::class);
+        $token = JsonWebTokenFactory::createWithInvalidSignature();
+        $this->expectException(ApiProblem::class);
         $this->v2Validator->verifySignature($token);
     }
 
@@ -52,13 +36,7 @@ class JwtV2ValidatorTest extends TestCase
     public function it_verifies_the_basic_claims_via_the_decoratee(): void
     {
         $token = JsonWebTokenFactory::createWithClaims([]);
-
-        $this->baseValidator->expects($this->once())
-            ->method('validateClaims')
-            ->with($token)
-            ->willThrowException(new AuthenticationException());
-
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->v2Validator->validateClaims($token);
     }
 
@@ -69,14 +47,18 @@ class JwtV2ValidatorTest extends TestCase
     {
         $tokenWithPermission = JsonWebTokenFactory::createWithClaims(
             [
+                'iss' => 'mock-issuer',
                 'azp' => 'foobar',
+                'sub' => 'mock',
                 'https://publiq.be/publiq-apis' => 'ups entry',
             ]
         );
 
         $tokenWithoutPermission = JsonWebTokenFactory::createWithClaims(
             [
+                'iss' => 'mock-issuer',
                 'azp' => 'foobar',
+                'sub' => 'mock',
                 'https://publiq.be/publiq-apis' => 'ups',
             ]
         );
@@ -84,7 +66,7 @@ class JwtV2ValidatorTest extends TestCase
         $this->v2Validator->validateClaims($tokenWithPermission);
         $this->addToAssertionCount(1);
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->v2Validator->validateClaims($tokenWithoutPermission);
     }
 
@@ -93,13 +75,25 @@ class JwtV2ValidatorTest extends TestCase
      */
     public function it_verifies_that_the_aud_is_the_v2_jwt_provider_if_no_azp_is_present(): void
     {
-        $tokenFromV2JwtProvider = JsonWebTokenFactory::createWithClaims(['aud' => 'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD']);
-        $tokenWithUnknownAud = JsonWebTokenFactory::createWithClaims(['aud' => 'foobar']);
+        $tokenFromV2JwtProvider = JsonWebTokenFactory::createWithClaims(
+            [
+                'iss' => 'mock-issuer',
+                'sub' => 'mock',
+                'aud' => 'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD',
+            ]
+        );
+        $tokenWithUnknownAud = JsonWebTokenFactory::createWithClaims(
+            [
+                'iss' => 'mock-issuer',
+                'sub' => 'mock',
+                'aud' => 'foobar',
+            ]
+        );
 
         $this->v2Validator->validateClaims($tokenFromV2JwtProvider);
         $this->addToAssertionCount(1);
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(ApiProblem::class);
         $this->v2Validator->validateClaims($tokenWithUnknownAud);
     }
 }

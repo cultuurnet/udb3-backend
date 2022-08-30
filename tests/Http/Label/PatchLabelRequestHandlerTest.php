@@ -38,7 +38,7 @@ final class PatchLabelRequestHandlerTest extends TestCase
     public function it_can_patch_labels(CommandType $commandType, AbstractCommand $command): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('id', '9714108c-dddc-4105-a736-2e32632999f4')
+            ->withRouteParameter('labelId', '9714108c-dddc-4105-a736-2e32632999f4')
             ->withJsonBodyFromArray([
                 'command' => $commandType->toString(),
             ])

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Label\Query;
 
+use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class QueryFactory implements QueryFactoryInterface
 {
@@ -21,18 +22,20 @@ class QueryFactory implements QueryFactoryInterface
         $this->userId = $userId;
     }
 
-    public function createFromRequest(Request $request): Query
+    public function createFromRequest(ServerRequestInterface $request): Query
     {
-        $value = $request->query->get(self::QUERY) !== null
-            ? (string) $request->query->get(self::QUERY) : '';
+        $queryParameters = new QueryParameters($request);
+
+        $value = $queryParameters->get(self::QUERY) !== null
+            ? (string) $queryParameters->get(self::QUERY) : '';
 
         $userId = $this->userId ?: null;
 
-        $offset = (int) $request->query->get(self::START);
+        $offset = (int) $queryParameters->get(self::START);
 
-        $limit = (int) $request->query->get(self::LIMIT);
+        $limit = (int) $queryParameters->get(self::LIMIT);
 
-        $suggestion = filter_var($request->query->get(self::SUGGESTION), FILTER_VALIDATE_BOOLEAN);
+        $suggestion = filter_var($queryParameters->get(self::SUGGESTION), FILTER_VALIDATE_BOOLEAN);
 
         return new Query(
             $value,
