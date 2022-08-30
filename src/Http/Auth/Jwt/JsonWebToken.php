@@ -13,7 +13,6 @@ use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
-use CultuurNet\UDB3\StringLiteral;
 
 final class JsonWebToken
 {
@@ -108,7 +107,7 @@ final class JsonWebToken
         }
 
         try {
-            return $userIdentityResolver->getUserById(new StringLiteral($this->getUserId()));
+            return $userIdentityResolver->getUserById($this->getUserId());
         } catch (Exception $e) {
             return null;
         }

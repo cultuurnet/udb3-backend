@@ -39,7 +39,7 @@ class RoleUsersProjector extends RoleProjector
 
         if ($document) {
             $userIdentityDetail = $this->userIdentityResolver->getUserById(
-                $userAdded->getUserId()
+                $userAdded->getUserId()->toNative()
             );
 
             if ($userIdentityDetail) {
