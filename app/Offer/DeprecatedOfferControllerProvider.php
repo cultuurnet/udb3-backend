@@ -82,16 +82,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         return "{$this->offerType}_offer_controller";
     }
 
-    private function getPermissionsControllerName(): string
-    {
-        return "permissions_{$this->offerType}_controller";
-    }
-
-    private function getDeprecatedPermissionControllerName(): string
-    {
-        return "permission_{$this->offerType}_controller";
-    }
-
     public function boot(Application $app): void
     {
     }

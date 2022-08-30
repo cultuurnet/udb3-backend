@@ -136,7 +136,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new CurrentUserHasPermissionRequestHandler(
                 Permission::aanbodBewerken(),
                 $app['offer_permission_voter'],
-                $app['current_user_id'] ?? null
+                $app[CurrentUser::class]->getId()
             )
         );
 
