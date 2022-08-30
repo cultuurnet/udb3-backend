@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
 use CultuurNet\UDB3\UiTPASService\Controller\EventCardSystemsController;
-use CultuurNet\UDB3\UiTPASService\Controller\EventDetailController;
+use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -15,17 +15,15 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
     public const EVENT_DETAIL = 'uitpas-service.event.detail';
     public const EVENT_CARD_SYSTEMS = 'uitpas-service.event.card_systems';
 
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
-        $app['uitpas.event_detail_controller'] = $app->share(
-            function (Application $app) {
-                return new EventDetailController(
+        $app[GetUiTPASDetailRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetUiTPASDetailRequestHandler(
                     $app['uitpas'],
                     $app['url_generator'],
                     self::EVENT_DETAIL,
                     self::EVENT_CARD_SYSTEMS
-                );
-            }
+            )
         );
 
         $app['uitpas.event_card_systems_controller'] = $app->share(
@@ -41,7 +39,7 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
 
         $controllers->get(
             '/{eventId}/',
-            'uitpas.event_detail_controller:get'
+            GetUiTPASDetailRequestHandler::class
         )->bind(self::EVENT_DETAIL);
 
         $controllers->get(
