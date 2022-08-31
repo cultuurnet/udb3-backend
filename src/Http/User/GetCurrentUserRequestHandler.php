@@ -5,27 +5,19 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Psr7\Headers;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class UserIdentityController
+final class GetCurrentUserRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var UserIdentityResolver
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver $userIdentityResolver;
 
-    /**
-     * @var JsonWebToken
-     */
-    private $jwt;
+    private JsonWebToken $jwt;
 
     public function __construct(
         UserIdentityResolver $userIdentityResolver,
@@ -34,28 +26,7 @@ class UserIdentityController
         $this->userIdentityResolver = $userIdentityResolver;
         $this->jwt = $jsonWebToken;
     }
-
-    public function getByEmailAddress(ServerRequestInterface $request): ResponseInterface
-    {
-        $emailAddressString = $request->getAttribute('emailAddress', '');
-        try {
-            $emailAddress = new EmailAddress($emailAddressString);
-        } catch (InvalidArgumentException $e) {
-            throw ApiProblem::urlNotFound(
-                sprintf('"%s" is not a valid email address', $emailAddressString)
-            );
-        }
-
-        $userIdentity = $this->userIdentityResolver->getUserByEmail($emailAddress);
-
-        if (!($userIdentity instanceof UserIdentityDetails)) {
-            throw ApiProblem::urlNotFound('No user found for the given email address.');
-        }
-
-        return (new JsonLdResponse($userIdentity));
-    }
-
-    public function getCurrentUser(): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->jwt->getType() === JsonWebToken::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
             throw ApiProblem::unauthorized(
@@ -73,6 +44,6 @@ class UserIdentityController
         $userIdentityAsArray['id'] = $userIdentity->getUserId();
         $userIdentityAsArray['nick'] = $userIdentity->getUserName();
 
-        return new JsonLdResponse($userIdentityAsArray, 200, new Headers(['Cache-Control' => 'private']));
+        return new JsonLdResponse($userIdentityAsArray, 200);
     }
 }
