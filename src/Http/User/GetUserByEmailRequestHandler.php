@@ -42,6 +42,6 @@ final class GetUserByEmailRequestHandler implements RequestHandlerInterface
             throw ApiProblem::urlNotFound('No user found for the given email address.');
         }
 
-        return (new JsonLdResponse($userIdentity));
+        return new JsonLdResponse($userIdentity);
     }
 }

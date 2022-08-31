@@ -73,7 +73,7 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
         ];
 
         $this->assertJsonResponse(
-            (new JsonLdResponse($expected, 200))->withHeader('Cache-Control', 'private'),
+            new JsonLdResponse($expected, 200),
             $response
         );
     }
@@ -105,7 +105,7 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
         ];
 
         $this->assertJsonResponse(
-            (new JsonLdResponse($expected, 200))->withHeader('Cache-Control', 'private'),
+            new JsonLdResponse($expected, 200),
             $response
         );
     }

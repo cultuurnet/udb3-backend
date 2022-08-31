@@ -44,7 +44,6 @@ final class GetCurrentUserRequestHandler implements RequestHandlerInterface
         $userIdentityAsArray['id'] = $userIdentity->getUserId();
         $userIdentityAsArray['nick'] = $userIdentity->getUserName();
 
-        return (new JsonLdResponse($userIdentityAsArray, 200))
-            ->withHeader('Cache-Control', 'private');
+        return new JsonLdResponse($userIdentityAsArray, 200);
     }
 }
