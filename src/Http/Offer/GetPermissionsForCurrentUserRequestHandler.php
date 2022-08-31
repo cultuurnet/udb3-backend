@@ -8,13 +8,15 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\UncacheableJsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use Fig\Http\Message\StatusCodeInterface;
+use CultuurNet\UDB3\Security\Permission\UserPermissionChecker;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class GetPermissionsForCurrentUserRequestHandler extends GetPermissionsRequestHandler implements RequestHandlerInterface
+final class GetPermissionsForCurrentUserRequestHandler implements RequestHandlerInterface
 {
+    private UserPermissionChecker $userPermissionChecker;
+
     private ?string $currentUserId;
 
     /**
@@ -25,26 +27,21 @@ final class GetPermissionsForCurrentUserRequestHandler extends GetPermissionsReq
         PermissionVoter $permissionVoter,
         ?string $currentUserId = null
     ) {
-        parent::__construct($permissions, $permissionVoter);
+        $this->userPermissionChecker = new UserPermissionChecker($permissions, $permissionVoter);
         $this->currentUserId = $currentUserId;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (is_null($this->currentUserId)) {
-            return new UncacheableJsonResponse(
-                ['permissions' => []],
-                StatusCodeInterface::STATUS_OK
-            );
+            new UncacheableJsonResponse(['permissions' => []]);
         }
 
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
 
-        $permissions = $this->getPermissions(
-            $offerId,
-            $this->currentUserId
-        );
-        return new UncacheableJsonResponse($permissions, StatusCodeInterface::STATUS_OK);
+        $permissions = $this->userPermissionChecker->getOwnedPermissions($offerId, $this->currentUserId);
+
+        return new UncacheableJsonResponse(['permissions' => $permissions]);
     }
 }
