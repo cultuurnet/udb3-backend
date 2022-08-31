@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
-use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
-use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
@@ -15,6 +13,8 @@ use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
