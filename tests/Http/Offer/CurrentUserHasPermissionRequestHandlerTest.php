@@ -50,11 +50,11 @@ final class CurrentUserHasPermissionRequestHandlerTest extends TestCase
     {
         $this->voter->method('isAllowed')->willReturn($hasPermission);
 
-        $currentUserHasPermissionRequestHandler = $this->psr7RequestBuilder
+        $currentUserHasPermissionRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerId', self::OFFER_ID)
             ->build('GET');
 
-        $response = $this->currentUserHasPermissionRequestHandler->handle($currentUserHasPermissionRequestHandler);
+        $response = $this->currentUserHasPermissionRequestHandler->handle($currentUserHasPermissionRequest);
 
         $this->assertJsonResponse(
             new PrivateJsonResponse([
