@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\UncacheableJsonResponse;
+use CultuurNet\UDB3\Http\Response\PrivateJsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Security\Permission\UserPermissionChecker;
@@ -34,7 +34,7 @@ final class GetPermissionsForCurrentUserRequestHandler implements RequestHandler
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (is_null($this->currentUserId)) {
-            new UncacheableJsonResponse(['permissions' => []]);
+            new PrivateJsonResponse(['permissions' => []]);
         }
 
         $routeParameters = new RouteParameters($request);
@@ -42,6 +42,6 @@ final class GetPermissionsForCurrentUserRequestHandler implements RequestHandler
 
         $permissions = $this->userPermissionChecker->getOwnedPermissions($offerId, $this->currentUserId);
 
-        return new UncacheableJsonResponse(['permissions' => $permissions]);
+        return new PrivateJsonResponse(['permissions' => $permissions]);
     }
 }

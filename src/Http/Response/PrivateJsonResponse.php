@@ -8,7 +8,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Interfaces\HeadersInterface;
 
-final class UncacheableJsonResponse extends JsonResponse
+final class PrivateJsonResponse extends JsonResponse
 {
     public function __construct($data, int $status = StatusCodeInterface::STATUS_OK, ?HeadersInterface $headers = null)
     {
