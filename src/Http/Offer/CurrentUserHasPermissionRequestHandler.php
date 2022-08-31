@@ -8,13 +8,16 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\UncacheableJsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
+use CultuurNet\UDB3\Security\Permission\UserPermissionChecker;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class CurrentUserHasPermissionRequestHandler extends HasPermissionRequestHandler implements RequestHandlerInterface
+final class CurrentUserHasPermissionRequestHandler implements RequestHandlerInterface
 {
+    private UserPermissionChecker $userPermissionChecker;
+
     private ?string $currentUserId;
 
     public function __construct(
@@ -22,7 +25,7 @@ final class CurrentUserHasPermissionRequestHandler extends HasPermissionRequestH
         PermissionVoter $permissionVoter,
         ?string $currentUserId = null
     ) {
-        parent::__construct($permission, $permissionVoter);
+        $this->userPermissionChecker = new UserPermissionChecker([$permission], $permissionVoter);
         $this->currentUserId = $currentUserId;
     }
 
@@ -31,8 +34,8 @@ final class CurrentUserHasPermissionRequestHandler extends HasPermissionRequestH
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
 
-        $hasPermission = $this->hasPermission($offerId, $this->currentUserId);
+        $hasPermission = $this->userPermissionChecker->hasPermission($offerId, $this->currentUserId);
 
-        return new UncacheableJsonResponse($hasPermission, StatusCodeInterface::STATUS_OK);
+        return new UncacheableJsonResponse(['hasPermission' => $hasPermission], StatusCodeInterface::STATUS_OK);
     }
 }
