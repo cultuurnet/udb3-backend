@@ -35,9 +35,6 @@ use Silex\ServiceProviderInterface;
 
 class OrganizerControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
-    public const ORGANIZER_GET_PERMISSIONS_FOR_CURRENT_USER = 'OrganizerGetPermissionsForCurrentUser';
-    public const ORGANIZER_GET_PERMISSIONS_FOR_GIVEN_USER = 'OrganizerGetPermissionsForGivenUser';
-
     public function connect(Application $app): ControllerCollection
     {
         /** @var ControllerCollection $controllers */
@@ -70,8 +67,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
         $controllers->delete('/{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
-        $controllers->get('/{offerId}/permissions/', self::ORGANIZER_GET_PERMISSIONS_FOR_CURRENT_USER);
-        $controllers->get('/{offerId}/permissions/{userId}/', self::ORGANIZER_GET_PERMISSIONS_FOR_GIVEN_USER);
+        $controllers->get('/{offerId}/permissions/', 'Organizer' . GetPermissionsForCurrentUserRequestHandler::class);
+        $controllers->get('/{offerId}/permissions/{userId}/', 'Organizer' . GetPermissionsForGivenUserRequestHandler::class);
 
         return $controllers;
     }
@@ -158,7 +155,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             fn (Application $application) => new DeleteLabelRequestHandler($app['event_command_bus'])
         );
 
-        $app[self::ORGANIZER_GET_PERMISSIONS_FOR_CURRENT_USER] = $app->share(
+        $app['Organizer' . GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new GetPermissionsForCurrentUserRequestHandler(
                     [Permission::organisatiesBewerken()],
@@ -168,7 +165,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             }
         );
 
-        $app[self::ORGANIZER_GET_PERMISSIONS_FOR_GIVEN_USER] = $app->share(
+        $app['Organizer' . GetPermissionsForGivenUserRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new GetPermissionsForGivenUserRequestHandler(
                     [Permission::organisatiesBewerken()],
