@@ -5,31 +5,22 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
 use CultureFeed_Uitpas;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class EventDetailController
+final class GetUiTPASDetailRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var CultureFeed_Uitpas
-     */
-    private $uitpas;
+    private CultureFeed_Uitpas $uitpas;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var string
-     */
-    private $eventDetailRouteName;
+    private string $eventDetailRouteName;
 
-    /**
-     * @var string
-     */
-    private $eventCardSystemsRouteName;
-
+    private string $eventCardSystemsRouteName;
 
     public function __construct(
         CultureFeed_Uitpas $uitpas,
@@ -43,8 +34,10 @@ class EventDetailController
         $this->eventCardSystemsRouteName = $eventCardSystemsRouteName;
     }
 
-    public function get(string $eventId): JsonResponse
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $eventId = (new RouteParameters($request))->getEventId();
+
         $data = [
             '@id' => $this->urlGenerator->generate(
                 $this->eventDetailRouteName,
