@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Headers;
 
 final class CurrentUserHasPermissionRequestHandlerTest extends TestCase
 {
