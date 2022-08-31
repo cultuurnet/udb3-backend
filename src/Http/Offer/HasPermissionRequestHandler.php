@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\StringLiteral;
-use Slim\Psr7\Headers;
 
 abstract class HasPermissionRequestHandler
 {

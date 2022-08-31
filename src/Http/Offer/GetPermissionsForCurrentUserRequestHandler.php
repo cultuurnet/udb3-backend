@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\UncacheableJsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
