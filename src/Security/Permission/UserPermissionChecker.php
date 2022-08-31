@@ -17,7 +17,7 @@ final class UserPermissionChecker
         $this->permissionVoter = $permissionVoter;
     }
 
-    public function getOwnedPermissions(string $resourceId, ?string $userId = null): array
+    public function getOwnedPermissions(string $resourceId, string $userId): array
     {
         $ownedPermissions = [];
 
@@ -36,16 +36,12 @@ final class UserPermissionChecker
         return $ownedPermissions;
     }
 
-    public function hasPermission(string $offerId, ?string $userId = null): bool
+    public function hasPermission(string $offerId, string $userId): bool
     {
-        if ($userId) {
-            return $this->permissionVoter->isAllowed(
-                $this->permissions[0],
-                new StringLiteral($offerId),
-                new StringLiteral($userId)
-            );
-        }
-
-        return false;
+        return $this->permissionVoter->isAllowed(
+            $this->permissions[0],
+            new StringLiteral($offerId),
+            new StringLiteral($userId)
+        );
     }
 }

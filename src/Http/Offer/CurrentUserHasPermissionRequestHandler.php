@@ -18,12 +18,12 @@ final class CurrentUserHasPermissionRequestHandler implements RequestHandlerInte
 {
     private UserPermissionChecker $userPermissionChecker;
 
-    private ?string $currentUserId;
+    private string $currentUserId;
 
     public function __construct(
         Permission $permission,
         PermissionVoter $permissionVoter,
-        ?string $currentUserId = null
+        string $currentUserId
     ) {
         $this->userPermissionChecker = new UserPermissionChecker([$permission], $permissionVoter);
         $this->currentUserId = $currentUserId;

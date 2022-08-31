@@ -17,7 +17,7 @@ final class GetPermissionsForCurrentUserRequestHandler implements RequestHandler
 {
     private UserPermissionChecker $userPermissionChecker;
 
-    private ?string $currentUserId;
+    private string $currentUserId;
 
     /**
      * @param Permission[] $permissions
@@ -25,7 +25,7 @@ final class GetPermissionsForCurrentUserRequestHandler implements RequestHandler
     public function __construct(
         array $permissions,
         PermissionVoter $permissionVoter,
-        ?string $currentUserId = null
+        string $currentUserId
     ) {
         $this->userPermissionChecker = new UserPermissionChecker($permissions, $permissionVoter);
         $this->currentUserId = $currentUserId;
@@ -33,10 +33,6 @@ final class GetPermissionsForCurrentUserRequestHandler implements RequestHandler
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if (is_null($this->currentUserId)) {
-            new PrivateJsonResponse(['permissions' => []]);
-        }
-
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
 
