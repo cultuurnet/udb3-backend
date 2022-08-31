@@ -29,24 +29,17 @@ final class CurrentUserHasPermissionRequestHandlerTest extends TestCase
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
-    private Headers $headers;
-
     public function setUp(): void
     {
         $this->voter = $this->createMock(PermissionVoter::class);
 
-        $currentUserId = 'cd8d2005-e978-4f4c-9eb6-a0c0104fd8d0';
-
         $this->currentUserHasPermissionRequestHandler = new CurrentUserHasPermissionRequestHandler(
             Permission::aanbodBewerken(),
             $this->voter,
-            $currentUserId
+            'cd8d2005-e978-4f4c-9eb6-a0c0104fd8d0'
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
-
-        $this->headers = new Headers();
-        $this->headers->setHeader('Cache-Control', 'private');
     }
 
     /**
