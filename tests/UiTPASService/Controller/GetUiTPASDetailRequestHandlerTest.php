@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
 use CultureFeed_Uitpas;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class EventDetailControllerTest extends TestCase
+final class GetUiTPASDetailRequestHandlerTest extends TestCase
 {
+    use AssertJsonResponseTrait;
+
     private const EVENT_DETAIL = 'mock.event.detail';
     private const EVENT_CARD_SYSTEMS = 'mock.event.card_systems';
 
@@ -24,16 +29,14 @@ class EventDetailControllerTest extends TestCase
      */
     private $urlGenerator;
 
-    /**
-     * @var EventDetailController
-     */
-    private $controller;
+    private GetUiTPASDetailRequestHandler $getUiTPASDetailController;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $this->controller = new EventDetailController(
+
+        $this->getUiTPASDetailController = new GetUiTPASDetailRequestHandler(
             $this->uitpas,
             $this->urlGenerator,
             self::EVENT_DETAIL,
@@ -44,7 +47,7 @@ class EventDetailControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_composed_event_detail()
+    public function it_returns_uitpas_event_details(): void
     {
         $eventId = 'e2b91aab-b6e4-4b88-9883-8a4e653dc6e1';
         $hasTicketSales = true;
@@ -86,9 +89,15 @@ class EventDetailControllerTest extends TestCase
                 }
             );
 
-        $response = $this->controller->get($eventId);
-        $actual = json_decode($response->getContent(), true);
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->build('GET');
 
-        $this->assertEquals($expected, $actual);
+        $response = $this->getUiTPASDetailController->handle($request);
+
+        $this->assertJsonResponse(
+            new JsonResponse($expected),
+            $response
+        );
     }
 }
