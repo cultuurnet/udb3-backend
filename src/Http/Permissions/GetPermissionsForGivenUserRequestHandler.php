@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Permissions;
 
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\PrivateJsonResponse;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Security\Permission\UserPermissionChecker;
@@ -34,7 +34,7 @@ abstract class GetPermissionsForGivenUserRequestHandler implements RequestHandle
         $userId = $routeParameters->get('userId');
 
         $permissions = $this->userPermissionChecker->getOwnedPermissions($itemId, $userId);
-        return new PrivateJsonResponse(['permissions' => $permissions]);
+        return new JsonResponse(['permissions' => $permissions]);
     }
 
     abstract public function getItemId(RouteParameters $routeParameters): string;

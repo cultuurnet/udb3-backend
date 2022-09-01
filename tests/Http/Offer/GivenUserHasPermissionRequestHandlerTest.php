@@ -9,10 +9,8 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
-use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Headers;
 
 final class GivenUserHasPermissionRequestHandlerTest extends TestCase
 {
@@ -30,8 +28,6 @@ final class GivenUserHasPermissionRequestHandlerTest extends TestCase
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
-    private Headers $headers;
-
     public function setUp(): void
     {
         $this->voter = $this->createMock(PermissionVoter::class);
@@ -42,9 +38,6 @@ final class GivenUserHasPermissionRequestHandlerTest extends TestCase
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
-
-        $this->headers = new Headers();
-        $this->headers->setHeader('Cache-Control', 'private');
     }
 
     /**
@@ -65,7 +58,7 @@ final class GivenUserHasPermissionRequestHandlerTest extends TestCase
         $this->assertJsonResponse(
             new JsonResponse([
                 'hasPermission' => $hasPermission,
-            ], StatusCodeInterface::STATUS_OK, $this->headers),
+            ]),
             $response
         );
     }
