@@ -7,12 +7,8 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
-use CultuurNet\UDB3\Http\Offer\OfferPermissionController;
-use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
-use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -35,8 +31,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
     public function connect(Application $app): ControllerCollection
     {
         $controllerName = $this->getEditControllerName();
-        $permissionsControllerName = $this->getPermissionsControllerName();
-        $deprecatedPermissionControllerName = $this->getDeprecatedPermissionControllerName();
 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
@@ -45,8 +39,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         $controllers->put('/{cdbid}/labels/{label}/', "{$controllerName}:addLabel");
 
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
-        $controllers->get('/{offerId}/permissions/', "{$permissionsControllerName}:getPermissionsForCurrentUser");
-        $controllers->get('/{offerId}/permissions/{userId}/', "{$permissionsControllerName}:getPermissionsForGivenUser");
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
@@ -54,8 +46,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
          */
         $controllers->post('/{cdbid}/labels/', "{$controllerName}:addLabelFromJsonBody");
         $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
-        $controllers->get('/{offerId}/permission/', "{$deprecatedPermissionControllerName}:currentUserHasPermission");
-        $controllers->get('/{offerId}/permission/{userId}/', "{$deprecatedPermissionControllerName}:givenUserHasPermission");
 
         return $controllers;
     }
@@ -85,49 +75,11 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                 );
             }
         );
-
-        $app[$this->getPermissionsControllerName()] = $app->share(
-            function (Application $app) {
-                $permissionsToCheck = [
-                    Permission::aanbodBewerken(),
-                    Permission::aanbodModereren(),
-                    Permission::aanbodVerwijderen(),
-                ];
-                $currentUserId = $app[CurrentUser::class]->getId();
-                return new OfferPermissionsController(
-                    $permissionsToCheck,
-                    $app['offer_permission_voter'],
-                    $currentUserId ? new StringLiteral($currentUserId) : null
-                );
-            }
-        );
-
-        /* Only for legacy routes used for backward compatibility */
-        $app[$this->getDeprecatedPermissionControllerName()] = $app->share(
-            function (Application $app) {
-                $currentUserId = $app[CurrentUser::class]->getId();
-                return new OfferPermissionController(
-                    Permission::aanbodBewerken(),
-                    $app['offer_permission_voter'],
-                    $currentUserId ? new StringLiteral($currentUserId) : null
-                );
-            }
-        );
     }
 
     private function getEditControllerName(): string
     {
         return "{$this->offerType}_offer_controller";
-    }
-
-    private function getPermissionsControllerName(): string
-    {
-        return "permissions_{$this->offerType}_controller";
-    }
-
-    private function getDeprecatedPermissionControllerName(): string
-    {
-        return "permission_{$this->offerType}_controller";
     }
 
     public function boot(Application $app): void
