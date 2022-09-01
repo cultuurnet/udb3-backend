@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
-use CultuurNet\UDB3\UiTPASService\Controller\EventCardSystemsController;
+use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
 class UiTPASServiceEventControllerProvider implements ControllerProviderInterface
 {
-    public const EVENT_DETAIL = 'uitpas-service.event.detail';
-    public const EVENT_CARD_SYSTEMS = 'uitpas-service.event.card_systems';
+    private const EVENT_DETAIL = 'uitpas-service.event.detail';
+    private const EVENT_CARD_SYSTEMS = 'uitpas-service.event.card_systems';
 
     public function connect(Application $app): ControllerCollection
     {
@@ -26,44 +29,49 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
             )
         );
 
-        $app['uitpas.event_card_systems_controller'] = $app->share(
-            function (Application $app) {
-                return new EventCardSystemsController(
-                    $app['uitpas']
-                );
-            }
+        $app[GetCardSystemsFromEventRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetCardSystemsFromEventRequestHandler(
+                $app['uitpas']
+            )
+        );
+
+        $app[SetCardSystemsOnEventRequestHandler::class] = $app->share(
+            fn (Application $app) => new SetCardSystemsOnEventRequestHandler(
+                $app['uitpas']
+            )
+        );
+
+        $app[AddCardSystemToEventRequestHandler::class] = $app->share(
+            fn (Application $app) => new AddCardSystemToEventRequestHandler(
+                $app['uitpas']
+            )
+        );
+
+        $app[DeleteCardSystemFromEventRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteCardSystemFromEventRequestHandler(
+                $app['uitpas']
+            )
         );
 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get(
-            '/{eventId}/',
-            GetUiTPASDetailRequestHandler::class
-        )->bind(self::EVENT_DETAIL);
+        $controllers->get('/{eventId}/', GetUiTPASDetailRequestHandler::class)
+            ->bind(self::EVENT_DETAIL);
 
-        $controllers->get(
-            '/{eventId}/card-systems/',
-            'uitpas.event_card_systems_controller:get'
-        )->bind(self::EVENT_CARD_SYSTEMS);
+        $controllers->get('/{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class)
+            ->bind(self::EVENT_CARD_SYSTEMS);
 
-        $controllers->put(
-            '/{eventId}/card-systems/',
-            'uitpas.event_card_systems_controller:set'
-        );
-        $controllers->put(
-            '/{eventId}/card-systems/{cardSystemId}/',
-            'uitpas.event_card_systems_controller:add'
-        );
+        $controllers->put('/{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
+
+        $controllers->put('/{eventId}/card-systems/{cardSystemId}/', AddCardSystemToEventRequestHandler::class);
+
         $controllers->put(
             '/{eventId}/card-systems/{cardSystemId}/distribution-key/{distributionKeyId}/',
-            'uitpas.event_card_systems_controller:add'
+            AddCardSystemToEventRequestHandler::class
         );
 
-        $controllers->delete(
-            '/{eventId}/card-systems/{cardSystemId}/',
-            'uitpas.event_card_systems_controller:delete'
-        );
+        $controllers->delete('/{eventId}/card-systems/{cardSystemId}/', DeleteCardSystemFromEventRequestHandler::class);
 
         return $controllers;
     }
