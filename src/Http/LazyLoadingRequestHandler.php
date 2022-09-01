@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http;
 
-use InvalidArgumentException;
-use Pimple;
+use Exception;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -13,10 +14,10 @@ use RuntimeException;
 
 final class LazyLoadingRequestHandler implements RequestHandlerInterface
 {
-    private Pimple $serviceContainer;
+    private ContainerInterface $serviceContainer;
     private string $serviceName;
 
-    public function __construct(Pimple $serviceContainer, string $serviceName)
+    public function __construct(ContainerInterface $serviceContainer, string $serviceName)
     {
         $this->serviceContainer = $serviceContainer;
         $this->serviceName = $serviceName;
@@ -25,9 +26,12 @@ final class LazyLoadingRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $handler = $this->serviceContainer[$this->serviceName];
-        } catch (InvalidArgumentException $e) {
-            throw new RuntimeException('Could not find request handler with service name ' . $this->serviceName);
+            $handler = $this->serviceContainer->get($this->serviceName);
+        } catch (Exception $e) {
+            if ($e instanceof NotFoundExceptionInterface) {
+                throw new RuntimeException('Could not find request handler with service name ' . $this->serviceName);
+            }
+            throw $e;
         }
 
         if (!$handler instanceof RequestHandlerInterface) {

@@ -6,8 +6,10 @@ namespace CultuurNet\UDB3\Http;
 
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
 use PHPUnit\Framework\TestCase;
 use Pimple;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
@@ -15,19 +17,21 @@ use stdClass;
 
 final class LazyLoadingRequestHandlerTest extends TestCase
 {
-    private Pimple $pimple;
+    private ContainerInterface $container;
     private RequestHandlerInterface $requestHandler;
     private ServerRequestInterface $request;
 
     protected function setUp(): void
     {
-        $this->pimple = new Pimple();
+        $pimple = new Pimple();
 
         $this->requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->pimple['request_handler'] = $this->requestHandler;
+        $pimple['request_handler'] = $this->requestHandler;
 
-        $this->pimple['random_service'] = new stdClass();
-        $this->pimple['random_string'] = 'foo';
+        $pimple['random_service'] = new stdClass();
+        $pimple['random_string'] = 'foo';
+
+        $this->container = new PimplePSRContainerBridge($pimple);
 
         $this->request = (new Psr7RequestBuilder())
             ->withUriFromString('/foo')
@@ -46,7 +50,7 @@ final class LazyLoadingRequestHandlerTest extends TestCase
             ->with($this->request)
             ->willReturn($response);
 
-        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->pimple, 'request_handler');
+        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->container, 'request_handler');
 
         $this->assertEquals($response, $lazyLoadingRequestHandler->handle($this->request));
     }
@@ -61,7 +65,7 @@ final class LazyLoadingRequestHandlerTest extends TestCase
 
         $this->expectException(RuntimeException::class);
 
-        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->pimple, 'service_does_not_exist');
+        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->container, 'service_does_not_exist');
         $lazyLoadingRequestHandler->handle($this->request);
     }
 
@@ -75,7 +79,7 @@ final class LazyLoadingRequestHandlerTest extends TestCase
 
         $this->expectException(RuntimeException::class);
 
-        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->pimple, 'random_string');
+        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->container, 'random_string');
         $lazyLoadingRequestHandler->handle($this->request);
     }
 
@@ -89,7 +93,7 @@ final class LazyLoadingRequestHandlerTest extends TestCase
 
         $this->expectException(RuntimeException::class);
 
-        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->pimple, 'random_service');
+        $lazyLoadingRequestHandler = new LazyLoadingRequestHandler($this->container, 'random_service');
         $lazyLoadingRequestHandler->handle($this->request);
     }
 }
