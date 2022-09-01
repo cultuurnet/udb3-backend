@@ -116,7 +116,7 @@ class OrganizerCardSystemsControllerTest extends TestCase
         ];
 
         $actualResponseContent = json_decode(
-            $this->controller->get($organizerId)->getContent()
+            $this->controller->get($organizerId)->getBody()->getContents()
         );
 
         $this->assertEquals($expectedResponseContent, $actualResponseContent);
