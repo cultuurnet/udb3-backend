@@ -34,10 +34,12 @@ abstract class GetPermissionsForCurrentUserRequestHandler implements RequestHand
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->getOfferId();
+        $itemId = $this->getItemId($routeParameters);
 
-        $permissions = $this->userPermissionChecker->getOwnedPermissions($offerId, $this->currentUserId);
+        $permissions = $this->userPermissionChecker->getOwnedPermissions($itemId, $this->currentUserId);
 
         return new PrivateJsonResponse(['permissions' => $permissions]);
     }
+
+    abstract public function getItemId(RouteParameters $routeParameters): string;
 }

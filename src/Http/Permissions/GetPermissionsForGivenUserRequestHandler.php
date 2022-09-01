@@ -30,10 +30,12 @@ abstract class GetPermissionsForGivenUserRequestHandler implements RequestHandle
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $offerId = $routeParameters->getOfferId();
+        $itemId = $this->getItemId($routeParameters);
         $userId = $routeParameters->get('userId');
 
-        $permissions = $this->userPermissionChecker->getOwnedPermissions($offerId, $userId);
+        $permissions = $this->userPermissionChecker->getOwnedPermissions($itemId, $userId);
         return new PrivateJsonResponse(['permissions' => $permissions]);
     }
+
+    abstract public function getItemId(RouteParameters $routeParameters): string;
 }

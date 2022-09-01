@@ -67,8 +67,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
         $controllers->delete('/{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
-        $controllers->get('/{offerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
-        $controllers->get('/{offerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
+        $controllers->get('/{organizerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
+        $controllers->get('/{organizerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
 
         return $controllers;
     }
