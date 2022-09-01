@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Pimple;
 use Psr\Container\ContainerInterface;
@@ -18,7 +19,7 @@ use stdClass;
 final class LazyLoadingRequestHandlerTest extends TestCase
 {
     private ContainerInterface $container;
-    private RequestHandlerInterface $requestHandler;
+    private MockObject $requestHandler;
     private ServerRequestInterface $request;
 
     protected function setUp(): void
