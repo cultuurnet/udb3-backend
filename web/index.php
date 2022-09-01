@@ -109,20 +109,6 @@ $app->before(
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
-$app->get(
-    'swagger.json',
-    function () {
-        $file = new SplFileInfo(__DIR__ . '/swagger.json');
-        return new \Symfony\Component\HttpFoundation\BinaryFileResponse(
-            $file,
-            200,
-            [
-                'Content-Type' => 'application/json',
-            ]
-        );
-    }
-);
-
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeControllerProvider = new PlaceControllerProvider();
