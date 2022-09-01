@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Permissions;
 
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Security\Permission\UserPermissionChecker;
 use Psr\Http\Message\ResponseInterface;
@@ -17,14 +16,10 @@ abstract class GetPermissionsForGivenUserRequestHandler implements RequestHandle
 {
     private UserPermissionChecker $userPermissionChecker;
 
-    /**
-     * @param Permission[] $permissions
-     */
     public function __construct(
-        array $permissions,
         PermissionVoter $permissionVoter
     ) {
-        $this->userPermissionChecker = new UserPermissionChecker($permissions, $permissionVoter);
+        $this->userPermissionChecker = new UserPermissionChecker($this->getPermissionsToCheck(), $permissionVoter);
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -38,4 +33,6 @@ abstract class GetPermissionsForGivenUserRequestHandler implements RequestHandle
     }
 
     abstract public function getItemId(RouteParameters $routeParameters): string;
+
+    abstract public function getPermissionsToCheck(): array;
 }

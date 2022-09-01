@@ -110,11 +110,6 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
             fn (Application $app) => new GetPermissionsForCurrentUserRequestHandler(
-                [
-                    Permission::aanbodBewerken(),
-                    Permission::aanbodModereren(),
-                    Permission::aanbodVerwijderen(),
-                ],
                 $app['offer_permission_voter'],
                 $app[CurrentUser::class]->getId()
             )
@@ -122,12 +117,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
             fn (Application $app) => new GetPermissionsForGivenUserRequestHandler(
-                [
-                    Permission::aanbodBewerken(),
-                    Permission::aanbodModereren(),
-                    Permission::aanbodVerwijderen(),
-                ],
-                $app['offer_permission_voter'],
+                $app['offer_permission_voter']
             )
         );
 

@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -158,7 +157,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new GetPermissionsForCurrentUserRequestHandler(
-                    [Permission::organisatiesBewerken()],
                     $app['organizer_permission_voter'],
                     $app[CurrentUser::class]->getId()
                 );
@@ -168,7 +166,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new GetPermissionsForGivenUserRequestHandler(
-                    [Permission::organisatiesBewerken()],
                     $app['organizer_permission_voter'],
                 );
             }

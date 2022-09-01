@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -19,11 +18,6 @@ final class GetPermissionsForGivenUserRequestHandlerTest extends TestCase
     private const OFFER_ID = 'd67e5cbc-c085-4ee0-a97b-c3795d480bd4';
 
     private const GIVEN_USER_ID = 'cd8d2005-e978-4f4c-9eb6-a0c0104fd8d0';
-
-    /**
-     * @var Permission[]
-     */
-    private array $permissions;
 
     /**
      * @var PermissionVoter|MockObject
@@ -38,16 +32,9 @@ final class GetPermissionsForGivenUserRequestHandlerTest extends TestCase
 
     public function setUp(): void
     {
-        $permissionsToCheck = [
-            Permission::aanbodBewerken(),
-            Permission::aanbodModereren(),
-            Permission::aanbodVerwijderen(),
-        ];
-        $this->permissions = $permissionsToCheck;
         $this->voter = $this->createMock(PermissionVoter::class);
 
         $this->getPermissionsForGivenUserRequestHandler = new GetPermissionsForGivenUserRequestHandler(
-            $this->permissions,
             $this->voter
         );
 
