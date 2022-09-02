@@ -53,7 +53,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
         $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
 
-        $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:deleteOrganizer');
 
         $controllers->post('/{itemId}/images/', 'event_editing_controller:addImage');
@@ -68,7 +67,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
         $controllers->post('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->post('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
         $controllers->post('/{cdbid}/organizer/', 'event_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;

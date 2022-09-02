@@ -34,7 +34,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{placeId}', ImportPlaceRequestHandler::class);
 
         $controllers->put('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
-        $controllers->put('/{cdbid}/contact-point/', 'place_editing_controller:updateContactPoint');
         $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'place_editing_controller:deleteOrganizer');
 
@@ -52,7 +51,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
         $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
         $controllers->post('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->post('/{cdbid}/contact-point/', 'place_editing_controller:updateContactPoint');
         $controllers->post('/{cdbid}/organizer/', 'place_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;

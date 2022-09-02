@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
@@ -59,6 +60,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/calendar-summary/', GetCalendarSummaryRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/status/', UpdateStatusRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
@@ -87,6 +90,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
 
         return $controllers;
     }
@@ -116,6 +120,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[UpdateBookingInfoRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateBookingInfoRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateContactPointRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateContactPointRequestHandler($app['event_command_bus']);
             }
         );
 
