@@ -23,8 +23,6 @@ final class UpdateTypicalAgeRangeRequestHandler implements RequestHandlerInterfa
 {
     private CommandBus $commandBus;
 
-    private AbstractUpdateTypicalAgeRange $updateTypicalAgeRange;
-
     public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
@@ -32,30 +30,33 @@ final class UpdateTypicalAgeRangeRequestHandler implements RequestHandlerInterfa
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (empty($bodyContent->typicalAgeRange)) {
-            return new JsonResponse(['error' => 'typicalAgeRange required'], StatusCodeInterface::STATUS_BAD_REQUEST);
-        }
-
-        $bodyContent = Json::decode($request->getBody()->getContents());
-        $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
-
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
+        $bodyContent = Json::decode($request->getBody()->getContents());
 
-        if ($routeParameters->getOfferType() === OfferType::event()) {
-            $this->updateTypicalAgeRange = new EventUpdateTypicalAgeRange(
+        // @todo Use a data validator and change to an exception so it can be converted to an API problem
+        if (empty($bodyContent->typicalAgeRange)) {
+            return new JsonResponse(
+                ['error' => 'typicalAgeRange required'],
+                StatusCodeInterface::STATUS_BAD_REQUEST
+            );
+        }
+
+        $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
+
+        if ($routeParameters->getOfferType()->sameAs(OfferType::event())) {
+            $updateTypicalAgeRange = new EventUpdateTypicalAgeRange(
                 $offerId,
                 $ageRange
             );
         } else {
-            $this->updateTypicalAgeRange = new PlaceUpdateTypicalAgeRange(
+            $updateTypicalAgeRange = new PlaceUpdateTypicalAgeRange(
                 $offerId,
                 $ageRange
             );
         }
 
-        $this->commandBus->dispatch($this->updateTypicalAgeRange);
+        $this->commandBus->dispatch($updateTypicalAgeRange);
 
         return new NoContentResponse();
     }
