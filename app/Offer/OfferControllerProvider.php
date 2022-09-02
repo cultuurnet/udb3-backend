@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
@@ -83,6 +84,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->post('/{offerType}/{offerId}/images/', AddImageRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/images/{mediaId}/', RemoveImageRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
@@ -250,6 +252,13 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[UpdateImageRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateImageRequestHandler(
                 $app['event_command_bus']
+            )
+        );
+
+        $app[RemoveImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new RemoveImageRequestHandler(
+                $app['event_command_bus'],
+                $app['media_manager']
             )
         );
 
