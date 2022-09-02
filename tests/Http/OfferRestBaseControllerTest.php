@@ -57,30 +57,6 @@ class OfferRestBaseControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_update_an_offer_organization_with_json_body(): void
-    {
-        $cdbid = 'f636ae50-ac26-48f0-ac1f-929e361ae403';
-        $organizerCdbid = '8fabb313-020a-4093-ba9a-69cca96c63fc';
-        $content = '{"organizer":"' . $organizerCdbid . '"}';
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $this->offerEditingService
-            ->expects($this->once())
-            ->method('updateOrganizer')
-            ->with(
-                $cdbid,
-                $organizerCdbid
-            );
-
-        $this->offerRestBaseController->updateOrganizerFromJsonBody(
-            $request,
-            $cdbid
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_should_update_an_image(): void
     {
         $offerId = '2b0682a4-c751-4440-81c5-3739965f2cea';
