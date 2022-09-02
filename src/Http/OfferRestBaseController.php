@@ -71,13 +71,6 @@ class OfferRestBaseController
         return new NoContent();
     }
 
-    public function deleteOrganizer(string $cdbid, string $organizerId): Response
-    {
-        $this->editor->deleteOrganizer($cdbid, $organizerId);
-
-        return new NoContent();
-    }
-
     public function addImage(Request $request, string $itemId): Response
     {
         $bodyContent = json_decode($request->getContent());
