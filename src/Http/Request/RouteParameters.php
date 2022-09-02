@@ -91,6 +91,11 @@ final class RouteParameters
         return $this->get('productionId');
     }
 
+    public function getMediaId(): string
+    {
+        return $this->get('mediaId');
+    }
+
     public function hasLanguage(): bool
     {
         return $this->has('language');
