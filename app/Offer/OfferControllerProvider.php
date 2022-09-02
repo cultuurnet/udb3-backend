@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
@@ -67,6 +68,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/typical-age-range/', DeleteTypicalAgeRangeRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
@@ -84,7 +86,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->get('/{offerType}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
-
+        $controllers->post('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
         return $controllers;
     }
@@ -108,6 +110,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[DeleteTypicalAgeRangeRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new DeleteTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateBookingInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateBookingInfoRequestHandler($app['event_command_bus']);
             }
         );
 
