@@ -40,7 +40,6 @@ final class DeleteOrganizerRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider offerTypeDataProvider
-
      */
     public function it_handles_deleting_the_organizer_of_an_offer(
         string $offerType,
