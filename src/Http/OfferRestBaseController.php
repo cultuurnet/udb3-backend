@@ -55,13 +55,6 @@ class OfferRestBaseController
         $this->bookingInfoDeserializer = $bookingInfoDeserializer;
     }
 
-    public function deleteTypicalAgeRange(string $cdbid)
-    {
-        $this->editor->deleteTypicalAgeRange($cdbid);
-
-        return new NoContent();
-    }
-
     /**
      * @deprecated
      */
