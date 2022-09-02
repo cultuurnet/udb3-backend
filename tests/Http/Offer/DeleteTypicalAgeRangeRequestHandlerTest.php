@@ -43,7 +43,7 @@ class DeleteTypicalAgeRangeRequestHandlerTest extends TestCase
      * @dataProvider offerTypeDataProvider
 
      */
-    public function it_handles_deleting_the_typical_age_range_of_an_event(
+    public function it_handles_deleting_the_typical_age_range_of_an_offer(
         string $offerType,
         AbstractDeleteTypicalAgeRange $deleteTypicalAgeRange
     ): void {

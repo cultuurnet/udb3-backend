@@ -43,7 +43,7 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
      * @dataProvider offerTypeDataProvider
 
      */
-    public function it_handles_updating_the_typical_age_range_of_an_event(
+    public function it_handles_updating_the_typical_age_range_of_an_offer(
         string $offerType,
         AbstractUpdateTypicalAgeRange $updateTypicalAgeRange
     ): void {
