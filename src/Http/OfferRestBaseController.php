@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\BookingInfo\BookingInfoJSONDeserializer;
@@ -54,22 +53,6 @@ class OfferRestBaseController
             $bookingInfoDeserializer = new BookingInfoJSONDeserializer();
         }
         $this->bookingInfoDeserializer = $bookingInfoDeserializer;
-    }
-
-    public function updateTypicalAgeRange(Request $request, string $cdbid): Response
-    {
-        $bodyContent = json_decode($request->getContent());
-
-        // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (empty($bodyContent->typicalAgeRange)) {
-            return new JsonResponse(['error' => 'typicalAgeRange required'], 400);
-        }
-
-        $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
-
-        $this->editor->updateTypicalAgeRange($cdbid, $ageRange);
-
-        return new NoContent();
     }
 
     public function deleteTypicalAgeRange(string $cdbid)

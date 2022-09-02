@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -54,29 +53,6 @@ class OfferRestBaseControllerTest extends TestCase
                 $this->offerEditingService,
                 $this->mediaManager,
             ]
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_typical_age_range(): void
-    {
-        $cdbid = 'f636ae50-ac26-48f0-ac1f-929e361ae403';
-        $content = '{"typicalAgeRange":"2-12"}';
-        $request = new Request([], [], [], [], [], [], $content);
-
-        $this->offerEditingService
-            ->expects($this->once())
-            ->method('updateTypicalAgeRange')
-            ->with(
-                $cdbid,
-                AgeRange::fromString('2-12')
-            );
-
-        $this->offerRestBaseController->updateTypicalAgeRange(
-            $request,
-            $cdbid
         );
     }
 
