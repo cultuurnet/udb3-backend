@@ -54,23 +54,6 @@ class OfferRestBaseController
         $this->bookingInfoDeserializer = $bookingInfoDeserializer;
     }
 
-    public function selectMainImage(Request $request, string $itemId): Response
-    {
-        $bodyContent = json_decode($request->getContent());
-        if (empty($bodyContent->mediaObjectId)) {
-            return new JsonResponse(['error' => 'media object id required'], 400);
-        }
-
-        $mediaObjectId = new UUID($bodyContent->mediaObjectId);
-
-        // Can we be sure that the given $mediaObjectId points to an image and not a different type?
-        $image = $this->mediaManager->getImage($mediaObjectId);
-
-        $this->editor->selectMainImage($itemId, $image);
-
-        return new NoContent();
-    }
-
     public function updateImage(Request $request, string $itemId, string $mediaObjectId): Response
     {
         $bodyContent = json_decode($request->getContent());
