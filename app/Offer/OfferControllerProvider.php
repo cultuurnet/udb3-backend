@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
@@ -94,6 +95,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->post('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/organizer/', UpdateOrganizerFromJsonBodyRequestHandler::class);
 
         return $controllers;
     }
@@ -178,6 +180,13 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[UpdateOrganizerRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateOrganizerRequestHandler(
+                $app['event_command_bus'],
+                $app['organizer_jsonld_repository']
+            )
+        );
+
+        $app[UpdateOrganizerFromJsonBodyRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateOrganizerFromJsonBodyRequestHandler(
                 $app['event_command_bus'],
                 $app['organizer_jsonld_repository']
             )

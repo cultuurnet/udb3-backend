@@ -65,7 +65,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
         $controllers->post('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->post('/{cdbid}/organizer/', 'event_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;
     }

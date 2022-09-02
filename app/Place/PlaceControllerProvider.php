@@ -50,7 +50,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
         $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
         $controllers->post('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->post('/{cdbid}/organizer/', 'place_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;
     }
