@@ -8,14 +8,11 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\BookingInfo\BookingInfoJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CultuurNet\UDB3\StringLiteral;
 
 class OfferRestBaseController
 {
@@ -51,26 +48,6 @@ class OfferRestBaseController
             $bookingInfoDeserializer = new BookingInfoJSONDeserializer();
         }
         $this->bookingInfoDeserializer = $bookingInfoDeserializer;
-    }
-
-    public function updateImage(Request $request, string $itemId, string $mediaObjectId): Response
-    {
-        $bodyContent = json_decode($request->getContent());
-        $description = new StringLiteral($bodyContent->description);
-        $copyrightHolder = new CopyrightHolder($bodyContent->copyrightHolder);
-        $imageId = new UUID($mediaObjectId);
-
-        // Can we be sure that the given $mediaObjectId points to an image and not a different type?
-        $image = $this->mediaManager->getImage($imageId);
-
-        $this->editor->updateImage(
-            $itemId,
-            $image,
-            $description,
-            $copyrightHolder
-        );
-
-        return new NoContent();
     }
 
     public function removeImage(string $itemId, string $mediaObjectId): Response
