@@ -36,7 +36,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
         $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
 
-        $controllers->post('/{itemId}/images/', 'place_editing_controller:addImage');
         $controllers->put('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');

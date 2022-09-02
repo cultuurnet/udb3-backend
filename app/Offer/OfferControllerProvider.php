@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler;
@@ -76,6 +77,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
+
+        $controllers->post('/{offerType}/{offerId}/images/', AddImageRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
@@ -224,6 +227,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[UpdatePriceInfoRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdatePriceInfoRequestHandler($app['event_command_bus'])
+        );
+
+        $app[AddImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new AddImageRequestHandler(
+                $app['event_command_bus']
+            )
         );
 
         $app[AddVideoRequestHandler::class] = $app->share(
