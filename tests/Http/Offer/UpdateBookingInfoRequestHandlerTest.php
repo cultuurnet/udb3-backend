@@ -56,7 +56,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(
                 [
                     'bookingInfo' => [
-                        'url' => 'https://www.publiq.be',
+                        'url' => 'https://www.publiq.be/',
                         'urlLabel' => ['nl' => 'Publiq vzw'],
                         'phone' => '02/1232323',
                         'email' => 'info@publiq.be',
