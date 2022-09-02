@@ -53,7 +53,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
         $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
 
-        $controllers->put('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
 
@@ -61,7 +60,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
-        $controllers->post('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'event_editing_controller:updateImage');
         $controllers->post('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
 

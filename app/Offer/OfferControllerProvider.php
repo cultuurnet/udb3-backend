@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
+use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
@@ -79,6 +80,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/images/', AddImageRequestHandler::class);
+        $controllers->put('/{itemId}/images/main/', SelectMainImageRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
@@ -99,6 +101,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->post('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/organizer/', UpdateOrganizerFromJsonBodyRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
 
         return $controllers;
     }
@@ -232,6 +235,13 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[AddImageRequestHandler::class] = $app->share(
             fn (Application $app) => new AddImageRequestHandler(
                 $app['event_command_bus']
+            )
+        );
+
+        $app[SelectMainImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new SelectMainImageRequestHandler(
+                $app['event_command_bus'],
+                $app['media_manager']
             )
         );
 
