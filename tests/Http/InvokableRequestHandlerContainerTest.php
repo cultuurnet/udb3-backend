@@ -18,7 +18,7 @@ class InvokableRequestHandlerContainerTest extends TestCase
 {
     private array $services;
     private MockObject $container;
-    private RequestHandlerInterface $requestHandler;
+    private MockObject $requestHandler;
     private RequestHandlerInterface $alreadyCallableRequestHandler;
     private InvokableRequestHandlerContainer $invokableRequestHandlerContainer;
 
