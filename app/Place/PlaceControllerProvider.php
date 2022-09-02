@@ -37,14 +37,13 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
 
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:removeImage');
-        $controllers->put('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
+
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
         $controllers->get('/{placeId}/events/', GetEventsRequestHandler::class);
-        $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
         $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
         $controllers->post('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
 

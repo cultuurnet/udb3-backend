@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
@@ -80,7 +81,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/images/', AddImageRequestHandler::class);
-        $controllers->put('/{itemId}/images/main/', SelectMainImageRequestHandler::class);
+        $controllers->put('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
+        $controllers->put('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
@@ -88,7 +90,6 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/organizer/{organizerId}/', DeleteOrganizerRequestHandler::class);
-
 
         $controllers->patch('/{offerType}/{offerId}/', PatchOfferRequestHandler::class);
 
@@ -102,6 +103,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->post('/{offerType}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/organizer/', UpdateOrganizerFromJsonBodyRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
 
         return $controllers;
     }
@@ -242,6 +244,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new SelectMainImageRequestHandler(
                 $app['event_command_bus'],
                 $app['media_manager']
+            )
+        );
+
+        $app[UpdateImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateImageRequestHandler(
+                $app['event_command_bus']
             )
         );
 
