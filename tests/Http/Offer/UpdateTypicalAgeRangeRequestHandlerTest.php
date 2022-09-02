@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange as EventUpdateTypicalAgeRange;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -48,16 +47,15 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
         string $offerType,
         AbstractUpdateTypicalAgeRange $updateTypicalAgeRange
     ): void {
-        $updateAddressRequest = $this->psr7RequestBuilder
+        $updateTypicalAgeRangeRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withRouteParameter('language', 'nl')
             ->withBodyFromString(
                 '{ "typicalAgeRange": "1-12" }'
             )
             ->build('PUT');
 
-        $response = $this->updateTypicalAgeRangeRequestHandler->handle($updateAddressRequest);
+        $response = $this->updateTypicalAgeRangeRequestHandler->handle($updateTypicalAgeRangeRequest);
 
         $this->assertEquals(
             [
