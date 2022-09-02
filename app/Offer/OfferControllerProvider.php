@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
@@ -80,6 +81,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->delete('/{offerType}/{offerId}/videos/{videoId}/', DeleteVideoRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/organizer/{organizerId}/', DeleteOrganizerRequestHandler::class);
+
 
         $controllers->patch('/{offerType}/{offerId}/', PatchOfferRequestHandler::class);
 
@@ -177,6 +180,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new UpdateOrganizerRequestHandler(
                 $app['event_command_bus'],
                 $app['organizer_jsonld_repository']
+            )
+        );
+
+        $app[DeleteOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteOrganizerRequestHandler(
+                $app['event_command_bus']
             )
         );
 
