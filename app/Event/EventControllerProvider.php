@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Http\Event\OnlineLocationPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
-use CultuurNet\UDB3\Http\OfferRestBaseController;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
@@ -64,15 +63,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
 
     public function register(Application $app): void
     {
-        $app['event_editing_controller'] = $app->share(
-            function (Application $app) {
-                return new OfferRestBaseController(
-                    $app['event_editor'],
-                    $app['media_manager']
-                );
-            }
-        );
-
         $app[ImportEventRequestHandler::class] = $app->share(
             fn (Application $app) => new ImportEventRequestHandler(
                 $app['event_repository'],
