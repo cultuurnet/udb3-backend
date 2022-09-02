@@ -16,7 +16,6 @@ use PHPUnit\Framework\TestCase;
 
 final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
 {
-    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
