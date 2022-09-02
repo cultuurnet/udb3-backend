@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
+use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange as PlaceUpdateTypicalAgeRange;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
@@ -40,11 +42,15 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeDataProvider
+
      */
-    public function it_handles_updating_the_typical_age_range_of_an_event(): void
-    {
+    public function it_handles_updating_the_typical_age_range_of_an_event(
+        string $offerType,
+        AbstractUpdateTypicalAgeRange $updateTypicalAgeRange
+    ): void {
         $updateAddressRequest = $this->psr7RequestBuilder
-            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
             ->withRouteParameter('language', 'nl')
             ->withBodyFromString(
@@ -56,10 +62,7 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new EventUpdateTypicalAgeRange(
-                    self::OFFER_ID,
-                    '1-12'
-                ),
+                $updateTypicalAgeRange,
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -68,5 +71,25 @@ final class UpdateTypicalAgeRangeRequestHandlerTest extends TestCase
             new NoContentResponse(),
             $response
         );
+    }
+
+    public function offerTypeDataProvider(): array
+    {
+        return [
+            [
+                'offerType' => 'events',
+                'updateTypicalAgeRange' => new EventUpdateTypicalAgeRange(
+                    self::OFFER_ID,
+                    '1-12'
+                ),
+            ],
+            [
+                'offerType' => 'places',
+                'updateTypicalAgeRange' => new PlaceUpdateTypicalAgeRange(
+                    self::OFFER_ID,
+                    '1-12'
+                ),
+            ],
+        ];
     }
 }
