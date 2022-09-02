@@ -56,7 +56,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:deleteOrganizer');
-        $controllers->put('/{cdbid}/typical-age-range/', 'event_editing_controller:updateTypicalAgeRange');
         $controllers->delete('/{cdbid}/typical-age-range/', 'event_editing_controller:deleteTypicalAgeRange');
 
         $controllers->post('/{itemId}/images/', 'event_editing_controller:addImage');
@@ -73,7 +72,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->post('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->post('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
-        $controllers->post('/{cdbid}/typical-age-range/', 'event_editing_controller:updateTypicalAgeRange');
         $controllers->post('/{cdbid}/organizer/', 'event_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;

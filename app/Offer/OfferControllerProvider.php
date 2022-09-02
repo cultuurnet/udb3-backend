@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -62,6 +63,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/type/{termId}/', UpdateTypeRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/facilities/', UpdateFacilitiesRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
@@ -77,6 +80,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
          */
         $controllers->get('/{offerType}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
 
 
         return $controllers;
@@ -90,6 +94,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[DeleteRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTypicalAgeRangeRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
         );
 
         $app[UpdateTitleRequestHandler::class] = $app->share(

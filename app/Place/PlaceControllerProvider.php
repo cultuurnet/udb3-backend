@@ -39,7 +39,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'place_editing_controller:deleteOrganizer');
         $controllers->delete('/{cdbid}/typical-age-range/', 'place_editing_controller:deleteTypicalAgeRange');
-        $controllers->put('/{cdbid}/typical-age-range/', 'place_editing_controller:updateTypicalAgeRange');
 
         $controllers->post('/{itemId}/images/', 'place_editing_controller:addImage');
         $controllers->put('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
@@ -54,7 +53,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->post('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
         $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
         $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
-        $controllers->post('/{cdbid}/typical-age-range/', 'place_editing_controller:updateTypicalAgeRange');
         $controllers->post('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
         $controllers->post('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');
         $controllers->post('/{cdbid}/contact-point/', 'place_editing_controller:updateContactPoint');
