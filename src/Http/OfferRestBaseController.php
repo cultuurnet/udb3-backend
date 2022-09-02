@@ -54,21 +54,6 @@ class OfferRestBaseController
         $this->bookingInfoDeserializer = $bookingInfoDeserializer;
     }
 
-    public function addImage(Request $request, string $itemId): Response
-    {
-        $bodyContent = json_decode($request->getContent());
-        if (empty($bodyContent->mediaObjectId)) {
-            return new JsonResponse(['error' => 'media object id required'], 400);
-        }
-
-        // @todo Validate that this id exists and is in fact an image and not a different type of media object
-        $imageId = new UUID($bodyContent->mediaObjectId);
-
-        $this->editor->addImage($itemId, $imageId);
-
-        return new NoContent();
-    }
-
     public function selectMainImage(Request $request, string $itemId): Response
     {
         $bodyContent = json_decode($request->getContent());
