@@ -56,7 +56,6 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{cdbid}/booking-info/', 'event_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contact-point/', 'event_editing_controller:updateContactPoint');
         $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'event_editing_controller:deleteOrganizer');
-        $controllers->delete('/{cdbid}/typical-age-range/', 'event_editing_controller:deleteTypicalAgeRange');
 
         $controllers->post('/{itemId}/images/', 'event_editing_controller:addImage');
         $controllers->put('/{itemId}/images/main/', 'event_editing_controller:selectMainImage');

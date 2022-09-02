@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
@@ -64,6 +65,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/facilities/', UpdateFacilitiesRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/typical-age-range/', DeleteTypicalAgeRangeRequestHandler::class);
+
 
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
@@ -99,6 +102,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[UpdateTypicalAgeRangeRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[DeleteTypicalAgeRangeRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new DeleteTypicalAgeRangeRequestHandler($app['event_command_bus']);
             }
         );
 
