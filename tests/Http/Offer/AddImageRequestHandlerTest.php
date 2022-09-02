@@ -46,7 +46,7 @@ final class AddImageRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeDataProvider
      */
-    public function it_handles_updating_the_image_of_an_offer(
+    public function it_handles_adding_an_image_to_an_offer(
         string $offerType,
         AbstractAddImage $addImage
     ): void {
