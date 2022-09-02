@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http;
 
-use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -14,7 +13,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,46 +76,6 @@ class OfferRestBaseControllerTest extends TestCase
             $request,
             $cdbid
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_update_booking_info(): void
-    {
-        $givenOfferId = 'b125e7b8-08ac-4740-80e1-b502ff716048';
-        $givenJson = json_encode(
-            [
-                'bookingInfo' => [
-                    'url' => 'https://publiq.be',
-                    'urlLabel' => ['nl' => 'Publiq vzw'],
-                    'phone' => '044/444444',
-                    'email' => 'info@publiq.be',
-                    'availabilityStarts' => '2018-01-01T00:00:00+01:00',
-                    'availabilityEnds' => '2018-01-31T23:59:59+01:00',
-                ],
-            ]
-        );
-
-        $givenRequest = new Request([], [], [], [], [], [], $givenJson);
-
-        $this->offerEditingService->expects($this->once())
-            ->method('updateBookingInfo')
-            ->with(
-                $givenOfferId,
-                new BookingInfo(
-                    'https://publiq.be',
-                    new MultilingualString(new Language('nl'), new StringLiteral('Publiq vzw')),
-                    '044/444444',
-                    'info@publiq.be',
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-31T23:59:59+01:00')
-                )
-            );
-
-        $response = $this->offerRestBaseController->updateBookingInfo($givenRequest, $givenOfferId);
-
-        $this->assertEquals(204, $response->getStatusCode());
     }
 
     /**

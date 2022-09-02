@@ -103,16 +103,6 @@ class OfferRestBaseController
         return new NoContent();
     }
 
-    public function updateBookingInfo(Request $request, string $cdbid): Response
-    {
-        $body = (string) $request->getContent();
-        $bookingInfo = $this->bookingInfoDeserializer->deserialize(new StringLiteral($body));
-
-        $this->editor->updateBookingInfo($cdbid, $bookingInfo);
-
-        return new NoContent();
-    }
-
     public function addImage(Request $request, string $itemId): Response
     {
         $bodyContent = json_decode($request->getContent());
