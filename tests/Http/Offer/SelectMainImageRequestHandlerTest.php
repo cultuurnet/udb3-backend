@@ -63,7 +63,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
         $this->image = new Image(
             new UUID(self::MEDIA_ID),
             MIMEType::fromSubtype('png'),
-            new Description('A picture of a pictur'),
+            new Description('A picture of a picture'),
             new CopyrightHolder('CreativeCommons'),
             new Url('https://url.com/image.jpeg'),
             new Language('nl')
@@ -140,7 +140,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
         $image = new Image(
             new UUID(self::MEDIA_ID),
             MIMEType::fromSubtype('png'),
-            new Description('A picture of a pictur'),
+            new Description('A picture of a picture'),
             new CopyrightHolder('CreativeCommons'),
             new Url('https://url.com/image.jpeg'),
             new Language('nl')

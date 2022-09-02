@@ -38,7 +38,6 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
 
         $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:removeImage');
 
-
         /**
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
