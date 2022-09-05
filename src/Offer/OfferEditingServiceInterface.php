@@ -10,7 +10,5 @@ use CultuurNet\UDB3\StringLiteral;
 
 interface OfferEditingServiceInterface
 {
-    public function updateTitle(string $id, Language $language, StringLiteral $title): void;
-    public function updateDescription(string $id, Language $language, Description $description): void;
     public function deleteOrganizer(string $id, string $organizerId): void;
 }

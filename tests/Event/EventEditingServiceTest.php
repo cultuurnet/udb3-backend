@@ -38,42 +38,6 @@ final class EventEditingServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_refuses_to_update_title_of_unknown_event(): void
-    {
-        $id = 'some-unknown-id';
-
-        $this->expectException(EntityNotFoundException::class);
-
-        $this->setUpEventNotFound($id);
-
-        $this->eventEditingService->updateTitle(
-            $id,
-            new Language('nl'),
-            new StringLiteral('new title')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_refuses_to_update_the_description_of_unknown_event(): void
-    {
-        $id = 'some-unknown-id';
-
-        $this->expectException(EntityNotFoundException::class);
-
-        $this->setUpEventNotFound($id);
-
-        $this->eventEditingService->updateDescription(
-            $id,
-            new Language('en'),
-            new Description('new description')
-        );
-    }
-
     private function setUpEventNotFound($id): void
     {
         $this->readRepository->expects($this->once())
