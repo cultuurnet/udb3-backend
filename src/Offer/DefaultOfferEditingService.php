@@ -34,8 +34,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
      */
     protected $readRepository;
 
-    private DocumentRepository $organizerDocumentRepository;
-
     /**
      * @var OfferCommandFactoryInterface
      */
@@ -50,13 +48,11 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
-        DocumentRepository $organizerDocumentRepository,
         OfferCommandFactoryInterface $commandFactory
     ) {
         $this->commandBus = $commandBus;
         $this->uuidGenerator = $uuidGenerator;
         $this->readRepository = $readRepository;
-        $this->organizerDocumentRepository = $organizerDocumentRepository;
         $this->commandFactory = $commandFactory;
         $this->publicationDate = null;
     }
