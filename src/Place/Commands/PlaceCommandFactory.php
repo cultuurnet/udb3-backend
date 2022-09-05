@@ -4,23 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Commands;
 
-use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
-use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
-use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
-use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
-use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractApprove;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
@@ -34,63 +20,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 class PlaceCommandFactory implements OfferCommandFactoryInterface
 {
-    public function createAddImageCommand(string $id, UUID $imageId): AbstractAddImage
-    {
-        return new AddImage($id, $imageId);
-    }
-
-    public function createRemoveImageCommand(string $id, Image $image): AbstractRemoveImage
-    {
-        return new RemoveImage($id, $image);
-    }
-
-    public function createUpdateImageCommand(
-        string $id,
-        UUID $mediaObjectId,
-        StringLiteral $description,
-        CopyrightHolder $copyrightHolder
-    ): AbstractUpdateImage {
-        return new UpdateImage(
-            $id,
-            $mediaObjectId,
-            $description,
-            $copyrightHolder
-        );
-    }
-
-    public function createSelectMainImage(string $id, Image $image): AbstractSelectMainImage
-    {
-        return new SelectMainImage($id, $image);
-    }
-
     public function createUpdateDescriptionCommand(string $id, Language $language, Description $description): AbstractUpdateDescription
     {
         return new UpdateDescription($id, $language, $description);
-    }
-
-    public function createSelectMainImageCommand(string $id, Image $image): AbstractSelectMainImage
-    {
-        return new SelectMainImage($id, $image);
-    }
-
-    public function createUpdateTypicalAgeRangeCommand(string $id, AgeRange $ageRange): AbstractUpdateTypicalAgeRange
-    {
-        return new UpdateTypicalAgeRange($id, $ageRange);
-    }
-
-    public function createDeleteTypicalAgeRangeCommand(string $id): AbstractDeleteTypicalAgeRange
-    {
-        return new DeleteTypicalAgeRange($id);
-    }
-
-    public function createUpdateContactPointCommand(string $id, ContactPoint $contactPoint): AbstractUpdateContactPoint
-    {
-        return new UpdateContactPoint($id, $contactPoint);
-    }
-
-    public function createUpdateBookingInfoCommand(string $id, BookingInfo $bookingInfo): AbstractUpdateBookingInfo
-    {
-        return new UpdateBookingInfo($id, $bookingInfo);
     }
 
     public function createApproveCommand(string $id): AbstractApprove
