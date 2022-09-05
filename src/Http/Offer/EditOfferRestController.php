@@ -25,10 +25,7 @@ class EditOfferRestController
      */
     private $commandBus;
 
-    /**
-     * @var OfferEditingServiceInterface
-     */
-    private $editService;
+    private OfferEditingServiceInterface $editService;
 
     /**
      * @var MainLanguageQueryInterface
