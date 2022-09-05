@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
@@ -24,6 +25,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
+use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
@@ -36,8 +38,8 @@ class OrganizerCommandHandlerProvider implements ServiceProviderInterface
         $app[DeleteOrganizerHandler::class] = $app->share(
             fn (Application $application) => new DeleteOrganizerHandler(
                 $app['organizer_repository'],
-                $app[EventOrganizerRelationService::class],
-                $app[PlaceOrganizerRelationService::class]
+                $app[EventRelationsRepository::class],
+                $app[PlaceRelationsRepository::class]
             )
         );
 
