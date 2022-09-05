@@ -30,27 +30,19 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
         );
 
         $app[GetCardSystemsFromEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetCardSystemsFromEventRequestHandler(
-                $app['uitpas']
-            )
+            fn (Application $app) => new GetCardSystemsFromEventRequestHandler($app['uitpas'])
         );
 
         $app[SetCardSystemsOnEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new SetCardSystemsOnEventRequestHandler(
-                $app['uitpas']
-            )
+            fn (Application $app) => new SetCardSystemsOnEventRequestHandler($app['uitpas'])
         );
 
         $app[AddCardSystemToEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new AddCardSystemToEventRequestHandler(
-                $app['uitpas']
-            )
+            fn (Application $app) => new AddCardSystemToEventRequestHandler($app['uitpas'])
         );
 
         $app[DeleteCardSystemFromEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new DeleteCardSystemFromEventRequestHandler(
-                $app['uitpas']
-            )
+            fn (Application $app) => new DeleteCardSystemFromEventRequestHandler($app['uitpas'])
         );
 
         /** @var ControllerCollection $controllers */
