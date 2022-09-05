@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
 use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
@@ -83,6 +84,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/labels/{labelName}/', RemoveLabelRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
@@ -141,6 +143,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[AddLabelRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new AddLabelRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[RemoveLabelRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new RemoveLabelRequestHandler($app['event_command_bus']);
             }
         );
 

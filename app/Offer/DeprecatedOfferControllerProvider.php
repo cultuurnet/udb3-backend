@@ -35,8 +35,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->delete('/{cdbid}/labels/{label}/', "{$controllerName}:removeLabel");
-
         $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
 
         /**
