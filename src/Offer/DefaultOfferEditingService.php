@@ -6,16 +6,11 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
-use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\StringLiteral;
 
 class DefaultOfferEditingService implements OfferEditingServiceInterface
 {
