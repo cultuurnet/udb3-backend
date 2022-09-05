@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Role;
 
+use CultuurNet\UDB3\Http\Role\GetRoleRequestHandler;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
@@ -43,6 +44,10 @@ class RoleControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[GetRoleRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetRoleRequestHandler($app['role_service'])
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -54,8 +59,7 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:create'
         );
 
-        $controllers
-            ->get('/roles/{id}/', 'role_controller:get');
+        $controllers->get('/roles/{roleId}/', GetRoleRequestHandler::class);
 
         $controllers->patch(
             '/roles/{id}/',
