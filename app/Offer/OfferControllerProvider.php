@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler;
@@ -79,6 +80,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/images/', AddImageRequestHandler::class);
@@ -129,6 +132,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[DeleteTypicalAgeRangeRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new DeleteTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[AddLabelRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelRequestHandler($app['event_command_bus']);
             }
         );
 
