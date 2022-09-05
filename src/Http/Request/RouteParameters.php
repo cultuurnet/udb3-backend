@@ -91,6 +91,11 @@ final class RouteParameters
         return $this->get('productionId');
     }
 
+    public function getRoleId(): string
+    {
+        return $this->get('roleId');
+    }
+
     public function hasLanguage(): bool
     {
         return $this->has('language');
