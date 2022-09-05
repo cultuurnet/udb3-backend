@@ -7,31 +7,27 @@ namespace CultuurNet\UDB3\UiTPASService\Controller;
 use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class GetUiTPASDetailRequestHandler implements RequestHandlerInterface
 {
     private CultureFeed_Uitpas $uitpas;
 
-    private UrlGeneratorInterface $urlGenerator;
+    private IriGeneratorInterface $getUiTPASDetailIriGenerator;
 
-    private string $eventDetailRouteName;
-
-    private string $eventCardSystemsRouteName;
+    private IriGeneratorInterface $getCardSystemsFromEventIriGenerator;
 
     public function __construct(
         CultureFeed_Uitpas $uitpas,
-        UrlGeneratorInterface $urlGenerator,
-        string $eventDetailRouteName,
-        string $eventCardSystemsRouteName
+        IriGeneratorInterface $getUiTPASDetailIriGenerator,
+        IriGeneratorInterface $getCardSystemsFromEventIriGenerator
     ) {
         $this->uitpas = $uitpas;
-        $this->urlGenerator = $urlGenerator;
-        $this->eventDetailRouteName = $eventDetailRouteName;
-        $this->eventCardSystemsRouteName = $eventCardSystemsRouteName;
+        $this->getUiTPASDetailIriGenerator = $getUiTPASDetailIriGenerator;
+        $this->getCardSystemsFromEventIriGenerator = $getCardSystemsFromEventIriGenerator;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -39,16 +35,8 @@ final class GetUiTPASDetailRequestHandler implements RequestHandlerInterface
         $eventId = (new RouteParameters($request))->getEventId();
 
         $data = [
-            '@id' => $this->urlGenerator->generate(
-                $this->eventDetailRouteName,
-                ['eventId' => $eventId],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'cardSystems' => $this->urlGenerator->generate(
-                $this->eventCardSystemsRouteName,
-                ['eventId' => $eventId],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
+            '@id' => $this->getUiTPASDetailIriGenerator->iri($eventId),
+            'cardSystems' => $this->getCardSystemsFromEventIriGenerator->iri($eventId),
             'hasTicketSales' => $this->uitpas->eventHasTicketSales($eventId),
         ];
 
