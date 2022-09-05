@@ -41,7 +41,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->post('/', ImportOrganizerRequestHandler::class);
         $controllers->put('/{organizerId}/', ImportOrganizerRequestHandler::class);
-        $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class)->bind('organizer');
+        $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class);
         $controllers->delete('/{organizerId}/', DeleteOrganizerRequestHandler::class);
 
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);

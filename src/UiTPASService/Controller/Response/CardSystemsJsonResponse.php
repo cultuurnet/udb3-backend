@@ -6,21 +6,23 @@ namespace CultuurNet\UDB3\UiTPASService\Controller\Response;
 
 use CultureFeed_Uitpas_CardSystem;
 use CultureFeed_Uitpas_DistributionKey;
-use Symfony\Component\HttpFoundation\Response;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Json;
+use Slim\Psr7\Interfaces\HeadersInterface;
 
-class CardSystemsJsonResponse extends Response
+class CardSystemsJsonResponse extends JsonResponse
 {
     /**
      * @param CultureFeed_Uitpas_CardSystem[] $cardSystems
      */
-    public function __construct(array $cardSystems, int $status = 200, array $headers = [])
+    public function __construct(array $cardSystems, int $status = 200, ?HeadersInterface $headers = null)
     {
         $data = [];
         foreach ($cardSystems as $cardSystem) {
             $data[$cardSystem->id] = $this->convertCardSystemToArray($cardSystem);
         }
 
-        $content = json_encode($data);
+        $content = Json::encode($data);
 
         parent::__construct($content, $status, $headers);
     }

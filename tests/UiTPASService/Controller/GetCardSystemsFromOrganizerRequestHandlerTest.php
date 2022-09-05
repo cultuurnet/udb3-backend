@@ -4,35 +4,37 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
-use CultureFeed_ResultSet;
 use CultureFeed_Uitpas;
 use CultureFeed_Uitpas_CardSystem;
 use CultureFeed_Uitpas_DistributionKey;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\UiTPASService\Controller\Response\CardSystemsJsonResponse;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class OrganizerCardSystemsControllerTest extends TestCase
+final class GetCardSystemsFromOrganizerRequestHandlerTest extends TestCase
 {
+    use AssertJsonResponseTrait;
+
     /**
      * @var CultureFeed_Uitpas|MockObject
      */
-    private $uitPas;
+    private $uitpas;
 
-    /**
-     * @var OrganizerCardSystemsController
-     */
-    private $controller;
+    private GetCardSystemsFromOrganizerRequestHandler $getCardSystemsFromOrganizerRequestHandler;
 
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->uitPas = $this->createMock(CultureFeed_Uitpas::class);
-        $this->controller = new OrganizerCardSystemsController($this->uitPas);
+        $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
+
+        $this->getCardSystemsFromOrganizerRequestHandler = new GetCardSystemsFromOrganizerRequestHandler($this->uitpas);
     }
 
     /**
      * @test
      */
-    public function it_responds_with_a_list_of_card_systems_with_distribution_keys_for_a_given_organizer()
+    public function it_can_get_card_systems_of_an_event(): void
     {
         $organizerId = 'db93a8d0-331a-4575-a23d-2c78d4ceb925';
 
@@ -75,50 +77,21 @@ class OrganizerCardSystemsControllerTest extends TestCase
             $cardSystem2,
         ];
 
-        $resultSet = new CultureFeed_ResultSet();
+        $resultSet = new \CultureFeed_ResultSet();
         $resultSet->objects = $cardSystems;
         $resultSet->total = 2;
 
-        $this->uitPas->expects($this->once())
-            ->method('getCardSystemsForOrganizer')
+        $this->uitpas->expects($this->once())
+            ->method('getCardSystemsForEvent')
             ->with($organizerId)
             ->willReturn($resultSet);
 
-        $expectedResponseContent = (object) [
-            1 => (object) [
-                'id' => 1,
-                'name' => 'Card system 1',
-                'distributionKeys' => (object) [
-                    1 => (object) [
-                        'id' => 1,
-                        'name' => 'Distribution key 1',
-                    ],
-                    2 => (object) [
-                        'id' => 2,
-                        'name' => 'Distribution key 2',
-                    ],
-                ],
-            ],
-            2 => (object) [
-                'id' => 2,
-                'name' => 'Card system 2',
-                'distributionKeys' => (object) [
-                    3 => (object) [
-                        'id' => 3,
-                        'name' => 'Distribution key 3',
-                    ],
-                    4 => (object) [
-                        'id' => 4,
-                        'name' => 'Distribution key 4',
-                    ],
-                ],
-            ],
-        ];
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', $organizerId)
+            ->build('GET');
 
-        $actualResponseContent = json_decode(
-            $this->controller->get($organizerId)->getContent()
-        );
+        $response = $this->getCardSystemsFromOrganizerRequestHandler->handle($request);
 
-        $this->assertEquals($expectedResponseContent, $actualResponseContent);
+        $this->assertJsonResponse(new CardSystemsJsonResponse($cardSystems), $response);
     }
 }
