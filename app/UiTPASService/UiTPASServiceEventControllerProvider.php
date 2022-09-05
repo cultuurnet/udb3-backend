@@ -22,9 +22,9 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{eventId}/', GetUiTPASDetailRequestHandler::class)
+        $controllers->get('/{eventId}/', GetUiTPASDetailRequestHandler::class);
 
-        $controllers->get('/{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class)
+        $controllers->get('/{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class);
 
         $controllers->put('/{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
 
