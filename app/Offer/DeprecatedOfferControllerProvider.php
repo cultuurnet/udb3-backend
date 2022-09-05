@@ -43,7 +43,7 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
-        $controllers->post('/{cdbid}/labels/', "{$controllerName}:addLabelFromJsonBody");
+
         $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
 
         return $controllers;

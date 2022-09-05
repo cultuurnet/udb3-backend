@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
@@ -36,6 +37,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
+use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
@@ -109,6 +111,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->post('/{offerType}/{offerId}/organizer/', UpdateOrganizerFromJsonBodyRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/labels/', AddLabelFromJsonBodyRequestHandler::class);
 
         return $controllers;
     }
@@ -138,6 +141,15 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $app[AddLabelRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new AddLabelRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[AddLabelFromJsonBodyRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelFromJsonBodyRequestHandler(
+                    $app['event_command_bus'],
+                    new LabelJSONDeserializer()
+                );
             }
         );
 
