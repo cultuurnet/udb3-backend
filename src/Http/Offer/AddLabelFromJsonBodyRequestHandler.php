@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
@@ -33,7 +34,11 @@ final class AddLabelFromJsonBodyRequestHandler implements RequestHandlerInterfac
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
         $bodyContent = $request->getBody()->getContents();
-        $label = $this->labelJsonDeserializer->deserialize(new StringLiteral($bodyContent));
+        try {
+            $label = $this->labelJsonDeserializer->deserialize(new StringLiteral($bodyContent));
+        } catch (\InvalidArgumentException $exception) {
+            throw ApiProblem::urlNotFound('The label should match pattern: ^[^;]{2,255}$');
+        }
 
         $this->commandBus->dispatch(new AddLabel($offerId, $label));
         return new NoContentResponse();
