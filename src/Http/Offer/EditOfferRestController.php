@@ -59,21 +59,6 @@ class EditOfferRestController
         $this->descriptionJsonDeserializer = $descriptionJsonDeserializer;
     }
 
-    public function updateTitle(Request $request, string $cdbid, string $lang): Response
-    {
-        $title = $this->titleJsonDeserializer->deserialize(
-            new StringLiteral($request->getContent())
-        );
-
-        $this->editService->updateTitle(
-            $cdbid,
-            new Language($lang),
-            $title
-        );
-
-        return new NoContent();
-    }
-
     public function updateDescription(Request $request, $cdbid, $lang): Response
     {
         $description = $this->descriptionJsonDeserializer->deserialize(
