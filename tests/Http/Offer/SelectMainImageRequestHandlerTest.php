@@ -6,9 +6,10 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage as EventSelectMainImage;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
@@ -20,12 +21,12 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
 use CultuurNet\UDB3\Place\Commands\SelectMainImage as PlaceSelectMainImage;
-use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class SelectMainImageRequestHandlerTest extends TestCase
 {
+    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
@@ -113,9 +114,8 @@ final class SelectMainImageRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeDataProvider
      */
-    public function it_throws_on_missing_media_id(
-        string $offerType
-    ): void {
+    public function it_throws_on_missing_media_id(string $offerType): void
+    {
         $selectMainImageRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
@@ -124,14 +124,9 @@ final class SelectMainImageRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
-        $response = $this->selectMainImageRequestHandler->handle($selectMainImageRequest);
-
-        $this->assertJsonResponse(
-            new JsonResponse(
-                ['error' => 'media object id required'],
-                StatusCodeInterface::STATUS_BAD_REQUEST
-            ),
-            $response
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail('media object id required'),
+            fn () => $this->selectMainImageRequestHandler->handle($selectMainImageRequest)
         );
     }
 

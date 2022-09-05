@@ -7,13 +7,11 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -35,10 +33,7 @@ final class UpdateOrganizerFromJsonBodyRequestHandler implements RequestHandlerI
         $offerId = $routeParameters->getOfferId();
         $bodyContent = Json::decode($request->getBody()->getContents());
         if (empty($bodyContent->organizer)) {
-            return new JsonResponse(
-                ['error' => 'organizer required'],
-                StatusCodeInterface::STATUS_BAD_REQUEST
-            );
+            throw ApiProblem::bodyInvalidDataWithDetail('organizer required');
         }
         $organizerId = $bodyContent->organizer;
 

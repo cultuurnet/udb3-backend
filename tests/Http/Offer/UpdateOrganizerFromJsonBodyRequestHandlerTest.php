@@ -9,12 +9,10 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Offer\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
 class UpdateOrganizerFromJsonBodyRequestHandlerTest extends TestCase
@@ -83,10 +81,8 @@ class UpdateOrganizerFromJsonBodyRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeDataProvider
      */
-    public function it_throws_when_organizer_is_missing(
-        string $offerType,
-        UpdateOrganizer $updateOrganizer
-    ): void {
+    public function it_throws_when_organizer_is_missing(string $offerType): void
+    {
         $updateOrganizerFromJsonBodyRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
@@ -95,14 +91,9 @@ class UpdateOrganizerFromJsonBodyRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
-        $response = $this->updateOrganizerFromJsonBodyRequestHandler->handle($updateOrganizerFromJsonBodyRequest);
-
-        $this->assertJsonResponse(
-            new JsonResponse(
-                ['error' => 'organizer required'],
-                StatusCodeInterface::STATUS_BAD_REQUEST
-            ),
-            $response
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail('organizer required'),
+            fn () => $this->updateOrganizerFromJsonBodyRequestHandler->handle($updateOrganizerFromJsonBodyRequest)
         );
     }
 

@@ -7,13 +7,12 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint as EventUpdateContactPoint;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint as PlaceUpdateContactPoint;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -42,12 +41,7 @@ final class UpdateContactPointRequestHandler implements RequestHandlerInterface
                 $bodyContent->contactPoint->phone
             )
         ) {
-            return new JsonResponse(
-                [
-                    'error' => 'contactPoint and his properties required',
-                ],
-                StatusCodeInterface::STATUS_BAD_REQUEST
-            );
+            throw ApiProblem::bodyInvalidDataWithDetail('contactPoint and his properties required');
         }
         $contactPoint = new ContactPoint(
             $bodyContent->contactPoint->phone,

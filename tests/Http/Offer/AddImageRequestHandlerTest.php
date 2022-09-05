@@ -6,18 +6,19 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Place\Commands\AddImage as PlaceAddImage;
-use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
 final class AddImageRequestHandlerTest extends TestCase
 {
+    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
     private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
@@ -77,10 +78,8 @@ final class AddImageRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeDataProvider
      */
-    public function it_throws_on_missing_media_id(
-        string $offerType,
-        AbstractAddImage $addImage
-    ): void {
+    public function it_throws_on_missing_media_id(string $offerType): void
+    {
         $addImageRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
@@ -89,14 +88,9 @@ final class AddImageRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
-        $response = $this->addImageRequestHandler->handle($addImageRequest);
-
-        $this->assertJsonResponse(
-            new JsonResponse(
-                ['error' => 'media object id required'],
-                StatusCodeInterface::STATUS_BAD_REQUEST
-            ),
-            $response
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail('media object id required'),
+            fn () => $this->addImageRequestHandler->handle($addImageRequest)
         );
     }
 

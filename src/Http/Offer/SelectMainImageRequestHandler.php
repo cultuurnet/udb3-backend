@@ -6,15 +6,14 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage as EventSelectMainImage;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\SelectMainImage as PlaceSelectMainImage;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -41,10 +40,7 @@ final class SelectMainImageRequestHandler implements RequestHandlerInterface
         $bodyContent = Json::decode($request->getBody()->getContents());
 
         if (empty($bodyContent->mediaObjectId)) {
-            return new JsonResponse(
-                ['error' => 'media object id required'],
-                StatusCodeInterface::STATUS_BAD_REQUEST
-            );
+            throw ApiProblem::bodyInvalidDataWithDetail('media object id required');
         }
 
         $mediaObjectId = new UUID($bodyContent->mediaObjectId);
