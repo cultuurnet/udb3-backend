@@ -108,6 +108,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
+         * These routes usually, but not always, used an incorrect HTTP method.
          */
         $controllers->get('/{offerType}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
