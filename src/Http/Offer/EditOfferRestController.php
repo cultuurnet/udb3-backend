@@ -61,19 +61,6 @@ class EditOfferRestController
         $this->descriptionJsonDeserializer = $descriptionJsonDeserializer;
     }
 
-    /**
-     * @deprecated
-     */
-    public function addLabelFromJsonBody(Request $request, string $cdbid): Response
-    {
-        $json = new StringLiteral($request->getContent());
-        $label = $this->labelJsonDeserializer->deserialize($json);
-
-        $this->commandBus->dispatch(new AddLabel($cdbid, $label));
-
-        return new NoContent();
-    }
-
     public function removeLabel(string $cdbid, string $label): Response
     {
         $this->commandBus->dispatch(new RemoveLabel($cdbid, $label));
