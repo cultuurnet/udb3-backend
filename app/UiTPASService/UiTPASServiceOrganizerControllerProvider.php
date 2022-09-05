@@ -9,20 +9,28 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestH
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Silex\ServiceProviderInterface;
 
-class UiTPASServiceOrganizerControllerProvider implements ControllerProviderInterface
+class UiTPASServiceOrganizerControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
     public function connect(Application $app): ControllerCollection
     {
-        $app[GetCardSystemsFromEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetCardSystemsFromEventRequestHandler($app['uitpas'])
-        );
-
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/{organizerId}/card-systems/', GetCardSystemsFromOrganizerRequestHandler::class);
 
         return $controllers;
+    }
+
+    public function register(Application $app): void
+    {
+        $app[GetCardSystemsFromEventRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetCardSystemsFromEventRequestHandler($app['uitpas'])
+        );
+    }
+
+    public function boot(Application $app): void
+    {
     }
 }
