@@ -101,7 +101,6 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
                     ],
                 ],
             ])
-            ->withRouteParameter('labelName', 'Geen;geldig;label;')
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
