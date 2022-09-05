@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
-use CultuurNet\UDB3\DescriptionJSONDeserializer;
-use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
-use CultuurNet\UDB3\Http\Offer\EditOfferRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 /**
  * @deprecated
@@ -59,15 +54,6 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
                         $editor = $app['event_editor'];
                         $mainLanguageQuery = $app['event_main_language_query'];
                 }
-
-                return new EditOfferRestController(
-                    $app['event_command_bus'],
-                    $editor,
-                    $mainLanguageQuery,
-                    new LabelJSONDeserializer(),
-                    new TitleJSONDeserializer(false, new StringLiteral('name')),
-                    new DescriptionJSONDeserializer()
-                );
             }
         );
     }
