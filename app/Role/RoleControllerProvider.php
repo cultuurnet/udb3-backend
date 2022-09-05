@@ -55,8 +55,7 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $controllers
-            ->get('/roles/{id}/', 'role_controller:get')
-            ->bind('role');
+            ->get('/roles/{id}/', 'role_controller:get');
 
         $controllers->patch(
             '/roles/{id}/',
