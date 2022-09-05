@@ -9,8 +9,6 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
@@ -18,7 +16,6 @@ use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\UDB3\StringLiteral;
 
 class EditOfferRestControllerTest extends TestCase
 {
@@ -83,24 +80,6 @@ class EditOfferRestControllerTest extends TestCase
             $this->titleDeserializer,
             $this->descriptionDeserializer
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_removes_a_label()
-    {
-        $label = 'test label';
-        $cdbid = 'c6ff4c27-bdbb-452f-a1b5-d9e2e3aa846c';
-
-        $this->commandBus->record();
-
-        $response = $this->controller
-            ->removeLabel($cdbid, $label);
-
-        $this->assertEquals([new RemoveLabel($cdbid, $label)], $this->commandBus->getRecordedCommands());
-
-        $this->assertEquals(204, $response->getStatusCode());
     }
 
     /**
