@@ -129,6 +129,12 @@ final class RouteParameters
         }
     }
 
+    public function getLabelNameAsString(): string
+    {
+        return $this->get('labelName');
+    }
+
+
     public function getOfferType(): OfferType
     {
         $offerType = $this->get('offerType');
