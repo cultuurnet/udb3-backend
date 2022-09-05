@@ -35,14 +35,12 @@ class DeprecatedOfferControllerProvider implements ControllerProviderInterface, 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->put('/{cdbid}/description/{lang}/', "{$controllerName}:updateDescription");
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
 
-        $controllers->post('/{cdbid}/{lang}/description/', "{$controllerName}:updateDescription");
 
         return $controllers;
     }

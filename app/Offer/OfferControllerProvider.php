@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
@@ -28,6 +29,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
@@ -59,6 +61,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/name/{language}/', UpdateTitleRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/{language}/title/', UpdateTitleRequestHandler::class);
+
+        $controllers->put('/{offerType}/{offerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 
@@ -114,6 +118,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->post('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/labels/', AddLabelFromJsonBodyRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/{language}/description/', UpdateDescriptionRequestHandler::class);
 
         return $controllers;
     }
@@ -175,6 +180,13 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[UpdateTitleRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateTitleRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateDescriptionRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateDescriptionRequestHandler(
+                $app['event_command_bus'],
+                new DescriptionJSONDeserializer()
+            )
         );
 
         $app[UpdateAvailableFromRequestHandler::class] = $app->share(
