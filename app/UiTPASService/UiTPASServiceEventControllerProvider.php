@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -15,17 +16,17 @@ use Silex\ControllerProviderInterface;
 
 class UiTPASServiceEventControllerProvider implements ControllerProviderInterface
 {
-    private const EVENT_DETAIL = 'uitpas-service.event.detail';
-    private const EVENT_CARD_SYSTEMS = 'uitpas-service.event.card_systems';
-
     public function connect(Application $app): ControllerCollection
     {
         $app[GetUiTPASDetailRequestHandler::class] = $app->share(
             fn (Application $app) => new GetUiTPASDetailRequestHandler(
                 $app['uitpas'],
-                $app['url_generator'],
-                self::EVENT_DETAIL,
-                self::EVENT_CARD_SYSTEMS
+                new CallableIriGenerator(
+                    fn (string $eventId) => $app['config']['url'] . '/uitpas/events' . $eventId
+                ),
+                new CallableIriGenerator(
+                    fn (string $eventId) => $app['config']['url'] . '/uitpas/events' . $eventId . '/card-systems'
+                )
             )
         );
 
@@ -48,11 +49,9 @@ class UiTPASServiceEventControllerProvider implements ControllerProviderInterfac
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{eventId}/', GetUiTPASDetailRequestHandler::class)
-            ->bind(self::EVENT_DETAIL);
+        $controllers->get('/{eventId}/', GetUiTPASDetailRequestHandler::class);
 
-        $controllers->get('/{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class)
-            ->bind(self::EVENT_CARD_SYSTEMS);
+        $controllers->get('/{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class);
 
         $controllers->put('/{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
 
