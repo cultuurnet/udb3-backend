@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
@@ -61,12 +59,6 @@ class EditOfferRestController
         $this->labelJsonDeserializer = $labelJsonDeserializer;
         $this->titleJsonDeserializer = $titleJsonDeserializer;
         $this->descriptionJsonDeserializer = $descriptionJsonDeserializer;
-    }
-
-    public function addLabel(string $cdbid, string $label): Response
-    {
-        $this->commandBus->dispatch(new AddLabel($cdbid, new Label(new LabelName($label))));
-        return new NoContent();
     }
 
     /**

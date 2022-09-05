@@ -9,8 +9,6 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
@@ -85,24 +83,6 @@ class EditOfferRestControllerTest extends TestCase
             $this->titleDeserializer,
             $this->descriptionDeserializer
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_adds_a_label()
-    {
-        $label = 'test label';
-        $cdbid = 'c6ff4c27-bdbb-452f-a1b5-d9e2e3aa846c';
-
-        $this->commandBus->record();
-
-        $response = $this->controller
-            ->addLabel($cdbid, $label);
-
-        $this->assertEquals([new AddLabel($cdbid, new Label(new LabelName($label)))], $this->commandBus->getRecordedCommands());
-
-        $this->assertEquals(204, $response->getStatusCode());
     }
 
     /**
