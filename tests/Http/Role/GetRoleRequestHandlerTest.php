@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Role;
 
-use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use PHPUnit\Framework\MockObject\MockObject;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
 final class GetRoleRequestHandlerTest extends TestCase
@@ -19,16 +19,16 @@ final class GetRoleRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
-    /** @var EntityServiceInterface|MockObject */
-    private $roleService;
+    /** @var DocumentRepository */
+    private $roleRepository;
 
     private GetRoleRequestHandler $getRoleRequestHandler;
 
     protected function setUp(): void
     {
-        $this->roleService = $this->createMock(EntityServiceInterface::class);
+        $this->roleRepository = new InMemoryDocumentRepository();
 
-        $this->getRoleRequestHandler = new GetRoleRequestHandler($this->roleService);
+        $this->getRoleRequestHandler = new GetRoleRequestHandler($this->roleRepository);
     }
 
     /**
@@ -39,11 +39,6 @@ final class GetRoleRequestHandlerTest extends TestCase
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('roleId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->build('GET');
-
-        $this->roleService->expects($this->once())
-            ->method('getEntity')
-            ->with('609a8214-51c9-48c0-903f-840a4f38852f')
-            ->willThrowException(new EntityNotFoundException('609a8214-51c9-48c0-903f-840a4f38852f'));
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::roleNotFound('609a8214-51c9-48c0-903f-840a4f38852f'),
@@ -56,19 +51,21 @@ final class GetRoleRequestHandlerTest extends TestCase
      */
     public function it_gets_a_role(): void
     {
+        $roleId = '609a8214-51c9-48c0-903f-840a4f38852f';
+
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('roleId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withRouteParameter('roleId', $roleId)
             ->build('GET');
 
-        $this->roleService->expects($this->once())
-            ->method('getEntity')
-            ->with('609a8214-51c9-48c0-903f-840a4f38852f')
-            ->willReturn('{"name: "test role"}');
+        $jsonDocument = (new JsonDocument($roleId))
+            ->withAssocBody(['name' => 'test role']);
+
+        $this->roleRepository->save($jsonDocument);
 
         $response = $this->getRoleRequestHandler->handle($request);
 
         $this->assertJsonResponse(
-            new JsonResponse('{"name: "test role"}'),
+            new JsonResponse($jsonDocument->getRawBody()),
             $response
         );
     }

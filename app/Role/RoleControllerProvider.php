@@ -45,7 +45,7 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $app[GetRoleRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetRoleRequestHandler($app['role_service'])
+            fn (Application $app) => new GetRoleRequestHandler($app['role_read_repository'])
         );
 
         /** @var ControllerCollection $controllers */

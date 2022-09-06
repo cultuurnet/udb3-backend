@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Role;
 
-use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetRoleRequestHandler implements RequestHandlerInterface
 {
-    private EntityServiceInterface $service;
+    private DocumentRepository $roleRepository;
 
-    public function __construct(EntityServiceInterface $service)
+    public function __construct(DocumentRepository $roleRepository)
     {
-        $this->service = $service;
+        $this->roleRepository = $roleRepository;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -28,11 +28,11 @@ final class GetRoleRequestHandler implements RequestHandlerInterface
         $roleId = $routeParameter->getRoleId();
 
         try {
-            $role = $this->service->getEntity($roleId);
-        } catch (EntityNotFoundException $e) {
+            $role = $this->roleRepository->fetch($roleId);
+        } catch (DocumentDoesNotExist $e) {
             throw ApiProblem::roleNotFound($roleId);
         }
 
-        return new JsonResponse($role);
+        return new JsonResponse($role->getRawBody());
     }
 }
