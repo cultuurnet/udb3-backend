@@ -19,17 +19,6 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['place_editing_service'] = $app->share(
-            function ($app) {
-                return new DefaultOfferEditingService(
-                    $app['event_command_bus'],
-                    new Version4Generator(),
-                    $app['place_jsonld_repository'],
-                    new PlaceCommandFactory()
-                );
-            }
-        );
-
         $app[PlaceOrganizerRelationService::class] = $app->share(
             function ($app) {
                 return new PlaceOrganizerRelationService(
