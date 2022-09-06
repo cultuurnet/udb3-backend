@@ -57,15 +57,7 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
         $addLabelFromJsonBodyRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withJsonBodyFromArray([
-                'label' => self::LABEL_NAME,
-                'offers' => [
-                    0 => [
-                        '@id' => 'http://culudb-silex.dev:8080/event/' . self::OFFER_ID,
-                        '@type' => $type,
-                    ],
-                ],
-            ])
+            ->withJsonBodyFromArray(['label' => self::LABEL_NAME])
             ->build('POST');
 
         $response = $this->addLabelFromJsonBodyRequestHandler->handle($addLabelFromJsonBodyRequest);
@@ -92,15 +84,7 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
         $addLabelFromJsonBodyRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
             ->withRouteParameter('offerId', self::OFFER_ID)
-            ->withJsonBodyFromArray([
-                'label' => 'Geen;geldig;label;',
-                'offers' => [
-                    0 => [
-                        '@id' => 'http://culudb-silex.dev:8080/event/' . self::OFFER_ID,
-                        '@type' => $type,
-                    ],
-                ],
-            ])
+            ->withJsonBodyFromArray(['label' => 'Geen;geldig;label;'])
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
