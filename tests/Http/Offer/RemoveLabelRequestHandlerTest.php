@@ -40,7 +40,7 @@ class RemoveLabelRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider labelProvider
      */
     public function it_handles_removing_both_valid_and_invalid_labels_of_an_offer(
         string $offerType,
@@ -68,7 +68,7 @@ class RemoveLabelRequestHandlerTest extends TestCase
         );
     }
 
-    public function offerTypeDataProvider(): array
+    public function labelProvider(): array
     {
         return [
             [

@@ -45,7 +45,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider descriptionProvider
      */
     public function it_handles_updating_the_description_of_an_offer(
         string $offerType,
@@ -75,7 +75,7 @@ final class UpdateDescriptionRequestHandlerTest extends TestCase
         );
     }
 
-    public function offerTypeDataProvider(): array
+    public function descriptionProvider(): array
     {
         return [
             [

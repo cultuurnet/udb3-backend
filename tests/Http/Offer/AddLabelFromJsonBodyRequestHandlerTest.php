@@ -47,11 +47,10 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider labelProvider
      */
     public function it_handles_adding_a_label_to_an_offer(
         string $offerType,
-        string $type,
         AbstractLabelCommand $addLabel
     ): void {
         $addLabelFromJsonBodyRequest = $this->psr7RequestBuilder
@@ -77,9 +76,9 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider labelProvider
      */
-    public function it_throws_on_invalid_label(string $offerType, string $type): void
+    public function it_throws_on_invalid_label(string $offerType): void
     {
         $addLabelFromJsonBodyRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
@@ -93,12 +92,11 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
         );
     }
 
-    public function offerTypeDataProvider(): array
+    public function labelProvider(): array
     {
         return [
             [
                 'offerType' => 'events',
-                'type' => 'Event',
                 'addLabel' => new AddLabel(
                     self::OFFER_ID,
                     new Label(new LabelName(self::LABEL_NAME))
@@ -106,7 +104,6 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
             ],
             [
                 'offerType' => 'places',
-                'type' => 'Place',
                 'addLabel' => new AddLabel(
                     self::OFFER_ID,
                     new Label(new LabelName(self::LABEL_NAME))

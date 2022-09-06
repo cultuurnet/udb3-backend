@@ -45,7 +45,7 @@ final class AddLabelRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider labelProvider
      */
     public function it_handles_adding_a_label_to_an_offer(
         string $offerType,
@@ -74,7 +74,7 @@ final class AddLabelRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeDataProvider
+     * @dataProvider labelProvider
      */
     public function it_throws_on_invalid_label(string $offerType): void
     {
@@ -90,7 +90,7 @@ final class AddLabelRequestHandlerTest extends TestCase
         );
     }
 
-    public function offerTypeDataProvider(): array
+    public function labelProvider(): array
     {
         return [
             [
