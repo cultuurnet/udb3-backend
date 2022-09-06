@@ -4,34 +4,30 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
+use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class EventOrganizerRelationServiceTest extends TestCase
 {
-    /**
-     * @var EventEditingServiceInterface|MockObject
-     */
-    private $editService;
+    private TraceableCommandBus $commandBus;
 
     /**
      * @var EventRelationsRepository|MockObject
      */
     private $relationRepository;
 
-    /**
-     * @var EventOrganizerRelationService
-     */
-    private $organizerRelationService;
+    private EventOrganizerRelationService $organizerRelationService;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->editService = $this->createMock(EventEditingServiceInterface::class);
+        $this->commandBus = new TraceableCommandBus();
         $this->relationRepository = $this->createMock(EventRelationsRepository::class);
 
         $this->organizerRelationService = new EventOrganizerRelationService(
-            $this->editService,
+            $this->commandBus,
             $this->relationRepository
         );
     }
@@ -39,7 +35,7 @@ class EventOrganizerRelationServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_the_organizer_from_all_events()
+    public function it_removes_the_organizer_from_all_events(): void
     {
         $organizerId = 'organizer-1';
         $eventIds = ['event-1', 'event-2'];
@@ -49,19 +45,14 @@ class EventOrganizerRelationServiceTest extends TestCase
             ->with($organizerId)
             ->willReturn($eventIds);
 
-        $this->editService->expects($this->exactly(2))
-            ->method('deleteOrganizer')
-            ->withConsecutive(
-                [
-                    $eventIds[0],
-                    $organizerId,
-                ],
-                [
-                    $eventIds[1],
-                    $organizerId,
-                ]
-            );
-
         $this->organizerRelationService->deleteOrganizer($organizerId);
+
+        $this->assertEquals(
+            [
+                new DeleteOrganizer($eventIds[0], $organizerId),
+                new DeleteOrganizer($eventIds[1], $organizerId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 }

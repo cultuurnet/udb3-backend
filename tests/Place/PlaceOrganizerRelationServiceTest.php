@@ -4,36 +4,30 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
-use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PlaceOrganizerRelationServiceTest extends TestCase
 {
-    /**
-     * @var OfferEditingServiceInterface|MockObject
-     */
-    private $editService;
+    private TraceableCommandBus $commandBus;
 
     /**
      * @var PlaceRelationsRepository|MockObject
      */
     private $relationRepository;
 
-    /**
-     * @var PlaceOrganizerRelationService
-     */
-    private $organizerRelationService;
+    private PlaceOrganizerRelationService $organizerRelationService;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->editService = $this->createMock(DefaultOfferEditingService::class);
+        $this->commandBus = new TraceableCommandBus();
         $this->relationRepository = $this->createMock(PlaceRelationsRepository::class);
 
         $this->organizerRelationService = new PlaceOrganizerRelationService(
-            $this->editService,
+            $this->commandBus,
             $this->relationRepository
         );
     }
@@ -41,7 +35,7 @@ class PlaceOrganizerRelationServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_the_organizer_from_all_places()
+    public function it_removes_the_organizer_from_all_places(): void
     {
         $organizerId = 'organizer-1';
         $placeIds = ['place-1', 'place-2'];
@@ -51,19 +45,14 @@ class PlaceOrganizerRelationServiceTest extends TestCase
             ->with($organizerId)
             ->willReturn($placeIds);
 
-        $this->editService->expects($this->exactly(2))
-            ->method('deleteOrganizer')
-            ->withConsecutive(
-                [
-                    $placeIds[0],
-                    $organizerId,
-                ],
-                [
-                    $placeIds[1],
-                    $organizerId,
-                ]
-            );
-
         $this->organizerRelationService->deleteOrganizer($organizerId);
+
+        $this->assertEquals(
+            [
+                new DeleteOrganizer($placeIds[0], $organizerId),
+                new DeleteOrganizer($placeIds[1], $organizerId),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 }
