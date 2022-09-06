@@ -26,6 +26,8 @@ final class Psr7RequestBuilder
 
     private ?StreamInterface $body = null;
 
+    private array $files = [];
+
     private array $routeParameters = [];
 
     /**
@@ -81,6 +83,13 @@ final class Psr7RequestBuilder
         return $c;
     }
 
+    public function withFiles(array $files): self
+    {
+        $c = clone $this;
+        $c->files = $files;
+        return $c;
+    }
+
     public function withRouteParameter(string $parameterName, string $parameterValue): self
     {
         $c = clone $this;
@@ -90,18 +99,22 @@ final class Psr7RequestBuilder
 
     public function build(string $method): ServerRequestInterface
     {
-        return (
-            new Request(
-                $method,
-                $this->uri ?? self::getUriFactory()->createUri(),
-                $this->headers ?? new Headers(),
-                [],
-                [],
-                $this->body ?? self::getStreamFactory()->createStream()
-            )
-        )
-            ->withAttribute('_route_params', $this->routeParameters)
-            ->withParsedBody($this->parsedBody);
+        $request = new Request(
+            $method,
+            $this->uri ?? self::getUriFactory()->createUri(),
+            $this->headers ?? new Headers(),
+            [],
+            [],
+            $this->body ?? self::getStreamFactory()->createStream(),
+            $this->files,
+        );
+
+        foreach ($this->routeParameters as $routeParameter => $value) {
+            $request = $request->withAttribute($routeParameter, $value);
+        }
+
+        $request = $request->withParsedBody($this->parsedBody);
+        return $request;
     }
 
     private static function getUriFactory(): UriFactory

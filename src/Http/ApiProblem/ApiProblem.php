@@ -222,6 +222,16 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function methodNotAllowed(string $detail = null): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/method/not-allowed',
+            'Method not allowed',
+            405,
+            $detail
+        );
+    }
+
     public static function urlNotFound(string $detail = null): self
     {
         return self::create(
@@ -272,6 +282,11 @@ final class ApiProblem extends Exception
     public static function imageNotFound(string $imageId): self
     {
         return self::resourceNotFound('Image', $imageId);
+    }
+
+    public static function labelNotFound(string $labelId): self
+    {
+        return self::resourceNotFound('Label', $labelId);
     }
 
     public static function bodyMissing(): self

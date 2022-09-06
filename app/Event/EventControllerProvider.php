@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
-use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
@@ -22,6 +21,7 @@ use CultuurNet\UDB3\Http\Event\OnlineLocationPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
+use CultuurNet\UDB3\Http\OfferRestBaseController;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
@@ -83,7 +83,7 @@ class EventControllerProvider implements ControllerProviderInterface, ServicePro
     {
         $app['event_editing_controller'] = $app->share(
             function (Application $app) {
-                return new EditEventRestController(
+                return new OfferRestBaseController(
                     $app['event_editor'],
                     $app['media_manager']
                 );

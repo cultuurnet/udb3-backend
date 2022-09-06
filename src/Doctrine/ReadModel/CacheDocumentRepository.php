@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\Common\Cache\Cache;
+use RuntimeException;
 
 class CacheDocumentRepository implements DocumentRepository
 {
@@ -31,7 +32,11 @@ class CacheDocumentRepository implements DocumentRepository
 
     public function save(JsonDocument $document): void
     {
-        $this->cache->save($document->getId(), $document->getRawBody(), 0);
+        $saved = $this->cache->save($document->getId(), $document->getRawBody(), 0);
+
+        if (!$saved) {
+            throw new RuntimeException('Could not save document ' . $document->getId() . 'to cache.');
+        }
     }
 
     public function remove($id): void

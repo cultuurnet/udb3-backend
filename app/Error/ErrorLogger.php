@@ -20,15 +20,15 @@ use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
+use League\Route\Http\Exception\MethodNotAllowedException as LeagueRouterMethodNotAllowedException;
+use League\Route\Http\Exception\NotFoundException as LeagueRouterNotFoundException;
 use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
 
 final class ErrorLogger
@@ -56,9 +56,9 @@ final class ErrorLogger
         FormatterException::class,
         EventCannotBeAddedToProduction::class,
         EventCannotBeRemovedFromProduction::class,
-        AccessDeniedHttpException::class,
-        AccessDeniedException::class,
         CalendarTypeNotSupported::class,
+        LeagueRouterNotFoundException::class,
+        LeagueRouterMethodNotAllowedException::class,
     ];
 
     /**

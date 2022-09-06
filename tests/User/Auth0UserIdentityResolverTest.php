@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\User;
 
-use Auth0\SDK\API\Management\Users;
 use Auth0\SDK\Contract\API\Management\UsersInterface;
 use Auth0\SDK\Contract\API\ManagementInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class Auth0UserIdentityResolverTest extends TestCase
 {
@@ -40,7 +38,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
-        $result = $auth0UserIdentityResolver->getUserById(new StringLiteral($userId));
+        $result = $auth0UserIdentityResolver->getUserById($userId);
         $this->assertEquals($userId, $result->getUserId());
         $this->assertEquals($name, $result->getUserName());
         $this->assertEquals($email, $result->getEmailAddress());
@@ -67,7 +65,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
-        $result = $auth0UserIdentityResolver->getUserById(new StringLiteral($userId));
+        $result = $auth0UserIdentityResolver->getUserById($userId);
         $this->assertNull($result);
     }
 
@@ -153,7 +151,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
-        $result = $auth0UserIdentityResolver->getUserByNick(new StringLiteral($name));
+        $result = $auth0UserIdentityResolver->getUserByNick($name);
 
         $this->assertEquals($userId, $result->getUserId());
         $this->assertEquals($name, $result->getUserName());
@@ -181,7 +179,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
-        $result = $auth0UserIdentityResolver->getUserByNick(new StringLiteral($name));
+        $result = $auth0UserIdentityResolver->getUserByNick($name);
 
         $this->assertNull($result);
     }
@@ -209,7 +207,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
 
-        $result = $auth0UserIdentityResolver->getUserByNick(new StringLiteral('Caca'));
+        $result = $auth0UserIdentityResolver->getUserByNick('Caca');
 
         $this->assertEquals($oldUuid, $result->getUserId());
     }

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\User;
 use Auth0\SDK\Contract\API\ManagementInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\StringLiteral;
 
 final class Auth0UserIdentityResolver implements UserIdentityResolver
 {
@@ -18,10 +17,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolver
         $this->auth0 = $auth0;
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function getUserById(StringLiteral $userId): ?UserIdentityDetails
+    public function getUserById(string $userId): ?UserIdentityDetails
     {
         return $this->fetchUser('user_id:"' . $userId . '" OR app_metadata.uitidv1id:"' . $userId . '"');
     }
@@ -31,9 +27,9 @@ final class Auth0UserIdentityResolver implements UserIdentityResolver
         return $this->fetchUser('email:"' . $email->toString() . '"');
     }
 
-    public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
+    public function getUserByNick(string $nick): ?UserIdentityDetails
     {
-        return $this->fetchUser('email:"' . $nick->toNative() . '" OR nickname:"' . $nick->toNative() . '"');
+        return $this->fetchUser('email:"' . $nick . '" OR nickname:"' . $nick . '"');
     }
 
     private function fetchUser(string $query): ?UserIdentityDetails
@@ -62,9 +58,6 @@ final class Auth0UserIdentityResolver implements UserIdentityResolver
 
     private function extractUserId(array $user): string
     {
-        if (isset($user['app_metadata']['uitidv1id'])) {
-            return $user['app_metadata']['uitidv1id'];
-        }
-        return $user['user_id'];
+        return $user['app_metadata']['uitidv1id'] ?? $user['user_id'];
     }
 }

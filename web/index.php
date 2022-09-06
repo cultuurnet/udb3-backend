@@ -2,37 +2,30 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
-use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
-use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
+use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
-use CultuurNet\UDB3\Silex\LegacyRoutesServiceProvider;
+use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
 use CultuurNet\UDB3\Silex\Offer\DeprecatedOfferControllerProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\Http\Management\PermissionsVoter;
-use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
 use Silex\Application;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 const API_NAME = ApiName::JSONLD;
 
@@ -58,113 +51,17 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new RequestHandlerControllerServiceProvider());
 
 /**
- * Firewall configuration.
- *
- * We can not expect the UUID of events, places and organizers
- * to be correctly formatted, because there is no exhaustive documentation
- * about how this is handled in UDB2. Therefore we take a rather liberal
- * approach and allow all alphanumeric characters and a dash.
+ * Register a PSR-7 / PSR-15 compatible router.
+ * Will be used in CatchAllRouteServiceProvider to route unmatched requests from Silex to the PSR router, until we can
+ * completely by-pass the Silex router.
  */
-$app['cors_preflight_request_matcher'] = $app->share(
-    function () {
-        return new PreflightRequestMatcher();
-    }
-);
-
-$app['id_pattern'] = '[\w\-]+';
-$app['security.firewalls'] = array(
-    'public' => [
-        'pattern' => (new AnyOfRequestMatcher())
-            ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/(calendar-summary|calsum)', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
-            ->with(new RequestMatcher('^/(events|event|places|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
-            ->with(new RequestMatcher('^/label/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
-            ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/images/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/(labels)$', null, 'GET'))
-            ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
-            ->with(new RequestMatcher('^/jobs/', null, 'GET'))
-            ->with(new RequestMatcher('^/uitpas/.*', null, 'GET'))
-            ->with(new RequestMatcher('^/(news_articles|news-articles)', null, ['GET', 'DELETE', 'POST', 'PUT']))
-    ],
-    'cors-preflight' => array(
-        'pattern' => $app['cors_preflight_request_matcher'],
-    ),
-    'secured' => array(
-        'pattern' => '^.*$',
-        'jwt' => [
-            'v1' => [
-                'valid_issuers' => $app['config']['jwt']['v1']['valid_issuers'],
-                'required_claims' => [
-                    'uid',
-                ],
-                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v1']['keys']['public']['file']
-            ],
-            'v2' => [
-                'valid_issuers' => $app['config']['jwt']['v2']['valid_issuers'],
-                'required_claims' => [
-                    'sub',
-                ],
-                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v2']['keys']['public']['file']
-            ],
-        ],
-        'stateless' => true,
-    ),
-);
+$app->register(new PsrRouterServiceProvider());
 
 /**
- * Security services.
+ * Middleware that proxies application/xml requests to the XML service.
+ * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
+ * (To be discussed if this is actually still needed now that all XML APIs are offline and no longer supported!)
  */
-$app->register(new \Silex\Provider\SecurityServiceProvider());
-$app->register(new JwtServiceProvider());
-
-$app['permissions_voter'] = $app->share(function($app) {
-    return new PermissionsVoter($app['config']['user_permissions']);
-});
-
-$app['user_permissions_voter'] = $app->share(function($app) {
-    return new UserPermissionsVoter($app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]);
-});
-
-$app['security.voters'] = $app->extend('security.voters', function($voters) use ($app){
-    return array_merge(
-        $voters,
-        [
-            $app['permissions_voter'],
-            $app['user_permissions_voter'],
-        ]
-    );
-});
-
-$app['security.access_manager'] = $app->share(function($app) {
-    return new AccessDecisionManager($app['security.voters'], AccessDecisionManager::STRATEGY_AFFIRMATIVE);
-});
-
-$app['security.access_rules'] = array(
-    array(
-        new RequestMatcher('^/labels/.*', null, ['POST', 'DELETE', 'PATCH']),
-        Permission::labelsBeheren()->toString()
-    ),
-    array('^/(roles|permissions|users)/.*', Permission::gebruikersBeheren()->toString()),
-);
-
-$app['security.entry_point.form._proto'] = $app::protect(
-    function () use ($app) {
-        return $app->share(
-            function () {
-                return new JwtAuthenticationEntryPoint();
-            }
-        );
-    }
-);
-
 if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
@@ -178,6 +75,10 @@ if (isset($app['config']['cdbxml_proxy']) &&
     );
 }
 
+/**
+ * Middleware that proxies requests for GET /events, GET /places and GET /organizers to Search API.
+ * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
+ */
 if (isset($app['config']['search_proxy']) &&
     $app['config']['search_proxy']['enabled']) {
     $app->before(
@@ -191,21 +92,22 @@ if (isset($app['config']['search_proxy']) &&
     );
 }
 
-$app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
+/**
+ * Middleware that authenticates incoming HTTP requests using the RequestAuthenticator service.
+ * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
+ */
+$app->before(
+    static function (Request $request, Application $app): void {
+        $psrRequest = (new DiactorosFactory())->createRequest($request);
 
-$app->get(
-    'swagger.json',
-    function () {
-        $file = new SplFileInfo(__DIR__ . '/swagger.json');
-        return new \Symfony\Component\HttpFoundation\BinaryFileResponse(
-            $file,
-            200,
-            [
-                'Content-Type' => 'application/json',
-            ]
-        );
-    }
+        /** @var RequestAuthenticator $authenticator */
+        $authenticator = $app[RequestAuthenticator::class];
+        $authenticator->authenticate($psrRequest);
+    },
+    Application::EARLY_EVENT
 );
+
+$app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
@@ -236,7 +138,6 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
-$app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProvider());
 $app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControllerProvider());
 $app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
 $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
@@ -248,11 +149,15 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 // Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
 // ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
 // the needed CORS headers).
+// Note that the new PSR router in PsrRouterServiceProvider already supports OPTIONS requests for all routes registered
+// in the new router, so this can be removed completely once all route definitions and handlers are moved to the new
+// router.
 $app->options('/{path}', fn () => new NoContentResponse())->assert('path', '^.+$');
 
 // Add CORS headers to every request. We explicitly allow everything, because we don't use cookies and our API is not on
 // an internal network, so CORS requests are never a security issue in our case. This greatly reduces the risk of CORS
 // bugs in our frontend and other integrations.
+// @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
 $app->after(
     function (Request $request, Response $response) {
         // Allow any known method regardless of the URL.
@@ -273,7 +178,7 @@ $app->after(
     }
 );
 
-$app->register(new LegacyRoutesServiceProvider());
+$app->register(new CatchAllRouteServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
 

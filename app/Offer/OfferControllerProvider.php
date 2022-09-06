@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
@@ -21,6 +26,8 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\User\CurrentUser;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -34,7 +41,6 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{offerType}/{offerId}/', GetDetailRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/', DeleteRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/name/{language}/', UpdateTitleRequestHandler::class);
@@ -43,6 +49,9 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 
         $controllers->get('/{offerType}/{offerId}/history/', GetHistoryRequestHandler::class);
+
+        $controllers->get('/{offerType}/{offerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
+        $controllers->get('/{offerType}/{offerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/calendar-summary/', GetCalendarSummaryRequestHandler::class);
@@ -60,6 +69,15 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->delete('/{offerType}/{offerId}/videos/{videoId}/', DeleteVideoRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
+
+        $controllers->patch('/{offerType}/{offerId}/', PatchOfferRequestHandler::class);
+
+        /**
+         * Legacy routes that we need to keep for backward compatibility.
+         */
+        $controllers->get('/{offerType}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
+        $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
+
 
         return $controllers;
     }
@@ -86,7 +104,35 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new GetHistoryRequestHandler(
                 $app['event_history_repository'],
                 $app['places_history_repository'],
-                $app['current_user_is_god_user']
+                $app[CurrentUser::class]->isGodUser()
+            )
+        );
+
+        $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPermissionsForCurrentUserRequestHandler(
+                $app['offer_permission_voter'],
+                $app[CurrentUser::class]->getId()
+            )
+        );
+
+        $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPermissionsForGivenUserRequestHandler(
+                $app['offer_permission_voter']
+            )
+        );
+
+        $app[CurrentUserHasPermissionRequestHandler::class] = $app->share(
+            fn (Application $app) => new CurrentUserHasPermissionRequestHandler(
+                Permission::aanbodBewerken(),
+                $app['offer_permission_voter'],
+                $app[CurrentUser::class]->getId()
+            )
+        );
+
+        $app[GivenUserHasPermissionRequestHandler::class] = $app->share(
+            fn (Application $app) => new GivenUserHasPermissionRequestHandler(
+                Permission::aanbodBewerken(),
+                $app['offer_permission_voter']
             )
         );
 
@@ -142,6 +188,10 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             fn (Application $app) => new DeleteVideoRequestHandler(
                 $app['event_command_bus']
             )
+        );
+
+        $app[PatchOfferRequestHandler::class] = $app->share(
+            fn (Application $app) => new PatchOfferRequestHandler($app['event_command_bus'])
         );
     }
 

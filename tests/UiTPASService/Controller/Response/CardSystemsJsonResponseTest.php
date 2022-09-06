@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\UiTPASService\Controller\Response;
 
 use CultureFeed_Uitpas_CardSystem;
 use CultureFeed_Uitpas_DistributionKey;
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
 class CardSystemsJsonResponseTest extends TestCase
@@ -13,7 +14,7 @@ class CardSystemsJsonResponseTest extends TestCase
     /**
      * @test
      */
-    public function it_should_encode_the_injected_card_systems_to_json()
+    public function it_should_encode_the_injected_card_systems_to_json(): void
     {
         $cardSystem1 = new CultureFeed_Uitpas_CardSystem();
         $cardSystem1->id = 1;
@@ -51,8 +52,8 @@ class CardSystemsJsonResponseTest extends TestCase
 
         $response = new CardSystemsJsonResponse($cardSystems);
 
-        $expected = json_decode(file_get_contents(__DIR__ . '/data/cardSystems.json'));
-        $actual = json_decode($response->getContent());
+        $expected = Json::decode(file_get_contents(__DIR__ . '/data/cardSystems.json'));
+        $actual = Json::decode($response->getBody()->getContents());
 
         $this->assertEquals($expected, $actual);
     }
@@ -60,12 +61,12 @@ class CardSystemsJsonResponseTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_json_array_if_no_card_systems_were_injected()
+    public function it_should_return_an_empty_json_array_if_no_card_systems_were_injected(): void
     {
         $response = new CardSystemsJsonResponse([]);
 
         $expected = '[]';
-        $actual = $response->getContent();
+        $actual = $response->getBody()->getContents();
 
         $this->assertEquals($expected, $actual);
     }

@@ -31,18 +31,16 @@ class UserPermissionVoterTest extends TestCase
 
         $this->userId = new StringLiteral('7fdc57a4-1bdc-40d3-8441-a7d83528a15c');
         $this->userPermissionsReadRepository->expects($this->once())
-            ->method('getPermissions')
-            ->will(
-                $this->returnCallback(function (StringLiteral $userId) {
-                    if ($userId === $this->userId) {
-                        return [
-                            Permission::aanbodBewerken(),
-                            Permission::voorzieningenBewerken(),
-                        ];
-                    } else {
-                        return [];
-                    }
-                })
+            ->method('hasPermission')
+            ->willReturnCallback(
+                function (string $userId, Permission $permission) {
+                    $permissions = [
+                        Permission::aanbodBewerken()->toString(),
+                        Permission::voorzieningenBewerken()->toString(),
+                    ];
+                    return $userId === $this->userId->toNative() &&
+                        in_array($permission->toString(), $permissions, true);
+                }
             );
 
         $this->requiredPermission = Permission::voorzieningenBewerken();

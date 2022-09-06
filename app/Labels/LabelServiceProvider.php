@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepos
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
-use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
@@ -34,6 +33,7 @@ use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
+use CultuurNet\UDB3\User\CurrentUser;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -167,15 +167,6 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[self::WRITE_SERVICE] = $app->share(
-            function (Application $app) {
-                return new WriteService(
-                    $app['event_command_bus'],
-                    new Version4Generator()
-                );
-            }
-        );
-
         $app[CdbXMLToJsonLDLabelImporter::class] = $app->share(
             fn (Application $app) => new CdbXMLToJsonLDLabelImporter($app[self::JSON_READ_REPOSITORY])
         );
@@ -276,7 +267,9 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::QUERY_FACTORY] = $app->share(
             function (Application $app) {
-                return new QueryFactory($app['current_user_is_god_user'] ? null : $app['current_user_id']);
+                /** @var CurrentUser $currentUser */
+                $currentUser = $app[CurrentUser::class];
+                return new QueryFactory($currentUser->isGodUser() ? null : $currentUser->getId());
             }
         );
     }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Label\Query;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface QueryFactoryInterface
 {
-    public function createFromRequest(Request $request): Query;
+    public function createFromRequest(ServerRequestInterface $request): Query;
 }

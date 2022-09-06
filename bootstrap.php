@@ -2,8 +2,6 @@
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
-use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
@@ -17,15 +15,10 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
-use CultuurNet\UDB3\EventBus\MiddlewareEventBus;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
@@ -48,9 +41,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
-use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
-use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler;
@@ -73,6 +64,7 @@ use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
+use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
@@ -84,13 +76,11 @@ use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
-use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
@@ -106,7 +96,6 @@ use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\Psr7ServiceProvider;
 use SocketIO\Emitter;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
@@ -211,95 +200,6 @@ $app['event_iri_generator'] = $app->share(
                 return $app['config']['url'] . '/event/' . $cdbid;
             }
         );
-    }
-);
-
-$app['current_user_id'] = $app::share(
-    function (Application $app) {
-        /* @var Impersonator $impersonator */
-        $impersonator = $app['impersonator'];
-        if ($impersonator->getUserId()) {
-            return $impersonator->getUserId();
-        }
-
-        try {
-            /* @var TokenStorageInterface $tokenStorage */
-            $tokenStorage = $app['security.token_storage'];
-        } catch (\InvalidArgumentException $e) {
-            // Running from CLI or unauthorized (will be further handled by the firewall).
-            return null;
-        }
-
-        $token = $tokenStorage->getToken();
-        if (!($token instanceof JsonWebToken)) {
-            // The token in the firewall storage is not supported.
-            return null;
-        }
-        return $token->getUserId();
-    }
-);
-
-$app['current_user_is_god_user'] = $app::share(
-    function (Application $app) {
-        return in_array(
-            $app['current_user_id'],
-            $app['config']['user_permissions']['allow_all'],
-            true
-        );
-    }
-);
-
-$app['jwt'] = $app::share(
-    function (Application $app) {
-        // Check first if we're impersonating someone.
-        /* @var Impersonator $impersonator */
-        $impersonator = $app['impersonator'];
-        if ($impersonator->getJwt()) {
-            return $impersonator->getJwt();
-        }
-
-        try {
-            /* @var TokenStorageInterface $tokenStorage */
-            $tokenStorage = $app['security.token_storage'];
-        } catch (\InvalidArgumentException $e) {
-            // Running from CLI.
-            return null;
-        }
-
-        $token = $tokenStorage->getToken();
-
-        if ($token instanceof JsonWebToken) {
-            return $token;
-        }
-
-        return null;
-    }
-);
-
-$app['api_key'] = $app->share(
-    function (Application $app) {
-        // Check first if we're impersonating someone.
-        // This is done when handling commands.
-        /* @var Impersonator $impersonator */
-        $impersonator = $app['impersonator'];
-        if ($impersonator->getApiKey()) {
-            return $impersonator->getApiKey();
-        }
-
-        // If not impersonating then use the api key from the request.
-        // It is possible to work without api key then null is returned
-        // and will be handled with a pass through authorizer.
-        return isset($app['auth.api_key']) ? $app['auth.api_key'] : null;
-    }
-);
-
-$app['api_client_id'] = $app::share(
-    function (Application $app) {
-        $token = $app['jwt'];
-        if ($token instanceof JsonWebToken) {
-            return $token->getClientId();
-        }
-        return null;
     }
 );
 
@@ -986,13 +886,11 @@ $app['predis.client'] = $app->share(function ($app) {
 $app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider(),
-    [
-        'auth.api_key.group_id' => $app['config']['api_key']['group_id'],
-        'auth.api_key_bypass' => $app['config']['bypass_api_key_check'] ?? false,
-    ]
-);
+// Provides authentication of HTTP requests. While the HTTP authentication is not needed in CLI context, the service
+// provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
+// access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
+// user who triggered the job is being impersonated.
+$app->register(new AuthServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),

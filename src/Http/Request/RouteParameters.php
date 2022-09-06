@@ -14,25 +14,31 @@ use RuntimeException;
 
 final class RouteParameters
 {
-    private array $routeParameters;
+    private array $attributes;
 
     public function __construct(ServerRequestInterface $request)
     {
-        $attributes = $request->getAttributes();
-        $this->routeParameters = $attributes['_route_params'] ?? [];
+        $this->attributes = $request->getAttributes();
     }
 
     public function get(string $parameterName): string
     {
-        if (!isset($this->routeParameters[$parameterName])) {
-            throw new RuntimeException('Route parameter ' . $parameterName . ' not found in given ServerRequestInterface!');
+        // The League router puts the parameters directly in the request attributes.
+        if (isset($this->attributes[$parameterName])) {
+            return (string) $this->attributes[$parameterName];
         }
-        return (string) $this->routeParameters[$parameterName];
+        // The Silex router puts the parameters in a "_route_params" nested array.
+        if (isset($this->attributes['_route_params'][$parameterName])) {
+            return (string) $this->attributes['_route_params'][$parameterName];
+        }
+        throw new RuntimeException('Route parameter ' . $parameterName . ' not found in given ServerRequestInterface!');
     }
 
     public function has(string $parameterName): bool
     {
-        return isset($this->routeParameters[$parameterName]);
+        // The League router puts the parameters directly in the request attributes.
+        // The Silex router puts the parameters in a "_route_params" nested array.
+        return isset($this->attributes[$parameterName]) || isset($this->attributes['_route_params'][$parameterName]);
     }
 
     public function getEventId(): string
@@ -73,6 +79,16 @@ final class RouteParameters
     public function getOrganizerId(): string
     {
         return $this->get('organizerId');
+    }
+
+    public function getLabelId(): string
+    {
+        return $this->get('labelId');
+    }
+
+    public function getProductionId(): string
+    {
+        return $this->get('productionId');
     }
 
     public function hasLanguage(): bool

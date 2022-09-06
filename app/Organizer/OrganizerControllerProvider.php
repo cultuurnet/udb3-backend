@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
@@ -24,13 +26,11 @@ use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
-use CultuurNet\UDB3\StringLiteral;
 
 class OrganizerControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
 {
@@ -41,7 +41,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
 
         $controllers->post('/', ImportOrganizerRequestHandler::class);
         $controllers->put('/{organizerId}/', ImportOrganizerRequestHandler::class);
-        $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class)->bind('organizer');
+        $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class);
         $controllers->delete('/{organizerId}/', DeleteOrganizerRequestHandler::class);
 
         $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
@@ -66,8 +66,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
         $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
         $controllers->delete('/{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
-        $controllers->get('/{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
-        $controllers->get('/{offerId}/permissions/{userId}/', 'organizer_permissions_controller:getPermissionsForGivenUser');
+        $controllers->get('/{organizerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
+        $controllers->get('/{organizerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
 
         return $controllers;
     }
@@ -154,12 +154,19 @@ class OrganizerControllerProvider implements ControllerProviderInterface, Servic
             fn (Application $application) => new DeleteLabelRequestHandler($app['event_command_bus'])
         );
 
-        $app['organizer_permissions_controller'] = $app->share(
+        $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new OfferPermissionsController(
-                    [Permission::organisatiesBewerken()],
+                return new GetPermissionsForCurrentUserRequestHandler(
                     $app['organizer_permission_voter'],
-                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
+                    $app[CurrentUser::class]->getId()
+                );
+            }
+        );
+
+        $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new GetPermissionsForGivenUserRequestHandler(
+                    $app['organizer_permission_voter'],
                 );
             }
         );

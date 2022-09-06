@@ -16,13 +16,13 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
 use Exception;
+use League\Route\Http\Exception\MethodNotAllowedException;
+use League\Route\Http\Exception\NotFoundException;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
@@ -75,10 +75,6 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             case $e instanceof ConvertsToApiProblem:
                 return $e->toApiProblem();
 
-            case $e instanceof AccessDeniedException:
-            case $e instanceof AccessDeniedHttpException:
-                return ApiProblem::forbidden();
-
             case $e instanceof CommandAuthorizationException:
                 return ApiProblem::forbidden(
                     sprintf(
@@ -88,6 +84,18 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                         $e->getCommand()->getItemId()
                     )
                 );
+
+            case $e instanceof NotFoundException:
+                return ApiProblem::urlNotFound();
+
+            case $e instanceof MethodNotAllowedException:
+                $details = null;
+                $headers = $e->getHeaders();
+                $allowed = $headers['Allow'] ?? null;
+                if ($allowed !== null) {
+                    $details = 'Allowed: ' . $allowed;
+                }
+                return ApiProblem::methodNotAllowed($details);
 
             // Do a best effort to convert "not found" exceptions into an ApiProblem with preferably a detail mentioning
             // what kind of resource and with what id could not be found. Since the exceptions themselves do not contain
