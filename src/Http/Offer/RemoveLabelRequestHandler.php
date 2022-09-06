@@ -25,7 +25,7 @@ final class RemoveLabelRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
-        $labelName = $routeParameters->getLabelNameAsString();
+        $labelName = $routeParameters->get('labelName');
 
         $this->commandBus->dispatch(new RemoveLabel($offerId, $labelName));
         return new NoContentResponse();
