@@ -133,8 +133,7 @@
     "ci": [
       "composer phpstan",
       "composer test",
-      "composer cs",
-      "composer unused --no-progress"
+      "composer cs"
     ],
     "cs": "php-cs-fixer fix -v --diff --dry-run",
     "cs-fix": "php-cs-fixer fix -v --diff"
