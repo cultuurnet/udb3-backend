@@ -33,7 +33,7 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
         $app[PlaceOrganizerRelationService::class] = $app->share(
             function ($app) {
                 return new PlaceOrganizerRelationService(
-                    $app['place_editing_service'],
+                    $app['event_command_bus'],
                     $app[PlaceRelationsRepository::class]
                 );
             }

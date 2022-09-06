@@ -36,7 +36,7 @@ class EventEditingServiceProvider implements ServiceProviderInterface
         $app[EventOrganizerRelationService::class] = $app->share(
             function ($app) {
                 return new EventOrganizerRelationService(
-                    $app['event_editor'],
+                    $app['event_command_bus'],
                     $app[EventRelationsRepository::class]
                 );
             }
