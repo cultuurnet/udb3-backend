@@ -37,7 +37,7 @@ final class AddLabelFromJsonBodyRequestHandler implements RequestHandlerInterfac
         try {
             $label = $this->labelJsonDeserializer->deserialize(new StringLiteral($bodyContent));
         } catch (\InvalidArgumentException $exception) {
-            throw ApiProblem::urlNotFound('The label should match pattern: ^[^;]{2,255}$');
+            throw ApiProblem::bodyInvalidDataWithDetail('The label should match pattern: ^[^;]{2,255}$');
         }
 
         $this->commandBus->dispatch(new AddLabel($offerId, $label));

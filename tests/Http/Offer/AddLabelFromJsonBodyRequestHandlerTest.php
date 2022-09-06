@@ -104,7 +104,7 @@ final class AddLabelFromJsonBodyRequestHandlerTest extends TestCase
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::urlNotFound('The label should match pattern: ^[^;]{2,255}$'),
+            ApiProblem::bodyInvalidDataWithDetail('The label should match pattern: ^[^;]{2,255}$'),
             fn () => $this->addLabelFromJsonBodyRequestHandler->handle($addLabelFromJsonBodyRequest)
         );
     }
