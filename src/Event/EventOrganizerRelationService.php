@@ -4,39 +4,31 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
-use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
+use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
+use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
 
 class EventOrganizerRelationService implements OrganizerRelationServiceInterface
 {
-    /**
-     * @var EventEditingServiceInterface
-     */
-    private $editingService;
+    private CommandBus $commandBus;
 
-    /**
-     * @var EventRelationsRepository
-     */
-    private $relationsRepository;
-
+    private EventRelationsRepository $relationsRepository;
 
     public function __construct(
-        EventEditingServiceInterface $editingService,
+        CommandBus $commandBus,
         EventRelationsRepository $relationsRepository
     ) {
-        $this->editingService = $editingService;
+        $this->commandBus = $commandBus;
         $this->relationsRepository = $relationsRepository;
     }
 
-    /**
-     * @param string $organizerId
-     */
-    public function deleteOrganizer($organizerId)
+    public function deleteOrganizer(string $organizerId): void
     {
         $eventIds = $this->relationsRepository->getEventsOrganizedByOrganizer($organizerId);
 
         foreach ($eventIds as $eventId) {
-            $this->editingService->deleteOrganizer($eventId, $organizerId);
+            $this->commandBus->dispatch(new DeleteOrganizer($eventId, $organizerId));
         }
     }
 }
