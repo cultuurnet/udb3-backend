@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
-use CultuurNet\UDB3\Http\OfferRestBaseController;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Place\LegacyPlaceRequestBodyParser;
@@ -34,46 +33,21 @@ class PlaceControllerProvider implements ControllerProviderInterface, ServicePro
         $controllers->put('/{placeId}', ImportPlaceRequestHandler::class);
 
         $controllers->put('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
-        $controllers->put('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');
-        $controllers->put('/{cdbid}/contact-point/', 'place_editing_controller:updateContactPoint');
         $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->delete('/{cdbid}/organizer/{organizerId}/', 'place_editing_controller:deleteOrganizer');
-        $controllers->delete('/{cdbid}/typical-age-range/', 'place_editing_controller:deleteTypicalAgeRange');
-        $controllers->put('/{cdbid}/typical-age-range/', 'place_editing_controller:updateTypicalAgeRange');
-
-        $controllers->post('/{itemId}/images/', 'place_editing_controller:addImage');
-        $controllers->put('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
-        $controllers->delete('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:removeImage');
-        $controllers->put('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
          * These routes usually used an incorrect HTTP method.
          */
         $controllers->get('/{placeId}/events/', GetEventsRequestHandler::class);
-        $controllers->post('/{itemId}/images/main/', 'place_editing_controller:selectMainImage');
-        $controllers->post('/{itemId}/images/{mediaObjectId}/', 'place_editing_controller:updateImage');
         $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
-        $controllers->post('/{cdbid}/typical-age-range/', 'place_editing_controller:updateTypicalAgeRange');
         $controllers->post('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->post('/{cdbid}/booking-info/', 'place_editing_controller:updateBookingInfo');
-        $controllers->post('/{cdbid}/contact-point/', 'place_editing_controller:updateContactPoint');
-        $controllers->post('/{cdbid}/organizer/', 'place_editing_controller:updateOrganizerFromJsonBody');
 
         return $controllers;
     }
 
     public function register(Application $app): void
     {
-        $app['place_editing_controller'] = $app->share(
-            function (Application $app) {
-                return new OfferRestBaseController(
-                    $app['place_editing_service'],
-                    $app['media_manager']
-                );
-            }
-        );
-
         $app[GetEventsRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new GetEventsRequestHandler(

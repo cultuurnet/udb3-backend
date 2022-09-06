@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
@@ -15,15 +18,22 @@ use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -56,19 +66,32 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->put('/{offerType}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/calendar-summary/', GetCalendarSummaryRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/status/', UpdateStatusRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/type/{termId}/', UpdateTypeRequestHandler::class);
         $controllers->put('/{offerType}/{offerId}/facilities/', UpdateFacilitiesRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/typical-age-range/', DeleteTypicalAgeRangeRequestHandler::class);
+
+        $controllers->put('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
+
+        $controllers->post('/{offerType}/{offerId}/images/', AddImageRequestHandler::class);
+        $controllers->put('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
+        $controllers->put('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/images/{mediaId}/', RemoveImageRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/videos/', AddVideoRequestHandler::class);
         $controllers->patch('/{offerType}/{offerId}/videos/', UpdateVideosRequestHandler::class);
         $controllers->delete('/{offerType}/{offerId}/videos/{videoId}/', DeleteVideoRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/organizer/{organizerId}/', DeleteOrganizerRequestHandler::class);
 
         $controllers->patch('/{offerType}/{offerId}/', PatchOfferRequestHandler::class);
 
@@ -77,7 +100,12 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
          */
         $controllers->get('/{offerType}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
-
+        $controllers->post('/{offerType}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/organizer/', UpdateOrganizerFromJsonBodyRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
 
         return $controllers;
     }
@@ -90,6 +118,30 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[DeleteRequestHandler::class] = $app->share(
             fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTypicalAgeRangeRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[DeleteTypicalAgeRangeRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new DeleteTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateBookingInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateBookingInfoRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateContactPointRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateContactPointRequestHandler($app['event_command_bus']);
+            }
         );
 
         $app[UpdateTitleRequestHandler::class] = $app->share(
@@ -143,6 +195,19 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             )
         );
 
+        $app[UpdateOrganizerFromJsonBodyRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateOrganizerFromJsonBodyRequestHandler(
+                $app['event_command_bus'],
+                $app['organizer_jsonld_repository']
+            )
+        );
+
+        $app[DeleteOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteOrganizerRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
         $app[UpdateCalendarRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
         );
@@ -169,6 +234,32 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[UpdatePriceInfoRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdatePriceInfoRequestHandler($app['event_command_bus'])
+        );
+
+        $app[AddImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new AddImageRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
+        $app[SelectMainImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new SelectMainImageRequestHandler(
+                $app['event_command_bus'],
+                $app['media_manager']
+            )
+        );
+
+        $app[UpdateImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateImageRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
+        $app[RemoveImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new RemoveImageRequestHandler(
+                $app['event_command_bus'],
+                $app['media_manager']
+            )
         );
 
         $app[AddVideoRequestHandler::class] = $app->share(

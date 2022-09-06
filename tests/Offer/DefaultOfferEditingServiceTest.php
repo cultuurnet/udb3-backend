@@ -44,14 +44,12 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->commandBus = $this->createMock(CommandBus::class);
         $uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->offerRepository = $this->createMock(DocumentRepository::class);
-        $organizerDocumentRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
 
         $this->offerEditingService = new DefaultOfferEditingService(
             $this->commandBus,
             $uuidGenerator,
             $this->offerRepository,
-            $organizerDocumentRepository,
             $this->commandFactory
         );
 
