@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Role;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -16,11 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 final class GetRoleRequestHandlerTest extends TestCase
 {
-    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
-    /** @var DocumentRepository */
-    private $roleRepository;
+    private DocumentRepository $roleRepository;
 
     private GetRoleRequestHandler $getRoleRequestHandler;
 
@@ -40,10 +37,9 @@ final class GetRoleRequestHandlerTest extends TestCase
             ->withRouteParameter('roleId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->build('GET');
 
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::roleNotFound('609a8214-51c9-48c0-903f-840a4f38852f'),
-            fn () => $this->getRoleRequestHandler->handle($request),
-        );
+        $this->expectException(DocumentDoesNotExist::class);
+
+        $this->getRoleRequestHandler->handle($request);
     }
 
     /**

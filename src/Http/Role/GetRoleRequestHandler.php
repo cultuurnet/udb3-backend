@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Role;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,11 +25,7 @@ final class GetRoleRequestHandler implements RequestHandlerInterface
         $routeParameter = new RouteParameters($request);
         $roleId = $routeParameter->getRoleId();
 
-        try {
-            $role = $this->roleRepository->fetch($roleId);
-        } catch (DocumentDoesNotExist $e) {
-            throw ApiProblem::roleNotFound($roleId);
-        }
+        $role = $this->roleRepository->fetch($roleId);
 
         return new JsonResponse($role->getRawBody());
     }
