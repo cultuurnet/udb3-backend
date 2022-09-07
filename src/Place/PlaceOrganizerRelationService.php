@@ -4,37 +4,31 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
+use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 
 class PlaceOrganizerRelationService implements OrganizerRelationServiceInterface
 {
-    private OfferEditingServiceInterface $editingService;
+    private CommandBus $commandBus;
 
-    /**
-     * @var PlaceRelationsRepository
-     */
-    private $relationsRepository;
-
+    private PlaceRelationsRepository $relationsRepository;
 
     public function __construct(
-        OfferEditingServiceInterface $editingService,
+        CommandBus $commandBus,
         PlaceRelationsRepository $relationsRepository
     ) {
-        $this->editingService = $editingService;
+        $this->commandBus = $commandBus;
         $this->relationsRepository = $relationsRepository;
     }
 
-    /**
-     * @param string $organizerId
-     */
-    public function deleteOrganizer($organizerId)
+    public function deleteOrganizer(string $organizerId): void
     {
         $placeIds = $this->relationsRepository->getPlacesOrganizedByOrganizer($organizerId);
 
         foreach ($placeIds as $placeId) {
-            $this->editingService->deleteOrganizer($placeId, $organizerId);
+            $this->commandBus->dispatch(new DeleteOrganizer($placeId, $organizerId));
         }
     }
 }

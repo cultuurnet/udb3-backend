@@ -4,66 +4,56 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
-use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
-use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use PHPUnit\Framework\MockObject\MockObject;
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
+use CultuurNet\UDB3\Place\ReadModel\Relations\InMemoryPlaceRelationsRepository;
 use PHPUnit\Framework\TestCase;
 
 class PlaceOrganizerRelationServiceTest extends TestCase
 {
-    /**
-     * @var OfferEditingServiceInterface|MockObject
-     */
-    private $editService;
+    private const ORGANIZER_ID = '6cdf72ad-5d6a-4a0a-82aa-30f038385d9f';
 
-    /**
-     * @var PlaceRelationsRepository|MockObject
-     */
-    private $relationRepository;
+    private const PLACE_IDS = [
+        'b1c876d7-48d5-4294-b67a-1787c5cb02e2',
+        '4bcb9fd8-1b5b-4b61-8597-03b9d0a46134',
+        '8f1b121d-ca12-485d-bb81-5bf205273560',
+    ];
 
-    /**
-     * @var PlaceOrganizerRelationService
-     */
-    private $organizerRelationService;
+    private TraceableCommandBus $commandBus;
 
-    public function setUp()
+    private PlaceOrganizerRelationService $organizerRelationService;
+
+    public function setUp(): void
     {
-        $this->editService = $this->createMock(DefaultOfferEditingService::class);
-        $this->relationRepository = $this->createMock(PlaceRelationsRepository::class);
+        $this->commandBus = new TraceableCommandBus();
+
+        $relationRepository = new InMemoryPlaceRelationsRepository();
+        foreach (self::PLACE_IDS as $placeId) {
+            $relationRepository->storeRelations($placeId, self::ORGANIZER_ID);
+        }
 
         $this->organizerRelationService = new PlaceOrganizerRelationService(
-            $this->editService,
-            $this->relationRepository
+            $this->commandBus,
+            $relationRepository
         );
+
+        $this->commandBus->record();
     }
 
     /**
      * @test
      */
-    public function it_removes_the_organizer_from_all_places()
+    public function it_removes_the_organizer_from_all_places(): void
     {
-        $organizerId = 'organizer-1';
-        $placeIds = ['place-1', 'place-2'];
+        $this->organizerRelationService->deleteOrganizer(self::ORGANIZER_ID);
 
-        $this->relationRepository->expects($this->once())
-            ->method('getPlacesOrganizedByOrganizer')
-            ->with($organizerId)
-            ->willReturn($placeIds);
-
-        $this->editService->expects($this->exactly(2))
-            ->method('deleteOrganizer')
-            ->withConsecutive(
-                [
-                    $placeIds[0],
-                    $organizerId,
-                ],
-                [
-                    $placeIds[1],
-                    $organizerId,
-                ]
-            );
-
-        $this->organizerRelationService->deleteOrganizer($organizerId);
+        $this->assertEquals(
+            [
+                new DeleteOrganizer(self::PLACE_IDS[0], self::ORGANIZER_ID),
+                new DeleteOrganizer(self::PLACE_IDS[1], self::ORGANIZER_ID),
+                new DeleteOrganizer(self::PLACE_IDS[2], self::ORGANIZER_ID),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 }
