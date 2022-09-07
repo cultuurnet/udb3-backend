@@ -6,16 +6,11 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Offer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
-use CultuurNet\UDB3\Offer\Commands\UpdateTitle;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\StringLiteral;
 
 class DefaultOfferEditingService implements OfferEditingServiceInterface
 {
@@ -66,32 +61,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $c = clone $this;
         $c->publicationDate = $publicationDate;
         return $c;
-    }
-
-    public function updateTitle(string $id, Language $language, StringLiteral $title): void
-    {
-        $this->guardId($id);
-
-        $this->commandBus->dispatch(
-            new UpdateTitle(
-                $id,
-                new \CultuurNet\UDB3\Model\ValueObject\Translation\Language($language->getCode()),
-                new Title($title->toNative())
-            )
-        );
-    }
-
-    public function updateDescription(string $id, Language $language, Description $description): void
-    {
-        $this->guardId($id);
-
-        $this->commandBus->dispatch(
-            $this->commandFactory->createUpdateDescriptionCommand(
-                $id,
-                $language,
-                $description
-            )
-        );
     }
 
     public function deleteOrganizer(string $id, string $organizerId): void

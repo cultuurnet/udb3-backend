@@ -6,15 +6,10 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -54,59 +49,6 @@ class DefaultOfferEditingServiceTest extends TestCase
         );
 
         $this->expectedCommandId = '123456';
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_a_title_in_a_given_language(): void
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('fetch')
-            ->with('foo')
-            ->willReturn(new JsonDocument('foo'));
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with(
-                new Commands\UpdateTitle(
-                    'foo',
-                    new \CultuurNet\UDB3\Model\ValueObject\Translation\Language('en'),
-                    new \CultuurNet\UDB3\Model\ValueObject\Text\Title('English title')
-                )
-            );
-
-        $this->offerEditingService->updateTitle(
-            'foo',
-            new Language('en'),
-            new Title('English title')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_update_the_description_in_a_given_language(): void
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('fetch')
-            ->with('foo')
-            ->willReturn(new JsonDocument('foo'));
-
-        $this->commandFactory->expects($this->once())
-            ->method('createUpdateDescriptionCommand')
-            ->with('foo', new Language('fr'), new Description('La description'))
-            ->willReturn(new UpdateDescription('foo', new Language('fr'), new Description('La description')));
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->willReturn($this->expectedCommandId);
-
-        $this->offerEditingService->updateDescription(
-            'foo',
-            new Language('fr'),
-            new Description('La description')
-        );
     }
 
     /**

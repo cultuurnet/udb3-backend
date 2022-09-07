@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler;
@@ -19,12 +22,14 @@ use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
 use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
@@ -35,6 +40,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
+use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
@@ -55,6 +61,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/name/{language}/', UpdateTitleRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/{language}/title/', UpdateTitleRequestHandler::class);
+
+        $controllers->put('/{offerType}/{offerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
 
         $controllers->put('/{offerType}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
 
@@ -79,6 +87,9 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $controllers->put('/{offerType}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
+        $controllers->put('/{offerType}/{offerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+        $controllers->delete('/{offerType}/{offerId}/labels/{labelName}/', RemoveLabelRequestHandler::class);
+
         $controllers->put('/{offerType}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
 
         $controllers->post('/{offerType}/{offerId}/images/', AddImageRequestHandler::class);
@@ -97,6 +108,7 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         /**
          * Legacy routes that we need to keep for backward compatibility.
+         * These routes usually, but not always, used an incorrect HTTP method.
          */
         $controllers->get('/{offerType}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
         $controllers->get('/{offerType}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
@@ -106,6 +118,8 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
         $controllers->post('/{offerType}/{offerId}/organizer/', UpdateOrganizerFromJsonBodyRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
         $controllers->post('/{offerType}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/labels/', AddLabelFromJsonBodyRequestHandler::class);
+        $controllers->post('/{offerType}/{offerId}/{language}/description/', UpdateDescriptionRequestHandler::class);
 
         return $controllers;
     }
@@ -132,6 +146,27 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
             }
         );
 
+        $app[AddLabelRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[RemoveLabelRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new RemoveLabelRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[AddLabelFromJsonBodyRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelFromJsonBodyRequestHandler(
+                    $app['event_command_bus'],
+                    new LabelJSONDeserializer()
+                );
+            }
+        );
+
         $app[UpdateBookingInfoRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateBookingInfoRequestHandler($app['event_command_bus']);
@@ -146,6 +181,13 @@ final class OfferControllerProvider implements ControllerProviderInterface, Serv
 
         $app[UpdateTitleRequestHandler::class] = $app->share(
             fn (Application $app) => new UpdateTitleRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateDescriptionRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateDescriptionRequestHandler(
+                $app['event_command_bus'],
+                new DescriptionJSONDeserializer()
+            )
         );
 
         $app[UpdateAvailableFromRequestHandler::class] = $app->share(
