@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Export;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
@@ -16,11 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ExportEventsAsJsonLdRequestHandlerTest extends TestCase
 {
-    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
-
-    private const OFFER_ID = 'd2a039e9-f4d6-4080-ae33-a106b5d3d47b';
-    private const LABEL_NAME = 'Some new Label';
 
     private TraceableCommandBus $commandBus;
 
@@ -44,7 +39,7 @@ final class ExportEventsAsJsonLdRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_exporting_offers_as_json_ld(): void
+    public function it_handles_exporting_events_as_json_ld(): void
     {
         $exportEventsAsJsonLdRequest = $this->psr7RequestBuilder
             ->withJsonBodyFromArray([
