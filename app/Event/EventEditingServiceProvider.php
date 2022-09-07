@@ -14,10 +14,7 @@ use Silex\ServiceProviderInterface;
 
 class EventEditingServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[EventOrganizerRelationService::class] = $app->share(
             function ($app) {
@@ -40,10 +37,7 @@ class EventEditingServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }

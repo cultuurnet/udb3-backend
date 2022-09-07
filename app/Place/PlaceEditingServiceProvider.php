@@ -11,10 +11,7 @@ use Silex\ServiceProviderInterface;
 
 class PlaceEditingServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[PlaceOrganizerRelationService::class] = $app->share(
             function ($app) {
@@ -26,10 +23,7 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
