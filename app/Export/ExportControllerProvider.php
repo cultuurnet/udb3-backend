@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex\Export;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXMLJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
-use CultuurNet\UDB3\Http\CommandDeserializerController;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
