@@ -8,6 +8,7 @@ use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXMLJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
 use CultuurNet\UDB3\Http\CommandDeserializerController;
+use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -19,9 +20,9 @@ class ExportControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['json_export_controller'] = $app->share(
+        $app[ExportEventsAsJsonLdRequestHandler::class] = $app->share(
             function (Application $app) {
-                return new CommandDeserializerController(
+                return new ExportEventsAsJsonLdRequestHandler(
                     new ExportEventsAsJsonLDJSONDeserializer(),
                     $app['event_export_command_bus']
                 );
@@ -49,7 +50,7 @@ class ExportControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/json/', 'json_export_controller:handle');
+        $controllers->post('/json/', ExportEventsAsJsonLdRequestHandler::class);
         $controllers->post('/ooxml/', 'ooxml_export_controller:handle');
         $controllers->post('/pdf/', 'pdf_export_controller:handle');
 
