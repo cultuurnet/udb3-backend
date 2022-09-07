@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Export;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
@@ -20,11 +21,10 @@ final class ExportEventsAsJsonLdRequestHandler implements RequestHandlerInterfac
     private DeserializerInterface $deserializer;
 
     public function __construct(
-        DeserializerInterface $commandDeserializer,
         CommandBus $commandBus
     ) {
-        $this->deserializer = $commandDeserializer;
         $this->commandBus = $commandBus;
+        $this->deserializer = new ExportEventsAsJsonLDJSONDeserializer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
