@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
+use Psr\Http\Message\UploadedFileInterface;
 use Zend\Diactoros\UploadedFile;
 
 final class UploadMediaRequestHandlerTest extends TestCase
@@ -57,9 +57,9 @@ final class UploadMediaRequestHandlerTest extends TestCase
         $this->imageUploader
             ->expects($this->once())
             ->method('upload')
-            ->willReturnCallback(function (SymfonyUploadedFile $uploadedFile) use ($imageId) {
-                $this->assertEquals('test.txt', $uploadedFile->getClientOriginalName());
-                $this->assertEquals('text/plain', $uploadedFile->getMimeType());
+            ->willReturnCallback(function (UploadedFileInterface $uploadedFile) use ($imageId) {
+                $this->assertEquals('test.txt', $uploadedFile->getClientFilename());
+                $this->assertEquals('text/plain', $uploadedFile->getClientMediaType());
                 $this->assertEquals(UPLOAD_ERR_OK, $uploadedFile->getError());
                 $this->assertEquals(3, $uploadedFile->getSize());
 
