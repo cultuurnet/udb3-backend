@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer;
-use CultuurNet\UDB3\Offer\Commands\AddLabelToQueryJSONDeserializer;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -20,7 +19,6 @@ class BulkLabelOfferControllerProvider implements ControllerProviderInterface
         $app[AddLabelToQueryRequestHandler::class] = $app->share(
             function (Application $app) {
                 return new AddLabelToQueryRequestHandler(
-                    new AddLabelToQueryJSONDeserializer(),
                     $app['bulk_label_offer_command_bus']
                 );
             }
