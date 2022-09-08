@@ -1,0 +1,58 @@
+version: "3.5"
+
+services:
+
+  php:
+    build: docker/php
+    container_name: php.uitdatabank
+    volumes:
+      - .:/var/www/html:cached
+    working_dir: /var/www/html/web
+    command: php -S 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    networks:
+      uitdatabank:
+        aliases:
+          - php.uitdatabank.dev
+
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    container_name: mysql.uitdatabank
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - 'udb3-mysql:/var/lib/mysql'
+    networks:
+      uitdatabank:
+        aliases:
+          - mysql.uitdatabank.dev
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: 'redis:alpine'
+    container_name: redis.uitdatabank
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    volumes:
+      - 'udb3-redis:/data'
+    networks:
+      -   uitdatabank
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+
+networks:
+  uitdatabank:
+    driver: bridge
+
+volumes:
+  udb3-redis:
+    driver: local
+  udb3-mysql:
+    driver: local
