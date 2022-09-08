@@ -66,7 +66,7 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 // Legacy URLs that get rewritten. Still needed when we're still using the Silex router because in Silex
                 // the rewrite happens after the auth check. But can be removed once we use the new PSR router for all
                 // routes because on the new router the rewrite will happen before the auth check.
-                $authenticator->addPublicRoute('^/(events|event|places|place)/[\w\-]+/calsum/?$', ['GET']);
+                $authenticator->addPublicRoute('~^/(events|event|places|place)/[\w\-]+/calsum/?$~', ['GET']);
                 $authenticator->addPublicRoute('~^/news_articles~', ['GET', 'DELETE', 'POST', 'PUT']);
 
                 // Permission checks on routes that do not dispatch commands (commands already have permission checks
