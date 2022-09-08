@@ -10,7 +10,6 @@ use CultuurNet\UDB3\LocalEntityService;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\StringLiteral;
 
 class LocalRoleReadingService extends LocalEntityService implements RoleReadingServiceInterface
 {
@@ -49,8 +48,8 @@ class LocalRoleReadingService extends LocalEntityService implements RoleReadingS
         return $this->roleUsersReadRepository->fetch($uuid->toString());
     }
 
-    public function getRolesByUserId(StringLiteral $userId): JsonDocument
+    public function getRolesByUserId(string $userId): JsonDocument
     {
-        return $this->userRolesReadRepository->fetch($userId->toNative());
+        return $this->userRolesReadRepository->fetch($userId);
     }
 }

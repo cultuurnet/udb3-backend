@@ -81,7 +81,7 @@ class ReadRoleRestController
     public function getUserRoles(string $userId): Response
     {
         try {
-            $document = $this->roleService->getRolesByUserId(new StringLiteral($userId));
+            $document = $this->roleService->getRolesByUserId($userId);
             $body = Json::decodeAssociatively($document->getRawBody());
         } catch (DocumentDoesNotExist $e) {
             // It's possible the document does not exist if the user exists but has

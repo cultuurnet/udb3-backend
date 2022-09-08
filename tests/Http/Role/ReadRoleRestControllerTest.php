@@ -18,7 +18,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 class ReadRoleRestControllerTest extends TestCase
@@ -177,13 +176,13 @@ class ReadRoleRestControllerTest extends TestCase
      */
     public function it_responds_with_an_array_of_roles_for_a_given_user_id()
     {
-        $userId = new StringLiteral('12345');
+        $userId = '12345';
 
         $readmodelJson = file_get_contents(__DIR__ . '/samples/role_users_readmodel.json');
         $expectedResponseJson = file_get_contents(__DIR__ . '/samples/role_users_response.json');
 
         $readmodelDocument = new JsonDocument(
-            $userId->toNative(),
+            $userId,
             $readmodelJson
         );
 
@@ -192,7 +191,7 @@ class ReadRoleRestControllerTest extends TestCase
             ->with($userId)
             ->willReturn($readmodelDocument);
 
-        $response = $this->roleRestController->getUserRoles($userId->toNative());
+        $response = $this->roleRestController->getUserRoles($userId);
         $actualResponseJson = $response->getContent();
 
         $this->jsonEquals->assert($expectedResponseJson, $actualResponseJson);
@@ -203,14 +202,14 @@ class ReadRoleRestControllerTest extends TestCase
      */
     public function it_responds_with_an_empty_array_if_no_roles_document_is_found_for_a_given_user_id()
     {
-        $userId = new StringLiteral('12345');
+        $userId = '12345';
 
         $this->roleService->expects($this->once())
             ->method('getRolesByUserId')
             ->with($userId)
-            ->willThrowException(DocumentDoesNotExist::withId($userId->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userId));
 
-        $response = $this->roleRestController->getUserRoles($userId->toNative());
+        $response = $this->roleRestController->getUserRoles($userId);
         $responseJson = $response->getContent();
 
         $this->jsonEquals->assert('[]', $responseJson);
@@ -231,7 +230,7 @@ class ReadRoleRestControllerTest extends TestCase
 
         $this->roleService->expects($this->once())
             ->method('getRolesByUserId')
-            ->with(new StringLiteral('12345'))
+            ->with('12345')
             ->willReturn($readmodelDocument);
 
         $response = $this->roleRestController->getCurrentUserRoles();
