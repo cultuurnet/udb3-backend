@@ -161,4 +161,9 @@ final class RouteParameters
             return false;
         }
     }
+
+    public function getUserId(): string
+    {
+        return $this->get('userId');
+    }
 }
