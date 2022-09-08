@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Offer\Commands\AddLabelToQueryJSONDeserializer;
 use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,11 +21,10 @@ final class AddLabelToQueryRequestHandler implements RequestHandlerInterface
     private DeserializerInterface $deserializer;
 
     public function __construct(
-        DeserializerInterface $commandDeserializer,
         CommandBus $commandBus
     ) {
-        $this->deserializer = $commandDeserializer;
         $this->commandBus = $commandBus;
+        $this->deserializer = new AddLabelToQueryJSONDeserializer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
