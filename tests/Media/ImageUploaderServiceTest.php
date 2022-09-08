@@ -16,6 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\UploadedFileInterface;
+use Zend\Diactoros\Stream;
 
 class ImageUploaderServiceTest extends TestCase
 {
@@ -99,6 +100,11 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getClientMediaType')
             ->willReturn('image/png');
 
+        $image
+            ->expects($this->once())
+            ->method('getStream')
+            ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
+
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
@@ -113,7 +119,7 @@ class ImageUploaderServiceTest extends TestCase
 
         $this->filesystem
             ->expects($this->once())
-            ->method('writeStream')
+            ->method('write')
             ->with($expectedDestination, $this->anything());
 
         $this->commandBus
@@ -276,6 +282,11 @@ class ImageUploaderServiceTest extends TestCase
             ->method('getSize')
             ->willReturn(5000);
 
+        $image
+            ->expects($this->once())
+            ->method('getStream')
+            ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
+
         $uploader = new ImageUploaderService(
             $this->uuidGenerator,
             $this->commandBus,
@@ -298,7 +309,7 @@ class ImageUploaderServiceTest extends TestCase
 
         $this->filesystem
             ->expects($this->once())
-            ->method('writeStream')
+            ->method('write')
             ->with($expectedDestination, $this->anything());
 
         $this->commandBus
