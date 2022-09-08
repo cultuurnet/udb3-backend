@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Export;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
+use CultuurNet\UDB3\Http\AsyncDispatchTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
@@ -16,6 +16,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ExportEventsAsJsonLdRequestHandler implements RequestHandlerInterface
 {
+    use AsyncDispatchTrait;
+
     private CommandBus $commandBus;
 
     private DeserializerInterface $deserializer;
@@ -32,12 +34,7 @@ final class ExportEventsAsJsonLdRequestHandler implements RequestHandlerInterfac
         $command = $this->deserializer->deserialize(
             new StringLiteral($request->getBody()->getContents())
         );
-        $this->commandBus->dispatch($command);
-
-        $commandId = '00000000-0000-0000-0000-000000000000';
-        if ($command instanceof AsyncCommand) {
-            $commandId = $command->getAsyncCommandId() ?? $commandId;
-        }
+        $commandId = $this->dispatchAsyncCommand($this->commandBus, $command);
 
         return new JsonResponse(['commandId' => $commandId]);
     }
