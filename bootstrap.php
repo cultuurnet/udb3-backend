@@ -89,6 +89,7 @@ use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
+use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -866,6 +867,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Role\RoleReadingServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsControllerProvider());
+$app->register(new UiTPASServiceEventControllerProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
