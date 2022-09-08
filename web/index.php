@@ -5,7 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
 use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
@@ -16,7 +15,6 @@ use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
-use CultuurNet\UDB3\Silex\Offer\DeprecatedOfferControllerProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
@@ -112,22 +110,16 @@ $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerP
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeControllerProvider = new PlaceControllerProvider();
-$placeOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::place());
 $eventControllerProvider = new EventControllerProvider();
-$eventOfferControllerProvider = new DeprecatedOfferControllerProvider(OfferType::event());
 $offerControllerProvider = new OfferControllerProvider();
 
 $app->register($placeControllerProvider);
-$app->register($placeOfferControllerProvider);
 $app->register($eventControllerProvider);
-$app->register($eventOfferControllerProvider);
 $app->register($offerControllerProvider);
 
 $app->mount('/places', $placeControllerProvider);
-$app->mount('/places', $placeOfferControllerProvider);
 
 $app->mount('/events', $eventControllerProvider);
-$app->mount('/events', $eventOfferControllerProvider);
 
 $app->mount('/', $offerControllerProvider);
 

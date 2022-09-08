@@ -91,6 +91,11 @@ final class RouteParameters
         return $this->get('productionId');
     }
 
+    public function getMediaId(): string
+    {
+        return $this->get('mediaId');
+    }
+
     public function getRoleId(): string
     {
         return $this->get('roleId');
