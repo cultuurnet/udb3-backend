@@ -12,12 +12,10 @@ use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemOperator;
-use org\bovigo\vfs\content\LargeFileContent;
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use CultuurNet\UDB3\StringLiteral;
+use Psr\Http\Message\UploadedFileInterface;
 
 class ImageUploaderServiceTest extends TestCase
 {
@@ -66,22 +64,22 @@ class ImageUploaderServiceTest extends TestCase
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
-        $file = $this->getMockFile(1000);
+        $image = $this->createMock(UploadedFileInterface::class);
 
-        $file
+        $image
             ->expects($this->once())
-            ->method('isValid')
-            ->willReturn(true);
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
 
-        $file
+        $image
             ->expects($this->once())
-            ->method('getMimeType')
+            ->method('getClientMediaType')
             ->willReturn('video/avi');
 
         $this->expectException(InvalidFileType::class);
         $this->expectExceptionMessage('The uploaded file has mime type "video/avi" instead of image/png,image/jpeg,image/gif');
 
-        $this->uploader->upload($file, $description, $copyrightHolder, $language);
+        $this->uploader->upload($image, $description, $copyrightHolder, $language);
     }
 
     /**
@@ -89,14 +87,17 @@ class ImageUploaderServiceTest extends TestCase
      */
     public function it_should_move_an_uploaded_file_to_the_upload_directory(): void
     {
-        $file = new UploadedFile(
-            __DIR__ . '/files/my-image.png',
-            'my-image.png',
-            'image/png',
-            null,
-            null,
-            true
-        );
+        $image = $this->createMock(UploadedFileInterface::class);
+
+        $image
+            ->expects($this->once())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
+
+        $image
+            ->expects($this->exactly(2))
+            ->method('getClientMediaType')
+            ->willReturn('image/png');
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -119,7 +120,7 @@ class ImageUploaderServiceTest extends TestCase
             ->expects($this->once())
             ->method('dispatch');
 
-        $imageId = $this->uploader->upload($file, $description, $copyrightHolder, $language);
+        $imageId = $this->uploader->upload($image, $description, $copyrightHolder, $language);
 
         $this->assertEquals($generatedUuid, $imageId->toString());
     }
@@ -129,11 +130,13 @@ class ImageUploaderServiceTest extends TestCase
      */
     public function it_should_throw_an_exception_when_the_upload_was_not_successful(): void
     {
-        $file = new UploadedFile(
-            __DIR__ . '/files/my-image.png',
-            'my-image.png',
-            'image/png'
-        );
+        $image = $this->createMock(UploadedFileInterface::class);
+
+        $image
+            ->expects($this->once())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_CANT_WRITE);
+
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
@@ -141,7 +144,7 @@ class ImageUploaderServiceTest extends TestCase
         $this->expectException(InvalidFileType::class);
         $this->expectExceptionMessage('The file did not upload correctly.');
 
-        $this->uploader->upload($file, $description, $copyrightHolder, $language);
+        $this->uploader->upload($image, $description, $copyrightHolder, $language);
     }
 
     /**
@@ -149,17 +152,17 @@ class ImageUploaderServiceTest extends TestCase
      */
     public function it_should_throw_an_exception_when_the_file_type_can_not_be_guessed(): void
     {
-        $file = $this->getMockFile(1000);
+        $image = $this->createMock(UploadedFileInterface::class);
 
-        $file
+        $image
             ->expects($this->once())
-            ->method('isValid')
-            ->willReturn(true);
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
 
-        $file
+        $image
             ->expects($this->once())
-            ->method('getMimeType')
-            ->willReturn(null);
+            ->method('getClientMediaType')
+            ->willReturn('');
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -168,7 +171,7 @@ class ImageUploaderServiceTest extends TestCase
         $this->expectException(InvalidFileType::class);
         $this->expectExceptionMessage('The type of the uploaded file can not be guessed.');
 
-        $this->uploader->upload($file, $description, $copyrightHolder, $language);
+        $this->uploader->upload($image, $description, $copyrightHolder, $language);
     }
 
     /**
@@ -184,7 +187,22 @@ class ImageUploaderServiceTest extends TestCase
             1000000
         );
 
-        $file = $this->getMockImage(1111111);
+        $image = $this->createMock(UploadedFileInterface::class);
+
+        $image
+            ->expects($this->once())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
+
+        $image
+            ->expects($this->once())
+            ->method('getClientMediaType')
+            ->willReturn('image/png');
+
+        $image
+            ->expects($this->once())
+            ->method('getSize')
+            ->willReturn(1000001);
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -193,7 +211,7 @@ class ImageUploaderServiceTest extends TestCase
         $this->expectException(InvalidFileSize::class);
         $this->expectExceptionMessage('The file size of the uploaded image is too big.');
 
-        $uploader->upload($file, $description, $copyrightHolder, $language);
+        $uploader->upload($image, $description, $copyrightHolder, $language);
     }
 
     /**
@@ -209,7 +227,22 @@ class ImageUploaderServiceTest extends TestCase
             1000000
         );
 
-        $file = $this->getMockImage(false);
+        $image = $this->createMock(UploadedFileInterface::class);
+
+        $image
+            ->expects($this->once())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
+
+        $image
+            ->expects($this->once())
+            ->method('getClientMediaType')
+            ->willReturn('image/png');
+
+        $image
+            ->expects($this->once())
+            ->method('getSize')
+            ->willReturn(0);
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -218,7 +251,7 @@ class ImageUploaderServiceTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The size of the uploaded image could not be determined.');
 
-        $uploader->upload($file, $description, $copyrightHolder, $language);
+        $uploader->upload($image, $description, $copyrightHolder, $language);
     }
 
     /**
@@ -226,7 +259,22 @@ class ImageUploaderServiceTest extends TestCase
      */
     public function it_should_upload_a_file_that_does_not_exceed_the_maximum_file_size(): void
     {
-        $file = $this->getMockImage(1000000);
+        $image = $this->createMock(UploadedFileInterface::class);
+
+        $image
+            ->expects($this->once())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
+
+        $image
+            ->expects($this->exactly(2))
+            ->method('getClientMediaType')
+            ->willReturn('image/jpeg');
+
+        $image
+            ->expects($this->once())
+            ->method('getSize')
+            ->willReturn(5000);
 
         $uploader = new ImageUploaderService(
             $this->uuidGenerator,
@@ -257,61 +305,8 @@ class ImageUploaderServiceTest extends TestCase
             ->expects($this->once())
             ->method('dispatch');
 
-        $imageId = $uploader->upload($file, $description, $copyrightHolder, $language);
+        $imageId = $uploader->upload($image, $description, $copyrightHolder, $language);
 
         $this->assertEquals($generatedUuid, $imageId->toString());
-    }
-
-    /**
-     * @param int | bool $imageSize
-     * @return UploadedFile|MockObject
-     */
-    private function getMockFile($imageSize)
-    {
-        $fileDirectory = vfsStream::setup('files');
-        $file = vfsStream::newFile('my-image.jpg')
-            ->withContent(new LargeFileContent($imageSize))
-            ->at($fileDirectory);
-        $filePath = $file->url();
-
-        $file = $this
-            ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->enableOriginalConstructor()
-            ->setConstructorArgs([tempnam(sys_get_temp_dir(), ''), 'dummy'])
-            ->getMock();
-
-        $file->expects($this->any())
-            ->method('getRealPath')
-            ->willReturn($filePath);
-
-        return $file;
-    }
-
-    /**
-     * @param int | bool $imageSize
-     *  Image size in bytes.
-     *
-     * @return UploadedFile|MockObject
-     */
-    private function getMockImage($imageSize)
-    {
-        $image = $this->getMockFile($imageSize);
-
-        $image
-            ->expects($this->once())
-            ->method('isValid')
-            ->willReturn(true);
-
-        $image
-            ->expects($this->once())
-            ->method('getMimeType')
-            ->willReturn('image/jpeg');
-
-        $image
-            ->expects($this->any())
-            ->method('guessExtension')
-            ->willReturn('jpeg');
-
-        return $image;
     }
 }
