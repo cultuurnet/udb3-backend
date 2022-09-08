@@ -7,7 +7,7 @@ services:
     container_name: php.uitdatabank
     volumes:
       - .:/var/www/html:cached
-    working_dir: /var/www/html/web
+    working_dir: /var/www/html
     command: php -S 0.0.0.0:8000
     ports:
       - "8000:8000"
