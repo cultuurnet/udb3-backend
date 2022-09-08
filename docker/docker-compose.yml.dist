@@ -33,21 +33,6 @@ services:
     ports:
       - "3306:3306"
 
-  rabbitmq:
-    image: bitnami/rabbitmq:3.10.7
-    container_name: rabbitmq.uitdatabank
-    environment:
-      - RABBITMQ_VHOST=${RABBITMQ_VHOST}
-      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
-      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
-    networks:
-      uitdatabank:
-        aliases:
-          - rabbitmq.uitdatabank.dev
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-
   redis:
     image: 'redis:alpine'
     container_name: redis.uitdatabank
