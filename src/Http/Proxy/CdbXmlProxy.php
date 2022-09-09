@@ -7,9 +7,6 @@ namespace CultuurNet\UDB3\Http\Proxy;
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\AndFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
-use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
-use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
-use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\ClientInterface;
@@ -32,11 +29,10 @@ class CdbXmlProxy extends Proxy
     ) {
         $cdbXmlFilter = $this->createFilter($accept);
 
-        $requestTransformer = $this->createTransformer($hostname, $port);
-
         parent::__construct(
             $cdbXmlFilter,
-            $requestTransformer,
+            $hostname,
+            $port,
             $diactorosFactory,
             $httpFoundationFactory,
             $client
@@ -52,19 +48,5 @@ class CdbXmlProxy extends Proxy
         $methodFilter = new MethodFilter(new StringLiteral('GET'));
 
         return new AndFilter([$acceptFilter, $methodFilter]);
-    }
-
-    /**
-     * @return CombinedReplacer
-     */
-    private function createTransformer(
-        Hostname $hostname,
-        PortNumber $port
-    ) {
-        $domainReplacer = new DomainReplacer($hostname);
-
-        $portReplacer = new PortReplacer($port);
-
-        return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 }

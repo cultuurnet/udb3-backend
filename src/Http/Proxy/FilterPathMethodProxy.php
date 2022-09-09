@@ -10,9 +10,6 @@ use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\OrFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\PathFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\PreflightFilter;
-use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
-use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
-use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\ClientInterface;
@@ -33,7 +30,8 @@ class FilterPathMethodProxy extends Proxy
     ) {
         parent::__construct(
             $this->createFilter($path, $method),
-            $this->createTransformer($hostname, $port),
+            $hostname,
+            $port,
             $diactorosFactory,
             $httpFoundationFactory,
             $client
@@ -58,19 +56,5 @@ class FilterPathMethodProxy extends Proxy
                 new PreflightFilter($path, $method),
             ]
         );
-    }
-
-    /**
-     * @return CombinedReplacer
-     */
-    private function createTransformer(
-        Hostname $hostname,
-        PortNumber $port
-    ) {
-        $domainReplacer = new DomainReplacer($hostname);
-
-        $portReplacer = new PortReplacer($port);
-
-        return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 }

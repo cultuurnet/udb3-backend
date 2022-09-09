@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
+use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
+use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
+use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\RequestTransformerInterface;
+use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
+use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,13 +49,14 @@ class Proxy
      */
     public function __construct(
         FilterInterface $filter,
-        RequestTransformerInterface $requestTransformer,
+        Hostname $hostname,
+        PortNumber $port,
         DiactorosFactory $diactorosFactory,
         HttpFoundationFactory $httpFoundationFactory,
         ClientInterface $client
     ) {
         $this->filter = $filter;
-        $this->requestTransformer = $requestTransformer;
+        $this->requestTransformer = $this->createTransformer($hostname, $port);
         $this->diactorosFactory = $diactorosFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->client = $client;
@@ -86,5 +92,16 @@ class Proxy
         }
 
         return $response;
+    }
+
+    private function createTransformer(
+        Hostname $hostname,
+        PortNumber $port
+    ): CombinedReplacer {
+        $domainReplacer = new DomainReplacer($hostname);
+
+        $portReplacer = new PortReplacer($port);
+
+        return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 }
