@@ -26,7 +26,7 @@ final class ProxyTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->searchProxy = Proxy::createWithSearchFilter(
+        $this->searchProxy = Proxy::createForSearch(
             new FilterPathRegex('^\/(events|places|organizers|offers)\/?$'),
             'GET',
             new Hostname('search.foo.bar'),
@@ -34,7 +34,7 @@ final class ProxyTest extends TestCase
             new Client()
         );
 
-        $this->cdbXmlProxy = Proxy::createWithCdbXmlFilter(
+        $this->cdbXmlProxy = Proxy::createForCdbXml(
             'application/xml',
             new Hostname('cdbxml.foo.bar'),
             new PortNumber(443),

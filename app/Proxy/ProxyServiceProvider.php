@@ -18,7 +18,7 @@ class ProxyServiceProvider implements ServiceProviderInterface
     {
         $app['cdbxml_proxy'] = $app->share(
             function ($app) {
-                return Proxy::createWithCdbXmlFilter(
+                return Proxy::createForCdbXml(
                     $app['config']['cdbxml_proxy']['accept'],
                     new Hostname($app['config']['cdbxml_proxy']['redirect_domain']),
                     new PortNumber($app['config']['cdbxml_proxy']['redirect_port']),
@@ -39,7 +39,7 @@ class ProxyServiceProvider implements ServiceProviderInterface
 
         $app['get_request_proxy_factory'] = $app->protect(
             function ($pathRegex, $redirectDomain, $redirectPort) {
-                return Proxy::createWithSearchFilter(
+                return Proxy::createForSearch(
                     new FilterPathRegex($pathRegex),
                     'GET',
                     new Hostname($redirectDomain),

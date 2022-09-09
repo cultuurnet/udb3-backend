@@ -96,7 +96,7 @@ final class Proxy implements RequestHandlerInterface
         return new AndFilter([$acceptFilter, $methodFilter]);
     }
 
-    public static function createWithSearchFilter(
+    public static function createForSearch(
         FilterPathRegex $path,
         string $method,
         Hostname $hostname,
@@ -111,7 +111,7 @@ final class Proxy implements RequestHandlerInterface
         );
     }
 
-    public static function createWithCdbXmlFilter(
+    public static function createForCdbXml(
         string $accept,
         Hostname $hostname,
         PortNumber $port,
