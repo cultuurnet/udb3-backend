@@ -13,17 +13,13 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\UDB3\StringLiteral;
 use Zend\Diactoros\Uri;
 
 class CdbXmlProxyTest extends TestCase
 {
     public const APPLICATION_XML = 'application/xml';
 
-    /**
-     * @var CdbXmlProxy
-     */
-    private $cdbXmlProxy;
+    private Proxy $cdbXmlProxy;
 
     /**
      * @var Request
@@ -32,8 +28,8 @@ class CdbXmlProxyTest extends TestCase
 
     public function setUp()
     {
-        $this->cdbXmlProxy = new CdbXmlProxy(
-            new StringLiteral(self::APPLICATION_XML),
+        $this->cdbXmlProxy = Proxy::createWithCdbXmlFilter(
+            self::APPLICATION_XML,
             new Hostname('www.google.be'),
             new PortNumber(80),
             new DiactorosFactory(),
@@ -55,8 +51,8 @@ class CdbXmlProxyTest extends TestCase
     {
         $handler = new MockHandler([new Response(200)]);
         $client = new Client(['handler' => $handler]);
-        $cdbXmlProxy = new CdbXmlProxy(
-            new StringLiteral(self::APPLICATION_XML),
+        $cdbXmlProxy = Proxy::createWithCdbXmlFilter(
+            self::APPLICATION_XML,
             new Hostname('www.google.be'),
             new PortNumber(80),
             new DiactorosFactory(),

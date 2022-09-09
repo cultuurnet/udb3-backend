@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Proxy;
 
-use CultuurNet\UDB3\Http\Proxy\CdbXmlProxy;
 use CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy;
 use CultuurNet\UDB3\Http\Proxy\FilterPathRegex;
+use CultuurNet\UDB3\Http\Proxy\Proxy;
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\Client;
@@ -22,8 +22,8 @@ class ProxyServiceProvider implements ServiceProviderInterface
     {
         $app['cdbxml_proxy'] = $app->share(
             function ($app) {
-                return new CdbXmlProxy(
-                    new StringLiteral($app['config']['cdbxml_proxy']['accept']),
+                return Proxy::createWithCdbXmlFilter(
+                    $app['config']['cdbxml_proxy']['accept'],
                     new Hostname($app['config']['cdbxml_proxy']['redirect_domain']),
                     new PortNumber($app['config']['cdbxml_proxy']['redirect_port']),
                     new DiactorosFactory(),
