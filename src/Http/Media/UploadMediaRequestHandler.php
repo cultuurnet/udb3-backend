@@ -14,7 +14,6 @@ use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 final class UploadMediaRequestHandler implements RequestHandlerInterface
 {
@@ -54,12 +53,8 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             return new JsonResponse(['error' => 'language required'], 400);
         }
 
-        $httpFoundationFactory = new HttpFoundationFactory();
-        $httpRequest = $httpFoundationFactory->createRequest($request);
-        $file = $httpRequest->files->get('file');
-
         $imageId = $this->imageUploader->upload(
-            $file,
+            $request->getUploadedFiles()['file'],
             new StringLiteral($description),
             new CopyrightHolder($copyrightHolder),
             new Language($language)
