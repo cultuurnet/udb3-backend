@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\RequestTransformerInterface;
+use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
+use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Psr7\Response as Psr7Response;
@@ -61,7 +63,8 @@ class ProxyTest extends TestCase
 
         $this->proxy = new Proxy(
             $this->filter,
-            $this->requestTransformer,
+            new Hostname('foo.bar'),
+            new PortNumber(443),
             $this->diactorosFactory,
             $this->httpFoundationFactory,
             $this->client
@@ -73,8 +76,8 @@ class ProxyTest extends TestCase
      */
     public function it_filters_out_requests_that_do_not_accept_xml()
     {
-        $sfRequest = SymfonyRequest::create('http://foo.bar', 'GET');
-        $psr7Request = new Psr7Request('GET', 'http://foo.bar');
+        $sfRequest = SymfonyRequest::create('https://foo.bar', 'GET');
+        $psr7Request = new Psr7Request('GET', 'https://foo.bar');
 
         $this->diactorosFactory->expects($this->once())
             ->method('createRequest')
@@ -102,9 +105,9 @@ class ProxyTest extends TestCase
      */
     public function it_sends_incoming_requests_after_transforming_them_and_returns_their_response()
     {
-        $sfRequest = SymfonyRequest::create('http://foo.bar', 'GET');
-        $psr7Request = new Psr7Request('GET', 'http://foo.bar');
-        $transformedPsr7Request = $psr7Request->withUri(new Uri('http://foo.baz'));
+        $sfRequest = SymfonyRequest::create('https://foo.bar', 'GET');
+        $psr7Request = new Psr7Request('GET', 'https://foo.bar');
+        $transformedPsr7Request = $psr7Request->withUri(new Uri('https://foo.bar'));
 
         $psr7Response = new Psr7Response(200, [], 'All good.');
         $sfResponse = new SymfonyResponse('All good.', 200, []);
@@ -118,11 +121,6 @@ class ProxyTest extends TestCase
             ->method('matches')
             ->with($psr7Request)
             ->willReturn(true);
-
-        $this->requestTransformer->expects($this->once())
-            ->method('transform')
-            ->with($psr7Request)
-            ->willReturn($transformedPsr7Request);
 
         $this->client->expects($this->once())
             ->method('send')
