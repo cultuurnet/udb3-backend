@@ -64,7 +64,7 @@ if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Http\Proxy\CdbXmlProxy $cdbXmlProxy */
+            /** @var \CultuurNet\UDB3\Http\Proxy\Proxy $cdbXmlProxy */
             $cdbXmlProxy = $app['cdbxml_proxy'];
 
             return $cdbXmlProxy->handle($request);
@@ -81,7 +81,7 @@ if (isset($app['config']['search_proxy']) &&
     $app['config']['search_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy $searchProxy */
+            /** @var \CultuurNet\UDB3\Http\Proxy\Proxy $searchProxy */
             $searchProxy = $app['search_proxy'];
 
             return $searchProxy->handle($request);

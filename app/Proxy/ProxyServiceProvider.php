@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Proxy;
 
-use CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy;
 use CultuurNet\UDB3\Http\Proxy\FilterPathRegex;
 use CultuurNet\UDB3\Http\Proxy\Proxy;
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
@@ -14,7 +13,6 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use CultuurNet\UDB3\StringLiteral;
 
 class ProxyServiceProvider implements ServiceProviderInterface
 {
@@ -45,9 +43,9 @@ class ProxyServiceProvider implements ServiceProviderInterface
 
         $app['get_request_proxy_factory'] = $app->protect(
             function ($pathRegex, $redirectDomain, $redirectPort) {
-                return new FilterPathMethodProxy(
+                return Proxy::createWithSearchFilter(
                     new FilterPathRegex($pathRegex),
-                    new StringLiteral('GET'),
+                    'GET',
                     new Hostname($redirectDomain),
                     new PortNumber($redirectPort),
                     new DiactorosFactory(),

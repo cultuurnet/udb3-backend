@@ -13,14 +13,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\UDB3\StringLiteral;
 
 class FilterPathMethodProxyTest extends TestCase
 {
-    /**
-     * @var FilterPathMethodProxy
-     */
-    private $proxy;
+    private Proxy $proxy;
 
     /**
      * @var Request
@@ -36,9 +32,9 @@ class FilterPathMethodProxyTest extends TestCase
     {
         $this->client = $this->createMock(ClientInterface::class);
 
-        $this->proxy = new FilterPathMethodProxy(
+        $this->proxy = Proxy::createWithSearchFilter(
             new FilterPathRegex('^\/event\/(?<offerId>[a-zA-Z0-9\-]+)\/calendar-summary$'),
-            new StringLiteral('GET'),
+            'GET',
             new Hostname('www.google.be'),
             new PortNumber(80),
             new DiactorosFactory(),
