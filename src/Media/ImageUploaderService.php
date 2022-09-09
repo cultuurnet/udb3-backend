@@ -15,7 +15,8 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Psr\Http\Message\UploadedFileInterface;
+use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 
 class ImageUploaderService implements ImageUploaderInterface
 {
@@ -58,22 +59,19 @@ class ImageUploaderService implements ImageUploaderInterface
     }
 
     public function upload(
-        UploadedFile $file,
+        UploadedFileInterface $file,
         StringLiteral $description,
         CopyrightHolder $copyrightHolder,
         Language $language
     ): UUID {
-        if (!$file->isValid()) {
+        if ($file->getError() !== UPLOAD_ERR_OK) {
             throw new InvalidFileType('The file did not upload correctly.');
         }
 
-        $mimeTypeString = $file->getMimeType();
-
+        $mimeTypeString = $file->getClientMediaType();
         if (!$mimeTypeString) {
             throw new InvalidFileType('The type of the uploaded file can not be guessed.');
         }
-
-        $this->guardFileSizeLimit($file);
 
         if (!\in_array($mimeTypeString, $this->supportedMimeTypes, true)) {
             throw new InvalidFileType(
@@ -81,15 +79,14 @@ class ImageUploaderService implements ImageUploaderInterface
             );
         }
 
-        /** @var MIMEType $mimeType */
+        $this->guardFileSizeLimit($file);
+
         $mimeType = MIMEType::fromNative($mimeTypeString);
 
         $fileId = new UUID($this->uuidGenerator->generate());
-        $fileName = $fileId->toString() . '.' . $file->guessExtension();
+        $fileName = $fileId->toString() . '.' . ExtensionGuesser::getInstance()->guess($file->getClientMediaType());
         $destination = $this->getUploadDirectory() . '/' . $fileName;
-        $stream = fopen($file->getRealPath(), 'r+');
-        $this->filesystem->writeStream($destination, $stream);
-        fclose($stream);
+        $this->filesystem->write($destination, $file->getStream()->getContents());
 
         $this->commandBus->dispatch(
             new UploadImage(
@@ -105,10 +102,9 @@ class ImageUploaderService implements ImageUploaderInterface
         return $fileId;
     }
 
-    private function guardFileSizeLimit(UploadedFile $file): void
+    private function guardFileSizeLimit(UploadedFileInterface $file): void
     {
-        $filePath = $file->getRealPath();
-        $fileSize = filesize($filePath);
+        $fileSize = $file->getSize();
 
         if ($this->maxFileSize && !$fileSize) {
             throw new \RuntimeException('The size of the uploaded image could not be determined.');
