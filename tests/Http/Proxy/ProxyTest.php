@@ -32,16 +32,6 @@ class ProxyTest extends TestCase
     private $requestTransformer;
 
     /**
-     * @var DiactorosFactory|MockObject
-     */
-    private $diactorosFactory;
-
-    /**
-     * @var HttpFoundationFactory|MockObject
-     */
-    private $httpFoundationFactory;
-
-    /**
      * @var ClientInterface|MockObject
      */
     private $client;
@@ -56,17 +46,12 @@ class ProxyTest extends TestCase
         $this->filter = $this->createMock(FilterInterface::class);
         $this->requestTransformer = $this->createMock(RequestTransformerInterface::class);
 
-        $this->diactorosFactory = $this->createMock(DiactorosFactory::class);
-        $this->httpFoundationFactory = $this->createMock(HttpFoundationFactory::class);
-
         $this->client = $this->createMock(ClientInterface::class);
 
         $this->proxy = new Proxy(
             $this->filter,
             new Hostname('foo.bar'),
             new PortNumber(443),
-            $this->diactorosFactory,
-            $this->httpFoundationFactory,
             $this->client
         );
     }
@@ -78,11 +63,6 @@ class ProxyTest extends TestCase
     {
         $sfRequest = SymfonyRequest::create('https://foo.bar', 'GET');
         $psr7Request = new Psr7Request('GET', 'https://foo.bar');
-
-        $this->diactorosFactory->expects($this->once())
-            ->method('createRequest')
-            ->with($sfRequest)
-            ->willReturn($psr7Request);
 
         $this->filter->expects($this->once())
             ->method('matches')
@@ -112,11 +92,6 @@ class ProxyTest extends TestCase
         $psr7Response = new Psr7Response(200, [], 'All good.');
         $sfResponse = new SymfonyResponse('All good.', 200, []);
 
-        $this->diactorosFactory->expects($this->once())
-            ->method('createRequest')
-            ->with($sfRequest)
-            ->willReturn($psr7Request);
-
         $this->filter->expects($this->once())
             ->method('matches')
             ->with($psr7Request)
@@ -126,11 +101,6 @@ class ProxyTest extends TestCase
             ->method('send')
             ->with($transformedPsr7Request)
             ->willReturn($psr7Response);
-
-        $this->httpFoundationFactory->expects($this->once())
-            ->method('createResponse')
-            ->with($psr7Response)
-            ->willReturn($sfResponse);
 
         $this->assertEquals(
             $sfResponse,

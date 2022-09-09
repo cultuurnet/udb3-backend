@@ -37,8 +37,6 @@ class FilterPathMethodProxyTest extends TestCase
             'GET',
             new Hostname('www.google.be'),
             new PortNumber(80),
-            new DiactorosFactory(),
-            new HttpFoundationFactory(),
             $this->client
         );
 

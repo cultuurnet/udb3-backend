@@ -32,8 +32,6 @@ class CdbXmlProxyTest extends TestCase
             self::APPLICATION_XML,
             new Hostname('www.google.be'),
             new PortNumber(80),
-            new DiactorosFactory(),
-            new HttpFoundationFactory(),
             new Client()
         );
 
@@ -55,8 +53,6 @@ class CdbXmlProxyTest extends TestCase
             self::APPLICATION_XML,
             new Hostname('www.google.be'),
             new PortNumber(80),
-            new DiactorosFactory(),
-            new HttpFoundationFactory(),
             $client
         );
         $response = $cdbXmlProxy->handle($this->request);

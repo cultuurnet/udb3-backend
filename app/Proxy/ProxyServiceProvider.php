@@ -24,8 +24,6 @@ class ProxyServiceProvider implements ServiceProviderInterface
                     $app['config']['cdbxml_proxy']['accept'],
                     new Hostname($app['config']['cdbxml_proxy']['redirect_domain']),
                     new PortNumber($app['config']['cdbxml_proxy']['redirect_port']),
-                    new DiactorosFactory(),
-                    new HttpFoundationFactory(),
                     new Client()
                 );
             }
@@ -48,8 +46,6 @@ class ProxyServiceProvider implements ServiceProviderInterface
                     'GET',
                     new Hostname($redirectDomain),
                     new PortNumber($redirectPort),
-                    new DiactorosFactory(),
-                    new HttpFoundationFactory(),
                     new Client()
                 );
             }

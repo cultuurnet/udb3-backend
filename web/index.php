@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
 use Silex\Application;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -64,10 +65,14 @@ if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
+            $psr7Request = (new DiactorosFactory())->createRequest($request);
             /** @var \CultuurNet\UDB3\Http\Proxy\Proxy $cdbXmlProxy */
             $cdbXmlProxy = $app['cdbxml_proxy'];
 
-            return $cdbXmlProxy->handle($request);
+            $psr7Response = $cdbXmlProxy->handle($psr7Request);
+            $response = (new HttpFoundationFactory())->createResponse($psr7Response);
+            $response->headers->remove('Transfer-Encoding');
+            return $response;
         },
         Application::EARLY_EVENT
     );
@@ -81,10 +86,14 @@ if (isset($app['config']['search_proxy']) &&
     $app['config']['search_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
+            $psr7Request = (new DiactorosFactory())->createRequest($request);
             /** @var \CultuurNet\UDB3\Http\Proxy\Proxy $searchProxy */
             $searchProxy = $app['search_proxy'];
 
-            return $searchProxy->handle($request);
+            $psr7Response = $searchProxy->handle($psr7Request);
+            $response = (new HttpFoundationFactory())->createResponse($psr7Response);
+            $response->headers->remove('Transfer-Encoding');
+            return $response;
         },
         Application::EARLY_EVENT
     );

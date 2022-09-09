@@ -19,67 +19,50 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use CultuurNet\UDB3\StringLiteral;
 use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
-class Proxy
+final class Proxy implements RequestHandlerInterface
 {
     private FilterInterface $filter;
 
     private RequestTransformerInterface $requestTransformer;
 
-    private DiactorosFactory $diactorosFactory;
-
-    private HttpFoundationFactory $httpFoundationFactory;
-
     private ClientInterface $client;
 
-    private function __construct(
+    public function __construct(
         FilterInterface $filter,
         Hostname $hostname,
         PortNumber $port,
-        DiactorosFactory $diactorosFactory,
-        HttpFoundationFactory $httpFoundationFactory,
         ClientInterface $client
     ) {
         $this->filter = $filter;
         $this->requestTransformer = $this->createTransformer($hostname, $port);
-        $this->diactorosFactory = $diactorosFactory;
-        $this->httpFoundationFactory = $httpFoundationFactory;
         $this->client = $client;
     }
 
-    /**
-     * @return null|Response
-     */
-    public function handle(Request $request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = null;
 
-        $psr7Request = $this->diactorosFactory->createRequest(
-            $request->duplicate()
-        );
-
-        if ($this->filter->matches($psr7Request)) {
+        if ($this->filter->matches($request)) {
             // Transform the request before re-sending it so we don't send the
             // exact same request and end up in an infinite loop.
-            $psr7Request = $this->requestTransformer->transform($psr7Request);
+            $psr7Request = $this->requestTransformer->transform($request);
 
-            $psr7Response = $this->client->send(
+            $response = $this->client->send(
                 $psr7Request,
                 [
                     'http_errors' => false,
                 ]
             );
-            $response = $this->httpFoundationFactory->createResponse($psr7Response);
 
-            // Without removing the transfer encoding the consuming client would
-            // get an error. (Both curl and Postman)
-            $response->headers->remove('Transfer-Encoding');
         }
-
         return $response;
     }
 
@@ -124,16 +107,12 @@ class Proxy
         string $method,
         Hostname $hostname,
         PortNumber $port,
-        DiactorosFactory $diactorosFactory,
-        HttpFoundationFactory $httpFoundationFactory,
         ClientInterface $client
     ): Proxy {
         return new self(
             self::createSearchFilter($path, $method),
             $hostname,
             $port,
-            $diactorosFactory,
-            $httpFoundationFactory,
             $client
         );
     }
@@ -142,16 +121,12 @@ class Proxy
         string $accept,
         Hostname $hostname,
         PortNumber $port,
-        DiactorosFactory $diactorosFactory,
-        HttpFoundationFactory $httpFoundationFactory,
         ClientInterface $client
     ): Proxy {
         return new self(
             self::createCdbXmlFilter($accept),
             $hostname,
             $port,
-            $diactorosFactory,
-            $httpFoundationFactory,
             $client
         );
     }
