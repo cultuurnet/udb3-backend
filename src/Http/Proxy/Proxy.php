@@ -36,7 +36,7 @@ class Proxy
 
     private ClientInterface $client;
 
-    public function __construct(
+    private function __construct(
         FilterInterface $filter,
         Hostname $hostname,
         PortNumber $port,
