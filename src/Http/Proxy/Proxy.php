@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Proxy;
 
+use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\AndFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
+use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\OrFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\PathFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\PreflightFilter;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\RequestTransformerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
+use CultuurNet\UDB3\StringLiteral;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,34 +26,16 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
 class Proxy
 {
-    /**
-     * @var FilterInterface
-     */
-    private $filter;
+    private FilterInterface $filter;
 
-    /**
-     * @var RequestTransformerInterface
-     */
-    private $requestTransformer;
+    private RequestTransformerInterface $requestTransformer;
 
-    /**
-     * @var DiactorosFactory
-     */
-    private $diactorosFactory;
+    private DiactorosFactory $diactorosFactory;
 
-    /**
-     * @var HttpFoundationFactory
-     */
-    private $httpFoundationFactory;
+    private HttpFoundationFactory $httpFoundationFactory;
 
-    /**
-     * @var ClientInterface
-     */
-    private $client;
+    private ClientInterface $client;
 
-    /**
-     * Proxy constructor.
-     */
     public function __construct(
         FilterInterface $filter,
         Hostname $hostname,
@@ -103,5 +92,67 @@ class Proxy
         $portReplacer = new PortReplacer($port);
 
         return new CombinedReplacer([$domainReplacer, $portReplacer]);
+    }
+
+    private static function createSearchFilter(FilterPathRegex $path, string $method): FilterInterface
+    {
+        $pathMethodFilter = new AndFilter(
+            [
+                new PathFilter($path),
+                new MethodFilter(new StringLiteral($method)),
+            ]
+        );
+
+        return new OrFilter(
+            [
+                $pathMethodFilter,
+                new PreflightFilter($path, new StringLiteral($method)),
+            ]
+        );
+    }
+
+    private static function createCdbXmlFilter(string $accept): AndFilter
+    {
+        $acceptFilter = new AcceptFilter(new StringLiteral($accept));
+        $methodFilter = new MethodFilter(new StringLiteral('GET'));
+
+        return new AndFilter([$acceptFilter, $methodFilter]);
+    }
+
+    public static function createWithSearchFilter(
+        FilterPathRegex $path,
+        string $method,
+        Hostname $hostname,
+        PortNumber $port,
+        DiactorosFactory $diactorosFactory,
+        HttpFoundationFactory $httpFoundationFactory,
+        ClientInterface $client
+    ): Proxy {
+        return new self(
+            self::createSearchFilter($path, $method),
+            $hostname,
+            $port,
+            $diactorosFactory,
+            $httpFoundationFactory,
+            $client
+        );
+    }
+
+    public static function createWithCdbXmlFilter(
+        string $accept,
+        Hostname $hostname,
+        PortNumber $port,
+        DiactorosFactory $diactorosFactory,
+        HttpFoundationFactory $httpFoundationFactory,
+        ClientInterface $client
+    ): Proxy {
+        return new self(
+            self::createCdbXmlFilter($accept),
+            $hostname,
+            $port,
+            $diactorosFactory,
+            $httpFoundationFactory,
+            $client
+        );
     }
 }
