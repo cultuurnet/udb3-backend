@@ -11,8 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 class ProxyServiceProvider implements ServiceProviderInterface
 {

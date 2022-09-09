@@ -22,10 +22,6 @@ use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
 final class Proxy implements RequestHandlerInterface
 {
@@ -61,7 +57,6 @@ final class Proxy implements RequestHandlerInterface
                     'http_errors' => false,
                 ]
             );
-
         }
         return $response;
     }
