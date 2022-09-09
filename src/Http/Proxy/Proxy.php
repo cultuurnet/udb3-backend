@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Proxy;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\AndFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
@@ -31,7 +32,7 @@ final class Proxy implements RequestHandlerInterface
 
     private ClientInterface $client;
 
-    public function __construct(
+    private function __construct(
         FilterInterface $filter,
         Hostname $hostname,
         PortNumber $port,
@@ -44,21 +45,19 @@ final class Proxy implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response = null;
-
         if ($this->filter->matches($request)) {
             // Transform the request before re-sending it so we don't send the
             // exact same request and end up in an infinite loop.
             $psr7Request = $this->requestTransformer->transform($request);
 
-            $response = $this->client->send(
+            return $this->client->send(
                 $psr7Request,
                 [
                     'http_errors' => false,
                 ]
             );
         }
-        return $response;
+        throw ApiProblem::blank('', 200);
     }
 
     private function createTransformer(
