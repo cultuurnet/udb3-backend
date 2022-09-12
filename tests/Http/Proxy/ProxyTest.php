@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Proxy;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
@@ -14,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ProxyTest extends TestCase
 {
+    use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
     private TraceableCommandBus $commandBus;
@@ -42,5 +45,50 @@ final class ProxyTest extends TestCase
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_requests_with_invalid_accept(): void
+    {
+        $cdbXmlRequest = $this->psr7RequestBuilder
+            ->withHeader('Accept', 'application/json')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::notAcceptable(),
+            fn () => $this->cdbXmlProxy->handle($cdbXmlRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_requests_with_invalid_method(): void
+    {
+        $searchRequest = $this->psr7RequestBuilder
+            ->withUriFromString('https://search.foo.bar/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::methodNotAllowed(),
+            fn () => $this->searchProxy->handle($searchRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_requests_with_invalid_path(): void
+    {
+        $searchRequest = $this->psr7RequestBuilder
+            ->withUriFromString('https://search.foo.bar/plaatsen?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::urlNotFound(),
+            fn () => $this->searchProxy->handle($searchRequest)
+        );
     }
 }
