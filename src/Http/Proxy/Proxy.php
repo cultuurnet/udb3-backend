@@ -6,10 +6,8 @@ namespace CultuurNet\UDB3\Http\Proxy;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
-use CultuurNet\UDB3\Http\Proxy\Filter\AndFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
 use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
-use CultuurNet\UDB3\Http\Proxy\Filter\OrFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\PathFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\PreflightFilter;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
@@ -26,38 +24,54 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class Proxy implements RequestHandlerInterface
 {
-    private FilterInterface $filter;
+    /**
+     * @var FilterInterface[]
+     */
+    private array $filters;
 
     private RequestTransformerInterface $requestTransformer;
 
     private ClientInterface $client;
 
     private function __construct(
-        FilterInterface $filter,
+        array $filters,
         Hostname $hostname,
         PortNumber $port,
         ClientInterface $client
     ) {
-        $this->filter = $filter;
+        $this->filters = $filters;
         $this->requestTransformer = $this->createTransformer($hostname, $port);
         $this->client = $client;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->filter->matches($request)) {
-            // Transform the request before re-sending it so we don't send the
-            // exact same request and end up in an infinite loop.
-            $psr7Request = $this->requestTransformer->transform($request);
+        foreach ($this->filters as $filter) {
+            if ($filter->matches($request)) {
+                if ($filter instanceof MethodFilter) {
+                    throw ApiProblem::methodNotAllowed();
+                }
+                if ($filter instanceof AcceptFilter) {
+                    throw ApiProblem::notAcceptable();
+                }
+                if ($filter instanceof PathFilter) {
+                    throw ApiProblem::urlNotFound();
+                }
+                if ($filter instanceof PreflightFilter) {
+                    throw ApiProblem::forbidden();
+                }
+            }
+        }
+        // Transform the request before re-sending it so we don't send the
+        // exact same request and end up in an infinite loop.
+        $psr7Request = $this->requestTransformer->transform($request);
 
-            return $this->client->send(
-                $psr7Request,
-                [
+        return $this->client->send(
+            $psr7Request,
+            [
                     'http_errors' => false,
                 ]
-            );
-        }
-        throw ApiProblem::blank('', 200);
+        );
     }
 
     private function createTransformer(
@@ -71,29 +85,27 @@ final class Proxy implements RequestHandlerInterface
         return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 
-    private static function createSearchFilter(FilterPathRegex $path, string $method): FilterInterface
+    /**
+     * @return FilterInterface[]
+     */
+    private static function createSearchFilters(FilterPathRegex $path, string $method): array
     {
-        $pathMethodFilter = new AndFilter(
-            [
-                new PathFilter($path),
-                new MethodFilter(new StringLiteral($method)),
-            ]
-        );
-
-        return new OrFilter(
-            [
-                $pathMethodFilter,
-                new PreflightFilter($path, new StringLiteral($method)),
-            ]
-        );
+        return [
+            new PathFilter($path),
+            new MethodFilter(new StringLiteral($method)),
+            new PreflightFilter($path, new StringLiteral($method)),
+        ];
     }
 
-    private static function createCdbXmlFilter(string $accept): AndFilter
+    /**
+     * @return FilterInterface[]
+     */
+    private static function createCdbXmlFilters(string $accept): array
     {
-        $acceptFilter = new AcceptFilter(new StringLiteral($accept));
-        $methodFilter = new MethodFilter(new StringLiteral('GET'));
-
-        return new AndFilter([$acceptFilter, $methodFilter]);
+        return [
+            new AcceptFilter(new StringLiteral($accept)),
+            new MethodFilter(new StringLiteral('GET')),
+        ];
     }
 
     public static function createForSearch(
@@ -104,7 +116,7 @@ final class Proxy implements RequestHandlerInterface
         ClientInterface $client
     ): Proxy {
         return new self(
-            self::createSearchFilter($path, $method),
+            self::createSearchFilters($path, $method),
             $hostname,
             $port,
             $client
@@ -118,7 +130,7 @@ final class Proxy implements RequestHandlerInterface
         ClientInterface $client
     ): Proxy {
         return new self(
-            self::createCdbXmlFilter($accept),
+            self::createCdbXmlFilters($accept),
             $hostname,
             $port,
             $client
