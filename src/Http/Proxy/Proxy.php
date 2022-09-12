@@ -47,19 +47,17 @@ final class Proxy implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         foreach ($this->filters as $filter) {
-            if ($filter->matches($request)) {
-                if ($filter instanceof MethodFilter) {
-                    throw ApiProblem::methodNotAllowed();
-                }
-                if ($filter instanceof AcceptFilter) {
-                    throw ApiProblem::notAcceptable();
-                }
-                if ($filter instanceof PathFilter) {
-                    throw ApiProblem::urlNotFound();
-                }
-                if ($filter instanceof PreflightFilter) {
-                    throw ApiProblem::forbidden();
-                }
+            if ($filter instanceof MethodFilter && !$filter->matches($request)) {
+                throw ApiProblem::methodNotAllowed();
+            }
+            if ($filter instanceof AcceptFilter  && !$filter->matches($request)) {
+                throw ApiProblem::notAcceptable();
+            }
+            if ($filter instanceof PathFilter && !$filter->matches($request)) {
+                throw ApiProblem::urlNotFound();
+            }
+            if ($filter instanceof PreflightFilter && !$filter->matches($request)) {
+                throw ApiProblem::forbidden();
             }
         }
         // Transform the request before re-sending it so we don't send the
@@ -70,7 +68,7 @@ final class Proxy implements RequestHandlerInterface
             $psr7Request,
             [
                     'http_errors' => false,
-                ]
+            ]
         );
     }
 
