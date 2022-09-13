@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Hostname;
 use CultuurNet\UDB3\Model\ValueObject\Web\PortNumber;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 
 final class ProxyTest extends TestCase
 {
@@ -32,19 +33,33 @@ final class ProxyTest extends TestCase
         $this->searchProxy = Proxy::createForSearch(
             new FilterPathRegex('^\/(events|places|organizers|offers)\/?$'),
             'GET',
-            new Hostname('search.foo.bar'),
+            new Hostname('search.uitdatabank.dev'),
             new PortNumber(443),
             new Client()
         );
 
         $this->cdbXmlProxy = Proxy::createForCdbXml(
             'application/xml',
-            new Hostname('cdbxml.foo.bar'),
+            new Hostname('cdbxml.uitdatabank.dev'),
             new PortNumber(443),
             new Client()
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_valid_requests(): void
+    {
+        $searchRequest = $this->psr7RequestBuilder
+            ->withUriFromString('https://search.uitdatabank.dev/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
+            ->build('GET');
+
+        $response = $this->searchProxy->handle($searchRequest);
+
+        $this->assertTrue(is_subclass_of(get_class($response), ResponseInterface::class));
     }
 
     /**
@@ -68,7 +83,7 @@ final class ProxyTest extends TestCase
     public function it_throws_on_requests_with_invalid_method(): void
     {
         $searchRequest = $this->psr7RequestBuilder
-            ->withUriFromString('https://search.foo.bar/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
+            ->withUriFromString('https://search.uitdatabank.dev/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
@@ -84,7 +99,7 @@ final class ProxyTest extends TestCase
     {
         $searchRequest = $this->psr7RequestBuilder
             ->withUriFromString('https://search.foo.bar/plaatsen?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
-            ->build('POST');
+            ->build('GET');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::urlNotFound(),
