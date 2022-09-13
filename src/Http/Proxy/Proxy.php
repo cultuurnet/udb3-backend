@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Proxy;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
-use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
 use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\PathFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\PreflightFilter;
@@ -24,9 +23,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class Proxy implements RequestHandlerInterface
 {
-    /**
-     * @var FilterInterface[]
-     */
     private array $filters;
 
     private RequestTransformerInterface $requestTransformer;
@@ -56,9 +52,6 @@ final class Proxy implements RequestHandlerInterface
             if ($filter instanceof PathFilter && !$filter->matches($request)) {
                 throw ApiProblem::urlNotFound();
             }
-            if ($filter instanceof PreflightFilter && !$filter->matches($request)) {
-                throw ApiProblem::forbidden();
-            }
         }
         // Transform the request before re-sending it so we don't send the
         // exact same request and end up in an infinite loop.
@@ -83,21 +76,14 @@ final class Proxy implements RequestHandlerInterface
         return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 
-    /**
-     * @return FilterInterface[]
-     */
     private static function createSearchFilters(FilterPathRegex $path, string $method): array
     {
         return [
             new PathFilter($path),
             new MethodFilter(new StringLiteral($method)),
-            new PreflightFilter($path, new StringLiteral($method)),
         ];
     }
 
-    /**
-     * @return FilterInterface[]
-     */
     private static function createCdbXmlFilters(string $accept): array
     {
         return [
