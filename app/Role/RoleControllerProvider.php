@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Role;
 
 use CultuurNet\UDB3\Http\Role\GetRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRolesFromCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUsersWithRoleRequestHandler;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
@@ -56,6 +57,10 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         $app[GetRolesFromUserRequestHandler::class] = $app->share(
             fn (Application $app) => new GetRolesFromUserRequestHandler($app['user_roles_repository'])
+        );
+
+        $app[GetRolesFromCurrentUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetRolesFromCurrentUserRequestHandler($app['user_roles_repository'], $app[CurrentUser::class]->getId())
         );
 
         /** @var ControllerCollection $controllers */
@@ -138,10 +143,7 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/users/{userId}/roles/', GetRolesFromUserRequestHandler::class);
 
-        $controllers->get(
-            '/user/roles/',
-            'role_controller:getCurrentUserRoles'
-        );
+        $controllers->get('/user/roles/', GetRolesFromCurrentUserRequestHandler::class);
 
         return $controllers;
     }
