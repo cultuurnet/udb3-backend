@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
-use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -25,8 +24,8 @@ class UiTPASServiceOrganizerControllerProvider implements ControllerProviderInte
 
     public function register(Application $app): void
     {
-        $app[GetCardSystemsFromEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetCardSystemsFromEventRequestHandler($app['uitpas'])
+        $app[GetCardSystemsFromOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetCardSystemsFromOrganizerRequestHandler($app['uitpas'])
         );
     }
 
