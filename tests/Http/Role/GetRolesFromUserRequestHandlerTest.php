@@ -49,7 +49,7 @@ class GetRolesFromUserRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it(): void
+    public function it_responds_with_an_array_of_roles_for_a_given_user_id(): void
     {
         $userId = '132c7cdd-d771-4c81-bca1-ba9b93b1f42b';
 
