@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
 use CultuurNet\UDB3\Http\Proxy\Filter\PathFilter;
-use CultuurNet\UDB3\Http\Proxy\Filter\PreflightFilter;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
 use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
