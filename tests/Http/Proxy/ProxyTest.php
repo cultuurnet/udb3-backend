@@ -33,14 +33,14 @@ final class ProxyTest extends TestCase
         $this->searchProxy = Proxy::createForSearch(
             new FilterPathRegex('^\/(events|places|organizers|offers)\/?$'),
             'GET',
-            new Hostname('search.uitdatabank.dev'),
+            new Hostname('search.uitdatabank.be'),
             new PortNumber(443),
             new Client()
         );
 
         $this->cdbXmlProxy = Proxy::createForCdbXml(
             'application/xml',
-            new Hostname('cdbxml.uitdatabank.dev'),
+            new Hostname('cdbxml.uitdatabank.be'),
             new PortNumber(443),
             new Client()
         );
@@ -54,7 +54,7 @@ final class ProxyTest extends TestCase
     public function it_handles_valid_requests(): void
     {
         $searchRequest = $this->psr7RequestBuilder
-            ->withUriFromString('https://search.uitdatabank.dev/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
+            ->withUriFromString('https://search.uitdatabank.be/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
             ->build('GET');
 
         $response = $this->searchProxy->handle($searchRequest);
@@ -83,7 +83,7 @@ final class ProxyTest extends TestCase
     public function it_throws_on_requests_with_invalid_method(): void
     {
         $searchRequest = $this->psr7RequestBuilder
-            ->withUriFromString('https://search.uitdatabank.dev/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
+            ->withUriFromString('https://search.uitdatabank.be/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
             ->build('POST');
 
         $this->assertCallableThrowsApiProblem(
