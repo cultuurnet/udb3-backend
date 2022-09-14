@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Role;
 
 use CultuurNet\UDB3\Http\Role\GetPermissionsRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRoleLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRolesFromCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
@@ -77,6 +78,10 @@ class RoleControllerProvider implements ControllerProviderInterface
             )
         );
 
+        $app[GetRoleLabelsRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetRoleLabelsRequestHandler($app['role_labels_read_repository'])
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -128,10 +133,7 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:removePermission'
         );
 
-        $controllers->get(
-            '/roles/{roleId}/labels/',
-            'role_controller:getRoleLabels'
-        );
+        $controllers->get('/roles/{roleId}/labels/', GetRoleLabelsRequestHandler::class);
 
         $controllers->put(
             '/roles/{roleId}/labels/{labelIdentifier}/',
