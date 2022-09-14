@@ -21,13 +21,13 @@ class JSONLDEventFormatter
      */
     protected $includedTerms;
 
-    private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
+    private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
      * @param string[]|null $include A list of properties to include when
      * formatting the events.
      */
-    public function __construct($include = null, CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
+    public function __construct($include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
         if ($calendarSummaryRepository) {
             $this->calendarSummaryRepository = $calendarSummaryRepository;
@@ -115,7 +115,7 @@ class JSONLDEventFormatter
                 $eventObject->terms = array_values($filteredTerms);
             }
 
-            if (in_array('calendarSummary', $includedProperties)) {
+            if (isset($this->calendarSummaryRepository) && in_array('calendarSummary', $includedProperties)) {
                 $urlParts = explode('/', $eventObject->{'@id'});
                 $eventId = array_pop($urlParts);
                 $eventObject->calendarSummary = $this->addCalendarSummary($eventId);

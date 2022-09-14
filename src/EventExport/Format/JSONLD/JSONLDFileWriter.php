@@ -14,9 +14,7 @@ class JSONLDFileWriter implements FileWriterInterface
      */
     protected $eventFormatter;
 
-    private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
-
-    public function __construct($include = null, CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
+    public function __construct($include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
         $this->eventFormatter = new JSONLDEventFormatter($include, $calendarSummaryRepository);
     }

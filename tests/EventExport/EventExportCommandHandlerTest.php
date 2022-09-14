@@ -63,7 +63,7 @@ class EventExportCommandHandlerTest extends TestCase
         $this->eventExportService->expects($this->once())
             ->method('exportEvents')
             ->with(
-                new JSONLDFileFormat($exportEventsAsJsonLD->getInclude()),
+                new JSONLDFileFormat($exportEventsAsJsonLD->getInclude(), null),
                 new EventExportQuery('query'),
                 new EmailAddress('jane@anonymous.com'),
                 $this->logger,
