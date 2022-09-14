@@ -34,7 +34,7 @@ final class GetCardSystemsFromOrganizerRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_card_systems_of_an_event(): void
+    public function it_can_get_card_systems_of_an_organizer(): void
     {
         $organizerId = 'db93a8d0-331a-4575-a23d-2c78d4ceb925';
 
@@ -82,7 +82,7 @@ final class GetCardSystemsFromOrganizerRequestHandlerTest extends TestCase
         $resultSet->total = 2;
 
         $this->uitpas->expects($this->once())
-            ->method('getCardSystemsForEvent')
+            ->method('getCardSystemsForOrganizer')
             ->with($organizerId)
             ->willReturn($resultSet);
 

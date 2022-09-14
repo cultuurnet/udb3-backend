@@ -22,9 +22,9 @@ final class GetCardSystemsFromOrganizerRequestHandler implements RequestHandlerI
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $eventId = (new RouteParameters($request))->getOrganizerId();
+        $organizerId = (new RouteParameters($request))->getOrganizerId();
 
-        $cardSystems = $this->uitpas->getCardSystemsForEvent($eventId);
+        $cardSystems = $this->uitpas->getCardSystemsForOrganizer($organizerId);
         return new CardSystemsJsonResponse($cardSystems->objects);
     }
 }
