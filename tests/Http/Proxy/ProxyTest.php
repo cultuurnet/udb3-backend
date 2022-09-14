@@ -61,49 +61,4 @@ final class ProxyTest extends TestCase
 
         $this->assertTrue(is_subclass_of(get_class($response), ResponseInterface::class));
     }
-
-    /**
-     * @test
-     */
-    public function it_throws_on_requests_with_invalid_accept(): void
-    {
-        $cdbXmlRequest = $this->psr7RequestBuilder
-            ->withHeader('Accept', 'application/json')
-            ->build('GET');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::notAcceptable(),
-            fn () => $this->cdbXmlProxy->handle($cdbXmlRequest)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_on_requests_with_invalid_method(): void
-    {
-        $searchRequest = $this->psr7RequestBuilder
-            ->withUriFromString('https://search.uitdatabank.be/offers?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
-            ->build('POST');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::methodNotAllowed(),
-            fn () => $this->searchProxy->handle($searchRequest)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_on_requests_with_invalid_path(): void
-    {
-        $searchRequest = $this->psr7RequestBuilder
-            ->withUriFromString('https://search.foo.bar/plaatsen?apiKey=fa4e7657-fd68-4797-97f8-99daf6adf1a3')
-            ->build('GET');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::urlNotFound(),
-            fn () => $this->searchProxy->handle($searchRequest)
-        );
-    }
 }
