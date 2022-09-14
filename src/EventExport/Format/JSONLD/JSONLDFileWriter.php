@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
 
 class JSONLDFileWriter implements FileWriterInterface
@@ -13,9 +14,11 @@ class JSONLDFileWriter implements FileWriterInterface
      */
     protected $eventFormatter;
 
-    public function __construct($include = null)
+    private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
+
+    public function __construct($include = null, CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
-        $this->eventFormatter = new JSONLDEventFormatter($include);
+        $this->eventFormatter = new JSONLDEventFormatter($include, $calendarSummaryRepository);
     }
 
     /**

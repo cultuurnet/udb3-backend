@@ -68,7 +68,10 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
         ExportEventsAsJsonLD $exportCommand
     ): void {
         $this->eventExportService->exportEvents(
-            new JSONLDFileFormat($exportCommand->getInclude()),
+            new JSONLDFileFormat(
+                $exportCommand->getInclude(),
+                $this->calendarSummaryRepository
+            ),
             $exportCommand->getQuery(),
             $exportCommand->getAddress(),
             $this->logger,

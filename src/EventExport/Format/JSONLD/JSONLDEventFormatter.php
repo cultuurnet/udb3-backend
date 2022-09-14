@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
+use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
+
 class JSONLDEventFormatter
 {
     /**
@@ -16,12 +21,18 @@ class JSONLDEventFormatter
      */
     protected $includedTerms;
 
+    private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
+
     /**
      * @param string[]|null $include A list of properties to include when
      * formatting the events.
      */
-    public function __construct($include = null)
+    public function __construct($include = null, CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
+        if ($calendarSummaryRepository) {
+            $this->calendarSummaryRepository = $calendarSummaryRepository;
+        }
+
         if ($include) {
             $include[] = '@id';
             // The address property is nested inside location.
@@ -110,7 +121,6 @@ class JSONLDEventFormatter
                     unset($eventObject->{$propertyName});
                 }
             }
-
 
             $event = json_encode($eventObject);
         }
