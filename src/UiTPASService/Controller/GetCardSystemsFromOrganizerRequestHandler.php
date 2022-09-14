@@ -24,7 +24,7 @@ final class GetCardSystemsFromOrganizerRequestHandler implements RequestHandlerI
     {
         $eventId = (new RouteParameters($request))->getOrganizerId();
 
-        $cardSystems = $this->uitpas->getCardSystemsForEvent($eventId);
+        $cardSystems = $this->uitpas->getCardSystemsForOrganizer($eventId);
         return new CardSystemsJsonResponse($cardSystems->objects);
     }
 }
