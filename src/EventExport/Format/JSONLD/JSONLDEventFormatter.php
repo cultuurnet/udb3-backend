@@ -115,6 +115,12 @@ class JSONLDEventFormatter
                 $eventObject->terms = array_values($filteredTerms);
             }
 
+            if (in_array('calendarSummary', $includedProperties)) {
+                $urlParts = explode('/', $eventObject->{'@id'});
+                $eventId = array_pop($urlParts);
+                $eventObject->calendarSummary = $this->addCalendarSummary($eventId);
+            }
+
             // filter out base properties
             foreach ($eventObject as $propertyName => $value) {
                 if (!in_array($propertyName, $includedProperties)) {
@@ -126,5 +132,15 @@ class JSONLDEventFormatter
         }
 
         return $event;
+    }
+
+    private function addCalendarSummary(string $eventId): string
+    {
+        try {
+            $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::sm());
+        } catch (SummaryUnavailableException $exception) {
+            $calendarSummary = $exception->getMessage();
+        }
+        return $calendarSummary;
     }
 }
