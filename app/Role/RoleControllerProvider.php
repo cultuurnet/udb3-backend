@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Role\GetPermissionsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRolesFromCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetUserPermissionsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUsersWithRoleRequestHandler;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -68,6 +69,14 @@ class RoleControllerProvider implements ControllerProviderInterface
             fn (Application $app) => new GetPermissionsRequestHandler()
         );
 
+        $app[GetUserPermissionsRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetUserPermissionsRequestHandler(
+                $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY],
+                $app[CurrentUser::class]->getId(),
+                $app[CurrentUser::class]->isGodUser(),
+            )
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -105,8 +114,7 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/permissions/', GetPermissionsRequestHandler::class);
 
-        $controllers
-            ->get('/user/permissions/', 'role_controller:getUserPermissions');
+        $controllers->get('/user/permissions/', GetUserPermissionsRequestHandler::class);
 
         $controllers->get('/roles/{roleId}/users/', GetUsersWithRoleRequestHandler::class);
 
