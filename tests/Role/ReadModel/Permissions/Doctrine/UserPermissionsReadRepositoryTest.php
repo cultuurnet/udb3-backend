@@ -46,7 +46,7 @@ class UserPermissionsReadRepositoryTest extends TestCase
      */
     public function it_should_return_the_permissions_for_a_user_that_are_granted_by_his_roles(): void
     {
-        $userId = new StringLiteral('7D23021B-C9AA-4B64-97A5-ECA8168F4A27');
+        $userId = '7D23021B-C9AA-4B64-97A5-ECA8168F4A27';
         $roleId = new StringLiteral('7B6A161E-987B-4069-8BB2-9956B01782CB');
         $otherRoleId = new StringLiteral('8B6A161E-987B-8069-8BB2-9856B01782CB');
 
@@ -55,7 +55,7 @@ class UserPermissionsReadRepositoryTest extends TestCase
             $this->userRoleTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-                SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
+                SchemaConfigurator::USER_ID_COLUMN => $userId,
             ]
         );
 
@@ -64,7 +64,7 @@ class UserPermissionsReadRepositoryTest extends TestCase
             $this->userRoleTableName,
             [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $otherRoleId,
-                SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
+                SchemaConfigurator::USER_ID_COLUMN => $userId,
             ]
         );
 
@@ -116,7 +116,7 @@ class UserPermissionsReadRepositoryTest extends TestCase
             true
         );
 
-        $otherUserPermissions = $this->repository->getPermissions(new StringLiteral('otherUserId'));
+        $otherUserPermissions = $this->repository->getPermissions('otherUserId');
         $this->assertEmpty($otherUserPermissions);
     }
 

@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\StringLiteral;
 
 class ReadRoleRestController
 {
@@ -107,14 +106,12 @@ class ReadRoleRestController
 
     public function getUserPermissions(): Response
     {
-        $userId = new StringLiteral($this->currentUserId);
-
         if ($this->userIsGodUser) {
             $list = $this->createPermissionsList(Permission::getAllPermissions());
         } else {
             $list = array_map(
                 fn (Permission $permission) => $permission->toUpperCaseString(),
-                $this->permissionsRepository->getPermissions($userId)
+                $this->permissionsRepository->getPermissions($this->currentUserId)
             );
         }
 

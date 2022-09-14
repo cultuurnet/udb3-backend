@@ -31,7 +31,7 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     /**
      * @return Permission[]
      */
-    public function getPermissions(StringLiteral $userId): array
+    public function getPermissions(string $userId): array
     {
         $userRoleQuery = $this->connection->createQueryBuilder()
             ->select(SchemaConfigurator::ROLE_ID_COLUMN)
@@ -47,7 +47,7 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
                 'up',
                 'rp.' . SchemaConfigurator::ROLE_ID_COLUMN . ' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
             )
-            ->setParameter('userId', (string) $userId);
+            ->setParameter('userId', $userId);
 
         $results = $userPermissionQuery->execute()->fetchAll(PDO::FETCH_COLUMN);
 
