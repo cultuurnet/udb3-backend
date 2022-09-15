@@ -18,18 +18,6 @@ class RoleReadingServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['role_reading_service'] = $app->share(
-            function ($app) {
-                return new LocalRoleReadingService(
-                    $app['role_read_repository'],
-                    $app['real_role_repository'],
-                    $app['role_iri_generator'],
-                    $app['role_labels_read_repository'],
-                    $app['role_users_read_repository'],
-                    $app['user_roles_repository']
-                );
-            }
-        );
     }
 
     /**
