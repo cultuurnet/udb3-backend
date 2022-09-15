@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\Role\GetRolesFromCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUserPermissionsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUsersWithRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\RolesSearchRequestHandler;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
@@ -82,11 +83,14 @@ class RoleControllerProvider implements ControllerProviderInterface
             fn (Application $app) => new GetRoleLabelsRequestHandler($app['role_labels_read_repository'])
         );
 
+        $app[RolesSearchRequestHandler::class] = $app->share(
+            fn (Application $app) => new RolesSearchRequestHandler($app['role_search_v3_repository'])
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers
-            ->get('/roles/', 'role_controller:search');
+        $controllers->get('/roles/', RolesSearchRequestHandler::class);
 
         $controllers->post(
             '/roles/',

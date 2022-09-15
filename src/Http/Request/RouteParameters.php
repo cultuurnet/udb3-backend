@@ -34,6 +34,15 @@ final class RouteParameters
         throw new RuntimeException('Route parameter ' . $parameterName . ' not found in given ServerRequestInterface!');
     }
 
+    public function getWithDefault(string $parameterName, string $default): string
+    {
+        if (!$this->has($parameterName)) {
+            return $default;
+        }
+
+        return $this->get($parameterName) ?: $default;
+    }
+
     public function has(string $parameterName): bool
     {
         // The League router puts the parameters directly in the request attributes.
