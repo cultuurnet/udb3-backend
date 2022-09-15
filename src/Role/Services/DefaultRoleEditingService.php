@@ -47,7 +47,7 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
         $uuid = new UUID($this->uuidGenerator->generate());
         $command = new CreateRole(
             $uuid,
-            $name
+            $name->toNative()
         );
 
         $this->commandBus->dispatch($command);

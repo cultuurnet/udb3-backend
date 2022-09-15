@@ -33,7 +33,7 @@ class CreateRoleTest extends TestCase
 
         $this->createRole = new CreateRole(
             $this->uuid,
-            $this->name
+            $this->name->toNative()
         );
     }
 

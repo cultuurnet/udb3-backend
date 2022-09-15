@@ -9,14 +9,11 @@ use CultuurNet\UDB3\StringLiteral;
 
 class CreateRole extends AbstractCommand
 {
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private string $name;
 
     public function __construct(
         UUID $uuid,
-        StringLiteral $name
+        string $name
     ) {
         parent::__construct($uuid);
 
@@ -25,6 +22,6 @@ class CreateRole extends AbstractCommand
 
     public function getName(): StringLiteral
     {
-        return $this->name;
+        return new StringLiteral($this->name);
     }
 }

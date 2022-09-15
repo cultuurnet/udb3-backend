@@ -75,7 +75,7 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->createRole = new CreateRole(
             $this->uuid,
-            new StringLiteral('roleName')
+            'roleName'
         );
 
         $this->renameRole = new RenameRole(

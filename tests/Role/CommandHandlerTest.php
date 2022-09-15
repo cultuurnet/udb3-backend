@@ -151,7 +151,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([])
             ->when(new CreateRole(
                 $this->uuid,
-                $this->name
+                $this->name->toNative()
             ))
             ->then([$this->roleCreated]);
     }
