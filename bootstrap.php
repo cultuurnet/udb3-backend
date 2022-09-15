@@ -710,18 +710,6 @@ $app['user_roles_projector'] = $app->share(
     }
 );
 
-$app['role_service'] = $app->share(
-    function ($app) {
-        $service = new \CultuurNet\UDB3\LocalEntityService(
-            $app['role_read_repository'],
-            $app['real_role_repository'],
-            $app['role_iri_generator']
-        );
-
-        return $service;
-    }
-);
-
 $app['role_permissions_cache'] = $app->share(
     function ($app) {
         return $app['cache']('role_permissions');
