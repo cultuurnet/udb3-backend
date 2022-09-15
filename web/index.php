@@ -56,24 +56,6 @@ $app->register(new RequestHandlerControllerServiceProvider());
 $app->register(new PsrRouterServiceProvider());
 
 /**
- * Middleware that proxies application/xml requests to the XML service.
- * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
- * (To be discussed if this is actually still needed now that all XML APIs are offline and no longer supported!)
- */
-if (isset($app['config']['cdbxml_proxy']) &&
-    $app['config']['cdbxml_proxy']['enabled']) {
-    $app->before(
-        function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Http\Proxy\CdbXmlProxy $cdbXmlProxy */
-            $cdbXmlProxy = $app['cdbxml_proxy'];
-
-            return $cdbXmlProxy->handle($request);
-        },
-        Application::EARLY_EVENT
-    );
-}
-
-/**
  * Middleware that proxies requests for GET /events, GET /places and GET /organizers to Search API.
  * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
  */

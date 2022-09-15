@@ -20,19 +20,6 @@ class ProxyServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['cdbxml_proxy'] = $app->share(
-            function ($app) {
-                return new CdbXmlProxy(
-                    new StringLiteral($app['config']['cdbxml_proxy']['accept']),
-                    new Hostname($app['config']['cdbxml_proxy']['redirect_domain']),
-                    new PortNumber($app['config']['cdbxml_proxy']['redirect_port']),
-                    new DiactorosFactory(),
-                    new HttpFoundationFactory(),
-                    new Client()
-                );
-            }
-        );
-
         $app['search_proxy'] = $app->share(
             function ($app) {
                 return $app['get_request_proxy_factory'](
