@@ -8,6 +8,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterfa
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
+use CultuurNet\UDB3\Json;
 
 class JSONLDEventFormatter
 {
@@ -94,7 +95,7 @@ class JSONLDEventFormatter
         $includedTerms = $this->includedTerms;
 
         if ($includedProperties) {
-            $eventObject = json_decode($event);
+            $eventObject = Json::decode($event);
 
             // filter out terms
             if (property_exists($eventObject, 'terms') && $includedTerms) {
@@ -121,7 +122,7 @@ class JSONLDEventFormatter
                 }
             }
 
-            $event = json_encode($eventObject);
+            $event = Json::encode($eventObject);
         }
 
         return $event;
