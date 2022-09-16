@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
 
-class JSONLDFileWriter implements FileWriterInterface
+final class JSONLDFileWriter implements FileWriterInterface
 {
-    protected JSONLDEventFormatter $eventFormatter;
+    private JSONLDEventFormatter $eventFormatter;
 
     public function __construct($include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
@@ -19,7 +19,7 @@ class JSONLDFileWriter implements FileWriterInterface
     /**
      * @return Resource
      */
-    protected function openFile(string $filePath)
+    private function openFile(string $filePath)
     {
         $file = fopen($filePath, 'w');
         if (false === $file) {
@@ -50,7 +50,7 @@ class JSONLDFileWriter implements FileWriterInterface
     /**
      * @param Resource $file
      */
-    protected function writeEvents($file, \Traversable $events): void
+    private function writeEvents($file, \Traversable $events): void
     {
         $first = true;
 

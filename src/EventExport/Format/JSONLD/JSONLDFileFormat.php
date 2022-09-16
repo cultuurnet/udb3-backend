@@ -7,12 +7,12 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\FileFormatInterface;
 
-class JSONLDFileFormat implements FileFormatInterface
+final class JSONLDFileFormat implements FileFormatInterface
 {
     /**
      * @var string[]
      */
-    protected ?array $include;
+    private ?array $include;
 
     private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
