@@ -47,7 +47,7 @@ class GetRoleLabelsRequestHandlerTest extends TestCase
      */
     public function it_returns_all_labels_for_a_role(): void
     {
-        $roleId = '';
+        $roleId = '2c160ac2-5f7f-4eb6-998d-498fa28f65ef';
 
         $labels = [
             '5355ddc5-3f09-4fb9-b535-056f19bd6997' => [
