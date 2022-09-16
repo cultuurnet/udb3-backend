@@ -17,10 +17,9 @@ class JSONLDFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param string $filePath
      * @return Resource
      */
-    protected function openFile($filePath)
+    protected function openFile(string $filePath)
     {
         $file = fopen($filePath, 'w');
         if (false === $file) {
@@ -49,8 +48,7 @@ class JSONLDFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param Resource     $file
-     * @param \Traversable $events
+     * @param Resource $file
      */
     protected function writeEvents($file, \Traversable $events): void
     {

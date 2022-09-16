@@ -14,19 +14,20 @@ class JSONLDEventFormatter
     /**
      * @var string[]
      */
-    protected ?array $includedProperties;
+    protected $includedProperties;
 
     /**
      * @var string[]
      */
-    protected array $includedTerms;
+    protected $includedTerms;
 
     private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
-     * @param string[]|null $include
+     * @param string[]|null $include A list of properties to include when
+     * formatting the events.
      */
-    public function __construct(array $include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
+    public function __construct($include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
         if ($calendarSummaryRepository) {
             $this->calendarSummaryRepository = $calendarSummaryRepository;
