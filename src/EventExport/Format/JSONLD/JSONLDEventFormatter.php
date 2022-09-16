@@ -131,7 +131,7 @@ class JSONLDEventFormatter
         try {
             $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::sm());
         } catch (SummaryUnavailableException $exception) {
-            $calendarSummary = $exception->getMessage();
+            $calendarSummary = '';
         }
         return $calendarSummary;
     }
