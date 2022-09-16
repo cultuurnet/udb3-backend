@@ -136,21 +136,6 @@ class DefaultRoleEditingServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_can_rename_a_role(): void
-    {
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($this->renameRole);
-
-        $this->roleEditingService->rename(
-            $this->uuid,
-            new StringLiteral('new roleName')
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_can_add_a_constraint(): void
     {
         $this->commandBus->expects($this->once())

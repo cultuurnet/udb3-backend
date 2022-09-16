@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Role\Commands\RemoveConstraint;
 use CultuurNet\UDB3\Role\Commands\RemoveLabel;
 use CultuurNet\UDB3\Role\Commands\RemovePermission;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
-use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
@@ -53,16 +52,6 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
         $this->commandBus->dispatch($command);
 
         return $uuid;
-    }
-
-    public function rename(UUID $uuid, StringLiteral $name): void
-    {
-        $command = new RenameRole(
-            $uuid,
-            $name
-        );
-
-        $this->commandBus->dispatch($command);
     }
 
     public function addPermission(UUID $uuid, Permission $permission): void
