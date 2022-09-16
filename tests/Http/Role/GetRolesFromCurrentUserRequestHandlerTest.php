@@ -22,7 +22,7 @@ class GetRolesFromCurrentUserRequestHandlerTest extends TestCase
 
     private string $currentUserId;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->userRolesRepository = new InMemoryDocumentRepository();
         $this->currentUserId = '132c7cdd-d771-4c81-bca1-ba9b93b1f42b';

@@ -20,7 +20,7 @@ class GetRolesFromUserRequestHandlerTest extends TestCase
 
     private DocumentRepository $userRolesRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->userRolesRepository = new InMemoryDocumentRepository();
 

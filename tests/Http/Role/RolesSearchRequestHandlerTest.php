@@ -23,7 +23,7 @@ class RolesSearchRequestHandlerTest extends TestCase
      */
     private $roleSearchRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->roleSearchRepository = $this->createMock(RepositoryInterface::class);
 
