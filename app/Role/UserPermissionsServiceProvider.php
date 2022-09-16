@@ -32,8 +32,8 @@ class UserPermissionsServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new UserPermissionsReadRepository(
                     $app['dbal_connection'],
-                    new StringLiteral(self::USER_ROLES_TABLE),
-                    new StringLiteral(self::ROLE_PERMISSIONS_TABLE)
+                    self::USER_ROLES_TABLE,
+                    self::ROLE_PERMISSIONS_TABLE
                 );
             }
         );

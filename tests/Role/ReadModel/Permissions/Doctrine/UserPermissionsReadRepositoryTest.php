@@ -16,18 +16,18 @@ class UserPermissionsReadRepositoryTest extends TestCase
 
     private UserPermissionsReadRepositoryInterface $repository;
 
-    private StringLiteral $userRoleTableName;
+    private string $userRoleTableName;
 
-    private StringLiteral $rolePermissionTableName;
+    private string $rolePermissionTableName;
 
     public function setUp(): void
     {
-        $this->userRoleTableName = new StringLiteral('user_role');
-        $this->rolePermissionTableName = new StringLiteral('role_permission');
+        $this->userRoleTableName = 'user_role';
+        $this->rolePermissionTableName = 'role_permission';
 
         $schemaConfigurator = new SchemaConfigurator(
-            $this->userRoleTableName,
-            $this->rolePermissionTableName
+            new StringLiteral($this->userRoleTableName),
+            new StringLiteral($this->rolePermissionTableName)
         );
 
         $schemaManager = $this->getConnection()->getSchemaManager();
@@ -47,14 +47,14 @@ class UserPermissionsReadRepositoryTest extends TestCase
     public function it_should_return_the_permissions_for_a_user_that_are_granted_by_his_roles(): void
     {
         $userId = '7D23021B-C9AA-4B64-97A5-ECA8168F4A27';
-        $roleId = new StringLiteral('7B6A161E-987B-4069-8BB2-9956B01782CB');
-        $otherRoleId = new StringLiteral('8B6A161E-987B-8069-8BB2-9856B01782CB');
+        $roleId = '7B6A161E-987B-4069-8BB2-9956B01782CB';
+        $otherRoleId = '8B6A161E-987B-8069-8BB2-9856B01782CB';
 
         // Add a role for the user
         $this->getConnection()->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
+                SchemaConfigurator::ROLE_ID_COLUMN => $roleId,
                 SchemaConfigurator::USER_ID_COLUMN => $userId,
             ]
         );
@@ -63,7 +63,7 @@ class UserPermissionsReadRepositoryTest extends TestCase
         $this->getConnection()->insert(
             $this->userRoleTableName,
             [
-                SchemaConfigurator::ROLE_ID_COLUMN => (string) $otherRoleId,
+                SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
                 SchemaConfigurator::USER_ID_COLUMN => $userId,
             ]
         );
