@@ -33,7 +33,7 @@ class RenameRoleTest extends TestCase
 
         $this->renameRole = new RenameRole(
             $this->uuid,
-            $this->name
+            $this->name->toNative()
         );
     }
 

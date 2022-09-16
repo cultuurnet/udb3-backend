@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Role\Commands\DeleteRole;
 use CultuurNet\UDB3\Role\Commands\RemoveConstraint;
 use CultuurNet\UDB3\Role\Commands\RemoveLabel;
 use CultuurNet\UDB3\Role\Commands\RemovePermission;
-use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
 use CultuurNet\UDB3\Role\RoleRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -34,7 +33,6 @@ class DefaultRoleEditingServiceTest extends TestCase
      */
     private $commandBus;
 
-
     protected TraceableEventStore $eventStore;
 
     private UUID $uuid;
@@ -42,8 +40,6 @@ class DefaultRoleEditingServiceTest extends TestCase
     private UUID $labelId;
 
     private CreateRole $createRole;
-
-    private RenameRole $renameRole;
 
     private AddPermission $addPermission;
 
@@ -76,11 +72,6 @@ class DefaultRoleEditingServiceTest extends TestCase
         $this->createRole = new CreateRole(
             $this->uuid,
             'roleName'
-        );
-
-        $this->renameRole = new RenameRole(
-            $this->uuid,
-            new StringLiteral('new roleName')
         );
 
         $this->addPermission = new AddPermission(

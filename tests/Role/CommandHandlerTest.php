@@ -166,7 +166,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$this->roleCreated])
             ->when(new RenameRole(
                 $this->uuid,
-                $this->name
+                $this->name->toNative()
             ))
             ->then([$this->roleRenamed]);
     }

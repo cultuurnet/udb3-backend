@@ -9,25 +9,19 @@ use CultuurNet\UDB3\StringLiteral;
 
 class RenameRole extends AbstractCommand
 {
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private string $name;
 
     public function __construct(
         UUID $uuid,
-        StringLiteral $name
+        string $name
     ) {
         parent::__construct($uuid);
 
         $this->name = $name;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): StringLiteral
     {
-        return $this->name;
+        return new StringLiteral($this->name);
     }
 }
