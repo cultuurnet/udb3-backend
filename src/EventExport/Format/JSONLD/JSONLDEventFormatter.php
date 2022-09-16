@@ -14,20 +14,19 @@ class JSONLDEventFormatter
     /**
      * @var string[]
      */
-    protected $includedProperties;
+    protected ?array $includedProperties;
 
     /**
      * @var string[]
      */
-    protected $includedTerms;
+    protected array $includedTerms;
 
     private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
-     * @param string[]|null $include A list of properties to include when
-     * formatting the events.
+     * @param string[]|null $include
      */
-    public function __construct($include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
+    public function __construct(array $include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
         if ($calendarSummaryRepository) {
             $this->calendarSummaryRepository = $calendarSummaryRepository;
@@ -41,7 +40,7 @@ class JSONLDEventFormatter
             if (in_array('address', $include)
                 && !in_array('location', $include)
             ) {
-                array_push($include, 'location');
+                $include[] = 'location';
             }
 
             // We include bookingInfo if one of its properties is wanted.
@@ -52,7 +51,7 @@ class JSONLDEventFormatter
             if (!empty($includedBookingInfoProperties)
                 && !in_array('bookingInfo', $include)
             ) {
-                array_push($include, 'bookingInfo');
+                $include[] = 'bookingInfo';
             }
 
             if (in_array('attendance', $include)) {
@@ -70,7 +69,7 @@ class JSONLDEventFormatter
         }
     }
 
-    private function filterTermsFromProperties($properties)
+    private function filterTermsFromProperties($properties): array
     {
         $termPrefix = 'terms.';
 
@@ -80,22 +79,15 @@ class JSONLDEventFormatter
                 return strpos($property, $termPrefix) === 0;
             }
         );
-        $terms = array_map(
+        return array_map(
             function ($term) use ($termPrefix) {
                 return str_replace($termPrefix, '', $term);
             },
             $prefixedTerms
         );
-
-        return $terms;
     }
 
-    /**
-     * @param   string $event A string representing an event in json-ld format
-     * @return  string  The event string formatted with all the included
-     *                  properties and terms
-     */
-    public function formatEvent($event)
+    public function formatEvent(string $event): string
     {
         $includedProperties = $this->includedProperties;
         $includedTerms = $this->includedTerms;

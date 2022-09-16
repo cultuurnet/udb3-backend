@@ -21,38 +21,19 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var EventExportServiceInterface
-     */
-    protected $eventExportService;
+    protected EventExportServiceInterface $eventExportService;
 
-    /**
-     * @var string
-     */
-    protected $princeXMLBinaryPath;
+    protected string $princeXMLBinaryPath;
 
-    /**
-     * @var EventInfoServiceInterface|null
-     */
-    protected $uitpas;
+    protected ?EventInfoServiceInterface $uitpas;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface
-     */
-    protected $calendarSummaryRepository;
+    protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
-    /**
-     * @var Twig_Environment|null
-     */
-    private $twig;
+    private ?Twig_Environment $twig;
 
-    /**
-     * @param string                             $princeXMLBinaryPath
-     * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
-     */
     public function __construct(
         EventExportServiceInterface $eventExportService,
-        $princeXMLBinaryPath,
+        string $princeXMLBinaryPath,
         EventInfoServiceInterface $uitpas = null,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
         Twig_Environment $twig = null
