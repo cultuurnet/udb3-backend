@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Role;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -45,7 +46,7 @@ class RolesSearchRequestHandlerTest extends TestCase
             ->with($search, $limit, $start)
             ->willReturn(new Results($limit, [], 0));
 
-        $expectedResults = json_encode((object) [
+        $expectedResults = Json::encode((object) [
             'itemsPerPage' => $limit,
             'member' => [],
             'totalItems' => 0,
@@ -78,7 +79,7 @@ class RolesSearchRequestHandlerTest extends TestCase
             ->with('', '10', '0')
             ->willReturn(new Results(10, [], 0));
 
-        $expectedResults = json_encode((object) [
+        $expectedResults = Json::encode((object) [
             'itemsPerPage' => 10,
             'member' => [],
             'totalItems' => 0,
