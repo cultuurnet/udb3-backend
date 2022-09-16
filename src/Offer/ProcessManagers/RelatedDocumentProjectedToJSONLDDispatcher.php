@@ -67,6 +67,10 @@ final class RelatedDocumentProjectedToJSONLDDispatcher implements EventListener
 
     private function handlePlaceProjectedToJSONLD(PlaceProjectedToJSONLD $placeProjectedToJSONLD): void
     {
+        if ($placeProjectedToJSONLD->isUpdatingEventsLocatedAtPlaceDisabled()) {
+            return;
+        }
+
         $placeId = $placeProjectedToJSONLD->getItemId();
 
         // In theory the event relations repository should only return unique event ids for a given place id, but to be
