@@ -118,7 +118,7 @@ class JSONLDEventFormatter
             if (isset($this->calendarSummaryRepository) && in_array('calendarSummary', $includedProperties)) {
                 $urlParts = explode('/', $eventObject->{'@id'});
                 $eventId = array_pop($urlParts);
-                $eventObject->calendarSummary = $this->addCalendarSummary($eventId);
+                $eventObject->calendarSummary = $this->getCalendarSummary($eventId);
             }
 
             // filter out base properties
@@ -134,7 +134,7 @@ class JSONLDEventFormatter
         return $event;
     }
 
-    private function addCalendarSummary(string $eventId): string
+    private function getCalendarSummary(string $eventId): string
     {
         try {
             $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::sm());
