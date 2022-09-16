@@ -10,7 +10,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use CultuurNet\UDB3\Json;
 
-class JSONLDEventFormatter
+final class JSONLDEventFormatter
 {
     /**
      * @var string[]|null
