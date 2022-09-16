@@ -8,6 +8,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
@@ -105,6 +106,10 @@ class ReindexOffersWithPopularityScore extends Command
     private function handleEvent(string $id): void
     {
         $projectedEvent = $this->eventFactoryForEvents->createEvent($id);
+
+        if ($projectedEvent instanceof PlaceProjectedToJSONLD) {
+            $projectedEvent = $projectedEvent->disableUpdatingEventsLocatedAtPlace();
+        }
 
         $this->eventBus->publish(
             new DomainEventStream(
