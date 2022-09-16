@@ -11,7 +11,6 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Headers;
 
 class GetUserPermissionsRequestHandler implements RequestHandlerInterface
 {
@@ -51,8 +50,7 @@ class GetUserPermissionsRequestHandler implements RequestHandlerInterface
 
         return new JsonResponse(
             $permissions,
-            StatusCodeInterface::STATUS_OK,
-            new Headers(['Cache-Control' => 'private'])
+            StatusCodeInterface::STATUS_OK
         );
     }
 }

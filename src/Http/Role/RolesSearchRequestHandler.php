@@ -11,7 +11,6 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Headers;
 
 class RolesSearchRequestHandler implements RequestHandlerInterface
 {
@@ -40,8 +39,7 @@ class RolesSearchRequestHandler implements RequestHandlerInterface
 
         return new JsonResponse(
             $data,
-            StatusCodeInterface::STATUS_OK,
-            new Headers(['Cache-Control' => 'private'])
+            StatusCodeInterface::STATUS_OK
         );
     }
 }

@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Headers;
 
 class RolesSearchRequestHandlerTest extends TestCase
 {
@@ -62,8 +61,7 @@ class RolesSearchRequestHandlerTest extends TestCase
 
         $expectedResponse = new JsonResponse(
             $expectedResults,
-            200,
-            new Headers(['Cache-Control' => 'private'])
+            200
         );
 
         $this->assertJsonResponse($expectedResponse, $actualResponse);
@@ -93,8 +91,7 @@ class RolesSearchRequestHandlerTest extends TestCase
 
         $expectedResponse = new JsonResponse(
             $expectedResults,
-            200,
-            new Headers(['Cache-Control' => 'private'])
+            200
         );
 
         $this->assertJsonResponse($expectedResponse, $actualResponse);

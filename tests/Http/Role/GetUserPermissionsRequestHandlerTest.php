@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInte
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Headers;
 
 class GetUserPermissionsRequestHandlerTest extends TestCase
 {
@@ -63,8 +62,7 @@ class GetUserPermissionsRequestHandlerTest extends TestCase
 
         $this->assertJsonResponse(new JsonResponse(
             $expectedPermissions,
-            200,
-            new Headers(['Cache-Control' => 'private'])
+            200
         ), $response);
     }
 
@@ -102,8 +100,7 @@ class GetUserPermissionsRequestHandlerTest extends TestCase
 
         $this->assertJsonResponse(new JsonResponse(
             $expectedPermissions,
-            200,
-            new Headers(['Cache-Control' => 'private'])
+            200
         ), $response);
     }
 }

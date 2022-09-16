@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Headers;
 
 class GetPermissionsRequestHandlerTest extends TestCase
 {
@@ -45,8 +44,7 @@ class GetPermissionsRequestHandlerTest extends TestCase
 
         $this->assertJsonResponse(new JsonResponse(
             $permissions,
-            200,
-            new Headers(['Cache-Control' => 'private'])
+            200
         ), $response);
     }
 }
