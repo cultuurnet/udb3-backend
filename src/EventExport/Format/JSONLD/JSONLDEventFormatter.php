@@ -13,22 +13,21 @@ use CultuurNet\UDB3\Json;
 class JSONLDEventFormatter
 {
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    protected $includedProperties;
+    private ?array $includedProperties;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    protected $includedTerms;
+    private ?array $includedTerms = null;
 
     private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
-     * @param string[]|null $include A list of properties to include when
-     * formatting the events.
+     * @param string[]|null $include
      */
-    public function __construct($include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
+    public function __construct(?array $include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
         if ($calendarSummaryRepository) {
             $this->calendarSummaryRepository = $calendarSummaryRepository;
