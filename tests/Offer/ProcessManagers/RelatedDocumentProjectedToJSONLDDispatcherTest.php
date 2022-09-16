@@ -88,6 +88,54 @@ final class RelatedDocumentProjectedToJSONLDDispatcherTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_dispatch_event_projected_to_jsonld_when_disabled(): void
+    {
+        $placeId = 'de61f344-fd6f-48c3-9bab-1aa2cc29741d';
+        $disabledPlaceId = 'ac04aa1e-fc5b-4873-bb47-c721e765a446';
+        $placeIds = [$placeId, $disabledPlaceId];
+
+        $this->eventRelationsRepository->storePlace('ed6a8bb2-66bb-450c-938f-a969354775b3', $placeId);
+        $this->eventRelationsRepository->storePlace('8dc2f84d-46c4-4098-946d-a8feb56f8e03', $disabledPlaceId);
+
+        $expectedMessages = [
+            new EventProjectedToJSONLD(
+                'ed6a8bb2-66bb-450c-938f-a969354775b3',
+                'https://io.uitdatabank.dev/events/ed6a8bb2-66bb-450c-938f-a969354775b3'
+            ),
+        ];
+
+        foreach ($placeIds as $placeId) {
+            $placeProjectedToJSONLD = new PlaceProjectedToJSONLD(
+                $placeId,
+                'https://io.uitdatabank.dev/places/' . $placeId
+            );
+
+            if ($placeId === $disabledPlaceId) {
+                $placeProjectedToJSONLD = $placeProjectedToJSONLD->disableUpdatingEventsLocatedAtPlace();
+            }
+
+            $this->relatedDocumentProjectedToJSONLDDispatcher->handle(
+                DomainMessage::recordNow(
+                    $placeId,
+                    0,
+                    new Metadata(),
+                    $placeProjectedToJSONLD
+                )
+            );
+        }
+
+        $actualMessages = $this->eventBus->getEvents();
+        $this->assertEquals($expectedMessages, $actualMessages);
+
+        $domainMessages = $this->eventBus->getDomainMessages();
+        foreach ($domainMessages as $domainMessage) {
+            $this->assertTrue(RelatedDocumentProjectedToJSONLDDispatcher::hasDispatchedMessage($domainMessage));
+        }
+    }
+
+    /**
+     * @test
+     */
     public function it_dispatches_a_projected_to_jsonld_message_for_every_event_and_place_related_to_an_updated_organizer(): void
     {
         $organizerId = 'd5c2ccca-1b60-4bd1-87a7-fa0373090723';
