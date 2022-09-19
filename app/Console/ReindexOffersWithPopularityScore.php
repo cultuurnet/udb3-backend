@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\Domain\DomainEventStream;
+use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
@@ -106,10 +110,18 @@ class ReindexOffersWithPopularityScore extends Command
     {
         $offerProjectedToJSONLD = $this->eventFactoryForOffers->createEvent($id);
 
+        if ($offerProjectedToJSONLD instanceof PlaceProjectedToJSONLD) {
+            InterceptingMiddleware::startIntercepting(
+                static fn (DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD
+            );
+        }
+
         $this->eventBus->publish(
             new DomainEventStream(
                 [(new DomainMessageBuilder())->create($offerProjectedToJSONLD)]
             )
         );
+
+        InterceptingMiddleware::stopIntercepting();
     }
 }
