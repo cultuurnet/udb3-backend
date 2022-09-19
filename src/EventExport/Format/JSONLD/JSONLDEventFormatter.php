@@ -22,16 +22,14 @@ final class JSONLDEventFormatter
      */
     private ?array $includedTerms = null;
 
-    private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
+    private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
-     * @param string[]|null $include
+     * @param string[] $include
      */
-    public function __construct(?array $include = null, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
+    public function __construct(array $include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
     {
-        if ($calendarSummaryRepository) {
-            $this->calendarSummaryRepository = $calendarSummaryRepository;
-        }
+        $this->calendarSummaryRepository = $calendarSummaryRepository;
 
         if ($include) {
             $include[] = '@id';
@@ -130,7 +128,7 @@ final class JSONLDEventFormatter
     private function getCalendarSummary(string $eventId): string
     {
         try {
-            $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::sm());
+            $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::md());
         } catch (SummaryUnavailableException $exception) {
             $calendarSummary = '';
         }
