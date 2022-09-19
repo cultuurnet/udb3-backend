@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
@@ -118,9 +119,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->iriOfferIdentifierFactory = $this->createMock(IriOfferIdentifierFactoryInterface::class);
         $this->cdbXMLImporter = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
-                new PriceDescriptionParser(
-                    new NumberFormatRepository(),
-                    new CurrencyRepository()
+                new CdbXmlPriceInfoParser(
+                    new PriceDescriptionParser(
+                        new NumberFormatRepository(),
+                        new CurrencyRepository()
+                    )
                 ),
                 [
                     'nl' => 'Basistarief',

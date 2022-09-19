@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
@@ -71,9 +72,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $cdbXMLImporter = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
-                new PriceDescriptionParser(
-                    new NumberFormatRepository(),
-                    new CurrencyRepository()
+                new CdbXmlPriceInfoParser(
+                    new PriceDescriptionParser(
+                        new NumberFormatRepository(),
+                        new CurrencyRepository()
+                    )
                 ),
                 [
                     'nl' => 'Basistarief',
