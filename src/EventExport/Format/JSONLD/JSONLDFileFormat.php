@@ -14,14 +14,14 @@ final class JSONLDFileFormat implements FileFormatInterface
      */
     private ?array $include;
 
-    private ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
+    private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
      * @param null|string[] $include
      */
     public function __construct(
         ?array $include = null,
-        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
     ) {
         $this->include = $include;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
