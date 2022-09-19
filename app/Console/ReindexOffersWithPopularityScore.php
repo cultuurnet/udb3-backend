@@ -25,18 +25,18 @@ class ReindexOffersWithPopularityScore extends Command
 
     private EventBus $eventBus;
 
-    private DocumentEventFactory $eventFactoryForEvents;
+    private DocumentEventFactory $eventFactoryForOffers;
 
     public function __construct(
         OfferType $type,
         Connection $connection,
         EventBus $eventBus,
-        DocumentEventFactory $eventFactoryForEvents
+        DocumentEventFactory $eventFactoryForOffers
     ) {
         $this->type = \strtolower($type->toString());
         $this->connection = $connection;
         $this->eventBus = $eventBus;
-        $this->eventFactoryForEvents = $eventFactoryForEvents;
+        $this->eventFactoryForOffers = $eventFactoryForOffers;
 
         // It's important to call the parent constructor after setting the properties.
         // Because the parent constructor calls the `configure` method.
@@ -104,11 +104,11 @@ class ReindexOffersWithPopularityScore extends Command
 
     private function handleEvent(string $id): void
     {
-        $projectedEvent = $this->eventFactoryForEvents->createEvent($id);
+        $offerProjectedToJSONLD = $this->eventFactoryForOffers->createEvent($id);
 
         $this->eventBus->publish(
             new DomainEventStream(
-                [(new DomainMessageBuilder())->create($projectedEvent)]
+                [(new DomainMessageBuilder())->create($offerProjectedToJSONLD)]
             )
         );
     }
