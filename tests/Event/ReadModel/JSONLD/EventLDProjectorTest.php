@@ -815,7 +815,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_adds_a_bookingInfo_property_when_cdbxml_has_pricevalue(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
-            'samples/event_with_price_value.cdbxml.xml'
+            'samples/event_with_price_value_and_description.cdbxml.xml'
         );
 
         $body = $this->project($event, $event->getEventId());
@@ -824,7 +824,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $expectedBookingInfo = new \stdClass();
         $expectedBookingInfo->priceCurrency = 'EUR';
-        $expectedBookingInfo->price = 0;
+        $expectedBookingInfo->price = 9.99;
+        $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
         $this->assertInternalType('object', $bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
@@ -845,8 +846,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $expectedBookingInfo = new \stdClass();
         $expectedBookingInfo->priceCurrency = 'EUR';
-        $expectedBookingInfo->price = 0;
-        $expectedBookingInfo->description = 'Gratis voor iedereen!';
+        $expectedBookingInfo->price = 9.99;
+        $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
         $this->assertInternalType('object', $bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
