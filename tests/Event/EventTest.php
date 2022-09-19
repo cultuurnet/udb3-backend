@@ -839,35 +839,52 @@ class EventTest extends AggregateRootScenarioTestCase
                     ),
                     new EventUpdatedFromUDB2(
                         $eventId,
-                        $this->getSample('event_with_price_value_and_description.cdbxml.xml'),
+                        $this->getSample('event_with_price_value_and_formatted_description.cdbxml.xml'),
                         self::NS_CDBXML_3_2
                     ),
                 ]
             )
             ->when(
-                fn (Event $event) => $event->updatePriceInfo(new PriceInfo(
-                    new BasePrice(
-                        new Money(999, new Currency('EUR'))
-                    )
-                ))
+                fn (Event $event) => $event->updatePriceInfo(
+                    (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
+                        ->withTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Met kinderen')
+                                ),
+                                new Money(2000, new Currency('EUR'))
+                            ),
+                        ])
+                )
             )
             ->when(
                 fn (Event $event) => $event->updatePriceInfo(
-                    new PriceInfo(
-                        new BasePrice(
-                            new Money(1499, new Currency('EUR'))
-                        )
-                    )
+                    (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
+                        ->withTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Met kinderen')
+                                ),
+                                new Money(1499, new Currency('EUR'))
+                            ),
+                        ])
                 )
             )
             ->then([
                 new PriceInfoUpdated(
                     $eventId,
-                    new PriceInfo(
-                        new BasePrice(
-                            new Money(1499, new Currency('EUR'))
-                        )
-                    )
+                    (new PriceInfo(new BasePrice(new Money(1250, new Currency('EUR')))))
+                        ->withTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Met kinderen')
+                                ),
+                                new Money(1499, new Currency('EUR'))
+                            ),
+                        ])
                 ),
             ]);
     }
