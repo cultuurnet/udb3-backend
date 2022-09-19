@@ -107,9 +107,7 @@ final class JSONLDEventFormatter
             }
 
             if (isset($this->calendarSummaryRepository) && in_array('calendarSummary', $includedProperties)) {
-                $urlParts = explode('/', $eventObject->{'@id'});
-                $eventId = array_pop($urlParts);
-                $eventObject->calendarSummary = $this->getCalendarSummary($eventId);
+                $eventObject->calendarSummary = $this->getCalendarSummary($event);
             }
 
             // filter out base properties

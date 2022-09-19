@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\CommandHandling\SimpleCommandHandler;
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepository;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
@@ -48,6 +49,7 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
     public function handleExportEventsAsJsonLD(
         ExportEventsAsJsonLD $exportCommand
     ): void {
+        $this->calendarSummaryRepository = new CalendarSummaryRepository();
         $this->eventExportService->exportEvents(
             new JSONLDFileFormat(
                 $exportCommand->getInclude(),
