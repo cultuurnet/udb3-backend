@@ -56,23 +56,6 @@ $app->register(new RequestHandlerControllerServiceProvider());
 $app->register(new PsrRouterServiceProvider());
 
 /**
- * Middleware that proxies requests for GET /events, GET /places and GET /organizers to Search API.
- * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
- */
-if (isset($app['config']['search_proxy']) &&
-    $app['config']['search_proxy']['enabled']) {
-    $app->before(
-        function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy $searchProxy */
-            $searchProxy = $app['search_proxy'];
-
-            return $searchProxy->handle($request);
-        },
-        Application::EARLY_EVENT
-    );
-}
-
-/**
  * Middleware that authenticates incoming HTTP requests using the RequestAuthenticator service.
  * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
  */
