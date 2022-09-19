@@ -7,21 +7,20 @@ namespace CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Doctrine\DBAL\Connection;
-use CultuurNet\UDB3\StringLiteral;
 use PDO;
 
 class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInterface
 {
     private Connection $connection;
 
-    private StringLiteral $userRoleTableName;
+    private string $userRoleTableName;
 
-    private StringLiteral $rolePermissionTableName;
+    private string $rolePermissionTableName;
 
     public function __construct(
         Connection $connection,
-        StringLiteral $userRoleTableName,
-        StringLiteral $rolePermissionTableName
+        string $userRoleTableName,
+        string $rolePermissionTableName
     ) {
         $this->connection = $connection;
         $this->userRoleTableName = $userRoleTableName;
@@ -31,11 +30,11 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     /**
      * @return Permission[]
      */
-    public function getPermissions(StringLiteral $userId): array
+    public function getPermissions(string $userId): array
     {
         $userRoleQuery = $this->connection->createQueryBuilder()
             ->select(SchemaConfigurator::ROLE_ID_COLUMN)
-            ->from((string) $this->userRoleTableName)
+            ->from($this->userRoleTableName)
             ->where(SchemaConfigurator::USER_ID_COLUMN . ' = :userId');
 
         $userPermissionQuery = $this->connection->createQueryBuilder()
@@ -47,7 +46,7 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
                 'up',
                 'rp.' . SchemaConfigurator::ROLE_ID_COLUMN . ' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
             )
-            ->setParameter('userId', (string) $userId);
+            ->setParameter('userId', $userId);
 
         $results = $userPermissionQuery->execute()->fetchAll(PDO::FETCH_COLUMN);
 
@@ -61,7 +60,7 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     {
         $userRoleQuery = $this->connection->createQueryBuilder()
             ->select(SchemaConfigurator::ROLE_ID_COLUMN)
-            ->from((string) $this->userRoleTableName)
+            ->from($this->userRoleTableName)
             ->where(SchemaConfigurator::USER_ID_COLUMN . ' = :userId');
 
         $userPermissionQuery = $this->connection->createQueryBuilder()
