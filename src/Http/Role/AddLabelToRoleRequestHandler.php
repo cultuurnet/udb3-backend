@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -38,7 +37,7 @@ class AddLabelToRoleRequestHandler implements RequestHandlerInterface
         try {
             $roleId = new UUID($roleId);
         } catch (InvalidArgumentException $e) {
-            throw ApiProblem::bodyInvalidData(new SchemaError('/', 'The provided role id is not a uuid'));
+            throw ApiProblem::invalidUUID('roleId');
         }
 
         $labelIdentifier = $routeParameters->get('labelIdentifier');

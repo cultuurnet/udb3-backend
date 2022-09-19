@@ -324,6 +324,11 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function invalidUUID(string $type): self
+    {
+        return self::bodyInvalidData(new SchemaError('/', "The provided $type is not a uuid"));
+    }
+
     public static function bodyInvalidDataWithDetail(string $detail): self
     {
         return self::create(

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Role;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
@@ -60,7 +59,7 @@ class RemoveLabelFromRoleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(new SchemaError('/', 'The provided role id is not a uuid')),
+            ApiProblem::invalidUUID('roleId'),
             fn () => $this->handler->handle($request)
         );
 

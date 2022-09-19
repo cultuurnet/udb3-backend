@@ -62,4 +62,27 @@ class ApiProblemTest extends TestCase
             $problem->toArray()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_create_an_invalid_uuid_error(): void
+    {
+        $problem = ApiProblem::invalidUUID('roleId');
+
+        $this->assertEquals(
+            [
+                'type' => 'https://api.publiq.be/probs/body/invalid-data',
+                'title' => 'Invalid body data',
+                'status' => 400,
+                'schemaErrors' => [
+                    [
+                        'jsonPointer' => '/',
+                        'error' => 'The provided roleId is not a uuid',
+                    ],
+                ],
+            ],
+            $problem->toArray()
+        );
+    }
 }
