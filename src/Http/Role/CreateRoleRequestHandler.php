@@ -6,12 +6,12 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\CreateRole;
 use Fig\Http\Message\StatusCodeInterface;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -33,7 +33,7 @@ final class CreateRoleRequestHandler implements RequestHandlerInterface
         $body = Json::decodeAssociatively($request->getBody()->getContents());
 
         if (empty($body['name'])) {
-            throw new InvalidArgumentException('Required fields are missing');
+            throw ApiProblem::requiredFieldMissing('name');
         }
 
         $roleId = new UUID($this->uuidGenerator->generate());

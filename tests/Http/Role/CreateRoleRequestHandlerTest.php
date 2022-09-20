@@ -6,18 +6,20 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\UuidGenerator\Testing\MockUuidGenerator;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\CreateRole;
 use Fig\Http\Message\StatusCodeInterface;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class CreateRoleRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
+    use AssertApiProblemTrait;
 
     private CreateRoleRequestHandler $handler;
 
@@ -46,8 +48,10 @@ final class CreateRoleRequestHandlerTest extends TestCase
 
         $this->commandBus->record();
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->handler->handle($request);
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::requiredFieldMissing('name'),
+            fn () => $this->handler->handle($request)
+        );
 
         $this->assertEmpty($this->commandBus->getRecordedCommands());
     }

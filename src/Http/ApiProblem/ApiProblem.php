@@ -430,4 +430,9 @@ final class ApiProblem extends Exception
             $detail
         );
     }
+
+    public static function requiredFieldMissing(string $field): self
+    {
+        return self::bodyInvalidData(new SchemaError('/', "The property '$field' is required."));
+    }
 }
