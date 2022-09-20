@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
-use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use CultuurNet\UDB3\Json;
 
 final class JSONLDEventFormatter
@@ -106,8 +105,9 @@ final class JSONLDEventFormatter
                 $eventObject->terms = array_values($filteredTerms);
             }
 
-            if (isset($this->calendarSummaryRepository) && in_array('calendarSummary', $includedProperties)) {
-                $eventObject->calendarSummary = $this->getCalendarSummary($event);
+            if (in_array('calendarSummary', $includedProperties)) {
+                $eventId = $this->parseEventIdFromUrl($eventObject);
+                $eventObject->calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::md());
             }
 
             // filter out base properties
@@ -123,13 +123,10 @@ final class JSONLDEventFormatter
         return $event;
     }
 
-    private function getCalendarSummary(string $eventId): string
+    private function parseEventIdFromUrl($event): string
     {
-        try {
-            $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::md());
-        } catch (SummaryUnavailableException $exception) {
-            $calendarSummary = '';
-        }
-        return $calendarSummary;
+        $eventUri = $event->{'@id'};
+        $uriParts = explode('/', $eventUri);
+        return array_pop($uriParts);
     }
 }
