@@ -12,6 +12,14 @@ use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\CustomLeagueRouterStrategy;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
+use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
+use CultuurNet\UDB3\Http\Productions\RemoveEventFromProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
+use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
+use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
 use League\Route\RouteGroup;
 use League\Route\Router;
@@ -43,6 +51,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
                 $this->bindCurators($router);
 
+                $this->bindProductions($router);
+
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
                 return $router;
@@ -60,6 +70,23 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->put('{articleId}/', UpdateNewsArticleRequestHandler::class);
 
             $routeGroup->delete('{articleId}/', DeleteNewsArticleRequestHandler::class);
+        });
+    }
+
+    private function bindProductions(Router $router): void
+    {
+        $router->group('productions', function (RouteGroup $routeGroup) {
+            $routeGroup->get('', SearchProductionsRequestHandler::class);
+
+            $routeGroup->post('', CreateProductionRequestHandler::class);
+            $routeGroup->put('{productionId}/events/{eventId}/', AddEventToProductionRequestHandler::class);
+            $routeGroup->delete('{productionId}/events/{eventId}/', RemoveEventFromProductionRequestHandler::class);
+            $routeGroup->post('{productionId}/merge/{fromProductionId}/', MergeProductionsRequestHandler::class);
+            $routeGroup->put('{productionId}/name/', RenameProductionRequestHandler::class);
+
+            $routeGroup->post('skip/', SkipEventsRequestHandler::class);
+
+            $routeGroup->get('suggestion/', SuggestProductionRequestHandler::class);
         });
     }
 
