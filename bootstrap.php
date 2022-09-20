@@ -75,6 +75,7 @@ use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
+use CultuurNet\UDB3\Silex\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
@@ -921,6 +922,8 @@ $app->register(new Auth0ServiceProvider());
 $app->register(new Psr7ServiceProvider());
 
 $app->register(new TermServiceProvider());
+
+$app->register(new JobsServiceProvider());
 
 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
