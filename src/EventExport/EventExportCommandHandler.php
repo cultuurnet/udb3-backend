@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\CommandHandling\SimpleCommandHandler;
-use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepository;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
@@ -28,28 +27,27 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
 
     protected ?EventInfoServiceInterface $uitpas;
 
-    protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
+    protected CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     private ?Twig_Environment $twig;
 
     public function __construct(
         EventExportServiceInterface $eventExportService,
         string $princeXMLBinaryPath,
+        CalendarSummaryRepositoryInterface $calendarSummaryRepository,
         EventInfoServiceInterface $uitpas = null,
-        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
         Twig_Environment $twig = null
     ) {
         $this->eventExportService = $eventExportService;
         $this->princeXMLBinaryPath = $princeXMLBinaryPath;
-        $this->uitpas = $uitpas;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
+        $this->uitpas = $uitpas;
         $this->twig = $twig;
     }
 
     public function handleExportEventsAsJsonLD(
         ExportEventsAsJsonLD $exportCommand
     ): void {
-        $this->calendarSummaryRepository = new CalendarSummaryRepository();
         $this->eventExportService->exportEvents(
             new JSONLDFileFormat(
                 $exportCommand->getInclude(),
