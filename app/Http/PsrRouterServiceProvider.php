@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
+use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler as ImportOrganizerRequestHandlerAlias;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
@@ -62,6 +63,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindExports($router);
 
                 $this->bindLegacyImports($router);
+
+                $this->bindJobs($router);
 
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
@@ -121,6 +124,13 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
             $routeGroup->post('organizers/', ImportOrganizerRequestHandlerAlias::class);
             $routeGroup->put('organizers/{organizerId}/', ImportOrganizerRequestHandlerAlias::class);
+        });
+    }
+
+    private function bindJobs(Router $router): void
+    {
+        $router->group('jobs', function (RouteGroup $routeGroup) {
+            $routeGroup->get('{jobId}/', GetJobStatusRequestHandler::class);
         });
     }
 
