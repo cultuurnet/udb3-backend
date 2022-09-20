@@ -86,8 +86,6 @@ $app->before(
     Application::EARLY_EVENT
 );
 
-$app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
-
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeControllerProvider = new PlaceControllerProvider();
