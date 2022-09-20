@@ -8,7 +8,11 @@ use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
+use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\PatchLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
+use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
 use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\ConstraintAwareLabelService;
 use CultuurNet\UDB3\Label\Events\LabelNameUniqueConstraintService;
@@ -89,6 +93,28 @@ class LabelServiceProvider implements ServiceProviderInterface
                     $app[self::LOGGER]
                 );
             }
+        );
+
+        $app[CreateLabelRequestHandler::class] = $app->share(
+            fn (Application $app) => new CreateLabelRequestHandler(
+                $app['event_command_bus'],
+                new Version4Generator()
+            )
+        );
+
+        $app[PatchLabelRequestHandler::class] = $app->share(
+            fn (Application $app) => new PatchLabelRequestHandler($app['event_command_bus'])
+        );
+
+        $app[GetLabelRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetLabelRequestHandler($app[LabelServiceProvider::JSON_READ_REPOSITORY])
+        );
+
+        $app[SearchLabelsRequestHandler::class] = $app->share(
+            fn (Application $app) => new SearchLabelsRequestHandler(
+                $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                $app[LabelServiceProvider::QUERY_FACTORY]
+            )
         );
     }
 
