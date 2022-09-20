@@ -34,6 +34,15 @@ final class RouteParameters
         throw new RuntimeException('Route parameter ' . $parameterName . ' not found in given ServerRequestInterface!');
     }
 
+    public function getWithDefault(string $parameterName, string $default): string
+    {
+        if (!$this->has($parameterName)) {
+            return $default;
+        }
+
+        return $this->get($parameterName) ?: $default;
+    }
+
     public function has(string $parameterName): bool
     {
         // The League router puts the parameters directly in the request attributes.
@@ -96,6 +105,16 @@ final class RouteParameters
         return $this->get('mediaId');
     }
 
+    public function getRoleId(): string
+    {
+        return $this->get('roleId');
+    }
+
+    public function hasRoleId(): bool
+    {
+        return $this->has('roleId');
+    }
+
     public function hasLanguage(): bool
     {
         return $this->has('language');
@@ -150,5 +169,10 @@ final class RouteParameters
         } catch (RuntimeException $e) {
             return false;
         }
+    }
+
+    public function getUserId(): string
+    {
+        return $this->get('userId');
     }
 }

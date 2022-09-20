@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Role;
 
+use CultuurNet\UDB3\Http\Role\GetPermissionsRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRoleLabelsRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRolesFromCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetUserPermissionsRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetUsersWithRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\RolesSearchRequestHandler;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
 use CultuurNet\UDB3\Http\Role\EditRoleRestController;
-use CultuurNet\UDB3\Http\Role\ReadRoleRestController;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -18,19 +25,6 @@ class RoleControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app): ControllerCollection
     {
-        $app['role_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadRoleRestController(
-                    $app['role_service'],
-                    $app['role_reading_service'],
-                    $app[CurrentUser::class]->getId(),
-                    $app[CurrentUser::class]->isGodUser(),
-                    $app['role_search_v3_repository'],
-                    $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]
-                );
-            }
-        );
-
         $app['role_edit_controller'] = $app->share(
             function (Application $app) {
                 return new EditRoleRestController(
@@ -43,19 +37,53 @@ class RoleControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[GetRoleRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetRoleRequestHandler($app['role_read_repository'])
+        );
+
+        $app[GetUsersWithRoleRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetUsersWithRoleRequestHandler($app['role_users_read_repository'])
+        );
+
+        $app[GetRolesFromUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetRolesFromUserRequestHandler($app['user_roles_repository'])
+        );
+
+        $app[GetRolesFromCurrentUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetRolesFromCurrentUserRequestHandler($app['user_roles_repository'], $app[CurrentUser::class]->getId())
+        );
+
+        $app[GetPermissionsRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPermissionsRequestHandler()
+        );
+
+        $app[GetUserPermissionsRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetUserPermissionsRequestHandler(
+                $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY],
+                $app[CurrentUser::class]->getId(),
+                $app[CurrentUser::class]->isGodUser(),
+            )
+        );
+
+        $app[GetRoleLabelsRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetRoleLabelsRequestHandler($app['role_labels_read_repository'])
+        );
+
+        $app[RolesSearchRequestHandler::class] = $app->share(
+            fn (Application $app) => new RolesSearchRequestHandler($app['role_search_v3_repository'])
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers
-            ->get('/roles/', 'role_controller:search');
+        $controllers->get('/roles/', RolesSearchRequestHandler::class);
 
         $controllers->post(
             '/roles/',
             'role_edit_controller:create'
         );
 
-        $controllers
-            ->get('/roles/{id}/', 'role_controller:get');
+        $controllers->get('/roles/{roleId}/', GetRoleRequestHandler::class);
 
         $controllers->patch(
             '/roles/{id}/',
@@ -79,16 +107,11 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         $controllers->delete('/roles/{id}/', 'role_edit_controller:delete');
 
-        $controllers
-            ->get('/permissions/', 'role_controller:getPermissions');
+        $controllers->get('/permissions/', GetPermissionsRequestHandler::class);
 
-        $controllers
-            ->get('/user/permissions/', 'role_controller:getUserPermissions');
+        $controllers->get('/user/permissions/', GetUserPermissionsRequestHandler::class);
 
-        $controllers->get(
-            '/roles/{roleId}/users/',
-            'role_controller:getRoleUsers'
-        );
+        $controllers->get('/roles/{roleId}/users/', GetUsersWithRoleRequestHandler::class);
 
         $controllers->put(
             '/roles/{roleId}/permissions/{permissionKey}/',
@@ -100,10 +123,7 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:removePermission'
         );
 
-        $controllers->get(
-            '/roles/{roleId}/labels/',
-            'role_controller:getRoleLabels'
-        );
+        $controllers->get('/roles/{roleId}/labels/', GetRoleLabelsRequestHandler::class);
 
         $controllers->put(
             '/roles/{roleId}/labels/{labelIdentifier}/',
@@ -125,15 +145,9 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:removeUser'
         );
 
-        $controllers->get(
-            '/users/{userId}/roles/',
-            'role_controller:getUserRoles'
-        );
+        $controllers->get('/users/{userId}/roles/', GetRolesFromUserRequestHandler::class);
 
-        $controllers->get(
-            '/user/roles/',
-            'role_controller:getCurrentUserRoles'
-        );
+        $controllers->get('/user/roles/', GetRolesFromCurrentUserRequestHandler::class);
 
         return $controllers;
     }

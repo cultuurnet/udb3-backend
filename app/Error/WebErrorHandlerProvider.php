@@ -119,6 +119,9 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                 if ($routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
                     return ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
                 }
+                if ($routeParameters->hasRoleId()) {
+                    return ApiProblem::roleNotFound($routeParameters->getRoleId());
+                }
                 return ApiProblem::urlNotFound();
 
             case $e instanceof DataValidationException:

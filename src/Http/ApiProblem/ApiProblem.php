@@ -289,6 +289,11 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('Label', $labelId);
     }
 
+    public static function roleNotFound(string $roleId): self
+    {
+        return self::resourceNotFound('Role', $roleId);
+    }
+
     public static function bodyMissing(): self
     {
         return self::create(
