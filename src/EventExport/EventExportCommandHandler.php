@@ -17,7 +17,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Twig_Environment;
 
-class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAwareInterface
+final class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
