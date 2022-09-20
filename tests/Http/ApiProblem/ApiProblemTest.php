@@ -93,7 +93,7 @@ class ApiProblemTest extends TestCase
         $problem = ApiProblem::unsupportedMediaType();
         $this->assertEquals(
             [
-                'type' => 'https://docs.publiq.be/docs/errors/baae4bf3cece5-header#unsupported-media-type',
+                'type' => 'https://api.publiq.be/probs/header/unsupported-media-type',
                 'title' => 'Unsupported media type',
                 'status' => 415,
             ],

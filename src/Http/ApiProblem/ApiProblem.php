@@ -307,7 +307,7 @@ final class ApiProblem extends Exception
     public static function unsupportedMediaType(): self
     {
         return self::create(
-            'https://docs.publiq.be/docs/errors/baae4bf3cece5-header#unsupported-media-type',
+            'https://api.publiq.be/probs/header/unsupported-media-type',
             'Unsupported media type',
             StatusCodeInterface::STATUS_UNSUPPORTED_MEDIA_TYPE,
         );
