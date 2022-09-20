@@ -21,9 +21,10 @@ class DeleteConstraintRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
+        $this->commandBus->record();
         $this->handler = new DeleteConstraintRequestHandler($this->commandBus);
     }
 
@@ -38,7 +39,6 @@ class DeleteConstraintRequestHandlerTest extends TestCase
             ->withRouteParameter('roleId', $roleId)
             ->build('DELETE');
 
-        $this->commandBus->record();
         $actualResponse = $this->handler->handle($request);
 
         $expectedResponse = new Response(StatusCodeInterface::STATUS_NO_CONTENT);

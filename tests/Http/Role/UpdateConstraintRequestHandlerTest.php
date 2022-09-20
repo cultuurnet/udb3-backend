@@ -26,9 +26,10 @@ class UpdateConstraintRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
+        $this->commandBus->record();
         $this->handler = new UpdateConstraintRequestHandler($this->commandBus);
     }
 
@@ -67,7 +68,6 @@ class UpdateConstraintRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(['query' => $query])
             ->build('PUT');
 
-        $this->commandBus->record();
         $actualResponse = $this->handler->handle($request);
 
         $expectedResponse = new Response(StatusCodeInterface::STATUS_NO_CONTENT);

@@ -27,6 +27,8 @@ class UpdateRoleRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
+        $this->commandBus->record();
+
         $this->handler = new UpdateRoleRequestHandler($this->commandBus);
     }
 
@@ -42,6 +44,8 @@ class UpdateRoleRequestHandlerTest extends TestCase
 
         $this->expectException(MissingContentTypeException::class);
         $this->handler->handle($request);
+
+        $this->assertEmpty($this->commandBus->getRecordedCommands());
     }
 
     /**
@@ -57,6 +61,8 @@ class UpdateRoleRequestHandlerTest extends TestCase
 
         $this->expectException(UnknownContentTypeException::class);
         $this->handler->handle($request);
+
+        $this->assertEmpty($this->commandBus->getRecordedCommands());
     }
 
     /**
@@ -71,8 +77,6 @@ class UpdateRoleRequestHandlerTest extends TestCase
             ->withHeader('Content-Type', 'application/ld+json;domain-model=RenameRole')
             ->withJsonBodyFromArray(['name' => $name])
             ->build('PATCH');
-
-        $this->commandBus->record();
 
         $response = $this->handler->handle($request);
         $this->assertJsonResponse(new Response(StatusCodeInterface::STATUS_NO_CONTENT), $response);

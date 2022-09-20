@@ -27,9 +27,11 @@ final class CreateRoleRequestHandlerTest extends TestCase
 
     private string $uuid = '9714108c-dddc-4105-a736-2e32632999f4';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
+
+        $this->commandBus->record();
 
         $this->handler = new CreateRoleRequestHandler(
             $this->commandBus,
@@ -45,8 +47,6 @@ final class CreateRoleRequestHandlerTest extends TestCase
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray(['name' => ''])
             ->build('POST');
-
-        $this->commandBus->record();
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::requiredFieldMissing('name'),
@@ -64,8 +64,6 @@ final class CreateRoleRequestHandlerTest extends TestCase
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([])
             ->build('POST');
-
-        $this->commandBus->record();
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::requiredFieldMissing('name'),
@@ -85,7 +83,6 @@ final class CreateRoleRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(['name' => $name])
             ->build('POST');
 
-        $this->commandBus->record();
         $response = $this->handler->handle($request);
 
         $this->assertJsonResponse(

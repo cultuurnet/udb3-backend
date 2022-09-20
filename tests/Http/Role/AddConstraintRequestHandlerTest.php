@@ -26,9 +26,10 @@ class AddConstraintRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
+        $this->commandBus->record();
         $this->handler = new AddConstraintRequestHandler($this->commandBus);
     }
 
@@ -43,7 +44,6 @@ class AddConstraintRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray([])
             ->build('POST');
 
-        $this->commandBus->record();
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
                 new SchemaError('/', 'The required properties (query) are missing'),
@@ -67,7 +67,6 @@ class AddConstraintRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(['query' => $query])
             ->build('POST');
 
-        $this->commandBus->record();
         $actualResponse = $this->handler->handle($request);
 
         $expectedResponse = new Response(StatusCodeInterface::STATUS_NO_CONTENT);
