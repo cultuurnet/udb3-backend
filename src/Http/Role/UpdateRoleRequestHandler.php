@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
-use CultuurNet\UDB3\Role\MissingContentTypeException;
-use CultuurNet\UDB3\Role\UnknownContentTypeException;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -43,12 +42,12 @@ class UpdateRoleRequestHandler implements RequestHandlerInterface
     private function ensureContentTypeIsProvided(ServerRequestInterface $request): void
     {
         if (!$request->hasHeader('Content-Type')) {
-            throw new MissingContentTypeException();
+            throw ApiProblem::unsupportedMediaType();
         }
 
         $contentType = $request->getHeader('Content-Type')[0];
         if ($contentType != 'application/ld+json;domain-model=RenameRole') {
-            throw new UnknownContentTypeException();
+            throw ApiProblem::unsupportedMediaType();
         }
     }
 }

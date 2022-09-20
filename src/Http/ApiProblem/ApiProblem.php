@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\ApiProblem;
 use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Offer\OfferType;
 use Exception;
+use Fig\Http\Message\StatusCodeInterface;
 
 /**
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
@@ -300,6 +301,15 @@ final class ApiProblem extends Exception
             'https://api.publiq.be/probs/body/missing',
             'Body missing',
             400
+        );
+    }
+
+    public static function unsupportedMediaType(): self
+    {
+        return self::create(
+            'https://docs.publiq.be/docs/errors/baae4bf3cece5-header#unsupported-media-type',
+            'Unsupported media type',
+            StatusCodeInterface::STATUS_UNSUPPORTED_MEDIA_TYPE,
         );
     }
 

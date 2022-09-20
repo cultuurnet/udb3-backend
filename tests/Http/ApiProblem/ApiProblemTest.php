@@ -84,4 +84,20 @@ class ApiProblemTest extends TestCase
             $problem->toArray()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_construct_unsupported_media_type_problem(): void
+    {
+        $problem = ApiProblem::unsupportedMediaType();
+        $this->assertEquals(
+            [
+                'type' => 'https://docs.publiq.be/docs/errors/baae4bf3cece5-header#unsupported-media-type',
+                'title' => 'Unsupported media type',
+                'status' => 415,
+            ],
+            $problem->toArray()
+        );
+    }
 }

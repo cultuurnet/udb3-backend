@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
-use CultuurNet\UDB3\Role\MissingContentTypeException;
-use CultuurNet\UDB3\Role\UnknownContentTypeException;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Response;
@@ -18,6 +18,7 @@ use Slim\Psr7\Response;
 class UpdateRoleRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
+    use AssertApiProblemTrait;
 
     private UpdateRoleRequestHandler $handler;
 
@@ -42,8 +43,10 @@ class UpdateRoleRequestHandlerTest extends TestCase
             ->withRouteParameter('id', $roleId)
             ->build('PATCH');
 
-        $this->expectException(MissingContentTypeException::class);
-        $this->handler->handle($request);
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::unsupportedMediaType(),
+            fn () => $this->handler->handle($request)
+        );
 
         $this->assertEmpty($this->commandBus->getRecordedCommands());
     }
@@ -59,8 +62,10 @@ class UpdateRoleRequestHandlerTest extends TestCase
             ->withHeader('Content-Type', 'unknown')
             ->build('PATCH');
 
-        $this->expectException(UnknownContentTypeException::class);
-        $this->handler->handle($request);
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::unsupportedMediaType(),
+            fn () => $this->handler->handle($request)
+        );
 
         $this->assertEmpty($this->commandBus->getRecordedCommands());
     }
