@@ -24,9 +24,9 @@ class ExportEventsAsJsonLDJSONDeserializer extends ExportEventsJSONDeserializer
     ) {
         return new ExportEventsAsJsonLD(
             $query,
+            $include,
             $address,
             $selection,
-            $include
         );
     }
 }

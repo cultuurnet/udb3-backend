@@ -24,9 +24,9 @@ class ExportEventsAsOOXMLJSONDeserializer extends ExportEventsJSONDeserializer
     ) {
         return new ExportEventsAsOOXML(
             $query,
+            $include,
             $address,
             $selection,
-            $include
         );
     }
 }

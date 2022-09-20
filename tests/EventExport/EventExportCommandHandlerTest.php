@@ -65,8 +65,8 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsJsonLD = new ExportEventsAsJsonLD(
             new EventExportQuery('query'),
+            ['calendarSummary'],
             new EmailAddress('jane@anonymous.com'),
-            null,
             null
         );
 
@@ -90,8 +90,8 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsOOXML = new ExportEventsAsOOXML(
             new EventExportQuery('query'),
+            ['calendarSummary'],
             new EmailAddress('jane@anonymous.com'),
-            null,
             null
         );
 
