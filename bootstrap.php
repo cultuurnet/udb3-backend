@@ -67,7 +67,6 @@ use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
-use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
@@ -917,7 +916,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 $app->register(new CuratorsServiceProvider());
-$app->register(new CuratorsControllerProvider());
 
 $app->register(new Auth0ServiceProvider());
 $app->register(new Psr7ServiceProvider());
