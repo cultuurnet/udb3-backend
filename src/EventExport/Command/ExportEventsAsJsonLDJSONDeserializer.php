@@ -18,9 +18,9 @@ class ExportEventsAsJsonLDJSONDeserializer extends ExportEventsJSONDeserializer
      */
     protected function createCommand(
         EventExportQuery $query,
+        $include,
         EmailAddress $address = null,
-        $selection = null,
-        $include = null
+        $selection = null
     ) {
         return new ExportEventsAsJsonLD(
             $query,
