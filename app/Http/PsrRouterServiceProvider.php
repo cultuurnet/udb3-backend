@@ -20,6 +20,8 @@ use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\PatchLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
+use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
+use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler as ImportOrganizerRequestHandlerAlias;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
@@ -71,6 +73,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindJobs($router);
 
                 $this->bindLabels($router);
+
+                $this->bindImages($router);
 
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
@@ -149,6 +153,17 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->get('{labelId}/', GetLabelRequestHandler::class);
             $routeGroup->get('', SearchLabelsRequestHandler::class);
         });
+    }
+
+    private function bindImages(Router $router): void
+    {
+        $router->group('images', function (RouteGroup $routeGroup) {
+            $routeGroup->post('', UploadMediaRequestHandler::class);
+            $routeGroup->get('{id}/', GetMediaRequestHandler::class);
+        });
+
+        /* @deprecated */
+        $router->get('/media/{id}/', GetMediaRequestHandler::class);
     }
 
     public function boot(Application $app): void
