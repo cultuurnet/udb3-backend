@@ -27,9 +27,9 @@ use Silex\ServiceProviderInterface;
 use Twig_Environment;
 use Twig_Extensions_Extension_Text;
 
-class ExportServiceProvider implements ServiceProviderInterface
+final class ExportServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['event_export_twig_environment'] = $app->share(
             function ($app) {
@@ -97,7 +97,7 @@ class ExportServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 
