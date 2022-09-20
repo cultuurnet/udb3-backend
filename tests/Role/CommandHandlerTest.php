@@ -216,7 +216,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId
+                    $userId->toNative()
                 )
             )
             ->then(
@@ -232,7 +232,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId
+                    $userId->toNative()
                 )
             )
             ->then(
