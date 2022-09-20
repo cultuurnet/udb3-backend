@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\JsonRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
@@ -38,9 +37,7 @@ class QueryValidatingRequestBodyParserTest extends TestCase
         $request = $this->givenTheRequestWasJsonParsed($request);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(
-                new SchemaError('/', 'The required properties (query) are missing'),
-            ),
+            ApiProblem::requiredFieldMissing('query'),
             fn () => $this->parser->parse($request)
         );
     }
@@ -57,9 +54,7 @@ class QueryValidatingRequestBodyParserTest extends TestCase
         $request = $this->givenTheRequestWasJsonParsed($request);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(
-                new SchemaError('/', 'The required properties (query) are missing'),
-            ),
+            ApiProblem::requiredFieldMissing('query'),
             fn () => $this->parser->parse($request)
         );
     }
