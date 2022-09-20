@@ -10,11 +10,14 @@ use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
 use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\CustomLeagueRouterStrategy;
+use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler as ImportEventRequestHandlerAlias;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler as ImportOrganizerRequestHandlerAlias;
+use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
@@ -57,6 +60,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindProductions($router);
 
                 $this->bindExports($router);
+
+                $this->bindLegacyImports($router);
 
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
@@ -101,6 +106,21 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->post('json/', ExportEventsAsJsonLdRequestHandler::class);
             $routeGroup->post('ooxml/', ExportEventsAsOoXmlRequestHandler::class);
             $routeGroup->post('pdf/', ExportEventsAsPdfRequestHandler::class);
+        });
+    }
+
+    private function bindLegacyImports(Router $router): void
+    {
+        // Bind the `/imports/...` routes for backwards compatibility.
+        $router->group('imports', function (RouteGroup $routeGroup) {
+            $routeGroup->post('events/', ImportEventRequestHandlerAlias::class);
+            $routeGroup->put('events/{eventId}/', ImportEventRequestHandlerAlias::class);
+
+            $routeGroup->post('places/', ImportPlaceRequestHandler::class);
+            $routeGroup->put('places/{placeId}/', ImportPlaceRequestHandler::class);
+
+            $routeGroup->post('organizers/', ImportOrganizerRequestHandlerAlias::class);
+            $routeGroup->put('organizers/{organizerId}/', ImportOrganizerRequestHandlerAlias::class);
         });
     }
 
