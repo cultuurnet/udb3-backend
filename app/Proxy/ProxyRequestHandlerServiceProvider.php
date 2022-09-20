@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use GuzzleHttp\Client;
+use League\Uri\Uri;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -16,7 +17,7 @@ final class ProxyRequestHandlerServiceProvider implements ServiceProviderInterfa
         $app[ProxyRequestHandler::class] = $app::share(
             static function (Application $app) {
                 return new ProxyRequestHandler(
-                    $app['config']['search_proxy']['redirect_domain'],
+                    Uri::createFromString($app['config']['search']['v3']['base_url'])->getHost(),
                     new Client()
                 );
             }
