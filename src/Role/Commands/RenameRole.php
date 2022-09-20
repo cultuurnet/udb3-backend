@@ -5,28 +5,21 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\StringLiteral;
 
 class RenameRole extends AbstractCommand
 {
-    /**
-     * @var StringLiteral
-     */
-    private $name;
+    private string $name;
 
     public function __construct(
         UUID $uuid,
-        StringLiteral $name
+        string $name
     ) {
         parent::__construct($uuid);
 
         $this->name = $name;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -13,8 +13,6 @@ interface RoleEditingServiceInterface
 {
     public function create(StringLiteral $name): UUID;
 
-    public function rename(UUID $uuid, StringLiteral $name): void;
-
     public function addPermission(UUID $uuid, Permission $permission): void;
 
     public function removePermission(UUID $uuid, Permission $permission): void;

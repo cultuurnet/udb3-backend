@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\MissingContentTypeException;
 use CultuurNet\UDB3\Role\UnknownContentTypeException;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\UDB3\StringLiteral;
 
 class UpdateRoleRequestDeserializer
 {
@@ -25,7 +24,7 @@ class UpdateRoleRequestDeserializer
             case 'application/ld+json;domain-model=RenameRole':
                 return new RenameRole(
                     new UUID($roleId),
-                    new StringLiteral($body_content->name)
+                    $body_content->name
                 );
 
             default:

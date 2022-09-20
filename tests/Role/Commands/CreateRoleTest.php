@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class CreateRoleTest extends TestCase
 {
@@ -15,10 +14,7 @@ class CreateRoleTest extends TestCase
      */
     protected $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * @var CreateRole
@@ -29,7 +25,7 @@ class CreateRoleTest extends TestCase
     {
         $this->uuid = new UUID('da3d5569-9d0b-4f52-b61e-1f81b4deeb01');
 
-        $this->name = new StringLiteral('roleName');
+        $this->name = 'roleName';
 
         $this->createRole = new CreateRole(
             $this->uuid,

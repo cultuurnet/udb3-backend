@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\ApiProblem;
 use CultuurNet\UDB3\Http\Docs\Stoplight;
 use CultuurNet\UDB3\Offer\OfferType;
 use Exception;
+use Fig\Http\Message\StatusCodeInterface;
 
 /**
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
@@ -303,6 +304,15 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function unsupportedMediaType(): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/header/unsupported-media-type',
+            'Unsupported media type',
+            StatusCodeInterface::STATUS_UNSUPPORTED_MEDIA_TYPE,
+        );
+    }
+
     public static function bodyInvalidSyntax(string $format): self
     {
         return self::create(
@@ -434,5 +444,10 @@ final class ApiProblem extends Exception
             400,
             $detail
         );
+    }
+
+    public static function requiredFieldMissing(string $field): self
+    {
+        return self::bodyInvalidData(new SchemaError('/', "The property '$field' is required."));
     }
 }
