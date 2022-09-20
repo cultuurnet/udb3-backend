@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
 use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
+use CultuurNet\UDB3\Silex\Proxy\ProxyRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
@@ -54,6 +55,11 @@ $app->register(new RequestHandlerControllerServiceProvider());
  * completely by-pass the Silex router.
  */
 $app->register(new PsrRouterServiceProvider());
+
+/**
+ * Register service providers for request handlers.
+ */
+$app->register(new ProxyRequestHandlerServiceProvider());
 
 /**
  * Middleware that authenticates incoming HTTP requests using the RequestAuthenticator service.

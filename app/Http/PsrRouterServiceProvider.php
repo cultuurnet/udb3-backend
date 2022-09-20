@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Http;
 use CultuurNet\UDB3\Http\CustomLeagueRouterStrategy;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
+use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
 use League\Route\Router;
 use Silex\Application;
@@ -34,6 +35,12 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $routerStrategy = new CustomLeagueRouterStrategy();
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
+
+                // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
+                $router->get('/events/', ProxyRequestHandler::class);
+                $router->get('/places/', ProxyRequestHandler::class);
+                $router->get('/offers/', ProxyRequestHandler::class);
+                $router->get('/organizers/', ProxyRequestHandler::class);
 
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
