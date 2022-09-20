@@ -10,6 +10,9 @@ use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
 use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\CustomLeagueRouterStrategy;
+use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
+use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
+use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
@@ -53,6 +56,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
                 $this->bindProductions($router);
 
+                $this->bindExports($router);
+
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
                 return $router;
@@ -87,6 +92,15 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->post('skip/', SkipEventsRequestHandler::class);
 
             $routeGroup->get('suggestion/', SuggestProductionRequestHandler::class);
+        });
+    }
+
+    private function bindExports(Router $router): void
+    {
+        $router->group('events/export', function (RouteGroup $routeGroup) {
+            $routeGroup->post('json/', ExportEventsAsJsonLdRequestHandler::class);
+            $routeGroup->post('ooxml/', ExportEventsAsOoXmlRequestHandler::class);
+            $routeGroup->post('pdf/', ExportEventsAsPdfRequestHandler::class);
         });
     }
 
