@@ -35,7 +35,7 @@ class DeleteConstraintRequestHandlerTest extends TestCase
         $roleId = '1ed1588b-a771-44ce-bac0-8f19f09a7d0f';
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('id', $roleId)
+            ->withRouteParameter('roleId', $roleId)
             ->build('DELETE');
 
         $this->commandBus->record();

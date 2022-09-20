@@ -26,7 +26,7 @@ class DeleteConstraintRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $roleId = new UUID($routeParameters->get('id'));
+        $roleId = new UUID($routeParameters->getRoleId());
 
         $this->commandBus->dispatch(
             new RemoveConstraint(
