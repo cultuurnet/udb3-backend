@@ -12,9 +12,9 @@ use CultuurNet\UDB3\Json;
 final class JSONLDEventFormatter
 {
     /**
-     * @var string[]|null
+     * @var string[]
      */
-    private ?array $includedProperties;
+    private array $includedProperties;
 
     /**
      * @var string[]|null
@@ -30,41 +30,39 @@ final class JSONLDEventFormatter
     {
         $this->calendarSummaryRepository = $calendarSummaryRepository;
 
-        if ($include) {
-            $include[] = '@id';
-            // The address property is nested inside location.
-            // The whole location property gets included instead of pulling it
-            // out and placing it directly on the object.
-            if (in_array('address', $include)
+        $include[] = '@id';
+        // The address property is nested inside location.
+        // The whole location property gets included instead of pulling it
+        // out and placing it directly on the object.
+        if (in_array('address', $include)
                 && !in_array('location', $include)
             ) {
-                $include[] = 'location';
-            }
+            $include[] = 'location';
+        }
 
-            // We include bookingInfo if one of its properties is wanted.
-            $includedBookingInfoProperties = array_intersect(
-                ['bookingInfo.url'],
-                $include
-            );
-            if (!empty($includedBookingInfoProperties)
+        // We include bookingInfo if one of its properties is wanted.
+        $includedBookingInfoProperties = array_intersect(
+            ['bookingInfo.url'],
+            $include
+        );
+        if (!empty($includedBookingInfoProperties)
                 && !in_array('bookingInfo', $include)
             ) {
-                $include[] = 'bookingInfo';
-            }
-
-            if (in_array('attendance', $include)) {
-                $include[] = 'attendanceMode';
-                $include[] = 'onlineUrl';
-            }
-
-            $terms = $this->filterTermsFromProperties($include);
-            if (count($terms) > 0) {
-                $this->includedTerms = $terms;
-                $include[] = 'terms';
-            }
-
-            $this->includedProperties = $include;
+            $include[] = 'bookingInfo';
         }
+
+        if (in_array('attendance', $include)) {
+            $include[] = 'attendanceMode';
+            $include[] = 'onlineUrl';
+        }
+
+        $terms = $this->filterTermsFromProperties($include);
+        if (count($terms) > 0) {
+            $this->includedTerms = $terms;
+            $include[] = 'terms';
+        }
+
+        $this->includedProperties = $include;
     }
 
     private function filterTermsFromProperties($properties): array
