@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class RenameRoleTest extends TestCase
 {
@@ -15,10 +14,7 @@ class RenameRoleTest extends TestCase
      */
     protected $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * @var RenameRole
@@ -29,11 +25,11 @@ class RenameRoleTest extends TestCase
     {
         $this->uuid = new UUID('45264080-03ba-4ae7-87ee-0865a1ed0ae2');
 
-        $this->name = new StringLiteral('newRoleName');
+        $this->name = 'newRoleName';
 
         $this->renameRole = new RenameRole(
             $this->uuid,
-            $this->name->toNative()
+            $this->name
         );
     }
 

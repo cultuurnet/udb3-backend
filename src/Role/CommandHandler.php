@@ -46,7 +46,7 @@ class CommandHandler extends AbstractCommandHandler
 
         $role->rename(
             $renameRole->getUuid(),
-            $renameRole->getName()
+            new StringLiteral($renameRole->getName())
         );
 
         $this->save($role);
