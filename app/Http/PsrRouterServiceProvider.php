@@ -60,7 +60,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
 
-                $this->bindCurators($router);
+                $this->bindNewsArticles($router);
 
                 $this->bindProductions($router);
 
@@ -79,7 +79,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
         );
     }
 
-    private function bindCurators(Router $router): void
+    private function bindNewsArticles(Router $router): void
     {
         $router->group('news-articles', function (RouteGroup $routeGroup) {
             $routeGroup->get('', GetNewsArticlesRequestHandler::class);
