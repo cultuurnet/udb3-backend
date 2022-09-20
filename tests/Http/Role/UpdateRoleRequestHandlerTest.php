@@ -40,7 +40,7 @@ class UpdateRoleRequestHandlerTest extends TestCase
     {
         $roleId = '1ed1588b-a771-44ce-bac0-8f19f09a7d0f';
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('id', $roleId)
+            ->withRouteParameter('roleId', $roleId)
             ->build('PATCH');
 
         $this->assertCallableThrowsApiProblem(
@@ -58,7 +58,7 @@ class UpdateRoleRequestHandlerTest extends TestCase
     {
         $roleId = '1ed1588b-a771-44ce-bac0-8f19f09a7d0f';
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('id', $roleId)
+            ->withRouteParameter('roleId', $roleId)
             ->withHeader('Content-Type', 'unknown')
             ->build('PATCH');
 
@@ -78,7 +78,7 @@ class UpdateRoleRequestHandlerTest extends TestCase
         $roleId = '1ed1588b-a771-44ce-bac0-8f19f09a7d0f';
         $name = 'my-little-role';
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('id', $roleId)
+            ->withRouteParameter('roleId', $roleId)
             ->withHeader('Content-Type', 'application/ld+json;domain-model=RenameRole')
             ->withJsonBodyFromArray(['name' => $name])
             ->build('PATCH');

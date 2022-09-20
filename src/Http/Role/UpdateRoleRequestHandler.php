@@ -30,7 +30,7 @@ class UpdateRoleRequestHandler implements RequestHandlerInterface
         $this->ensureContentTypeIsProvided($request);
 
         $routeParameters = new RouteParameters($request);
-        $roleId = new UUID($routeParameters->get('id'));
+        $roleId = new UUID($routeParameters->getRoleId());
 
         $body = Json::decodeAssociatively($request->getBody()->getContents());
 
