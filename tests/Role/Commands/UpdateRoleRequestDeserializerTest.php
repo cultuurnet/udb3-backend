@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\MissingContentTypeException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\UDB3\StringLiteral;
 
 class UpdateRoleRequestDeserializerTest extends TestCase
 {
@@ -52,7 +51,7 @@ class UpdateRoleRequestDeserializerTest extends TestCase
 
         $expectedCommand = new RenameRole(
             new UUID($this->roleId),
-            new StringLiteral('editRole')
+            'editRole'
         );
 
         $this->assertEquals($expectedCommand, $command);

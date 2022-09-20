@@ -85,4 +85,42 @@ class ApiProblemTest extends TestCase
             $problem->toArray()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_construct_a_required_field_missing(): void
+    {
+        $problem = ApiProblem::requiredFieldMissing('field_name');
+        $this->assertEquals(
+            [
+                'type' => 'https://api.publiq.be/probs/body/invalid-data',
+                'title' => 'Invalid body data',
+                'status' => 400,
+                'schemaErrors' => [
+                    [
+                        'jsonPointer' => '/',
+                        'error' => 'The property \'field_name\' is required.',
+                    ],
+                ],
+            ],
+            $problem->toArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_construct_unsupported_media_type_problem(): void
+    {
+        $problem = ApiProblem::unsupportedMediaType();
+        $this->assertEquals(
+            [
+                'type' => 'https://api.publiq.be/probs/header/unsupported-media-type',
+                'title' => 'Unsupported media type',
+                'status' => 415,
+            ],
+            $problem->toArray()
+        );
+    }
 }

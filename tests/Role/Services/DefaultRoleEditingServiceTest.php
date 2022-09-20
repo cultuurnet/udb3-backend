@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Role\Commands\DeleteRole;
 use CultuurNet\UDB3\Role\Commands\RemoveConstraint;
 use CultuurNet\UDB3\Role\Commands\RemoveLabel;
 use CultuurNet\UDB3\Role\Commands\RemovePermission;
-use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
 use CultuurNet\UDB3\Role\RoleRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -34,7 +33,6 @@ class DefaultRoleEditingServiceTest extends TestCase
      */
     private $commandBus;
 
-
     protected TraceableEventStore $eventStore;
 
     private UUID $uuid;
@@ -42,8 +40,6 @@ class DefaultRoleEditingServiceTest extends TestCase
     private UUID $labelId;
 
     private CreateRole $createRole;
-
-    private RenameRole $renameRole;
 
     private AddPermission $addPermission;
 
@@ -75,12 +71,7 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->createRole = new CreateRole(
             $this->uuid,
-            new StringLiteral('roleName')
-        );
-
-        $this->renameRole = new RenameRole(
-            $this->uuid,
-            new StringLiteral('new roleName')
+            'roleName'
         );
 
         $this->addPermission = new AddPermission(
@@ -131,21 +122,6 @@ class DefaultRoleEditingServiceTest extends TestCase
         );
 
         $this->assertEquals($this->uuid, $roleId);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_rename_a_role(): void
-    {
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($this->renameRole);
-
-        $this->roleEditingService->rename(
-            $this->uuid,
-            new StringLiteral('new roleName')
-        );
     }
 
     /**
