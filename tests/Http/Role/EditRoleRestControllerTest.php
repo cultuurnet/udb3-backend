@@ -108,7 +108,7 @@ class EditRoleRestControllerTest extends TestCase
 
         $renameRole = new RenameRole(
             new UUID($roleId),
-            new StringLiteral('editRoleName')
+            'editRoleName'
         );
 
         $this->updateRoleRequestDeserializer->expects($this->once())
