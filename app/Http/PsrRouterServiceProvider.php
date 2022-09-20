@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Http;
 
+use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
+use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
+use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
+use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
+use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\CustomLeagueRouterStrategy;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
+use League\Route\RouteGroup;
 use League\Route\Router;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -35,11 +41,26 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
 
+                $this->bindCurators($router);
+
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
                 return $router;
             }
         );
+    }
+
+    private function bindCurators(Router $router): void
+    {
+        $router->group('news-articles', function (RouteGroup $routeGroup) {
+            $routeGroup->get('', GetNewsArticlesRequestHandler::class);
+            $routeGroup->get('{articleId}/', GetNewsArticleRequestHandler::class);
+
+            $routeGroup->post('', CreateNewsArticleRequestHandler::class);
+            $routeGroup->put('{articleId}/', UpdateNewsArticleRequestHandler::class);
+
+            $routeGroup->delete('{articleId}/', DeleteNewsArticleRequestHandler::class);
+        });
     }
 
     public function boot(Application $app): void

@@ -6,7 +6,6 @@ use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
 use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
@@ -116,7 +115,6 @@ $app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControlle
 $app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
 $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
-$app->mount('/news-articles', new CuratorsControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
