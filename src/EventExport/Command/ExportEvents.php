@@ -51,10 +51,9 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
         }
 
         $this->query = $query;
+        $this->include = $include;
         $this->address = $address;
         $this->selection = $selection;
-
-        $this->include = $include;
     }
 
     /**
@@ -80,9 +79,9 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
     }
 
     /**
-     * @return null|string[]
+     * @return string[]
      */
-    public function getInclude(): ?array
+    public function getInclude(): array
     {
         return $this->include;
     }
