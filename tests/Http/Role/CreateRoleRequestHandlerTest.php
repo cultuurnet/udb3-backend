@@ -40,10 +40,29 @@ final class CreateRoleRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_when_an_empty_name_is_given(): void
+    public function it_throws_api_problem_when_an_empty_name_is_given(): void
     {
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray(['name' => ''])
+            ->build('POST');
+
+        $this->commandBus->record();
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::requiredFieldMissing('name'),
+            fn () => $this->handler->handle($request)
+        );
+
+        $this->assertEmpty($this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_api_problem_when_no_name_is_given(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([])
             ->build('POST');
 
         $this->commandBus->record();
