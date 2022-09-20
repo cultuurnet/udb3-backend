@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
-use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
@@ -112,8 +111,6 @@ $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
 $app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
 $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
-
-$app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
 // Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
 // ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
