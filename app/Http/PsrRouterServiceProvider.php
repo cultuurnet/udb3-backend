@@ -16,6 +16,10 @@ use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
+use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\PatchLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler as ImportOrganizerRequestHandlerAlias;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
@@ -65,6 +69,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindLegacyImports($router);
 
                 $this->bindJobs($router);
+
+                $this->bindLabels($router);
 
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
@@ -131,6 +137,17 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
     {
         $router->group('jobs', function (RouteGroup $routeGroup) {
             $routeGroup->get('{jobId}/', GetJobStatusRequestHandler::class);
+        });
+    }
+
+    private function bindLabels(Router $router): void
+    {
+        $router->group('labels', function (RouteGroup $routeGroup) {
+            $routeGroup->post('', CreateLabelRequestHandler::class);
+            $routeGroup->patch('{labelId}/', PatchLabelRequestHandler::class);
+
+            $routeGroup->get('{labelId}/', GetLabelRequestHandler::class);
+            $routeGroup->get('', SearchLabelsRequestHandler::class);
         });
     }
 
