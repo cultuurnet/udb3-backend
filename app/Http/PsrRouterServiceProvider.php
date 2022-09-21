@@ -26,6 +26,14 @@ use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetPermissionsRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRoleLabelsRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRolesFromCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetUserPermissionsRequestHandler;
+use CultuurNet\UDB3\Http\Role\GetUsersWithRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\RolesSearchRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
@@ -116,6 +124,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindPlaces($router);
 
                 $this->bindUser($router);
+
+                $this->bindRoles($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -296,6 +306,18 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
     {
         $router->get('users/emails/{email}/', GetUserByEmailRequestHandler::class);
         $router->get('user/', GetCurrentUserRequestHandler::class);
+    }
+
+    private function bindRoles(Router $router): void
+    {
+        $router->get('/roles/', RolesSearchRequestHandler::class);
+        $router->get('/roles/{roleId}/', GetRoleRequestHandler::class);
+        $router->get('/permissions/', GetPermissionsRequestHandler::class);
+        $router->get('/roles/{roleId}/users/', GetUsersWithRoleRequestHandler::class);
+        $router->get('/roles/{roleId}/labels/', GetRoleLabelsRequestHandler::class);
+        $router->get('/users/{userId}/roles/', GetRolesFromUserRequestHandler::class);
+        $router->get('/user/roles/', GetRolesFromCurrentUserRequestHandler::class);
+        $router->get('/user/permissions/', GetUserPermissionsRequestHandler::class);
     }
 
     public function boot(Application $app): void
