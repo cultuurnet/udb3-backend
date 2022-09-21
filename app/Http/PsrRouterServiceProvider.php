@@ -95,7 +95,6 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindImages($router);
 
                 $this->bindOrganizers($router);
-                
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
                 $router->get('/places/', ProxyRequestHandler::class);
