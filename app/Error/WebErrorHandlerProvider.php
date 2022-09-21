@@ -18,11 +18,11 @@ use Error;
 use Exception;
 use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;
+use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Component\HttpFoundation\Request;
 use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
@@ -44,7 +44,10 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (Exception $e) use ($app) {
                 $app[ErrorLogger::class]->log($e);
-                $request = $app['request_stack']->getCurrentRequest();
+
+                $request = (new DiactorosFactory())->createRequest(
+                    $app['request_stack']->getCurrentRequest()
+                );
 
                 $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
@@ -54,7 +57,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         );
     }
 
-    public static function createNewApiProblem(Request $request, Throwable $e, int $defaultStatus): ApiProblem
+    public static function createNewApiProblem(ServerRequestInterface $request, Throwable $e, int $defaultStatus): ApiProblem
     {
         $problem = self::convertThrowableToApiProblem($request, $e, $defaultStatus);
         if (self::$debug) {
@@ -63,7 +66,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         return $problem;
     }
 
-    private static function convertThrowableToApiProblem(Request $request, Throwable $e, int $defaultStatus): ApiProblem
+    private static function convertThrowableToApiProblem(ServerRequestInterface $request, Throwable $e, int $defaultStatus): ApiProblem
     {
         switch (true) {
             case $e instanceof ApiProblem:
@@ -105,8 +108,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             // exception in the request handler or command handler and convert it to an ApiProblem with a better detail.
             case $e instanceof AggregateNotFoundException:
             case $e instanceof DocumentDoesNotExist:
-                $psr7Request = (new DiactorosFactory())->createRequest($request);
-                $routeParameters = new RouteParameters($psr7Request);
+                $routeParameters = new RouteParameters($request);
                 if ($routeParameters->hasEventId()) {
                     return ApiProblem::eventNotFound($routeParameters->getEventId());
                 }
