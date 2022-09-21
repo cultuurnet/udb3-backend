@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Http;
 
-use CultuurNet\UDB3\Http\CustomLeagueRouterStrategy;
+use CultuurNet\UDB3\Silex\Http\CustomLeagueRouterStrategy;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
