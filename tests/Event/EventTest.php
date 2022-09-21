@@ -799,38 +799,94 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_update_price_info_after_udb2_import(): void
+    public function it_stores_price_info_from_udb2_import(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $createEvent = $this->getCreationEvent();
+        $cdbXml = $this->getSample('event_with_price_value_and_description.cdbxml.xml');
 
         $priceInfo = new PriceInfo(
             new BasePrice(
-                new Money(1000, new Currency('EUR'))
+                new Money(999, new Currency('EUR'))
             )
         );
-
-        $xmlData = $this->getSample('EventTest.cdbxml.xml');
-        $xmlNamespace = self::NS_CDBXML_3_2;
 
         $this->scenario
             ->given(
                 [
-                    $createEvent,
-                    new PriceInfoUpdated($eventId, $priceInfo),
-                    new EventUpdatedFromUDB2($eventId, $xmlData, $xmlNamespace),
+                    new EventImportedFromUDB2($eventId, $cdbXml, self::NS_CDBXML_3_2),
                 ]
             )
             ->when(
-                function (Event $event) use ($priceInfo) {
-                    $event->updatePriceInfo($priceInfo);
-                }
+                fn (Event $event) => $event->updatePriceInfo($priceInfo)
             )
-            ->then(
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_update_price_info_from_udb2_update(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->scenario
+            ->given(
                 [
-                    new PriceInfoUpdated($eventId, $priceInfo),
+                    new EventImportedFromUDB2(
+                        $eventId,
+                        $this->getSample('event_without_price.cdbxml.xml'),
+                        self::NS_CDBXML_3_2
+                    ),
+                    new EventUpdatedFromUDB2(
+                        $eventId,
+                        $this->getSample('event_with_price_value_and_formatted_description.cdbxml.xml'),
+                        self::NS_CDBXML_3_2
+                    ),
                 ]
-            );
+            )
+            ->when(
+                fn (Event $event) => $event->updatePriceInfo(
+                    (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
+                        ->withTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Met kinderen')
+                                ),
+                                new Money(2000, new Currency('EUR'))
+                            ),
+                        ])
+                )
+            )
+            ->when(
+                fn (Event $event) => $event->updatePriceInfo(
+                    (new PriceInfo((new BasePrice(new Money(1250, new Currency('EUR'))))))
+                        ->withTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Met kinderen')
+                                ),
+                                new Money(1499, new Currency('EUR'))
+                            ),
+                        ])
+                )
+            )
+            ->then([
+                new PriceInfoUpdated(
+                    $eventId,
+                    (new PriceInfo(new BasePrice(new Money(1250, new Currency('EUR')))))
+                        ->withTariffs([
+                            new \CultuurNet\UDB3\PriceInfo\Tariff(
+                                new MultilingualString(
+                                    new LegacyLanguage('nl'),
+                                    new StringLiteral('Met kinderen')
+                                ),
+                                new Money(1499, new Currency('EUR'))
+                            ),
+                        ])
+                ),
+            ]);
     }
 
     /**

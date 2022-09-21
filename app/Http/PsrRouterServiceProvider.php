@@ -50,6 +50,7 @@ use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
+use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
 use League\Route\RouteGroup;
 use League\Route\Router;
@@ -94,6 +95,12 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindImages($router);
 
                 $this->bindOrganizers($router);
+                
+                // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
+                $router->get('/events/', ProxyRequestHandler::class);
+                $router->get('/places/', ProxyRequestHandler::class);
+                $router->get('/offers/', ProxyRequestHandler::class);
+                $router->get('/organizers/', ProxyRequestHandler::class);
 
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 

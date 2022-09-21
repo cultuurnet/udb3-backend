@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use Broadway\EventHandling\EventBus;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
@@ -148,9 +149,11 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CdbXMLImporter(
                     new CdbXMLItemBaseImporter(
-                        new PriceDescriptionParser(
-                            new NumberFormatRepository(),
-                            new CurrencyRepository()
+                        new CdbXmlPriceInfoParser(
+                            new PriceDescriptionParser(
+                                new NumberFormatRepository(),
+                                new CurrencyRepository()
+                            )
                         ),
                         $app['config']['base_price_translations']
                     ),
