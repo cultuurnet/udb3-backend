@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Http;
 
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use League\Route\ContainerAwareInterface;
 use League\Route\ContainerAwareTrait;
 use League\Route\Http\Exception\MethodNotAllowedException;
@@ -33,6 +34,13 @@ final class CustomLeagueRouterStrategy extends AbstractStrategy implements
 {
     use ContainerAwareTrait;
 
+    private WebErrorHandler $webErrorHandler;
+
+    public function __construct(WebErrorHandler $webErrorHandler)
+    {
+        $this->webErrorHandler = $webErrorHandler;
+    }
+
     public function getOptionsCallable(array $methods): callable
     {
         return static function (): ResponseInterface {
@@ -54,18 +62,7 @@ final class CustomLeagueRouterStrategy extends AbstractStrategy implements
 
     public function getThrowableHandler(): MiddlewareInterface
     {
-        return new class() implements MiddlewareInterface {
-            public function process(
-                ServerRequestInterface $request,
-                RequestHandlerInterface $handler
-            ): ResponseInterface {
-                try {
-                    return $handler->handle($request);
-                } catch (Throwable $e) {
-                    throw $e;
-                }
-            }
-        };
+        return $this->webErrorHandler;
     }
 
     public function invokeRouteCallable(Route $route, ServerRequestInterface $request): ResponseInterface

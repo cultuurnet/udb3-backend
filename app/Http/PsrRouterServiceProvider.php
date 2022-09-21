@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Http;
 
+use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Silex\Http\CustomLeagueRouterStrategy;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
@@ -31,7 +32,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
                 // Use a custom strategy so we can implement getOptionsCallable() on the strategy, to support CORS
                 // pre-flight requests. We also have to set the container on the strategy.
-                $routerStrategy = new CustomLeagueRouterStrategy();
+                $routerStrategy = new CustomLeagueRouterStrategy($app[WebErrorHandler::class]);
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
 
