@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\Domain\DomainEventStream;
+use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
@@ -19,24 +22,27 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ReindexOffersWithPopularityScore extends Command
 {
+    private OfferType $offerType;
+
     private string $type;
 
     private Connection $connection;
 
     private EventBus $eventBus;
 
-    private DocumentEventFactory $eventFactoryForEvents;
+    private DocumentEventFactory $eventFactoryForOffers;
 
     public function __construct(
         OfferType $type,
         Connection $connection,
         EventBus $eventBus,
-        DocumentEventFactory $eventFactoryForEvents
+        DocumentEventFactory $eventFactoryForOffers
     ) {
+        $this->offerType = $type;
         $this->type = \strtolower($type->toString());
         $this->connection = $connection;
         $this->eventBus = $eventBus;
-        $this->eventFactoryForEvents = $eventFactoryForEvents;
+        $this->eventFactoryForOffers = $eventFactoryForOffers;
 
         // It's important to call the parent constructor after setting the properties.
         // Because the parent constructor calls the `configure` method.
@@ -69,9 +75,17 @@ class ReindexOffersWithPopularityScore extends Command
             return 0;
         }
 
+        if ($this->offerType->sameAs(OfferType::place())) {
+            InterceptingMiddleware::startIntercepting(
+                static fn (DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD
+            );
+        }
+
         foreach ($offerIds as $offerId) {
             $this->handleEvent($offerId);
         }
+
+        InterceptingMiddleware::stopIntercepting();
 
         return 0;
     }
@@ -104,11 +118,11 @@ class ReindexOffersWithPopularityScore extends Command
 
     private function handleEvent(string $id): void
     {
-        $projectedEvent = $this->eventFactoryForEvents->createEvent($id);
+        $offerProjectedToJSONLD = $this->eventFactoryForOffers->createEvent($id);
 
         $this->eventBus->publish(
             new DomainEventStream(
-                [(new DomainMessageBuilder())->create($projectedEvent)]
+                [(new DomainMessageBuilder())->create($offerProjectedToJSONLD)]
             )
         );
     }
