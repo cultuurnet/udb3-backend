@@ -9,11 +9,11 @@ use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
 use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
-use CultuurNet\UDB3\Http\CustomLeagueRouterStrategy;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler as ImportEventRequestHandlerAlias;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
+use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
@@ -58,7 +58,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
                 // Use a custom strategy so we can implement getOptionsCallable() on the strategy, to support CORS
                 // pre-flight requests. We also have to set the container on the strategy.
-                $routerStrategy = new CustomLeagueRouterStrategy();
+                $routerStrategy = new CustomLeagueRouterStrategy($app[WebErrorHandler::class]);
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
 

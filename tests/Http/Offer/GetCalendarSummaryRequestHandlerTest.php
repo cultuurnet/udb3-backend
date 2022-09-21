@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\HtmlResponse;
@@ -27,22 +26,6 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
 
         $this->getCalendarSummaryRequestHandler = new GetCalendarSummaryRequestHandler(
             $this->repositoryMockFactory->create()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_api_problem_if_the_given_offer_does_not_exist(): void
-    {
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', '5ba3596f-5682-4cf5-85a9-306f9d0b0c34')
-            ->build('GET');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::eventNotFound('5ba3596f-5682-4cf5-85a9-306f9d0b0c34'),
-            fn () => $this->getCalendarSummaryRequestHandler->handle($request)
         );
     }
 
