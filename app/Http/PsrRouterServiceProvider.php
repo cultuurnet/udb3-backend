@@ -26,6 +26,8 @@ use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
+use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
@@ -112,6 +114,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindEvents($router);
 
                 $this->bindPlaces($router);
+
+                $this->bindUser($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -286,6 +290,12 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->post('{placeId}/address/{language}/', UpdatePlaceAddressRequestHandler::class);
             $routeGroup->post('{placeId}/major-info/', UpdatePlaceMajorInfoRequestHandler::class);
         });
+    }
+
+    private function bindUser(Router $router): void
+    {
+        $router->get('users/emails/{email}/', GetUserByEmailRequestHandler::class);
+        $router->get('user/', GetCurrentUserRequestHandler::class);
     }
 
     public function boot(Application $app): void
