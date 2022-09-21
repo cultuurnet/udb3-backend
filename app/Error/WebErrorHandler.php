@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
@@ -22,6 +23,23 @@ use Throwable;
 
 final class WebErrorHandler
 {
+    private ErrorLogger $errorLogger;
+    private bool $debugMode;
+
+    public function __construct(ErrorLogger $errorLogger, bool $debugMode)
+    {
+        $this->errorLogger = $errorLogger;
+        $this->debugMode = $debugMode;
+    }
+
+    public function handle(ServerRequestInterface $request, Throwable $e): ApiProblemJsonResponse
+    {
+        $this->errorLogger->log($e);
+        $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
+        $problem = self::createNewApiProblem($request, $e, $defaultStatus, $this->debugMode);
+        return new ApiProblemJsonResponse($problem);
+    }
+
     public static function createNewApiProblem(ServerRequestInterface $request, Throwable $e, int $defaultStatus, bool $debug = false): ApiProblem
     {
         $problem = self::convertThrowableToApiProblem($request, $e, $defaultStatus);

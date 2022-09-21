@@ -37,18 +37,25 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             }
         );
 
+        $app[WebErrorHandler::class] = $app::share(
+            function (Application $app): WebErrorHandler {
+                return new WebErrorHandler(
+                    $app[ErrorLogger::class],
+                    $app['debug'] === true
+                );
+            }
+        );
+
         $app->error(
             function (Exception $e) use ($app) {
-                $app[ErrorLogger::class]->log($e);
-
                 $request = (new DiactorosFactory())->createRequest(
                     $app['request_stack']->getCurrentRequest()
                 );
 
-                $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
-
-                $problem = WebErrorHandler::createNewApiProblem($request, $e, $defaultStatus, $app['debug'] === true);
-                return (new ApiProblemJsonResponse($problem))->toHttpFoundationResponse();
+                /** @var WebErrorHandler $webErrorHandler */
+                $webErrorHandler = $app[WebErrorHandler::class];
+                $response = $webErrorHandler->handle($request, $e);
+                return $response->toHttpFoundationResponse();
             }
         );
     }

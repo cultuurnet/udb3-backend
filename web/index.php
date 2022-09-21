@@ -160,22 +160,14 @@ JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-sch
 try {
     $app->run();
 } catch (\Throwable $throwable) {
-    // All Silex kernel exceptions are caught by the ErrorHandlerProvider.
-    // Errors and uncaught runtime exceptions are caught here.
-    $app[ErrorLogger::class]->log($throwable);
-
-    // Errors always get a status 500, but we still need a default status code in case of runtime exceptions that
-    // weren't caught by Silex.
-    $apiProblem = WebErrorHandler::createNewApiProblem(
-        $app['request_stack']->getCurrentRequest(),
-        $throwable,
-        500,
-        $app['debug'] === true
-    );
+    /** @var WebErrorHandler $webErrorHandler */
+    $webErrorHandler = $app[WebErrorHandler::class];
+    $request = (new DiactorosFactory())->createRequest($app['request_stack']->getCurrentRequest());
+    $response = $webErrorHandler->handle($request, $throwable);
 
     // We're outside of the Silex app, so we cannot use the standard way to return a Response object.
-    http_response_code($apiProblem->getStatus());
+    http_response_code($response->getStatusCode());
     header('Content-Type: application/json');
-    echo json_encode($apiProblem->toArray());
+    echo $response->getBody()->getContents();
     exit;
 }
