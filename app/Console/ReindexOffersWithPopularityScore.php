@@ -10,6 +10,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
+use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
@@ -23,6 +24,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ReindexOffersWithPopularityScore extends Command
 {
+    private OfferType $offerType;
+
     private string $type;
 
     private Connection $connection;
@@ -37,6 +40,7 @@ class ReindexOffersWithPopularityScore extends Command
         EventBus $eventBus,
         DocumentEventFactory $eventFactoryForOffers
     ) {
+        $this->offerType = $type;
         $this->type = \strtolower($type->toString());
         $this->connection = $connection;
         $this->eventBus = $eventBus;
@@ -73,9 +77,17 @@ class ReindexOffersWithPopularityScore extends Command
             return 0;
         }
 
+        if ($this->offerType->sameAs(OfferType::place())) {
+            InterceptingMiddleware::startIntercepting(
+                static fn(DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD
+            );
+        }
+
         foreach ($offerIds as $offerId) {
             $this->handleEvent($offerId);
         }
+
+        InterceptingMiddleware::stopIntercepting();
 
         return 0;
     }
@@ -110,18 +122,11 @@ class ReindexOffersWithPopularityScore extends Command
     {
         $offerProjectedToJSONLD = $this->eventFactoryForOffers->createEvent($id);
 
-        if ($offerProjectedToJSONLD instanceof PlaceProjectedToJSONLD) {
-            InterceptingMiddleware::startIntercepting(
-                static fn (DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD
-            );
-        }
-
         $this->eventBus->publish(
             new DomainEventStream(
                 [(new DomainMessageBuilder())->create($offerProjectedToJSONLD)]
             )
         );
 
-        InterceptingMiddleware::stopIntercepting();
     }
 }
