@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CommerceGuys\Intl\Currency\CurrencyRepository;
+use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
+use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
@@ -63,7 +67,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Language as LegacyLanguage;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Image;
@@ -78,6 +82,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -116,7 +121,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     public static function create(
         string $eventId,
-        Language $mainLanguage,
+        LegacyLanguage $mainLanguage,
         Title $title,
         EventType $eventType,
         LocationId $location,
@@ -228,7 +233,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     {
         $this->eventId = $eventImported->getEventId();
         // When importing from UDB2 the default main language is always 'nl'.
-        $this->mainLanguage = new Language('nl');
+        $this->mainLanguage = new LegacyLanguage('nl');
         $this->setUDB2Data($eventImported);
     }
 
@@ -275,7 +280,16 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->bookingInfo = null;
 
         // Just clear the price info.
-        $this->priceInfo = null;
+        $priceInfoParser = new CdbXmlPriceInfoParser(
+            new PriceDescriptionParser(
+                new NumberFormatRepository(),
+                new CurrencyRepository()
+            )
+        );
+        $this->priceInfo = $priceInfoParser->parse(
+            $udb2Event->getDetails(),
+            new Language($this->mainLanguage->getCode())
+        );
 
         $this->importWorkflowStatus($udb2Event);
 
@@ -577,7 +591,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return new VideoUpdated($this->eventId, $video);
     }
 
-    protected function createTitleTranslatedEvent(Language $language, Title $title): TitleTranslated
+    protected function createTitleTranslatedEvent(LegacyLanguage $language, Title $title): TitleTranslated
     {
         return new TitleTranslated($this->eventId, $language, $title);
     }
@@ -587,7 +601,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return new TitleUpdated($this->eventId, $title);
     }
 
-    protected function createDescriptionTranslatedEvent(Language $language, Description $description): DescriptionTranslated
+    protected function createDescriptionTranslatedEvent(LegacyLanguage $language, Description $description): DescriptionTranslated
     {
         return new DescriptionTranslated($this->eventId, $language, $description);
     }
