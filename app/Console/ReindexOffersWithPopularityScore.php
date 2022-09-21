@@ -10,9 +10,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
-use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
@@ -79,7 +77,7 @@ class ReindexOffersWithPopularityScore extends Command
 
         if ($this->offerType->sameAs(OfferType::place())) {
             InterceptingMiddleware::startIntercepting(
-                static fn(DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD
+                static fn (DomainMessage $message) => $message->getPayload() instanceof EventProjectedToJSONLD
             );
         }
 
@@ -127,6 +125,5 @@ class ReindexOffersWithPopularityScore extends Command
                 [(new DomainMessageBuilder())->create($offerProjectedToJSONLD)]
             )
         );
-
     }
 }
