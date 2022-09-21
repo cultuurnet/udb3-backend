@@ -18,7 +18,7 @@ class JSONLDEventFormatterTest extends TestCase
     public function setUp(): void
     {
         $this->calendarSummaryRepository = $this->createMock(CalendarSummaryRepositoryInterface::class);
-        $this->calendarSummaryRepository->method('get')->willReturn('Test');
+        $this->calendarSummaryRepository->method('get')->willReturn('Vrijdag');
     }
 
     private function getJSONEventFromFile($fileName)
@@ -128,6 +128,26 @@ class JSONLDEventFormatterTest extends TestCase
 
         $this->assertEquals(
             '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","bookingAvailability":{"type":"Unavailable"}}',
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_export_calendar_summary(): void
+    {
+        $includedProperties = [
+            'id',
+            'calendarSummary',
+        ];
+        $eventWithTerms = $this->getJSONEventFromFile('event_with_booking_availability.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithTerms);
+
+        $this->assertEquals(
+            '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","calendarSummary":"Vrijdag"}',
             $event
         );
     }
