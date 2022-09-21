@@ -25,9 +25,6 @@ final class OfferJsonDocumentReadRepository
         $this->placeDocumentRepository = $placeDocumentRepository;
     }
 
-    /**
-     * @throws ApiProblem
-     */
     public function fetch(OfferType $offerType, string $id, bool $includeMetadata = false): JsonDocument
     {
         if ($offerType->sameAs(OfferType::event())) {
@@ -37,6 +34,6 @@ final class OfferJsonDocumentReadRepository
             return $this->placeDocumentRepository->fetch($id, $includeMetadata);
         }
 
-        throw ApiProblem::offerNotFound($offerType, $id);
+        throw DocumentDoesNotExist::withId($id);
     }
 }
