@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Silex\ApiName;
@@ -70,8 +70,8 @@ $app->before(
     static function (Request $request, Application $app): void {
         $psrRequest = (new DiactorosFactory())->createRequest($request);
 
-        /** @var RequestAuthenticator $authenticator */
-        $authenticator = $app[RequestAuthenticator::class];
+        /** @var RequestAuthenticatorMiddleware $authenticator */
+        $authenticator = $app[RequestAuthenticatorMiddleware::class];
         $authenticator->authenticate($psrRequest);
     },
     Application::EARLY_EVENT

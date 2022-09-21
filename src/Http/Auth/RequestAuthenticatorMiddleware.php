@@ -24,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class RequestAuthenticator implements MiddlewareInterface
+final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 {
     private const BEARER = 'Bearer ';
 
