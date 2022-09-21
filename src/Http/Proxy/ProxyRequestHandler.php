@@ -28,7 +28,11 @@ final class ProxyRequestHandler implements RequestHandlerInterface
         $rewrittenRequest = $request->withUri($rewrittenUri);
 
         // Disable conversion of HTTP error responses to exceptions so we can return the 4xx and 5xx responses as-is.
-        return $this->httpClient->send($rewrittenRequest, ['http_errors' => false])
-            ->withoutHeader('Transfer-Encoding');
+        $response = $this->httpClient->send($rewrittenRequest, ['http_errors' => false]);
+
+        // Return the response but remove the Transfer-Encoding header first, as this header is specific to the transfer
+        // of a response between two nodes (i.e. this app and SAPI3) and it causes issues when sending the response back
+        // to the original client.
+        return $response->withoutHeader('Transfer-Encoding');
     }
 }
