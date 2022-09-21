@@ -16,13 +16,16 @@ use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler as UpdateEventMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
+use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
+use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
+use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
@@ -44,7 +47,7 @@ use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler as UpdateOrganizerAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
@@ -107,6 +110,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindOrganizers($router);
 
                 $this->bindEvents($router);
+
+                $this->bindPlaces($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -218,8 +223,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->put('{organizerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
             $routeGroup->delete('{organizerId}/description/{language}/', DeleteDescriptionRequestHandler::class);
 
-            $routeGroup->put('{organizerId}/address/', UpdateAddressRequestHandler::class);
-            $routeGroup->put('{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
+            $routeGroup->put('{organizerId}/address/', UpdateOrganizerAddressRequestHandler::class);
+            $routeGroup->put('{organizerId}/address/{language}/', UpdateOrganizerAddressRequestHandler::class);
             $routeGroup->delete('{organizerId}/address/', DeleteAddressRequestHandler::class);
 
             $routeGroup->put('{organizerId}/url/', UpdateUrlRequestHandler::class);
@@ -245,7 +250,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->post('', ImportEventRequestHandler::class);
             $routeGroup->put('{eventId}/', ImportEventRequestHandler::class);
 
-            $routeGroup->put('{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
+            $routeGroup->put('{eventId}/major-info/', UpdateEventMajorInfoRequestHandler::class);
             $routeGroup->put('{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
             $routeGroup->patch('{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
             $routeGroup->put('{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
@@ -260,7 +265,26 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
              * Legacy routes that we need to keep for backward compatibility.
              * These routes usually used an incorrect HTTP method.
              */
-            $routeGroup->post('{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
+            $routeGroup->post('{eventId}/major-info/', UpdateEventMajorInfoRequestHandler::class);
+        });
+    }
+
+    private function bindPlaces(Router $router): void
+    {
+        $router->group('places', function (RouteGroup $routeGroup) {
+            $routeGroup->post('', ImportPlaceRequestHandler::class);
+            $routeGroup->put('{placeId}/', ImportPlaceRequestHandler::class);
+
+            $routeGroup->put('{placeId}/address/{language}/', UpdatePlaceAddressRequestHandler::class);
+            $routeGroup->put('{placeId}/major-info/', UpdatePlaceMajorInfoRequestHandler::class);
+
+            /**
+             * Legacy routes that we need to keep for backward compatibility.
+             * These routes usually used an incorrect HTTP method.
+             */
+            $routeGroup->get('{placeId}/events/', GetEventsRequestHandler::class);
+            $routeGroup->post('{placeId}/address/{language}/', UpdatePlaceAddressRequestHandler::class);
+            $routeGroup->post('{placeId}/major-info/', UpdatePlaceMajorInfoRequestHandler::class);
         });
     }
 
