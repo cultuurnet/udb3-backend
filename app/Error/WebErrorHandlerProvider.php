@@ -27,12 +27,8 @@ use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
 {
-    private static bool $debug = false;
-
     public function register(Application $app): void
     {
-        self::$debug = $app['debug'] === true;
-
         $app[ErrorLogger::class] = $app::share(
             function (Application $app): ErrorLogger {
                 return new ErrorLogger(
@@ -51,16 +47,16 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
                 $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
 
-                $problem = $this::createNewApiProblem($request, $e, $defaultStatus);
+                $problem = $this::createNewApiProblem($request, $e, $defaultStatus, $app['debug'] === true);
                 return (new ApiProblemJsonResponse($problem))->toHttpFoundationResponse();
             }
         );
     }
 
-    public static function createNewApiProblem(ServerRequestInterface $request, Throwable $e, int $defaultStatus): ApiProblem
+    public static function createNewApiProblem(ServerRequestInterface $request, Throwable $e, int $defaultStatus, bool $debug = false): ApiProblem
     {
         $problem = self::convertThrowableToApiProblem($request, $e, $defaultStatus);
-        if (self::$debug) {
+        if ($debug) {
             $problem->setDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }
         return $problem;
@@ -155,6 +151,5 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
     public function boot(Application $app): void
     {
-        self::$debug = $app['debug'] === true;
     }
 }

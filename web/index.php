@@ -168,7 +168,8 @@ try {
     $apiProblem = WebErrorHandlerProvider::createNewApiProblem(
         $app['request_stack']->getCurrentRequest(),
         $throwable,
-        500
+        500,
+        $app['debug'] === true
     );
 
     // We're outside of the Silex app, so we cannot use the standard way to return a Response object.
