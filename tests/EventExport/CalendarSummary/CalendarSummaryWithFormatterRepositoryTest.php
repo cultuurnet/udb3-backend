@@ -144,16 +144,16 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
                 'contentType' => ContentType::html(),
                 'format' => Format::md(),
             ],
-            /*[
-                'result' => '<ul class="cnw-event-date-info"><li>' .
-                    '<time itemprop="startDate" datetime="2022-09-23T18:00:00+00:00">' .
+            [
+                'result' => '<ul class="cnw-event-date-info">' .
+                    '<li><time itemprop="startDate" datetime="2022-09-23T18:00:00+00:00">' .
                     '<span class="cf-weekday cf-meta">Vrijdag</span> ' .
                     '<span class="cf-date">23 september 2022</span> ' .
                     '<span class="cf-from cf-meta">van</span> ' .
                     '<span class="cf-time">20:00</span></time> ' .
                     '<span class="cf-to cf-meta">tot</span> ' .
                     '<time itemprop="endDate" datetime="2022-09-23T21:00:00+00:00">' .
-                    '<span class="cf-time">23:00</span></time></li> ' .
+                    '<span class="cf-time">23:00</span></time></li>' .
                     '<li><time itemprop="startDate" datetime="2022-09-30T18:00:00+00:00">' .
                     '<span class="cf-weekday cf-meta">Vrijdag</span> ' .
                     '<span class="cf-date">30 september 2022</span> ' .
@@ -167,7 +167,7 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
                     '<span class="cf-date">7 oktober 2022</span></time></li></ul>',
                 'contentType' => ContentType::html(),
                 'format' => Format::lg(),
-            ],*/
+            ],
         ];
     }
 }
