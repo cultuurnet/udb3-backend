@@ -23,7 +23,24 @@ use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
 use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler as ImportOrganizerRequestHandlerAlias;
+use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
 use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
@@ -75,6 +92,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindLabels($router);
 
                 $this->bindImages($router);
+
+                $this->bindOrganizers($router);
 
                 $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
@@ -132,8 +151,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->post('places/', ImportPlaceRequestHandler::class);
             $routeGroup->put('places/{placeId}/', ImportPlaceRequestHandler::class);
 
-            $routeGroup->post('organizers/', ImportOrganizerRequestHandlerAlias::class);
-            $routeGroup->put('organizers/{organizerId}/', ImportOrganizerRequestHandlerAlias::class);
+            $routeGroup->post('organizers/', ImportOrganizerRequestHandler::class);
+            $routeGroup->put('organizers/{organizerId}/', ImportOrganizerRequestHandler::class);
         });
     }
 
@@ -164,6 +183,41 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
         /* @deprecated */
         $router->get('/media/{id}/', GetMediaRequestHandler::class);
+    }
+
+    private function bindOrganizers(Router $router): void
+    {
+        $router->group('organizers', function (RouteGroup $routeGroup) {
+            $routeGroup->post('', ImportOrganizerRequestHandler::class);
+            $routeGroup->put('{organizerId}/', ImportOrganizerRequestHandler::class);
+            $routeGroup->get('{organizerId}/', GetOrganizerRequestHandler::class);
+            $routeGroup->delete('{organizerId}/', DeleteOrganizerRequestHandler::class);
+
+            $routeGroup->put('{organizerId}/name/', UpdateTitleRequestHandler::class);
+            $routeGroup->put('{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
+
+            $routeGroup->put('{organizerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
+            $routeGroup->delete('{organizerId}/description/{language}/', DeleteDescriptionRequestHandler::class);
+
+            $routeGroup->put('{organizerId}/address/', UpdateAddressRequestHandler::class);
+            $routeGroup->put('{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
+            $routeGroup->delete('{organizerId}/address/', DeleteAddressRequestHandler::class);
+
+            $routeGroup->put('{organizerId}/url/', UpdateUrlRequestHandler::class);
+
+            $routeGroup->put('{organizerId}/contact-point/', UpdateContactPointRequestHandler::class);
+
+            $routeGroup->post('{organizerId}/images/', AddImageRequestHandler::class);
+            $routeGroup->put('{organizerId}/images/main/', UpdateMainImageRequestHandler::class);
+            $routeGroup->patch('{organizerId}/images/', UpdateImagesRequestHandler::class);
+            $routeGroup->delete('{organizerId}/images/{imageId}/', DeleteImageRequestHandler::class);
+
+            $routeGroup->put('{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+            $routeGroup->delete('{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
+
+            $routeGroup->get('{organizerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
+            $routeGroup->get('{organizerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
+        });
     }
 
     public function boot(Application $app): void
