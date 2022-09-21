@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
+use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
@@ -165,7 +166,7 @@ try {
 
     // Errors always get a status 500, but we still need a default status code in case of runtime exceptions that
     // weren't caught by Silex.
-    $apiProblem = WebErrorHandlerProvider::createNewApiProblem(
+    $apiProblem = WebErrorHandler::createNewApiProblem(
         $app['request_stack']->getCurrentRequest(),
         $throwable,
         500,
