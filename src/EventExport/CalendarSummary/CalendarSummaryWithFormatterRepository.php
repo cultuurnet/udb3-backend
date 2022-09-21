@@ -18,14 +18,14 @@ final class CalendarSummaryWithFormatterRepository implements CalendarSummaryRep
         $this->repository = $repository;
     }
 
-    public function get(string $offerId, ContentType $type, Format $format): string
+    public function get(string $eventId, ContentType $type, Format $format): string
     {
-        $offerDocument = $this->repository->fetch($offerId);
+        $eventDocument = $this->repository->fetch($eventId);
         if ($type->sameAs(ContentType::html())) {
             $calendarFormatter = new CalendarHTMLFormatter();
         } else {
             $calendarFormatter = new CalendarPlainTextFormatter();
         }
-        return $calendarFormatter->format(Offer::fromJsonLd($offerDocument->getRawBody()), $format->toString());
+        return $calendarFormatter->format(Offer::fromJsonLd($eventDocument->getRawBody()), $format->toString());
     }
 }
