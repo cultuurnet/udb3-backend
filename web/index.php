@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Proxy\ProxyRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
-use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
 use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
@@ -77,16 +76,12 @@ $app->before(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $placeControllerProvider = new PlaceControllerProvider();
-$eventControllerProvider = new EventControllerProvider();
 $offerControllerProvider = new OfferControllerProvider();
 
 $app->register($placeControllerProvider);
-$app->register($eventControllerProvider);
 $app->register($offerControllerProvider);
 
 $app->mount('/places', $placeControllerProvider);
-
-$app->mount('/events', $eventControllerProvider);
 
 $app->mount('/', $offerControllerProvider);
 
