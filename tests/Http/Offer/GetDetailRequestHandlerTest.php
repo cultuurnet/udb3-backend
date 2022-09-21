@@ -241,40 +241,6 @@ class GetDetailRequestHandlerTest extends TestCase
         $this->assertArrayNotHasKey('metadata', $decodedResponseBody);
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_url_not_found_if_the_event_does_not_exist(): void
-    {
-        $request = (new Psr7RequestBuilder())
-            ->withUriFromString('/events/c09b7a51-b17c-4121-b278-eef71ef04e47')
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
-            ->build('GET');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::eventNotFound('c09b7a51-b17c-4121-b278-eef71ef04e47'),
-            fn () => $this->getDetailRequestHandler->handle($request)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_url_not_found_if_the_place_does_not_exist(): void
-    {
-        $request = (new Psr7RequestBuilder())
-            ->withUriFromString('/places/1e960233-b724-4c56-89dc-c160d15508c6')
-            ->withRouteParameter('offerType', 'places')
-            ->withRouteParameter('offerId', '1e960233-b724-4c56-89dc-c160d15508c6')
-            ->build('GET');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::placeNotFound('1e960233-b724-4c56-89dc-c160d15508c6'),
-            fn () => $this->getDetailRequestHandler->handle($request)
-        );
-    }
-
     private function mockEventDocument(string $eventId): void
     {
         $jsonLd = Json::encode(

@@ -33,22 +33,6 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_api_problem_if_the_given_offer_does_not_exist(): void
-    {
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', '5ba3596f-5682-4cf5-85a9-306f9d0b0c34')
-            ->build('GET');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::eventNotFound('5ba3596f-5682-4cf5-85a9-306f9d0b0c34'),
-            fn () => $this->getCalendarSummaryRequestHandler->handle($request)
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_a_html_calendar_summary_based_on_the_accept_header(): void
     {
         $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
