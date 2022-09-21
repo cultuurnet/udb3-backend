@@ -11,16 +11,16 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 final class CalendarSummaryWithFormatterRepository implements CalendarSummaryRepositoryInterface
 {
-    private DocumentRepository $repository;
+    private DocumentRepository $eventRepository;
 
     public function __construct(DocumentRepository $repository)
     {
-        $this->repository = $repository;
+        $this->eventRepository = $repository;
     }
 
     public function get(string $eventId, ContentType $type, Format $format): string
     {
-        $eventDocument = $this->repository->fetch($eventId);
+        $eventDocument = $this->eventRepository->fetch($eventId);
         if ($type->sameAs(ContentType::html())) {
             $calendarFormatter = new CalendarHTMLFormatter();
         } else {

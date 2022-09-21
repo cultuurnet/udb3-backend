@@ -17,8 +17,8 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $documentRepository = new InMemoryDocumentRepository();
-        $documentRepository->save(
+        $eventRepository = new InMemoryDocumentRepository();
+        $eventRepository->save(
             new JsonDocument(
                 self::EVENT_ID,
                 Json::encode(
@@ -75,7 +75,7 @@ final class CalendarSummaryWithFormatterRepositoryTest extends TestCase
                 )
             )
         );
-        $this->repository = new CalendarSummaryWithFormatterRepository($documentRepository);
+        $this->repository = new CalendarSummaryWithFormatterRepository($eventRepository);
     }
 
     /**
