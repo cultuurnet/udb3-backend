@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
 use CultuurNet\UDB3\Offer\BulkLabelCommandHandler;
+use CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer;
+use CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
@@ -15,10 +19,7 @@ use Silex\ServiceProviderInterface;
 
 class BulkLabelOfferServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         // Set up the bulk label offer command bus.
         $app['resque_command_bus_factory']('bulk_label_offer');
@@ -48,12 +49,30 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
                 return $commandBus;
             }
         );
+
+        $app[AddLabelToQueryRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelToQueryRequestHandler(
+                    $app['bulk_label_offer_command_bus']
+                );
+            }
+        );
+
+        $app[AddLabelToMultipleRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelToMultipleRequestHandler(
+                    new AddLabelToMultipleJSONDeserializer(
+                        new IriOfferIdentifierJSONDeserializer(
+                            $app['iri_offer_identifier_factory']
+                        )
+                    ),
+                    $app['bulk_label_offer_command_bus']
+                );
+            }
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
