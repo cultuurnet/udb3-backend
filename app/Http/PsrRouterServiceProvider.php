@@ -23,8 +23,42 @@ use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler as DeleteOfferOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
+use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
@@ -51,23 +85,23 @@ use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
 use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler as AddOrganizerImageRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler as AddOrganizerLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler as GetOrganizerPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler as GetOrganizerPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler as UpdateOrganizerAddressRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler as UpdateOrganizerContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler as UpdateOrganizerDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler as UpdateOrganizerTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
@@ -108,9 +142,21 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
 
+                $this->bindOffers($router);
+
+                $this->bindEvents($router);
+
+                $this->bindPlaces($router);
+
+                $this->bindOrganizers($router);
+
                 $this->bindNewsArticles($router);
 
                 $this->bindProductions($router);
+
+                $this->bindLabels($router);
+
+                $this->bindRoles($router);
 
                 $this->bindExports($router);
 
@@ -118,19 +164,9 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
                 $this->bindJobs($router);
 
-                $this->bindLabels($router);
-
                 $this->bindImages($router);
 
-                $this->bindOrganizers($router);
-
-                $this->bindEvents($router);
-
-                $this->bindPlaces($router);
-
                 $this->bindUser($router);
-
-                $this->bindRoles($router);
 
                 $this->bindSavedSearches($router);
 
@@ -139,8 +175,6 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $router->get('/places/', ProxyRequestHandler::class);
                 $router->get('/offers/', ProxyRequestHandler::class);
                 $router->get('/organizers/', ProxyRequestHandler::class);
-
-                $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
 
                 return $router;
             }
@@ -241,10 +275,10 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             $routeGroup->get('{organizerId}/', GetOrganizerRequestHandler::class);
             $routeGroup->delete('{organizerId}/', DeleteOrganizerRequestHandler::class);
 
-            $routeGroup->put('{organizerId}/name/', UpdateTitleRequestHandler::class);
-            $routeGroup->put('{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
+            $routeGroup->put('{organizerId}/name/', UpdateOrganizerTitleRequestHandler::class);
+            $routeGroup->put('{organizerId}/name/{language}/', UpdateOrganizerTitleRequestHandler::class);
 
-            $routeGroup->put('{organizerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
+            $routeGroup->put('{organizerId}/description/{language}/', UpdateOrganizerDescriptionRequestHandler::class);
             $routeGroup->delete('{organizerId}/description/{language}/', DeleteDescriptionRequestHandler::class);
 
             $routeGroup->put('{organizerId}/address/', UpdateOrganizerAddressRequestHandler::class);
@@ -253,19 +287,87 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
             $routeGroup->put('{organizerId}/url/', UpdateUrlRequestHandler::class);
 
-            $routeGroup->put('{organizerId}/contact-point/', UpdateContactPointRequestHandler::class);
+            $routeGroup->put('{organizerId}/contact-point/', UpdateOrganizerContactPointRequestHandler::class);
 
-            $routeGroup->post('{organizerId}/images/', AddImageRequestHandler::class);
+            $routeGroup->post('{organizerId}/images/', AddOrganizerImageRequestHandler::class);
             $routeGroup->put('{organizerId}/images/main/', UpdateMainImageRequestHandler::class);
             $routeGroup->patch('{organizerId}/images/', UpdateImagesRequestHandler::class);
             $routeGroup->delete('{organizerId}/images/{imageId}/', DeleteImageRequestHandler::class);
 
-            $routeGroup->put('{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+            $routeGroup->put('{organizerId}/labels/{labelName}/', AddOrganizerLabelRequestHandler::class);
             $routeGroup->delete('{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
-            $routeGroup->get('{organizerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
-            $routeGroup->get('{organizerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
+            $routeGroup->get('{organizerId}/permissions/', GetOrganizerPermissionsForCurrentUserRequestHandler::class);
+            $routeGroup->get('{organizerId}/permissions/{userId}/', GetOrganizerPermissionsForGivenUserRequestHandler::class);
         });
+    }
+
+    private function bindOffers(Router $router): void
+    {
+        $router->get('/{offerType:events|places}/{offerId}/', GetDetailRequestHandler::class);
+        $router->delete('/{offerType:events|places}/{offerId}/', DeleteRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/name/{language}/', UpdateTitleRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/{language}/title/', UpdateTitleRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/available-from/', UpdateAvailableFromRequestHandler::class);
+
+        $router->get('/{offerType:events|places}/{offerId}/history/', GetHistoryRequestHandler::class);
+
+        $router->get('/{offerType:events|places}/{offerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
+        $router->get('/{offerType:events|places}/{offerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/calendar/', UpdateCalendarRequestHandler::class);
+        $router->get('/{offerType:events|places}/{offerId}/calendar-summary/', GetCalendarSummaryRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/status/', UpdateStatusRequestHandler::class);
+        $router->put('/{offerType:events|places}/{offerId}/booking-availability/', UpdateBookingAvailabilityRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/type/{termId}/', UpdateTypeRequestHandler::class);
+        $router->put('/{offerType:events|places}/{offerId}/facilities/', UpdateFacilitiesRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
+        $router->delete('/{offerType:events|places}/{offerId}/typical-age-range/', DeleteTypicalAgeRangeRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/labels/{labelName}/', AddLabelRequestHandler::class);
+        $router->delete('/{offerType:events|places}/{offerId}/labels/{labelName}/', RemoveLabelRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/price-info/', UpdatePriceInfoRequestHandler::class);
+
+        $router->post('/{offerType:events|places}/{offerId}/images/', AddImageRequestHandler::class);
+        $router->put('/{offerType:events|places}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
+        $router->put('/{offerType:events|places}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
+        $router->delete('/{offerType:events|places}/{offerId}/images/{mediaId}/', RemoveImageRequestHandler::class);
+
+        $router->post('/{offerType:events|places}/{offerId}/videos/', AddVideoRequestHandler::class);
+        $router->patch('/{offerType:events|places}/{offerId}/videos/', UpdateVideosRequestHandler::class);
+        $router->delete('/{offerType:events|places}/{offerId}/videos/{videoId}/', DeleteVideoRequestHandler::class);
+
+        $router->put('/{offerType:events|places}/{offerId}/organizer/{organizerId}/', UpdateOrganizerRequestHandler::class);
+        $router->delete('/{offerType:events|places}/{offerId}/organizer/{organizerId}/', DeleteOfferOrganizerRequestHandler::class);
+
+        $router->patch('/{offerType:events|places}/{offerId}/', PatchOfferRequestHandler::class);
+
+        /**
+         * Legacy routes that we need to keep for backward compatibility.
+         * These routes usually, but not always, used an incorrect HTTP method.
+         */
+        $router->get('/{offerType:events|places}/{offerId}/permission/', CurrentUserHasPermissionRequestHandler::class);
+        $router->get('/{offerType:events|places}/{offerId}/permission/{userId}/', GivenUserHasPermissionRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/contact-point/', UpdateContactPointRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/organizer/', UpdateOrganizerFromJsonBodyRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/images/main/', SelectMainImageRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/images/{mediaId}/', UpdateImageRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/labels/', AddLabelFromJsonBodyRequestHandler::class);
+        $router->post('/{offerType:events|places}/{offerId}/{language}/description/', UpdateDescriptionRequestHandler::class);
     }
 
     private function bindEvents(Router $router): void
@@ -314,8 +416,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
     private function bindUser(Router $router): void
     {
-        $router->get('users/emails/{email}/', GetUserByEmailRequestHandler::class);
-        $router->get('user/', GetCurrentUserRequestHandler::class);
+        $router->get('/users/emails/{email}/', GetUserByEmailRequestHandler::class);
+        $router->get('/user/', GetCurrentUserRequestHandler::class);
     }
 
     private function bindRoles(Router $router): void
@@ -333,10 +435,10 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
     private function bindSavedSearches(Router $router): void
     {
         $router->group('saved-searches', function (RouteGroup $routeGroup) {
-            $routeGroup->get('/v3/', ReadSavedSearchesRequestHandler::class);
+            $routeGroup->get('v3/', ReadSavedSearchesRequestHandler::class);
 
-            $routeGroup->post('/v3/', CreateSavedSearchRequestHandler::class);
-            $routeGroup->delete('/v3/{id}/', DeleteSavedSearchRequestHandler::class);
+            $routeGroup->post('v3/', CreateSavedSearchRequestHandler::class);
+            $routeGroup->delete('v3/{id}/', DeleteSavedSearchRequestHandler::class);
         });
     }
 
