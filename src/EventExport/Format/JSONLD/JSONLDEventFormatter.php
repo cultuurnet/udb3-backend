@@ -4,62 +4,68 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
-class JSONLDEventFormatter
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
+use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\Json;
+
+final class JSONLDEventFormatter
 {
     /**
      * @var string[]
      */
-    protected $includedProperties;
+    private array $includedProperties;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    protected $includedTerms;
+    private ?array $includedTerms = null;
+
+    private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
     /**
-     * @param string[]|null $include A list of properties to include when
-     * formatting the events.
+     * @param string[] $include
      */
-    public function __construct($include = null)
+    public function __construct(array $include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
     {
-        if ($include) {
-            $include[] = '@id';
-            // The address property is nested inside location.
-            // The whole location property gets included instead of pulling it
-            // out and placing it directly on the object.
-            if (in_array('address', $include)
+        $this->calendarSummaryRepository = $calendarSummaryRepository;
+
+        $include[] = '@id';
+        // The address property is nested inside location.
+        // The whole location property gets included instead of pulling it
+        // out and placing it directly on the object.
+        if (in_array('address', $include)
                 && !in_array('location', $include)
             ) {
-                array_push($include, 'location');
-            }
+            $include[] = 'location';
+        }
 
-            // We include bookingInfo if one of its properties is wanted.
-            $includedBookingInfoProperties = array_intersect(
-                ['bookingInfo.url'],
-                $include
-            );
-            if (!empty($includedBookingInfoProperties)
+        // We include bookingInfo if one of its properties is wanted.
+        $includedBookingInfoProperties = array_intersect(
+            ['bookingInfo.url'],
+            $include
+        );
+        if (!empty($includedBookingInfoProperties)
                 && !in_array('bookingInfo', $include)
             ) {
-                array_push($include, 'bookingInfo');
-            }
-
-            if (in_array('attendance', $include)) {
-                $include[] = 'attendanceMode';
-                $include[] = 'onlineUrl';
-            }
-
-            $terms = $this->filterTermsFromProperties($include);
-            if (count($terms) > 0) {
-                $this->includedTerms = $terms;
-                $include[] = 'terms';
-            }
-
-            $this->includedProperties = $include;
+            $include[] = 'bookingInfo';
         }
+
+        if (in_array('attendance', $include)) {
+            $include[] = 'attendanceMode';
+            $include[] = 'onlineUrl';
+        }
+
+        $terms = $this->filterTermsFromProperties($include);
+        if (count($terms) > 0) {
+            $this->includedTerms = $terms;
+            $include[] = 'terms';
+        }
+
+        $this->includedProperties = $include;
     }
 
-    private function filterTermsFromProperties($properties)
+    private function filterTermsFromProperties($properties): array
     {
         $termPrefix = 'terms.';
 
@@ -69,28 +75,21 @@ class JSONLDEventFormatter
                 return strpos($property, $termPrefix) === 0;
             }
         );
-        $terms = array_map(
+        return array_map(
             function ($term) use ($termPrefix) {
                 return str_replace($termPrefix, '', $term);
             },
             $prefixedTerms
         );
-
-        return $terms;
     }
 
-    /**
-     * @param   string $event A string representing an event in json-ld format
-     * @return  string  The event string formatted with all the included
-     *                  properties and terms
-     */
-    public function formatEvent($event)
+    public function formatEvent(string $event): string
     {
         $includedProperties = $this->includedProperties;
         $includedTerms = $this->includedTerms;
 
         if ($includedProperties) {
-            $eventObject = json_decode($event);
+            $eventObject = Json::decode($event);
 
             // filter out terms
             if (property_exists($eventObject, 'terms') && $includedTerms) {
@@ -104,6 +103,11 @@ class JSONLDEventFormatter
                 $eventObject->terms = array_values($filteredTerms);
             }
 
+            if (in_array('calendarSummary', $includedProperties)) {
+                $eventId = $this->parseEventIdFromUrl($eventObject);
+                $eventObject->calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::md());
+            }
+
             // filter out base properties
             foreach ($eventObject as $propertyName => $value) {
                 if (!in_array($propertyName, $includedProperties)) {
@@ -111,10 +115,16 @@ class JSONLDEventFormatter
                 }
             }
 
-
-            $event = json_encode($eventObject);
+            $event = Json::encode($eventObject);
         }
 
         return $event;
+    }
+
+    private function parseEventIdFromUrl($event): string
+    {
+        $eventUri = $event->{'@id'};
+        $uriParts = explode('/', $eventUri);
+        return array_pop($uriParts);
     }
 }
