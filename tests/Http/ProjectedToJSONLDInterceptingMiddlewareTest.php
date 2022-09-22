@@ -25,7 +25,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ProjectedToJSONLDInterceptingMiddlewareTest extends TestCase
 {
-    private EventBus $traceableEventBus;
+    private TraceableEventBus $traceableEventBus;
     private EventBus $middlewareEventBus;
     private ProjectedToJSONLDInterceptingMiddleware $projectedToJSONLDInterceptingMiddleware;
 
