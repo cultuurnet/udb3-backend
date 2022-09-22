@@ -34,12 +34,6 @@ class ImageUploaderService implements ImageUploaderInterface
     private ?int $maxFileSize;
 
     private array $supportedMimeTypes = [
-        'image/png',
-        'image/jpeg',
-        'image/gif',
-    ];
-
-    private array $extensions = [
         'image/png' => 'png',
         'image/jpeg' => 'jpeg',
         'image/gif' => 'gif',
@@ -78,9 +72,10 @@ class ImageUploaderService implements ImageUploaderInterface
             throw new InvalidFileType('The type of the uploaded file can not be guessed.');
         }
 
-        if (!\in_array($mimeTypeString, $this->supportedMimeTypes, true)) {
+        $supportedMimeTypes = array_keys($this->supportedMimeTypes);
+        if (!\in_array($mimeTypeString, $supportedMimeTypes, true)) {
             throw new InvalidFileType(
-                'The uploaded file has mime type "' . $mimeTypeString . '" instead of ' . \implode(',', $this->supportedMimeTypes)
+                'The uploaded file has mime type "' . $mimeTypeString . '" instead of ' . \implode(',', $supportedMimeTypes)
             );
         }
 
@@ -129,6 +124,6 @@ class ImageUploaderService implements ImageUploaderInterface
 
     private function guessExtensionForMimeType(string $mimeType): ?string
     {
-        return $this->extensions[$mimeType] ?? null;
+        return $this->supportedMimeTypes[$mimeType] ?? null;
     }
 }
