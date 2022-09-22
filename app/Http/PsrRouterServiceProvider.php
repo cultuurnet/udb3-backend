@@ -23,6 +23,8 @@ use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
@@ -208,6 +210,9 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
     private function bindLabels(Router $router): void
     {
+        $router->post('/query/labels/', AddLabelToQueryRequestHandler::class);
+        $router->post('/offers/labels/', AddLabelToMultipleRequestHandler::class);
+
         $router->group('labels', function (RouteGroup $routeGroup) {
             $routeGroup->post('', CreateLabelRequestHandler::class);
             $routeGroup->patch('{labelId}/', PatchLabelRequestHandler::class);
