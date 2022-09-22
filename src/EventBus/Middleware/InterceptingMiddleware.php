@@ -32,6 +32,7 @@ final class InterceptingMiddleware implements EventBusMiddleware
      */
     public static function startIntercepting(Closure $filterCallback): void
     {
+        self::clearInterceptedMessages();
         self::$interceptCallback = $filterCallback;
     }
 
@@ -59,6 +60,11 @@ final class InterceptingMiddleware implements EventBusMiddleware
             }
         }
         return new DomainEventStream($unique);
+    }
+
+    public static function clearInterceptedMessages(): void
+    {
+        self::$intercepted = [];
     }
 
     public function beforePublish(DomainEventStream $domainEventStream): DomainEventStream
