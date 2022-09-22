@@ -19,7 +19,7 @@ final class CorsHeadersMiddlewareTest extends TestCase
     protected function setUp(): void
     {
         $this->corsHeadersMiddleware = new CorsHeadersMiddleware();
-        $this->requestHandler = new class implements RequestHandlerInterface {
+        $this->requestHandler = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new NoContentResponse();
