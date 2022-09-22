@@ -9,6 +9,7 @@
 /web/media/
 /web/images
 *.pem
+allow_all.php
 config.php
 phpunit.xml
 external_id_mapping_organizer.yml
