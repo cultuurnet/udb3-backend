@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
@@ -49,6 +52,32 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new UDB3SavedSearchesCommandHandler(
                     $app['udb3_saved_searches_repo_sapi3']
+                );
+            }
+        );
+
+        $app[ReadSavedSearchesRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new ReadSavedSearchesRequestHandler(
+                    $app[SavedSearchRepositoryInterface::class]
+                );
+            }
+        );
+
+        $app[CreateSavedSearchRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new CreateSavedSearchRequestHandler(
+                    $app[CurrentUser::class]->getId(),
+                    $app['event_command_bus']
+                );
+            }
+        );
+
+        $app[DeleteSavedSearchRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new DeleteSavedSearchRequestHandler(
+                    $app[CurrentUser::class]->getId(),
+                    $app['event_command_bus']
                 );
             }
         );
