@@ -25,9 +25,9 @@ final class SetCardSystemsOnEventRequestHandler implements RequestHandlerInterfa
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $content = $request->getBody()->getContents();
-        $cardSystemIds = empty($content) ? [] : Json::decodeAssociatively($content);
+        $cardSystemIds = !empty($content) ? Json::decodeAssociatively($content) : null;
 
-        if (!is_array($cardSystemIds) || empty($cardSystemIds)) {
+        if (!is_array($cardSystemIds)) {
             throw ApiProblem::bodyInvalidDataWithDetail('Payload should be an array of card system ids');
         }
 
