@@ -72,8 +72,6 @@ $app->before(
     Application::EARLY_EVENT
 );
 
-$app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
-
 $offerControllerProvider = new OfferControllerProvider();
 
 $app->register($offerControllerProvider);
