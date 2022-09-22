@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\StringLiteral;
 use League\Flysystem\FilesystemOperator;
 use Psr\Http\Message\UploadedFileInterface;
-use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 
 class ImageUploaderService implements ImageUploaderInterface
 {
@@ -38,6 +37,12 @@ class ImageUploaderService implements ImageUploaderInterface
         'image/png',
         'image/jpeg',
         'image/gif',
+    ];
+
+    private array $extensions = [
+        'image/png' => 'png',
+        'image/jpeg' => 'jpeg',
+        'image/gif' => 'gif',
     ];
 
     public function __construct(
@@ -84,7 +89,7 @@ class ImageUploaderService implements ImageUploaderInterface
         $mimeType = MIMEType::fromNative($mimeTypeString);
 
         $fileId = new UUID($this->uuidGenerator->generate());
-        $fileName = $fileId->toString() . '.' . ExtensionGuesser::getInstance()->guess($file->getClientMediaType());
+        $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($file->getClientMediaType());
         $destination = $this->getUploadDirectory() . '/' . $fileName;
         $this->filesystem->write($destination, $file->getStream()->getContents());
 
@@ -120,5 +125,10 @@ class ImageUploaderService implements ImageUploaderInterface
     public function getUploadDirectory(): string
     {
         return $this->uploadDirectory;
+    }
+
+    private function guessExtensionForMimeType(string $mimeType): ?string
+    {
+        return $this->extensions[$mimeType] ?? null;
     }
 }
