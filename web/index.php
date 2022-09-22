@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
-use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
@@ -72,11 +71,7 @@ $app->before(
     Application::EARLY_EVENT
 );
 
-$offerControllerProvider = new OfferControllerProvider();
 
-$app->register($offerControllerProvider);
-
-$app->mount('/', $offerControllerProvider);
 
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
