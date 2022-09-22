@@ -92,7 +92,6 @@ use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
-use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Http\Adapter\Guzzle7\Client;
 use Monolog\Logger;
@@ -109,7 +108,8 @@ $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation = __DIR__;
 }
-$app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
+
+$app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
 $app['system_user_id'] = $app::share(
     function () {
@@ -128,6 +128,11 @@ $app['config'] = array_merge_recursive(
         ],
     ]
 );
+$logFile = fopen('/home/vagrant/log.txt', 'w') or die('Unable to open file!');
+$ex = var_export($app['config'], true);
+fwrite($logFile, $ex);
+fclose($logFile);
+
 
 $app['debug'] = $app['config']['debug'] ?? false;
 
