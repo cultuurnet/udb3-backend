@@ -34,6 +34,9 @@ use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUserPermissionsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUsersWithRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\RolesSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
@@ -126,6 +129,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindUser($router);
 
                 $this->bindRoles($router);
+
+                $this->bindSavedSearches($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -318,6 +323,16 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
         $router->get('/users/{userId}/roles/', GetRolesFromUserRequestHandler::class);
         $router->get('/user/roles/', GetRolesFromCurrentUserRequestHandler::class);
         $router->get('/user/permissions/', GetUserPermissionsRequestHandler::class);
+    }
+
+    private function bindSavedSearches(Router $router): void
+    {
+        $router->group('saved-searches', function (RouteGroup $routeGroup) {
+            $routeGroup->get('/v3/', ReadSavedSearchesRequestHandler::class);
+
+            $routeGroup->post('/v3/', CreateSavedSearchRequestHandler::class);
+            $routeGroup->delete('/v3/{id}/', DeleteSavedSearchRequestHandler::class);
+        });
     }
 
     public function boot(Application $app): void
