@@ -117,6 +117,7 @@ use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
@@ -179,6 +180,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindUiTPASEvents($router);
 
                 $this->bindUiTPASLabels($router);
+
+                $this->bindUiTPASOrganizers($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -476,6 +479,13 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
     {
         $router->group('uitpas/labels', function (RouteGroup $routeGroup) {
             $routeGroup->get('', GetUiTPASLabelsRequestHandler::class);
+        });
+    }
+
+    private function bindUiTPASOrganizers(Router $router): void
+    {
+        $router->group('uitpas/organizers', function (RouteGroup $routeGroup) {
+            $routeGroup->get('{organizerId}/card-systems/', GetCardSystemsFromOrganizerRequestHandler::class);
         });
     }
 
