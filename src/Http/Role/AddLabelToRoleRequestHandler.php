@@ -37,7 +37,7 @@ class AddLabelToRoleRequestHandler implements RequestHandlerInterface
         try {
             $roleId = new UUID($roleId);
         } catch (InvalidArgumentException $e) {
-            throw ApiProblem::invalidUUID('roleId');
+            throw ApiProblem::roleNotFound($roleId);
         }
 
         $labelIdentifier = $routeParameters->get('labelIdentifier');

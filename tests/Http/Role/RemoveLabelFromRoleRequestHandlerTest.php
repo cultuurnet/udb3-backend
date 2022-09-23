@@ -59,7 +59,7 @@ class RemoveLabelFromRoleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::invalidUUID('roleId'),
+            ApiProblem::roleNotFound($roleId),
             fn () => $this->handler->handle($request)
         );
 

@@ -33,7 +33,7 @@ class RemoveRoleFromUserRequestHandler implements RequestHandlerInterface
         try {
             $roleId = new UUID($roleId);
         } catch (InvalidArgumentException $e) {
-            throw ApiProblem::invalidUUID('roleId');
+            throw ApiProblem::roleNotFound($roleId);
         }
 
         $this->commandBus->dispatch(new RemoveUser($roleId, $routeParameters->getUserId()));
