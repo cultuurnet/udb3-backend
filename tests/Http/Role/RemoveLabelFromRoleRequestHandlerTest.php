@@ -54,7 +54,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('roleId', $roleId)
-            ->withRouteParameter('labelIdentifier', $labelId)
+            ->withRouteParameter('labelId', $labelId)
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
@@ -75,7 +75,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('roleId', $roleId)
-            ->withRouteParameter('labelIdentifier', $labelId)
+            ->withRouteParameter('labelId', $labelId)
             ->build('PUT');
 
         $actualResponse = $this->handler->handle($request);
@@ -103,7 +103,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('roleId', $roleId)
-            ->withRouteParameter('labelIdentifier', $labelName)
+            ->withRouteParameter('labelId', $labelName)
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
@@ -127,7 +127,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('roleId', $roleId)
-            ->withRouteParameter('labelIdentifier', $labelName)
+            ->withRouteParameter('labelId', $labelName)
             ->build('PUT');
 
         $actualResponse = $this->handler->handle($request);
