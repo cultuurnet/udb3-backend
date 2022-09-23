@@ -39,7 +39,7 @@ class UpdateConstraintRequestHandlerTest extends TestCase
     {
         $roleId = '1ed1588b-a771-44ce-bac0-8f19f09a7d0f';
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('id', $roleId)
+            ->withRouteParameter('roleId', $roleId)
             ->withJsonBodyFromArray([])
             ->build('PUT');
 
@@ -60,7 +60,7 @@ class UpdateConstraintRequestHandlerTest extends TestCase
         $query = 'constraint-name';
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('id', $roleId)
+            ->withRouteParameter('roleId', $roleId)
             ->withJsonBodyFromArray(['query' => $query])
             ->build('PUT');
 

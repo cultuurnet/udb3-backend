@@ -55,23 +55,24 @@ final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_on_missing_card_systems(): void
+    public function it_allows_an_empty_list_of_card_system_ids(): void
     {
         $eventId = '52943e99-51c8-4ba9-95ef-ec7d93f16ed9';
         $cardSystemIds = [];
-
-        $this->uitpas->expects($this->never())
-            ->method('setCardSystemsForEvent');
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
             ->withJsonBodyFromArray($cardSystemIds)
             ->build('GET');
 
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail('Payload should be an array of card system ids'),
-            fn () => $this->setCardSystemsOnEventRequestHandler->handle($request),
-        );
+        $this->uitpas->expects($this->once())
+            ->method('setCardSystemsForEvent')
+            ->with($eventId, $cardSystemIds)
+            ->willReturn(null);
+
+        $response = $this->setCardSystemsOnEventRequestHandler->handle($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**

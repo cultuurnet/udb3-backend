@@ -12,6 +12,11 @@ use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumer;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Curators\LabelFactory;
 use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
+use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
+use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
+use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
+use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
+use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
@@ -22,7 +27,7 @@ use CultuurNet\UDB3\StringLiteral;
 
 final class CuratorsServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app['curators_event_bus_forwarding_consumer'] = $app->share(
             function (Application $app) {
@@ -65,6 +70,37 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
 
         $app[NewsArticleRepository::class] = $app->share(
             fn (Application $app) => new DBALNewsArticleRepository($app['dbal_connection'])
+        );
+
+        $app[GetNewsArticleRequestHandler::class] = $app->share(
+            fn (Application $application) => new GetNewsArticleRequestHandler(
+                $app[NewsArticleRepository::class]
+            )
+        );
+
+        $app[GetNewsArticlesRequestHandler::class] = $app->share(
+            fn (Application $application) => new GetNewsArticlesRequestHandler(
+                $app[NewsArticleRepository::class]
+            )
+        );
+
+        $app[CreateNewsArticleRequestHandler::class] = $app->share(
+            fn (Application $application) => new CreateNewsArticleRequestHandler(
+                $app[NewsArticleRepository::class],
+                $app['uuid_generator'],
+            )
+        );
+
+        $app[UpdateNewsArticleRequestHandler::class] = $app->share(
+            fn (Application $application) => new UpdateNewsArticleRequestHandler(
+                $app[NewsArticleRepository::class],
+            )
+        );
+
+        $app[DeleteNewsArticleRequestHandler::class] = $app->share(
+            fn (Application $application) => new DeleteNewsArticleRequestHandler(
+                $app[NewsArticleRepository::class],
+            )
         );
     }
 

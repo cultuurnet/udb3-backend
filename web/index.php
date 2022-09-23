@@ -6,22 +6,13 @@ use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Proxy\ProxyRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
-use CultuurNet\UDB3\Silex\Error\ErrorLogger;
-use CultuurNet\UDB3\Silex\Event\EventControllerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
-use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
-use CultuurNet\UDB3\Silex\Offer\OfferControllerProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceControllerProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
 use Silex\Application;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,39 +67,6 @@ $app->before(
     },
     Application::EARLY_EVENT
 );
-
-$app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
-
-$app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
-
-$placeControllerProvider = new PlaceControllerProvider();
-$eventControllerProvider = new EventControllerProvider();
-$offerControllerProvider = new OfferControllerProvider();
-
-$app->register($placeControllerProvider);
-$app->register($eventControllerProvider);
-$app->register($offerControllerProvider);
-
-$app->mount('/places', $placeControllerProvider);
-
-$app->mount('/events', $eventControllerProvider);
-
-$app->mount('/', $offerControllerProvider);
-
-$app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
-$app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
-$app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
-$app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControllerProvider());
-$app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
-$app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
-$app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
-$app->mount('/news-articles', new CuratorsControllerProvider());
-
-$app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
 // Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
 // ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get

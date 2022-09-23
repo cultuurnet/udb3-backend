@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Silex\Media;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
+use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
@@ -101,6 +103,25 @@ class MediaServiceProvider implements ServiceProviderInterface
         $app['media_url_mapping'] = $app->share(
             function (Application $app) {
                 return new MediaUrlMapping($app['config']['media']['media_url_mapping']);
+            }
+        );
+
+        $app[GetMediaRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new GetMediaRequestHandler(
+                    $app['media_manager'],
+                    $app['media_object_serializer'],
+                    $app['media_url_mapping']
+                );
+            }
+        );
+
+        $app[UploadMediaRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UploadMediaRequestHandler(
+                    $app['image_uploader'],
+                    $app['media_object_iri_generator']
+                );
             }
         );
     }

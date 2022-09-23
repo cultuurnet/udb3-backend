@@ -216,7 +216,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId
+                    $userId->toNative()
                 )
             )
             ->then(
@@ -232,7 +232,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new AddUser(
                     $this->uuid,
-                    $userId
+                    $userId->toNative()
                 )
             )
             ->then(
@@ -243,7 +243,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new RemoveUser(
                     $this->uuid,
-                    $userId
+                    $userId->toNative()
                 )
             )
             ->then(
@@ -259,7 +259,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new RemoveUser(
                     $this->uuid,
-                    $userId
+                    $userId->toNative()
                 )
             )
             ->then(
@@ -271,7 +271,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new RemoveUser(
                     $this->uuid,
-                    new StringLiteral('user-that-was-never-added')
+                    'user-that-was-never-added'
                 )
             )
             ->then(

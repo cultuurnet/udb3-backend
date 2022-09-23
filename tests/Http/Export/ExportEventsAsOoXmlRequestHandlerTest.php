@@ -43,6 +43,9 @@ final class ExportEventsAsOoXmlRequestHandlerTest extends TestCase
     {
         $exportEventsAsOoXmlRequest = $this->psr7RequestBuilder
             ->withJsonBodyFromArray([
+                'include' => [
+                    'calendarSummary',
+                ],
                 'query' => 'Dansvoorstellingen',
                 'email' => 'jane@anonymous.com',
             ])
@@ -54,6 +57,7 @@ final class ExportEventsAsOoXmlRequestHandlerTest extends TestCase
             [
                 new ExportEventsAsOOXML(
                     new EventExportQuery('Dansvoorstellingen'),
+                    ['calendarSummary'],
                     new EmailAddress('jane@anonymous.com')
                 ),
             ],
