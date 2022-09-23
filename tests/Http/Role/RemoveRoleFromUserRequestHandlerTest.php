@@ -15,7 +15,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Response;
 
-class RemoveRoleFromUserRequestHandlerTest extends TestCase
+final class RemoveRoleFromUserRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;

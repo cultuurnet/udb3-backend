@@ -17,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-class RemoveLabelFromRoleRequestHandler implements RequestHandlerInterface
+final class RemoveLabelFromRoleRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 

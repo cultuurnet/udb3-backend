@@ -17,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-class AddLabelToRoleRequestHandler implements RequestHandlerInterface
+final class AddLabelToRoleRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 

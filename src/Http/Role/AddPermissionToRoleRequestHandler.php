@@ -17,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-class AddPermissionToRoleRequestHandler implements RequestHandlerInterface
+final class AddPermissionToRoleRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 

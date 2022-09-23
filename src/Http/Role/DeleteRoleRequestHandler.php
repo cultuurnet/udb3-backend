@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-class DeleteRoleRequestHandler implements RequestHandlerInterface
+final class DeleteRoleRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 

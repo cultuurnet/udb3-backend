@@ -17,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-class RemovePermissionFromRoleRequestHandler implements RequestHandlerInterface
+final class RemovePermissionFromRoleRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 

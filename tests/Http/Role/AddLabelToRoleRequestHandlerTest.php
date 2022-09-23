@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Response;
 
-class AddLabelToRoleRequestHandlerTest extends TestCase
+final class AddLabelToRoleRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
