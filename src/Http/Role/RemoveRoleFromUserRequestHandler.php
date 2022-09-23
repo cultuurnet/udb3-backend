@@ -6,14 +6,13 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
-class RemoveRoleFromUserRequestHandler implements RequestHandlerInterface
+final class RemoveRoleFromUserRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -29,6 +28,6 @@ class RemoveRoleFromUserRequestHandler implements RequestHandlerInterface
 
         $this->commandBus->dispatch(new RemoveUser($roleId, $routeParameters->getUserId()));
 
-        return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        return new NoContentResponse();
     }
 }

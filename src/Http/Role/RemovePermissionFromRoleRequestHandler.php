@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Role\Commands\RemovePermission;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use Fig\Http\Message\StatusCodeInterface;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
-class RemovePermissionFromRoleRequestHandler implements RequestHandlerInterface
+final class RemovePermissionFromRoleRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -29,16 +25,11 @@ class RemovePermissionFromRoleRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $roleId = $routeParameters->getRoleId();
-        $permission = $routeParameters->get('permissionKey');
 
-        try {
-            $permission = Permission::fromUpperCaseString($permission);
-        } catch (InvalidArgumentException $ex) {
-            throw ApiProblem::urlNotFound("Permission $permission is not a valid permission.");
-        }
+        $permission = $routeParameters->getPermission();
 
         $this->commandBus->dispatch(new RemovePermission($roleId, $permission));
 
-        return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        return new NoContentResponse();
     }
 }

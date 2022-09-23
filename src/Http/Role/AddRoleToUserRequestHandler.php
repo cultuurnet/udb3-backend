@@ -6,14 +6,13 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Role\Commands\AddUser;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
-class AddRoleToUserRequestHandler implements RequestHandlerInterface
+final class AddRoleToUserRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -29,6 +28,6 @@ class AddRoleToUserRequestHandler implements RequestHandlerInterface
 
         $this->commandBus->dispatch(new AddUser($roleId, $routeParameters->getUserId()));
 
-        return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        return new NoContentResponse();
     }
 }
