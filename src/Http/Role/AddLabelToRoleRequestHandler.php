@@ -19,6 +19,8 @@ use Slim\Psr7\Response;
 
 final class AddLabelToRoleRequestHandler implements RequestHandlerInterface
 {
+    use GetLabelIdFromRouteParameters;
+
     private CommandBus $commandBus;
 
     private ReadRepositoryInterface $labelRepository;
@@ -40,18 +42,7 @@ final class AddLabelToRoleRequestHandler implements RequestHandlerInterface
             throw ApiProblem::roleNotFound($roleId);
         }
 
-        $labelIdentifier = $routeParameters->get('labelIdentifier');
-        try {
-            $labelId = new UUID($labelIdentifier);
-        } catch (InvalidArgumentException $exception) {
-            $entity = $this->labelRepository->getByName($labelIdentifier);
-
-            if ($entity === null) {
-                throw ApiProblem::blank('There is no label with identifier: ' . $labelIdentifier, 404);
-            }
-
-            $labelId = new UUID($entity->getUuid()->toString());
-        }
+        $labelId = $this->getLabelId($routeParameters);
 
         $this->commandBus->dispatch(new AddLabel($roleId, $labelId));
 
