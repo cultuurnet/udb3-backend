@@ -118,6 +118,7 @@ use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 use League\Route\RouteGroup;
 use League\Route\Router;
@@ -176,6 +177,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindSavedSearches($router);
 
                 $this->bindUiTPASEvents($router);
+
+                $this->bindUiTPASLabels($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -466,6 +469,13 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
             );
 
             $routeGroup->delete('{eventId}/card-systems/{cardSystemId}/', DeleteCardSystemFromEventRequestHandler::class);
+        });
+    }
+
+    private function bindUiTPASLabels(Router $router): void
+    {
+        $router->group('uitpas/labels', function (RouteGroup $routeGroup) {
+            $routeGroup->get('', GetUiTPASLabelsRequestHandler::class);
         });
     }
 
