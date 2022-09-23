@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
@@ -174,5 +175,15 @@ final class RouteParameters
     public function getUserId(): string
     {
         return $this->get('userId');
+    }
+
+    public function getPermission(): Permission
+    {
+        $permission = $this->get('permissionKey');
+        try {
+            return Permission::fromUpperCaseString($permission);
+        } catch (InvalidArgumentException $ex) {
+            throw ApiProblem::urlNotFound("Permission $permission is not a valid permission.");
+        }
     }
 }

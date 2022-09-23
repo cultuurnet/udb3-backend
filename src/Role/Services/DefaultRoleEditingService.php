@@ -78,7 +78,7 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
     {
         $command = new AddUser(
             $uuid,
-            $userId
+            $userId->toNative()
         );
 
         $this->commandBus->dispatch($command);
@@ -88,7 +88,7 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
     {
         $command = new RemoveUser(
             $uuid,
-            $userId
+            $userId->toNative()
         );
 
         $this->commandBus->dispatch($command);
