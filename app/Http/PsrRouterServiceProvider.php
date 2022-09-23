@@ -62,6 +62,13 @@ use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
+use CultuurNet\UDB3\Http\Role\AddConstraintRequestHandler;
+use CultuurNet\UDB3\Http\Role\AddLabelToRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\AddPermissionToRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\AddRoleToUserRequestHandler;
+use CultuurNet\UDB3\Http\Role\CreateRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\DeleteConstraintRequestHandler;
+use CultuurNet\UDB3\Http\Role\DeleteRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetPermissionsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRoleLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRoleRequestHandler;
@@ -69,7 +76,12 @@ use CultuurNet\UDB3\Http\Role\GetRolesFromCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetRolesFromUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUserPermissionsRequestHandler;
 use CultuurNet\UDB3\Http\Role\GetUsersWithRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\RemoveLabelFromRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\RemovePermissionFromRoleRequestHandler;
+use CultuurNet\UDB3\Http\Role\RemoveRoleFromUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\RolesSearchRequestHandler;
+use CultuurNet\UDB3\Http\Role\UpdateConstraintRequestHandler;
+use CultuurNet\UDB3\Http\Role\UpdateRoleRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
@@ -443,6 +455,19 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
         $router->get('/users/{userId}/roles/', GetRolesFromUserRequestHandler::class);
         $router->get('/user/roles/', GetRolesFromCurrentUserRequestHandler::class);
         $router->get('/user/permissions/', GetUserPermissionsRequestHandler::class);
+
+        $router->post('/roles/', CreateRoleRequestHandler::class);
+        $router->patch('/roles/{roleId}/', UpdateRoleRequestHandler::class);
+        $router->post('/roles/{roleId}/constraints/', AddConstraintRequestHandler::class);
+        $router->put('/roles/{roleId}/constraints/', UpdateConstraintRequestHandler::class);
+        $router->delete('/roles/{roleId}/constraints/', DeleteConstraintRequestHandler::class);
+        $router->delete('/roles/{roleId}/', DeleteRoleRequestHandler::class);
+        $router->put('/roles/{roleId}/permissions/{permissionKey}/', AddPermissionToRoleRequestHandler::class);
+        $router->delete('/roles/{roleId}/permissions/{permissionKey}/', RemovePermissionFromRoleRequestHandler::class);
+        $router->put('/roles/{roleId}/labels/{labelId}/', AddLabelToRoleRequestHandler::class);
+        $router->delete('/roles/{roleId}/labels/{labelId}/', RemoveLabelFromRoleRequestHandler::class);
+        $router->put('/roles/{roleId}/users/{userId}/', AddRoleToUserRequestHandler::class);
+        $router->delete('/roles/{roleId}/users/{userId}/', RemoveRoleFromUserRequestHandler::class);
     }
 
     private function bindSavedSearches(Router $router): void
