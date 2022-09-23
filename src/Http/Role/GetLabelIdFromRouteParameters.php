@@ -16,14 +16,14 @@ trait GetLabelIdFromRouteParameters
 
     private function getLabelId(RouteParameters $routeParameters): UUID
     {
-        $labelIdentifier = $routeParameters->get('labelIdentifier');
+        $labelId = $routeParameters->get('labelId');
         try {
-            return new UUID($labelIdentifier);
+            return new UUID($labelId);
         } catch (InvalidArgumentException $exception) {
-            $entity = $this->labelRepository->getByName($labelIdentifier);
+            $entity = $this->labelRepository->getByName($labelId);
 
             if ($entity === null) {
-                throw ApiProblem::urlNotFound('There is no label with identifier: ' . $labelIdentifier);
+                throw ApiProblem::urlNotFound('There is no label with identifier: ' . $labelId);
             }
 
             return new UUID($entity->getUuid()->toString());

@@ -150,9 +150,9 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/roles/{roleId}/labels/', GetRoleLabelsRequestHandler::class);
 
-        $controllers->put('/roles/{roleId}/labels/{labelIdentifier}/', AddLabelToRoleRequestHandler::class);
+        $controllers->put('/roles/{roleId}/labels/{labelId}/', AddLabelToRoleRequestHandler::class);
 
-        $controllers->delete('/roles/{roleId}/labels/{labelIdentifier}/', RemoveLabelFromRoleRequestHandler::class);
+        $controllers->delete('/roles/{roleId}/labels/{labelId}/', RemoveLabelFromRoleRequestHandler::class);
 
         $controllers->put('/roles/{roleId}/users/{userId}/', AddRoleToUserRequestHandler::class);
 
