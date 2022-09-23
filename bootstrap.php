@@ -128,11 +128,6 @@ $app['config'] = array_merge_recursive(
         ],
     ]
 );
-$logFile = fopen('/home/vagrant/log.txt', 'w') or die('Unable to open file!');
-$ex = var_export($app['config'], true);
-fwrite($logFile, $ex);
-fclose($logFile);
-
 
 $app['debug'] = $app['config']['debug'] ?? false;
 
