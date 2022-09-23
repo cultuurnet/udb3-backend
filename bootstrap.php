@@ -94,7 +94,7 @@ use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
+use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Http\Adapter\Guzzle7\Client;
@@ -861,7 +861,7 @@ $app->register(new UserPermissionsServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
-$app->register(new UiTPASServiceOrganizerControllerProvider());
+$app->register(new UiTPASServiceOrganizerServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
