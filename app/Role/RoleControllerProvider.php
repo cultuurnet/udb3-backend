@@ -25,10 +25,7 @@ use CultuurNet\UDB3\Http\Role\RemoveRoleFromUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\RolesSearchRequestHandler;
 use CultuurNet\UDB3\Http\Role\UpdateConstraintRequestHandler;
 use CultuurNet\UDB3\Http\Role\UpdateRoleRequestHandler;
-use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
-use CultuurNet\UDB3\Http\Role\EditRoleRestController;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -38,18 +35,6 @@ class RoleControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app): ControllerCollection
     {
-        $app['role_edit_controller'] = $app->share(
-            function (Application $app) {
-                return new EditRoleRestController(
-                    $app['role_editing_service'],
-                    $app['event_command_bus'],
-                    new UpdateRoleRequestDeserializer(),
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    new QueryJSONDeserializer()
-                );
-            }
-        );
-
         $app[GetRoleRequestHandler::class] = $app->share(
             fn (Application $app) => new GetRoleRequestHandler($app['role_read_repository'])
         );
