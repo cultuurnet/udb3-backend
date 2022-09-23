@@ -25,7 +25,7 @@ final class GetUsersWithRoleRequestHandler implements RequestHandlerInterface
         $routeParameter = new RouteParameters($request);
         $roleId = $routeParameter->getRoleId();
 
-        $document = $this->userRolesRepository->fetch($roleId);
+        $document = $this->userRolesRepository->fetch($roleId->toString());
 
         return new JsonResponse(array_values($document->getAssocBody()));
     }

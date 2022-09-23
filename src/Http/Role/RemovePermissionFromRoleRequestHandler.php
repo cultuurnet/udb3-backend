@@ -6,14 +6,13 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Role\Commands\RemoveConstraint;
-use Fig\Http\Message\StatusCodeInterface;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Role\Commands\RemovePermission;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
-class DeleteConstraintRequestHandler implements RequestHandlerInterface
+final class RemovePermissionFromRoleRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -27,12 +26,10 @@ class DeleteConstraintRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $roleId = $routeParameters->getRoleId();
 
-        $this->commandBus->dispatch(
-            new RemoveConstraint(
-                $roleId
-            )
-        );
+        $permission = $routeParameters->getPermission();
 
-        return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        $this->commandBus->dispatch(new RemovePermission($roleId, $permission));
+
+        return new NoContentResponse();
     }
 }

@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -30,7 +29,7 @@ class UpdateRoleRequestHandler implements RequestHandlerInterface
         $this->ensureContentTypeIsProvided($request);
 
         $routeParameters = new RouteParameters($request);
-        $roleId = new UUID($routeParameters->getRoleId());
+        $roleId = $routeParameters->getRoleId();
 
         $body = Json::decodeAssociatively($request->getBody()->getContents());
 

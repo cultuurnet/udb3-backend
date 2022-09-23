@@ -6,30 +6,20 @@ namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class RemoveUserTest extends TestCase
 {
-    /**
-     * @var RemoveUser
-     */
-    private $removeUser;
+    private RemoveUser $removeUser;
 
-    /**
-     * @var UUID
-     */
-    private $uuid;
+    private UUID $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private string $userId;
 
     protected function setUp()
     {
         $this->uuid = new UUID('67780d64-b401-4040-af1f-5f424e0b7306');
 
-        $this->userId = new StringLiteral('userId');
+        $this->userId = 'userId';
 
         $this->removeUser = new RemoveUser($this->uuid, $this->userId);
     }

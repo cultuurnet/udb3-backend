@@ -17,50 +17,31 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Twig_Environment;
 
-class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAwareInterface
+final class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var EventExportServiceInterface
-     */
-    protected $eventExportService;
+    protected EventExportServiceInterface $eventExportService;
 
-    /**
-     * @var string
-     */
-    protected $princeXMLBinaryPath;
+    protected string $princeXMLBinaryPath;
 
-    /**
-     * @var EventInfoServiceInterface|null
-     */
-    protected $uitpas;
+    protected ?EventInfoServiceInterface $uitpas;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface
-     */
-    protected $calendarSummaryRepository;
+    protected CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
-    /**
-     * @var Twig_Environment|null
-     */
-    private $twig;
+    private ?Twig_Environment $twig;
 
-    /**
-     * @param string                             $princeXMLBinaryPath
-     * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
-     */
     public function __construct(
         EventExportServiceInterface $eventExportService,
-        $princeXMLBinaryPath,
+        string $princeXMLBinaryPath,
+        CalendarSummaryRepositoryInterface $calendarSummaryRepository,
         EventInfoServiceInterface $uitpas = null,
-        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
         Twig_Environment $twig = null
     ) {
         $this->eventExportService = $eventExportService;
         $this->princeXMLBinaryPath = $princeXMLBinaryPath;
-        $this->uitpas = $uitpas;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
+        $this->uitpas = $uitpas;
         $this->twig = $twig;
     }
 
@@ -68,7 +49,10 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
         ExportEventsAsJsonLD $exportCommand
     ): void {
         $this->eventExportService->exportEvents(
-            new JSONLDFileFormat($exportCommand->getInclude()),
+            new JSONLDFileFormat(
+                $exportCommand->getInclude(),
+                $this->calendarSummaryRepository
+            ),
             $exportCommand->getQuery(),
             $exportCommand->getAddress(),
             $this->logger,

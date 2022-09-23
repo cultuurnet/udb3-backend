@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Export;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryWithFormatterRepository;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
 use CultuurNet\UDB3\EventExport\EventExportServiceInterface;
@@ -29,7 +30,7 @@ use Silex\ServiceProviderInterface;
 use Twig_Environment;
 use Twig_Extensions_Extension_Text;
 
-class ExportServiceProvider implements ServiceProviderInterface
+final class ExportServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
@@ -78,8 +79,8 @@ class ExportServiceProvider implements ServiceProviderInterface
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $app['event_export_service'],
                     $app['config']['prince']['binary'],
+                    new CalendarSummaryWithFormatterRepository($app['event_jsonld_repository']),
                     $eventInfoService,
-                    $app['calendar_summary_repository'],
                     $app['event_export_twig_environment']
                 );
                 $eventExportCommandHandler->setLogger(

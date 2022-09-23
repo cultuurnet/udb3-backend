@@ -43,6 +43,9 @@ final class ExportEventsAsJsonLdRequestHandlerTest extends TestCase
     {
         $exportEventsAsJsonLdRequest = $this->psr7RequestBuilder
             ->withJsonBodyFromArray([
+                'include' => [
+                    'calendarSummary',
+                ],
                 'query' => 'Dansvoorstellingen',
                 'email' => 'jane@anonymous.com',
             ])
@@ -54,6 +57,7 @@ final class ExportEventsAsJsonLdRequestHandlerTest extends TestCase
             [
                 new ExportEventsAsJsonLD(
                     new EventExportQuery('Dansvoorstellingen'),
+                    ['calendarSummary'],
                     new EmailAddress('jane@anonymous.com')
                 ),
             ],

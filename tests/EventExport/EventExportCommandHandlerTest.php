@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport;
 
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
@@ -28,10 +29,16 @@ class EventExportCommandHandlerTest extends TestCase
 
     private EventExportCommandHandler $eventExportCommandHandler;
 
+
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
+
+    /**
+     * @var CalendarSummaryRepositoryInterface|MockObject
+     */
+    private $calendarSummary;
 
     protected function setUp(): void
     {
@@ -39,9 +46,12 @@ class EventExportCommandHandlerTest extends TestCase
 
         $this->princeXMLBinaryPath = 'PrinceXML path';
 
+        $this->calendarSummary = $this->createMock(CalendarSummaryRepositoryInterface::class);
+
         $this->eventExportCommandHandler = new EventExportCommandHandler(
             $this->eventExportService,
-            $this->princeXMLBinaryPath
+            $this->princeXMLBinaryPath,
+            $this->calendarSummary
         );
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -55,15 +65,15 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsJsonLD = new ExportEventsAsJsonLD(
             new EventExportQuery('query'),
+            ['calendarSummary'],
             new EmailAddress('jane@anonymous.com'),
-            null,
             null
         );
 
         $this->eventExportService->expects($this->once())
             ->method('exportEvents')
             ->with(
-                new JSONLDFileFormat($exportEventsAsJsonLD->getInclude()),
+                new JSONLDFileFormat($exportEventsAsJsonLD->getInclude(), $this->calendarSummary),
                 new EventExportQuery('query'),
                 new EmailAddress('jane@anonymous.com'),
                 $this->logger,
@@ -80,15 +90,15 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsOOXML = new ExportEventsAsOOXML(
             new EventExportQuery('query'),
+            ['calendarSummary'],
             new EmailAddress('jane@anonymous.com'),
-            null,
             null
         );
 
         $this->eventExportService->expects($this->once())
             ->method('exportEvents')
             ->with(
-                new OOXMLFileFormat($exportEventsAsOOXML->getInclude()),
+                new OOXMLFileFormat($exportEventsAsOOXML->getInclude(), null, $this->calendarSummary),
                 new EventExportQuery('query'),
                 new EmailAddress('jane@anonymous.com'),
                 $this->logger,
@@ -122,7 +132,12 @@ class EventExportCommandHandlerTest extends TestCase
                     WebArchiveTemplate::tips(),
                     'brand',
                     'logo',
-                    'title'
+                    'title',
+                    null,
+                    null,
+                    null,
+                    null,
+                    $this->calendarSummary
                 ),
                 new EventExportQuery('query'),
                 new EmailAddress('jane@anonymous.com'),

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Request;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
@@ -105,9 +107,14 @@ final class RouteParameters
         return $this->get('mediaId');
     }
 
-    public function getRoleId(): string
+    public function getRoleId(): UUID
     {
-        return $this->get('roleId');
+        $roleId = $this->get('roleId');
+        try {
+            return new UUID($roleId);
+        } catch (InvalidArgumentException $exception) {
+            throw ApiProblem::roleNotFound($roleId);
+        }
     }
 
     public function hasRoleId(): bool
@@ -174,5 +181,15 @@ final class RouteParameters
     public function getUserId(): string
     {
         return $this->get('userId');
+    }
+
+    public function getPermission(): Permission
+    {
+        $permission = $this->get('permissionKey');
+        try {
+            return Permission::fromUpperCaseString($permission);
+        } catch (InvalidArgumentException $ex) {
+            throw ApiProblem::urlNotFound("Permission $permission is not a valid permission.");
+        }
     }
 }

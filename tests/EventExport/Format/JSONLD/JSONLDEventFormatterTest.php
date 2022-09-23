@@ -4,10 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class JSONLDEventFormatterTest extends TestCase
 {
+    /**
+     * @var CalendarSummaryRepositoryInterface|MockObject
+     */
+    private $calendarSummaryRepository;
+
+    public function setUp(): void
+    {
+        $this->calendarSummaryRepository = $this->createMock(CalendarSummaryRepositoryInterface::class);
+        $this->calendarSummaryRepository->method('get')->willReturn('Vrijdag');
+    }
+
     private function getJSONEventFromFile($fileName)
     {
         $jsonEvent = file_get_contents(
@@ -28,7 +41,7 @@ class JSONLDEventFormatterTest extends TestCase
             'terms.theme',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
-        $formatter = new JSONLDEventFormatter($includedProperties);
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
 
         $event = $formatter->formatEvent($eventWithTerms);
 
@@ -47,7 +60,7 @@ class JSONLDEventFormatterTest extends TestCase
             'id',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
-        $formatter = new JSONLDEventFormatter($includedProperties);
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
 
         $event = $formatter->formatEvent($eventWithTerms);
 
@@ -67,7 +80,7 @@ class JSONLDEventFormatterTest extends TestCase
             'terms.eventtype',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
-        $formatter = new JSONLDEventFormatter($includedProperties);
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
 
         $event = $formatter->formatEvent($eventWithTerms);
 
@@ -89,7 +102,7 @@ class JSONLDEventFormatterTest extends TestCase
             'status',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_status.json');
-        $formatter = new JSONLDEventFormatter($includedProperties);
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
 
         $event = $formatter->formatEvent($eventWithTerms);
 
@@ -109,12 +122,32 @@ class JSONLDEventFormatterTest extends TestCase
             'bookingAvailability',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_booking_availability.json');
-        $formatter = new JSONLDEventFormatter($includedProperties);
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
 
         $event = $formatter->formatEvent($eventWithTerms);
 
         $this->assertEquals(
             '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","bookingAvailability":{"type":"Unavailable"}}',
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_export_calendar_summary(): void
+    {
+        $includedProperties = [
+            'id',
+            'calendarSummary',
+        ];
+        $eventWithTerms = $this->getJSONEventFromFile('event_with_booking_availability.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithTerms);
+
+        $this->assertEquals(
+            '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","calendarSummary":"Vrijdag"}',
             $event
         );
     }
@@ -129,7 +162,7 @@ class JSONLDEventFormatterTest extends TestCase
             'videos',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_multiple_videos.json');
-        $formatter = new JSONLDEventFormatter($includedProperties);
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
 
         $event = $formatter->formatEvent($eventWithTerms);
 
@@ -149,7 +182,7 @@ class JSONLDEventFormatterTest extends TestCase
             'attendance',
         ];
         $eventWithAttendanceMode = $this->getJSONEventFromFile('event_with_attendance_mode.json');
-        $formatter = new JSONLDEventFormatter($includedProperties);
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
 
         $event = $formatter->formatEvent($eventWithAttendanceMode);
 

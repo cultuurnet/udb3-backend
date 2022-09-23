@@ -293,20 +293,6 @@ $app['event_calendar_repository'] = $app->share(
     }
 );
 
-$app['calendar_summary_repository'] = $app->share(
-    function ($app) {
-        // At the moment the calendar-summary is accessible through this app via proxy.
-        if (isset($app['config']['url'])) {
-            return new \CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository(
-                new Client(new \GuzzleHttp\Client()),
-                \League\Uri\Http::createFromString($app['config']['url'])
-            );
-        } else {
-            return null;
-        }
-    }
-);
-
 $app['event_calendar_cache'] = $app->share(
     function (Application $app) {
         return $app['cache']('event_calendar');
@@ -855,7 +841,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $app->register(new LabelServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());

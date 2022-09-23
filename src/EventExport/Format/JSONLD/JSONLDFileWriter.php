@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
 
-class JSONLDFileWriter implements FileWriterInterface
+final class JSONLDFileWriter implements FileWriterInterface
 {
-    /**
-     * @var JSONLDEventFormatter
-     */
-    protected $eventFormatter;
+    private JSONLDEventFormatter $eventFormatter;
 
-    public function __construct($include = null)
+    public function __construct($include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
     {
-        $this->eventFormatter = new JSONLDEventFormatter($include);
+        $this->eventFormatter = new JSONLDEventFormatter($include, $calendarSummaryRepository);
     }
 
     /**
-     * @param string $filePath
      * @return Resource
      */
-    protected function openFile($filePath)
+    private function openFile(string $filePath)
     {
         $file = fopen($filePath, 'w');
         if (false === $file) {
@@ -37,7 +34,7 @@ class JSONLDFileWriter implements FileWriterInterface
     /**
      * {@inheritdoc}
      */
-    public function write($filePath, $events)
+    public function write($filePath, $events): void
     {
         $file = $this->openFile($filePath);
 
@@ -51,10 +48,9 @@ class JSONLDFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param Resource     $file
-     * @param \Traversable $events
+     * @param Resource $file
      */
-    protected function writeEvents($file, $events)
+    private function writeEvents($file, \Traversable $events): void
     {
         $first = true;
 
