@@ -68,10 +68,6 @@ $app->before(
     Application::EARLY_EVENT
 );
 
-
-
-$app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
-
 // Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
 // ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
 // the needed CORS headers).
