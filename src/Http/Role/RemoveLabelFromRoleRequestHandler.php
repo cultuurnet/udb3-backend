@@ -34,12 +34,6 @@ class RemoveLabelFromRoleRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $roleId = $routeParameters->getRoleId();
 
-        try {
-            $roleId = new UUID($roleId);
-        } catch (InvalidArgumentException $e) {
-            throw ApiProblem::roleNotFound($roleId);
-        }
-
         $labelIdentifier = $routeParameters->get('labelIdentifier');
         try {
             $labelId = new UUID($labelIdentifier);

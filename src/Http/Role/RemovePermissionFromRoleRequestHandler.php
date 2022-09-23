@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Role;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RemovePermission;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Fig\Http\Message\StatusCodeInterface;
@@ -31,12 +30,6 @@ class RemovePermissionFromRoleRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $roleId = $routeParameters->getRoleId();
         $permission = $routeParameters->get('permissionKey');
-
-        try {
-            $roleId = new UUID($roleId);
-        } catch (InvalidArgumentException $e) {
-            throw ApiProblem::roleNotFound($roleId);
-        }
 
         try {
             $permission = Permission::fromUpperCaseString($permission);
