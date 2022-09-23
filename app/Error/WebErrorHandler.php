@@ -117,7 +117,7 @@ final class WebErrorHandler implements MiddlewareInterface
                     return ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
                 }
                 if ($routeParameters->hasRoleId()) {
-                    return ApiProblem::roleNotFound($routeParameters->getRoleId());
+                    return ApiProblem::roleNotFound($routeParameters->getRoleId()->toString());
                 }
                 return ApiProblem::urlNotFound();
 
