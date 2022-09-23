@@ -25,7 +25,7 @@ class GetRoleLabelsRequestHandler implements RequestHandlerInterface
         $routeParameter = new RouteParameters($request);
         $roleId = $routeParameter->getRoleId();
 
-        $document = $this->roleLabelsReadRepository->fetch($roleId);
+        $document = $this->roleLabelsReadRepository->fetch($roleId->toString());
 
         return new JsonResponse(array_values($document->getAssocBody()));
     }

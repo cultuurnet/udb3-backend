@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Request;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -106,9 +107,14 @@ final class RouteParameters
         return $this->get('mediaId');
     }
 
-    public function getRoleId(): string
+    public function getRoleId(): UUID
     {
-        return $this->get('roleId');
+        $roleId = $this->get('roleId');
+        try {
+            return new UUID($roleId);
+        } catch (InvalidArgumentException $exception) {
+            throw ApiProblem::roleNotFound($roleId);
+        }
     }
 
     public function hasRoleId(): bool

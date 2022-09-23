@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RemoveConstraint;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -26,7 +25,7 @@ class DeleteConstraintRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $roleId = new UUID($routeParameters->getRoleId());
+        $roleId = $routeParameters->getRoleId();
 
         $this->commandBus->dispatch(
             new RemoveConstraint(
