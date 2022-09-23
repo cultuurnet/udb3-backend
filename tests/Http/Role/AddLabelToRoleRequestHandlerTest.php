@@ -108,7 +108,7 @@ final class AddLabelToRoleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::blank('There is no label with identifier: ' . $labelName, 404),
+            ApiProblem::urlNotFound('There is no label with identifier: ' . $labelName),
             fn () => $this->handler->handle($request)
         );
 

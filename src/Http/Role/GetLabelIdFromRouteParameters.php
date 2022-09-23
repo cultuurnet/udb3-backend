@@ -23,7 +23,7 @@ trait GetLabelIdFromRouteParameters
             $entity = $this->labelRepository->getByName($labelIdentifier);
 
             if ($entity === null) {
-                throw ApiProblem::blank('There is no label with identifier: ' . $labelIdentifier, 404);
+                throw ApiProblem::urlNotFound('There is no label with identifier: ' . $labelIdentifier);
             }
 
             return new UUID($entity->getUuid()->toString());
