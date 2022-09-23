@@ -114,6 +114,11 @@ use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
+use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 use League\Route\RouteGroup;
 use League\Route\Router;
 use Silex\Application;
@@ -169,6 +174,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $this->bindUser($router);
 
                 $this->bindSavedSearches($router);
+
+                $this->bindUiTPASEvents($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -439,6 +446,26 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
             $routeGroup->post('v3/', CreateSavedSearchRequestHandler::class);
             $routeGroup->delete('v3/{id}/', DeleteSavedSearchRequestHandler::class);
+        });
+    }
+
+    private function bindUiTPASEvents(Router $router): void
+    {
+        $router->group('uitpas/events', function (RouteGroup $routeGroup) {
+            $routeGroup->get('{eventId}/', GetUiTPASDetailRequestHandler::class);
+
+            $routeGroup->get('{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class);
+
+            $routeGroup->put('{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
+
+            $routeGroup->put('{eventId}/card-systems/{cardSystemId}/', AddCardSystemToEventRequestHandler::class);
+
+            $routeGroup->put(
+                '{eventId}/card-systems/{cardSystemId}/distribution-key/{distributionKeyId}/',
+                AddCardSystemToEventRequestHandler::class
+            );
+
+            $routeGroup->delete('{eventId}/card-systems/{cardSystemId}/', DeleteCardSystemFromEventRequestHandler::class);
         });
     }
 
