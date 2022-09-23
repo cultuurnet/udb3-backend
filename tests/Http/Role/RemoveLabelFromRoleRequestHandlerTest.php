@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -16,10 +17,8 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RemoveLabel;
 use CultuurNet\UDB3\StringLiteral;
-use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Response;
 
 final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 {
@@ -81,7 +80,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 
         $actualResponse = $this->handler->handle($request);
 
-        $expectedResponse = new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        $expectedResponse = new NoContentResponse();
         $expectedCommand = new RemoveLabel(
             new UUID($roleId),
             new UUID($labelId)
@@ -133,7 +132,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 
         $actualResponse = $this->handler->handle($request);
 
-        $expectedResponse = new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        $expectedResponse = new NoContentResponse();
         $expectedCommand = new RemoveLabel(
             new UUID($roleId),
             $labelId

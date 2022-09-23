@@ -7,14 +7,13 @@ namespace CultuurNet\UDB3\Http\Role;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
-use Fig\Http\Message\StatusCodeInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
 final class RemoveRoleFromUserRequestHandler implements RequestHandlerInterface
 {
@@ -38,6 +37,6 @@ final class RemoveRoleFromUserRequestHandler implements RequestHandlerInterface
 
         $this->commandBus->dispatch(new RemoveUser($roleId, $routeParameters->getUserId()));
 
-        return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        return new NoContentResponse();
     }
 }

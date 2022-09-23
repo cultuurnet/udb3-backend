@@ -7,14 +7,13 @@ namespace CultuurNet\UDB3\Http\Role;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
-use Fig\Http\Message\StatusCodeInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
 
 final class AddPermissionToRoleRequestHandler implements RequestHandlerInterface
 {
@@ -40,6 +39,6 @@ final class AddPermissionToRoleRequestHandler implements RequestHandlerInterface
 
         $this->commandBus->dispatch(new AddPermission($roleId, $permission));
 
-        return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+        return new NoContentResponse();
     }
 }
