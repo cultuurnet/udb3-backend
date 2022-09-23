@@ -35,7 +35,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
      */
     private $labelRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
         $this->commandBus->record();
