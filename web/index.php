@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
 use Silex\Application;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
@@ -73,7 +72,6 @@ $app->before(
 
 
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
-$app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
 
 // Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an

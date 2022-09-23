@@ -93,7 +93,7 @@ use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
-use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
+use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -859,7 +859,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
-$app->register(new UiTPASServiceLabelsControllerProvider());
+$app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerControllerProvider());
 
