@@ -25,7 +25,7 @@ final class RouteParameters
     {
         // The League router puts the parameters directly in the request attributes.
         if (isset($this->attributes[$parameterName])) {
-            return urldecode($this->attributes[$parameterName]);
+            return rawurldecode($this->attributes[$parameterName]);
         }
         // The Silex router puts the parameters in a "_route_params" nested array.
         if (isset($this->attributes['_route_params'][$parameterName])) {
