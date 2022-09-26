@@ -53,7 +53,7 @@ class RolesSearchRequestHandlerTest extends TestCase
         ]);
 
         $request = (new Psr7RequestBuilder())
-            ->withUriFromString('https://io.uitdatabank.dev/roles/?limit=' . $limit .'&query=' . $search . '&start=' . $start)
+            ->withUriFromString('https://io.uitdatabank.dev/roles/?limit=' . $limit . '&query=' . $search . '&start=' . $start)
             ->build('GET');
 
         $actualResponse = $this->rolesSearchRequestHandler->handle($request);
