@@ -13,7 +13,6 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
-use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
@@ -22,6 +21,7 @@ use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
+use Exception;
 use stdClass;
 
 class TabularDataEventFormatter
@@ -751,7 +751,6 @@ class TabularDataEventFormatter
 
     /**
      * Gives a formatter that tries to fetch a summary in plain text.
-     * If the formatted summary is missing, the summary that is available on the event will be used as fallback.
      */
     private function calendarSummaryFormatter(
         Format $format,
@@ -762,13 +761,11 @@ class TabularDataEventFormatter
 
             if ($calendarSummaryRepository) {
                 try {
-                    $calendarSummary = $calendarSummaryRepository->get($eventId, ContentType::plain(), $format);
-                } catch (SummaryUnavailableException $exception) {
-                    //TODO: Log the missing summaries.
-                };
+                    return $calendarSummaryRepository->get($eventId, ContentType::plain(), $format);
+                } catch (Exception $exception) {
+                    return '';
+                }
             }
-
-            return $calendarSummary ?? $event->calendarSummary;
         };
     }
 
