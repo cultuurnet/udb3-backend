@@ -16,45 +16,38 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
 {
     use AsyncCommandTrait;
 
-    /**
-     * @var EventExportQuery
-     */
-    private $query;
+    private EventExportQuery $query;
 
-    /**
-     * @var ?EmailAddress
-     */
-    private $address;
+    private ?EmailAddress $address;
 
     /**
      * @var null|string[]
      */
-    private $selection;
+    private ?array $selection;
 
     /**
-     * @var null|string[]
+     * @var string[]
      */
-    private $include;
+    private array $include;
 
     /**
-     * @param string[]          $selection
-     * @param string[]          $include
+     * @param string[] $include
+     * @param string[]|null $selection
      */
     public function __construct(
         EventExportQuery $query,
+        array $include,
         EmailAddress $address = null,
-        $selection = null,
-        $include = null
+        ?array $selection = null
     ) {
         if ($query->isEmpty()) {
             throw new \RuntimeException('Query can not be empty');
         }
 
         $this->query = $query;
+        $this->include = $include;
         $this->address = $address;
         $this->selection = $selection;
-
-        $this->include = $include;
     }
 
     /**
@@ -64,7 +57,6 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
     {
         return $this->query;
     }
-
 
     public function getAddress(): ?EmailAddress
     {
@@ -80,9 +72,9 @@ abstract class ExportEvents implements ExportEventsInterface, AsyncCommand
     }
 
     /**
-     * @return null|string[]
+     * @return string[]
      */
-    public function getInclude(): ?array
+    public function getInclude(): array
     {
         return $this->include;
     }

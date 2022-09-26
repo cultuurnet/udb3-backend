@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
@@ -118,9 +119,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->iriOfferIdentifierFactory = $this->createMock(IriOfferIdentifierFactoryInterface::class);
         $this->cdbXMLImporter = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
-                new PriceDescriptionParser(
-                    new NumberFormatRepository(),
-                    new CurrencyRepository()
+                new CdbXmlPriceInfoParser(
+                    new PriceDescriptionParser(
+                        new NumberFormatRepository(),
+                        new CurrencyRepository()
+                    )
                 ),
                 [
                     'nl' => 'Basistarief',
@@ -812,7 +815,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_adds_a_bookingInfo_property_when_cdbxml_has_pricevalue(): void
     {
         $event = $this->cdbXMLEventFactory->eventImportedFromUDB2(
-            'samples/event_with_price_value.cdbxml.xml'
+            'samples/event_with_price_value_and_description.cdbxml.xml'
         );
 
         $body = $this->project($event, $event->getEventId());
@@ -821,7 +824,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $expectedBookingInfo = new \stdClass();
         $expectedBookingInfo->priceCurrency = 'EUR';
-        $expectedBookingInfo->price = 0;
+        $expectedBookingInfo->price = 9.99;
+        $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
         $this->assertInternalType('object', $bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);
@@ -842,8 +846,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $expectedBookingInfo = new \stdClass();
         $expectedBookingInfo->priceCurrency = 'EUR';
-        $expectedBookingInfo->price = 0;
-        $expectedBookingInfo->description = 'Gratis voor iedereen!';
+        $expectedBookingInfo->price = 9.99;
+        $expectedBookingInfo->description = 'Iedereen aan dezelfde prijs';
 
         $this->assertInternalType('object', $bookingInfo);
         $this->assertEquals($expectedBookingInfo, $bookingInfo);

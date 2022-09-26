@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -25,21 +24,15 @@ final class OfferJsonDocumentReadRepository
         $this->placeDocumentRepository = $placeDocumentRepository;
     }
 
-    /**
-     * @throws ApiProblem
-     */
     public function fetch(OfferType $offerType, string $id, bool $includeMetadata = false): JsonDocument
     {
-        try {
-            if ($offerType->sameAs(OfferType::event())) {
-                return $this->eventDocumentRepository->fetch($id, $includeMetadata);
-            }
-            if ($offerType->sameAs(OfferType::place())) {
-                return $this->placeDocumentRepository->fetch($id, $includeMetadata);
-            }
-        } catch (DocumentDoesNotExist $e) {
+        if ($offerType->sameAs(OfferType::event())) {
+            return $this->eventDocumentRepository->fetch($id, $includeMetadata);
+        }
+        if ($offerType->sameAs(OfferType::place())) {
+            return $this->placeDocumentRepository->fetch($id, $includeMetadata);
         }
 
-        throw ApiProblem::offerNotFound($offerType, $id);
+        throw DocumentDoesNotExist::withId($id);
     }
 }

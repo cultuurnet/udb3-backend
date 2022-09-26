@@ -536,14 +536,30 @@ class TabularDataEventFormatterTest extends TestCase
             'calendarSummary',
         ];
 
+        $calendarSummaryRepository = $this->createMock(CalendarSummaryRepositoryInterface::class);
+
+        $calendarSummaryRepository->expects($this->any())
+            ->method('get')
+            ->willReturnCallback(
+                function (string $eventId, ContentType $contentType, Format $format): string {
+                    if ($contentType->sameAs(ContentType::plain()) && $format->sameAs(Format::md())) {
+                        return 'SHORT CALENDAR SUMMARY';
+                    }
+                    if ($contentType->sameAs(ContentType::plain()) && $format->sameAs(Format::lg())) {
+                        return 'LONG CALENDAR SUMMARY';
+                    }
+                    return '';
+                }
+            );
+
         $event = $this->getJSONEventFromFile('event_with_dates.json');
-        $formatter = new TabularDataEventFormatter($includedProperties);
+        $formatter = new TabularDataEventFormatter($includedProperties, null, $calendarSummaryRepository);
         $formattedEvent = $formatter->formatEvent($event);
 
         $expectedFormattedEvent = [
             'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
-            'calendarSummary.short' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ' . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
-            'calendarSummary.long' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ' . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'calendarSummary.short' => 'SHORT CALENDAR SUMMARY',
+            'calendarSummary.long' => 'LONG CALENDAR SUMMARY',
         ];
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);

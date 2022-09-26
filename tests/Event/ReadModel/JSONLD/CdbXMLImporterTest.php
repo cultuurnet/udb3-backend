@@ -9,6 +9,7 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultureFeed_Cdb_Item_Event;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
+use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
@@ -45,9 +46,11 @@ class CdbXMLImporterTest extends TestCase
     {
         $this->importer = new CdbXMLImporter(
             new CdbXMLItemBaseImporter(
-                new PriceDescriptionParser(
-                    new NumberFormatRepository(),
-                    new CurrencyRepository()
+                new CdbXmlPriceInfoParser(
+                    new PriceDescriptionParser(
+                        new NumberFormatRepository(),
+                        new CurrencyRepository()
+                    )
                 ),
                 [
                     'nl' => 'Basistarief',
