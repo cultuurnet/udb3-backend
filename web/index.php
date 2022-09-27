@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Silex\Proxy\ProxyRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
-use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use League\Route\Router;
 use Silex\Application;
@@ -54,8 +53,6 @@ $app->register(new PsrRouterServiceProvider());
  * Register service providers for request handlers.
  */
 $app->register(new ProxyRequestHandlerServiceProvider());
-
-$app->register(new CatchAllRouteServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
 
