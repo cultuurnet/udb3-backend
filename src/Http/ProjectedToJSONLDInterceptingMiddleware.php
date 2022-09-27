@@ -18,8 +18,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Limits the amount of "ProjectedToJSONLD" messages on the AMQP queues by intercepting them on the event bus
  * during the request handling, and only (re)publishing the unique ones after the request handler is done.
- * Note that before() and after() callbacks are only called in the context of HTTP requests, so not in CLI
- * commands where we don't want this behavior.
  * Some examples where this is useful:
  * - New event, place, organizer imports that contain one or more non-required fields which results in extra
  *   ProjectedToJSONLD messages
