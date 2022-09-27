@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
@@ -13,7 +14,10 @@ use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use CultuurNet\UDB3\Silex\CatchAllRouteServiceProvider;
+use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
+use League\Route\Router;
 use Silex\Application;
+use Slim\Psr7\Factory\ServerRequestFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
 const API_NAME = ApiName::JSONLD;
@@ -55,17 +59,16 @@ $app->register(new CatchAllRouteServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
 
+$request = ServerRequestFactory::createFromGlobals();
+$request = (new LegacyPathRewriter())->rewriteRequest($request);
+
 try {
-    $app->run();
+    $response = $app[Router::class]->handle($request);
 } catch (\Throwable $throwable) {
     /** @var WebErrorHandler $webErrorHandler */
     $webErrorHandler = $app[WebErrorHandler::class];
     $request = (new DiactorosFactory())->createRequest($app['request_stack']->getCurrentRequest());
     $response = $webErrorHandler->handle($request, $throwable);
-
-    // We're outside of the Silex app, so we cannot use the standard way to return a Response object.
-    http_response_code($response->getStatusCode());
-    header('Content-Type: application/json');
-    echo $response->getBody()->getContents();
-    exit;
 }
+
+(new SapiStreamEmitter())->emit($response);
