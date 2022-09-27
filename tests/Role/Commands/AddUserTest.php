@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\StringLiteral;
 
 class AddUserTest extends TestCase
 {
@@ -20,16 +19,13 @@ class AddUserTest extends TestCase
      */
     private $uuid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $userId;
+    private string $userId;
 
     protected function setUp()
     {
         $this->uuid = new UUID('7ce4cb7e-af7c-4724-bfbe-d943ac2b949a');
 
-        $this->userId = new StringLiteral('userId');
+        $this->userId = 'userId';
 
         $this->addUser = new AddUser($this->uuid, $this->userId);
     }

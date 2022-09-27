@@ -25,7 +25,7 @@ final class GetRoleRequestHandler implements RequestHandlerInterface
         $routeParameter = new RouteParameters($request);
         $roleId = $routeParameter->getRoleId();
 
-        $role = $this->roleRepository->fetch($roleId);
+        $role = $this->roleRepository->fetch($roleId->toString());
 
         return new JsonResponse($role->getRawBody());
     }

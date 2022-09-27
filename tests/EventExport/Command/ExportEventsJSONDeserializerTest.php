@@ -59,16 +59,16 @@ class ExportEventsJSONDeserializerTest extends TestCase
             ->method('createCommand')
             ->with(
                 new EventExportQuery('city:leuven'),
+                [
+                    'name',
+                    'image',
+                    'address',
+                ],
                 new EmailAddress('foo@bar.com'),
                 [
                     '8102d369-47c5-4ded-ad03-e12ef7b246c3',
                     'b5f6f86b-6e81-439b-b93d-68a95a356756',
                     'eb59c69c-2e29-4cbc-901f-d9076b38ca59',
-                ],
-                [
-                    'name',
-                    'image',
-                    'address',
                 ]
             )
             ->willReturn(new \stdClass());
@@ -104,16 +104,16 @@ class ExportEventsJSONDeserializerTest extends TestCase
 
         $expectedCommand = new $expectedCommandType(
             new EventExportQuery('city:leuven'),
+            [
+                'name',
+                'image',
+                'address',
+            ],
             new EmailAddress('foo@bar.com'),
             [
                 '8102d369-47c5-4ded-ad03-e12ef7b246c3',
                 'b5f6f86b-6e81-439b-b93d-68a95a356756',
                 'eb59c69c-2e29-4cbc-901f-d9076b38ca59',
-            ],
-            [
-                'name',
-                'image',
-                'address',
             ]
         );
 
