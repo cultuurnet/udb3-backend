@@ -99,7 +99,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
-                $labels = file_exists(__DIR__ . '/../../excluded_labels.php') ? require __DIR__ . '/../../excluded_labels.php' : [];
+                $labels = file_exists(__DIR__ . '/../../config.excluded_labels.php') ? require __DIR__ . '/../../config.excluded_labels.php' : [];
 
                 return new GodUserReadRepositoryDecorator(
                     new JsonReadRepository(
