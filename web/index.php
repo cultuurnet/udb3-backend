@@ -53,21 +53,6 @@ $app->register(new PsrRouterServiceProvider());
  */
 $app->register(new ProxyRequestHandlerServiceProvider());
 
-/**
- * Middleware that authenticates incoming HTTP requests using the RequestAuthenticator service.
- * @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
- */
-$app->before(
-    static function (Request $request, Application $app): void {
-        $psrRequest = (new DiactorosFactory())->createRequest($request);
-
-        /** @var RequestAuthenticatorMiddleware $authenticator */
-        $authenticator = $app[RequestAuthenticatorMiddleware::class];
-        $authenticator->authenticate($psrRequest);
-    },
-    Application::EARLY_EVENT
-);
-
 // Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
 // ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
 // the needed CORS headers).
@@ -75,30 +60,6 @@ $app->before(
 // in the new router, so this can be removed completely once all route definitions and handlers are moved to the new
 // router.
 $app->options('/{path}', fn () => new NoContentResponse())->assert('path', '^.+$');
-
-// Add CORS headers to every request. We explicitly allow everything, because we don't use cookies and our API is not on
-// an internal network, so CORS requests are never a security issue in our case. This greatly reduces the risk of CORS
-// bugs in our frontend and other integrations.
-// @todo III-4235 Move to Middleware in new PSR router when all routes are registered on the new router.
-$app->after(
-    function (Request $request, Response $response) {
-        // Allow any known method regardless of the URL.
-        $methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-        $response->headers->set('Allow', implode(',', $methods));
-        $response->headers->set('Access-Control-Allow-Methods', implode(',', $methods));
-
-        // Allow the Authorization header to be used.
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
-
-        // If a specific origin has been requested to be used, echo it back. Otherwise allow *.
-        $requestedOrigin = $request->headers->get('Origin', '*');
-        $response->headers->set('Access-Control-Allow-Origin', $requestedOrigin);
-
-        // If specific headers have been requested to be used, echo them back. Otherwise allow the default headers.
-        $requestedHeaders = $request->headers->get('Access-Control-Request-Headers', 'authorization,x-api-key');
-        $response->headers->set('Access-Control-Allow-Headers', $requestedHeaders);
-    }
-);
 
 $app->register(new CatchAllRouteServiceProvider());
 
