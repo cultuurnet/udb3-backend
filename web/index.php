@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
-use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
