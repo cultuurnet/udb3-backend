@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex\Term;
 use CultuurNet\UDB3\Term\TermRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\Yaml\Yaml;
 
 final class TermServiceProvider implements ServiceProviderInterface
 {
@@ -18,18 +17,17 @@ final class TermServiceProvider implements ServiceProviderInterface
                 $mapping = [];
 
                 $files = [
-                    __DIR__ . '/../../term_mapping_facilities.yml',
-                    __DIR__ . '/../../term_mapping_themes.yml',
-                    __DIR__ . '/../../term_mapping_types.yml',
+                    __DIR__ . '/../../config.term_mapping_facilities.php',
+                    __DIR__ . '/../../config.term_mapping_themes.php',
+                    __DIR__ . '/../../config.term_mapping_types.php',
                 ];
 
                 foreach ($files as $file) {
                     if (file_exists($file)) {
-                        $yaml = file_get_contents($file);
-                        $yaml = Yaml::parse($yaml);
+                        $terms  = require $file;
 
-                        if (is_array($yaml)) {
-                            $mapping = array_merge($mapping, $yaml);
+                        if (is_array($terms)) {
+                            $mapping = array_merge($mapping, $terms);
                         }
                     }
                 }
