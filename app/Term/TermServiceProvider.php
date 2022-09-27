@@ -10,7 +10,7 @@ use Silex\ServiceProviderInterface;
 
 final class TermServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app[TermRepository::class] = $app::share(
             function () {
@@ -37,7 +37,7 @@ final class TermServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
