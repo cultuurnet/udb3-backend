@@ -53,14 +53,6 @@ $app->register(new PsrRouterServiceProvider());
  */
 $app->register(new ProxyRequestHandlerServiceProvider());
 
-// Match with any OPTIONS request with any URL and return a 204 No Content. Actual CORS headers will be added by an
-// ->after() middleware, which adds CORS headers to every request (so non-preflighted requests like simple GETs also get
-// the needed CORS headers).
-// Note that the new PSR router in PsrRouterServiceProvider already supports OPTIONS requests for all routes registered
-// in the new router, so this can be removed completely once all route definitions and handlers are moved to the new
-// router.
-$app->options('/{path}', fn () => new NoContentResponse())->assert('path', '^.+$');
-
 $app->register(new CatchAllRouteServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
