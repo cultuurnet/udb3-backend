@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8a1992fe20f80a6095166baa5febeb6",
+    "content-hash": "36f03ccf4b9a48a84ffcd279335b1f15",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -2293,6 +2293,73 @@
                 }
             ],
             "time": "2020-04-07T20:44:10+00:00"
+        },
+        {
+            "name": "laminas/laminas-httphandlerrunner",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-httphandlerrunner.git",
+                "reference": "eb670c5c7167cd218c61a8b4f6ab9ce339200c16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-httphandlerrunner/zipball/eb670c5c7167cd218c61a8b4f6ab9ce339200c16",
+                "reference": "eb670c5c7167cd218c61a8b4f6ab9ce339200c16",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ~8.0.0 || ~8.1.0",
+                "psr/http-message": "^1.0",
+                "psr/http-message-implementation": "^1.0",
+                "psr/http-server-handler": "^1.0"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "~2.4.0",
+                "laminas/laminas-diactoros": "^2.13.0",
+                "phpunit/phpunit": "^9.5.21",
+                "psalm/plugin-phpunit": "^0.17.0",
+                "vimeo/psalm": "^4.24.0"
+            },
+            "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "Laminas\\HttpHandlerRunner\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\HttpHandlerRunner\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Execute PSR-15 RequestHandlerInterface instances and emit responses they generate.",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "components",
+                "laminas",
+                "mezzio",
+                "psr-15",
+                "psr-7"
+            ],
+            "support": {
+                "chat": "https://laminas.dev/chat",
+                "docs": "https://docs.laminas.dev/laminas-httphandlerrunner/",
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/laminas/laminas-httphandlerrunner/issues",
+                "rss": "https://github.com/laminas/laminas-httphandlerrunner/releases.atom",
+                "source": "https://github.com/laminas/laminas-httphandlerrunner"
+            },
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2022-09-17T16:24:51+00:00"
         },
         {
             "name": "lcobucci/jwt",
