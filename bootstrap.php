@@ -148,8 +148,6 @@ $app['event_store_factory'] = $app->protect(
 
 $app->register(new SentryServiceProvider());
 
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
