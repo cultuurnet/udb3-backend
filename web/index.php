@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Proxy\ProxyRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use League\Route\Router;
@@ -21,11 +20,6 @@ const API_NAME = ApiName::JSONLD;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
-
-// Register our own ControllerCollection as controllers_factory so every route automatically gets a trailing slash.
-$app['controllers_factory'] = function () use ($app) {
-    return new Udb3ControllerCollection($app['route_factory']);
-};
 
 $app->register(new WebErrorHandlerProvider());
 
