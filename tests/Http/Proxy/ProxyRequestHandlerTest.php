@@ -28,7 +28,7 @@ final class ProxyRequestHandlerTest extends TestCase
     public function it_changes_the_domain_and_then_resends_it_and_returns_the_response(): void
     {
         $originalRequest = (new Psr7RequestBuilder())
-            ->withUriFromString('https://mock.local/test/foo/bar')
+            ->withUriFromString('http://mock.local:80/test/foo/bar')
             ->withJsonBodyFromArray(['foo' => 'bar'])
             ->withHeader('x-test-header', 'example value')
             ->build('POST');
