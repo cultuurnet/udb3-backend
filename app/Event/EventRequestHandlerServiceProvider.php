@@ -27,40 +27,10 @@ use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
-use Silex\ControllerCollection;
-use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
 
-class EventControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
+final class EventRequestHandlerServiceProvider implements ServiceProviderInterface
 {
-    public function connect(Application $app): ControllerCollection
-    {
-        /* @var ControllerCollection $controllers */
-        $controllers = $app['controllers_factory'];
-
-        $controllers->post('/', ImportEventRequestHandler::class);
-        $controllers->put('/{eventId}/', ImportEventRequestHandler::class);
-
-        $controllers->put('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
-        $controllers->put('/{eventId}/location/{locationId}/', UpdateLocationRequestHandler::class);
-        $controllers->patch('/{eventId}/sub-events/', UpdateSubEventsRequestHandler::class);
-        $controllers->put('/{eventId}/theme/{termId}/', UpdateThemeRequestHandler::class);
-        $controllers->delete('/{eventId}/theme/', DeleteThemeRequestHandler::class);
-        $controllers->put('/{eventId}/attendance-mode/', UpdateAttendanceModeRequestHandler::class);
-        $controllers->put('/{eventId}/online-url/', UpdateOnlineUrlRequestHandler::class);
-        $controllers->delete('/{eventId}/online-url/', DeleteOnlineUrlRequestHandler::class);
-        $controllers->put('/{eventId}/audience/', UpdateAudienceRequestHandler::class);
-        $controllers->post('/{eventId}/copies/', CopyEventRequestHandler::class);
-
-        /**
-         * Legacy routes that we need to keep for backward compatibility.
-         * These routes usually used an incorrect HTTP method.
-         */
-        $controllers->post('/{eventId}/major-info/', UpdateMajorInfoRequestHandler::class);
-
-        return $controllers;
-    }
-
     public function register(Application $app): void
     {
         $app[ImportEventRequestHandler::class] = $app->share(

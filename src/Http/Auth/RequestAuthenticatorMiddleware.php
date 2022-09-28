@@ -19,9 +19,12 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepos
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-final class RequestAuthenticator
+final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 {
     private const BEARER = 'Bearer ';
 
@@ -65,6 +68,12 @@ final class RequestAuthenticator
     public function addPermissionRestrictedRoute(string $pathPattern, array $methods, Permission $permission): void
     {
         $this->permissionRestrictedRoutes[] = new PermissionRestrictedRouteRule($pathPattern, $methods, $permission);
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $this->authenticate($request);
+        return $handler->handle($request);
     }
 
     /**

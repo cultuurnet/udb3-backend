@@ -28,12 +28,11 @@ use CultuurNet\UDB3\Http\Role\UpdateRoleRequestHandler;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
-use Silex\ControllerCollection;
-use Silex\ControllerProviderInterface;
+use Silex\ServiceProviderInterface;
 
-class RoleControllerProvider implements ControllerProviderInterface
+final class RoleRequestHandlerServiceProvider implements ServiceProviderInterface
 {
-    public function connect(Application $app): ControllerCollection
+    public function register(Application $app): void
     {
         $app[GetRoleRequestHandler::class] = $app->share(
             fn (Application $app) => new GetRoleRequestHandler($app['role_read_repository'])
@@ -118,50 +117,9 @@ class RoleControllerProvider implements ControllerProviderInterface
         $app[RemoveRoleFromUserRequestHandler::class] = $app->share(
             fn (Application $app) => new RemoveRoleFromUserRequestHandler($app['event_command_bus'])
         );
+    }
 
-        /** @var ControllerCollection $controllers */
-        $controllers = $app['controllers_factory'];
-
-        $controllers->get('/roles/', RolesSearchRequestHandler::class);
-
-        $controllers->post('/roles/', CreateRoleRequestHandler::class);
-
-        $controllers->get('/roles/{roleId}/', GetRoleRequestHandler::class);
-
-        $controllers->patch('/roles/{roleId}/', UpdateRoleRequestHandler::class);
-
-        $controllers->post('/roles/{id}/constraints/', AddConstraintRequestHandler::class);
-
-        $controllers->put('/roles/{id}/constraints/', UpdateConstraintRequestHandler::class);
-
-        $controllers->delete('/roles/{roleId}/constraints/', DeleteConstraintRequestHandler::class);
-
-        $controllers->delete('/roles/{roleId}/', DeleteRoleRequestHandler::class);
-
-        $controllers->get('/permissions/', GetPermissionsRequestHandler::class);
-
-        $controllers->get('/user/permissions/', GetUserPermissionsRequestHandler::class);
-
-        $controllers->get('/roles/{roleId}/users/', GetUsersWithRoleRequestHandler::class);
-
-        $controllers->put('/roles/{roleId}/permissions/{permissionKey}/', AddPermissionToRoleRequestHandler::class);
-
-        $controllers->delete('/roles/{roleId}/permissions/{permissionKey}/', RemovePermissionFromRoleRequestHandler::class);
-
-        $controllers->get('/roles/{roleId}/labels/', GetRoleLabelsRequestHandler::class);
-
-        $controllers->put('/roles/{roleId}/labels/{labelId}/', AddLabelToRoleRequestHandler::class);
-
-        $controllers->delete('/roles/{roleId}/labels/{labelId}/', RemoveLabelFromRoleRequestHandler::class);
-
-        $controllers->put('/roles/{roleId}/users/{userId}/', AddRoleToUserRequestHandler::class);
-
-        $controllers->delete('/roles/{roleId}/users/{userId}/', RemoveRoleFromUserRequestHandler::class);
-
-        $controllers->get('/users/{userId}/roles/', GetRolesFromUserRequestHandler::class);
-
-        $controllers->get('/user/roles/', GetRolesFromCurrentUserRequestHandler::class);
-
-        return $controllers;
+    public function boot(Application $app): void
+    {
     }
 }

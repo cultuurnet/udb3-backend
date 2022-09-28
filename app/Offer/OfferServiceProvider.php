@@ -8,8 +8,45 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
+use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
+use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
+use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTitleRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
+use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
@@ -39,11 +76,13 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use CultuurNet\UDB3\User\CurrentUser;
+use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -252,6 +291,207 @@ final class OfferServiceProvider implements ServiceProviderInterface
                 $app[OfferRepository::class],
                 $app[EventHasTicketSalesGuard::class]
             )
+        );
+
+        $app[GetDetailRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetDetailRequestHandler($app[OfferJsonDocumentReadRepository::class])
+        );
+
+        $app[DeleteRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTypicalAgeRangeRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[DeleteTypicalAgeRangeRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new DeleteTypicalAgeRangeRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[AddLabelRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[RemoveLabelRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new RemoveLabelRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[AddLabelFromJsonBodyRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelFromJsonBodyRequestHandler(
+                    $app['event_command_bus'],
+                    new LabelJSONDeserializer()
+                );
+            }
+        );
+
+        $app[UpdateBookingInfoRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateBookingInfoRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateContactPointRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateContactPointRequestHandler($app['event_command_bus']);
+            }
+        );
+
+        $app[UpdateTitleRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateTitleRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateDescriptionRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateDescriptionRequestHandler(
+                $app['event_command_bus'],
+                new DescriptionJSONDeserializer()
+            )
+        );
+
+        $app[UpdateAvailableFromRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateAvailableFromRequestHandler($app['event_command_bus'])
+        );
+
+        $app[GetHistoryRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetHistoryRequestHandler(
+                $app['event_history_repository'],
+                $app['places_history_repository'],
+                $app[CurrentUser::class]->isGodUser()
+            )
+        );
+
+        $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPermissionsForCurrentUserRequestHandler(
+                $app['offer_permission_voter'],
+                $app[CurrentUser::class]->getId()
+            )
+        );
+
+        $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetPermissionsForGivenUserRequestHandler(
+                $app['offer_permission_voter']
+            )
+        );
+
+        $app[CurrentUserHasPermissionRequestHandler::class] = $app->share(
+            fn (Application $app) => new CurrentUserHasPermissionRequestHandler(
+                Permission::aanbodBewerken(),
+                $app['offer_permission_voter'],
+                $app[CurrentUser::class]->getId()
+            )
+        );
+
+        $app[GivenUserHasPermissionRequestHandler::class] = $app->share(
+            fn (Application $app) => new GivenUserHasPermissionRequestHandler(
+                Permission::aanbodBewerken(),
+                $app['offer_permission_voter']
+            )
+        );
+
+        $app[UpdateOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateOrganizerRequestHandler(
+                $app['event_command_bus'],
+                $app['organizer_jsonld_repository']
+            )
+        );
+
+        $app[UpdateOrganizerFromJsonBodyRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateOrganizerFromJsonBodyRequestHandler(
+                $app['event_command_bus'],
+                $app['organizer_jsonld_repository']
+            )
+        );
+
+        $app[DeleteOrganizerRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteOrganizerRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
+        $app[UpdateCalendarRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateCalendarRequestHandler($app['event_command_bus'])
+        );
+
+        $app[GetCalendarSummaryRequestHandler::class] = $app->share(
+            fn (Application $app) => new GetCalendarSummaryRequestHandler($app[OfferJsonDocumentReadRepository::class])
+        );
+
+        $app[UpdateStatusRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateStatusRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateBookingAvailabilityRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateBookingAvailabilityRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateTypeRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateTypeRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdateFacilitiesRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateFacilitiesRequestHandler($app['event_command_bus'])
+        );
+
+        $app[UpdatePriceInfoRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdatePriceInfoRequestHandler($app['event_command_bus'])
+        );
+
+        $app[AddImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new AddImageRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
+        $app[SelectMainImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new SelectMainImageRequestHandler(
+                $app['event_command_bus'],
+                $app['media_manager']
+            )
+        );
+
+        $app[UpdateImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateImageRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
+        $app[RemoveImageRequestHandler::class] = $app->share(
+            fn (Application $app) => new RemoveImageRequestHandler(
+                $app['event_command_bus'],
+                $app['media_manager']
+            )
+        );
+
+        $app[AddVideoRequestHandler::class] = $app->share(
+            fn (Application $app) => new AddVideoRequestHandler(
+                $app['event_command_bus'],
+                new UuidFactory()
+            )
+        );
+
+        $app[UpdateVideosRequestHandler::class] = $app->share(
+            fn (Application $app) => new UpdateVideosRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
+        $app[DeleteVideoRequestHandler::class] = $app->share(
+            fn (Application $app) => new DeleteVideoRequestHandler(
+                $app['event_command_bus']
+            )
+        );
+
+        $app[PatchOfferRequestHandler::class] = $app->share(
+            fn (Application $app) => new PatchOfferRequestHandler($app['event_command_bus'])
         );
     }
 

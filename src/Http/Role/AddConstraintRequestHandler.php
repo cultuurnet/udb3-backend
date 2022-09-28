@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Role;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use Fig\Http\Message\StatusCodeInterface;
@@ -28,7 +27,7 @@ class AddConstraintRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
-        $roleId = new UUID($routeParameters->get('id'));
+        $roleId = $routeParameters->getRoleId();
 
         $requestBodyParser = RequestBodyParserFactory::createBaseParser(
             new QueryValidatingRequestBodyParser()

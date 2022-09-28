@@ -18,34 +18,10 @@ use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use Silex\Application;
-use Silex\ControllerCollection;
-use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
 
-class PlaceControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
+final class PlaceRequestHandlerServiceProvider implements ServiceProviderInterface
 {
-    public function connect(Application $app): ControllerCollection
-    {
-        /** @var ControllerCollection $controllers */
-        $controllers = $app['controllers_factory'];
-
-        $controllers->post('/', ImportPlaceRequestHandler::class);
-        $controllers->put('/{placeId}', ImportPlaceRequestHandler::class);
-
-        $controllers->put('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
-        $controllers->put('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
-
-        /**
-         * Legacy routes that we need to keep for backward compatibility.
-         * These routes usually used an incorrect HTTP method.
-         */
-        $controllers->get('/{placeId}/events/', GetEventsRequestHandler::class);
-        $controllers->post('/{placeId}/address/{language}/', UpdateAddressRequestHandler::class);
-        $controllers->post('/{placeId}/major-info/', UpdateMajorInfoRequestHandler::class);
-
-        return $controllers;
-    }
-
     public function register(Application $app): void
     {
         $app[GetEventsRequestHandler::class] = $app->share(

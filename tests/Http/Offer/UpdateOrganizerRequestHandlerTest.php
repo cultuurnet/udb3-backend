@@ -54,7 +54,7 @@ class UpdateOrganizerRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::urlNotFound(
-                'Organizer with id "%20%2010cfb8c6-8e2e-4fdb-8119-5b9057cf33d7" does not exist.'
+                'Organizer with id "  10cfb8c6-8e2e-4fdb-8119-5b9057cf33d7" does not exist.'
             ),
             fn () => $this->updateOrganizerRequestHandler->handle($request)
         );

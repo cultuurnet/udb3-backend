@@ -8,5 +8,6 @@ return Publiq\PhpCsFixer\Config::fromFolders(
         'bin/',
         'src/',
         'tests/',
+        'web/',
     ]
 )->legacy();
