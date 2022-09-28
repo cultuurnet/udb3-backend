@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
+use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
@@ -100,6 +101,7 @@ use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Http\Adapter\Guzzle7\Client;
 use League\Container\Container;
+use League\Container\ReflectionContainer;
 use Monolog\Logger;
 use Silex\Application;
 use SocketIO\Emitter;
@@ -107,9 +109,19 @@ use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
 
+/**
+ * Set up a PSR-11 container using league/container. The goal is for this container to replace the Silex Application
+ * object (a Pimple container).
+ * We inject this new PSR container into the Silex application (extended via HybridContainerApplication) so that Silex
+ * service definitions can fetch services from the PSR container (if they exist there) instead of the Silex container.
+ * We then wrap the Silex container in a decorator that makes it PSR-11 compatible and set that as a delegate on the
+ * league container so that service definitions in the league container can fetch services from the Silex container if
+ * they do not exist in the league container.
+ */
 $container = new Container();
-
 $app = new HybridContainerApplication($container);
+$container->delegate(new PimplePSRContainerBridge($app));
+
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
