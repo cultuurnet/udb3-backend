@@ -100,7 +100,6 @@ use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Http\Adapter\Guzzle7\Client;
 use Monolog\Logger;
 use Silex\Application;
-use Silex\Provider\Psr7ServiceProvider;
 use SocketIO\Emitter;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -906,7 +905,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 $app->register(new CuratorsServiceProvider());
 
 $app->register(new Auth0ServiceProvider());
-$app->register(new Psr7ServiceProvider());
 
 $app->register(new TermServiceProvider());
 
