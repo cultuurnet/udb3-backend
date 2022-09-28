@@ -28,50 +28,10 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
-use Silex\ControllerCollection;
-use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
 
-class OrganizerControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
+final class OrganizerRequestHandlerServiceProvider implements ServiceProviderInterface
 {
-    public function connect(Application $app): ControllerCollection
-    {
-        /** @var ControllerCollection $controllers */
-        $controllers = $app['controllers_factory'];
-
-        $controllers->post('/', ImportOrganizerRequestHandler::class);
-        $controllers->put('/{organizerId}/', ImportOrganizerRequestHandler::class);
-        $controllers->get('/{organizerId}/', GetOrganizerRequestHandler::class);
-        $controllers->delete('/{organizerId}/', DeleteOrganizerRequestHandler::class);
-
-        $controllers->put('/{organizerId}/name/', UpdateTitleRequestHandler::class);
-        $controllers->put('/{organizerId}/name/{language}/', UpdateTitleRequestHandler::class);
-
-        $controllers->put('/{organizerId}/description/{language}/', UpdateDescriptionRequestHandler::class);
-        $controllers->delete('/{organizerId}/description/{language}/', DeleteDescriptionRequestHandler::class);
-
-        $controllers->put('/{organizerId}/address/', UpdateAddressRequestHandler::class);
-        $controllers->put('/{organizerId}/address/{language}/', UpdateAddressRequestHandler::class);
-        $controllers->delete('/{organizerId}/address/', DeleteAddressRequestHandler::class);
-
-        $controllers->put('/{organizerId}/url/', UpdateUrlRequestHandler::class);
-
-        $controllers->put('/{organizerId}/contact-point/', UpdateContactPointRequestHandler::class);
-
-        $controllers->post('/{organizerId}/images/', AddImageRequestHandler::class);
-        $controllers->put('/{organizerId}/images/main', UpdateMainImageRequestHandler::class);
-        $controllers->patch('/{organizerId}/images/', UpdateImagesRequestHandler::class);
-        $controllers->delete('/{organizerId}/images/{imageId}', DeleteImageRequestHandler::class);
-
-        $controllers->put('/{organizerId}/labels/{labelName}/', AddLabelRequestHandler::class);
-        $controllers->delete('/{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
-
-        $controllers->get('/{organizerId}/permissions/', GetPermissionsForCurrentUserRequestHandler::class);
-        $controllers->get('/{organizerId}/permissions/{userId}/', GetPermissionsForGivenUserRequestHandler::class);
-
-        return $controllers;
-    }
-
     public function register(Application $app): void
     {
         $app[ImportOrganizerRequestHandler::class] = $app->share(

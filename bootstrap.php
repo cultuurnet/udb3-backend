@@ -67,7 +67,6 @@ use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
-use CultuurNet\UDB3\Silex\Curators\CuratorsControllerProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
@@ -75,15 +74,19 @@ use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
+use CultuurNet\UDB3\Silex\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
+use CultuurNet\UDB3\Silex\Place\PlaceRequestHandlerServiceProvider;
+use CultuurNet\UDB3\Silex\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
@@ -93,10 +96,8 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use Http\Adapter\Guzzle7\Client;
 use Monolog\Logger;
 use Silex\Application;
-use Silex\Provider\Psr7ServiceProvider;
 use SocketIO\Emitter;
 use CultuurNet\UDB3\StringLiteral;
 
@@ -145,11 +146,8 @@ $app['event_store_factory'] = $app->protect(
 
 $app->register(new SentryServiceProvider());
 
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
 $app->register(new EventBusServiceProvider());
 
@@ -539,7 +537,7 @@ $app['organizer_iri_generator'] = $app->share(
     }
 );
 
-$app->register(new OrganizerControllerProvider());
+$app->register(new OrganizerRequestHandlerServiceProvider());
 $app->register(new OrganizerJSONLDServiceProvider());
 $app->register(new OrganizerCommandHandlerProvider());
 
@@ -828,19 +826,22 @@ $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
 $app->register(new EventCommandHandlerProvider());
+$app->register(new EventRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
+$app->register(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $app->register(new LabelServiceProvider());
+$app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
-$app->register(new UiTPASServiceLabelsControllerProvider());
-$app->register(new UiTPASServiceEventControllerProvider());
-$app->register(new UiTPASServiceOrganizerControllerProvider());
+$app->register(new UiTPASServiceLabelsServiceProvider());
+$app->register(new UiTPASServiceEventServiceProvider());
+$app->register(new UiTPASServiceOrganizerServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
@@ -901,12 +902,12 @@ $app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 $app->register(new CuratorsServiceProvider());
-$app->register(new CuratorsControllerProvider());
 
 $app->register(new Auth0ServiceProvider());
-$app->register(new Psr7ServiceProvider());
 
 $app->register(new TermServiceProvider());
+
+$app->register(new JobsServiceProvider());
 
 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);

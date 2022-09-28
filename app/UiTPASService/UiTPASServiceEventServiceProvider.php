@@ -11,35 +11,10 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandl
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 use Silex\Application;
-use Silex\ControllerCollection;
-use Silex\ControllerProviderInterface;
 use Silex\ServiceProviderInterface;
 
-class UiTPASServiceEventControllerProvider implements ControllerProviderInterface, ServiceProviderInterface
+class UiTPASServiceEventServiceProvider implements ServiceProviderInterface
 {
-    public function connect(Application $app): ControllerCollection
-    {
-        /** @var ControllerCollection $controllers */
-        $controllers = $app['controllers_factory'];
-
-        $controllers->get('/{eventId}/', GetUiTPASDetailRequestHandler::class);
-
-        $controllers->get('/{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class);
-
-        $controllers->put('/{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
-
-        $controllers->put('/{eventId}/card-systems/{cardSystemId}/', AddCardSystemToEventRequestHandler::class);
-
-        $controllers->put(
-            '/{eventId}/card-systems/{cardSystemId}/distribution-key/{distributionKeyId}/',
-            AddCardSystemToEventRequestHandler::class
-        );
-
-        $controllers->delete('/{eventId}/card-systems/{cardSystemId}/', DeleteCardSystemFromEventRequestHandler::class);
-
-        return $controllers;
-    }
-
     public function register(Application $app): void
     {
         $app[GetUiTPASDetailRequestHandler::class] = $app->share(

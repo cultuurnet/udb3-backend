@@ -11,7 +11,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
-use CultuurNet\UDB3\Http\Auth\RequestAuthenticator;
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
@@ -28,9 +28,9 @@ final class AuthServiceProvider implements ServiceProviderInterface
     {
         CurrentUser::configureGodUserIds($app['config']['user_permissions']['allow_all']);
 
-        $app[RequestAuthenticator::class] = $app::share(
-            function (Application $app): RequestAuthenticator {
-                $authenticator = new RequestAuthenticator(
+        $app[RequestAuthenticatorMiddleware::class] = $app::share(
+            function (Application $app): RequestAuthenticatorMiddleware {
+                $authenticator = new RequestAuthenticatorMiddleware(
                     new UitIdV1JwtValidator(
                         'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v1']['keys']['public']['file'],
                         $app['config']['jwt']['v1']['valid_issuers']
@@ -93,8 +93,8 @@ final class AuthServiceProvider implements ServiceProviderInterface
                     return new CurrentUser($impersonator->getUserId());
                 }
 
-                /* @var RequestAuthenticator $requestAuthenticator */
-                $requestAuthenticator = $app[RequestAuthenticator::class];
+                /* @var RequestAuthenticatorMiddleware $requestAuthenticator */
+                $requestAuthenticator = $app[RequestAuthenticatorMiddleware::class];
                 return $requestAuthenticator->getCurrentUser();
             }
         );
@@ -109,8 +109,8 @@ final class AuthServiceProvider implements ServiceProviderInterface
                     return $impersonator->getJwt();
                 }
 
-                /* @var RequestAuthenticator $requestAuthenticator */
-                $requestAuthenticator = $app[RequestAuthenticator::class];
+                /* @var RequestAuthenticatorMiddleware $requestAuthenticator */
+                $requestAuthenticator = $app[RequestAuthenticatorMiddleware::class];
                 return $requestAuthenticator->getToken();
             }
         );
@@ -126,8 +126,8 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 }
 
                 // If not impersonating then use the api key from the request.
-                /** @var RequestAuthenticator $requestAuthenticator */
-                $requestAuthenticator = $app[RequestAuthenticator::class];
+                /** @var RequestAuthenticatorMiddleware $requestAuthenticator */
+                $requestAuthenticator = $app[RequestAuthenticatorMiddleware::class];
                 return $requestAuthenticator->getApiKey();
             }
         );

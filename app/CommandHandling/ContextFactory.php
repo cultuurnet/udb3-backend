@@ -10,7 +10,6 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ContextFactory
 {
@@ -19,7 +18,6 @@ final class ContextFactory
         ?JsonWebToken $jwt = null,
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
-        ?string $clientIp = null,
         ?Consumer $consumer = null
     ): Metadata {
         $contextValues = [];
@@ -48,9 +46,6 @@ final class ContextFactory
             $contextValues['api'] = $apiName;
         }
 
-        if ($clientIp) {
-            $contextValues['client_ip'] = $clientIp;
-        }
         if ($consumer) {
             $contextValues['consumer']['name'] = $consumer->getName();
         }
@@ -62,19 +57,11 @@ final class ContextFactory
 
     public static function createFromGlobals(Application $application): Metadata
     {
-        $clientIp = null;
-        $requestStack = $application['request_stack'];
-        if ($requestStack instanceof RequestStack) {
-            $request = $requestStack->getMasterRequest();
-            $clientIp = $request ? $request->getClientIp() : null;
-        }
-
         return self::createContext(
             $application[CurrentUser::class]->getId(),
             $application[JsonWebToken::class],
             $application[ApiKey::class],
             $application['api_name'],
-            $clientIp,
             $application[Consumer::class]
         );
     }
