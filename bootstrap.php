@@ -117,10 +117,14 @@ date_default_timezone_set('Europe/Brussels');
  * We then wrap the Silex container in a decorator that makes it PSR-11 compatible and set that as a delegate on the
  * league container so that service definitions in the league container can fetch services from the Silex container if
  * they do not exist in the league container.
+ * Lastly we set a ReflectionContainer as a second delegate on the league container to enable auto-wiring in the league
+ * container. Because the Silex container also looks up missing services in the league container, it also gets auto-
+ * wiring this way.
  */
 $container = new Container();
 $app = new HybridContainerApplication($container);
 $container->delegate(new PimplePSRContainerBridge($app));
+$container->delegate(new ReflectionContainer(true));
 
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 
