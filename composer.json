@@ -50,7 +50,6 @@
     "league/route": "^5.1",
     "league/uri": "^6.3",
     "league/uri-components": "^2.4",
-    "marvin_b8/psr-7-service-provider": "^1.0",
     "mathiasverraes/money": "^v1.3.0",
     "monolog/monolog": "~1.11",
     "nesbot/carbon": "^1.22",
