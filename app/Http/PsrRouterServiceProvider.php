@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Http;
 
+use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Http\Auth\CorsHeadersMiddleware;
+use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
@@ -62,6 +65,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
+use CultuurNet\UDB3\Http\ProjectedToJSONLDInterceptingMiddleware;
 use CultuurNet\UDB3\Http\Role\AddConstraintRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddLabelToRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddPermissionToRoleRequestHandler;
@@ -135,6 +139,7 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 use League\Route\RouteGroup;
 use League\Route\Router;
+use Psr\Container\ContainerInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -160,6 +165,8 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 $routerStrategy = new CustomLeagueRouterStrategy($app[WebErrorHandler::class]);
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
+
+                $this->registerMiddlewares($container, $router);
 
                 $this->bindOffers($router);
 
@@ -204,6 +211,20 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 return $router;
             }
         );
+    }
+
+    private function registerMiddlewares(ContainerInterface $container, Router $router): void
+    {
+        // Intercepts all "ProjectedToJSONLD" messages during request handling, and publishes the unique ones on the
+        // event bus afterwards. See class docblock for more info.
+        $router->middleware(new ProjectedToJSONLDInterceptingMiddleware($container->get(EventBus::class)));
+
+        // Determines if a request requires authentication or not, and if yes it checks the JWT and optionally the API
+        // key to determine if the request is correctly authenticated.
+        $router->middleware($container->get(RequestAuthenticatorMiddleware::class));
+
+        // Adds CORS headers to every response that we return.
+        $router->middleware(new CorsHeadersMiddleware());
     }
 
     private function bindNewsArticles(Router $router): void
