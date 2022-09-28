@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
-use Exception;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
 {
@@ -27,19 +25,6 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                     $app[ErrorLogger::class],
                     $app['debug'] === true
                 );
-            }
-        );
-
-        $app->error(
-            function (Exception $e) use ($app) {
-                $request = (new DiactorosFactory())->createRequest(
-                    $app['request_stack']->getCurrentRequest()
-                );
-
-                /** @var WebErrorHandler $webErrorHandler */
-                $webErrorHandler = $app[WebErrorHandler::class];
-                $response = $webErrorHandler->handle($request, $e);
-                return $response->toHttpFoundationResponse();
             }
         );
     }

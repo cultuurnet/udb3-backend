@@ -23,12 +23,7 @@ use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
 use League\Route\Http\Exception\MethodNotAllowedException as LeagueRouterMethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException as LeagueRouterNotFoundException;
 use Psr\Log\LoggerInterface;
-use Respect\Validation\Exceptions\GroupedValidationException;
 use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 
 final class ErrorLogger
@@ -40,19 +35,14 @@ final class ErrorLogger
     private const BAD_REQUESTS = [
         EntityNotFoundException::class,
         CommandAuthorizationException::class,
-        NotFoundHttpException::class,
-        MethodNotAllowedException::class,
         DataValidationException::class,
-        GroupedValidationException::class,
         RequestAuthenticationException::class,
         MissingValueException::class,
         AggregateNotFoundException::class,
-        MethodNotAllowedHttpException::class,
         ChangeNotAllowedByTicketSales::class,
         MediaObjectNotFoundException::class,
         DocumentDoesNotExist::class,
         NotWellFormedException::class,
-        BadRequestHttpException::class,
         FormatterException::class,
         EventCannotBeAddedToProduction::class,
         EventCannotBeRemovedFromProduction::class,

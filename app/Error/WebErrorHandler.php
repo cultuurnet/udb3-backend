@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Respect\Validation\Exceptions\GroupedValidationException;
 use Throwable;
 
 final class WebErrorHandler implements MiddlewareInterface
@@ -124,11 +123,6 @@ final class WebErrorHandler implements MiddlewareInterface
             case $e instanceof DataValidationException:
                 $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
                 $problem->setValidationMessages($e->getValidationMessages());
-                return $problem;
-
-            case $e instanceof GroupedValidationException:
-                $problem = ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
-                $problem->setValidationMessages($e->getMessages());
                 return $problem;
 
             // Remove "URL CALLED" and everything after it.
