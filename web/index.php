@@ -36,12 +36,6 @@ $app->register(new WebErrorHandlerProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 /**
- * Allow to use class names of PSR-15 RequestHandlerInterface implementations as controllers.
- * The class name still needs to be registered as a service!
- */
-$app->register(new RequestHandlerControllerServiceProvider());
-
-/**
  * Register a PSR-7 / PSR-15 compatible router.
  * Will be used in CatchAllRouteServiceProvider to route unmatched requests from Silex to the PSR router, until we can
  * completely by-pass the Silex router.
