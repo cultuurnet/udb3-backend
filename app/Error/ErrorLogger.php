@@ -23,7 +23,6 @@ use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
 use League\Route\Http\Exception\MethodNotAllowedException as LeagueRouterMethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException as LeagueRouterNotFoundException;
 use Psr\Log\LoggerInterface;
-use Respect\Validation\Exceptions\GroupedValidationException;
 use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
 use Throwable;
 
@@ -37,7 +36,6 @@ final class ErrorLogger
         EntityNotFoundException::class,
         CommandAuthorizationException::class,
         DataValidationException::class,
-        GroupedValidationException::class,
         RequestAuthenticationException::class,
         MissingValueException::class,
         AggregateNotFoundException::class,
