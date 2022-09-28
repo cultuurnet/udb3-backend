@@ -129,7 +129,7 @@ use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
-use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
+use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
