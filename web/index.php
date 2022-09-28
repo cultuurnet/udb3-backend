@@ -59,6 +59,10 @@ JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-sch
 $request = ServerRequestFactory::createFromGlobals();
 $request = (new LegacyPathRewriter())->rewriteRequest($request);
 
+// If the Router and all its dependencies (i.e. other services requires to handle the request) are instantiated
+// correctly, any exception will be caught by the Router and then converted to an ApiProblem using the
+// CustomLeagueRouterStrategy and WebErrorHandler. However if the instantiation of a service fails, we need to catch the
+// resulting Throwable and convert it to an ApiProblem response here using the WebErrorHandler.
 try {
     $response = $app[Router::class]->handle($request);
 } catch (\Throwable $throwable) {
