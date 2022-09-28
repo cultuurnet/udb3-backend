@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Silex\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Silex\Proxy\ProxyRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Udb3ControllerCollection;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
-use CultuurNet\UDB3\Silex\Http\RequestHandlerControllerServiceProvider;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use League\Route\Router;
 use Silex\Application;
