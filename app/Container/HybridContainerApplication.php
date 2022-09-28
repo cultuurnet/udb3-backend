@@ -24,9 +24,9 @@ final class HybridContainerApplication extends Application
 
     public function offsetGet($id)
     {
-        if ($this->psrContainer->has($id)) {
-            return $this->psrContainer->get($id);
+        if ($this->offsetExists($id)) {
+            return parent::offsetGet($id);
         }
-        return parent::offsetGet($id);
+        return $this->psrContainer->get($id);
     }
 }
