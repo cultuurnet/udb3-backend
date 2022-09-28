@@ -17,7 +17,6 @@ use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use League\Route\Router;
 use Silex\Application;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
 const API_NAME = ApiName::JSONLD;
 
