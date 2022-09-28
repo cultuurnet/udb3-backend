@@ -64,7 +64,6 @@ try {
 } catch (\Throwable $throwable) {
     /** @var WebErrorHandler $webErrorHandler */
     $webErrorHandler = $app[WebErrorHandler::class];
-    $request = (new DiactorosFactory())->createRequest($app['request_stack']->getCurrentRequest());
     $response = $webErrorHandler->handle($request, $throwable);
 }
 
