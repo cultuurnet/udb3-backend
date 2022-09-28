@@ -25,7 +25,6 @@ use League\Route\Http\Exception\NotFoundException as LeagueRouterNotFoundExcepti
 use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 
 final class ErrorLogger
@@ -37,7 +36,6 @@ final class ErrorLogger
     private const BAD_REQUESTS = [
         EntityNotFoundException::class,
         CommandAuthorizationException::class,
-        MethodNotAllowedException::class,
         DataValidationException::class,
         GroupedValidationException::class,
         RequestAuthenticationException::class,
