@@ -22,8 +22,13 @@ final class ProxyRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // Make sure to explicitly set the scheme to https and remove the port (if set), because our load balancer on
+        // AWS that handles SSL forwards the request to the backend server using the HTTP scheme and port 80, while
+        // we want to proxy the request using HTTPS.
         $rewrittenUri = $request->getUri()
-            ->withHost($this->newDomain);
+            ->withHost($this->newDomain)
+            ->withScheme('https')
+            ->withPort(null);
 
         $rewrittenRequest = $request->withUri($rewrittenUri);
 
