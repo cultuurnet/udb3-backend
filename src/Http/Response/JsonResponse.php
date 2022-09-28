@@ -11,8 +11,6 @@ use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Interfaces\HeadersInterface;
 use Slim\Psr7\Response;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class JsonResponse extends Response
 {
@@ -34,17 +32,5 @@ class JsonResponse extends Response
         }
 
         parent::__construct($status, $headers, $body);
-    }
-
-    /**
-     * @deprecated
-     *   Only use for backward compatibility with Symfony's HTTP foundation where we cannot use PSR7 yet.
-     *   For example Silex's middlewares, Symfony's security component, etc.
-     *   Controllers / request handlers can just be refactored to return PSR7 responses.
-     */
-    public function toHttpFoundationResponse(): HttpFoundationResponse
-    {
-        return (new HttpFoundationFactory())
-            ->createResponse($this);
     }
 }
