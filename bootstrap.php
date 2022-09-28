@@ -66,6 +66,7 @@ use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
@@ -98,6 +99,7 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Http\Adapter\Guzzle7\Client;
+use League\Container\Container;
 use Monolog\Logger;
 use Silex\Application;
 use SocketIO\Emitter;
@@ -105,7 +107,9 @@ use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
 
-$app = new Application();
+$container = new Container();
+
+$app = new HybridContainerApplication($container);
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
