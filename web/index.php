@@ -31,11 +31,6 @@ $app['controllers_factory'] = function () use ($app) {
 $app->register(new WebErrorHandlerProvider());
 
 /**
- * Allow to use services as controllers.
- */
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
-
-/**
  * Register a PSR-7 / PSR-15 compatible router.
  * Will be used in CatchAllRouteServiceProvider to route unmatched requests from Silex to the PSR router, until we can
  * completely by-pass the Silex router.

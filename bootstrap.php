@@ -152,7 +152,6 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
 $app->register(new EventBusServiceProvider());
 
