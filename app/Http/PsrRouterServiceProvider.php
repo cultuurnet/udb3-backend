@@ -154,7 +154,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
                 // Decorate the PSR container with InvokableRequestHandlerContainer so that every
                 // RequestHandlerInterface that gets requested by the router is decorated with InvokableRequestHandler,
                 // because the League router needs the router to be a callable at the time of writing.
-                $container = $app->getPsrContainer();
+                $container = $app->getLeagueContainer();
                 $container = new InvokableRequestHandlerContainer($container);
 
                 // Use a custom strategy so we can implement getOptionsCallable() on the strategy, to support CORS

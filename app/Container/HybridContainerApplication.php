@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Container;
 
-use Psr\Container\ContainerInterface;
+use League\Container\DefinitionContainerInterface;
 use Silex\Application;
 
 /**
@@ -14,12 +14,12 @@ use Silex\Application;
  */
 final class HybridContainerApplication extends Application
 {
-    private ContainerInterface $psrContainer;
+    private DefinitionContainerInterface $leagueContainer;
 
-    public function __construct(ContainerInterface $psrContainer)
+    public function __construct(DefinitionContainerInterface $leagueContainer)
     {
         parent::__construct();
-        $this->psrContainer = $psrContainer;
+        $this->leagueContainer = $leagueContainer;
     }
 
     public function offsetGet($id)
@@ -27,11 +27,11 @@ final class HybridContainerApplication extends Application
         if ($this->offsetExists($id)) {
             return parent::offsetGet($id);
         }
-        return $this->psrContainer->get($id);
+        return $this->leagueContainer->get($id);
     }
 
-    public function getPsrContainer(): ContainerInterface
+    public function getLeagueContainer(): DefinitionContainerInterface
     {
-        return $this->psrContainer;
+        return $this->leagueContainer;
     }
 }
