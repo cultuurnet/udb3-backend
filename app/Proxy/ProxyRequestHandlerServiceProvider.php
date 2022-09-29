@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Proxy;
+namespace CultuurNet\UDB3\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;

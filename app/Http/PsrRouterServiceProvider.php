@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Http;
+namespace CultuurNet\UDB3\Http;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Http\Auth\CorsHeadersMiddleware;
@@ -130,6 +130,7 @@ use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
+use CultuurNet\UDB3\Silex\Http\CustomLeagueRouterStrategy;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
