@@ -24,15 +24,14 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Silex\ApiName;
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
 use PhpAmqpLib\Message\AMQPMessage;
 
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
-    public function provides(string $id): bool
+    public function getProvidedServiceNames(): array
     {
-        $services = [AMQPPublisher::class];
-        return in_array($id, $services, true);
+        return [AMQPPublisher::class];
     }
 
     public function register(): void
