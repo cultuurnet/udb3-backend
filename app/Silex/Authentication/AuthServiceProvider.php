@@ -32,11 +32,11 @@ final class AuthServiceProvider implements ServiceProviderInterface
             function (Application $app): RequestAuthenticatorMiddleware {
                 $authenticator = new RequestAuthenticatorMiddleware(
                     new UitIdV1JwtValidator(
-                        'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v1']['keys']['public']['file'],
+                        'file://' . __DIR__ . '/../../../' . $app['config']['jwt']['v1']['keys']['public']['file'],
                         $app['config']['jwt']['v1']['valid_issuers']
                     ),
                     new UitIdV2JwtValidator(
-                        'file://' . __DIR__ . '/../../' . $app['config']['jwt']['v2']['keys']['public']['file'],
+                        'file://' . __DIR__ . '/../../../' . $app['config']['jwt']['v2']['keys']['public']['file'],
                         $app['config']['jwt']['v2']['valid_issuers'],
                         $app['config']['jwt']['v2']['jwt_provider_client_id']
                     ),

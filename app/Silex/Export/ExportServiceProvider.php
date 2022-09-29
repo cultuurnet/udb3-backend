@@ -38,7 +38,7 @@ final class ExportServiceProvider implements ServiceProviderInterface
         $app['event_export_twig_environment'] = $app->share(
             function ($app) {
                 $loader = new \Twig_Loader_Filesystem(
-                    __DIR__ . '/../../src/EventExport/Format/HTML/templates'
+                    __DIR__ . '/../../../src/EventExport/Format/HTML/templates'
                 );
 
                 $twig = new Twig_Environment($loader);
@@ -144,7 +144,7 @@ final class ExportServiceProvider implements ServiceProviderInterface
             new ItemIdentifierFactory($app['config']['item_url_regex']),
             $searchService,
             new Version4Generator(),
-            realpath(__DIR__ . '/../../web/downloads'),
+            realpath(__DIR__ . '/../../../web/downloads'),
             new CallableIriGenerator(
                 function ($fileName) use ($app) {
                     return $app['config']['url'] . '/downloads/' . $fileName;
