@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\ApiName;
 use PhpAmqpLib\Message\AMQPMessage;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

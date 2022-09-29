@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex;
 
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;

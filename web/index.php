@@ -6,7 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
-use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\PsrRouterServiceProvider;
