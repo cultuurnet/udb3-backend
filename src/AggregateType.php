@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  * @method static AggregateType role()
  * @method static AggregateType label()
  */
-class AggregateType extends Enum
+final class AggregateType extends Enum
 {
     public static function getAllowedValues(): array
     {
