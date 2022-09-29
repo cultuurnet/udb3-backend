@@ -8,7 +8,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 
-class Impersonator
+final class Impersonator
 {
     /**
      * @var string|null
