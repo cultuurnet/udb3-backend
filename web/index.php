@@ -34,7 +34,7 @@ $container->addServiceProvider(new PsrRouterServiceProvider());
 /**
  * Register service providers for request handlers.
  */
-$app->register(new ProxyRequestHandlerServiceProvider());
+$container->addServiceProvider(new ProxyRequestHandlerServiceProvider());
 
 JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../vendor/publiq/udb3-json-schemas');
 

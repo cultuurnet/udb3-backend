@@ -6,15 +6,24 @@ namespace CultuurNet\UDB3\Silex\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use GuzzleHttp\Client;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Uri\Uri;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class ProxyRequestHandlerServiceProvider implements ServiceProviderInterface
+final class ProxyRequestHandlerServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    public function provides(string $id): bool
     {
-        $app[ProxyRequestHandler::class] = $app::share(
+        $services = [ProxyRequestHandler::class];
+        return in_array($id, $services, true);
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            ProxyRequestHandler::class,
             static function (Application $app) {
                 return new ProxyRequestHandler(
                     Uri::createFromString($app['config']['search']['v3']['base_url'])->getHost(),
@@ -22,9 +31,5 @@ final class ProxyRequestHandlerServiceProvider implements ServiceProviderInterfa
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
