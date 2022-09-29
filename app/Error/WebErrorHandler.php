@@ -8,7 +8,6 @@ use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Error\ErrorLogger;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;

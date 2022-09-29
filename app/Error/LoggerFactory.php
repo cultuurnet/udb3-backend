@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Error;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Silex\Error\ContextExceptionConverterProcessor;
-use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Error\SentryHandlerScopeDecorator;
 use Monolog\Handler\GroupHandler;
 use Monolog\Handler\StreamHandler;
