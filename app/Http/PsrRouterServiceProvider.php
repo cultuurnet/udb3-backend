@@ -140,7 +140,6 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\RouteGroup;
 use League\Route\Router;
 use Psr\Container\ContainerInterface;
-use Silex\Application;
 
 final class PsrRouterServiceProvider extends AbstractServiceProvider
 {
