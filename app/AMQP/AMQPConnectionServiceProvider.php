@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex\AMQP;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-class AMQPConnectionServiceProvider extends AbstractServiceProvider
+final class AMQPConnectionServiceProvider extends AbstractServiceProvider
 {
     public function provides(string $id): bool
     {
