@@ -91,6 +91,7 @@ use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
@@ -129,7 +130,6 @@ use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
-use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -148,16 +148,13 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
     public function register(Application $app): void
     {
         $app[Router::class] = $app::share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $router = new Router();
-
-                // Create a PSR container based on the Silex (Pimple) container, to allow the router to resolve
-                // request handler class names to actual instances.
-                $container = new PimplePSRContainerBridge($app);
 
                 // Decorate the PSR container with InvokableRequestHandlerContainer so that every
                 // RequestHandlerInterface that gets requested by the router is decorated with InvokableRequestHandler,
                 // because the League router needs the router to be a callable at the time of writing.
+                $container = $app->getPsrContainer();
                 $container = new InvokableRequestHandlerContainer($container);
 
                 // Use a custom strategy so we can implement getOptionsCallable() on the strategy, to support CORS
