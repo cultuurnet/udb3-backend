@@ -29,4 +29,9 @@ final class HybridContainerApplication extends Application
         }
         return $this->psrContainer->get($id);
     }
+
+    public function getPsrContainer(): ContainerInterface
+    {
+        return $this->psrContainer;
+    }
 }
