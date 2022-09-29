@@ -46,10 +46,10 @@ $request = (new LegacyPathRewriter())->rewriteRequest($request);
 // CustomLeagueRouterStrategy and WebErrorHandler. However if the instantiation of a service fails, we need to catch the
 // resulting Throwable and convert it to an ApiProblem response here using the WebErrorHandler.
 try {
-    $response = $app[Router::class]->handle($request);
+    $response = $container->get(Router::class)->handle($request);
 } catch (\Throwable $throwable) {
     /** @var WebErrorHandler $webErrorHandler */
-    $webErrorHandler = $app[WebErrorHandler::class];
+    $webErrorHandler = $container->get(WebErrorHandler::class);
     $response = $webErrorHandler->handle($request, $throwable);
 }
 
