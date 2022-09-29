@@ -32,10 +32,10 @@ final class WebErrorHandlerProvider extends AbstractServiceProvider
 
         $container->addShared(
             WebErrorHandler::class,
-            function (): WebErrorHandler {
+            function () use ($container): WebErrorHandler {
                 return new WebErrorHandler(
-                    $app[ErrorLogger::class],
-                    $app['debug'] === true
+                    $container->get(ErrorLogger::class),
+                    $container->get('debug') === true
                 );
             }
         );
