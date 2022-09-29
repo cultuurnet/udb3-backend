@@ -18,7 +18,7 @@ class ImageStorageProvider implements ServiceProviderInterface
     {
         $app['local_file_system'] = $app->share(
             function () {
-                $localAdapter = new LocalFilesystemAdapter(__DIR__ . '/../../');
+                $localAdapter = new LocalFilesystemAdapter(__DIR__ . '/../udb3-silex/');
                 return new Filesystem($localAdapter);
             }
         );
