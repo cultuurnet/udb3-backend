@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
-use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use GuzzleHttp\Client;
 use League\Uri\Uri;
 use Silex\Application;

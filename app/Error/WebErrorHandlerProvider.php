@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Error;
 
-use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
 final class WebErrorHandlerProvider extends AbstractServiceProvider
 {

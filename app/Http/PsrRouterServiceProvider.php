@@ -90,7 +90,7 @@ use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
-use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
