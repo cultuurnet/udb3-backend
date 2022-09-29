@@ -23,9 +23,9 @@ final class WebErrorHandlerProvider extends AbstractServiceProvider
 
         $container->addShared(
             ErrorLogger::class,
-            function (): ErrorLogger {
+            function () use ($container): ErrorLogger {
                 return new ErrorLogger(
-                    LoggerFactory::create($app, LoggerName::forWeb())
+                    LoggerFactory::create($container, LoggerName::forWeb())
                 );
             }
         );

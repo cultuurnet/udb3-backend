@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Event\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Event\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Psr\Log\NullLogger;
@@ -22,7 +23,7 @@ class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['event_geocoordinates_command_handler'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $handler = new GeoCoordinatesCommandHandler(
                     $app['event_repository'],
                     new DefaultAddressFormatter(),
@@ -30,7 +31,7 @@ class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     $app[GeocodingService::class]
                 );
 
-                $handler->setLogger(LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'event')));
+                $handler->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'event')));
 
                 return $handler;
             }

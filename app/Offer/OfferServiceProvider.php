@@ -77,6 +77,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -168,10 +169,10 @@ final class OfferServiceProvider implements ServiceProviderInterface
         );
 
         $app[EventHasTicketSalesGuard::class] = $app->share(
-            fn (Application $app) => new EventHasTicketSalesGuard(
+            fn (HybridContainerApplication $app) => new EventHasTicketSalesGuard(
                 $app['uitpas'],
                 $app['event_repository'],
-                LoggerFactory::create($app, LoggerName::forService('uitpas', 'ticket-sales'))
+                LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('uitpas', 'ticket-sales'))
             )
         );
 

@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
 use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Ramsey\Uuid\UuidFactory;
@@ -30,7 +31,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
     public function register(Application $app): void
     {
         $app['curators_event_bus_forwarding_consumer'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $deserializerLocator = new SimpleDeserializerLocator();
                 $deserializerLocator->registerDeserializer(
                     NewsArticleAboutEventAddedJSONDeserializer::getContentType(),
@@ -51,7 +52,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                     new UuidFactory(),
                 );
 
-                $consumer->setLogger(LoggerFactory::create($app, LoggerName::forAmqpWorker('curators')));
+                $consumer->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('curators')));
 
                 return $consumer;
             }

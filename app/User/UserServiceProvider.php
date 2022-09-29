@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\User;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
@@ -19,12 +20,12 @@ class UserServiceProvider implements ServiceProviderInterface
     public function register(Application $app): void
     {
         $app['cdbxml_created_by_resolver'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $resolver = new CdbXmlCreatedByToUserIdResolver(
                     $app[Auth0UserIdentityResolver::class]
                 );
 
-                $resolver->setLogger(LoggerFactory::create($app, LoggerName::forService('xml-conversion', 'created-by-resolver')));
+                $resolver->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('xml-conversion', 'created-by-resolver')));
 
                 return $resolver;
             }

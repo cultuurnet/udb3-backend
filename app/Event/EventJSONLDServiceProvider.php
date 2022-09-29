@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepositor
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -50,7 +51,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
     public function register(Application $app): void
     {
         $app['event_jsonld_repository'] = $app->share(
-            function ($app) {
+            function (HybridContainerApplication $app) {
                 $repository = new CacheDocumentRepository(
                     $app['event_jsonld_cache']
                 );
@@ -96,7 +97,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                 $repository = new CuratorEnrichedOfferRepository(
                     $repository,
                     $app[NewsArticleRepository::class],
-                    LoggerFactory::create($app, LoggerName::forConfig()),
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forConfig()),
                     $app['config']['curator_labels']
                 );
 

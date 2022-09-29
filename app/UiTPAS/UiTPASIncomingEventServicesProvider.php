@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
@@ -24,7 +25,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
     public function register(Application $app): void
     {
         $app['amqp.uitpas_event_bus_forwarding_consumer'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 // If this service gets instantiated, it's because we're running the AMQP listener for UiTPAS messages
                 // so we should set the API name to UiTPAS listener.
                 $app['api_name'] = ApiName::UITPAS_LISTENER;
@@ -46,7 +47,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 $consumerFactory = new EventBusForwardingConsumerFactory(
                     0,
                     $app['amqp.connection'],
-                    LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas')),
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('uitpas')),
                     $uitpasDeserializerLocator,
                     $app[EventBus::class],
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
@@ -61,13 +62,13 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['uitpas_event_process_manager'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 return new EventProcessManager(
                     $app['event_command_bus'],
                     InMemoryUiTPASLabelsRepository::fromStrings(
                         $app['config']['uitpas']['labels']
                     ),
-                    LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('uitpas'))
                 );
             }
         );

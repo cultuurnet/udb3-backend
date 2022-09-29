@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Place\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Place\GeoCoordinatesProcessManager;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
@@ -21,7 +22,7 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['place_geocoordinates_command_handler'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $handler = new GeoCoordinatesCommandHandler(
                     $app['place_repository'],
                     new DefaultAddressFormatter(),
@@ -29,19 +30,19 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     $app[GeocodingService::class]
                 );
 
-                $handler->setLogger(LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'place')));
+                $handler->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'place')));
 
                 return $handler;
             }
         );
 
         $app['place_geocoordinates_process_manager'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus'],
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'place'))
+                        LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'place'))
                     )
                 );
             }

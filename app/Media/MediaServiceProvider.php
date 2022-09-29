@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
@@ -86,7 +87,7 @@ class MediaServiceProvider implements ServiceProviderInterface
         );
 
         $app['media_manager'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $mediaManager = new MediaManager(
                     $app['content_url_generator'],
                     new SimplePathGenerator(),
@@ -94,7 +95,7 @@ class MediaServiceProvider implements ServiceProviderInterface
                     $app['image_storage']
                 );
 
-                $mediaManager->setLogger(LoggerFactory::create($app, LoggerName::forService('media', 'manager')));
+                $mediaManager->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('media', 'manager')));
 
                 return $mediaManager;
             }

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreatedJSONDeserializer;
@@ -79,9 +80,9 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $logger = LoggerFactory::create(
-                    $app,
+                    $app->getLeagueContainer(),
                     LoggerName::forAmqpWorker('xml-imports', 'messages'),
                     [new StreamHandler('php://stdout')]
                 );
@@ -172,8 +173,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['logger.xml-imports.enricher'] = $app->share(
-            function (Application $app) {
-                return LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'enricher'));
+            function (HybridContainerApplication $app) {
+                return LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('xml-imports', 'enricher'));
             }
         );
 
@@ -208,7 +209,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_events_to_udb3_event_applier'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $applier = new EventImporter(
                     new Any(),
                     $app['event_repository'],
@@ -219,7 +220,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 $applier->setLogger(
-                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'event'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('xml-imports', 'event'))
                 );
 
                 return $applier;
@@ -227,7 +228,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_actor_events_to_udb3_place_applier'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $applier = new ActorImporter(
                     $app['place_repository'],
                     new ActorToUDB3PlaceFactory(),
@@ -237,7 +238,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 $applier->setLogger(
-                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'place'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('xml-imports', 'place'))
                 );
 
                 return $applier;
@@ -245,7 +246,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_actor_events_to_udb3_organizer_applier'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $applier = new ActorImporter(
                     $app['organizer_repository'],
                     new ActorToUDB3OrganizerFactory(),
@@ -254,7 +255,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 $applier->setLogger(
-                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'organizer'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('xml-imports', 'organizer'))
                 );
 
                 return $applier;
@@ -262,26 +263,26 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_label_importer'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $labelImporter = new LabelImporter(
                     $app['labels.constraint_aware_service']
                 );
 
-                $labelImporter->setLogger(LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'labels')));
+                $labelImporter->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('xml-imports', 'labels')));
 
                 return $labelImporter;
             }
         );
 
         $app['udb2_media_importer'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $mediaImporter = new MediaImporter(
                     $app['media_manager'],
                     (new ImageCollectionFactory())->withUuidRegex($app['udb2_cdbxml_enricher.media_uuid_regex'])
                 );
 
                 $mediaImporter->setLogger(
-                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'media'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('xml-imports', 'media'))
                 );
 
                 return $mediaImporter;

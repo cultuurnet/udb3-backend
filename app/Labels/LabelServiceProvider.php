@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -303,9 +304,9 @@ class LabelServiceProvider implements ServiceProviderInterface
     private function setUpLogger(Application $app): void
     {
         $app[self::LOGGER] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 return LoggerFactory::create(
-                    $app,
+                    $app->getLeagueContainer(),
                     LoggerName::forService('labels'),
                     [new StreamHandler('php://stdout')]
                 );

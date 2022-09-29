@@ -367,7 +367,7 @@ $app['logger_factory.resque_worker'] = $app::protect(
         }
         $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
 
-        return LoggerFactory::create($app, LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
+        return LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
     }
 );
 

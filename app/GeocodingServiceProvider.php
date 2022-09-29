@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex;
 use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
@@ -20,7 +21,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app[GeocodingService::class] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $googleMapsApiKey = null;
 
                 if (isset($app['geocoding_service.google_maps_api_key'])) {
@@ -35,7 +36,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                             $googleMapsApiKey
                         )
                     ),
-                    LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'google'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'google'))
                 );
 
                 return new CachedGeocodingService(

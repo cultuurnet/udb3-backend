@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Offer\BulkLabelCommandHandler;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer;
 use CultuurNet\UDB3\Search\ResultsGenerator;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
@@ -26,12 +27,12 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
 
         // Set up the bulk label offer command handler.
         $app['bulk_label_offer_command_handler'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $searchResultsGenerator = new ResultsGenerator(
                     $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_OFFERS]
                 );
                 $searchResultsGenerator->setLogger(
-                    LoggerFactory::create($app, LoggerName::forResqueWorker('bulk-label-offer', 'search'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('bulk-label-offer', 'search'))
                 );
 
                 return new BulkLabelCommandHandler(

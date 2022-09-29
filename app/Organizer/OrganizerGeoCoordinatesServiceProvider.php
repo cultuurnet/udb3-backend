@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
@@ -32,12 +33,12 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
         );
 
         $app['organizer_geocoordinates_process_manager'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus'],
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'organizer'))
+                        LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'organizer'))
                     )
                 );
             }

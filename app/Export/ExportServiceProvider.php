@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
@@ -53,7 +54,7 @@ final class ExportServiceProvider implements ServiceProviderInterface
         );
 
         $app['event_export_service'] = $app->share(
-            function ($app) {
+            function (HybridContainerApplication $app) {
                 return $this->createEventExportService(
                     $app,
                     $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]
@@ -66,14 +67,14 @@ final class ExportServiceProvider implements ServiceProviderInterface
 
         // Set up the event export command handler.
         $app['event_export_command_handler'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $eventInfoService = new CultureFeedEventInfoService(
                     $app['uitpas'],
                     new EventOrganizerPromotionQueryFactory($app['clock'])
                 );
 
                 $eventInfoService->setLogger(
-                    LoggerFactory::create($app, LoggerName::forResqueWorker('event-export', 'uitpas'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export', 'uitpas'))
                 );
 
                 $eventExportCommandHandler = new EventExportCommandHandler(
@@ -84,7 +85,7 @@ final class ExportServiceProvider implements ServiceProviderInterface
                     $app['event_export_twig_environment']
                 );
                 $eventExportCommandHandler->setLogger(
-                    LoggerFactory::create($app, LoggerName::forResqueWorker('event-export'))
+                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export'))
                 );
                 return $eventExportCommandHandler;
             }
@@ -129,10 +130,10 @@ final class ExportServiceProvider implements ServiceProviderInterface
     }
 
     private function createEventExportService(
-        Application $app,
+        HybridContainerApplication $app,
         SearchServiceInterface $searchService
     ): EventExportServiceInterface {
-        $logger = LoggerFactory::create($app, LoggerName::forResqueWorker('event-export'));
+        $logger = LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export'));
         if ($searchService instanceof LoggerAwareInterface) {
             $searchService = clone $searchService;
             $searchService->setLogger($logger);

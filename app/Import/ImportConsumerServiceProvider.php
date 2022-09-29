@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\Import\Command\HttpImportCommandHandler;
 use CultuurNet\UDB3\Model\Import\Command\ImportEventDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportOrganizerDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportPlaceDocument;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use GuzzleHttp\Client;
@@ -131,7 +132,7 @@ class ImportConsumerServiceProvider implements ServiceProviderInterface
         );
 
         $app['import_command_bus_forwarding_consumer'] = $app->share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 $consumer = new CommandBusForwardingConsumer(
                     $app['amqp.connection'],
                     $app['import_consumer_command_bus'],
@@ -141,7 +142,7 @@ class ImportConsumerServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['imports']['queue'])
                 );
 
-                $consumer->setLogger(LoggerFactory::create($app, LoggerName::forAmqpWorker('json-imports')));
+                $consumer->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forAmqpWorker('json-imports')));
 
                 return $consumer;
             }
