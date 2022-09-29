@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Error;
 
 use CultuurNet\UDB3\Error\ErrorLogger;
+use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

@@ -78,7 +78,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;

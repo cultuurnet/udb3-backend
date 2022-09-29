@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

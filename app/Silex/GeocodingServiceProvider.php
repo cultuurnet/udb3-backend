@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\StatefulGeocoder;

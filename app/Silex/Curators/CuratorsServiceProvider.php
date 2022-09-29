@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
 use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
