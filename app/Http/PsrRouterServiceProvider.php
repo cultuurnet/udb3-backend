@@ -91,7 +91,6 @@ use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
@@ -137,29 +136,37 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestH
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\RouteGroup;
 use League\Route\Router;
 use Psr\Container\ContainerInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class PsrRouterServiceProvider implements ServiceProviderInterface
+final class PsrRouterServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    public function provides(string $id): bool
     {
-        $app[Router::class] = $app::share(
-            function (HybridContainerApplication $app) {
+        $services = [Router::class];
+        return in_array($id, $services, true);
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            Router::class,
+            function () use ($container) {
                 $router = new Router();
 
                 // Decorate the PSR container with InvokableRequestHandlerContainer so that every
                 // RequestHandlerInterface that gets requested by the router is decorated with InvokableRequestHandler,
                 // because the League router needs the router to be a callable at the time of writing.
-                $container = $app->getLeagueContainer();
                 $container = new InvokableRequestHandlerContainer($container);
 
                 // Use a custom strategy so we can implement getOptionsCallable() on the strategy, to support CORS
                 // pre-flight requests. We also have to set the container on the strategy.
-                $routerStrategy = new CustomLeagueRouterStrategy($app[WebErrorHandler::class]);
+                $routerStrategy = new CustomLeagueRouterStrategy($container->get(WebErrorHandler::class));
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
 
