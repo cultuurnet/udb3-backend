@@ -36,7 +36,7 @@ use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Silex\Error\CliErrorHandlerProvider;
-use CultuurNet\UDB3\Silex\Error\ErrorLogger;
+use CultuurNet\UDB3\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
