@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Http;
+namespace CultuurNet\UDB3\Http;
 
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
+use CultuurNet\UDB3\Error\WebErrorHandler;
 use League\Route\ContainerAwareInterface;
 use League\Route\ContainerAwareTrait;
 use League\Route\Http\Exception\MethodNotAllowedException;

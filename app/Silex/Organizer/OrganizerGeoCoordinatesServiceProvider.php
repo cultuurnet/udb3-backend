@@ -12,8 +12,8 @@ use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
-use CultuurNet\UDB3\Silex\Error\LoggerName;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

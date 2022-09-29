@@ -18,9 +18,9 @@ final class TermServiceProvider implements ServiceProviderInterface
                 $mapping = [];
 
                 $files = [
-                    __DIR__ . '/../../term_mapping_facilities.yml',
-                    __DIR__ . '/../../term_mapping_themes.yml',
-                    __DIR__ . '/../../term_mapping_types.yml',
+                    __DIR__ . '/../../../term_mapping_facilities.yml',
+                    __DIR__ . '/../../../term_mapping_themes.yml',
+                    __DIR__ . '/../../../term_mapping_types.yml',
                 ];
 
                 foreach ($files as $file) {

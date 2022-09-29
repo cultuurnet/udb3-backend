@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Container;
+namespace CultuurNet\UDB3\Container;
 
 use League\Container\ContainerAwareTrait;
 use League\Container\ServiceProvider\ServiceProviderInterface;

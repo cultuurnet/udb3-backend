@@ -12,6 +12,9 @@ use Silex\Application;
  * defined in the Silex/Pimple container, it gets the service from a PSR-11 container that is injected. This way we can
  * move services one by one to a PSR-11 container without breaking existing service definitions in the Silex
  * application.
+ *
+ * @deprecated Can be removed once all services are moved to the new PSR-11 container and we don't bootstrap a Silex
+ *   Application anymore.
  */
 final class HybridContainerApplication extends Application
 {

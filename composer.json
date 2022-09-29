@@ -94,7 +94,6 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CultuurNet\\UDB3\\Silex\\": "tests/",
       "CultuurNet\\UDB3\\": "tests//"
     }
   },

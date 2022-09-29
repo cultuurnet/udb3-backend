@@ -33,8 +33,8 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
-use CultuurNet\UDB3\Silex\Error\LoggerName;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
@@ -127,8 +127,8 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
-                $labels = file_exists(__DIR__ . '/../../excluded_labels.yml') ?
-                    Yaml::Parse(file_get_contents(__DIR__ . '/../../excluded_labels.yml')) : [];
+                $labels = file_exists(__DIR__ . '/../../../excluded_labels.yml') ?
+                    Yaml::Parse(file_get_contents(__DIR__ . '/../../../excluded_labels.yml')) : [];
 
                 return new GodUserReadRepositoryDecorator(
                     new JsonReadRepository(
