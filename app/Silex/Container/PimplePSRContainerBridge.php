@@ -8,6 +8,10 @@ use InvalidArgumentException;
 use Pimple;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @deprecated Can be removed once all services are moved to the new PSR-11 container and we don't bootstrap a Silex
+ *   Application anymore.
+ */
 final class PimplePSRContainerBridge implements ContainerInterface
 {
     private Pimple $pimple;
