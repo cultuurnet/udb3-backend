@@ -91,6 +91,7 @@ use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
+use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
@@ -136,17 +137,15 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestH
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\RouteGroup;
 use League\Route\Router;
 use Psr\Container\ContainerInterface;
 
 final class PsrRouterServiceProvider extends AbstractServiceProvider
 {
-    public function provides(string $id): bool
+    protected function getProvidedServiceNames(): array
     {
-        $services = [Router::class];
-        return in_array($id, $services, true);
+        return [Router::class];
     }
 
     public function register(): void
