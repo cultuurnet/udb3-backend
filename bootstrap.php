@@ -817,7 +817,7 @@ $app['uitpas'] = $app->share(
 // who initially queued the command.
 $app['impersonator'] = $app->share(
     function () {
-        return new \CultuurNet\UDB3\Silex\Impersonator();
+        return new \CultuurNet\UDB3\Impersonator();
     }
 );
 
