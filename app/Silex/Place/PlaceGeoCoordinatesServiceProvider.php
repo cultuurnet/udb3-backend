@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Place\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Place\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Silex\Error\LoggerName;
+use CultuurNet\UDB3\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
