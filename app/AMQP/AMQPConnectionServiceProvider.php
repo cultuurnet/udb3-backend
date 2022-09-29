@@ -4,31 +4,32 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\AMQP;
 
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class AMQPConnectionServiceProvider implements ServiceProviderInterface
+class AMQPConnectionServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    public function provides(string $id): bool
     {
-        $app['amqp.connection'] = $app->share(
-            function (Application $app) {
-                $connection = new AMQPStreamConnection(
-                    $app['amqp.connection.host'],
-                    $app['amqp.connection.port'],
-                    $app['amqp.connection.user'],
-                    $app['amqp.connection.password'],
-                    $app['amqp.connection.vhost']
-                );
-
-                return $connection;
-            }
-        );
+        $services = [AMQPStreamConnection::class];
+        return in_array($id, $services, true);
     }
 
-
-    public function boot(Application $app)
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            AMQPStreamConnection::class,
+            function () use ($container): AMQPStreamConnection {
+                return new AMQPStreamConnection(
+                    $container->get('amqp.connection.host'),
+                    $container->get('amqp.connection.port'),
+                    $container->get('amqp.connection.user'),
+                    $container->get('amqp.connection.password'),
+                    $container->get('amqp.connection.vhost')
+                );
+            }
+        );
     }
 }
