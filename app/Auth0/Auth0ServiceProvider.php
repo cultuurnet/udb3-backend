@@ -11,15 +11,24 @@ use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CacheRepository;
 use GuzzleHttp\Client;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class Auth0ServiceProvider implements ServiceProviderInterface
+final class Auth0ServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    public function provides(string $id): bool
     {
-        $app['auth0.management-token'] = $app::share(
-            function (Application $app) {
+        $services = ['auth0.management-token'];
+        return in_array($id, $services, true);
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'auth0.management-token',
+            function (Application $app): string {
                 $provider = new Auth0ManagementTokenProvider(
                     new Auth0ManagementTokenGenerator(
                         new Client(),
@@ -35,17 +44,14 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[Auth0UserIdentityResolver::class] = $app::share(
-            function (Application $app) {
+        $container->addShared(
+            Auth0UserIdentityResolver::class,
+            function (Application $app): Auth0UserIdentityResolver {
                 $config = new SdkConfiguration(null, SdkConfiguration::STRATEGY_NONE);
                 $config->setDomain($app['config']['auth0']['domain']);
                 $config->setManagementToken($app['auth0.management-token']);
                 return new Auth0UserIdentityResolver(new Management($config));
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
