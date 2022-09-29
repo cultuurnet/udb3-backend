@@ -22,7 +22,7 @@ const API_NAME = ApiName::JSONLD;
 $app = require __DIR__ . '/../bootstrap.php';
 $container = $app->getLeagueContainer();
 
-$app->register(new WebErrorHandlerProvider());
+$container->addServiceProvider(new WebErrorHandlerProvider());
 
 /**
  * Register a PSR-7 / PSR-15 compatible router.

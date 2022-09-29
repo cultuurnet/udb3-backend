@@ -4,14 +4,26 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class WebErrorHandlerProvider implements ServiceProviderInterface
+final class WebErrorHandlerProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    public function provides(string $id): bool
     {
-        $app[ErrorLogger::class] = $app::share(
+        $services = [
+            ErrorLogger::class,
+            WebErrorHandler::class,
+        ];
+        return in_array($id, $services, true);
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            ErrorLogger::class,
             function (Application $app): ErrorLogger {
                 return new ErrorLogger(
                     LoggerFactory::create($app, LoggerName::forWeb())
@@ -19,7 +31,8 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             }
         );
 
-        $app[WebErrorHandler::class] = $app::share(
+        $container->addShared(
+            WebErrorHandler::class,
             function (Application $app): WebErrorHandler {
                 return new WebErrorHandler(
                     $app[ErrorLogger::class],
@@ -27,9 +40,5 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
