@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\AMQP;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 final class AMQPConnectionServiceProvider extends AbstractServiceProvider
 {
-    public function provides(string $id): bool
+    protected function getProvidedServiceNames(): array
     {
-        $services = ['amqp.connection'];
-        return in_array($id, $services, true);
+        return ['amqp.connection'];
     }
 
     public function register(): void
