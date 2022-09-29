@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Error;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use Silex\Application;
 
 final class WebErrorHandlerProvider extends AbstractServiceProvider
 {
@@ -24,7 +23,7 @@ final class WebErrorHandlerProvider extends AbstractServiceProvider
 
         $container->addShared(
             ErrorLogger::class,
-            function (Application $app): ErrorLogger {
+            function (): ErrorLogger {
                 return new ErrorLogger(
                     LoggerFactory::create($app, LoggerName::forWeb())
                 );
@@ -33,7 +32,7 @@ final class WebErrorHandlerProvider extends AbstractServiceProvider
 
         $container->addShared(
             WebErrorHandler::class,
-            function (Application $app): WebErrorHandler {
+            function (): WebErrorHandler {
                 return new WebErrorHandler(
                     $app[ErrorLogger::class],
                     $app['debug'] === true
