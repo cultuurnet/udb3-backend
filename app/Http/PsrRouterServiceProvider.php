@@ -538,8 +538,4 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('{organizerId}/card-systems/', GetCardSystemsFromOrganizerRequestHandler::class);
         });
     }
-
-    public function boot(Application $app): void
-    {
-    }
 }
