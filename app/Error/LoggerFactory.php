@@ -10,9 +10,9 @@ use Monolog\Handler\GroupHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\PsrLogMessageProcessor;
+use Psr\Container\ContainerInterface;
 use Sentry\Monolog\Handler as SentryHandler;
 use Sentry\State\HubInterface;
-use Silex\Application;
 
 final class LoggerFactory
 {
@@ -32,7 +32,7 @@ final class LoggerFactory
     private static $sentryHandler;
 
     public static function create(
-        Application $app,
+        ContainerInterface $container,
         LoggerName $name,
         array $extraHandlers = []
     ): Logger {
@@ -44,7 +44,7 @@ final class LoggerFactory
             self::$loggers[$loggerName]->pushProcessor(new PsrLogMessageProcessor());
 
             $streamHandler = self::getStreamHandler($fileNameWithoutSuffix);
-            $sentryHandler = self::getSentryHandler($app);
+            $sentryHandler = self::getSentryHandler($container);
 
             $handlers = new GroupHandler(array_merge([$streamHandler, $sentryHandler], $extraHandlers));
             self::$loggers[$loggerName]->pushHandler($handlers);
@@ -63,11 +63,11 @@ final class LoggerFactory
         return self::$streamHandlers[$name];
     }
 
-    private static function getSentryHandler(Application $app): SentryHandlerScopeDecorator
+    private static function getSentryHandler(ContainerInterface $container): SentryHandlerScopeDecorator
     {
         if (!isset(self::$sentryHandler)) {
             self::$sentryHandler = new SentryHandlerScopeDecorator(
-                new SentryHandler($app[HubInterface::class], Logger::ERROR),
+                new SentryHandler($container->get(HubInterface::class), Logger::ERROR),
                 $app[JsonWebToken::class] ?? null,
                 $app[ApiKey::class] ?? null,
                 $app['api_name'] ?? null
