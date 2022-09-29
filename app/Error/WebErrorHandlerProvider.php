@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
 
 final class WebErrorHandlerProvider extends AbstractServiceProvider
 {
-    public function provides(string $id): bool
+    protected function getProvidedServiceNames(): array
     {
-        $services = [
+        return [
             ErrorLogger::class,
             WebErrorHandler::class,
         ];
-        return in_array($id, $services, true);
     }
 
     public function register(): void
