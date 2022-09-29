@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Error;
+namespace CultuurNet\UDB3\Error;
 
 use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Exception;
@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
+use CultuurNet\UDB3\Silex\Error\ContextExceptionConverterProcessor;
 use Error;
 use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;

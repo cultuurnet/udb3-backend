@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
+use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Proxy\ProxyRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Error\WebErrorHandlerProvider;
