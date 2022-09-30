@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3;
 
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 
-class Impersonator
+final class Impersonator
 {
     /**
      * @var string|null

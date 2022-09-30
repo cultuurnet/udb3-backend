@@ -18,7 +18,7 @@ use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\AggregateType;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

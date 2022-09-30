@@ -6,7 +6,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
-use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwner;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Silex\Console\ChangeOrganizerOwner;

@@ -31,7 +31,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepo
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;

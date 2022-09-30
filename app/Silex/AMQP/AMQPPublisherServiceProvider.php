@@ -23,26 +23,18 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\Silex\ApiName;
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use CultuurNet\UDB3\ApiName;
 use PhpAmqpLib\Message\AMQPMessage;
+use Silex\Application;
+use Silex\ServiceProviderInterface;
 
-final class AMQPPublisherServiceProvider extends AbstractServiceProvider
+final class AMQPPublisherServiceProvider implements ServiceProviderInterface
 {
-    public function provides(string $id): bool
+    public function register(Application $app): void
     {
-        $services = [AMQPPublisher::class];
-        return in_array($id, $services, true);
-    }
-
-    public function register(): void
-    {
-        $container = $this->getContainer();
-
-        $container->addShared(
-            AMQPPublisher::class,
-            function () use ($container): ReplayFilteringEventListener {
-                $connection = $container->get('amqp.connection');
+        $app[AMQPPublisher::class] = $app->share(
+            function (Application $app) {
+                $connection = $app['amqp.connection'];
                 $channel = $connection->channel();
 
                 $contentTypeMapping = [
@@ -73,10 +65,10 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 
                 $publisher = new AMQPPublisher(
                     $channel,
-                    $container->get('amqp.publisher.exchange_name'),
+                    $app['amqp.publisher.exchange_name'],
                     $anyOfSpecification,
                     $messageFactory,
-                    function (DomainMessage $domainMessage) use ($container) {
+                    function (DomainMessage $domainMessage) use ($app) {
                         // Route ProjectedToJSONLD messages that are triggered by
                         // RelatedDocumentProjectedToJSONLDDispatcher to the "related" queue.
                         if (RelatedDocumentProjectedToJSONLDDispatcher::hasDispatchedMessage($domainMessage) === true) {
@@ -86,23 +78,27 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
                         // Check if the API key or Client ID is in the list of keys / ids that should have their
                         // messages routed to the "cli" queue to offload the API queue if the API key or Client ID is
                         // sending A LOT of requests. (Configured manually in config.yml)
-                        $jwt = $container->get(JsonWebToken::class);
+                        $jwt = $app[JsonWebToken::class];
                         $clientId = $jwt instanceof JsonWebToken ? $jwt->getClientId() : null;
-                        $apiKey = $container->get(ApiKey::class);
+                        $apiKey = $app[ApiKey::class];
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;
-                        if (in_array($clientId, $container->get('amqp.publisher.cli.client_ids'), true) ||
-                            in_array($apiKey, $container->get('amqp.publisher.cli.api_keys'), true)) {
+                        if (in_array($clientId, $app['amqp.publisher.cli.client_ids'], true) ||
+                            in_array($apiKey, $app['amqp.publisher.cli.api_keys'], true)) {
                             return 'cli';
                         }
 
                         // Check if the app is running in the CLI environment and route the messages to the "cli" queue.
                         // If not, route them to the "api" queue.
-                        return $container->get('api_name') === ApiName::CLI ? 'cli' : 'api';
+                        return $app['api_name'] === ApiName::CLI ? 'cli' : 'api';
                     }
                 );
 
                 return new ReplayFilteringEventListener($publisher);
             }
         );
+    }
+
+    public function boot(Application $app)
+    {
     }
 }
