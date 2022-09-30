@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Proxy;
+namespace CultuurNet\UDB3\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use GuzzleHttp\Client;
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Uri\Uri;
 use Silex\Application;
 
 final class ProxyRequestHandlerServiceProvider extends AbstractServiceProvider
 {
-    public function provides(string $id): bool
+    protected function getProvidedServiceNames(): array
     {
-        $services = [ProxyRequestHandler::class];
-        return in_array($id, $services, true);
+        return [ProxyRequestHandler::class];
     }
 
     public function register(): void

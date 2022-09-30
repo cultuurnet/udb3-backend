@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Http;
+namespace CultuurNet\UDB3\Http;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Http\Auth\CorsHeadersMiddleware;
@@ -65,7 +65,6 @@ use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
-use CultuurNet\UDB3\Http\ProjectedToJSONLDInterceptingMiddleware;
 use CultuurNet\UDB3\Http\Role\AddConstraintRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddLabelToRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddPermissionToRoleRequestHandler;
@@ -91,8 +90,8 @@ use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
-use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
-use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
@@ -136,17 +135,15 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestH
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\RouteGroup;
 use League\Route\Router;
 use Psr\Container\ContainerInterface;
 
 final class PsrRouterServiceProvider extends AbstractServiceProvider
 {
-    public function provides(string $id): bool
+    protected function getProvidedServiceNames(): array
     {
-        $services = [Router::class];
-        return in_array($id, $services, true);
+        return [Router::class];
     }
 
     public function register(): void
