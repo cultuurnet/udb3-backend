@@ -20,8 +20,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Impersonator;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 final class AuthServiceProvider extends AbstractServiceProvider
 {
@@ -33,7 +31,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
             JsonWebToken::class,
             ApiKey::class,
             ConsumerReadRepository::class,
-            Consumer::class
+            Consumer::class,
         ];
     }
 
@@ -118,7 +116,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             JsonWebToken::class,
-             function () use ($container): ?JsonWebToken {
+            function () use ($container): ?JsonWebToken {
                  // Check first if we're impersonating someone.
                  // This is done when handling async commands via a CLI worker.
                  /* @var Impersonator $impersonator */
