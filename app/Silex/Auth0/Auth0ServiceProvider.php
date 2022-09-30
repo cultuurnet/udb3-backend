@@ -6,20 +6,19 @@ namespace CultuurNet\UDB3\Silex\Auth0;
 
 use Auth0\SDK\API\Management;
 use Auth0\SDK\Configuration\SdkConfiguration;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\User\Auth0ManagementTokenGenerator;
 use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\CacheRepository;
 use GuzzleHttp\Client;
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silex\Application;
 
 final class Auth0ServiceProvider extends AbstractServiceProvider
 {
-    public function provides(string $id): bool
+    protected function getProvidedServiceNames(): array
     {
-        $services = ['auth0.management-token'];
-        return in_array($id, $services, true);
+        return ['auth0.management-token'];
     }
 
     public function register(): void
