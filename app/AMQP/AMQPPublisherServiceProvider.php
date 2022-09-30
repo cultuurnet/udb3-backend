@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\AMQP;
+namespace CultuurNet\UDB3\AMQP;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
