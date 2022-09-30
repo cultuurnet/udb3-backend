@@ -876,7 +876,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 // provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
 // access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
 // user who triggered the job is being impersonated.
-$app->register(new AuthServiceProvider());
+$container->addServiceProvider(new AuthServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
