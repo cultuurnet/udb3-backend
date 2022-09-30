@@ -891,7 +891,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 $app->register(new AuthServiceProvider());
 
 $app->register(
-    new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
+    new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
     [
         'udb2_place_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_place.php',
         'udb2_organizer_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_organizer.php',

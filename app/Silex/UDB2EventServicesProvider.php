@@ -44,7 +44,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
+class UDB2EventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
