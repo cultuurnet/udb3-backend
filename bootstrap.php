@@ -63,7 +63,7 @@ use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
+use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
