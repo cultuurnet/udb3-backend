@@ -35,12 +35,14 @@ use CultuurNet\UDB3\Silex\Console\UpdateEventsAttendanceMode;
 use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
+use Doctrine\DBAL\Connection;
 use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -48,8 +50,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 const API_NAME = ApiName::CLI;
 
-/** @var \Silex\Application $app */
+/** @var HybridContainerApplication $app */
 $app = require __DIR__ . '/../bootstrap.php';
+$container = $app->getLeagueContainer();
 
 $app->register(new CliErrorHandlerProvider());
 
@@ -77,24 +80,26 @@ $app['impersonator']->impersonate(
     )
 );
 
+$heartBeat = static function () use ($container) {
+    /** @var Connection $db */
+    $db = $container->get('dbal_connection');
+    $db->query('SELECT 1')->execute();
+};
+
 $consoleApp->add(
-    (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))
-        ->withHeartBeat('dbal_connection:keepalive')
+    new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer', $container, $heartBeat)
 );
 
 $consoleApp->add(
-    (new ConsumeCommand('amqp-listen-uitpas', 'amqp.uitpas_event_bus_forwarding_consumer'))
-        ->withHeartBeat('dbal_connection:keepalive')
+    new ConsumeCommand('amqp-listen-uitpas', 'amqp.uitpas_event_bus_forwarding_consumer', $container, $heartBeat)
 );
 
 $consoleApp->add(
-    (new ConsumeCommand('amqp-listen-imports', 'import_command_bus_forwarding_consumer'))
-        ->withHeartBeat('dbal_connection:keepalive')
+    new ConsumeCommand('amqp-listen-imports', 'import_command_bus_forwarding_consumer', $container, $heartBeat)
 );
 
 $consoleApp->add(
-    (new ConsumeCommand('amqp-listen-curators', 'curators_event_bus_forwarding_consumer'))
-        ->withHeartBeat('dbal_connection:keepalive')
+    new ConsumeCommand('amqp-listen-curators', 'curators_event_bus_forwarding_consumer', $container, $heartBeat)
 );
 
 $consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app[EventBus::class]));

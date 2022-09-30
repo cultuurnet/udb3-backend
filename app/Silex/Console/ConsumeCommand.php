@@ -4,42 +4,29 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Closure;
 use CultuurNet\UDB3\Broadway\AMQP\ConsumerInterface;
 use Knp\Command\Command;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
+use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsumeCommand extends Command
 {
-    /**
-     * @var string
-     */
-    private $consumerName;
+    private string $consumerName;
+    private ContainerInterface $container;
+    private ?Closure $heartBeat;
 
-    /**
-     * @var string
-     */
-    private $heartBeatServiceName;
-
-    /**
-     * @param string $name
-     * @param string $consumerName
-     */
-    public function __construct($name, $consumerName)
+    public function __construct(string $name, string $consumerName, ContainerInterface $container, Closure $heartBeat)
     {
         parent::__construct($name);
 
         $this->consumerName = $consumerName;
-    }
-
-    public function withHeartBeat($heartBeatServiceName)
-    {
-        $c = clone $this;
-        $c->heartBeatServiceName = $heartBeatServiceName;
-        return $c;
+        $this->container = $container;
+        $this->heartBeat = $heartBeat;
     }
 
     private function handleSignal(OutputInterface $output, $signal)
@@ -67,11 +54,9 @@ class ConsumeCommand extends Command
         $channel = $this->getChannel();
         $output->writeln('Connected. Listening for incoming messages...');
 
-        $heartBeat = $this->getHeartBeat();
-
         while (count($channel->callbacks) > 0) {
-            if ($heartBeat) {
-                $heartBeat($this->getSilexApplication());
+            if ($this->heartBeat) {
+                call_user_func($this->heartBeat);
             }
 
             pcntl_signal_dispatch();
@@ -91,10 +76,8 @@ class ConsumeCommand extends Command
      */
     protected function getChannel()
     {
-        $app = $this->getSilexApplication();
-
         /** @var ConsumerInterface $consumer */
-        $consumer = $app[$this->consumerName];
+        $consumer = $this->container->get($this->consumerName);
         $channel = $consumer->getChannel();
 
         if (!$channel instanceof AMQPChannel) {
@@ -104,27 +87,5 @@ class ConsumeCommand extends Command
         }
 
         return $channel;
-    }
-
-    /**
-     * @return callable|null
-     */
-    protected function getHeartBeat()
-    {
-        $app = $this->getSilexApplication();
-
-        $heartBeat = null;
-
-        if ($this->heartBeatServiceName) {
-            $heartBeat = $app[$this->heartBeatServiceName];
-
-            if (!is_callable($heartBeat)) {
-                throw new RuntimeException(
-                    'The heartbeat service should be callable'
-                );
-            }
-        }
-
-        return $heartBeat;
     }
 }
