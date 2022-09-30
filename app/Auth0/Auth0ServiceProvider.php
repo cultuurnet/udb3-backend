@@ -19,7 +19,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
     {
         return [
             'auth0.management-token',
-            Auth0UserIdentityResolver::class
+            Auth0UserIdentityResolver::class,
         ];
     }
 
@@ -29,7 +29,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'auth0.management-token',
-            function () use ($container):string {
+            function () use ($container): string {
                 $provider = new Auth0ManagementTokenProvider(
                     new Auth0ManagementTokenGenerator(
                         new Client(),
