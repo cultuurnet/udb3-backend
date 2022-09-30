@@ -37,7 +37,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
         ];
     }
 
-    public function register(Application $app): void
+    public function register(): void
     {
         $container = $this->getContainer();
 
@@ -160,15 +160,16 @@ final class AuthServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $app[Consumer::class] = $app->share(
-            static function (Application $app): ?Consumer {
-                $apiKey = $app[ApiKey::class];
+        $container->addShared(
+            Consumer::class,
+            static function () use ($container): ?Consumer {
+                $apiKey = $container->get(ApiKey::class);
                 if ($apiKey === null) {
                     return null;
                 }
 
                 /** @var ConsumerReadRepository $consumerReadRepository */
-                $consumerReadRepository = $app[ConsumerReadRepository::class];
+                $consumerReadRepository = $container->get(ConsumerReadRepository::class);
                 return $consumerReadRepository->getConsumer($apiKey);
             }
         );
