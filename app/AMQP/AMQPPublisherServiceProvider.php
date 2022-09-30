@@ -24,17 +24,24 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\ApiName;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use PhpAmqpLib\Message\AMQPMessage;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class AMQPPublisherServiceProvider implements ServiceProviderInterface
+final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    public function getProvidedServiceNames(): array
     {
-        $app[AMQPPublisher::class] = $app->share(
-            function (Application $app) {
-                $connection = $app['amqp.connection'];
+        return [AMQPPublisher::class];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            AMQPPublisher::class,
+            function () use ($container): ReplayFilteringEventListener {
+                $connection = $container->get('amqp.connection');
                 $channel = $connection->channel();
 
                 $contentTypeMapping = [
@@ -65,10 +72,10 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
 
                 $publisher = new AMQPPublisher(
                     $channel,
-                    $app['amqp.publisher.exchange_name'],
+                    $container->get('config')['amqp']['publish']['udb3']['exchange'],
                     $anyOfSpecification,
                     $messageFactory,
-                    function (DomainMessage $domainMessage) use ($app) {
+                    function (DomainMessage $domainMessage) use ($container) {
                         // Route ProjectedToJSONLD messages that are triggered by
                         // RelatedDocumentProjectedToJSONLDDispatcher to the "related" queue.
                         if (RelatedDocumentProjectedToJSONLDDispatcher::hasDispatchedMessage($domainMessage) === true) {
@@ -78,27 +85,23 @@ final class AMQPPublisherServiceProvider implements ServiceProviderInterface
                         // Check if the API key or Client ID is in the list of keys / ids that should have their
                         // messages routed to the "cli" queue to offload the API queue if the API key or Client ID is
                         // sending A LOT of requests. (Configured manually in config.yml)
-                        $jwt = $app[JsonWebToken::class];
+                        $jwt = $container->get(JsonWebToken::class);
                         $clientId = $jwt instanceof JsonWebToken ? $jwt->getClientId() : null;
-                        $apiKey = $app[ApiKey::class];
+                        $apiKey = $container->get(ApiKey::class);
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;
-                        if (in_array($clientId, $app['amqp.publisher.cli.client_ids'], true) ||
-                            in_array($apiKey, $app['amqp.publisher.cli.api_keys'], true)) {
+                        if (in_array($clientId, $container->get('config')['amqp']['publish']['udb3']['cli']['client_ids'], true) ||
+                            in_array($apiKey, $container->get('config')['amqp']['publish']['udb3']['cli']['api_keys'], true)) {
                             return 'cli';
                         }
 
                         // Check if the app is running in the CLI environment and route the messages to the "cli" queue.
                         // If not, route them to the "api" queue.
-                        return $app['api_name'] === ApiName::CLI ? 'cli' : 'api';
+                        return $container->get('api_name') === ApiName::CLI ? 'cli' : 'api';
                     }
                 );
 
                 return new ReplayFilteringEventListener($publisher);
             }
         );
-    }
-
-    public function boot(Application $app)
-    {
     }
 }
