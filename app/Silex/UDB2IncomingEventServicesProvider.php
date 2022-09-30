@@ -48,37 +48,6 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['udb2_deserializer_locator'] = $app->share(
-            function () {
-                $deserializerLocator = new SimpleDeserializerLocator();
-                $deserializerLocator->registerDeserializer(
-                    new StringLiteral(
-                        'application/vnd.cultuurnet.udb2-events.actor-created+json'
-                    ),
-                    new ActorCreatedJSONDeserializer()
-                );
-                $deserializerLocator->registerDeserializer(
-                    new StringLiteral(
-                        'application/vnd.cultuurnet.udb2-events.actor-updated+json'
-                    ),
-                    new ActorUpdatedJSONDeserializer()
-                );
-                $deserializerLocator->registerDeserializer(
-                    new StringLiteral(
-                        'application/vnd.cultuurnet.udb2-events.event-created+json'
-                    ),
-                    new EventCreatedJSONDeserializer()
-                );
-                $deserializerLocator->registerDeserializer(
-                    new StringLiteral(
-                        'application/vnd.cultuurnet.udb2-events.event-updated+json'
-                    ),
-                    new EventUpdatedJSONDeserializer()
-                );
-                return $deserializerLocator;
-            }
-        );
-
         $app['cdbxml_enricher_http_client_adapter'] = $app->share(
             function (Application $app) {
                 $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
