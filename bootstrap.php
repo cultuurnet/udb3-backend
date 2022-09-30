@@ -825,13 +825,8 @@ $container->addServiceProvider(
     new AMQPConnectionServiceProvider(),
 );
 
-$app->register(
+$container->addServiceProvider(
     new AMQPPublisherServiceProvider(),
-    [
-        'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
-        'amqp.publisher.cli.client_ids' => $app['config']['amqp']['publish']['udb3']['cli']['client_ids'],
-        'amqp.publisher.cli.api_keys' => $app['config']['amqp']['publish']['udb3']['cli']['api_keys'],
-    ]
 );
 
 $app->register(new MetadataServiceProvider());

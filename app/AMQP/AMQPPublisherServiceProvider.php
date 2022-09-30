@@ -72,7 +72,7 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
 
                 $publisher = new AMQPPublisher(
                     $channel,
-                    $container->get('amqp.publisher.exchange_name'),
+                    $container->get('config')['amqp']['publish']['udb3']['exchange'],
                     $anyOfSpecification,
                     $messageFactory,
                     function (DomainMessage $domainMessage) use ($container) {
@@ -89,8 +89,8 @@ final class AMQPPublisherServiceProvider extends AbstractServiceProvider
                         $clientId = $jwt instanceof JsonWebToken ? $jwt->getClientId() : null;
                         $apiKey = $container->get(ApiKey::class);
                         $apiKey = $apiKey instanceof ApiKey ? $apiKey->toString() : null;
-                        if (in_array($clientId, $container->get('amqp.publisher.cli.client_ids'), true) ||
-                            in_array($apiKey, $container->get('amqp.publisher.cli.api_keys'), true)) {
+                        if (in_array($clientId, $container->get('config')['amqp']['publish']['udb3']['cli']['client_ids'], true) ||
+                            in_array($apiKey, $container->get('config')['amqp']['publish']['udb3']['cli']['api_keys'], true)) {
                             return 'cli';
                         }
 
