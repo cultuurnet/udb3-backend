@@ -99,18 +99,19 @@ final class AuthServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $app[CurrentUser::class] = $app->share(
-            static function (Application $app): CurrentUser {
+        $container->addShared(
+            CurrentUser::class,
+            static function () use ($container): CurrentUser {
                 // Check first if we're impersonating someone.
                 // This is done when handling async commands via a CLI worker.
                 /* @var Impersonator $impersonator */
-                $impersonator = $app['impersonator'];
+                $impersonator = $container->get('impersonator');
                 if ($impersonator->getUserId()) {
                     return new CurrentUser($impersonator->getUserId());
                 }
 
                 /* @var RequestAuthenticatorMiddleware $requestAuthenticator */
-                $requestAuthenticator = $app[RequestAuthenticatorMiddleware::class];
+                $requestAuthenticator = $container->get(RequestAuthenticatorMiddleware::class);
                 return $requestAuthenticator->getCurrentUser();
             }
         );
