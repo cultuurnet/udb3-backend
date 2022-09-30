@@ -90,8 +90,6 @@ $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3Se
 $consoleApp->add(new GeocodeOrganizerCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_ORGANIZERS], $app['organizer_jsonld_repository']));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app[EventBus::class], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app[EventBus::class], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
-$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app[EventBus::class], $app['system_user_id']));
-$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app[EventBus::class], $app['system_user_id']));
 $consoleApp->add(
     new ProcessDuplicatePlaces(
         $app['event_command_bus'],
