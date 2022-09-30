@@ -66,7 +66,6 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                             'event_geocoordinates_process_manager',
                             'organizer_geocoordinates_process_manager',
                             'uitpas_event_process_manager',
-                            'curators_news_article_process_manager',
                             RelocateEventToCanonicalPlace::class,
                             AutoApproveForUiTIDv1ApiKeysProcessManager::class,
                         ];
