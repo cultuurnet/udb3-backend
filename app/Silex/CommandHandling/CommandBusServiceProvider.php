@@ -20,7 +20,7 @@ use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class CommandBusServiceProvider implements ServiceProviderInterface
+final class CommandBusServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
