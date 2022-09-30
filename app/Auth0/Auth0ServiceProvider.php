@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Auth0;
+namespace CultuurNet\UDB3\Auth0;
 
 use Auth0\SDK\API\Management;
 use Auth0\SDK\Configuration\SdkConfiguration;
