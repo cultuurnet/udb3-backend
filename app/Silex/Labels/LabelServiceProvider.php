@@ -85,16 +85,6 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $this->setUpQueryFactory($app);
 
-        $app['related_udb3_labels_applier'] = $app->share(
-            function (Application $app) {
-                return new RelatedUDB3LabelApplier(
-                    $app[self::RELATIONS_READ_REPOSITORY],
-                    $app[self::JSON_READ_REPOSITORY],
-                    $app[self::LOGGER]
-                );
-            }
-        );
-
         $app[CreateLabelRequestHandler::class] = $app->share(
             fn (Application $app) => new CreateLabelRequestHandler(
                 $app['event_command_bus'],
