@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
+use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CommandValidatorInterface;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
 use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
@@ -19,32 +22,48 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use function Clue\StreamFilter\fun;
+use function foo\func;
 
-final class CommandBusServiceProvider implements ServiceProviderInterface
+final class CommandBusServiceProvider extends AbstractServiceProvider
 {
+    protected function getProvidedServiceNames(): array
+    {
+        return [
+            'command_bus.security',
+            'authorized_command_bus',
+            'event_command_bus',
+            'event_command_validator',
+            'resque_command_bus_factory'
+        ];
+    }
+
     public function register(Application $app): void
     {
-        $app['command_bus.security'] = $app->share(
-            function ($app) {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'command_bus.security',
+            function () use ($container): LabelCommandBusSecurity {
                 // Set up security to check permissions of AuthorizableCommand commands.
                 $security = new PermissionVoterCommandBusSecurity(
-                    $app[CurrentUser::class]->getId(),
+                    $container->get(CurrentUser::class)->getId(),
                     // Either allow everything for god users, or use a voter based on the specific permission
                     new AnyOfVoter(
-                        $app['god_user_voter'],
+                        $container->get('god_user_voter'),
                         (new PermissionSwitchVoter())
                             // Use the organizer voter for ORGANISATIES_BEWERKEN to take into account who is the owner
                             // and/or look at the constraint query in the role to only allow edits to a subset of
                             // organizers.
                             ->withVoter(
-                                $app['organizer_permission_voter'],
+                                $container->get('organizer_permission_voter'),
                                 Permission::organisatiesBewerken()
                             )
                             // Use the offer voter for AANBOD permissions to take into account who is the owner
                             // and/or look at the constraint query in the role to only allow edits to a subset of
                             // offers.
                             ->withVoter(
-                                $app['offer_permission_voter'],
+                                $container->get('offer_permission_voter'),
                                 Permission::aanbodBewerken(),
                                 Permission::aanbodModereren(),
                                 Permission::aanbodVerwijderen()
@@ -52,7 +71,7 @@ final class CommandBusServiceProvider implements ServiceProviderInterface
                             // Other permissions should just be checked by seeing if the user has that permission.
                             ->withDefaultVoter(
                                 new UserPermissionVoter(
-                                    $app['user_permissions_read_repository']
+                                    $container->get('user_permissions_read_repository')
                                 )
                             )
                     )
@@ -62,40 +81,43 @@ final class CommandBusServiceProvider implements ServiceProviderInterface
                 // AuthorizableLabelCommand (skipped otherwise).
                 return new LabelCommandBusSecurity(
                     $security,
-                    $app[CurrentUser::class]->getId(),
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                    $container->get(CurrentUser::class)->getId(),
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY)
                 );
             }
         );
 
-        $app['authorized_command_bus'] = $app->share(
-            function () use ($app) {
+        $container->addShared(
+            'authorized_command_bus',
+            function() use ($container): AuthorizedCommandBus {
                 return new AuthorizedCommandBus(
                     new SimpleContextAwareCommandBus(),
-                    $app[CurrentUser::class]->getId(),
-                    $app['command_bus.security']
+                    $container->get(CurrentUser::class)->getId(),
+                    $container->get('command_bus.security')
                 );
             }
         );
 
-        $app['event_command_bus'] = $app->share(
-            function () use ($app) {
+        $container->addShared(
+            'event_command_bus',
+            function() use ($container): LazyLoadingCommandBus{
                 return new LazyLoadingCommandBus(
                     new ValidatingCommandBusDecorator(
                         new ContextDecoratedCommandBus(
                             new RetryingCommandBus(
-                                $app['authorized_command_bus']
+                                $container->get('authorized_command_bus')
                             ),
                             $app
                         ),
-                        $app['event_command_validator']
+                        $container->get('event_command_validator')
                     )
                 );
             }
         );
 
-        $app['event_command_validator'] = $app->share(
-            function () {
+        $container->addShared(
+            'event_command_validator',
+            function():CompositeCommandValidator  {
                 return new CompositeCommandValidator();
             }
         );
@@ -139,9 +161,5 @@ final class CommandBusServiceProvider implements ServiceProviderInterface
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
