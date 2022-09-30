@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\InMemoryExcludedLabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
@@ -26,7 +25,7 @@ abstract class AbstractRemoveLabel extends Command
             $connection,
             new StringLiteral('labels_json'),
             new StringLiteral('label_roles'),
-            new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
+            new StringLiteral('user_roles'),
             new InMemoryExcludedLabelsRepository([])
         );
         $this->commandBus = $commandBus;
