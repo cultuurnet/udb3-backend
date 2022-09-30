@@ -151,10 +151,11 @@ final class AuthServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $app[ConsumerReadRepository::class] = $app->share(
-            function (Application $app): ConsumerReadRepository {
+        $container->addShared(
+            ConsumerReadRepository::class,
+            function () use ($container): ConsumerReadRepository {
                 return new InMemoryConsumerRepository(
-                    new CultureFeedConsumerReadRepository($app['culturefeed'], true)
+                    new CultureFeedConsumerReadRepository($container->get('culturefeed'), true)
                 );
             }
         );
