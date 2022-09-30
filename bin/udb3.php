@@ -78,22 +78,7 @@ $app['impersonator']->impersonate(
 );
 
 $consoleApp->add(
-    (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))
-        ->withHeartBeat('dbal_connection:keepalive')
-);
-
-$consoleApp->add(
     (new ConsumeCommand('amqp-listen-uitpas', 'amqp.uitpas_event_bus_forwarding_consumer'))
-        ->withHeartBeat('dbal_connection:keepalive')
-);
-
-$consoleApp->add(
-    (new ConsumeCommand('amqp-listen-imports', 'import_command_bus_forwarding_consumer'))
-        ->withHeartBeat('dbal_connection:keepalive')
-);
-
-$consoleApp->add(
-    (new ConsumeCommand('amqp-listen-curators', 'curators_event_bus_forwarding_consumer'))
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
