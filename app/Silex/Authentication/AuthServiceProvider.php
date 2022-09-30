@@ -11,6 +11,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
@@ -22,28 +23,43 @@ use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-final class AuthServiceProvider implements ServiceProviderInterface
+final class AuthServiceProvider extends AbstractServiceProvider
 {
+    protected function getProvidedServiceNames(): array
+    {
+        return [
+            RequestAuthenticatorMiddleware::class,
+            CurrentUser::class,
+            JsonWebToken::class,
+            ApiKey::class,
+            ConsumerReadRepository::class,
+            Consumer::class
+        ];
+    }
+
     public function register(Application $app): void
     {
-        CurrentUser::configureGodUserIds($app['config']['user_permissions']['allow_all']);
+        $container = $this->getContainer();
 
-        $app[RequestAuthenticatorMiddleware::class] = $app::share(
-            function (Application $app): RequestAuthenticatorMiddleware {
+        CurrentUser::configureGodUserIds($container->get('config')['user_permissions']['allow_all']);
+
+        $container->addShared(
+            RequestAuthenticatorMiddleware::class,
+            function () use ($container): RequestAuthenticatorMiddleware {
                 $authenticator = new RequestAuthenticatorMiddleware(
                     new UitIdV1JwtValidator(
-                        'file://' . __DIR__ . '/../../../' . $app['config']['jwt']['v1']['keys']['public']['file'],
-                        $app['config']['jwt']['v1']['valid_issuers']
+                        'file://' . __DIR__ . '/../../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
+                        $container->get('config')['jwt']['v1']['valid_issuers']
                     ),
                     new UitIdV2JwtValidator(
-                        'file://' . __DIR__ . '/../../../' . $app['config']['jwt']['v2']['keys']['public']['file'],
-                        $app['config']['jwt']['v2']['valid_issuers'],
-                        $app['config']['jwt']['v2']['jwt_provider_client_id']
+                        'file://' . __DIR__ . '/../../../' . $container->get('config')['jwt']['v2']['keys']['public']['file'],
+                        $container->get('config')['jwt']['v2']['valid_issuers'],
+                        $container->get('config')['jwt']['v2']['jwt_provider_client_id']
                     ),
-                    new CultureFeedApiKeyAuthenticator($app[ConsumerReadRepository::class]),
-                    $app[ConsumerReadRepository::class],
-                    new ConsumerIsInPermissionGroup((string) $app['config']['api_key']['group_id']),
-                    $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]
+                    new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
+                    $container->get(ConsumerReadRepository::class),
+                    new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
+                    $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY)
                 );
 
                 // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
@@ -152,9 +168,5 @@ final class AuthServiceProvider implements ServiceProviderInterface
                 return $consumerReadRepository->getConsumer($apiKey);
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
