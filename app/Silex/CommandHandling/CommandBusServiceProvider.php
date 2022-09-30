@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
-use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CommandValidatorInterface;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
@@ -21,9 +19,6 @@ use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
-use function Clue\StreamFilter\fun;
-use function foo\func;
 
 final class CommandBusServiceProvider extends AbstractServiceProvider
 {
@@ -34,7 +29,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'authorized_command_bus',
             'event_command_bus',
             'event_command_validator',
-            'resque_command_bus_factory'
+            'resque_command_bus_factory',
         ];
     }
 
@@ -89,7 +84,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'authorized_command_bus',
-            function() use ($container): AuthorizedCommandBus {
+            function () use ($container): AuthorizedCommandBus {
                 return new AuthorizedCommandBus(
                     new SimpleContextAwareCommandBus(),
                     $container->get(CurrentUser::class)->getId(),
@@ -100,7 +95,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'event_command_bus',
-            function() use ($container): LazyLoadingCommandBus{
+            function () use ($container): LazyLoadingCommandBus {
                 return new LazyLoadingCommandBus(
                     new ValidatingCommandBusDecorator(
                         new ContextDecoratedCommandBus(
@@ -117,7 +112,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'event_command_validator',
-            function():CompositeCommandValidator  {
+            function (): CompositeCommandValidator {
                 return new CompositeCommandValidator();
             }
         );
