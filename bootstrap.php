@@ -821,15 +821,8 @@ $app['impersonator'] = $app->share(
     }
 );
 
-$app->register(
+$container->addServiceProvider(
     new AMQPConnectionServiceProvider(),
-    [
-        'amqp.connection.host' => $app['config']['amqp']['host'],
-        'amqp.connection.port' => $app['config']['amqp']['port'],
-        'amqp.connection.user' => $app['config']['amqp']['user'],
-        'amqp.connection.password' => $app['config']['amqp']['password'],
-        'amqp.connection.vhost' => $app['config']['amqp']['vhost'],
-    ]
 );
 
 $app->register(

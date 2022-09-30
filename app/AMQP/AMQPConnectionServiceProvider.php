@@ -22,11 +22,11 @@ final class AMQPConnectionServiceProvider extends AbstractServiceProvider
             'amqp.connection',
             function () use ($container): AMQPStreamConnection {
                 return new AMQPStreamConnection(
-                    $container->get('amqp.connection.host'),
-                    $container->get('amqp.connection.port'),
-                    $container->get('amqp.connection.user'),
-                    $container->get('amqp.connection.password'),
-                    $container->get('amqp.connection.vhost')
+                    $container->get('config')['amqp']['host'],
+                    $container->get('config')['amqp']['port'],
+                    $container->get('config')['amqp']['user'],
+                    $container->get('config')['amqp']['password'],
+                    $container->get('config')['amqp']['vhost']
                 );
             }
         );
