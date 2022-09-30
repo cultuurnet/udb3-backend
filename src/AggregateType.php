@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  * @method static AggregateType role()
  * @method static AggregateType label()
  */
-class AggregateType extends Enum
+final class AggregateType extends Enum
 {
     public static function getAllowedValues(): array
     {

@@ -12,7 +12,7 @@ use Broadway\EventSourcing\EventStreamDecorator;
 use Broadway\EventStore\EventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\AggregateType;
 use PHPUnit\Framework\TestCase;
 
 class EventStreamTest extends TestCase

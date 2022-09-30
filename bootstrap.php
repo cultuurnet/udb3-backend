@@ -59,10 +59,10 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use CultuurNet\UDB3\Silex\AggregateType;
-use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
-use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
-use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
+use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
@@ -97,9 +97,7 @@ use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
-use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use Http\Adapter\Guzzle7\Client;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Monolog\Logger;
@@ -131,7 +129,8 @@ $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation = __DIR__;
 }
-$app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
+
+$app['config'] = file_exists(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 
 $app['system_user_id'] = $app::share(
     function () {
@@ -817,16 +816,28 @@ $app['uitpas'] = $app->share(
 // who initially queued the command.
 $app['impersonator'] = $app->share(
     function () {
-        return new \CultuurNet\UDB3\Silex\Impersonator();
+        return new \CultuurNet\UDB3\Impersonator();
     }
 );
 
-$container->addServiceProvider(
+$app->register(
     new AMQPConnectionServiceProvider(),
+    [
+        'amqp.connection.host' => $app['config']['amqp']['host'],
+        'amqp.connection.port' => $app['config']['amqp']['port'],
+        'amqp.connection.user' => $app['config']['amqp']['user'],
+        'amqp.connection.password' => $app['config']['amqp']['password'],
+        'amqp.connection.vhost' => $app['config']['amqp']['vhost'],
+    ]
 );
 
-$container->addServiceProvider(
+$app->register(
     new AMQPPublisherServiceProvider(),
+    [
+        'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
+        'amqp.publisher.cli.client_ids' => $app['config']['amqp']['publish']['udb3']['cli']['client_ids'],
+        'amqp.publisher.cli.api_keys' => $app['config']['amqp']['publish']['udb3']['cli']['api_keys'],
+    ]
 );
 
 $app->register(new MetadataServiceProvider());
@@ -882,8 +893,8 @@ $app->register(new AuthServiceProvider());
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
     [
-        'udb2_place_external_id_mapping.yml_file_location' => $udb3ConfigLocation . '/external_id_mapping_place.yml',
-        'udb2_organizer_external_id_mapping.yml_file_location' => $udb3ConfigLocation . '/external_id_mapping_organizer.yml',
+        'udb2_place_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_place.php',
+        'udb2_organizer_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_organizer.php',
         'udb2_cdbxml_enricher.http_response_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_response_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_response_timeout'] : 3,
         'udb2_cdbxml_enricher.http_connect_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_connect_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_connect_timeout'] : 1,
         'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],

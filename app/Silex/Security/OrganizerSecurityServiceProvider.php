@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex\Security;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
-use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\ApiName;
 use GuzzleHttp\Psr7\Uri;
 use Http\Adapter\Guzzle7\Client;
 use Silex\Application;
