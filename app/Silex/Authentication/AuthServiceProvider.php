@@ -133,19 +133,20 @@ final class AuthServiceProvider extends AbstractServiceProvider
              }
         );
 
-        $app[ApiKey::class] = $app->share(
-            function (Application $app): ?ApiKey {
+        $container->addShared(
+            ApiKey::class,
+            function () use ($container): ?ApiKey {
                 // Check first if we're impersonating someone.
                 // This is done when handling async commands via a CLI worker.
                 /* @var Impersonator $impersonator */
-                $impersonator = $app['impersonator'];
+                $impersonator = $container->get('impersonator');
                 if ($impersonator->getApiKey()) {
                     return $impersonator->getApiKey();
                 }
 
                 // If not impersonating then use the api key from the request.
                 /** @var RequestAuthenticatorMiddleware $requestAuthenticator */
-                $requestAuthenticator = $app[RequestAuthenticatorMiddleware::class];
+                $requestAuthenticator = $container->get(RequestAuthenticatorMiddleware::class);
                 return $requestAuthenticator->getApiKey();
             }
         );
