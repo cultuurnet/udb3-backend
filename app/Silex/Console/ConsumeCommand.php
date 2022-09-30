@@ -29,13 +29,13 @@ class ConsumeCommand extends Command
         $this->heartBeat = $heartBeat;
     }
 
-    private function handleSignal(OutputInterface $output, $signal)
+    private function handleSignal(OutputInterface $output, $signal): void
     {
         $output->writeln('Signal received, halting.');
         exit;
     }
 
-    private function registerSignalHandlers(OutputInterface $output)
+    private function registerSignalHandlers(OutputInterface $output): void
     {
         $handler = function ($signal) use ($output) {
             $this->handleSignal($output, $signal);
@@ -46,7 +46,7 @@ class ConsumeCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $this->registerSignalHandlers($output);
 
@@ -71,10 +71,7 @@ class ConsumeCommand extends Command
         return 0;
     }
 
-    /**
-     * @return AMQPChannel
-     */
-    protected function getChannel()
+    private function getChannel(): AMQPChannel
     {
         /** @var ConsumerInterface $consumer */
         $consumer = $this->container->get($this->consumerName);
