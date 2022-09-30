@@ -42,7 +42,6 @@ use Monolog\Handler\StreamHandler;
 use Ramsey\Uuid\UuidFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\Yaml\Yaml;
 use CultuurNet\UDB3\StringLiteral;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
@@ -301,28 +300,27 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_place_external_id_mapping_service'] = $app->share(
             function (Application $app) {
-                $yamlFileLocation = $app['udb2_place_external_id_mapping.yml_file_location'];
-                return $app['udb2_external_id_mapping_service_factory']($yamlFileLocation);
+                $mappingFileLocation = $app['udb2_place_external_id_mapping.file_location'];
+                return $app['udb2_external_id_mapping_service_factory']($mappingFileLocation);
             }
         );
 
         $app['udb2_organizer_external_id_mapping_service'] = $app->share(
             function (Application $app) {
-                $yamlFileLocation = $app['udb2_organizer_external_id_mapping.yml_file_location'];
-                return $app['udb2_external_id_mapping_service_factory']($yamlFileLocation);
+                $mappingFileLocation = $app['udb2_organizer_external_id_mapping.file_location'];
+                return $app['udb2_external_id_mapping_service_factory']($mappingFileLocation);
             }
         );
 
         $app['udb2_external_id_mapping_service_factory'] = $app->protect(
-            function ($yamlFileLocation) {
+            function ($mappingFileLocation) {
                 $map = [];
 
-                if (file_exists($yamlFileLocation)) {
-                    $yaml = file_get_contents($yamlFileLocation);
-                    $yaml = Yaml::parse($yaml);
+                if (file_exists($mappingFileLocation)) {
+                    $mapping = require $mappingFileLocation;
 
-                    if (is_array($yaml)) {
-                        $map = $yaml;
+                    if (is_array($mapping)) {
+                        $map = $mapping;
                     }
                 }
 

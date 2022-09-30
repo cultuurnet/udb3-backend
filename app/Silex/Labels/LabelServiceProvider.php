@@ -42,7 +42,6 @@ use CultuurNet\UDB3\User\CurrentUser;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class LabelServiceProvider implements ServiceProviderInterface
 {
@@ -127,8 +126,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
-                $labels = file_exists(__DIR__ . '/../../../excluded_labels.yml') ?
-                    Yaml::Parse(file_get_contents(__DIR__ . '/../../../excluded_labels.yml')) : [];
+                $labels = file_exists(__DIR__ . '/../../../config.excluded_labels.php') ? require __DIR__ . '/../../../config.excluded_labels.php' : [];
 
                 return new GodUserReadRepositoryDecorator(
                     new JsonReadRepository(
