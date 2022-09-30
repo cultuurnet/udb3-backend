@@ -116,20 +116,21 @@ final class AuthServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $app[JsonWebToken::class] = $app::share(
-            function (Application $app): ?JsonWebToken {
-                // Check first if we're impersonating someone.
-                // This is done when handling async commands via a CLI worker.
-                /* @var Impersonator $impersonator */
-                $impersonator = $app['impersonator'];
-                if ($impersonator->getJwt()) {
-                    return $impersonator->getJwt();
-                }
+        $container->addShared(
+            JsonWebToken::class,
+             function () use ($container): ?JsonWebToken {
+                 // Check first if we're impersonating someone.
+                 // This is done when handling async commands via a CLI worker.
+                 /* @var Impersonator $impersonator */
+                 $impersonator =  $container->get('impersonator');
+                 if ($impersonator->getJwt()) {
+                     return $impersonator->getJwt();
+                 }
 
-                /* @var RequestAuthenticatorMiddleware $requestAuthenticator */
-                $requestAuthenticator = $app[RequestAuthenticatorMiddleware::class];
-                return $requestAuthenticator->getToken();
-            }
+                 /* @var RequestAuthenticatorMiddleware $requestAuthenticator */
+                 $requestAuthenticator = $container->get(RequestAuthenticatorMiddleware::class);
+                 return $requestAuthenticator->getToken();
+             }
         );
 
         $app[ApiKey::class] = $app->share(
