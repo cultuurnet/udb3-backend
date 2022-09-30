@@ -37,7 +37,6 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use CultuurNet\UDB3\User\CurrentUser;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
