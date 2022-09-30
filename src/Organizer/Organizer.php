@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -51,7 +50,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 
-class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXmlInterface, LabelAwareAggregateRoot
+class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
 {
     protected string $actorId;
 
@@ -147,17 +146,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
 
         return $organizer;
-    }
-
-    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
-    {
-        $this->apply(
-            new OrganizerUpdatedFromUDB2(
-                $this->actorId,
-                $cdbXml,
-                $cdbXmlNamespaceUri
-            )
-        );
     }
 
     public function updateWebsite(Url $website): void
