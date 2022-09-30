@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\AMQP;
+namespace CultuurNet\UDB3\AMQP;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispat
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use PhpAmqpLib\Message\AMQPMessage;
 
 final class AMQPPublisherServiceProvider extends AbstractServiceProvider

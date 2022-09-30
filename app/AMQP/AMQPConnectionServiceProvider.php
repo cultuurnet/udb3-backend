@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\AMQP;
+namespace CultuurNet\UDB3\AMQP;
 
-use CultuurNet\UDB3\Silex\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 final class AMQPConnectionServiceProvider extends AbstractServiceProvider
