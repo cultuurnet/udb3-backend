@@ -79,43 +79,6 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             }
         );
 
-        $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
-            function (HybridContainerApplication $app) {
-                $logger = LoggerFactory::create(
-                    $app->getLeagueContainer(),
-                    LoggerName::forAmqpWorker('xml-imports', 'messages'),
-                    [new StreamHandler('php://stdout')]
-                );
-
-                return new EventBusForwardingConsumerFactory(
-                    0,
-                    $app['amqp.connection'],
-                    $logger,
-                    $app['udb2_deserializer_locator'],
-                    $app[EventBus::class],
-                    new StringLiteral($app['config']['amqp']['consumer_tag']),
-                    new UuidFactory()
-                );
-            }
-        );
-
-        $app['amqp.udb2_event_bus_forwarding_consumer'] = $app->share(
-            function (Application $app) {
-                // If this service gets instantiated, it's because we're running the AMQP listener for CDBXML imports so
-                // we should set the API name to CDBXML.
-                $app['api_name'] = ApiName::CDBXML;
-
-                $consumerConfig = $app['config']['amqp']['consumers']['udb2'];
-                $exchange = new StringLiteral($consumerConfig['exchange']);
-                $queue = new StringLiteral($consumerConfig['queue']);
-
-                /** @var EventBusForwardingConsumerFactory $consumerFactory */
-                $consumerFactory = $app['udb2_event_bus_forwarding_consumer_factory'];
-
-                return $consumerFactory->create($exchange, $queue);
-            }
-        );
-
         $app['cdbxml_enricher_http_client_adapter'] = $app->share(
             function (Application $app) {
                 $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
