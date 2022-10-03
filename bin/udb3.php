@@ -2,46 +2,11 @@
 <?php
 
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Console\ConsoleServiceProvider;
-use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\ApiName;
-use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
-use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
-use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
-use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
-use CultuurNet\UDB3\Console\Command\ConsumeCommand;
-use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
-use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
-use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
-use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
-use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
-use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
-use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
-use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
-use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
-use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
-use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
-use CultuurNet\UDB3\Console\Command\RemoveFacilitiesFromPlace;
-use CultuurNet\UDB3\Console\Command\RemoveLabelOffer;
-use CultuurNet\UDB3\Console\Command\RemoveLabelOrganizer;
-use CultuurNet\UDB3\Console\Command\ReplaceNewsArticlePublisher;
-use CultuurNet\UDB3\Console\Command\ReplayCommand;
-use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
-use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
-use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
-use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
-use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Error\ErrorLogger;
-use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
