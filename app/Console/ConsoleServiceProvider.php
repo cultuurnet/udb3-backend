@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
+use CultuurNet\UDB3\Console\Command\RemoveFacilitiesFromPlace;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
@@ -60,6 +61,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:change-owner-bulk',
             'console.label:update-unique',
             'console.organizer:update-unique',
+            'console.place:facilities:remove',
         ];
     }
 
@@ -304,6 +306,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:update-unique',
             function () use ($container) {
                 return new UpdateUniqueOrganizers($container->get('dbal_connection'), new WebsiteNormalizer());
+            }
+        );
+
+        $container->addShared(
+            'console.place:facilities:remove',
+            function () use ($container) {
+                return new RemoveFacilitiesFromPlace(
+                    $container->get('event_command_bus'),
+                    $container->get('sapi3_search_service_places')
+                );
             }
         );
     }
