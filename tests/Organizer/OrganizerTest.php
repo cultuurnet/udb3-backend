@@ -38,12 +38,10 @@ use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
-use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\MainImageUpdated;
-use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
@@ -160,55 +158,6 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ]
             );
-    }
-
-    /**
-     * @test
-     */
-    public function it_updates_from_udb2_actors_and_takes_labels_into_account(): void
-    {
-        $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
-
-        $this->scenario
-            ->withAggregateId('404EE8DE-E828-9C07-FE7D12DC4EB24480')
-            ->given(
-                [
-                    new OrganizerCreated(
-                        '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        'DE Studio',
-                        'Wetstraat 1',
-                        '1000',
-                        'Brussel',
-                        'BE',
-                        [],
-                        [],
-                        []
-                    ),
-                ]
-            )
-            ->when(
-                function (Organizer $organizer) use ($cdbXml) {
-                    $organizer->updateWithCdbXml(
-                        $cdbXml,
-                        'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-                    );
-                }
-            )
-            ->then(
-                [
-                    new OrganizerUpdatedFromUDB2(
-                        '404EE8DE-E828-9C07-FE7D12DC4EB24480',
-                        $cdbXml,
-                        'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-                    ),
-                ]
-            )
-            ->when(
-                function (Organizer $organizer) {
-                    $organizer->addLabel(new Label(new LabelName('foo')));
-                }
-            )
-            ->then([]);
     }
 
     /**
@@ -1338,52 +1287,6 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     new TitleUpdated(
                         '404EE8DE-E828-9C07-FE7D12DC4EB24480',
                         'STUK'
-                    ),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_sets_the_title_on_organizer_updated_from_udb2(): void
-    {
-        $cdbXml = $this->getCdbXML('organizer_with_keyword.cdbxml.xml');
-
-        $this->scenario
-            ->given(
-                [
-                    $this->organizerCreatedWithUniqueWebsite,
-                ]
-            )
-            ->when(
-                function (Organizer $organizer) use ($cdbXml) {
-                    $organizer->updateWithCdbXml(
-                        $cdbXml,
-                        'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-                    );
-                    $organizer->updateTitle(
-                        new Title('DE Studio'),
-                        new Language('en')
-                    );
-                    $organizer->updateTitle(
-                        new Title('Het Depot'),
-                        new Language('en')
-                    );
-                }
-            )
-            ->then(
-                [
-                    // Organizer was created with title 'STUK,
-                    // but then imported with title 'DE Studio'.
-                    new OrganizerUpdatedFromUDB2(
-                        $this->id,
-                        $cdbXml,
-                        'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-                    ),
-                    new TitleUpdated(
-                        $this->id,
-                        'Het Depot'
                     ),
                 ]
             );

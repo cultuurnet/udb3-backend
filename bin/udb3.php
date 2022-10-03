@@ -19,8 +19,6 @@ use CultuurNet\UDB3\Silex\Console\GeocodeEventCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportOfferAutoClassificationLabels;
-use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
-use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexEventsWithRecommendations;
@@ -87,19 +85,7 @@ $heartBeat = static function () use ($container) {
 };
 
 $consoleApp->add(
-    new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer', $container, $heartBeat)
-);
-
-$consoleApp->add(
     new ConsumeCommand('amqp-listen-uitpas', 'amqp.uitpas_event_bus_forwarding_consumer', $container, $heartBeat)
-);
-
-$consoleApp->add(
-    new ConsumeCommand('amqp-listen-imports', 'import_command_bus_forwarding_consumer', $container, $heartBeat)
-);
-
-$consoleApp->add(
-    new ConsumeCommand('amqp-listen-curators', 'curators_event_bus_forwarding_consumer', $container, $heartBeat)
 );
 
 $consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app[EventBus::class]));
@@ -110,8 +96,6 @@ $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3Se
 $consoleApp->add(new GeocodeOrganizerCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_ORGANIZERS], $app['organizer_jsonld_repository']));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app[EventBus::class], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app[EventBus::class], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
-$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app[EventBus::class], $app['system_user_id']));
-$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app[EventBus::class], $app['system_user_id']));
 $consoleApp->add(
     new ProcessDuplicatePlaces(
         $app['event_command_bus'],
