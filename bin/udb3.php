@@ -68,7 +68,7 @@ $container->get('impersonator')->impersonate(
     )
 );
 
-$consoleApp->add($container->get(ConsumeCommand::class));
+$consoleApp->add($container->get('console.amqp-listen-uitpas'));
 
 $consoleApp->add(new ReplayCommand($container->get('event_command_bus'), $container->get('dbal_connection'), $container->get('eventstore_payload_serializer'), $container->get(EventBus::class)));
 $consoleApp->add(new EventAncestorsCommand($container->get('event_command_bus'), $container->get('event_store')));

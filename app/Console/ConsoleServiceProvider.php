@@ -13,7 +13,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            ConsumeCommand::class,
+            'console.amqp-listen-uitpas',
         ];
     }
 
@@ -22,7 +22,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            ConsumeCommand::class,
+            'console.amqp-listen-uitpas',
             function () use ($container) {
                 $heartBeat = static function () use ($container) {
                     /** @var Connection $db */
