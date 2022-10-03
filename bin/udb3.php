@@ -60,10 +60,10 @@ $consoleApp->setCatchExceptions(false);
 // An udb3 system user is needed for geocode commands and updating the status of one or multiple offers.
 // Because of the changes for geocoding the amqp forwarding for udb2 imports also needs a user.
 // To avoid fixing this locally in the amqp-silex lib, all CLI commands are executed as udb3 system user.
-$app['impersonator']->impersonate(
+$container->get('impersonator')->impersonate(
     new Metadata(
         [
-            'user_id' => $app['system_user_id'],
+            'user_id' => $container->get('system_user_id'),
         ]
     )
 );
