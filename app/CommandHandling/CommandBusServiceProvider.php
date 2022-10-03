@@ -2,15 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\CommandHandling;
+namespace CultuurNet\UDB3\CommandHandling;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
-use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
-use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
-use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;

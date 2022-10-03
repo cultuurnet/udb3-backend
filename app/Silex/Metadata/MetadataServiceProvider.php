@@ -12,7 +12,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
-use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
+use CultuurNet\UDB3\CommandHandling\ContextFactory;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
