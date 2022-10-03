@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console;
 
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
+use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use Doctrine\DBAL\Driver\Connection;
 
@@ -14,6 +16,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
     {
         return [
             'console.amqp-listen-uitpas',
+            'console.replay',
         ];
     }
 
@@ -35,6 +38,18 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     'amqp.uitpas_event_bus_forwarding_consumer',
                     $container,
                     $heartBeat
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.replay',
+            function () use ($container) {
+                return new ReplayCommand(
+                    $container->get('event_command_bus'),
+                    $container->get('dbal_connection'),
+                    $container->get('eventstore_payload_serializer'),
+                    $container->get(EventBus::class)
                 );
             }
         );
