@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Error\ErrorLogger;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -35,34 +36,39 @@ $container->get('impersonator')->impersonate(
     )
 );
 
-$consoleApp->add($container->get('console.amqp-listen-uitpas'));
-$consoleApp->add($container->get('console.replay'));
-$consoleApp->add($container->get('console.event:ancestors'));
-$consoleApp->add($container->get('console.purge'));
-$consoleApp->add($container->get('console.place:geocode'));
-$consoleApp->add($container->get('console.event:geocode'));
-$consoleApp->add($container->get('console.organizer:geocode'));
-$consoleApp->add($container->get('console.fire-projected-to-jsonld-for-relations'));
-$consoleApp->add($container->get('console.fire-projected-to-jsonld'));
-$consoleApp->add($container->get('console.place:process-duplicates'));
-$consoleApp->add($container->get('console.event:reindex-offers-with-popularity'));
-$consoleApp->add($container->get('console.place:reindex-offers-with-popularity'));
-$consoleApp->add($container->get('console.event:reindex-events-with-recommendations'));
-$consoleApp->add($container->get('console.event:status:update'));
-$consoleApp->add($container->get('console.place:status:update'));
-$consoleApp->add($container->get('console.event:booking-availability:update'));
-$consoleApp->add($container->get('console.event:attendanceMode:update'));
-$consoleApp->add($container->get('console.offer:change-owner'));
-$consoleApp->add($container->get('console.offer:change-owner-bulk'));
-$consoleApp->add($container->get('console.organizer:change-owner'));
-$consoleApp->add($container->get('console.organizer:change-owner-bulk'));
-$consoleApp->add($container->get('console.label:update-unique'));
-$consoleApp->add($container->get('console.organizer:update-unique'));
-$consoleApp->add($container->get('console.place:facilities:remove'));
-$consoleApp->add($container->get('console.offer:remove-label'));
-$consoleApp->add($container->get('console.organizer:remove-label'));
-$consoleApp->add($container->get('console.offer:import-auto-classification-labels'));
-$consoleApp->add($container->get('console.article:replace-publisher'));
+$commands = [
+    'amqp-listen-uitpas',
+    'replay',
+    'event:ancestors',
+    'purge',
+    'place:geocode',
+    'event:geocode',
+    'organizer:geocode',
+    'fire-projected-to-jsonld-for-relations',
+    'fire-projected-to-jsonld',
+    'place:process-duplicates',
+    'event:reindex-offers-with-popularity',
+    'place:reindex-offers-with-popularity',
+    'event:reindex-events-with-recommendations',
+    'event:status:update',
+    'place:status:update',
+    'event:booking-availability:update',
+    'event:attendanceMode:update',
+    'offer:change-owner',
+    'offer:change-owner-bulk',
+    'organizer:change-owner',
+    'organizer:change-owner-bulk',
+    'label:update-unique',
+    'organizer:update-unique',
+    'place:facilities:remove',
+    'offer:remove-label',
+    'organizer:remove-label',
+    'offer:import-auto-classification-labels',
+    'article:replace-publisher',
+];
+$commandServices = array_map(fn (string $command) => 'console.' . $command, $commands);
+$commandMap = array_combine($commands, $commandServices);
+$consoleApp->setCommandLoader(new ContainerCommandLoader($container, $commandMap));
 
 try {
     $consoleApp->run();
