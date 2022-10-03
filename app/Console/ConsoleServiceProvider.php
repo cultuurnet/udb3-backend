@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Console\Command\RemoveFacilitiesFromPlace;
 use CultuurNet\UDB3\Console\Command\RemoveLabelOffer;
+use CultuurNet\UDB3\Console\Command\RemoveLabelOrganizer;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
@@ -64,6 +65,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:update-unique',
             'console.place:facilities:remove',
             'console.offer:remove-label',
+            'console.organizer:remove-label',
         ];
     }
 
@@ -325,6 +327,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.offer:remove-label',
             function () use ($container) {
                 return new RemoveLabelOffer($container->get('dbal_connection'), $container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            'console.organizer:remove-label',
+            function () use ($container) {
+                return new RemoveLabelOrganizer(
+                    $container->get('dbal_connection'),
+                    $container->get('event_command_bus')
+                );
             }
         );
     }
