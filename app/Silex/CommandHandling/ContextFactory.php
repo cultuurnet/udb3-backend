@@ -8,8 +8,6 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
-use CultuurNet\UDB3\User\CurrentUser;
-use Silex\Application;
 
 final class ContextFactory
 {
@@ -53,17 +51,6 @@ final class ContextFactory
         $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
 
         return new Metadata($contextValues);
-    }
-
-    public static function createFromGlobals(Application $application): Metadata
-    {
-        return self::createContext(
-            $application[CurrentUser::class]->getId(),
-            $application[JsonWebToken::class],
-            $application[ApiKey::class],
-            $application['api_name'],
-            $application[Consumer::class]
-        );
     }
 
     public static function prepareForLogging(Metadata $metadata): Metadata

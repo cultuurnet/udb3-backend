@@ -7,9 +7,13 @@ namespace CultuurNet\UDB3\Silex\Metadata;
 use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\CallableEventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
+use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -24,7 +28,13 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                 return new LazyCallbackMetadataEnricher(
                     function () use ($app) {
                         // Create a default context from application globals.
-                        $context = ContextFactory::createFromGlobals($app);
+                        $context = ContextFactory::createContext(
+                            $app[CurrentUser::class]->getId(),
+                            $app[JsonWebToken::class],
+                            $app[ApiKey::class],
+                            $app['api_name'],
+                            $app[Consumer::class]
+                        );
 
                         // Allow some processes to overwrite the context, like resque workers.
                         if ($app['context'] instanceof Metadata) {
