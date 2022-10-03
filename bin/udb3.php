@@ -3,6 +3,7 @@
 
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Console\ConsoleServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -53,6 +54,7 @@ $app = require __DIR__ . '/../bootstrap.php';
 $container = $app->getLeagueContainer();
 
 $container->addServiceProvider(new CliErrorHandlerProvider());
+$container->addServiceProvider(new ConsoleServiceProvider());
 
 $consoleApp = new Application('UDB3');
 $consoleApp->setCatchExceptions(false);
