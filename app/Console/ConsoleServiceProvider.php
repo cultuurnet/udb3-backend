@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
+use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use Doctrine\DBAL\Driver\Connection;
@@ -17,6 +18,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         return [
             'console.amqp-listen-uitpas',
             'console.replay',
+            'console.event:ancestors',
         ];
     }
 
@@ -51,6 +53,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('eventstore_payload_serializer'),
                     $container->get(EventBus::class)
                 );
+            }
+        );
+
+        $container->addShared(
+            'console.event:ancestors',
+            function () use ($container) {
+                return new EventAncestorsCommand($container->get('event_command_bus'), $container->get('event_store'));
             }
         );
     }

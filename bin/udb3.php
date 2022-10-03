@@ -72,7 +72,7 @@ $container->get('impersonator')->impersonate(
 
 $consoleApp->add($container->get('console.amqp-listen-uitpas'));
 $consoleApp->add($container->get('console.replay'));
-$consoleApp->add(new EventAncestorsCommand($container->get('event_command_bus'), $container->get('event_store')));
+$consoleApp->add($container->get('console.event:ancestors'));
 $consoleApp->add(new PurgeModelCommand($container->get('dbal_connection')));
 $consoleApp->add(new GeocodePlaceCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES), $container->get('place_jsonld_repository')));
 $consoleApp->add(new GeocodeEventCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS), $container->get('event_jsonld_repository')));
