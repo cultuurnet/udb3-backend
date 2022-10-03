@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
-use Silex\Application;
 
 final class CommandBusServiceProvider extends AbstractServiceProvider
 {
@@ -36,7 +35,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         ];
     }
 
-    public function register(Application $app): void
+    public function register(): void
     {
         $container = $this->getContainer();
 
@@ -124,41 +123,27 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $app['resque_command_bus_factory'] = $app->protect(
-            function ($queueName) use ($app) {
-                $app[$queueName . '_command_bus_factory'] = function () use ($app, $queueName) {
-                    $commandBus = new ResqueCommandBus(
-                        $app['authorized_command_bus'],
-                        $queueName,
-                        $app['command_bus_event_dispatcher']
-                    );
-
-                    $commandBus->setLogger($app['logger_factory.resque_worker']($queueName));
-
-                    return $commandBus;
-                };
-
-                $app[$queueName . '_command_validator'] = $app->share(
-                    function () {
-                        return new CompositeCommandValidator();
-                    }
-                );
-
-                $app[$queueName . '_command_bus'] = $app->share(
-                    function (Application $app) use ($queueName) {
-                        return new ValidatingCommandBusDecorator(
-                            new ContextDecoratedCommandBus(
-                                $app[$queueName . '_command_bus_factory'],
-                                $app
-                            ),
-                            $app[$queueName . '_command_validator']
+        $container->addShared(
+            'resque_command_bus_factory',
+            function ($queueName) use ($container) {
+                $container->addShared(
+                    $queueName . '_command_bus_factory',
+                    function () use ($container, $queueName): ResqueCommandBus {
+                        $commandBus = new ResqueCommandBus(
+                            $container->get('authorized_command_bus'),
+                            $queueName,
+                            $container->get('command_bus_event_dispatcher')
                         );
+
+                        $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
+
+                        return $commandBus;
                     }
                 );
-
-                $app[$queueName . '_command_bus_out'] = $app->share(
-                    function (Application $app) use ($queueName) {
-                        return $app[$queueName . '_command_bus_factory'];
+                $container->addShared(
+                    $queueName . '_command_validator',
+                    function (): CompositeCommandValidator {
+                        return new CompositeCommandValidator();
                     }
                 );
             }
