@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
+use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwnerInBulk;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
@@ -53,6 +54,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.offer:change-owner',
             'console.offer:change-owner-bulk',
             'console.organizer:change-owner',
+            'console.organizer:change-owner-bulk',
         ];
     }
 
@@ -273,6 +275,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:change-owner',
             function () use ($container) {
                 return new ChangeOrganizerOwner($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            'console.organizer:change-owner-bulk',
+            function () use ($container) {
+                return new ChangeOrganizerOwnerInBulk(
+                    $container->get('event_command_bus'),
+                    $container->get('organizer_owner.repository')
+                );
             }
         );
     }
