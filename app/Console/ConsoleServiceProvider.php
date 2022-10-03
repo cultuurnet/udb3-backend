@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console;
 
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
@@ -47,6 +48,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:status:update',
             'console.event:booking-availability:update',
             'console.event:attendanceMode:update',
+            'console.offer:change-owner',
         ];
     }
 
@@ -243,6 +245,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('sapi3_search_service_events')
                 );
+            }
+        );
+
+        $container->addShared(
+            'console.offer:change-owner',
+            function () use ($container) {
+                return new ChangeOfferOwner($container->get('event_command_bus'));
             }
         );
     }
