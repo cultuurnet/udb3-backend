@@ -94,7 +94,7 @@ $consoleApp->add($container->get('console.organizer:change-owner-bulk'));
 $consoleApp->add($container->get('console.label:update-unique'));
 $consoleApp->add($container->get('console.organizer:update-unique'));
 $consoleApp->add($container->get('console.place:facilities:remove'));
-$consoleApp->add(new RemoveLabelOffer($container->get('dbal_connection'), $container->get('event_command_bus')));
+$consoleApp->add($container->get('console.offer:remove-label'));
 $consoleApp->add(new RemoveLabelOrganizer($container->get('dbal_connection'), $container->get('event_command_bus')));
 
 $consoleApp->add(new ImportOfferAutoClassificationLabels($container->get('dbal_connection'), $container->get('event_command_bus')));
