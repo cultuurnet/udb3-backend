@@ -54,7 +54,7 @@ $container = $app->getLeagueContainer();
 
 $app->register(new CliErrorHandlerProvider());
 
-$consoleApp = new Application();
+$consoleApp = new Application('UDB3');
 $consoleApp->setCatchExceptions(false);
 
 // An udb3 system user is needed for geocode commands and updating the status of one or multiple offers.
