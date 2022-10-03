@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Console\Command\RemoveFacilitiesFromPlace;
 use CultuurNet\UDB3\Console\Command\RemoveLabelOffer;
 use CultuurNet\UDB3\Console\Command\RemoveLabelOrganizer;
+use CultuurNet\UDB3\Console\Command\ReplaceNewsArticlePublisher;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
@@ -68,6 +69,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.offer:remove-label',
             'console.organizer:remove-label',
             'console.offer:import-auto-classification-labels',
+            'console.article:replace-publisher',
         ];
     }
 
@@ -349,6 +351,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('dbal_connection'),
                     $container->get('event_command_bus')
                 );
+            }
+        );
+
+        $container->addShared(
+            'console.article:replace-publisher',
+            function () use ($container) {
+                return new ReplaceNewsArticlePublisher($container->get('dbal_connection'));
             }
         );
     }
