@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Console;
+namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;

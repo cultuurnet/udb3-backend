@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Console;
+namespace CultuurNet\UDB3\Console\Command;
 
 use League\Csv\Reader;
 use Symfony\Component\Console\Input\InputArgument;

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Console;
+namespace CultuurNet\UDB3\Console\Command;
 
-use CultuurNet\UDB3\Organizer\Commands\ChangeOwner;
+use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class ChangeOrganizerOwner extends AbstractCommand
+class ChangeOfferOwner extends AbstractCommand
 {
     public function configure(): void
     {
-        $this->setName('organizer:change-owner');
-        $this->setDescription('Change the owner of an organizer to a new user id');
-        $this->addArgument('organizerId', InputArgument::REQUIRED, 'Uuid of the organizer');
+        $this->setName('offer:change-owner');
+        $this->setDescription('Change the owner of an offer to a new user id');
+        $this->addArgument('offerId', InputArgument::REQUIRED, 'Uuid of the offer');
         $this->addArgument(
             'newOwnerId',
             InputArgument::REQUIRED,
@@ -32,13 +32,16 @@ final class ChangeOrganizerOwner extends AbstractCommand
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
 
-        $organizerId = $input->getArgument('organizerId');
+        $offerId = $input->getArgument('offerId');
         $newOwnerId = $input->getArgument('newOwnerId');
 
         $this->commandBus->dispatch(
-            new ChangeOwner($organizerId, $newOwnerId)
+            new ChangeOwner(
+                $offerId,
+                $newOwnerId
+            )
         );
-        $logger->info('Successfully changed owner of organizer "' . $organizerId . '" to user with id "' . $newOwnerId . '"');
+        $logger->info('Successfully changed owner of offer "' . $offerId . '" to user with id "' . $newOwnerId . '"');
 
         return 0;
     }

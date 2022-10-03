@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Console;
+namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Doctrine\DBAL\Connection;

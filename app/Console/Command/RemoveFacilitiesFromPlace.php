@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Console;
+namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
