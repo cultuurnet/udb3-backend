@@ -77,7 +77,7 @@ $consoleApp->add($container->get('console.purge'));
 $consoleApp->add($container->get('console.place:geocode'));
 $consoleApp->add($container->get('console.event:geocode'));
 $consoleApp->add($container->get('console.organizer:geocode'));
-$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($container->get(EventBus::class), $container->get('dbal_connection'), $container->get(OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY), $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)));
+$consoleApp->add($container->get('console.fire-projected-to-jsonld-for-relations'));
 $consoleApp->add(new FireProjectedToJSONLDCommand($container->get(EventBus::class), $container->get(OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY), $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)));
 $consoleApp->add(
     new ProcessDuplicatePlaces(

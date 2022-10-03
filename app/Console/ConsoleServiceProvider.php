@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Console;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
+use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
@@ -27,6 +28,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:geocode',
             'console.event:geocode',
             'console.organizer:geocode',
+            'console.fire-projected-to-jsonld-for-relations',
         ];
     }
 
@@ -107,6 +109,18 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('sapi3_search_service_organizers'),
                     $container->get('organizer_jsonld_repository')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.fire-projected-to-jsonld-for-relations',
+            function () use ($container) {
+                return new FireProjectedToJSONLDForRelationsCommand(
+                    $container->get(EventBus::class),
+                    $container->get('dbal_connection'),
+                    $container->get('organizer_jsonld_projected_event_factory'),
+                    $container->get('place_jsonld_projected_event_factory')
                 );
             }
         );
