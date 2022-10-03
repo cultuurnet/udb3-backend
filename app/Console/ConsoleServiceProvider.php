@@ -14,9 +14,11 @@ use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
+use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
+use CultuurNet\UDB3\Offer\OfferType;
 use Doctrine\DBAL\Driver\Connection;
 
 final class ConsoleServiceProvider extends AbstractServiceProvider
@@ -34,6 +36,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.fire-projected-to-jsonld-for-relations',
             'console.fire-projected-to-jsonld',
             'console.place:process-duplicates',
+            'console.event:reindex-offers-with-popularity',
         ];
     }
 
@@ -152,6 +155,18 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('place_jsonld_projected_event_factory'),
                     $container->get(EventRelationsRepository::class),
                     $container->get('dbal_connection')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.event:reindex-offers-with-popularity',
+            function () use ($container) {
+                return new ReindexOffersWithPopularityScore(
+                    OfferType::event(),
+                    $container->get('dbal_connection'),
+                    $container->get(EventBus::class),
+                    $container->get('event_jsonld_projected_event_factory')
                 );
             }
         );
