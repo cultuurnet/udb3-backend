@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Migrations;
+namespace CultuurNet\UDB3\Migrations;
 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
 use Doctrine\DBAL\Migrations\AbstractMigration;

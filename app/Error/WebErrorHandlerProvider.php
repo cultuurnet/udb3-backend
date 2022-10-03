@@ -2,34 +2,41 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Error;
+namespace CultuurNet\UDB3\Error;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
-class WebErrorHandlerProvider implements ServiceProviderInterface
+final class WebErrorHandlerProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[ErrorLogger::class] = $app::share(
-            function (Application $app): ErrorLogger {
-                return new ErrorLogger(
-                    LoggerFactory::create($app, LoggerName::forWeb())
-                );
-            }
-        );
-
-        $app[WebErrorHandler::class] = $app::share(
-            function (Application $app): WebErrorHandler {
-                return new WebErrorHandler(
-                    $app[ErrorLogger::class],
-                    $app['debug'] === true
-                );
-            }
-        );
+        return [
+            ErrorLogger::class,
+            WebErrorHandler::class,
+        ];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            ErrorLogger::class,
+            function () use ($container): ErrorLogger {
+                return new ErrorLogger(
+                    LoggerFactory::create($container, LoggerName::forWeb())
+                );
+            }
+        );
+
+        $container->addShared(
+            WebErrorHandler::class,
+            function () use ($container): WebErrorHandler {
+                return new WebErrorHandler(
+                    $container->get(ErrorLogger::class),
+                    $container->get('debug') === true
+                );
+            }
+        );
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Http;
+namespace CultuurNet\UDB3\Http;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Http\Auth\CorsHeadersMiddleware;
@@ -65,7 +65,6 @@ use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
-use CultuurNet\UDB3\Http\ProjectedToJSONLDInterceptingMiddleware;
 use CultuurNet\UDB3\Http\Role\AddConstraintRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddLabelToRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddPermissionToRoleRequestHandler;
@@ -91,8 +90,8 @@ use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
-use CultuurNet\UDB3\Silex\Error\WebErrorHandler;
-use CultuurNet\UDB3\Http\InvokableRequestHandlerContainer;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
@@ -129,7 +128,6 @@ use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
-use CultuurNet\UDB3\Silex\PimplePSRContainerBridge;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -140,20 +138,22 @@ use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler
 use League\Route\RouteGroup;
 use League\Route\Router;
 use Psr\Container\ContainerInterface;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class PsrRouterServiceProvider implements ServiceProviderInterface
+final class PsrRouterServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[Router::class] = $app::share(
-            function (Application $app) {
-                $router = new Router();
+        return [Router::class];
+    }
 
-                // Create a PSR container based on the Silex (Pimple) container, to allow the router to resolve
-                // request handler class names to actual instances.
-                $container = new PimplePSRContainerBridge($app);
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            Router::class,
+            function () use ($container) {
+                $router = new Router();
 
                 // Decorate the PSR container with InvokableRequestHandlerContainer so that every
                 // RequestHandlerInterface that gets requested by the router is decorated with InvokableRequestHandler,
@@ -162,7 +162,7 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
 
                 // Use a custom strategy so we can implement getOptionsCallable() on the strategy, to support CORS
                 // pre-flight requests. We also have to set the container on the strategy.
-                $routerStrategy = new CustomLeagueRouterStrategy($app[WebErrorHandler::class]);
+                $routerStrategy = new CustomLeagueRouterStrategy($container->get(WebErrorHandler::class));
                 $routerStrategy->setContainer($container);
                 $router->setStrategy($routerStrategy);
 
@@ -533,9 +533,5 @@ final class PsrRouterServiceProvider implements ServiceProviderInterface
         $router->group('uitpas/organizers', function (RouteGroup $routeGroup) {
             $routeGroup->get('{organizerId}/card-systems/', GetCardSystemsFromOrganizerRequestHandler::class);
         });
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }

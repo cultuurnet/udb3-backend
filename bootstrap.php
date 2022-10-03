@@ -59,17 +59,19 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
-use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
+use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
-use CultuurNet\UDB3\Silex\Error\LoggerName;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
@@ -96,6 +98,8 @@ use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
+use League\Container\Container;
+use League\Container\ReflectionContainer;
 use Monolog\Logger;
 use Silex\Application;
 use SocketIO\Emitter;
@@ -103,7 +107,23 @@ use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
 
-$app = new Application();
+/**
+ * Set up a PSR-11 container using league/container. The goal is for this container to replace the Silex Application
+ * object (a Pimple container).
+ * We inject this new PSR container into the Silex application (extended via HybridContainerApplication) so that Silex
+ * service definitions can fetch services from the PSR container (if they exist there) instead of the Silex container.
+ * We then wrap the Silex container in a decorator that makes it PSR-11 compatible and set that as a delegate on the
+ * league container so that service definitions in the league container can fetch services from the Silex container if
+ * they do not exist in the league container.
+ * Lastly we set a ReflectionContainer as a second delegate on the league container to enable auto-wiring in the league
+ * container. Because the Silex container also looks up missing services in the league container, it also gets auto-
+ * wiring this way.
+ */
+$container = new Container();
+$app = new HybridContainerApplication($container);
+$container->delegate(new PimplePSRContainerBridge($app));
+$container->delegate(new ReflectionContainer(true));
+
 $app['api_name'] = defined('API_NAME') ? API_NAME : ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
@@ -346,7 +366,7 @@ $app['logger_factory.resque_worker'] = $app::protect(
         }
         $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
 
-        return LoggerFactory::create($app, LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
+        return LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
     }
 );
 
@@ -796,7 +816,7 @@ $app['uitpas'] = $app->share(
 // who initially queued the command.
 $app['impersonator'] = $app->share(
     function () {
-        return new \CultuurNet\UDB3\Silex\Impersonator();
+        return new \CultuurNet\UDB3\Impersonator();
     }
 );
 

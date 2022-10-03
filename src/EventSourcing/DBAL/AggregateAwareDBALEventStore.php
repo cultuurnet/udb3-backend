@@ -11,7 +11,7 @@ use Broadway\EventStore\EventStore;
 use Broadway\EventStore\EventStreamNotFoundException;
 use Broadway\Serializer\Serializer;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\AggregateType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
