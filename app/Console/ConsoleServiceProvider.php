@@ -25,9 +25,11 @@ use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
 use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
+use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use Doctrine\DBAL\Driver\Connection;
 
 final class ConsoleServiceProvider extends AbstractServiceProvider
@@ -57,6 +59,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:change-owner',
             'console.organizer:change-owner-bulk',
             'console.label:update-unique',
+            'console.organizer:update-unique',
         ];
     }
 
@@ -294,6 +297,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.label:update-unique',
             function () use ($container) {
                 return new UpdateUniqueLabels($container->get('dbal_connection'));
+            }
+        );
+
+        $container->addShared(
+            'console.organizer:update-unique',
+            function () use ($container) {
+                return new UpdateUniqueOrganizers($container->get('dbal_connection'), new WebsiteNormalizer());
             }
         );
     }
