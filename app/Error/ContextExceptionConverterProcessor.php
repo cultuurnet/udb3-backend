@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Error;
+namespace CultuurNet\UDB3\Error;
 
 use Monolog\Processor\ProcessorInterface;
 use Throwable;
