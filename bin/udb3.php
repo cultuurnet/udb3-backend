@@ -68,15 +68,7 @@ $container->get('impersonator')->impersonate(
     )
 );
 
-$heartBeat = static function () use ($container) {
-    /** @var Connection $db */
-    $db = $container->get('dbal_connection');
-    $db->query('SELECT 1')->execute();
-};
-
-$consoleApp->add(
-    new ConsumeCommand('amqp-listen-uitpas', 'amqp.uitpas_event_bus_forwarding_consumer', $container, $heartBeat)
-);
+$consoleApp->add($container->get(ConsumeCommand::class));
 
 $consoleApp->add(new ReplayCommand($container->get('event_command_bus'), $container->get('dbal_connection'), $container->get('eventstore_payload_serializer'), $container->get(EventBus::class)));
 $consoleApp->add(new EventAncestorsCommand($container->get('event_command_bus'), $container->get('event_store')));
