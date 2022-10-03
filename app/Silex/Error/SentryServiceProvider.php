@@ -4,29 +4,32 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use function Sentry\init;
 
-class SentryServiceProvider implements ServiceProviderInterface
+final class SentryServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[HubInterface::class] = $app->share(
-            function (Application $app) {
+        return [HubInterface::class];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            HubInterface::class,
+            function () use ($container) {
                 init([
-                    'dsn' => $app['config']['sentry']['dsn'],
-                    'environment' => $app['config']['sentry']['environment'],
+                    'dsn' => $container->get('config')['sentry']['dsn'],
+                    'environment' => $container->get('config')['sentry']['environment'],
                 ]);
 
                 return SentrySdk::getCurrentHub();
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }

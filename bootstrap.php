@@ -164,7 +164,7 @@ $app['event_store_factory'] = $app->protect(
     }
 );
 
-$app->register(new SentryServiceProvider());
+$container->addServiceProvider(new SentryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
