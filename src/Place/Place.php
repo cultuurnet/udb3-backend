@@ -9,7 +9,6 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
@@ -74,7 +73,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class Place extends Offer implements UpdateableWithCdbXmlInterface
+class Place extends Offer
 {
     private string $placeId;
 

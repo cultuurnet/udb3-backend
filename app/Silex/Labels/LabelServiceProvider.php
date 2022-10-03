@@ -37,7 +37,6 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
-use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use CultuurNet\UDB3\User\CurrentUser;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
@@ -84,16 +83,6 @@ class LabelServiceProvider implements ServiceProviderInterface
         $this->setUpProjectors($app);
 
         $this->setUpQueryFactory($app);
-
-        $app['related_udb3_labels_applier'] = $app->share(
-            function (Application $app) {
-                return new RelatedUDB3LabelApplier(
-                    $app[self::RELATIONS_READ_REPOSITORY],
-                    $app[self::JSON_READ_REPOSITORY],
-                    $app[self::LOGGER]
-                );
-            }
-        );
 
         $app[CreateLabelRequestHandler::class] = $app->share(
             fn (Application $app) => new CreateLabelRequestHandler(

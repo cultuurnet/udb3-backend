@@ -22,7 +22,6 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
-use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
@@ -100,7 +99,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class Event extends Offer implements UpdateableWithCdbXmlInterface
+class Event extends Offer
 {
     protected string $eventId;
 
@@ -518,17 +517,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function createImagesUpdatedFromUDB2(ImageCollection $images): ImagesUpdatedFromUDB2
     {
         return new ImagesUpdatedFromUDB2($this->eventId, $images);
-    }
-
-    public function updateWithCdbXml($cdbXml, $cdbXmlNamespaceUri): void
-    {
-        $this->apply(
-            new EventUpdatedFromUDB2(
-                $this->eventId,
-                $cdbXml,
-                $cdbXmlNamespaceUri
-            )
-        );
     }
 
     protected function createLabelAddedEvent(string $labelName, bool $isVisible): LabelAdded
