@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
 use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
+use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -55,6 +56,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.offer:change-owner-bulk',
             'console.organizer:change-owner',
             'console.organizer:change-owner-bulk',
+            'console.label:update-unique',
         ];
     }
 
@@ -285,6 +287,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('organizer_owner.repository')
                 );
+            }
+        );
+
+        $container->addShared(
+            'console.label:update-unique',
+            function () use ($container) {
+                return new UpdateUniqueLabels($container->get('dbal_connection'));
             }
         );
     }

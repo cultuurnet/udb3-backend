@@ -91,7 +91,7 @@ $consoleApp->add($container->get('console.offer:change-owner'));
 $consoleApp->add($container->get('console.offer:change-owner-bulk'));
 $consoleApp->add($container->get('console.organizer:change-owner'));
 $consoleApp->add($container->get('console.organizer:change-owner-bulk'));
-$consoleApp->add(new UpdateUniqueLabels($container->get('dbal_connection')));
+$consoleApp->add($container->get('console.label:update-unique'));
 $consoleApp->add(new UpdateUniqueOrganizers($container->get('dbal_connection'), new WebsiteNormalizer()));
 $consoleApp->add(new RemoveFacilitiesFromPlace($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES)));
 $consoleApp->add(new RemoveLabelOffer($container->get('dbal_connection'), $container->get('event_command_bus')));
