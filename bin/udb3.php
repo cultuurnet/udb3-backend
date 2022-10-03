@@ -85,7 +85,7 @@ $consoleApp->add($container->get('console.place:reindex-offers-with-popularity')
 $consoleApp->add($container->get('console.event:reindex-events-with-recommendations'));
 $consoleApp->add($container->get('console.event:status:update'));
 $consoleApp->add($container->get('console.place:status:update'));
-$consoleApp->add(new UpdateBookingAvailabilityCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS)));
+$consoleApp->add($container->get('console.event:booking-availability:update'));
 $consoleApp->add(new UpdateEventsAttendanceMode($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS)));
 $consoleApp->add(new ChangeOfferOwner($container->get('event_command_bus')));
 $consoleApp->add(new ChangeOfferOwnerInBulk($container->get('event_command_bus'), $container->get('offer_owner_query')));

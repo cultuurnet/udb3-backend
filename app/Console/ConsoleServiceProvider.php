@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
+use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
@@ -43,6 +44,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:reindex-events-with-recommendations',
             'console.event:status:update',
             'console.place:status:update',
+            'console.event:booking-availability:update',
         ];
     }
 
@@ -218,6 +220,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     OfferType::place(),
                     $container->get('event_command_bus'),
                     $container->get('sapi3_search_service_places')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.event:booking-availability:update',
+            function () use ($container) {
+                return new UpdateBookingAvailabilityCommand(
+                    $container->get('event_command_bus'),
+                    $container->get('sapi3_search_service_events')
                 );
             }
         );
