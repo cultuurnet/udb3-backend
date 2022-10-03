@@ -53,7 +53,7 @@ const API_NAME = ApiName::CLI;
 $app = require __DIR__ . '/../bootstrap.php';
 $container = $app->getLeagueContainer();
 
-$app->register(new CliErrorHandlerProvider());
+$container->addServiceProvider(new CliErrorHandlerProvider());
 
 $app->register(
     new ConsoleServiceProvider(),

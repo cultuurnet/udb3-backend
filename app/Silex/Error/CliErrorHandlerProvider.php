@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\ErrorLogger;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class CliErrorHandlerProvider implements ServiceProviderInterface
+final class CliErrorHandlerProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[ErrorLogger::class] = $app::share(
-            function (HybridContainerApplication $app): ErrorLogger {
+        return [ErrorLogger::class];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            ErrorLogger::class,
+            function () use ($container): ErrorLogger {
                 return new ErrorLogger(
-                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forCli())
+                    LoggerFactory::create($container, LoggerName::forCli())
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
