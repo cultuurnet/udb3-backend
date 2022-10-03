@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Console;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
+use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
@@ -23,6 +24,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:ancestors',
             'console.purge',
             'console.place:geocode',
+            'console.event:geocode',
         ];
     }
 
@@ -81,6 +83,17 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('sapi3_search_service_places'),
                     $container->get('place_jsonld_repository')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.event:geocode',
+            function () use ($container) {
+                return new GeocodeEventCommand(
+                    $container->get('event_command_bus'),
+                    $container->get('sapi3_search_service_events'),
+                    $container->get('event_jsonld_repository')
                 );
             }
         );
