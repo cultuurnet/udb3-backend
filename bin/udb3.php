@@ -96,8 +96,7 @@ $consoleApp->add($container->get('console.organizer:update-unique'));
 $consoleApp->add($container->get('console.place:facilities:remove'));
 $consoleApp->add($container->get('console.offer:remove-label'));
 $consoleApp->add($container->get('console.organizer:remove-label'));
-
-$consoleApp->add(new ImportOfferAutoClassificationLabels($container->get('dbal_connection'), $container->get('event_command_bus')));
+$consoleApp->add($container->get('console.offer:import-auto-classification-labels'));
 
 $consoleApp->add(new ReplaceNewsArticlePublisher($container->get('dbal_connection')));
 

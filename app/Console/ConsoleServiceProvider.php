@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
+use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
@@ -66,6 +67,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:facilities:remove',
             'console.offer:remove-label',
             'console.organizer:remove-label',
+            'console.offer:import-auto-classification-labels',
         ];
     }
 
@@ -334,6 +336,16 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:remove-label',
             function () use ($container) {
                 return new RemoveLabelOrganizer(
+                    $container->get('dbal_connection'),
+                    $container->get('event_command_bus')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.offer:import-auto-classification-labels',
+            function () use ($container) {
+                return new ImportOfferAutoClassificationLabels(
                     $container->get('dbal_connection'),
                     $container->get('event_command_bus')
                 );
