@@ -65,6 +65,7 @@ use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Authentication\AuthServiceProvider;
+use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
@@ -168,7 +169,7 @@ $app->register(new SentryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider());
+$container->addServiceProvider(new CommandBusServiceProvider());
 $app->register(new EventBusServiceProvider());
 
 /**
