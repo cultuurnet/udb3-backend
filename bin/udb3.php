@@ -42,6 +42,7 @@ use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Doctrine\DBAL\Connection;
 use Knp\Provider\ConsoleServiceProvider;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -63,8 +64,7 @@ $app->register(
     ]
 );
 
-/** @var \Knp\Console\Application $consoleApp */
-$consoleApp = $app['console'];
+$consoleApp = new Application();
 $consoleApp->setCatchExceptions(false);
 
 // An udb3 system user is needed for geocode commands and updating the status of one or multiple offers.
