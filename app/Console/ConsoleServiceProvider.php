@@ -35,7 +35,6 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
-use Doctrine\DBAL\Driver\Connection;
 
 final class ConsoleServiceProvider extends AbstractServiceProvider
 {
