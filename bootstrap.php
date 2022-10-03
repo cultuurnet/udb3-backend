@@ -60,8 +60,8 @@ use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\AggregateType;
-use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
-use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
+use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
+use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
@@ -811,24 +811,12 @@ $app['impersonator'] = $app->share(
     }
 );
 
-$app->register(
-    new AMQPConnectionServiceProvider(),
-    [
-        'amqp.connection.host' => $app['config']['amqp']['host'],
-        'amqp.connection.port' => $app['config']['amqp']['port'],
-        'amqp.connection.user' => $app['config']['amqp']['user'],
-        'amqp.connection.password' => $app['config']['amqp']['password'],
-        'amqp.connection.vhost' => $app['config']['amqp']['vhost'],
-    ]
+$container->addServiceProvider(
+    new AMQPConnectionServiceProvider()
 );
 
-$app->register(
-    new AMQPPublisherServiceProvider(),
-    [
-        'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
-        'amqp.publisher.cli.client_ids' => $app['config']['amqp']['publish']['udb3']['cli']['client_ids'],
-        'amqp.publisher.cli.api_keys' => $app['config']['amqp']['publish']['udb3']['cli']['api_keys'],
-    ]
+$container->addServiceProvider(
+    new AMQPPublisherServiceProvider()
 );
 
 $app->register(new MetadataServiceProvider());
