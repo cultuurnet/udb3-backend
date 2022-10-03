@@ -81,14 +81,7 @@ $consoleApp->add($container->get('console.fire-projected-to-jsonld-for-relations
 $consoleApp->add($container->get('console.fire-projected-to-jsonld'));
 $consoleApp->add($container->get('console.place:process-duplicates'));
 $consoleApp->add($container->get('console.event:reindex-offers-with-popularity'));
-$consoleApp->add(
-    new ReindexOffersWithPopularityScore(
-        OfferType::place(),
-        $container->get('dbal_connection'),
-        $container->get(EventBus::class),
-        $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)
-    )
-);
+$consoleApp->add($container->get('console.place:reindex-offers-with-popularity'));
 $consoleApp->add(
     new ReindexEventsWithRecommendations(
         $container->get('dbal_connection'),

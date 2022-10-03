@@ -37,6 +37,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.fire-projected-to-jsonld',
             'console.place:process-duplicates',
             'console.event:reindex-offers-with-popularity',
+            'console.place:reindex-offers-with-popularity',
         ];
     }
 
@@ -167,6 +168,18 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('dbal_connection'),
                     $container->get(EventBus::class),
                     $container->get('event_jsonld_projected_event_factory')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.place:reindex-offers-with-popularity',
+            function () use ($container) {
+                return new ReindexOffersWithPopularityScore(
+                    OfferType::place(),
+                    $container->get('dbal_connection'),
+                    $container->get(EventBus::class),
+                    $container->get('place_jsonld_projected_event_factory')
                 );
             }
         );
