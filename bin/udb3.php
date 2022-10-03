@@ -34,7 +34,7 @@ use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
-use CultuurNet\UDB3\Silex\Error\CliErrorHandlerProvider;
+use CultuurNet\UDB3\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -52,7 +52,7 @@ const API_NAME = ApiName::CLI;
 $app = require __DIR__ . '/../bootstrap.php';
 $container = $app->getLeagueContainer();
 
-$app->register(new CliErrorHandlerProvider());
+$container->addServiceProvider(new CliErrorHandlerProvider());
 
 $consoleApp = new Application('UDB3');
 $consoleApp->setCatchExceptions(false);
