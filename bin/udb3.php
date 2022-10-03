@@ -88,7 +88,7 @@ $consoleApp->add($container->get('console.place:status:update'));
 $consoleApp->add($container->get('console.event:booking-availability:update'));
 $consoleApp->add($container->get('console.event:attendanceMode:update'));
 $consoleApp->add($container->get('console.offer:change-owner'));
-$consoleApp->add(new ChangeOfferOwnerInBulk($container->get('event_command_bus'), $container->get('offer_owner_query')));
+$consoleApp->add($container->get('console.offer:change-owner-bulk'));
 $consoleApp->add(new ChangeOrganizerOwner($container->get('event_command_bus')));
 $consoleApp->add(new ChangeOrganizerOwnerInBulk($container->get('event_command_bus'), $container->get('organizer_owner.repository')));
 $consoleApp->add(new UpdateUniqueLabels($container->get('dbal_connection')));
