@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
+use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
@@ -38,6 +39,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:process-duplicates',
             'console.event:reindex-offers-with-popularity',
             'console.place:reindex-offers-with-popularity',
+            'console.event:reindex-events-with-recommendations',
         ];
     }
 
@@ -180,6 +182,17 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('dbal_connection'),
                     $container->get(EventBus::class),
                     $container->get('place_jsonld_projected_event_factory')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.event:reindex-events-with-recommendations',
+            function () use ($container) {
+                return new ReindexEventsWithRecommendations(
+                    $container->get('dbal_connection'),
+                    $container->get(EventBus::class),
+                    $container->get('event_jsonld_projected_event_factory')
                 );
             }
         );

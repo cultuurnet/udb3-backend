@@ -82,13 +82,7 @@ $consoleApp->add($container->get('console.fire-projected-to-jsonld'));
 $consoleApp->add($container->get('console.place:process-duplicates'));
 $consoleApp->add($container->get('console.event:reindex-offers-with-popularity'));
 $consoleApp->add($container->get('console.place:reindex-offers-with-popularity'));
-$consoleApp->add(
-    new ReindexEventsWithRecommendations(
-        $container->get('dbal_connection'),
-        $container->get(EventBus::class),
-        $container->get(EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)
-    )
-);
+$consoleApp->add($container->get('console.event:reindex-events-with-recommendations'));
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::event(), $container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS)));
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::place(), $container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES)));
 $consoleApp->add(new UpdateBookingAvailabilityCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS)));
