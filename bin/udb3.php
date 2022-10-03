@@ -76,7 +76,7 @@ $consoleApp->add($container->get('console.event:ancestors'));
 $consoleApp->add($container->get('console.purge'));
 $consoleApp->add($container->get('console.place:geocode'));
 $consoleApp->add($container->get('console.event:geocode'));
-$consoleApp->add(new GeocodeOrganizerCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_ORGANIZERS), $container->get('organizer_jsonld_repository')));
+$consoleApp->add($container->get('console.organizer:geocode'));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($container->get(EventBus::class), $container->get('dbal_connection'), $container->get(OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY), $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)));
 $consoleApp->add(new FireProjectedToJSONLDCommand($container->get(EventBus::class), $container->get(OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY), $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)));
 $consoleApp->add(
