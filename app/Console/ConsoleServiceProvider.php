@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
 use CultuurNet\UDB3\Console\Command\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
+use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -40,6 +41,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:reindex-offers-with-popularity',
             'console.place:reindex-offers-with-popularity',
             'console.event:reindex-events-with-recommendations',
+            'console.event:status:update',
         ];
     }
 
@@ -193,6 +195,17 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('dbal_connection'),
                     $container->get(EventBus::class),
                     $container->get('event_jsonld_projected_event_factory')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.event:status:update',
+            function () use ($container) {
+                return new UpdateOfferStatusCommand(
+                    OfferType::event(),
+                    $container->get('event_command_bus'),
+                    $container->get('sapi3_search_service_events')
                 );
             }
         );
