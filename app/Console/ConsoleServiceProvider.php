@@ -42,6 +42,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:reindex-offers-with-popularity',
             'console.event:reindex-events-with-recommendations',
             'console.event:status:update',
+            'console.place:status:update',
         ];
     }
 
@@ -206,6 +207,17 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     OfferType::event(),
                     $container->get('event_command_bus'),
                     $container->get('sapi3_search_service_events')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.place:status:update',
+            function () use ($container) {
+                return new UpdateOfferStatusCommand(
+                    OfferType::place(),
+                    $container->get('event_command_bus'),
+                    $container->get('sapi3_search_service_places')
                 );
             }
         );
