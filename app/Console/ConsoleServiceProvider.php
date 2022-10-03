@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Console;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
+use CultuurNet\UDB3\Console\Command\ChangeOrganizerOwner;
 use CultuurNet\UDB3\Console\Command\ConsumeCommand;
 use CultuurNet\UDB3\Console\Command\EventAncestorsCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
@@ -51,6 +52,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.event:attendanceMode:update',
             'console.offer:change-owner',
             'console.offer:change-owner-bulk',
+            'console.organizer:change-owner',
         ];
     }
 
@@ -264,6 +266,13 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('offer_owner_query')
                 );
+            }
+        );
+
+        $container->addShared(
+            'console.organizer:change-owner',
+            function () use ($container) {
+                return new ChangeOrganizerOwner($container->get('event_command_bus'));
             }
         );
     }
