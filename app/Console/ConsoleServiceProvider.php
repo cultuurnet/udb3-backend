@@ -12,9 +12,11 @@ use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeEventCommand;
 use CultuurNet\UDB3\Console\Command\GeocodeOrganizerCommand;
 use CultuurNet\UDB3\Console\Command\GeocodePlaceCommand;
+use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use Doctrine\DBAL\Driver\Connection;
 
 final class ConsoleServiceProvider extends AbstractServiceProvider
@@ -31,6 +33,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.organizer:geocode',
             'console.fire-projected-to-jsonld-for-relations',
             'console.fire-projected-to-jsonld',
+            'console.place:process-duplicates',
         ];
     }
 
@@ -134,6 +137,21 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     $container->get(EventBus::class),
                     $container->get('organizer_jsonld_projected_event_factory'),
                     $container->get('place_jsonld_projected_event_factory')
+                );
+            }
+        );
+
+        $container->addShared(
+            'console.place:process-duplicates',
+            function () use ($container) {
+                return new ProcessDuplicatePlaces(
+                    $container->get('event_command_bus'),
+                    $container->get('duplicate_place_repository'),
+                    $container->get('canonical_service'),
+                    $container->get(EventBus::class),
+                    $container->get('place_jsonld_projected_event_factory'),
+                    $container->get(EventRelationsRepository::class),
+                    $container->get('dbal_connection')
                 );
             }
         );

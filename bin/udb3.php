@@ -79,17 +79,7 @@ $consoleApp->add($container->get('console.event:geocode'));
 $consoleApp->add($container->get('console.organizer:geocode'));
 $consoleApp->add($container->get('console.fire-projected-to-jsonld-for-relations'));
 $consoleApp->add($container->get('console.fire-projected-to-jsonld'));
-$consoleApp->add(
-    new ProcessDuplicatePlaces(
-        $container->get('event_command_bus'),
-        $container->get('duplicate_place_repository'),
-        $container->get('canonical_service'),
-        $container->get(EventBus::class),
-        $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY),
-        $container->get(EventRelationsRepository::class),
-        $container->get('dbal_connection')
-    )
-);
+$consoleApp->add($container->get('console.place:process-duplicates'));
 $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::event(),
