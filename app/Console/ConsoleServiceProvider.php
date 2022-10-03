@@ -81,7 +81,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.amqp-listen-uitpas',
             function () use ($container) {
                 $heartBeat = static function () use ($container) {
-                    /** @var Connection $db */
                     $db = $container->get('dbal_connection');
                     $db->query('SELECT 1')->execute();
                 };
