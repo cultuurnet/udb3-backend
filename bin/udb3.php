@@ -41,7 +41,6 @@ use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Doctrine\DBAL\Connection;
-use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -54,15 +53,6 @@ $app = require __DIR__ . '/../bootstrap.php';
 $container = $app->getLeagueContainer();
 
 $app->register(new CliErrorHandlerProvider());
-
-$app->register(
-    new ConsoleServiceProvider(),
-    [
-        'console.name' => 'UDB3',
-        'console.version' => '0.0.1',
-        'console.project_directory' => __DIR__ . '/..',
-    ]
-);
 
 $consoleApp = new Application();
 $consoleApp->setCatchExceptions(false);
