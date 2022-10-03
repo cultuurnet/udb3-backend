@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
 use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
@@ -102,7 +105,11 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                             new RetryingCommandBus(
                                 $container->get('authorized_command_bus')
                             ),
-                            $app
+                            $container->get(CurrentUser::class)->getId(),
+                            $container->get(JsonWebToken::class),
+                            $container->get(ApiKey::class),
+                            $container->get('api_name'),
+                            $container->get(Consumer::class)
                         ),
                         $container->get('event_command_validator')
                     )
