@@ -78,76 +78,76 @@ $consoleApp->add(
     new ConsumeCommand('amqp-listen-uitpas', 'amqp.uitpas_event_bus_forwarding_consumer', $container, $heartBeat)
 );
 
-$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app[EventBus::class]));
-$consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
-$consoleApp->add(new PurgeModelCommand($app['dbal_connection']));
-$consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES], $app['place_jsonld_repository']));
-$consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS], $app['event_jsonld_repository']));
-$consoleApp->add(new GeocodeOrganizerCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_ORGANIZERS], $app['organizer_jsonld_repository']));
-$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app[EventBus::class], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
-$consoleApp->add(new FireProjectedToJSONLDCommand($app[EventBus::class], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
+$consoleApp->add(new ReplayCommand($container->get('event_command_bus'), $container->get('dbal_connection'), $container->get('eventstore_payload_serializer'), $container->get(EventBus::class)));
+$consoleApp->add(new EventAncestorsCommand($container->get('event_command_bus'), $container->get('event_store')));
+$consoleApp->add(new PurgeModelCommand($container->get('dbal_connection')));
+$consoleApp->add(new GeocodePlaceCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES), $container->get('place_jsonld_repository')));
+$consoleApp->add(new GeocodeEventCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS), $container->get('event_jsonld_repository')));
+$consoleApp->add(new GeocodeOrganizerCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_ORGANIZERS), $container->get('organizer_jsonld_repository')));
+$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($container->get(EventBus::class), $container->get('dbal_connection'), $container->get(OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY), $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)));
+$consoleApp->add(new FireProjectedToJSONLDCommand($container->get(EventBus::class), $container->get(OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY), $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)));
 $consoleApp->add(
     new ProcessDuplicatePlaces(
-        $app['event_command_bus'],
-        $app['duplicate_place_repository'],
-        $app['canonical_service'],
-        $app[EventBus::class],
-        $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
-        $app[EventRelationsRepository::class],
-        $app['dbal_connection']
+        $container->get('event_command_bus'),
+        $container->get('duplicate_place_repository'),
+        $container->get('canonical_service'),
+        $container->get(EventBus::class),
+        $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY),
+        $container->get(EventRelationsRepository::class),
+        $container->get('dbal_connection')
     )
 );
 $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::event(),
-        $app['dbal_connection'],
-        $app[EventBus::class],
-        $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+        $container->get('dbal_connection'),
+        $container->get(EventBus::class),
+        $container->get(EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)
     )
 );
 $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::place(),
-        $app['dbal_connection'],
-        $app[EventBus::class],
-        $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+        $container->get('dbal_connection'),
+        $container->get(EventBus::class),
+        $container->get(PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)
     )
 );
 $consoleApp->add(
     new ReindexEventsWithRecommendations(
-        $app['dbal_connection'],
-        $app[EventBus::class],
-        $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+        $container->get('dbal_connection'),
+        $container->get(EventBus::class),
+        $container->get(EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY)
     )
 );
-$consoleApp->add(new UpdateOfferStatusCommand(OfferType::event(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
-$consoleApp->add(new UpdateOfferStatusCommand(OfferType::place(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
-$consoleApp->add(new UpdateBookingAvailabilityCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
-$consoleApp->add(new UpdateEventsAttendanceMode($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
-$consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
-$consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_owner_query']));
-$consoleApp->add(new ChangeOrganizerOwner($app['event_command_bus']));
-$consoleApp->add(new ChangeOrganizerOwnerInBulk($app['event_command_bus'], $app['organizer_owner.repository']));
-$consoleApp->add(new UpdateUniqueLabels($app['dbal_connection']));
-$consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection'], new WebsiteNormalizer()));
-$consoleApp->add(new RemoveFacilitiesFromPlace($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
-$consoleApp->add(new RemoveLabelOffer($app['dbal_connection'], $app['event_command_bus']));
-$consoleApp->add(new RemoveLabelOrganizer($app['dbal_connection'], $app['event_command_bus']));
+$consoleApp->add(new UpdateOfferStatusCommand(OfferType::event(), $container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS)));
+$consoleApp->add(new UpdateOfferStatusCommand(OfferType::place(), $container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES)));
+$consoleApp->add(new UpdateBookingAvailabilityCommand($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS)));
+$consoleApp->add(new UpdateEventsAttendanceMode($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS)));
+$consoleApp->add(new ChangeOfferOwner($container->get('event_command_bus')));
+$consoleApp->add(new ChangeOfferOwnerInBulk($container->get('event_command_bus'), $container->get('offer_owner_query')));
+$consoleApp->add(new ChangeOrganizerOwner($container->get('event_command_bus')));
+$consoleApp->add(new ChangeOrganizerOwnerInBulk($container->get('event_command_bus'), $container->get('organizer_owner.repository')));
+$consoleApp->add(new UpdateUniqueLabels($container->get('dbal_connection')));
+$consoleApp->add(new UpdateUniqueOrganizers($container->get('dbal_connection'), new WebsiteNormalizer()));
+$consoleApp->add(new RemoveFacilitiesFromPlace($container->get('event_command_bus'), $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES)));
+$consoleApp->add(new RemoveLabelOffer($container->get('dbal_connection'), $container->get('event_command_bus')));
+$consoleApp->add(new RemoveLabelOrganizer($container->get('dbal_connection'), $container->get('event_command_bus')));
 
-$consoleApp->add(new ImportOfferAutoClassificationLabels($app['dbal_connection'], $app['event_command_bus']));
+$consoleApp->add(new ImportOfferAutoClassificationLabels($container->get('dbal_connection'), $container->get('event_command_bus')));
 
-$consoleApp->add(new ReplaceNewsArticlePublisher($app['dbal_connection']));
+$consoleApp->add(new ReplaceNewsArticlePublisher($container->get('dbal_connection')));
 
 try {
     $consoleApp->run();
 } catch (\Exception $exception) {
-    $app[ErrorLogger::class]->log($exception);
+    $container->get(ErrorLogger::class)->log($exception);
     $consoleApp->renderException($exception, new ConsoleOutput());
     // Exit with a non-zero status code so a script executing this command gets feedback on whether it was successful or
     // not. This is also how Symfony Console normally does it when it catches exceptions. (Which we disabled)
     exit(1);
 } catch (\Error $error) {
-    $app[ErrorLogger::class]->log($error);
+    $container->get(ErrorLogger::class)->log($error);
     // The version of Symfony Console that we are on does not support rendering of Errors yet, so after logging it we
     // should re-throw it so PHP itself prints a message and then exits with a non-zero status code.
     throw $error;
