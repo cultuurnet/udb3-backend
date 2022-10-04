@@ -63,7 +63,7 @@ use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\ApiName;
-use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
+use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
@@ -897,7 +897,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 $app->register(new CuratorsServiceProvider());
 
-$app->register(new Auth0ServiceProvider());
+$container->addServiceProvider(new Auth0ServiceProvider());
 
 $app->register(new TermServiceProvider());
 
