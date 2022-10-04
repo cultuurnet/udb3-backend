@@ -46,11 +46,11 @@ final class AuthServiceProvider extends AbstractServiceProvider
             function () use ($container): RequestAuthenticatorMiddleware {
                 $authenticator = new RequestAuthenticatorMiddleware(
                     new UitIdV1JwtValidator(
-                        'file://' . __DIR__ . '/../../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
+                        'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
                         $container->get('config')['jwt']['v1']['valid_issuers']
                     ),
                     new UitIdV2JwtValidator(
-                        'file://' . __DIR__ . '/../../../' . $container->get('config')['jwt']['v2']['keys']['public']['file'],
+                        'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v2']['keys']['public']['file'],
                         $container->get('config')['jwt']['v2']['valid_issuers'],
                         $container->get('config')['jwt']['v2']['jwt_provider_client_id']
                     ),
