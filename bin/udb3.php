@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Error\ErrorLogger;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
+use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -36,39 +36,7 @@ $container->get('impersonator')->impersonate(
     )
 );
 
-$commands = [
-    'amqp-listen-uitpas',
-    'replay',
-    'event:ancestors',
-    'purge',
-    'place:geocode',
-    'event:geocode',
-    'organizer:geocode',
-    'fire-projected-to-jsonld-for-relations',
-    'fire-projected-to-jsonld',
-    'place:process-duplicates',
-    'event:reindex-offers-with-popularity',
-    'place:reindex-offers-with-popularity',
-    'event:reindex-events-with-recommendations',
-    'event:status:update',
-    'place:status:update',
-    'event:booking-availability:update',
-    'event:attendanceMode:update',
-    'offer:change-owner',
-    'offer:change-owner-bulk',
-    'organizer:change-owner',
-    'organizer:change-owner-bulk',
-    'label:update-unique',
-    'organizer:update-unique',
-    'place:facilities:remove',
-    'offer:remove-label',
-    'organizer:remove-label',
-    'offer:import-auto-classification-labels',
-    'article:replace-publisher',
-];
-$commandServices = array_map(fn (string $command) => 'console.' . $command, $commands);
-$commandMap = array_combine($commands, $commandServices);
-$consoleApp->setCommandLoader(new ContainerCommandLoader($container, $commandMap));
+$consoleApp->setCommandLoader($container->get(CommandLoaderInterface::class));
 
 try {
     $consoleApp->run();

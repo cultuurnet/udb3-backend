@@ -35,46 +35,71 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
+use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
 final class ConsoleServiceProvider extends AbstractServiceProvider
 {
+    private const COMMAND_SERVICES = [
+        'console.amqp-listen-uitpas',
+        'console.replay',
+        'console.event:ancestors',
+        'console.purge',
+        'console.place:geocode',
+        'console.event:geocode',
+        'console.organizer:geocode',
+        'console.fire-projected-to-jsonld-for-relations',
+        'console.fire-projected-to-jsonld',
+        'console.place:process-duplicates',
+        'console.event:reindex-offers-with-popularity',
+        'console.place:reindex-offers-with-popularity',
+        'console.event:reindex-events-with-recommendations',
+        'console.event:status:update',
+        'console.place:status:update',
+        'console.event:booking-availability:update',
+        'console.event:attendanceMode:update',
+        'console.offer:change-owner',
+        'console.offer:change-owner-bulk',
+        'console.organizer:change-owner',
+        'console.organizer:change-owner-bulk',
+        'console.label:update-unique',
+        'console.organizer:update-unique',
+        'console.place:facilities:remove',
+        'console.offer:remove-label',
+        'console.organizer:remove-label',
+        'console.offer:import-auto-classification-labels',
+        'console.article:replace-publisher',
+    ];
+
     protected function getProvidedServiceNames(): array
     {
-        return [
-            'console.amqp-listen-uitpas',
-            'console.replay',
-            'console.event:ancestors',
-            'console.purge',
-            'console.place:geocode',
-            'console.event:geocode',
-            'console.organizer:geocode',
-            'console.fire-projected-to-jsonld-for-relations',
-            'console.fire-projected-to-jsonld',
-            'console.place:process-duplicates',
-            'console.event:reindex-offers-with-popularity',
-            'console.place:reindex-offers-with-popularity',
-            'console.event:reindex-events-with-recommendations',
-            'console.event:status:update',
-            'console.place:status:update',
-            'console.event:booking-availability:update',
-            'console.event:attendanceMode:update',
-            'console.offer:change-owner',
-            'console.offer:change-owner-bulk',
-            'console.organizer:change-owner',
-            'console.organizer:change-owner-bulk',
-            'console.label:update-unique',
-            'console.organizer:update-unique',
-            'console.place:facilities:remove',
-            'console.offer:remove-label',
-            'console.organizer:remove-label',
-            'console.offer:import-auto-classification-labels',
-            'console.article:replace-publisher',
-        ];
+        return array_merge(
+            self::COMMAND_SERVICES,
+            [CommandLoaderInterface::class]
+        );
     }
 
     public function register(): void
     {
         $container = $this->getContainer();
+
+        $container->addShared(
+            CommandLoaderInterface::class,
+            function () use ($container): CommandLoaderInterface {
+                $commandServiceNames = self::COMMAND_SERVICES;
+
+                // Remove the "console." prefix from every command service name to get the actual command names without
+                // loading them.
+                $commandNames = array_map(
+                    fn (string $commandServiceName) => substr($commandServiceName, strlen('console.')),
+                    $commandServiceNames
+                );
+
+                $commandMap = array_combine($commandNames, $commandServiceNames);
+
+                return new ContainerCommandLoader($container, $commandMap);
+            }
+        );
 
         $container->addShared(
             'console.amqp-listen-uitpas',
