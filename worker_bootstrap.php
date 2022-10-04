@@ -2,13 +2,14 @@
 
 use CultuurNet\UDB3\CommandHandling\QueueJob;
 use CultuurNet\UDB3\Log\ContextEnrichingLogger;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 
 require_once 'vendor/autoload.php';
 
 Resque_Event::listen(
     'beforePerform',
     function (Resque_Job $job) {
-        /** @var \Silex\Application $app */
+        /** @var HybridContainerApplication $app */
         $app = require __DIR__ . '/bootstrap.php';
 
         $logger = new ContextEnrichingLogger(
@@ -44,7 +45,7 @@ Resque_Event::listen(
 Resque_Event::listen(
     'afterPerform',
     function (Resque_Job $job) {
-        /** @var \Silex\Application $app */
+        /** @var HybridContainerApplication $app */
         $app = require __DIR__ . '/bootstrap.php';
 
         $logger = new ContextEnrichingLogger(
