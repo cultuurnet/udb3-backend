@@ -907,4 +907,4 @@ if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
 }
 
-return $app;
+return $container;

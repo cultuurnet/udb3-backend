@@ -1,18 +1,16 @@
 <?php
 
-/** @var HybridContainerApplication $application */
-$application = require __DIR__ . '/../bootstrap.php';
-$container = $application->getLeagueContainer();
-
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\DBAL\Tools\Console\ConsoleRunner;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
+/** @var ContainerInterface $container */
+$container = require __DIR__ . '/../bootstrap.php';
 $connection = $container->get('dbal_connection');
 
 $commands = [

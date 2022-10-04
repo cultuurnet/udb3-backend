@@ -7,20 +7,19 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\ApiName;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\PsrRouterServiceProvider;
 use CultuurNet\UDB3\Proxy\ProxyRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Error\WebErrorHandlerProvider;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
+use League\Container\DefinitionContainerInterface;
 use League\Route\Router;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 const API_NAME = ApiName::JSONLD;
 
-/** @var HybridContainerApplication $app */
-$app = require __DIR__ . '/../bootstrap.php';
-$container = $app->getLeagueContainer();
+/** @var DefinitionContainerInterface $container */
+$container = require __DIR__ . '/../bootstrap.php';
 
 $container->addServiceProvider(new WebErrorHandlerProvider());
 
