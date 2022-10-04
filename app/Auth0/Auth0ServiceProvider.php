@@ -38,7 +38,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
                         $container->get('config')['auth0']['client_secret']
                     ),
                     new CacheRepository(
-                        $container->get('config')('auth0-management-token')
+                        $container->get('cache')('auth0-management-token')
                     )
                 );
                 return $provider->token();
@@ -46,7 +46,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'auth0.management-token',
+            Auth0UserIdentityResolver::class,
             function () use ($container): Auth0UserIdentityResolver {
                 $config = new SdkConfiguration(null, SdkConfiguration::STRATEGY_NONE);
                 $config->setDomain($container->get('config')['auth0']['domain']);
