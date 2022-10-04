@@ -265,15 +265,6 @@ $app['dbal_connection'] = $app->share(
     }
 );
 
-$app['dbal_connection:keepalive'] = $app->protect(
-    function (Application $app) {
-        /** @var \Doctrine\DBAL\Connection $db */
-        $db = $app['dbal_connection'];
-
-        $db->query('SELECT 1')->execute();
-    }
-);
-
 $app['dbal_event_store'] = $app->share(
     function ($app) {
         return $app['event_store_factory'](AggregateType::event());
