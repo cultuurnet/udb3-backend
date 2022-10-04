@@ -64,7 +64,7 @@ use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
-use CultuurNet\UDB3\Silex\Authentication\AuthServiceProvider;
+use CultuurNet\UDB3\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
@@ -867,7 +867,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 // provider still needs to be registered in the general bootstrap.php instead of web/index.php so CLI commands have
 // access to services like CurrentUser, which is also provided when an async job is being handled in the CLI and the
 // user who triggered the job is being impersonated.
-$app->register(new AuthServiceProvider());
+$container->addServiceProvider(new AuthServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
