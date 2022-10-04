@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use GuzzleHttp\Client;
 use League\Uri\Uri;
-use Silex\Application;
 
 final class ProxyRequestHandlerServiceProvider extends AbstractServiceProvider
 {
