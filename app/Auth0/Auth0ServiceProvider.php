@@ -38,7 +38,7 @@ final class Auth0ServiceProvider extends AbstractServiceProvider
                         $container->get('config')['auth0']['client_secret']
                     ),
                     new CacheRepository(
-                        $container->get('config')('auth0-management-token')
+                        $container->get('cache')('auth0-management-token')
                     )
                 );
                 return $provider->token();
