@@ -10,7 +10,6 @@ Resque_Event::listen(
     function (Resque_Job $job) {
         /** @var \Silex\Application $app */
         $app = require __DIR__ . '/bootstrap.php';
-        $app->boot();
 
         $logger = new ContextEnrichingLogger(
             $app['logger_factory.resque_worker']($job->queue),
@@ -47,7 +46,6 @@ Resque_Event::listen(
     function (Resque_Job $job) {
         /** @var \Silex\Application $app */
         $app = require __DIR__ . '/bootstrap.php';
-        $app->boot();
 
         $logger = new ContextEnrichingLogger(
             $app['logger_factory.resque_worker']($job->queue),
