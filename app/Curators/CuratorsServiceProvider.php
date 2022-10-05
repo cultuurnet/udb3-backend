@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Curators;
+namespace CultuurNet\UDB3\Curators;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Curators\DBALNewsArticleRepository;
-use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;

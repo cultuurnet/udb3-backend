@@ -69,7 +69,7 @@ use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
-use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Error\SentryServiceProvider;
