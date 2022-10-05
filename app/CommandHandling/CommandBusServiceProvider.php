@@ -233,10 +233,24 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                             return $commandBus;
                         }
                     );
+
                     $container->addShared(
                         $queueName . '_command_validator',
                         function (): CompositeCommandValidator {
                             return new CompositeCommandValidator();
+                        }
+                    );
+
+                    $container->addShared(
+                        $queueName . '_command_bus',
+                        function () use ($queueName, $container) {
+                            return new ValidatingCommandBusDecorator(
+                                new ContextDecoratedCommandBus(
+                                    $container->get($queueName . '_command_bus_factory'),
+                                    $container
+                                ),
+                                $container->get($queueName . '_command_validator')
+                            );
                         }
                     );
                 }
