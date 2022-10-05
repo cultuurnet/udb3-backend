@@ -262,52 +262,56 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpProjectors(Application $app): void
+    private function setUpProjectors(Container $container): void
     {
-        $app[self::JSON_PROJECTOR] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::JSON_PROJECTOR,
+            function() use ($container): JsonProjector {
                 return new JsonProjector(
-                    $app[self::JSON_WRITE_REPOSITORY],
-                    $app[self::JSON_READ_REPOSITORY]
+                    $container->get(self::JSON_WRITE_REPOSITORY),
+                    $container->get(self::JSON_READ_REPOSITORY)
                 );
             }
         );
 
-        $app[self::RELATIONS_PROJECTOR] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+        self::RELATIONS_PROJECTOR,
+            function () use ($container): RelationsProjector {
                 return new RelationsProjector(
-                    $app[self::RELATIONS_WRITE_REPOSITORY],
-                    $app[self::RELATIONS_READ_REPOSITORY],
+                    $container->get(self::RELATIONS_WRITE_REPOSITORY),
+                    $container->get(self::RELATIONS_READ_REPOSITORY),
                     new LabelEventRelationTypeResolver()
                 );
             }
         );
 
-        $app[self::LABEL_ROLES_PROJECTOR] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+        self::LABEL_ROLES_PROJECTOR,
+            function () use ($container): LabelRolesProjector {
                 return new LabelRolesProjector(
-                    $app[self::LABEL_ROLES_WRITE_REPOSITORY]
+                    $container->get(self::LABEL_ROLES_WRITE_REPOSITORY)
                 );
             }
         );
 
-        $app[LabelVisibilityOnRelatedDocumentsProjector::class] = $app->share(
-            function (Application $app) {
-                $projector = (new LabelVisibilityOnRelatedDocumentsProjector($app[self::RELATIONS_READ_REPOSITORY]))
+        $container->addShared(
+            LabelVisibilityOnRelatedDocumentsProjector::class,
+            function () use ($container) {
+                $projector = (new LabelVisibilityOnRelatedDocumentsProjector($container->get(self::RELATIONS_READ_REPOSITORY)))
                     ->withDocumentRepositoryForRelationType(
                         RelationType::event(),
-                        $app['event_jsonld_repository']
+                        $container->get('event_jsonld_repository')
                     )
                     ->withDocumentRepositoryForRelationType(
                         RelationType::place(),
-                        $app['place_jsonld_repository']
+                        $container->get('place_jsonld_repository')
                     )
                     ->withDocumentRepositoryForRelationType(
                         RelationType::organizer(),
-                        $app['organizer_jsonld_repository']
+                        $container->get('organizer_jsonld_repository')
                     );
 
-                $projector->setLogger($app[self::LOGGER]);
+                $projector->setLogger($container->get(self::LOGGER));
 
                 return $projector;
             }
