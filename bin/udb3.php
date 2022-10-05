@@ -4,9 +4,9 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Console\ConsoleServiceProvider;
 use CultuurNet\UDB3\ApiName;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Error\ErrorLogger;
+use League\Container\DefinitionContainerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -15,9 +15,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 const API_NAME = ApiName::CLI;
 
-/** @var HybridContainerApplication $app */
-$app = require __DIR__ . '/../bootstrap.php';
-$container = $app->getLeagueContainer();
+/** @var DefinitionContainerInterface $container */
+$container = require __DIR__ . '/../bootstrap.php';
 
 $container->addServiceProvider(new CliErrorHandlerProvider());
 $container->addServiceProvider(new ConsoleServiceProvider());

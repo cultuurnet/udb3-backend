@@ -69,7 +69,7 @@ use CultuurNet\UDB3\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
-use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Error\SentryServiceProvider;
@@ -78,7 +78,7 @@ use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
-use CultuurNet\UDB3\Silex\Jobs\JobsServiceProvider;
+use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
@@ -888,16 +888,16 @@ $app->register(new PlaceHistoryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
-$app->register(new CuratorsServiceProvider());
+$container->addServiceProvider(new CuratorsServiceProvider());
 
 $container->addServiceProvider(new Auth0ServiceProvider());
 
 $app->register(new TermServiceProvider());
 
-$app->register(new JobsServiceProvider());
+$container->addServiceProvider(new JobsServiceProvider());
 
 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
 }
 
-return $app;
+return $container;
