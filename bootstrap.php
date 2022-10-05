@@ -895,7 +895,7 @@ $app->register(new PlaceHistoryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
-$app->register(new CuratorsServiceProvider());
+$container->addServiceProvider(new CuratorsServiceProvider());
 
 $container->addServiceProvider(new Auth0ServiceProvider());
 
