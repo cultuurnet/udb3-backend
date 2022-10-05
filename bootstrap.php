@@ -836,7 +836,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $container->addServiceProvider(new EventEditingServiceProvider());
 $container->addServiceProvider(new EventReadServiceProvider());
 $container->addServiceProvider(new EventCommandHandlerProvider());
-$app->register(new EventRequestHandlerServiceProvider());
+$container->addServiceProvider(new EventRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
 $app->register(new PlaceRequestHandlerServiceProvider());

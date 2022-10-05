@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
@@ -26,88 +27,134 @@ use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use Ramsey\Uuid\UuidFactory;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class EventRequestHandlerServiceProvider implements ServiceProviderInterface
+final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[ImportEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new ImportEventRequestHandler(
-                $app['event_repository'],
-                $app['uuid_generator'],
-                $app['event_iri_generator'],
-                new EventDenormalizer(),
-                new CombinedRequestBodyParser(
-                    new LegacyEventRequestBodyParser($app['place_iri_generator']),
-                    RemoveEmptyArraysRequestBodyParser::createForEvents(),
-                    new ImportTermRequestBodyParser(new EventCategoryResolver()),
-                    new ImportPriceInfoRequestBodyParser($app['config']['base_price_translations']),
-                    ImagesPropertyPolyfillRequestBodyParser::createForEvents(
-                        $app['media_object_iri_generator'],
-                        $app['media_object_repository']
-                    ),
-                    new OnlineLocationPolyfillRequestBodyParser($app['place_iri_generator'])
-                ),
-                $app['event_command_bus'],
-                $app['import_image_collection_factory'],
-                $app['place_jsonld_repository']
-            )
-        );
-
-        $app[UpdateLocationRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateLocationRequestHandler(
-                $app['event_command_bus'],
-                $app['place_jsonld_repository']
-            )
-        );
-
-        $app[UpdateSubEventsRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateSubEventsRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateThemeRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateThemeRequestHandler($app['event_command_bus'])
-        );
-
-        $app[DeleteThemeRequestHandler::class] = $app->share(
-            fn (Application $app) => new DeleteThemeRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateAttendanceModeRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateAttendanceModeRequestHandler(
-                $app['event_command_bus'],
-                $app[EventRelationsRepository::class]
-            )
-        );
-
-        $app[UpdateOnlineUrlRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateOnlineUrlRequestHandler($app['event_command_bus'])
-        );
-
-        $app[DeleteOnlineUrlRequestHandler::class] = $app->share(
-            fn (Application $app) => new DeleteOnlineUrlRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateAudienceRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateAudienceRequestHandler($app['event_command_bus'])
-        );
-
-        $app[CopyEventRequestHandler::class] = $app->share(
-            fn (Application $app) => new CopyEventRequestHandler(
-                $app['event_command_bus'],
-                new UuidFactory(),
-                $app['event_iri_generator']
-            )
-        );
-
-        $app[UpdateMajorInfoRequestHandler::class] = $app->share(
-            fn (Application $app) => new UpdateMajorInfoRequestHandler($app['event_command_bus'])
-        );
+        return [
+            ImportEventRequestHandler::class,
+            UpdateLocationRequestHandler::class,
+            UpdateSubEventsRequestHandler::class,
+            UpdateThemeRequestHandler::class,
+            DeleteThemeRequestHandler::class,
+            UpdateAttendanceModeRequestHandler::class,
+            UpdateOnlineUrlRequestHandler::class,
+            DeleteOnlineUrlRequestHandler::class,
+            UpdateAudienceRequestHandler::class,
+            CopyEventRequestHandler::class,
+            UpdateMajorInfoRequestHandler::class,
+        ];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            ImportEventRequestHandler::class,
+            function () use ($container): ImportEventRequestHandler {
+                return new ImportEventRequestHandler(
+                    $container->get('event_repository'),
+                    $container->get('uuid_generator'),
+                    $container->get('event_iri_generator'),
+                    new EventDenormalizer(),
+                    new CombinedRequestBodyParser(
+                        new LegacyEventRequestBodyParser($container->get('place_iri_generator')),
+                        RemoveEmptyArraysRequestBodyParser::createForEvents(),
+                        new ImportTermRequestBodyParser(new EventCategoryResolver()),
+                        new ImportPriceInfoRequestBodyParser($container->get('config')['base_price_translations']),
+                        ImagesPropertyPolyfillRequestBodyParser::createForEvents(
+                            $container->get('media_object_iri_generator'),
+                            $container->get('media_object_repository')
+                        ),
+                        new OnlineLocationPolyfillRequestBodyParser($container->get('place_iri_generator'))
+                    ),
+                    $container->get('event_command_bus'),
+                    $container->get('import_image_collection_factory'),
+                    $container->get('place_jsonld_repository'),
+                );
+            }
+        );
+
+        $container->addShared(
+            UpdateLocationRequestHandler::class,
+            function () use ($container): UpdateLocationRequestHandler {
+                return new UpdateLocationRequestHandler(
+                    $container->get('event_command_bus'),
+                    $container->get('place_jsonld_repository'),
+                );
+            }
+        );
+
+        $container->addShared(
+            UpdateSubEventsRequestHandler::class,
+            function () use ($container): UpdateSubEventsRequestHandler {
+                return new UpdateSubEventsRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateThemeRequestHandler::class,
+            function () use ($container): UpdateThemeRequestHandler {
+                return new UpdateThemeRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            DeleteThemeRequestHandler::class,
+            function () use ($container): DeleteThemeRequestHandler {
+                return new DeleteThemeRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateAttendanceModeRequestHandler::class,
+            function () use ($container): UpdateAttendanceModeRequestHandler {
+                return new UpdateAttendanceModeRequestHandler(
+                    $container->get('event_command_bus'),
+                    $container->get(EventRelationsRepository::class),
+                );
+            }
+        );
+
+        $container->addShared(
+            UpdateOnlineUrlRequestHandler::class,
+            function () use ($container): UpdateOnlineUrlRequestHandler {
+                return new UpdateOnlineUrlRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            DeleteOnlineUrlRequestHandler::class,
+            function () use ($container): DeleteOnlineUrlRequestHandler {
+                return new DeleteOnlineUrlRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateAudienceRequestHandler::class,
+            function () use ($container): UpdateAudienceRequestHandler {
+                return new UpdateAudienceRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            CopyEventRequestHandler::class,
+            function () use ($container): CopyEventRequestHandler {
+                return new CopyEventRequestHandler(
+                    $container->get('event_command_bus'),
+                    new UuidFactory(),
+                    $container->get('event_iri_generator'),
+                );
+            }
+        );
+
+        $container->addShared(
+            UpdateMajorInfoRequestHandler::class,
+            function () use ($container): UpdateMajorInfoRequestHandler {
+                return new UpdateMajorInfoRequestHandler($container->get('event_command_bus'));
+            }
+        );
     }
 }
