@@ -888,7 +888,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServi
 $app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 $app->register(new CuratorsServiceProvider());
 
