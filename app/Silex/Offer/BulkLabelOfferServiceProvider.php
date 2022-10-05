@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
-use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Offer\AddLabelToMultipleRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
 use CultuurNet\UDB3\Offer\BulkLabelCommandHandler;
@@ -36,15 +35,6 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
                     $searchResultsGenerator,
                     $app['event_command_bus']
                 );
-            }
-        );
-
-        // Tie the bulk label offer command handler to the command bus.
-        $app->extend(
-            'bulk_label_offer_command_bus_out',
-            function (CommandBus $commandBus, Application $app) {
-                $commandBus->subscribe($app['bulk_label_offer_command_handler']);
-                return $commandBus;
             }
         );
 

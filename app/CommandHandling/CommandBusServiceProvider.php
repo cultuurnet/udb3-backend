@@ -235,7 +235,9 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_export_command_bus_out',
             function () use ($container) {
-                return self::createResqueCommandBus('event_export', $container);
+                $commandBus = self::createResqueCommandBus('event_export', $container);
+                $commandBus->subscribe($container->get('event_export_command_handler'));
+                return $commandBus;
             }
         );
 
@@ -255,7 +257,9 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'bulk_label_offer_command_bus_out',
             function () use ($container) {
-                return self::createResqueCommandBus('bulk_label_offer', $container);
+                $commandBus = self::createResqueCommandBus('bulk_label_offer', $container);
+                $commandBus->subscribe($container->get('bulk_label_offer_command_handler'));
+                return $commandBus;
             }
         );
     }
