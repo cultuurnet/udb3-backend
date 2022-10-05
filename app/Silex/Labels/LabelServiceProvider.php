@@ -68,8 +68,21 @@ final class LabelServiceProvider implements ServiceProviderInterface
 
     public const LOGGER = 'labels.logger';
 
-    public function register(Application $app): void
+
+    protected function getProvidedServiceNames(): array
     {
+        return [
+            CreateLabelRequestHandler::class,
+            PatchLabelRequestHandler::class,
+            GetLabelRequestHandler::class,
+            SearchLabelsRequestHandler::class
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
         $this->setUpLogger($app);
 
         $this->setUpReadModels($app);
@@ -84,31 +97,39 @@ final class LabelServiceProvider implements ServiceProviderInterface
 
         $this->setUpQueryFactory($app);
 
-        $app[CreateLabelRequestHandler::class] = $app->share(
-            fn (Application $app) => new CreateLabelRequestHandler(
-                $app['event_command_bus'],
-                new Version4Generator()
-            )
+        $container->addShared(
+            CreateLabelRequestHandler::class,
+            function() use ($container): CreateLabelRequestHandler {
+                return new CreateLabelRequestHandler(
+                    $container->get('event_command_bus'),
+                    new Version4Generator()
+                );
+            }
         );
 
-        $app[PatchLabelRequestHandler::class] = $app->share(
-            fn (Application $app) => new PatchLabelRequestHandler($app['event_command_bus'])
+        $container->addShared(
+            PatchLabelRequestHandler::class,
+            function() use ($container): PatchLabelRequestHandler {
+                return new PatchLabelRequestHandler($container->get('event_command_bus'));
+            }
         );
 
-        $app[GetLabelRequestHandler::class] = $app->share(
-            fn (Application $app) => new GetLabelRequestHandler($app[LabelServiceProvider::JSON_READ_REPOSITORY])
+        $container->addShared(
+            GetLabelRequestHandler::class,
+            function() use ($container): GetLabelRequestHandler {
+                return new GetLabelRequestHandler($container->get(LabelServiceProvider::JSON_READ_REPOSITORY));
+            }
         );
 
-        $app[SearchLabelsRequestHandler::class] = $app->share(
-            fn (Application $app) => new SearchLabelsRequestHandler(
-                $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                $app[LabelServiceProvider::QUERY_FACTORY]
-            )
+        $container->addShared(
+            SearchLabelsRequestHandler::class,
+            function() use ($container): SearchLabelsRequestHandler {
+                return new SearchLabelsRequestHandler(
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                        $container->get(LabelServiceProvider::QUERY_FACTORY)
+                );
+            }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 
     private function setUpReadModels(Application $app): void
