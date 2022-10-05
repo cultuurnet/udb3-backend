@@ -26,6 +26,8 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\GodUserReadRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\InMemoryExcludedLabelsRepository;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
@@ -39,10 +41,11 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\CurrentUser;
+use League\Container\Container;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 
-final class LabelServiceProvider implements ServiceProviderInterface
+final class LabelServiceProvider extends AbstractServiceProvider
 {
     public const JSON_TABLE = 'labels_json';
     public const RELATIONS_TABLE = 'labels_relations';
@@ -83,19 +86,19 @@ final class LabelServiceProvider implements ServiceProviderInterface
     {
         $container = $this->getContainer();
 
-        $this->setUpLogger($app);
+        $this->setUpLogger($container);
 
-        $this->setUpReadModels($app);
+        $this->setUpReadModels($container);
 
-        $this->setUpServices($app);
+        $this->setUpServices($container);
 
-        $this->setUpEventStore($app);
+        $this->setUpEventStore($container);
 
-        $this->setUpCommandHandler($app);
+        $this->setUpCommandHandler($container);
 
-        $this->setUpProjectors($app);
+        $this->setUpProjectors($container);
 
-        $this->setUpQueryFactory($app);
+        $this->setUpQueryFactory($container);
 
         $container->addShared(
             CreateLabelRequestHandler::class,
@@ -132,59 +135,64 @@ final class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    private function setUpReadModels(Application $app): void
+    private function setUpReadModels(Container $container): void
     {
-        $app[self::JSON_READ_REPOSITORY] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::JSON_READ_REPOSITORY,
+            function() use ($container): ReadRepositoryInterface {
                 $labels = file_exists(__DIR__ . '/../../../config.excluded_labels.php') ? require __DIR__ . '/../../../config.excluded_labels.php' : [];
 
                 return new GodUserReadRepositoryDecorator(
                     new JsonReadRepository(
-                        $app['dbal_connection'],
+                        $container->get('dbal_connection'),
                         new StringLiteral(self::JSON_TABLE),
                         new StringLiteral(self::LABEL_ROLES_TABLE),
                         new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
                         new InMemoryExcludedLabelsRepository($labels ?? [])
                     ),
-                    $app['config']['user_permissions']['allow_all']
+                    $container->get('config')['user_permissions']['allow_all']
                 );
             }
         );
 
-        $app[self::JSON_WRITE_REPOSITORY] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::JSON_WRITE_REPOSITORY,
+            function() use ($container): WriteRepositoryInterface {
                 return new BroadcastingWriteRepositoryDecorator(
                     new JsonWriteRepository(
-                        $app['dbal_connection'],
+                        $container->get('dbal_connection'),
                         new StringLiteral(self::JSON_TABLE)
                     ),
-                    $app[EventBus::class]
+                    $container->get(EventBus::class)
                 );
             }
         );
 
-        $app[self::RELATIONS_WRITE_REPOSITORY] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::RELATIONS_WRITE_REPOSITORY,
+            function() use ($container): RelationsWriteRepository {
                 return new RelationsWriteRepository(
-                    $app['dbal_connection'],
+                    $container->get('dbal_connection'),
                     new StringLiteral(self::RELATIONS_TABLE)
                 );
             }
         );
 
-        $app[self::RELATIONS_READ_REPOSITORY] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::RELATIONS_READ_REPOSITORY,
+            function() use ($container): RelationsReadRepository {
                 return new RelationsReadRepository(
-                    $app['dbal_connection'],
+                    $container->get('dbal_connection'),
                     new StringLiteral(self::RELATIONS_TABLE)
                 );
             }
         );
 
-        $app[self::LABEL_ROLES_WRITE_REPOSITORY] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::LABEL_ROLES_WRITE_REPOSITORY,
+            function() use ($container): LabelRolesWriteRepository {
                 return new LabelRolesWriteRepository(
-                    $app['dbal_connection'],
+                    $container->get('dbal_connection'),
                     new StringLiteral(self::LABEL_ROLES_TABLE)
                 );
             }
@@ -309,12 +317,13 @@ final class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    private function setUpLogger(Application $app): void
+    private function setUpLogger(Container $container): void
     {
-        $app[self::LOGGER] = $app->share(
-            function (HybridContainerApplication $app) {
+        $container->addShared(
+            self::LOGGER,
+            function() use ($container) {
                 return LoggerFactory::create(
-                    $app->getLeagueContainer(),
+                    $container,
                     LoggerName::forService('labels'),
                     [new StreamHandler('php://stdout')]
                 );
