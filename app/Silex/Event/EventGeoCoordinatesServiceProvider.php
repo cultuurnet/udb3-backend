@@ -8,50 +8,59 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Event\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use Psr\Log\NullLogger;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
+class EventGeoCoordinatesServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app['event_geocoordinates_command_handler'] = $app->share(
-            function (HybridContainerApplication $app) {
+        return [
+            'event_geocoordinates_command_handler',
+            'event_geocoordinates_process_manager',
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'event_geocoordinates_command_handler',
+            function () use ($container): GeoCoordinatesCommandHandler {
                 $handler = new GeoCoordinatesCommandHandler(
-                    $app['event_repository'],
+                    $container->get('event_repository'),
                     new DefaultAddressFormatter(),
                     new LocalityAddressFormatter(),
-                    $app[GeocodingService::class]
+                    $container->get(GeocodingService::class),
                 );
-
-                $handler->setLogger(LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'event')));
+                $handler->setLogger(
+                    LoggerFactory::create(
+                        $container,
+                        LoggerName::forService('geo-coordinates', 'event')
+                    )
+                );
 
                 return $handler;
             }
         );
 
-        $app['event_geocoordinates_process_manager'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'event_geocoordinates_process_manager',
+            function () use ($container) {
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
-                        $app['event_command_bus'],
+                        $container->get('event_command_bus'),
                         new CultureFeedAddressFactory(),
                         new NullLogger()
                     )
                 );
             }
         );
-    }
-
-
-    public function boot(Application $app)
-    {
     }
 }

@@ -895,7 +895,7 @@ $app->register(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
 $app->register(new EventHistoryServiceProvider());
