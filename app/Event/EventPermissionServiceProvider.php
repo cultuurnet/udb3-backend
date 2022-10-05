@@ -33,7 +33,7 @@ final class EventPermissionServiceProvider extends AbstractServiceProvider
                 );
             }
         );
-        
+
         $container->addShared(
             'event_permission.projector',
             function () use ($container): Projector {
