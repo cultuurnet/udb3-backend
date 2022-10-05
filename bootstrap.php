@@ -834,7 +834,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
-$app->register(new LabelServiceProvider());
+$container->addServiceProvider(new LabelServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
