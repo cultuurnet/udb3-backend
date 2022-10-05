@@ -43,7 +43,7 @@ class ImageStorageProvider implements ServiceProviderInterface
                 return new ImageStorage(
                     $app['local_file_system'],
                     $app['s3_file_system'],
-                    $app['media.media_directory']
+                    $app['config']['media']['media_directory']
                 );
             }
         );

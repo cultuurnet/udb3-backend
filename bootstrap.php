@@ -842,13 +842,8 @@ $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
-    [
-        'media.upload_directory' => $app['config']['media']['upload_directory'],
-        'media.media_directory' => $app['config']['media']['media_directory'],
-        'media.file_size_limit' => $app['config']['media']['file_size_limit'] ?? 1000000
-     ],
+$container->addServiceProvider(
+    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider()
 );
 
 $app->register(new ImageStorageProvider());
