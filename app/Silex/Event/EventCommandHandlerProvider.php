@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
@@ -14,54 +15,92 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class EventCommandHandlerProvider implements ServiceProviderInterface
+final class EventCommandHandlerProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[UpdateSubEventsHandler::class] = $app->share(
-            fn (Application $application) => new UpdateSubEventsHandler($app['event_repository'])
-        );
-
-        $app[UpdateThemeHandler::class] = $app->share(
-            fn (Application $application) => new UpdateThemeHandler($app['event_repository'])
-        );
-
-        $app[RemoveThemeHandler::class] = $app->share(
-            fn (Application $application) => new RemoveThemeHandler($app['event_repository'])
-        );
-
-        $app[UpdateAttendanceModeHandler::class] = $app->share(
-            fn (Application $application) => new UpdateAttendanceModeHandler($app['event_repository'])
-        );
-
-        $app[UpdateOnlineUrlHandler::class] = $app->share(
-            fn (Application $application) => new UpdateOnlineUrlHandler($app['event_repository'])
-        );
-
-        $app[DeleteOnlineUrlHandler::class] = $app->share(
-            fn (Application $application) => new DeleteOnlineUrlHandler($app['event_repository'])
-        );
-
-        $app[UpdateAudienceHandler::class] = $app->share(
-            fn (Application $application) => new UpdateAudienceHandler($app['event_repository'])
-        );
-
-        $app[UpdateUiTPASPricesHandler::class] = $app->share(
-            fn (Application $application) => new UpdateUiTPASPricesHandler($app['event_repository'])
-        );
-
-        $app[CopyEventHandler::class] = $app->share(
-            fn (Application $application) => new CopyEventHandler(
-                $app['event_repository'],
-                $app[ProductionRepository::class]
-            )
-        );
+        return [
+            UpdateSubEventsHandler::class,
+            UpdateThemeHandler::class,
+            RemoveThemeHandler::class,
+            UpdateAttendanceModeHandler::class,
+            UpdateOnlineUrlHandler::class,
+            DeleteOnlineUrlHandler::class,
+            UpdateAudienceHandler::class,
+            UpdateUiTPASPricesHandler::class,
+            CopyEventHandler::class,
+        ];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            UpdateSubEventsHandler::class,
+            function () use ($container): UpdateSubEventsHandler {
+                return new UpdateSubEventsHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            UpdateThemeHandler::class,
+            function () use ($container): UpdateThemeHandler {
+                return new UpdateThemeHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            RemoveThemeHandler::class,
+            function () use ($container): RemoveThemeHandler {
+                return new RemoveThemeHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            UpdateAttendanceModeHandler::class,
+            function () use ($container): UpdateAttendanceModeHandler {
+                return new UpdateAttendanceModeHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            UpdateOnlineUrlHandler::class,
+            function () use ($container): UpdateOnlineUrlHandler {
+                return new UpdateOnlineUrlHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            DeleteOnlineUrlHandler::class,
+            function () use ($container): DeleteOnlineUrlHandler {
+                return new DeleteOnlineUrlHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            UpdateAudienceHandler::class,
+            function () use ($container): UpdateAudienceHandler {
+                return new UpdateAudienceHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            UpdateUiTPASPricesHandler::class,
+            function () use ($container): UpdateUiTPASPricesHandler {
+                return new UpdateUiTPASPricesHandler($container->get('event_repository'));
+            }
+        );
+
+        $container->addShared(
+            CopyEventHandler::class,
+            function () use ($container): CopyEventHandler {
+                return new CopyEventHandler(
+                    $container->get('event_repository'),
+                    $container->get(ProductionRepository::class)
+                );
+            }
+        );
     }
 }
