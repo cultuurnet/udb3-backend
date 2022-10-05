@@ -31,7 +31,6 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'authorized_command_bus',
             'event_command_bus',
             'event_command_validator',
-            'resque_command_bus_factory',
             'event_export_command_bus',
             'event_export_command_bus_out',
             'bulk_label_offer_command_bus',
