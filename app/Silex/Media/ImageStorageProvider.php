@@ -5,51 +5,60 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Media;
 
 use Aws\S3\S3Client;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorage;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class ImageStorageProvider implements ServiceProviderInterface
+final class ImageStorageProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app['local_file_system'] = $app->share(
-            function () {
+        return [
+            'local_file_system',
+            's3_file_system',
+            'image_storage'
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+        
+        $container->addShared(
+            'local_file_system',
+            function (): Filesystem {
                 $localAdapter = new LocalFilesystemAdapter(__DIR__ . '/../../../');
                 return new Filesystem($localAdapter);
             }
         );
-
-        $app['s3_file_system'] = $app->share(
-            function ($app) {
+        
+        $container->addShared(
+            's3_file_system',
+            function () use ($container): Filesystem {
                 $s3Client = new S3Client([
                     'credentials' => [
-                        'key'    => $app['config']['media']['aws']['credentials']['key'],
-                        'secret' => $app['config']['media']['aws']['credentials']['secret'],
+                        'key'    => $container->get('config')['media']['aws']['credentials']['key'],
+                        'secret' => $container->get('config')['media']['aws']['credentials']['secret'],
                     ],
-                    'region' => $app['config']['media']['aws']['region'],
-                    'version' => $app['config']['media']['aws']['version'],
+                    'region' => $container->get('config')['media']['aws']['region'],
+                    'version' => $container->get('config')['media']['aws']['version'],
                 ]);
-                $s3Adapter = new AwsS3V3Adapter($s3Client, $app['config']['media']['aws']['bucket']);
+                $s3Adapter = new AwsS3V3Adapter($s3Client, $container->get('config')['media']['aws']['bucket']);
                 return new Filesystem($s3Adapter);
             }
         );
-
-        $app['image_storage'] = $app->share(
-            function ($app) {
+        
+        $container->addShared(
+            'image_storage',
+            function () use ($container): ImageStorage {
                 return new ImageStorage(
-                    $app['local_file_system'],
-                    $app['s3_file_system'],
-                    $app['config']['media']['media_directory']
+                    $container->get('local_file_system'),
+                    $container->get('s3_file_system'),
+                    $container->get('config')['media']['media_directory']
                 );
             }
         );
-    }
-
-    public function boot(Application $app)
-    {
     }
 }
