@@ -8,6 +8,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\User\CurrentUser;
 use Psr\Container\ContainerInterface;
 
 final class ContextFactory
