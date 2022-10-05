@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Label\ConstraintAwareLabelService;
 use CultuurNet\UDB3\Label\Events\LabelNameUniqueConstraintService;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
+use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
@@ -199,19 +200,23 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpServices(Application $app): void
+    private function setUpServices(Container $container): void
     {
-        $app['labels.constraint_aware_service'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'labels.constraint_aware_service',
+            function () use ($container): LabelServiceInterface {
                 return new ConstraintAwareLabelService(
-                    $app[self::REPOSITORY],
+                    $container->get(self::REPOSITORY),
                     new Version4Generator()
                 );
             }
         );
 
-        $app[CdbXMLToJsonLDLabelImporter::class] = $app->share(
-            fn (Application $app) => new CdbXMLToJsonLDLabelImporter($app[self::JSON_READ_REPOSITORY])
+        $container->addShared(
+            CdbXMLToJsonLDLabelImporter::class,
+            function () use ($container): CdbXMLToJsonLDLabelImporter {
+                return new CdbXMLToJsonLDLabelImporter($container->get(self::JSON_READ_REPOSITORY));
+            }
         );
     }
 
