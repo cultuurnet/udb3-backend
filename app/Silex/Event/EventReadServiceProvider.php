@@ -4,49 +4,55 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\JSONLDMainLanguageQuery;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class EventReadServiceProvider implements ServiceProviderInterface
+final class EventReadServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[EventRelationsProjector::class] = $app->share(
-            function ($app) {
+        return [
+            EventRelationsProjector::class,
+            EventRelationsRepository::class,
+            'event_main_language_query',
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            EventRelationsProjector::class,
+            function () use ($container): EventRelationsProjector {
                 return new EventRelationsProjector(
-                    $app[EventRelationsRepository::class],
-                    $app['udb2_event_cdbid_extractor']
+                    $container->get(EventRelationsRepository::class),
+                    $container->get('udb2_event_cdbid_extractor'),
                 );
             }
         );
 
-        $app[EventRelationsRepository::class] = $app::share(
-            function ($app) {
-                return new DBALEventRelationsRepository(
-                    $app['dbal_connection']
-                );
+        $container->addShared(
+            EventRelationsRepository::class,
+            function () use ($container): DBALEventRelationsRepository {
+                return new DBALEventRelationsRepository($container->get('dbal_connection'));
             }
         );
 
-        $app['event_main_language_query'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'event_main_language_query',
+            function () use ($container): JSONLDMainLanguageQuery {
                 $fallbackLanguage = new Language('nl');
 
                 return new JSONLDMainLanguageQuery(
-                    $app['event_jsonld_repository'],
+                    $container->get('event_jsonld_repository'),
                     $fallbackLanguage
                 );
             }
         );
-    }
-
-
-    public function boot(Application $app)
-    {
     }
 }
