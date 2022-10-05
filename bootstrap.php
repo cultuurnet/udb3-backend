@@ -848,7 +848,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $app->register(new LabelServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
+$container->get(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
