@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
 
-class EventEditingServiceProvider extends AbstractServiceProvider
+final class EventEditingServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {

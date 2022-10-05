@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use Psr\Log\NullLogger;
 
-class EventGeoCoordinatesServiceProvider extends AbstractServiceProvider
+final class EventGeoCoordinatesServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
