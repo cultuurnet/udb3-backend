@@ -28,7 +28,7 @@ final class ImageStorageProvider extends AbstractServiceProvider
         $container->addShared(
             'local_file_system',
             function (): Filesystem {
-                $localAdapter = new LocalFilesystemAdapter(__DIR__ . '/../../../');
+                $localAdapter = new LocalFilesystemAdapter(__DIR__ . '/../../');
                 return new Filesystem($localAdapter);
             }
         );
