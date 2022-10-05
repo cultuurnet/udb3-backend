@@ -18,14 +18,14 @@ final class ImageStorageProvider extends AbstractServiceProvider
         return [
             'local_file_system',
             's3_file_system',
-            'image_storage'
+            'image_storage',
         ];
     }
 
     public function register(): void
     {
         $container = $this->getContainer();
-        
+
         $container->addShared(
             'local_file_system',
             function (): Filesystem {
@@ -33,7 +33,7 @@ final class ImageStorageProvider extends AbstractServiceProvider
                 return new Filesystem($localAdapter);
             }
         );
-        
+
         $container->addShared(
             's3_file_system',
             function () use ($container): Filesystem {
@@ -49,7 +49,7 @@ final class ImageStorageProvider extends AbstractServiceProvider
                 return new Filesystem($s3Adapter);
             }
         );
-        
+
         $container->addShared(
             'image_storage',
             function () use ($container): ImageStorage {
