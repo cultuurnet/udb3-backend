@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex\Media;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Model\Import\MediaObject\MediaManagerImageCollectionFactory;
 
-finalclass MediaImportServiceProvider extends AbstractServiceProvider
+final class MediaImportServiceProvider extends AbstractServiceProvider
 {
 
     protected function getProvidedServiceNames(): array
