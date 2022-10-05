@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Event;
+namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
-use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 
 class EventEditingServiceProvider extends AbstractServiceProvider

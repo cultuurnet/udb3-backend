@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\EventCommandHandlerProvider;
+use CultuurNet\UDB3\Event\EventEditingServiceProvider;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -822,7 +823,7 @@ $container->addServiceProvider(
 $app->register(new MetadataServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
+$container->addServiceProvider(new EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
 $container->addServiceProvider(new EventCommandHandlerProvider());
 $app->register(new EventRequestHandlerServiceProvider());
