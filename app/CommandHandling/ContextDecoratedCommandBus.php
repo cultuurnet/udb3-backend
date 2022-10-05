@@ -5,48 +5,24 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
-use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use Psr\Container\ContainerInterface;
 
 class ContextDecoratedCommandBus extends CommandBusDecoratorBase
 {
-    private ?string $userId;
-
-    private ?JsonWebToken $jwt;
-
-    private ?ApiKey $apiKey;
-
-    private ?string $apiName;
-
-    private ?Consumer $consumer;
+    private ContainerInterface $container;
 
     public function __construct(
         CommandBus $decoratee,
-        ?string $userId = null,
-        ?JsonWebToken $jwt = null,
-        ?ApiKey $apiKey = null,
-        ?string $apiName = null,
-        ?Consumer $consumer = null
+        ContainerInterface $container
     ) {
         parent::__construct($decoratee);
-        $this->userId = $userId;
-        $this->jwt = $jwt;
-        $this->apiKey = $apiKey;
-        $this->apiName = $apiName;
-        $this->consumer = $consumer;
+        $this->container = $container;
     }
 
     public function dispatch($command): void
     {
         if ($this->decoratee instanceof ContextAwareInterface) {
-            $context = ContextFactory::createContext(
-                $this->userId,
-                $this->jwt,
-                $this->apiKey,
-                $this->apiName,
-                $this->consumer
-            );
+            $context = ContextFactory::createFromGlobals($this->container);
             $this->decoratee->setContext($context);
         }
         $this->decoratee->dispatch($command);
