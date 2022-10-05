@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\Jobs\ResqueJobStatusFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class JobsServiceProvider implements ServiceProviderInterface
+final class JobsServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
