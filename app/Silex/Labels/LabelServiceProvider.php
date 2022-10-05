@@ -312,12 +312,13 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpQueryFactory(Application $app): void
+    private function setUpQueryFactory(Container $container): void
     {
-        $app[self::QUERY_FACTORY] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::QUERY_FACTORY,
+            function() use ($container): QueryFactory {
                 /** @var CurrentUser $currentUser */
-                $currentUser = $app[CurrentUser::class];
+                $currentUser = $container->get(CurrentUser::class);
                 return new QueryFactory($currentUser->isGodUser() ? null : $currentUser->getId());
             }
         );
