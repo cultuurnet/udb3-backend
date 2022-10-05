@@ -174,14 +174,7 @@ $app->register(new EventBusServiceProvider());
 /**
  * CultureFeed services.
  */
-$app->register(
-    new CultureFeedServiceProvider(),
-    [
-        'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
-        'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
-        'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
-    ]
-);
+$container->addServiceProvider(new CultureFeedServiceProvider());
 
 /**
  * Mailing service.

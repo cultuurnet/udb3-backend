@@ -4,28 +4,33 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\CultureFeed;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use CultureFeed_DefaultOAuthClient;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
-final class CultureFeedServiceProvider implements ServiceProviderInterface
+final class CultureFeedServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app['culturefeed'] = $app->share(
-            function (Application $app) {
-                $oauthClient = new \CultureFeed_DefaultOAuthClient(
-                    $app['culturefeed.consumer.key'],
-                    $app['culturefeed.consumer.secret']
-                );
-                $oauthClient->setEndpoint($app['culturefeed.endpoint']);
-
-                return new \CultureFeed($oauthClient);
-            }
-        );
+        return [
+            'culturefeed',
+        ];
     }
 
-
-    public function boot(Application $app)
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'culturefeed',
+            function () use ($container): CultureFeed_DefaultOAuthClient {
+                $oauthClient = new CultureFeed_DefaultOAuthClient(
+                    $container->get('config')['uitid']['consumer']['key'],
+                    $container->get('config')['uitid']['consumer']['secret'],
+                );
+                $oauthClient->setEndpoint($container->get('config')['uitid']['base_url']);
+
+                return $oauthClient;
+            }
+        );
     }
 }
