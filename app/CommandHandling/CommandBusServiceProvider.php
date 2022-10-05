@@ -253,6 +253,13 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                             );
                         }
                     );
+
+                    $container->addShared(
+                        $queueName . '_command_bus_out',
+                        function () use ($queueName, $container) {
+                            return $container->get($queueName . '_command_bus_factory');
+                        }
+                    );
                 }
             )
         );
