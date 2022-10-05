@@ -899,7 +899,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvid
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
-$app->register(new EventHistoryServiceProvider());
+$container->addServiceProvider(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());

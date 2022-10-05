@@ -4,35 +4,36 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class EventHistoryServiceProvider implements ServiceProviderInterface
+final class EventHistoryServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[HistoryProjector::class] = $app->share(
-            function ($app) {
-                $projector = new HistoryProjector(
-                    $app['event_history_repository']
-                );
-
-                return $projector;
-            }
-        );
-
-        $app['event_history_repository'] = $app->share(
-            function ($app) {
-                return new CacheDocumentRepository(
-                    $app['cache']('event_history')
-                );
-            }
-        );
+        return [
+            HistoryProjector::class,
+            'event_history_repository',
+        ];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            HistoryProjector::class,
+            function () use ($container): HistoryProjector {
+                return new HistoryProjector($container->get('event_history_repository'));
+            }
+        );
+
+        $container->addShared(
+            'event_history_repository',
+            function () use ($container): CacheDocumentRepository {
+                return new CacheDocumentRepository($container->get('cache')('event_history'));
+            }
+        );
     }
 }
