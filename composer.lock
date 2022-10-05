@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e85ce31a75deff9829cd486e776965a9",
+    "content-hash": "ffbfe42632cd647cf3be2ac1219a2353",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -2192,48 +2192,6 @@
                 "url parsing"
             ],
             "time": "2017-09-28T15:52:11+00:00"
-        },
-        {
-            "name": "knplabs/console-service-provider",
-            "version": "1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/KnpLabs/ConsoleServiceProvider.git",
-                "reference": "7a839206270755483f6a06a6cfb3308fa6f9c562"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/ConsoleServiceProvider/zipball/7a839206270755483f6a06a6cfb3308fa6f9c562",
-                "reference": "7a839206270755483f6a06a6cfb3308fa6f9c562",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "symfony/console": "~2.3|~3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Knp\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Knplabs",
-                    "homepage": "http://knplabs.com"
-                }
-            ],
-            "description": "console service provider for Silex",
-            "homepage": "http://knplabs.com",
-            "keywords": [
-                "console",
-                "silex"
-            ],
-            "time": "2016-02-01T15:38:27+00:00"
         },
         {
             "name": "kylekatarnls/update-helper",
