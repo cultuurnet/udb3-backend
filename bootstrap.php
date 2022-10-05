@@ -846,7 +846,7 @@ $container->addServiceProvider(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider()
 );
 
-$app->register(new ImageStorageProvider());
+$container->addServiceProvider(new ImageStorageProvider());
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
