@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Http\Role\RemoveRoleFromUserRequestHandler;
 use CultuurNet\UDB3\Http\Role\RolesSearchRequestHandler;
 use CultuurNet\UDB3\Http\Role\UpdateConstraintRequestHandler;
 use CultuurNet\UDB3\Http\Role\UpdateRoleRequestHandler;
-use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
