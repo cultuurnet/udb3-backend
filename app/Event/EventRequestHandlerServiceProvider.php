@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Event;
+namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
+use CultuurNet\UDB3\Http\Event\OnlineLocationPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
@@ -18,7 +19,6 @@ use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
-use CultuurNet\UDB3\Http\Event\OnlineLocationPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
