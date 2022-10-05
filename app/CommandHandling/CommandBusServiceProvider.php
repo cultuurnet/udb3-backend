@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
-use League\Container\Argument\Literal\ObjectArgument;
 use Psr\Container\ContainerInterface;
 
 final class CommandBusServiceProvider extends AbstractServiceProvider
@@ -36,6 +35,10 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'event_command_bus',
             'event_command_validator',
             'resque_command_bus_factory',
+            'event_export_command_bus',
+            'event_export_command_bus_out',
+            'bulk_label_offer_command_bus',
+            'bulk_label_offer_command_bus_out',
         ];
     }
 
@@ -216,31 +219,44 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $container->add(
-            'resque_command_bus_factory',
-            new ObjectArgument(
-                function ($queueName) use ($container) {
-                    $container->addShared(
-                        $queueName . '_command_bus',
-                        function () use ($queueName, $container) {
-                            return new ValidatingCommandBusDecorator(
-                                new ContextDecoratedCommandBus(
-                                    self::createResqueCommandBus($queueName, $container),
-                                    $container
-                                ),
-                                new CompositeCommandValidator()
-                            );
-                        }
-                    );
+        $container->addShared(
+            'event_export_command_bus',
+            function () use ($container) {
+                return new ValidatingCommandBusDecorator(
+                    new ContextDecoratedCommandBus(
+                        self::createResqueCommandBus('event_export', $container),
+                        $container
+                    ),
+                    new CompositeCommandValidator()
+                );
+            }
+        );
 
-                    $container->addShared(
-                        $queueName . '_command_bus_out',
-                        function () use ($queueName, $container) {
-                            return self::createResqueCommandBus($queueName, $container);
-                        }
-                    );
-                }
-            )
+        $container->addShared(
+            'event_export_command_bus_out',
+            function () use ($container) {
+                return self::createResqueCommandBus('event_export', $container);
+            }
+        );
+
+        $container->addShared(
+            'bulk_label_offer_command_bus',
+            function () use ($container) {
+                return new ValidatingCommandBusDecorator(
+                    new ContextDecoratedCommandBus(
+                        self::createResqueCommandBus('bulk_label_offer', $container),
+                        $container
+                    ),
+                    new CompositeCommandValidator()
+                );
+            }
+        );
+
+        $container->addShared(
+            'bulk_label_offer_command_bus_out',
+            function () use ($container) {
+                return self::createResqueCommandBus('bulk_label_offer', $container);
+            }
         );
     }
 

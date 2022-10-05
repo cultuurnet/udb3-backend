@@ -62,9 +62,6 @@ final class ExportServiceProvider implements ServiceProviderInterface
             }
         );
 
-        // Set up the event export command bus.
-        $app['resque_command_bus_factory']('event_export');
-
         // Set up the event export command handler.
         $app['event_export_command_handler'] = $app->share(
             function (HybridContainerApplication $app) {

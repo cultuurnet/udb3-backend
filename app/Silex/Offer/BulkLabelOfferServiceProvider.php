@@ -22,9 +22,6 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        // Set up the bulk label offer command bus.
-        $app['resque_command_bus_factory']('bulk_label_offer');
-
         // Set up the bulk label offer command handler.
         $app['bulk_label_offer_command_handler'] = $app->share(
             function (HybridContainerApplication $app) {
