@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
+use CultuurNet\UDB3\Place\PlaceRepository;
 
 class EventEditingServiceProvider extends AbstractServiceProvider
 {
@@ -39,7 +40,7 @@ class EventEditingServiceProvider extends AbstractServiceProvider
                 return new ReplayFilteringEventListener(
                     new RelocateEventToCanonicalPlace(
                         $container->get('event_command_bus'),
-                        new CanonicalPlaceRepository($container->get('place_repository'))
+                        new CanonicalPlaceRepository($container->get(PlaceRepository::class))
                     )
                 );
             }
