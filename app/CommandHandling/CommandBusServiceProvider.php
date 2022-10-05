@@ -219,9 +219,9 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'resque_command_bus_factory',
             new ObjectArgument(
                 function ($queueName) use ($container) {
-                $container->addShared(
-                    $queueName . '_command_bus_factory',
-                    function () use ($container, $queueName): ResqueCommandBus {
+                    $container->addShared(
+                        $queueName . '_command_bus_factory',
+                        function () use ($container, $queueName): ResqueCommandBus {
                         $commandBus = new ResqueCommandBus(
                             $container->get('authorized_command_bus'),
                             $queueName,
@@ -232,14 +232,14 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
 
                         return $commandBus;
                     }
-                );
-                $container->addShared(
-                    $queueName . '_command_validator',
-                    function (): CompositeCommandValidator {
+                    );
+                    $container->addShared(
+                        $queueName . '_command_validator',
+                        function (): CompositeCommandValidator {
                         return new CompositeCommandValidator();
                     }
-                );
-            }
+                    );
+                }
             )
         );
     }
