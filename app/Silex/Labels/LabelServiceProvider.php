@@ -220,17 +220,18 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpEventStore(Application $app): void
+    private function setUpEventStore(Container $container): void
     {
-        $app[self::UNIQUE_EVENT_STORE] = $app->share(
-            function (Application $app) {
-                $eventStore = $app['event_store_factory'](
+        $container->addShared(
+            self::UNIQUE_EVENT_STORE,
+            function() use ($container){
+                $eventStore = $container->get('event_store_factory')(
                     AggregateType::label()
                 );
 
                 return new UniqueDBALEventStoreDecorator(
                     $eventStore,
-                    $app['dbal_connection'],
+                    $container->get('dbal_connection'),
                     'labels_unique',
                     new LabelNameUniqueConstraintService()
                 );
