@@ -42,7 +42,7 @@ use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class LabelServiceProvider implements ServiceProviderInterface
+final class LabelServiceProvider implements ServiceProviderInterface
 {
     public const JSON_TABLE = 'labels_json';
     public const RELATIONS_TABLE = 'labels_relations';
