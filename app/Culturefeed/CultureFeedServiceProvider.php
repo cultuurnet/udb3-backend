@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Culturefeed;
 
+use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
@@ -22,14 +23,14 @@ final class CultureFeedServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'culturefeed',
-            function () use ($container): CultureFeed_DefaultOAuthClient {
+            function () use ($container): CultureFeed {
                 $oauthClient = new CultureFeed_DefaultOAuthClient(
                     $container->get('config')['uitid']['consumer']['key'],
                     $container->get('config')['uitid']['consumer']['secret'],
                 );
                 $oauthClient->setEndpoint($container->get('config')['uitid']['base_url']);
 
-                return $oauthClient;
+                return new CultureFeed($oauthClient);
             }
         );
     }
