@@ -4,30 +4,28 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Media;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Model\Import\MediaObject\MediaManagerImageCollectionFactory;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class MediaImportServiceProvider implements ServiceProviderInterface
+class MediaImportServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+
+    protected function getProvidedServiceNames(): array
     {
-        $app['import_image_collection_factory'] = $app->share(
-            function (Application $app) {
+        return ['import_image_collection_factory'];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'import_image_collection_factory',
+            function () use ($container) {
                 return new MediaManagerImageCollectionFactory(
-                    $app['media_manager']
+                    $container->get('media_manager')
                 );
             }
         );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
-    {
     }
 }
