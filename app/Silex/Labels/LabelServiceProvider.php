@@ -78,6 +78,22 @@ final class LabelServiceProvider extends AbstractServiceProvider
             PatchLabelRequestHandler::class,
             GetLabelRequestHandler::class,
             SearchLabelsRequestHandler::class,
+            self::JSON_READ_REPOSITORY,
+            self::JSON_WRITE_REPOSITORY,
+            self::RELATIONS_WRITE_REPOSITORY,
+            self::RELATIONS_READ_REPOSITORY,
+            self::LABEL_ROLES_WRITE_REPOSITORY,
+            'labels.constraint_aware_service',
+            CdbXMLToJsonLDLabelImporter::class,
+            self::UNIQUE_EVENT_STORE,
+            self::REPOSITORY,
+            self::COMMAND_HANDLER,
+            self::JSON_PROJECTOR,
+            self::RELATIONS_PROJECTOR,
+            self::LABEL_ROLES_PROJECTOR,
+            LabelVisibilityOnRelatedDocumentsProjector::class,
+            self::QUERY_FACTORY,
+            self::LOGGER,
         ];
     }
 
