@@ -36,7 +36,6 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\AggregateType;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -44,7 +43,6 @@ use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\Container;
 use Monolog\Handler\StreamHandler;
-use Silex\Application;
 
 final class LabelServiceProvider extends AbstractServiceProvider
 {
@@ -79,7 +77,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
             CreateLabelRequestHandler::class,
             PatchLabelRequestHandler::class,
             GetLabelRequestHandler::class,
-            SearchLabelsRequestHandler::class
+            SearchLabelsRequestHandler::class,
         ];
     }
 
@@ -103,7 +101,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             CreateLabelRequestHandler::class,
-            function() use ($container): CreateLabelRequestHandler {
+            function () use ($container): CreateLabelRequestHandler {
                 return new CreateLabelRequestHandler(
                     $container->get('event_command_bus'),
                     new Version4Generator()
@@ -113,24 +111,24 @@ final class LabelServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             PatchLabelRequestHandler::class,
-            function() use ($container): PatchLabelRequestHandler {
+            function () use ($container): PatchLabelRequestHandler {
                 return new PatchLabelRequestHandler($container->get('event_command_bus'));
             }
         );
 
         $container->addShared(
             GetLabelRequestHandler::class,
-            function() use ($container): GetLabelRequestHandler {
+            function () use ($container): GetLabelRequestHandler {
                 return new GetLabelRequestHandler($container->get(LabelServiceProvider::JSON_READ_REPOSITORY));
             }
         );
 
         $container->addShared(
             SearchLabelsRequestHandler::class,
-            function() use ($container): SearchLabelsRequestHandler {
+            function () use ($container): SearchLabelsRequestHandler {
                 return new SearchLabelsRequestHandler(
                     $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
-                        $container->get(LabelServiceProvider::QUERY_FACTORY)
+                    $container->get(LabelServiceProvider::QUERY_FACTORY)
                 );
             }
         );
@@ -140,7 +138,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
     {
         $container->addShared(
             self::JSON_READ_REPOSITORY,
-            function() use ($container): ReadRepositoryInterface {
+            function () use ($container): ReadRepositoryInterface {
                 $labels = file_exists(__DIR__ . '/../../../config.excluded_labels.php') ? require __DIR__ . '/../../../config.excluded_labels.php' : [];
 
                 return new GodUserReadRepositoryDecorator(
@@ -158,7 +156,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             self::JSON_WRITE_REPOSITORY,
-            function() use ($container): WriteRepositoryInterface {
+            function () use ($container): WriteRepositoryInterface {
                 return new BroadcastingWriteRepositoryDecorator(
                     new JsonWriteRepository(
                         $container->get('dbal_connection'),
@@ -171,7 +169,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             self::RELATIONS_WRITE_REPOSITORY,
-            function() use ($container): RelationsWriteRepository {
+            function () use ($container): RelationsWriteRepository {
                 return new RelationsWriteRepository(
                     $container->get('dbal_connection'),
                     new StringLiteral(self::RELATIONS_TABLE)
@@ -181,7 +179,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             self::RELATIONS_READ_REPOSITORY,
-            function() use ($container): RelationsReadRepository {
+            function () use ($container): RelationsReadRepository {
                 return new RelationsReadRepository(
                     $container->get('dbal_connection'),
                     new StringLiteral(self::RELATIONS_TABLE)
@@ -191,7 +189,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             self::LABEL_ROLES_WRITE_REPOSITORY,
-            function() use ($container): LabelRolesWriteRepository {
+            function () use ($container): LabelRolesWriteRepository {
                 return new LabelRolesWriteRepository(
                     $container->get('dbal_connection'),
                     new StringLiteral(self::LABEL_ROLES_TABLE)
@@ -224,7 +222,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
     {
         $container->addShared(
             self::UNIQUE_EVENT_STORE,
-            function() use ($container){
+            function () use ($container) {
                 $eventStore = $container->get('event_store_factory')(
                     AggregateType::label()
                 );
@@ -243,7 +241,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
     {
         $container->addShared(
             self::REPOSITORY,
-            function() use ($container): LabelRepository {
+            function () use ($container): LabelRepository {
                 return new LabelRepository(
                     $container->get(self::UNIQUE_EVENT_STORE),
                     $container->get(EventBus::class),
@@ -254,7 +252,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             self::COMMAND_HANDLER,
-            function() use ($container): CommandHandler {
+            function () use ($container): CommandHandler {
                 return new CommandHandler(
                     $container->get(self::REPOSITORY)
                 );
@@ -266,7 +264,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
     {
         $container->addShared(
             self::JSON_PROJECTOR,
-            function() use ($container): JsonProjector {
+            function () use ($container): JsonProjector {
                 return new JsonProjector(
                     $container->get(self::JSON_WRITE_REPOSITORY),
                     $container->get(self::JSON_READ_REPOSITORY)
@@ -275,7 +273,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-        self::RELATIONS_PROJECTOR,
+            self::RELATIONS_PROJECTOR,
             function () use ($container): RelationsProjector {
                 return new RelationsProjector(
                     $container->get(self::RELATIONS_WRITE_REPOSITORY),
@@ -286,7 +284,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-        self::LABEL_ROLES_PROJECTOR,
+            self::LABEL_ROLES_PROJECTOR,
             function () use ($container): LabelRolesProjector {
                 return new LabelRolesProjector(
                     $container->get(self::LABEL_ROLES_WRITE_REPOSITORY)
@@ -322,7 +320,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
     {
         $container->addShared(
             self::QUERY_FACTORY,
-            function() use ($container): QueryFactory {
+            function () use ($container): QueryFactory {
                 /** @var CurrentUser $currentUser */
                 $currentUser = $container->get(CurrentUser::class);
                 return new QueryFactory($currentUser->isGodUser() ? null : $currentUser->getId());
@@ -334,7 +332,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
     {
         $container->addShared(
             self::LOGGER,
-            function() use ($container) {
+            function () use ($container) {
                 return LoggerFactory::create(
                     $container,
                     LoggerName::forService('labels'),
