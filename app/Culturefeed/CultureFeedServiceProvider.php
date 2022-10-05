@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\CultureFeed;
+namespace CultuurNet\UDB3\Culturefeed;
 
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
