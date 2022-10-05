@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\Argument\Literal\ObjectArgument;
+use Psr\Container\ContainerInterface;
 
 final class CommandBusServiceProvider extends AbstractServiceProvider
 {
@@ -215,26 +216,16 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $createResqueCommandBus = static function ($queueName) use ($container): ResqueCommandBus {
-            $commandBus = new ResqueCommandBus(
-                $container->get('authorized_command_bus'),
-                $queueName,
-                $container->get('command_bus_event_dispatcher')
-            );
-            $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
-            return $commandBus;
-        };
-
         $container->add(
             'resque_command_bus_factory',
             new ObjectArgument(
-                function ($queueName) use ($container, $createResqueCommandBus) {
+                function ($queueName) use ($container) {
                     $container->addShared(
                         $queueName . '_command_bus',
-                        function () use ($queueName, $container, $createResqueCommandBus) {
+                        function () use ($queueName, $container) {
                             return new ValidatingCommandBusDecorator(
                                 new ContextDecoratedCommandBus(
-                                    $createResqueCommandBus($queueName),
+                                    self::createResqueCommandBus($queueName, $container),
                                     $container
                                 ),
                                 new CompositeCommandValidator()
@@ -244,12 +235,23 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
 
                     $container->addShared(
                         $queueName . '_command_bus_out',
-                        function () use ($queueName, $createResqueCommandBus) {
-                            return $createResqueCommandBus($queueName);
+                        function () use ($queueName, $container) {
+                            return self::createResqueCommandBus($queueName, $container);
                         }
                     );
                 }
             )
         );
+    }
+
+    public static function createResqueCommandBus(string $queueName, ContainerInterface $container): ResqueCommandBus
+    {
+        $commandBus = new ResqueCommandBus(
+            $container->get('authorized_command_bus'),
+            $queueName,
+            $container->get('command_bus_event_dispatcher')
+        );
+        $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
+        return $commandBus;
     }
 }
