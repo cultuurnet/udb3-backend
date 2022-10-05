@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex\CultureFeed;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class CultureFeedServiceProvider implements ServiceProviderInterface
+final class CultureFeedServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
