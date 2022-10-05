@@ -8,6 +8,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use Psr\Container\ContainerInterface;
 
 final class ContextFactory
 {
@@ -66,5 +67,16 @@ final class ContextFactory
         }
 
         return new Metadata($metadata);
+    }
+
+    public static function createFromGlobals(ContainerInterface $container): Metadata
+    {
+        return self::createContext(
+            $container->get(CurrentUser::class)->getId(),
+            $container->get(JsonWebToken::class),
+            $container->get(ApiKey::class),
+            $container->get('api_name'),
+            $container->get(Consumer::class)
+        );
     }
 }
