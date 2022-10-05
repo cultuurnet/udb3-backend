@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
+use League\Container\Argument\Literal\ObjectArgument;
 
 final class CommandBusServiceProvider extends AbstractServiceProvider
 {
@@ -120,9 +121,10 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $container->addShared(
+        $container->add(
             'resque_command_bus_factory',
-            function ($queueName) use ($container) {
+            new ObjectArgument(
+                function ($queueName) use ($container) {
                 $container->addShared(
                     $queueName . '_command_bus_factory',
                     function () use ($container, $queueName): ResqueCommandBus {
@@ -144,6 +146,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                     }
                 );
             }
+            )
         );
     }
 }
