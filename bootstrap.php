@@ -901,7 +901,7 @@ $container->addServiceProvider(new Auth0ServiceProvider());
 
 $app->register(new TermServiceProvider());
 
-$app->register(new JobsServiceProvider());
+$container->addServiceProvider(new JobsServiceProvider());
 
 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
