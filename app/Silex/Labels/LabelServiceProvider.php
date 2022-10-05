@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Labels;
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
@@ -40,7 +41,6 @@ use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\CurrentUser;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 final class LabelServiceProvider implements ServiceProviderInterface
 {
