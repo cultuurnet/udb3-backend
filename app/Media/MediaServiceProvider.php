@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Media;
+namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
@@ -10,12 +10,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
 use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Media\ImageUploaderService;
-use CultuurNet\UDB3\Media\MediaUrlMapping;
-use CultuurNet\UDB3\Media\MediaManager;
-use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
-use CultuurNet\UDB3\Media\SimplePathGenerator;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;

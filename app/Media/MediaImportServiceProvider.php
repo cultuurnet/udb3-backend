@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Media;
+namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Model\Import\MediaObject\MediaManagerImageCollectionFactory;

@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Media;
+namespace CultuurNet\UDB3\Media;
 
 use Aws\S3\S3Client;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Media\ImageStorage;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;

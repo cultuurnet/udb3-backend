@@ -80,7 +80,7 @@ use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
+use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
@@ -843,7 +843,7 @@ $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
 
 $container->addServiceProvider(
-    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider()
+    new \CultuurNet\UDB3\Media\MediaServiceProvider()
 );
 
 $container->addServiceProvider(new ImageStorageProvider());
@@ -888,7 +888,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServi
 $app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 
 $app->register(new CuratorsServiceProvider());
 
