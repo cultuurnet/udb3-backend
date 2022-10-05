@@ -222,22 +222,22 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                     $container->addShared(
                         $queueName . '_command_bus_factory',
                         function () use ($container, $queueName): ResqueCommandBus {
-                        $commandBus = new ResqueCommandBus(
-                            $container->get('authorized_command_bus'),
-                            $queueName,
-                            $container->get('command_bus_event_dispatcher')
-                        );
+                            $commandBus = new ResqueCommandBus(
+                                $container->get('authorized_command_bus'),
+                                $queueName,
+                                $container->get('command_bus_event_dispatcher')
+                            );
 
-                        $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
+                            $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
 
-                        return $commandBus;
-                    }
+                            return $commandBus;
+                        }
                     );
                     $container->addShared(
                         $queueName . '_command_validator',
                         function (): CompositeCommandValidator {
-                        return new CompositeCommandValidator();
-                    }
+                            return new CompositeCommandValidator();
+                        }
                     );
                 }
             )
