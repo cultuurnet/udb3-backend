@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Event;
+namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Event\Productions\BroadcastingProductionRepository;
 use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
