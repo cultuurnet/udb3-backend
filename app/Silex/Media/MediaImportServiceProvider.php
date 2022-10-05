@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Model\Import\MediaObject\MediaManagerImageCollectionFactory;
 
 final class MediaImportServiceProvider extends AbstractServiceProvider
 {
-
     protected function getProvidedServiceNames(): array
     {
         return ['import_image_collection_factory'];
