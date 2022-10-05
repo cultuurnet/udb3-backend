@@ -111,11 +111,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                             new RetryingCommandBus(
                                 $container->get('authorized_command_bus')
                             ),
-                            $container->get(CurrentUser::class)->getId(),
-                            $container->get(JsonWebToken::class),
-                            $container->get(ApiKey::class),
-                            $container->get('api_name'),
-                            $container->get(Consumer::class)
+                            $container
                         ),
                         $container->get('event_command_validator')
                     )
