@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
-
-interface EventCdbXMLInterface extends CdbXmlContainerInterface
+interface EventCdbXMLInterface
 {
     /**
      * @return int

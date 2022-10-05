@@ -2,18 +2,19 @@
 
 use CultuurNet\UDB3\CommandHandling\QueueJob;
 use CultuurNet\UDB3\Log\ContextEnrichingLogger;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 
 require_once 'vendor/autoload.php';
 
 Resque_Event::listen(
     'beforePerform',
     function (Resque_Job $job) {
-        /** @var \Silex\Application $app */
+        /** @var HybridContainerApplication $app */
         $app = require __DIR__ . '/bootstrap.php';
-        $app->boot();
+        $container = $app->getLeagueContainer();
 
         $logger = new ContextEnrichingLogger(
-            $app['logger_factory.resque_worker']($job->queue),
+            $container->get('logger_factory.resque_worker')($job->queue),
             ['job_id' => $job->payload['id']]
         );
         $logger->info('job_started');
@@ -22,7 +23,7 @@ Resque_Event::listen(
             $args = $job->getArguments();
 
             $context = unserialize(base64_decode($args['context']));
-            $app['impersonator']->impersonate($context);
+            $container->get('impersonator')->impersonate($context);
 
             // Command bus service name is based on queue name + _command_bus_out.
             // Eg. Queue "event" => command bus "event_command_bus_out".
@@ -30,7 +31,7 @@ Resque_Event::listen(
 
             // Allows to access the command bus and logger in perform() of jobs that come out of the queue.
             QueueJob::setLogger($logger);
-            QueueJob::setCommandBus($app[$commandBusServiceName]);
+            QueueJob::setCommandBus($container->get($commandBusServiceName));
         } catch (Throwable $e) {
             $logger->error('job_failed', ['exception' => $e]);
             $logger->info('job_finished');
@@ -45,12 +46,12 @@ Resque_Event::listen(
 Resque_Event::listen(
     'afterPerform',
     function (Resque_Job $job) {
-        /** @var \Silex\Application $app */
+        /** @var HybridContainerApplication $app */
         $app = require __DIR__ . '/bootstrap.php';
-        $app->boot();
+        $container = $app->getLeagueContainer();
 
         $logger = new ContextEnrichingLogger(
-            $app['logger_factory.resque_worker']($job->queue),
+            $container->get('logger_factory.resque_worker')($job->queue),
             ['job_id' => $job->payload['id']]
         );
         $logger->info('job_finished');

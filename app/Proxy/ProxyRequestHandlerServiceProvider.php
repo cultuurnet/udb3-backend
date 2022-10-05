@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use GuzzleHttp\Client;
 use League\Uri\Uri;
-use Silex\Application;
 
 final class ProxyRequestHandlerServiceProvider extends AbstractServiceProvider
 {
@@ -23,9 +22,9 @@ final class ProxyRequestHandlerServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             ProxyRequestHandler::class,
-            static function (Application $app) {
+            static function () use ($container) {
                 return new ProxyRequestHandler(
-                    Uri::createFromString($app['config']['search']['v3']['base_url'])->getHost(),
+                    Uri::createFromString($container->get('config')['search']['v3']['base_url'])->getHost(),
                     new Client()
                 );
             }

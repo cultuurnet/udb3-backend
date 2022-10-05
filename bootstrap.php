@@ -73,7 +73,7 @@ use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
+use CultuurNet\UDB3\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
@@ -165,7 +165,7 @@ $app['event_store_factory'] = $app->protect(
     }
 );
 
-$app->register(new SentryServiceProvider());
+$container->addServiceProvider(new SentryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
@@ -263,15 +263,6 @@ $app['dbal_connection'] = $app->share(
         );
 
         return $connection;
-    }
-);
-
-$app['dbal_connection:keepalive'] = $app->protect(
-    function (Application $app) {
-        /** @var \Doctrine\DBAL\Connection $db */
-        $db = $app['dbal_connection'];
-
-        $db->query('SELECT 1')->execute();
     }
 );
 
@@ -880,14 +871,10 @@ $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider())
 $container->addServiceProvider(new AuthServiceProvider());
 
 $app->register(
-    new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
+    new \CultuurNet\UDB3\Silex\UDB2EventServicesProvider(),
     [
         'udb2_place_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_place.php',
         'udb2_organizer_external_id_mapping.file_location' => $udb3ConfigLocation . '/config.external_id_mapping_organizer.php',
-        'udb2_cdbxml_enricher.http_response_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_response_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_response_timeout'] : 3,
-        'udb2_cdbxml_enricher.http_connect_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_connect_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_connect_timeout'] : 1,
-        'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],
-        'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]
 );
 
@@ -907,7 +894,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServi
 $app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 $app->register(new CuratorsServiceProvider());

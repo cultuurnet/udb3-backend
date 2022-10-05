@@ -309,51 +309,6 @@ class PlaceTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_should_update_the_address_after_udb2_updates(): void
-    {
-        $placeCreated = $this->createPlaceCreatedEvent();
-        $placeId = $placeCreated->getPlaceId();
-
-        $address = new Address(
-            new Street('Eenmeilaan'),
-            new PostalCode('3010'),
-            new Locality('Kessel-Lo'),
-            new CountryCode('BE')
-        );
-
-        $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_same_address.xml');
-        $cdbNamespace = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
-
-        $this->scenario
-            ->withAggregateId($placeId)
-            ->given(
-                [
-                    $placeCreated,
-                ]
-            )
-            ->when(
-                function (Place $place) use ($address, $cdbXml, $cdbNamespace) {
-                    $place->updateAddress($address, new Language('nl'));
-                    $place->updateWithCdbXml($cdbXml, $cdbNamespace);
-                    $place->updateAddress($address, new Language('nl'));
-                }
-            )
-            ->then([
-                new PlaceUpdatedFromUDB2(
-                    $placeId,
-                    $cdbXml,
-                    $cdbNamespace
-                ),
-                new AddressUpdated(
-                    $placeId,
-                    $address
-                ),
-            ]);
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_update_typical_age_range_after_udb2_update(): void
     {
         $placeCreated = $this->createPlaceCreatedEvent();
@@ -536,48 +491,6 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->then(
                 [
                     new PlaceImportedFromUDB2(
-                        '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        $cdbXml,
-                        'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-                    ),
-                ]
-            )
-            ->when(
-                function (Place $place) {
-                    $place->addLabel(new Label(new LabelName('Toevlalocatie')));
-                }
-            )
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_applies_placeUpdatedFromUdb2_when_updating_actor_cdbxml_and_takes_keywords_into_account(): void
-    {
-        $cdbXml = $this->getCdbXML(
-            '/ReadModel/JSONLD/place_with_long_description.cdbxml.xml'
-        );
-
-        $this->scenario
-            ->withAggregateId('318F2ACB-F612-6F75-0037C9C29F44087A')
-            ->given(
-                [
-                    new PlaceImportedFromUDB2(
-                        '318F2ACB-F612-6F75-0037C9C29F44087A',
-                        $cdbXml,
-                        'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
-                    ),
-                ]
-            )
-            ->when(
-                function (Place $place) use ($cdbXml) {
-                    $place->updateWithCdbXml($cdbXml, 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL');
-                }
-            )
-            ->then(
-                [
-                    new PlaceUpdatedFromUDB2(
                         '318F2ACB-F612-6F75-0037C9C29F44087A',
                         $cdbXml,
                         'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
