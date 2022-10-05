@@ -12,7 +12,7 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class ImageStorageProvider implements ServiceProviderInterface
+final class ImageStorageProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

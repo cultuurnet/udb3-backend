@@ -20,7 +20,7 @@ use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 
-class MediaServiceProvider extends AbstractServiceProvider
+final class MediaServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
