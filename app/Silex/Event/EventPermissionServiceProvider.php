@@ -4,43 +4,44 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class EventPermissionServiceProvider implements ServiceProviderInterface
+final class EventPermissionServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app['event_owner.repository'] = $app->share(
-            function (Application $app) {
+        return [
+            'event_owner.repository',
+            'event_permission.projector',
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'event_owner.repository',
+            function () use ($container): DBALResourceOwnerRepository {
                 return new DBALResourceOwnerRepository(
                     new StringLiteral('event_permission_readmodel'),
-                    $app['dbal_connection'],
+                    $container->get('dbal_connection'),
                     new StringLiteral('event_id')
                 );
             }
         );
-
-        $app['event_permission.projector'] = $app->share(
-            function (Application $app) {
+        
+        $container->addShared(
+            'event_permission.projector',
+            function () use ($container): Projector {
                 return new Projector(
-                    $app['event_owner.repository'],
-                    $app['cdbxml_created_by_resolver']
+                    $container->get('event_owner.repository'),
+                    $container->get('cdbxml_created_by_resolver'),
                 );
             }
         );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
-    {
     }
 }
