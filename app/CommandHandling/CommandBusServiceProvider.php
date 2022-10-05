@@ -215,31 +215,26 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             }
         );
 
+        $createResqueCommandBus = static function ($queueName) use ($container): ResqueCommandBus {
+            $commandBus = new ResqueCommandBus(
+                $container->get('authorized_command_bus'),
+                $queueName,
+                $container->get('command_bus_event_dispatcher')
+            );
+            $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
+            return $commandBus;
+        };
+
         $container->add(
             'resque_command_bus_factory',
             new ObjectArgument(
-                function ($queueName) use ($container) {
-                    $container->addShared(
-                        $queueName . '_command_bus_factory',
-                        function () use ($container, $queueName): ResqueCommandBus {
-                            $commandBus = new ResqueCommandBus(
-                                $container->get('authorized_command_bus'),
-                                $queueName,
-                                $container->get('command_bus_event_dispatcher')
-                            );
-
-                            $commandBus->setLogger($container->get('logger_factory.resque_worker')($queueName));
-
-                            return $commandBus;
-                        }
-                    );
-
+                function ($queueName) use ($container, $createResqueCommandBus) {
                     $container->addShared(
                         $queueName . '_command_bus',
-                        function () use ($queueName, $container) {
+                        function () use ($queueName, $container, $createResqueCommandBus) {
                             return new ValidatingCommandBusDecorator(
                                 new ContextDecoratedCommandBus(
-                                    $container->get($queueName . '_command_bus_factory'),
+                                    $createResqueCommandBus($queueName),
                                     $container
                                 ),
                                 new CompositeCommandValidator()
@@ -249,8 +244,8 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
 
                     $container->addShared(
                         $queueName . '_command_bus_out',
-                        function () use ($queueName, $container) {
-                            return $container->get($queueName . '_command_bus_factory');
+                        function () use ($queueName, $createResqueCommandBus) {
+                            return $createResqueCommandBus($queueName);
                         }
                     );
                 }
