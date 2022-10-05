@@ -239,22 +239,24 @@ final class LabelServiceProvider extends AbstractServiceProvider
         );
     }
 
-    private function setUpCommandHandler(Application $app): void
+    private function setUpCommandHandler(Container $container): void
     {
-        $app[self::REPOSITORY] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::REPOSITORY,
+            function() use ($container): LabelRepository {
                 return new LabelRepository(
-                    $app[self::UNIQUE_EVENT_STORE],
-                    $app[EventBus::class],
-                    [$app['event_stream_metadata_enricher']]
+                    $container->get(self::UNIQUE_EVENT_STORE),
+                    $container->get(EventBus::class),
+                    [$container->get('event_stream_metadata_enricher')]
                 );
             }
         );
 
-        $app[self::COMMAND_HANDLER] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            self::COMMAND_HANDLER,
+            function() use ($container): CommandHandler {
                 return new CommandHandler(
-                    $app[self::REPOSITORY]
+                    $container->get(self::REPOSITORY)
                 );
             }
         );
