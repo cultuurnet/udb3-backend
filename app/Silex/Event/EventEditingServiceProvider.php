@@ -5,39 +5,46 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class EventEditingServiceProvider implements ServiceProviderInterface
+class EventEditingServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[EventOrganizerRelationService::class] = $app->share(
-            function ($app) {
+        return [
+            EventOrganizerRelationService::class,
+            RelocateEventToCanonicalPlace::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            EventOrganizerRelationService::class,
+            function () use ($container): EventOrganizerRelationService {
                 return new EventOrganizerRelationService(
-                    $app['event_command_bus'],
-                    $app[EventRelationsRepository::class]
+                    $container->get('event_command_bus'),
+                    $container->get(EventRelationsRepository::class),
                 );
             }
         );
 
-        $app[RelocateEventToCanonicalPlace::class] = $app->share(
-            function ($app) {
+        $container->addShared(
+            RelocateEventToCanonicalPlace::class,
+            function () use ($container): ReplayFilteringEventListener {
                 return new ReplayFilteringEventListener(
                     new RelocateEventToCanonicalPlace(
-                        $app['event_command_bus'],
-                        new CanonicalPlaceRepository($app['place_repository'])
+                        $container->get('event_command_bus'),
+                        new CanonicalPlaceRepository($container->get('place_repository'))
                     )
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
