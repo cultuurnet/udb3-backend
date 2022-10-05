@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Event\EventGeoCoordinatesServiceProvider;
 use CultuurNet\UDB3\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Event\EventPermissionServiceProvider;
+use CultuurNet\UDB3\Event\EventReadServiceProvider;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -833,7 +834,7 @@ $app->register(new MetadataServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $container->addServiceProvider(new EventEditingServiceProvider());
-$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
+$container->addServiceProvider(new EventReadServiceProvider());
 $container->addServiceProvider(new EventCommandHandlerProvider());
 $app->register(new EventRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
