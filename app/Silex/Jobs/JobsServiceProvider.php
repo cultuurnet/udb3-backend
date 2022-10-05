@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Jobs;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Jobs\ResqueJobStatusFactory;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class JobsServiceProvider implements ServiceProviderInterface
+final class JobsServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[GetJobStatusRequestHandler::class] = $app->share(
-            fn () => new GetJobStatusRequestHandler(new ResqueJobStatusFactory())
-        );
+        return [GetJobStatusRequestHandler::class];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            GetJobStatusRequestHandler::class,
+            fn () => new GetJobStatusRequestHandler(new ResqueJobStatusFactory())
+        );
     }
 }
