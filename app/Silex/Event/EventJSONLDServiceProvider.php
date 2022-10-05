@@ -10,6 +10,7 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Event\EventTypeResolver;
@@ -35,119 +36,132 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepositor
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Term\TermRepository;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-class EventJSONLDServiceProvider implements ServiceProviderInterface
+final class EventJSONLDServiceProvider extends AbstractServiceProvider
 {
     public const PROJECTOR = 'event_jsonld_projector';
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'event_jsonld_projected_event_factory';
 
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app['event_jsonld_repository'] = $app->share(
-            function (HybridContainerApplication $app) {
-                $repository = new CacheDocumentRepository(
-                    $app['event_jsonld_cache']
-                );
+        return [
+            'event_jsonld_repository',
+            'event_jsonld_cache',
+            self::PROJECTOR,
+            self::JSONLD_PROJECTED_EVENT_FACTORY,
+            'event_cdbxml_importer',
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'event_jsonld_repository',
+            function () use ($container): BroadcastingDocumentRepositoryDecorator {
+                $repository = new CacheDocumentRepository($container->get('event_jsonld_cache'));
 
                 $repository = EmbeddingRelatedResourcesOfferRepository::createForEventRepository(
                     $repository,
-                    $app['place_jsonld_repository'],
-                    $app['organizer_jsonld_repository']
+                    $container->get('place_jsonld_repository'),
+                    $container->get('organizer_jsonld_repository'),
                 );
 
                 $repository = new ProductionEnrichedEventRepository(
                     $repository,
-                    $app[ProductionRepository::class],
-                    $app['event_iri_generator']
+                    $container->get(ProductionRepository::class),
+                    $container->get('event_iri_generator'),
                 );
 
                 $repository = new OfferMetadataEnrichedOfferRepository(
-                    $app[OfferMetadataRepository::class],
-                    $repository
+                    $container->get(OfferMetadataRepository::class),
+                    $repository,
                 );
 
                 $repository = new PopularityEnrichedOfferRepository(
-                    $app[PopularityRepository::class],
-                    $repository
+                    $container->get(PopularityRepository::class),
+                    $repository,
                 );
 
                 $repository = new RecommendationForEnrichedOfferRepository(
-                    new DBALRecommendationsRepository($app['dbal_connection']),
-                    $app['event_iri_generator'],
-                    $repository
+                    new DBALRecommendationsRepository($container->get('dbal_connection')),
+                    $container->get('event_iri_generator'),
+                    $repository,
                 );
 
                 $repository = new PropertyPolyfillOfferRepository(
                     $repository,
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    OfferType::event()
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                    OfferType::event(),
                 );
 
-                $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
+                $repository = new TermLabelOfferRepositoryDecorator(
+                    $repository,
+                    $container->get(TermRepository::class),
+                );
 
-                $repository = new MediaUrlOfferRepositoryDecorator($repository, $app['media_url_mapping']);
+                $repository = new MediaUrlOfferRepositoryDecorator(
+                    $repository,
+                    $container->get('media_url_mapping'),
+                );
 
                 $repository = new CuratorEnrichedOfferRepository(
                     $repository,
-                    $app[NewsArticleRepository::class],
-                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forConfig()),
-                    $app['config']['curator_labels']
+                    $container->get(NewsArticleRepository::class),
+                    LoggerFactory::create($container, LoggerName::forConfig()),
+                    $container->get('config')['curator_labels'],
                 );
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
-                    $app[EventBus::class],
-                    new EventFactory(
-                        $app['event_iri_generator']
-                    )
+                    $container->get(EventBus::class),
+                    new EventFactory($container->get('event_iri_generator')),
                 );
             }
         );
 
-        $app['event_jsonld_cache'] = $app->share(
-            function (Application $app) {
-                return $app['cache']('event_jsonld');
+        $container->addShared(
+            'event_jsonld_cache',
+            function () use ($container) {
+                return $container->get('cache')('event_jsonld');
             }
         );
 
-        $app[self::PROJECTOR] = $app->share(
-            function ($app) {
+        $container->addShared(
+            self::PROJECTOR,
+            function () use ($container): EventLDProjector {
                 return new EventLDProjector(
-                    $app['event_jsonld_repository'],
-                    $app['event_iri_generator'],
-                    $app['place_iri_generator'],
-                    $app['place_service'],
-                    $app['organizer_service'],
-                    $app['media_object_serializer'],
-                    $app['iri_offer_identifier_factory'],
-                    $app['event_cdbxml_importer'],
-                    new JsonDocumentLanguageEnricher(
-                        new EventJsonDocumentLanguageAnalyzer()
-                    ),
+                    $container->get('event_jsonld_repository'),
+                    $container->get('event_iri_generator'),
+                    $container->get('place_iri_generator'),
+                    $container->get('place_service'),
+                    $container->get('organizer_service'),
+                    $container->get('media_object_serializer'),
+                    $container->get('iri_offer_identifier_factory'),
+                    $container->get('event_cdbxml_importer'),
+                    new JsonDocumentLanguageEnricher(new EventJsonDocumentLanguageAnalyzer()),
                     new EventTypeResolver(),
-                    $app['config']['base_price_translations'],
-                    new VideoNormalizer($app['config']['media']['video_default_copyright'])
+                    $container->get('config')['base_price_translations'],
+                    new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
                 );
             }
         );
 
-        $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
-            function ($app) {
-                return new EventFactory(
-                    $app['event_iri_generator']
-                );
+        $container->addShared(
+            self::JSONLD_PROJECTED_EVENT_FACTORY,
+            function () use ($container): EventFactory {
+                return new EventFactory($container->get('event_iri_generator'));
             }
         );
 
-        $app['event_cdbxml_importer'] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            'event_cdbxml_importer',
+            function () use ($container): CdbXMLImporter {
                 return new CdbXMLImporter(
                     new CdbXMLItemBaseImporter(
                         new CdbXmlPriceInfoParser(
@@ -156,18 +170,14 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                                 new CurrencyRepository()
                             )
                         ),
-                        $app['config']['base_price_translations']
+                        $container->get('config')['base_price_translations']
                     ),
-                    $app['udb2_event_cdbid_extractor'],
-                    $app['calendar_factory'],
-                    $app['cdbxml_contact_info_importer'],
-                    $app[CdbXMLToJsonLDLabelImporter::class]
+                    $container->get('udb2_event_cdbid_extractor'),
+                    $container->get('calendar_factory'),
+                    $container->get('cdbxml_contact_info_importer'),
+                    $container->get(CdbXMLToJsonLDLabelImporter::class),
                 );
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }

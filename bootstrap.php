@@ -291,7 +291,7 @@ $app['cdbxml_contact_info_importer'] = $app->share(
     }
 );
 
-$app->register(new EventJSONLDServiceProvider());
+$container->addServiceProvider(new EventJSONLDServiceProvider());
 
 $app['event_calendar_repository'] = $app->share(
     function ($app) {
