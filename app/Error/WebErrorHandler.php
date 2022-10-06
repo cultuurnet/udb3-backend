@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Error;
 
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemFactory;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use Psr\Http\Message\ResponseInterface;
