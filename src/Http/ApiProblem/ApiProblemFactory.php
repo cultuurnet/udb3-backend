@@ -151,7 +151,7 @@ final class ApiProblemFactory
         // probably best to not convert it to a Bad Gateway problem but make it a generic error so it gets logged in
         // Sentry.
         if ($request && strpos($message, 'A curl error (28) occurred: Operation timed out after') !== false) {
-            $service = strpos($request->getUri()->getPath(), "uitpas") !== false ? "UiTPAS" : "UiTID v1";
+            $service = strpos($request->getUri()->getPath(), 'uitpas') !== false ? 'UiTPAS' : 'UiTID v1';
             return ApiProblem::badGateway("Could not contact the {$service} servers. Please try again later.");
         }
 
