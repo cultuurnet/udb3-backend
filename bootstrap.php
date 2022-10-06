@@ -812,7 +812,7 @@ $container->addServiceProvider(
     new AMQPPublisherServiceProvider()
 );
 
-$app->register(new MetadataServiceProvider());
+$container->addServiceProvider(new MetadataServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
