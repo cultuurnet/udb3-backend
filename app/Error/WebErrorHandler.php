@@ -139,7 +139,20 @@ final class WebErrorHandler implements MiddlewareInterface
         Throwable $e,
         int $defaultStatus
     ): ApiProblem {
+        $routeParameters = new RouteParameters($request);
         $title = self::sanitizeCultureFeedErrorMessage($e->getMessage());
+
+        if (strpos($title, 'event is not known in uitpas') !== false) {
+            $message = 'Event not found in UiTPAS. Are you sure it is an UiTPAS event?';
+            if ($routeParameters->hasEventId()) {
+                $message = sprintf(
+                    'Event with id \'%s\' was not found in UiTPAS. Are you sure it is an UiTPAS event?',
+                    $routeParameters->getEventId()
+                );
+            }
+            return ApiProblem::urlNotFound($message);
+        }
+
         return ApiProblem::blank($title, $e->getCode() ?: $defaultStatus);
     }
 
