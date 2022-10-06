@@ -37,7 +37,7 @@ final class MetadataServiceProvider extends AbstractServiceProvider
                 return new LazyCallbackMetadataEnricher(
                     function () use ($container) {
                         // Create a default context from application globals.
-                        $context = ContextFactory::createFromGlobals($app);
+                        $context = ContextFactory::createFromGlobals($container);
 
                         // Allow some processes to overwrite the context, like resque workers.
                         if ($container->get('context') instanceof Metadata) {
@@ -61,14 +61,16 @@ final class MetadataServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $app['command_bus_event_dispatcher'] = $app::share(
-            function (Application $app) {
+        $container->addShared(
+            'command_bus_event_dispatcher',
+            function () use ($container) {
                 $dispatcher = new CallableEventDispatcher();
                 $dispatcher->addListener(
                     ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
-                    function ($context) use ($app) {
+                    function ($context) use ($container) {
                         // Overwrite the context based on the context stored with the resque command being executed.
-                        $app['context'] = $app::share(
+                        $container->addShared(
+                            'context',
                             function () use ($context) {
                                 return $context;
                             }
