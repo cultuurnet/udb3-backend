@@ -117,8 +117,15 @@ final class ApiProblemFactory
                 return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 400);
 
             default:
-                return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 500);
+                return self::convertToGenericApiProblem($e);
         }
+    }
+
+    private static function convertToGenericApiProblem(Throwable $e): ApiProblem
+    {
+        // Note: When we have improved the validation of most endpoints, we should make this return a plain
+        // "Internal Server Error" instead.
+        return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 500);
     }
 
     private static function convertCultureFeedExceptionToApiProblem(
