@@ -8,14 +8,23 @@ use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\CallableEventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-final class MetadataServiceProvider implements ServiceProviderInterface
+final class MetadataServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
+    {
+        return [
+            'metadata_enricher',
+            'event_stream_metadata_enricher',
+            'command_bus_event_dispatcher'
+        ];
+    }
+    public function register(Application $app): void
     {
         $app['context'] = null;
 
@@ -65,9 +74,5 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                 return $dispatcher;
             }
         );
-    }
-
-    public function boot(Application $app)
-    {
     }
 }
