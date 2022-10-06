@@ -30,7 +30,6 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'command_bus.security',
             'authorized_command_bus',
             'event_command_bus',
-            'event_command_validator',
             'event_export_command_bus',
             'event_export_command_bus_out',
             'bulk_label_offer_command_bus',
@@ -109,7 +108,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                             ),
                             $container
                         ),
-                        $container->get('event_command_validator')
+                        new CompositeCommandValidator()
                     )
                 );
 
@@ -201,13 +200,6 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                 );
 
                 return $commandBus;
-            }
-        );
-
-        $container->addShared(
-            'event_command_validator',
-            function (): CompositeCommandValidator {
-                return new CompositeCommandValidator();
             }
         );
 
