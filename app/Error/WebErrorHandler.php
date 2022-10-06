@@ -36,14 +36,13 @@ final class WebErrorHandler implements MiddlewareInterface
     public function handle(ServerRequestInterface $request, Throwable $e): ApiProblemJsonResponse
     {
         $this->errorLogger->log($e);
-        $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
-        $problem = self::createNewApiProblem($request, $e, $defaultStatus, $this->debugMode);
+        $problem = self::createNewApiProblem($request, $e, $this->debugMode);
         return new ApiProblemJsonResponse($problem);
     }
 
-    public static function createNewApiProblem(ServerRequestInterface $request, Throwable $e, int $defaultStatus, bool $debug = false): ApiProblem
+    public static function createNewApiProblem(ServerRequestInterface $request, Throwable $e, bool $debug = false): ApiProblem
     {
-        $problem = ApiProblemFactory::createFromThrowable($request, $e, $defaultStatus);
+        $problem = ApiProblemFactory::createFromThrowable($request, $e);
         if ($debug) {
             $problem->setDebugInfo(ContextExceptionConverterProcessor::convertThrowableToArray($e));
         }

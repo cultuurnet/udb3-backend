@@ -8,6 +8,7 @@ use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Error\ErrorLogger;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
@@ -21,9 +22,10 @@ final class ApiProblemFactory
 {
     public static function createFromThrowable(
         ServerRequestInterface $request,
-        Throwable $e,
-        int $defaultStatus
+        Throwable $e
     ): ApiProblem {
+        $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
+
         switch (true) {
             case $e instanceof ApiProblem:
                 return $e;
