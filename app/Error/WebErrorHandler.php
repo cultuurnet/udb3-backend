@@ -127,12 +127,20 @@ final class WebErrorHandler implements MiddlewareInterface
 
             case $e instanceof CultureFeed_Exception:
             case $e instanceof CultureFeed_HttpException:
-                $title = self::sanitizeCultureFeedErrorMessage($e->getMessage());
-                return ApiProblem::blank($title, $e->getCode() ?: $defaultStatus);
+                return self::convertCultureFeedExceptionToApiProblem($request, $e, $defaultStatus);
 
             default:
                 return ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
         }
+    }
+
+    private static function convertCultureFeedExceptionToApiProblem(
+        ServerRequestInterface $request,
+        Throwable $e,
+        int $defaultStatus
+    ): ApiProblem {
+        $title = self::sanitizeCultureFeedErrorMessage($e->getMessage());
+        return ApiProblem::blank($title, $e->getCode() ?: $defaultStatus);
     }
 
     /**
