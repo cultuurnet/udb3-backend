@@ -24,20 +24,26 @@ final class MetadataServiceProvider extends AbstractServiceProvider
             'command_bus_event_dispatcher'
         ];
     }
-    public function register(Application $app): void
+
+    public function register(): void
     {
         $app['context'] = null;
 
-        $app['metadata_enricher'] = $app::share(
-            function (Application $app) {
+        $container = $this->getContainer();
+
+        $container->addShared('context');
+
+        $container->addShared(
+            'metadata_enricher',
+            function () use ($container) {
                 return new LazyCallbackMetadataEnricher(
-                    function () use ($app) {
+                    function () use ($container) {
                         // Create a default context from application globals.
                         $context = ContextFactory::createFromGlobals($app);
 
                         // Allow some processes to overwrite the context, like resque workers.
-                        if ($app['context'] instanceof Metadata) {
-                            $context = $app['context'];
+                        if ($container->get('context') instanceof Metadata) {
+                            $context = $container->get('context');
                         }
 
                         return ContextFactory::prepareForLogging($context);
