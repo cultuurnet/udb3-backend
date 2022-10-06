@@ -208,7 +208,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new ValidatingCommandBusDecorator(
                     new ContextDecoratedCommandBus(
-                        self::createResqueCommandBus('event_export', $container),
+                        $this->createResqueCommandBus('event_export', $container),
                         $container
                     ),
                     new CompositeCommandValidator()
@@ -219,7 +219,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_export_command_bus_out',
             function () use ($container) {
-                $commandBus = self::createResqueCommandBus('event_export', $container);
+                $commandBus = $this->createResqueCommandBus('event_export', $container);
                 $commandBus->subscribe($container->get('event_export_command_handler'));
                 return $commandBus;
             }
@@ -230,7 +230,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new ValidatingCommandBusDecorator(
                     new ContextDecoratedCommandBus(
-                        self::createResqueCommandBus('bulk_label_offer', $container),
+                        $this->createResqueCommandBus('bulk_label_offer', $container),
                         $container
                     ),
                     new CompositeCommandValidator()
@@ -241,14 +241,14 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'bulk_label_offer_command_bus_out',
             function () use ($container) {
-                $commandBus = self::createResqueCommandBus('bulk_label_offer', $container);
+                $commandBus = $this->createResqueCommandBus('bulk_label_offer', $container);
                 $commandBus->subscribe($container->get('bulk_label_offer_command_handler'));
                 return $commandBus;
             }
         );
     }
 
-    private static function createResqueCommandBus(string $queueName, ContainerInterface $container): ResqueCommandBus
+    private function createResqueCommandBus(string $queueName, ContainerInterface $container): ResqueCommandBus
     {
         $commandBus = new ResqueCommandBus(
             $container->get('authorized_command_bus'),
