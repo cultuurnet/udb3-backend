@@ -248,7 +248,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function createResqueCommandBus(string $queueName, ContainerInterface $container): ResqueCommandBus
+    private static function createResqueCommandBus(string $queueName, ContainerInterface $container): ResqueCommandBus
     {
         $commandBus = new ResqueCommandBus(
             $container->get('authorized_command_bus'),
