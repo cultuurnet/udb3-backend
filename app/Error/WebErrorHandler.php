@@ -153,6 +153,17 @@ final class WebErrorHandler implements MiddlewareInterface
             return ApiProblem::urlNotFound($message);
         }
 
+        if (strpos($title, 'Unknown organiser cdbid') !== false) {
+            $message = 'Organizer not found in UiTPAS. Are you sure it is an UiTPAS organizer?';
+            if ($routeParameters->hasOrganizerId()) {
+                $message = sprintf(
+                    'Organizer with id \'%s\' was not found in UiTPAS. Are you sure it is an UiTPAS organizer?',
+                    $routeParameters->getOrganizerId()
+                );
+            }
+            return ApiProblem::urlNotFound($message);
+        }
+
         return ApiProblem::blank($title, $e->getCode() ?: $defaultStatus);
     }
 
