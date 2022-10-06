@@ -3,6 +3,7 @@
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
+use CultuurNet\UDB3\Culturefeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
@@ -27,8 +28,7 @@ use CultuurNet\UDB3\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
-use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
-use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Error\SentryServiceProvider;
@@ -133,14 +133,7 @@ $app->register(new EventBusServiceProvider());
 /**
  * CultureFeed services.
  */
-$app->register(
-    new CultureFeedServiceProvider(),
-    [
-        'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
-        'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
-        'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
-    ]
-);
+$container->addServiceProvider(new CultureFeedServiceProvider());
 
 /**
  * Mailing service.
@@ -757,7 +750,7 @@ $app->register(new PlaceHistoryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
-$app->register(new CuratorsServiceProvider());
+$container->addServiceProvider(new CuratorsServiceProvider());
 
 $container->addServiceProvider(new Auth0ServiceProvider());
 
