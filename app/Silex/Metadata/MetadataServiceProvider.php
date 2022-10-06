@@ -27,8 +27,6 @@ final class MetadataServiceProvider extends AbstractServiceProvider
 
     public function register(): void
     {
-        $app['context'] = null;
-
         $container = $this->getContainer();
 
         $container->addShared('context');
@@ -52,11 +50,12 @@ final class MetadataServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $app['event_stream_metadata_enricher'] = $app::share(
-            function ($app) {
+        $container->addShared(
+            'event_stream_metadata_enricher',
+            function () use ($container) {
                 $eventStreamDecorator = new MetadataEnrichingEventStreamDecorator();
                 $eventStreamDecorator->registerEnricher(
-                    $app['metadata_enricher']
+                    $container->get('metadata_enricher')
                 );
                 return $eventStreamDecorator;
             }
