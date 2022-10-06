@@ -7,11 +7,19 @@ namespace CultuurNet\UDB3\Http\ApiProblem;
 use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
+use CultuurNet\CalendarSummaryV3\FormatterException;
+use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Error\ErrorLogger;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\NotWellFormedException;
+use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
+use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
+use CultuurNet\UDB3\UiTPAS\Validation\ChangeNotAllowedByTicketSales;
 use Error;
 use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;
@@ -24,8 +32,6 @@ final class ApiProblemFactory
         ServerRequestInterface $request,
         Throwable $e
     ): ApiProblem {
-        $defaultStatus = ErrorLogger::isBadRequestException($e) ? 400 : 500;
-
         switch (true) {
             case $e instanceof ApiProblem:
                 return $e;
@@ -35,6 +41,9 @@ final class ApiProblemFactory
 
             case $e instanceof ConvertsToApiProblem:
                 return $e->toApiProblem();
+
+            case $e instanceof RequestAuthenticationException:
+                return ApiProblem::unauthorized($e->getMessage());
 
             case $e instanceof CommandAuthorizationException:
                 return ApiProblem::forbidden(
@@ -66,6 +75,8 @@ final class ApiProblemFactory
             // exception in the request handler or command handler and convert it to an ApiProblem with a better detail.
             case $e instanceof AggregateNotFoundException:
             case $e instanceof DocumentDoesNotExist:
+            case $e instanceof EntityNotFoundException:
+            case $e instanceof MediaObjectNotFoundException:
                 $routeParameters = new RouteParameters($request);
                 if ($routeParameters->hasEventId()) {
                     return ApiProblem::eventNotFound($routeParameters->getEventId());
@@ -82,26 +93,36 @@ final class ApiProblemFactory
                 if ($routeParameters->hasRoleId()) {
                     return ApiProblem::roleNotFound($routeParameters->getRoleId()->toString());
                 }
+                if ($routeParameters->hasMediaId()) {
+                    return ApiProblem::mediaObjectNotFound($routeParameters->getMediaId());
+                }
                 return ApiProblem::urlNotFound();
 
             case $e instanceof DataValidationException:
-                $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: $defaultStatus);
+                $problem = ApiProblem::blank('Invalid payload.', $e->getCode() ?: 400);
                 $problem->setValidationMessages($e->getValidationMessages());
                 return $problem;
 
             case $e instanceof CultureFeed_Exception:
             case $e instanceof CultureFeed_HttpException:
-                return self::convertCultureFeedExceptionToApiProblem($request, $e, $defaultStatus);
+                return self::convertCultureFeedExceptionToApiProblem($request, $e);
+
+            case $e instanceof MissingValueException:
+            case $e instanceof ChangeNotAllowedByTicketSales:
+            case $e instanceof NotWellFormedException:
+            case $e instanceof FormatterException:
+            case $e instanceof EventCannotBeAddedToProduction:
+            case $e instanceof EventCannotBeRemovedFromProduction:
+                return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 400);
 
             default:
-                return ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
+                return ApiProblem::blank($e->getMessage(), $e->getCode() ?: 500);
         }
     }
 
     private static function convertCultureFeedExceptionToApiProblem(
         ServerRequestInterface $request,
-        Throwable $e,
-        int $defaultStatus
+        Throwable $e
     ): ApiProblem {
         $routeParameters = new RouteParameters($request);
         $title = self::sanitizeCultureFeedErrorMessage($e->getMessage());
@@ -128,7 +149,7 @@ final class ApiProblemFactory
             return ApiProblem::urlNotFound($message);
         }
 
-        return ApiProblem::blank($title, $e->getCode() ?: $defaultStatus);
+        return ApiProblem::blank($title, $e->getCode() ?: 500);
     }
 
     /**
