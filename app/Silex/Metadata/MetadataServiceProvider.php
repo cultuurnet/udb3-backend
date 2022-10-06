@@ -11,7 +11,6 @@ use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
-use Silex\Application;
 
 final class MetadataServiceProvider extends AbstractServiceProvider
 {
