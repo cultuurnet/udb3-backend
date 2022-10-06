@@ -125,20 +125,25 @@ final class WebErrorHandler implements MiddlewareInterface
                 $problem->setValidationMessages($e->getValidationMessages());
                 return $problem;
 
-            // Remove "URL CALLED" and everything after it.
-            // E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..."
-            // becomes "event is not known in uitpas ".
-            // The trailing space could easily be removed but it's there for backward compatibility with systems that
-            // might have implemented a comparison on the error message when this was introduced in udb3-uitpas-service
-            // in the past.
             case $e instanceof CultureFeed_Exception:
             case $e instanceof CultureFeed_HttpException:
-                $title = $e->getMessage();
-                $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
-                return ApiProblem::blank($formattedTitle, $e->getCode() ?: $defaultStatus);
+                $title = self::sanitizeCultureFeedErrorMessage($e->getMessage());
+                return ApiProblem::blank($title, $e->getCode() ?: $defaultStatus);
 
             default:
                 return ApiProblem::blank($e->getMessage(), $e->getCode() ?: $defaultStatus);
         }
+    }
+
+    /**
+     * Remove "URL CALLED" and everything after it.
+     * E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..."
+     * becomes "event is not known in uitpas ".
+     * The trailing space could easily be removed but it's there for backward compatibility with systems that might have
+     * implemented a comparison on the error message when this was introduced in udb3-uitpas-service in the past.
+     */
+    private static function sanitizeCultureFeedErrorMessage(string $errorMessage): string
+    {
+        return preg_replace('/URL CALLED.*/', '', $errorMessage);
     }
 }
