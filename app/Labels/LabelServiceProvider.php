@@ -155,7 +155,7 @@ final class LabelServiceProvider extends AbstractServiceProvider
         $container->addShared(
             self::JSON_READ_REPOSITORY,
             function () use ($container): ReadRepositoryInterface {
-                $labels = file_exists(__DIR__ . '/../../../config.excluded_labels.php') ? require __DIR__ . '/../../../config.excluded_labels.php' : [];
+                $labels = file_exists(__DIR__ . '/../../config.excluded_labels.php') ? require __DIR__ . '/../../config.excluded_labels.php' : [];
 
                 return new GodUserReadRepositoryDecorator(
                     new JsonReadRepository(
