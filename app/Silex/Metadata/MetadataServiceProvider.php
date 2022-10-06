@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 final class MetadataServiceProvider extends AbstractServiceProvider
 {
@@ -21,7 +20,7 @@ final class MetadataServiceProvider extends AbstractServiceProvider
         return [
             'metadata_enricher',
             'event_stream_metadata_enricher',
-            'command_bus_event_dispatcher'
+            'command_bus_event_dispatcher',
         ];
     }
 
