@@ -455,4 +455,17 @@ final class ApiProblem extends Exception
     {
         return self::bodyInvalidData(new SchemaError('/', "The property '$field' is required."));
     }
+
+    public static function badGateway(string $detail): self
+    {
+        // For 502 Bad Gateway we use about:blank because a) 502 is always type "bad gateway" and b) we don't want to
+        // document self-explanatory 5xx error codes, especially because an integrator cannot fix them in their own
+        // code.
+        return self::create(
+            'about:blank',
+            'Bad Gateway',
+            502,
+            $detail
+        );
+    }
 }
