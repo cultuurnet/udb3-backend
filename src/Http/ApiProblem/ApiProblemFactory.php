@@ -29,9 +29,11 @@ use Throwable;
 final class ApiProblemFactory
 {
     public static function createFromThrowable(
-        ServerRequestInterface $request,
-        Throwable $e
+        Throwable $e,
+        ?ServerRequestInterface $request = null
     ): ApiProblem {
+        $routeParameters = $request ? new RouteParameters($request) : null;
+
         switch (true) {
             case $e instanceof ApiProblem:
                 return $e;
@@ -77,23 +79,22 @@ final class ApiProblemFactory
             case $e instanceof DocumentDoesNotExist:
             case $e instanceof EntityNotFoundException:
             case $e instanceof MediaObjectNotFoundException:
-                $routeParameters = new RouteParameters($request);
-                if ($routeParameters->hasEventId()) {
+                if ($routeParameters && $routeParameters->hasEventId()) {
                     return ApiProblem::eventNotFound($routeParameters->getEventId());
                 }
-                if ($routeParameters->hasPlaceId()) {
+                if ($routeParameters && $routeParameters->hasPlaceId()) {
                     return ApiProblem::placeNotFound($routeParameters->getPlaceId());
                 }
-                if ($routeParameters->hasOrganizerId()) {
+                if ($routeParameters && $routeParameters->hasOrganizerId()) {
                     return ApiProblem::organizerNotFound($routeParameters->getOrganizerId());
                 }
-                if ($routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
+                if ($routeParameters && $routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
                     return ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
                 }
-                if ($routeParameters->hasRoleId()) {
+                if ($routeParameters && $routeParameters->hasRoleId()) {
                     return ApiProblem::roleNotFound($routeParameters->getRoleId()->toString());
                 }
-                if ($routeParameters->hasMediaId()) {
+                if ($routeParameters && $routeParameters->hasMediaId()) {
                     return ApiProblem::mediaObjectNotFound($routeParameters->getMediaId());
                 }
                 return ApiProblem::urlNotFound();
@@ -105,7 +106,7 @@ final class ApiProblemFactory
 
             case $e instanceof CultureFeed_Exception:
             case $e instanceof CultureFeed_HttpException:
-                return self::convertCultureFeedExceptionToApiProblem($request, $e);
+                return self::convertCultureFeedExceptionToApiProblem($e, $routeParameters);
 
             case $e instanceof MissingValueException:
             case $e instanceof ChangeNotAllowedByTicketSales:
@@ -121,15 +122,14 @@ final class ApiProblemFactory
     }
 
     private static function convertCultureFeedExceptionToApiProblem(
-        ServerRequestInterface $request,
-        Throwable $e
+        Throwable $e,
+        ?RouteParameters $routeParameters = null
     ): ApiProblem {
-        $routeParameters = new RouteParameters($request);
         $title = self::sanitizeCultureFeedErrorMessage($e->getMessage());
 
         if (strpos($title, 'event is not known in uitpas') !== false) {
             $message = 'Event not found in UiTPAS. Are you sure it is an UiTPAS event?';
-            if ($routeParameters->hasEventId()) {
+            if ($routeParameters && $routeParameters->hasEventId()) {
                 $message = sprintf(
                     'Event with id \'%s\' was not found in UiTPAS. Are you sure it is an UiTPAS event?',
                     $routeParameters->getEventId()
@@ -140,7 +140,7 @@ final class ApiProblemFactory
 
         if (strpos($title, 'Unknown organiser cdbid') !== false) {
             $message = 'Organizer not found in UiTPAS. Are you sure it is an UiTPAS organizer?';
-            if ($routeParameters->hasOrganizerId()) {
+            if ($routeParameters && $routeParameters->hasOrganizerId()) {
                 $message = sprintf(
                     'Organizer with id \'%s\' was not found in UiTPAS. Are you sure it is an UiTPAS organizer?',
                     $routeParameters->getOrganizerId()
