@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
@@ -17,11 +18,19 @@ use CultuurNet\UDB3\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-final class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
+final class OrganizerGeoCoordinatesServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app)
+    protected function getProvidedServiceNames(): array
     {
-        $app['organizer_geocoordinates_command_handler'] = $app->share(
+        return [
+            'organizer_geocoordinates_command_handler',
+            'organizer_geocoordinates_process_manager'
+        ];
+    }
+
+    public function register(Application $app): void
+    {
+        $app[] = $app->share(
             function (Application $app) {
                 return new UpdateGeoCoordinatesFromAddressCommandHandler(
                     $app['organizer_repository'],
@@ -43,10 +52,5 @@ final class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInt
                 );
             }
         );
-    }
-
-
-    public function boot(Application $app)
-    {
     }
 }
