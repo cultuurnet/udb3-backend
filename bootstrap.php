@@ -67,6 +67,13 @@ use CultuurNet\UDB3\StringLiteral;
 date_default_timezone_set('Europe/Brussels');
 
 /**
+ * Disable warnings for calling new SimpleXmlElement() with invalid XML.
+ * An exception will still be thrown, but no warnings will be generated (which are hard to catch/hide otherwise).
+ * We do this system-wide because we parse XML in various places (UiTPAS API responses, UiTID v1 responses, imported UDB2 XML, ...)
+ */
+libxml_use_internal_errors(true);
+
+/**
  * Set up a PSR-11 container using league/container. The goal is for this container to replace the Silex Application
  * object (a Pimple container).
  * We inject this new PSR container into the Silex application (extended via HybridContainerApplication) so that Silex
