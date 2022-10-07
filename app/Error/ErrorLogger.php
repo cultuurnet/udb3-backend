@@ -24,7 +24,9 @@ final class ErrorLogger
 
     public function log(Throwable $throwable): void
     {
-        if (self::isBadRequestException($throwable) || self::isBadCLIInput($throwable)) {
+        if (self::isBadRequestException($throwable) ||
+            self::isBadGateway($throwable) ||
+            self::isBadCLIInput($throwable)) {
             return;
         }
 
@@ -48,5 +50,11 @@ final class ErrorLogger
     {
         $apiProblem = ApiProblemFactory::createFromThrowable($e);
         return $apiProblem->getStatus() >= 400 && $apiProblem->getStatus() < 500;
+    }
+
+    public static function isBadGateway(Throwable $e): bool
+    {
+        $apiProblem = ApiProblemFactory::createFromThrowable($e);
+        return $apiProblem->getStatus() === 502;
     }
 }

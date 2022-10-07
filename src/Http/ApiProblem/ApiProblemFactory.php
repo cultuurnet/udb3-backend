@@ -152,6 +152,17 @@ final class ApiProblemFactory
             return ApiProblem::urlNotFound($message);
         }
 
+        // In some cases the UiTPAS servers return a 404 error with an HTML page. In this case we treat it as UiTPAS
+        // being down and return a Bad Gateway error, because the response is caused by the UiTPAS web server not
+        // being configured / running correctly.
+        // Note: The "reponse" below is not a typo, that's actually the wording in the message of the
+        // CultureFeed_HttpException when a response is not 200...
+        if ($e instanceof CultureFeed_HttpException &&
+            strpos($title, 'The reponse for the HTTP request was not 200') !== false &&
+            strpos($title, '<html') !== false) {
+            return ApiProblem::badGateway('Could not contact the UiTPAS servers. Please try again later.');
+        }
+
         return ApiProblem::blank($title, $e->getCode() ?: 500);
     }
 
