@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Organizer;
+namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;

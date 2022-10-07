@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Organizer;
+namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;

@@ -19,8 +19,8 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
+use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
+use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 
