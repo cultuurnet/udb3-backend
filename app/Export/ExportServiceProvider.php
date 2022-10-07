@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Export;
+namespace CultuurNet\UDB3\Export;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryWithFormatterRepository;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
@@ -19,8 +21,6 @@ use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Psr\Log\LoggerAwareInterface;
 use Twig_Environment;
@@ -48,7 +48,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
             'event_export_twig_environment',
             function () use ($container): Twig_Environment {
                 $loader = new \Twig_Loader_Filesystem(
-                    __DIR__ . '/../../../src/EventExport/Format/HTML/templates'
+                    __DIR__ . '/../../src/EventExport/Format/HTML/templates'
                 );
 
                 $twig = new Twig_Environment($loader);
@@ -76,7 +76,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
                     new ItemIdentifierFactory($container->get('config')['item_url_regex']),
                     $searchService,
                     new Version4Generator(),
-                    realpath(__DIR__ . '/../../../web/downloads'),
+                    realpath(__DIR__ . '/../../web/downloads'),
                     new CallableIriGenerator(
                         function ($fileName) use ($container) {
                             return $container->get('config')['url'] . '/downloads/' . $fileName;
