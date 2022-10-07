@@ -128,7 +128,7 @@ $container->addServiceProvider(new SentryServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
 $container->addServiceProvider(new CommandBusServiceProvider());
-$app->register(new EventBusServiceProvider());
+$container->addServiceProvider(new EventBusServiceProvider());
 
 /**
  * CultureFeed services.
