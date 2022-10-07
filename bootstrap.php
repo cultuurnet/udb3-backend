@@ -354,6 +354,7 @@ $app['places_locator_event_stream_decorator'] = $app->share(
     }
 );
 
+// @todo: remove usages of 'place_repository' with Class based share
 $app['place_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
@@ -366,6 +367,12 @@ $app['place_repository'] = $app->share(
         );
 
         return $repository;
+    }
+);
+$container->addShared(
+    \CultuurNet\UDB3\Place\PlaceRepository::class,
+    function () use ($container): \CultuurNet\UDB3\Place\PlaceRepository {
+        return $container->get('place_repository');
     }
 );
 
