@@ -52,6 +52,10 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.');
         }
 
+        if (strlen($copyrightHolder) < 2) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" must be at least 2 characters long.');
+        }
+
         if (!$language) {
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is required.');
         }

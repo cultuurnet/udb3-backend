@@ -81,7 +81,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
      * @test
      * @dataProvider incompleteRequestProvider
      */
-    public function it_throws_an_api_problem_if_a_field_is_missing(array $body, ApiProblem $apiProblem): void
+    public function it_throws_an_api_problem_if_a_field_is_missing_or_invalid(array $body, ApiProblem $apiProblem): void
     {
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
@@ -109,6 +109,14 @@ final class UploadMediaRequestHandlerTest extends TestCase
                     'language' => 'nl',
                 ],
                 ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.'),
+            ],
+            'invalid copyright holder' => [
+                [
+                    'description' => 'Lenna',
+                    'language' => 'nl',
+                    'copyrightHolder' => 'a',
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" must be at least 2 characters long.'),
             ],
             'missing language' => [
                 [
