@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler;
@@ -27,112 +28,182 @@ use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\User\CurrentUser;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class OrganizerRequestHandlerServiceProvider implements ServiceProviderInterface
+final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[ImportOrganizerRequestHandler::class] = $app->share(
-            fn (Application $app) => new ImportOrganizerRequestHandler(
-                $app['organizer_repository'],
-                $app['event_command_bus'],
-                $app['uuid_generator'],
-                $app['organizer_iri_generator'],
-                new CombinedRequestBodyParser(
-                    new LegacyOrganizerRequestBodyParser(),
-                    RemoveEmptyArraysRequestBodyParser::createForOrganizers(),
-                    ImagesPropertyPolyfillRequestBodyParser::createForOrganizers(
-                        $app['media_object_iri_generator'],
-                        $app['media_object_repository']
-                    )
-                )
-            )
-        );
-
-        $app[GetOrganizerRequestHandler::class] = $app->share(
-            fn (Application $application) => new GetOrganizerRequestHandler($app['organizer_service'])
-        );
-
-        $app[DeleteOrganizerRequestHandler::class] = $app->share(
-            fn (Application $application) => new DeleteOrganizerRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateTitleRequestHandler::class] = $app->share(
-            fn (Application $application) => new UpdateTitleRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateDescriptionRequestHandler::class] = $app->share(
-            fn (Application $application) => new UpdateDescriptionRequestHandler($app['event_command_bus'])
-        );
-
-        $app[DeleteDescriptionRequestHandler::class] = $app->share(
-            fn (Application $application) => new DeleteDescriptionRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateAddressRequestHandler::class] = $app->share(
-            fn (Application $application) => new UpdateAddressRequestHandler($app['event_command_bus'])
-        );
-
-        $app[DeleteAddressRequestHandler::class] = $app->share(
-            fn (Application $application) => new DeleteAddressRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateUrlRequestHandler::class] = $app->share(
-            fn (Application $application) => new UpdateUrlRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateContactPointRequestHandler::class] = $app->share(
-            fn (Application $application) => new UpdateContactPointRequestHandler($app['event_command_bus'])
-        );
-
-        $app[AddImageRequestHandler::class] = $app->share(
-            fn (Application $application) => new AddImageRequestHandler(
-                $app['event_command_bus'],
-                $app['media_object_repository']
-            )
-        );
-
-        $app[UpdateImagesRequestHandler::class] = $app->share(
-            fn (Application $application) => new UpdateImagesRequestHandler($app['event_command_bus'])
-        );
-
-        $app[UpdateMainImageRequestHandler::class] = $app->share(
-            fn (Application $application) => new UpdateMainImageRequestHandler($app['event_command_bus'])
-        );
-
-        $app[DeleteImageRequestHandler::class] = $app->share(
-            fn (Application $application) => new DeleteImageRequestHandler($app['event_command_bus'])
-        );
-
-        $app[AddLabelRequestHandler::class] = $app->share(
-            fn (Application $application) => new AddLabelRequestHandler($app['event_command_bus'])
-        );
-
-        $app[DeleteLabelRequestHandler::class] = $app->share(
-            fn (Application $application) => new DeleteLabelRequestHandler($app['event_command_bus'])
-        );
-
-        $app[GetPermissionsForCurrentUserRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new GetPermissionsForCurrentUserRequestHandler(
-                    $app['organizer_permission_voter'],
-                    $app[CurrentUser::class]->getId()
-                );
-            }
-        );
-
-        $app[GetPermissionsForGivenUserRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new GetPermissionsForGivenUserRequestHandler(
-                    $app['organizer_permission_voter'],
-                );
-            }
-        );
+        return [
+            ImportOrganizerRequestHandler::class,
+            GetOrganizerRequestHandler::class,
+            DeleteOrganizerRequestHandler::class,
+            UpdateTitleRequestHandler::class,
+            UpdateDescriptionRequestHandler::class,
+            DeleteDescriptionRequestHandler::class,
+            UpdateAddressRequestHandler::class,
+            DeleteAddressRequestHandler::class,
+            UpdateUrlRequestHandler::class,
+            UpdateContactPointRequestHandler::class,
+            AddImageRequestHandler::class,
+            UpdateImagesRequestHandler::class,
+            UpdateMainImageRequestHandler::class,
+            DeleteImageRequestHandler::class,
+            AddLabelRequestHandler::class,
+            DeleteLabelRequestHandler::class,
+            GetPermissionsForCurrentUserRequestHandler::class,
+            GetPermissionsForGivenUserRequestHandler::class,
+        ];
     }
 
-    public function boot(Application $app): void
+    public function register(): void
     {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            ImportOrganizerRequestHandler::class,
+            function () use ($container) {
+                return new ImportOrganizerRequestHandler(
+                    $container->get('organizer_repository'),
+                    $container->get('event_command_bus'),
+                    $container->get('uuid_generator'),
+                    $container->get('organizer_iri_generator'),
+                    new CombinedRequestBodyParser(
+                        new LegacyOrganizerRequestBodyParser(),
+                        RemoveEmptyArraysRequestBodyParser::createForOrganizers(),
+                        ImagesPropertyPolyfillRequestBodyParser::createForOrganizers(
+                            $container->get('media_object_iri_generator'),
+                            $container->get('media_object_repository')
+                        )
+                    )
+                );
+            }
+        );
+
+        $container->addShared(
+            GetOrganizerRequestHandler::class,
+            function () use ($container) {
+                return new GetOrganizerRequestHandler($container->get('organizer_service'));
+            }
+        );
+
+        $container->addShared(
+            DeleteOrganizerRequestHandler::class,
+            function () use ($container) {
+                return new DeleteOrganizerRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateTitleRequestHandler::class,
+            function () use ($container) {
+                return new UpdateTitleRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateDescriptionRequestHandler::class,
+            function () use ($container) {
+                return new UpdateDescriptionRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            DeleteDescriptionRequestHandler::class,
+            function () use ($container) {
+                return new DeleteDescriptionRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateAddressRequestHandler::class,
+            function () use ($container) {
+                return new UpdateAddressRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            DeleteAddressRequestHandler::class,
+            function () use ($container) {
+                return new DeleteAddressRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateUrlRequestHandler::class,
+            function () use ($container) {
+                return new UpdateUrlRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateContactPointRequestHandler::class,
+            function () use ($container) {
+                return new UpdateContactPointRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            AddImageRequestHandler::class,
+            function () use ($container) {
+                return new AddImageRequestHandler(
+                    $container->get('event_command_bus'),
+                    $container->get('media_object_repository')
+                );
+            }
+        );
+
+        $container->addShared(
+            UpdateImagesRequestHandler::class,
+            function () use ($container) {
+                return new UpdateImagesRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateMainImageRequestHandler::class,
+            function () use ($container) {
+                return new UpdateMainImageRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            DeleteImageRequestHandler::class,
+            function () use ($container) {
+                return new DeleteImageRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            AddLabelRequestHandler::class,
+            function () use ($container) {
+                return new AddLabelRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            DeleteLabelRequestHandler::class,
+            function () use ($container) {
+                return new DeleteLabelRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            GetPermissionsForCurrentUserRequestHandler::class,
+            function () use ($container) {
+                return new GetPermissionsForCurrentUserRequestHandler(
+                    $container->get('organizer_permission_voter'),
+                    $container->get(CurrentUser::class)->getId()
+                );
+            }
+        );
+
+        $container->addShared(
+            GetPermissionsForGivenUserRequestHandler::class,
+            function () use ($container) {
+                return new GetPermissionsForGivenUserRequestHandler(
+                    $container->get('organizer_permission_voter'),
+                );
+            }
+        );
     }
 }
