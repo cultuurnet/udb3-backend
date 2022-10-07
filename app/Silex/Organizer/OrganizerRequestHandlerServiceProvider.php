@@ -201,7 +201,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetPermissionsForGivenUserRequestHandler::class,
             function () use ($container) {
                 return new GetPermissionsForGivenUserRequestHandler(
-                    $container->get('organizer_permission_voter'),
+                    $container->get('organizer_permission_voter')
                 );
             }
         );
