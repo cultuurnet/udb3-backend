@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Export;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryWithFormatterRepository;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
-use CultuurNet\UDB3\EventExport\EventExportServiceInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory;
@@ -19,126 +19,129 @@ use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Search\SearchServiceInterface;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Psr\Log\LoggerAwareInterface;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Twig_Environment;
 use Twig_Extensions_Extension_Text;
 
-final class ExportServiceProvider implements ServiceProviderInterface
+final class ExportServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app['event_export_twig_environment'] = $app->share(
-            function ($app) {
+        return [
+            'event_export_twig_environment',
+            'event_export_service',
+            'event_export_command_handler',
+            ExportEventsAsJsonLdRequestHandler::class,
+            ExportEventsAsOoXmlRequestHandler::class,
+            ExportEventsAsPdfRequestHandler::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'event_export_twig_environment',
+            function () use ($container): Twig_Environment {
                 $loader = new \Twig_Loader_Filesystem(
                     __DIR__ . '/../../../src/EventExport/Format/HTML/templates'
                 );
 
                 $twig = new Twig_Environment($loader);
 
-                $twig->addExtension(
-                    new GoogleMapUrlGenerator($app['geocoding_service.google_maps_api_key'])
-                );
-
+                $twig->addExtension(new GoogleMapUrlGenerator($container->get('config')['google_maps_api_key']));
                 $twig->addExtension(new Twig_Extensions_Extension_Text());
 
                 return $twig;
             }
         );
 
-        $app['event_export_service'] = $app->share(
-            function (HybridContainerApplication $app) {
-                $searchService = $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS];
+        $container->addShared(
+            'event_export_service',
+            function () use ($container): EventExportService {
+                $searchService = $container->get(Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS);
 
-                $logger = LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export'));
+                $logger = LoggerFactory::create($container, LoggerName::forResqueWorker('event-export'));
                 if ($searchService instanceof LoggerAwareInterface) {
                     $searchService = clone $searchService;
                     $searchService->setLogger($logger);
                 }
 
                 return new EventExportService(
-                    $app['event_jsonld_repository'],
-                    new ItemIdentifierFactory($app['config']['item_url_regex']),
+                    $container->get('event_jsonld_repository'),
+                    new ItemIdentifierFactory($container->get('config')['item_url_regex']),
                     $searchService,
                     new Version4Generator(),
                     realpath(__DIR__ . '/../../../web/downloads'),
                     new CallableIriGenerator(
-                        function ($fileName) use ($app) {
-                            return $app['config']['url'] . '/downloads/' . $fileName;
+                        function ($fileName) use ($container) {
+                            return $container->get('config')['url'] . '/downloads/' . $fileName;
                         }
                     ),
                     new NotificationMailer(
-                        $app['mailer'],
-                        $app['event_export_notification_mail_factory']
+                        $container->get('mailer'),
+                        $container->get('event_export_notification_mail_factory'),
                     ),
                     new ResultsGenerator(
                         $searchService,
                         null,
-                        (int) ($app['config']['export']['page_size'] ?? 100)
+                        (int) ($container->get('config')['export']['page_size'] ?? 100)
                     ),
-                    $app['config']['export']['max_items']
+                    $container->get('config')['export']['max_items']
                 );
             }
         );
 
-        // Set up the event export command handler.
-        $app['event_export_command_handler'] = $app->share(
-            function (HybridContainerApplication $app) {
+        $container->addShared(
+            'event_export_command_handler',
+            function () use ($container): EventExportCommandHandler {
                 $eventInfoService = new CultureFeedEventInfoService(
-                    $app['uitpas'],
-                    new EventOrganizerPromotionQueryFactory($app['clock'])
+                    $container->get('uitpas'),
+                    new EventOrganizerPromotionQueryFactory($container->get('clock'))
                 );
 
                 $eventInfoService->setLogger(
-                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export', 'uitpas'))
+                    LoggerFactory::create($container, LoggerName::forResqueWorker('event-export', 'uitpas'))
                 );
 
                 $eventExportCommandHandler = new EventExportCommandHandler(
-                    $app['event_export_service'],
-                    $app['config']['prince']['binary'],
-                    new CalendarSummaryWithFormatterRepository($app['event_jsonld_repository']),
+                    $container->get('event_export_service'),
+                    $container->get('config')['prince']['binary'],
+                    new CalendarSummaryWithFormatterRepository($container->get('event_jsonld_repository')),
                     $eventInfoService,
-                    $app['event_export_twig_environment']
+                    $container->get('event_export_twig_environment'),
                 );
                 $eventExportCommandHandler->setLogger(
-                    LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export'))
+                    LoggerFactory::create($container, LoggerName::forResqueWorker('event-export'))
                 );
+
                 return $eventExportCommandHandler;
             }
         );
 
-        $app[ExportEventsAsJsonLdRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new ExportEventsAsJsonLdRequestHandler(
-                    $app['event_export_command_bus']
-                );
+        $container->addShared(
+            ExportEventsAsJsonLdRequestHandler::class,
+            function () use ($container): ExportEventsAsJsonLdRequestHandler {
+                return new ExportEventsAsJsonLdRequestHandler($container->get('event_export_command_bus'));
             }
         );
 
-        $app[ExportEventsAsOoXmlRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new ExportEventsAsOoXmlRequestHandler(
-                    $app['event_export_command_bus']
-                );
+        $container->addShared(
+            ExportEventsAsOoXmlRequestHandler::class,
+            function () use ($container): ExportEventsAsOoXmlRequestHandler {
+                return new ExportEventsAsOoXmlRequestHandler($container->get('event_export_command_bus'));
             }
         );
 
-        $app[ExportEventsAsPdfRequestHandler::class] = $app->share(
-            function (Application $app) {
-                return new ExportEventsAsPdfRequestHandler(
-                    $app['event_export_command_bus']
-                );
+        $container->addShared(
+            ExportEventsAsPdfRequestHandler::class,
+            function () use ($container): ExportEventsAsPdfRequestHandler {
+                return new ExportEventsAsPdfRequestHandler($container->get('event_export_command_bus'));
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }

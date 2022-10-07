@@ -676,7 +676,7 @@ $container->addServiceProvider(
 
 $app->register(new MetadataServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
 $app->register(new EventCommandHandlerProvider());
