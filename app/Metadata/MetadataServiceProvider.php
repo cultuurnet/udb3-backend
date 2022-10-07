@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Metadata;
+namespace CultuurNet\UDB3\Metadata;
 
 use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\CallableEventDispatcher;

@@ -40,7 +40,7 @@ use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
-use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
+use CultuurNet\UDB3\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerRequestHandlerServiceProvider;
