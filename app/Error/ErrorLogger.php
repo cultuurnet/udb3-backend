@@ -11,7 +11,7 @@ use Throwable;
 
 final class ErrorLogger
 {
-    private const BAD_CLI_INPUT = [
+    private const CLI_RUNTIME_EXCEPTIONS = [
         SymfonyConsoleRuntimeException::class,
     ];
 
@@ -26,7 +26,7 @@ final class ErrorLogger
     {
         if (self::isBadRequestException($throwable) ||
             self::isBadGateway($throwable) ||
-            self::isBadCLIInput($throwable)) {
+            self::isCliRuntimeException($throwable)) {
             return;
         }
 
@@ -34,12 +34,12 @@ final class ErrorLogger
         $this->logger->error($throwable->getMessage(), ['exception' => $throwable]);
     }
 
-    public static function isBadCLIInput(Throwable $e): bool
+    public static function isCliRuntimeException(Throwable $e): bool
     {
         // Use foreach + instanceof instead of in_array() to also filter out child classes and/or interface
         // implementations.
-        foreach (self::BAD_CLI_INPUT as $badCLIInputExceptionClass) {
-            if ($e instanceof $badCLIInputExceptionClass) {
+        foreach (self::CLI_RUNTIME_EXCEPTIONS as $cliRuntimeExceptionClass) {
+            if ($e instanceof $cliRuntimeExceptionClass) {
                 return true;
             }
         }
