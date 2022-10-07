@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Security;
+namespace CultuurNet\UDB3\Security;
 
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Security\ResourceOwner\CombinedResourceOwnerQuery;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
-use CultuurNet\UDB3\ApiName;
+use CultuurNet\UDB3\Security\ResourceOwner\CombinedResourceOwnerQuery;
 use GuzzleHttp\Psr7\Uri;
 use Http\Adapter\Guzzle7\Client;
 
