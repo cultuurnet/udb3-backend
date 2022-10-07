@@ -531,13 +531,16 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-$app['role_search_v3_repository.table_name'] = new StringLiteral('roles_search_v3');
+/**
+ * @todo move this to a class.
+ */
+const ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME = 'roles_search_v3';
 
 $app['role_search_v3_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
             $app['dbal_connection'],
-            $app['role_search_v3_repository.table_name']
+            new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME)
         );
     }
 );

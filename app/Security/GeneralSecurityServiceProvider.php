@@ -38,7 +38,7 @@ final class GeneralSecurityServiceProvider extends AbstractServiceProvider
                 $container->get('dbal_connection'),
                 new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
                 new StringLiteral(UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE),
-                $container->get('role_search_v3_repository.table_name'),
+                new StringLiteral(ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME),
             )
         );
     }
