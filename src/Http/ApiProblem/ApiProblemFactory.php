@@ -145,7 +145,7 @@ final class ApiProblemFactory
      * exceptions thrown by external libraries to a more specific ApiProblem.
      */
     private static function convertGenericExceptionToApiProblem(
-        Throwable $e,
+        Exception $e,
         ?ServerRequestInterface $request = null
     ): ApiProblem {
         $message = $e->getMessage();
