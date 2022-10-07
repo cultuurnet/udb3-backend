@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Organizer;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler;
@@ -25,7 +26,6 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
-use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 
 final class OrganizerCommandHandlerProvider extends AbstractServiceProvider

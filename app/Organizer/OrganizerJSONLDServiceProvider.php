@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
-use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 
 final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
 {
