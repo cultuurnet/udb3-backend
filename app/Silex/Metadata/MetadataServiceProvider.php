@@ -27,7 +27,7 @@ final class MetadataServiceProvider extends AbstractServiceProvider
     {
         $container = $this->getContainer();
 
-        $container->addShared('context');
+        $container->addShared('context', '');
 
         $container->addShared(
             'metadata_enricher',
