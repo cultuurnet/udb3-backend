@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Term;
+namespace CultuurNet\UDB3\Term;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Term\TermRepository;
 
 final class TermServiceProvider extends AbstractServiceProvider
 {
@@ -31,9 +30,9 @@ final class TermServiceProvider extends AbstractServiceProvider
         $mapping = [];
 
         $files = [
-            __DIR__ . '/../../../config.term_mapping_facilities.php',
-            __DIR__ . '/../../../config.term_mapping_themes.php',
-            __DIR__ . '/../../../config.term_mapping_types.php',
+            __DIR__ . '/../../config.term_mapping_facilities.php',
+            __DIR__ . '/../../config.term_mapping_themes.php',
+            __DIR__ . '/../../config.term_mapping_types.php',
         ];
 
         foreach ($files as $file) {
