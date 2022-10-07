@@ -768,7 +768,7 @@ $container->addServiceProvider(new CuratorsServiceProvider());
 
 $container->addServiceProvider(new Auth0ServiceProvider());
 
-$app->register(new TermServiceProvider());
+$container->addServiceProvider(new TermServiceProvider());
 
 $container->addServiceProvider(new JobsServiceProvider());
 

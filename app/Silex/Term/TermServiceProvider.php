@@ -4,40 +4,48 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Term;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Term\TermRepository;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class TermServiceProvider implements ServiceProviderInterface
+final class TermServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[TermRepository::class] = $app::share(
-            function () {
-                $mapping = [];
+        return [
+            TermRepository::class,
+        ];
+    }
 
-                $files = [
-                    __DIR__ . '/../../../config.term_mapping_facilities.php',
-                    __DIR__ . '/../../../config.term_mapping_themes.php',
-                    __DIR__ . '/../../../config.term_mapping_types.php',
-                ];
+    public function register(): void
+    {
+        $container = $this->getContainer();
 
-                foreach ($files as $file) {
-                    if (file_exists($file)) {
-                        $terms  = require $file;
-
-                        if (is_array($terms)) {
-                            $mapping = array_merge($mapping, $terms);
-                        }
-                    }
-                }
-
-                return new TermRepository($mapping);
-            }
+        $container->addShared(
+            TermRepository::class,
+            fn () => $this->provideTermRepository()
         );
     }
 
-    public function boot(Application $app): void
+    private function provideTermRepository(): TermRepository
     {
+        $mapping = [];
+
+        $files = [
+            __DIR__ . '/../../../config.term_mapping_facilities.php',
+            __DIR__ . '/../../../config.term_mapping_themes.php',
+            __DIR__ . '/../../../config.term_mapping_types.php',
+        ];
+
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                $terms  = require $file;
+
+                if (is_array($terms)) {
+                    $mapping = array_merge($mapping, $terms);
+                }
+            }
+        }
+
+        return new TermRepository($mapping);
     }
 }
