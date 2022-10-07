@@ -192,6 +192,17 @@ final class ApiProblemFactory
             return ApiProblem::urlNotFound($message);
         }
 
+        if (strpos($title, 'event already has ticketsales') !== false) {
+            $message = 'Event has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.';
+            if ($routeParameters && $routeParameters->hasEventId()) {
+                $message = sprintf(
+                    'Event with id \'%s\' has ticket sales in UiTPAS, which makes it impossible to change its organizer, UiTPAS card systems, and UiTPAS distribution keys.',
+                    $routeParameters->getEventId()
+                );
+            }
+            return ApiProblem::eventHasUitpasTicketSales($message);
+        }
+
         // In some cases the UiTPAS servers return a 404 error with an HTML page. In this case we treat it as UiTPAS
         // being down and return a Bad Gateway error, because the response is caused by the UiTPAS web server not
         // being configured / running correctly.

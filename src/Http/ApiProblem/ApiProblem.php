@@ -421,6 +421,16 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function eventHasUitpasTicketSales($detail): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/event-has-uitpas-ticket-sales',
+            'Event has UiTPAS ticket sales',
+            400,
+            $detail
+        );
+    }
+
     public static function fileMissing($detail): self
     {
         return self::create(
