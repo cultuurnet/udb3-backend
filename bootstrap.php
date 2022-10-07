@@ -543,7 +543,7 @@ $app['organizer_iri_generator'] = $app->share(
 
 $app->register(new OrganizerRequestHandlerServiceProvider());
 $app->register(new OrganizerJSONLDServiceProvider());
-$app->register(new OrganizerCommandHandlerProvider());
+$container->addServiceProvider(new OrganizerCommandHandlerProvider());
 
 $app['eventstore_payload_serializer'] = $app->share(
     function ($app) {
