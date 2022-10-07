@@ -79,22 +79,25 @@ final class ApiProblemFactory
             case $e instanceof DocumentDoesNotExist:
             case $e instanceof EntityNotFoundException:
             case $e instanceof MediaObjectNotFoundException:
-                if ($routeParameters && $routeParameters->hasEventId()) {
+                if (!$routeParameters) {
+                    return ApiProblem::urlNotFound();
+                }
+                if ($routeParameters->hasEventId()) {
                     return ApiProblem::eventNotFound($routeParameters->getEventId());
                 }
-                if ($routeParameters && $routeParameters->hasPlaceId()) {
+                if ($routeParameters->hasPlaceId()) {
                     return ApiProblem::placeNotFound($routeParameters->getPlaceId());
                 }
-                if ($routeParameters && $routeParameters->hasOrganizerId()) {
+                if ($routeParameters->hasOrganizerId()) {
                     return ApiProblem::organizerNotFound($routeParameters->getOrganizerId());
                 }
-                if ($routeParameters && $routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
+                if ($routeParameters->hasOfferId() && $routeParameters->hasOfferType()) {
                     return ApiProblem::offerNotFound($routeParameters->getOfferType(), $routeParameters->getOfferId());
                 }
-                if ($routeParameters && $routeParameters->hasRoleId()) {
+                if ($routeParameters->hasRoleId()) {
                     return ApiProblem::roleNotFound($routeParameters->getRoleId()->toString());
                 }
-                if ($routeParameters && $routeParameters->hasMediaId()) {
+                if ($routeParameters->hasMediaId()) {
                     return ApiProblem::mediaObjectNotFound($routeParameters->getMediaId());
                 }
                 return ApiProblem::urlNotFound();
