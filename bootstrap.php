@@ -1,23 +1,27 @@
 <?php
 
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
+use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
+use CultuurNet\UDB3\ApiName;
+use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
+use CultuurNet\UDB3\Authentication\AuthServiceProvider;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
+use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\Culturefeed\CultureFeedServiceProvider;
-use CultuurNet\UDB3\Event\EventCommandHandlerProvider;
-use CultuurNet\UDB3\Event\EventEditingServiceProvider;
-use CultuurNet\UDB3\Event\EventGeoCoordinatesServiceProvider;
-use CultuurNet\UDB3\Event\EventHistoryServiceProvider;
-use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Event\EventPermissionServiceProvider;
-use CultuurNet\UDB3\Event\EventReadServiceProvider;
-use CultuurNet\UDB3\Event\EventRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Event\ProductionServiceProvider;
+use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
@@ -27,28 +31,18 @@ use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
-use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
-use CultuurNet\UDB3\AggregateType;
-use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
-use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
-use CultuurNet\UDB3\ApiName;
-use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
-use CultuurNet\UDB3\Authentication\AuthServiceProvider;
-use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
-use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
-use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Error\SentryServiceProvider;
-use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
-use CultuurNet\UDB3\Jobs\JobsServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
+use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
+use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
@@ -62,15 +56,22 @@ use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerServiceProvider;
+use CultuurNet\UDB3\StringLiteral;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Monolog\Logger;
 use Silex\Application;
 use SocketIO\Emitter;
-use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
+
+/**
+ * Disable warnings for calling new SimpleXmlElement() with invalid XML.
+ * An exception will still be thrown, but no warnings will be generated (which are hard to catch/hide otherwise).
+ * We do this system-wide because we parse XML in various places (UiTPAS API responses, UiTID v1 responses, imported UDB2 XML, ...)
+ */
+libxml_use_internal_errors(true);
 
 /**
  * Set up a PSR-11 container using league/container. The goal is for this container to replace the Silex Application
@@ -134,7 +135,7 @@ $container->addServiceProvider(new SentryServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
 $container->addServiceProvider(new CommandBusServiceProvider());
-$app->register(new EventBusServiceProvider());
+$container->addServiceProvider(new EventBusServiceProvider());
 
 /**
  * CultureFeed services.
@@ -247,7 +248,7 @@ $app['cdbxml_contact_info_importer'] = $app->share(
     }
 );
 
-$container->addServiceProvider(new EventJSONLDServiceProvider());
+$app->register(new EventJSONLDServiceProvider());
 
 $app['event_calendar_repository'] = $app->share(
     function ($app) {
@@ -348,10 +349,9 @@ $app['places_locator_event_stream_decorator'] = $app->share(
     }
 );
 
-// @todo: remove usages of 'place_repository' with Class based share
 $app['place_repository'] = $app->share(
     function (Application $app) {
-        $repository = new PlaceRepository(
+        $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
             $app['place_store'],
             $app[EventBus::class],
             array(
@@ -361,12 +361,6 @@ $app['place_repository'] = $app->share(
         );
 
         return $repository;
-    }
-);
-$container->addShared(
-    PlaceRepository::class,
-    function () use ($container): PlaceRepository {
-        return $container->get('place_repository');
     }
 );
 
@@ -689,37 +683,32 @@ $container->addServiceProvider(
 
 $app->register(new MetadataServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
-$container->addServiceProvider(new EventEditingServiceProvider());
-$container->addServiceProvider(new EventReadServiceProvider());
-$container->addServiceProvider(new EventCommandHandlerProvider());
-$container->addServiceProvider(new EventRequestHandlerServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Export\ExportServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
+$app->register(new EventCommandHandlerProvider());
+$app->register(new EventRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
 $app->register(new PlaceRequestHandlerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
-$container->addServiceProvider(new EventPermissionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $app->register(new LabelServiceProvider());
 $app->register(new RoleRequestHandlerServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
-$container->addServiceProvider(new ProductionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
 $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
-    [
-        'media.upload_directory' => $app['config']['media']['upload_directory'],
-        'media.media_directory' => $app['config']['media']['media_directory'],
-        'media.file_size_limit' => $app['config']['media']['file_size_limit'] ?? 1000000
-     ],
+$container->addServiceProvider(
+    new \CultuurNet\UDB3\Media\MediaServiceProvider()
 );
 
-$app->register(new ImageStorageProvider());
+$container->addServiceProvider(new ImageStorageProvider());
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
@@ -755,13 +744,13 @@ $app->register(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
-$container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
-$container->addServiceProvider(new EventHistoryServiceProvider());
+$app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 
 $container->addServiceProvider(new CuratorsServiceProvider());
 

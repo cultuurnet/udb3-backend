@@ -2,40 +2,48 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\EventBus;
+namespace CultuurNet\UDB3\EventBus;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
-use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
-use CultuurNet\UDB3\EventBus\MiddlewareEventBus;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
+use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
-final class EventBusServiceProvider implements ServiceProviderInterface
+final class EventBusServiceProvider extends AbstractServiceProvider
 {
-    public function register(Application $app): void
+    protected function getProvidedServiceNames(): array
     {
-        $app[EventBus::class] = $app::share(
-            function ($app) {
+        return [
+            EventBus::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            EventBus::class,
+            function () use ($container): EventBus {
                 $eventBus = new MiddlewareEventBus();
 
                 $callbackMiddleware = new CallbackOnFirstPublicationMiddleware(
-                    function () use (&$eventBus, $app): void {
+                    function () use (&$eventBus, $container): void {
                         $subscribers = [
                             EventRelationsProjector::class,
                             PlaceRelationsProjector::class,
@@ -77,7 +85,7 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                         }
 
                         foreach ($subscribers as $subscriberServiceId) {
-                            $eventBus->subscribe($app[$subscriberServiceId]);
+                            $eventBus->subscribe($container->get($subscriberServiceId));
                         }
                     }
                 );
@@ -85,12 +93,9 @@ final class EventBusServiceProvider implements ServiceProviderInterface
                 $eventBus->registerMiddleware($callbackMiddleware);
                 $eventBus->registerMiddleware(new ReplayFlaggingMiddleware());
                 $eventBus->registerMiddleware(new InterceptingMiddleware());
+
                 return $eventBus;
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
