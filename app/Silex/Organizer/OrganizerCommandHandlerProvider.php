@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
@@ -29,8 +30,30 @@ use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-final class OrganizerCommandHandlerProvider implements ServiceProviderInterface
+final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
 {
+    protected function getProvidedServiceNames(): array
+    {
+        return [
+            DeleteOrganizerHandler::class,
+            AddLabelHandler::class,
+            RemoveLabelHandler::class,
+            ImportLabelsHandler::class,
+            UpdateTitleHandler::class,
+            UpdateDescriptionHandler::class,
+            DeleteDescriptionHandler::class,
+            UpdateAddressHandler::class,
+            RemoveAddressHandler::class,
+            UpdateWebsiteHandler::class,
+            UpdateContactPointHandler::class,
+            AddImageHandler::class,
+            UpdateMainImageHandler::class,
+            UpdateImageHandler::class,
+            RemoveImageHandler::class,
+            ImportImagesHandler::class,
+            ChangeOwnerHandler::class
+        ];
+    }
     public function register(Application $app): void
     {
         $app[DeleteOrganizerHandler::class] = $app->share(
@@ -119,9 +142,5 @@ final class OrganizerCommandHandlerProvider implements ServiceProviderInterface
         $app[ChangeOwnerHandler::class] = $app->share(
             fn (Application $application) => new ChangeOwnerHandler($app['organizer_repository'])
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
