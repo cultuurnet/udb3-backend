@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Console\Command;
 
 use Closure;
 use CultuurNet\UDB3\Broadway\AMQP\ConsumerInterface;
-use Knp\Command\Command;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

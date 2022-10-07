@@ -1,58 +1,19 @@
 <?php
 
-use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
-use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
-use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
+use CultuurNet\UDB3\Culturefeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOfferHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
-use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
-use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
-use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
@@ -65,11 +26,10 @@ use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Authentication\AuthServiceProvider;
-use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
+use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
-use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
-use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Error\SentryServiceProvider;
@@ -77,10 +37,9 @@ use CultuurNet\UDB3\Silex\Event\EventCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
-use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
+use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
@@ -106,6 +65,13 @@ use SocketIO\Emitter;
 use CultuurNet\UDB3\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
+
+/**
+ * Disable warnings for calling new SimpleXmlElement() with invalid XML.
+ * An exception will still be thrown, but no warnings will be generated (which are hard to catch/hide otherwise).
+ * We do this system-wide because we parse XML in various places (UiTPAS API responses, UiTID v1 responses, imported UDB2 XML, ...)
+ */
+libxml_use_internal_errors(true);
 
 /**
  * Set up a PSR-11 container using league/container. The goal is for this container to replace the Silex Application
@@ -168,20 +134,13 @@ $container->addServiceProvider(new SentryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
-$app->register(new EventBusServiceProvider());
+$container->addServiceProvider(new CommandBusServiceProvider());
+$container->addServiceProvider(new EventBusServiceProvider());
 
 /**
  * CultureFeed services.
  */
-$app->register(
-    new CultureFeedServiceProvider(),
-    [
-        'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
-        'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
-        'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
-    ]
-);
+$container->addServiceProvider(new CultureFeedServiceProvider());
 
 /**
  * Mailing service.
@@ -360,103 +319,6 @@ $app['logger_factory.resque_worker'] = $app::protect(
         return LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
     }
 );
-
-$subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $app): CommandBus {
-    $subscribe = function (CommandBus $commandBus) use ($app) {
-        $commandBus->subscribe(
-            new \CultuurNet\UDB3\Event\EventCommandHandler(
-                $app['event_repository'],
-                $app['organizer_repository'],
-                $app['media_manager']
-            )
-        );
-
-        $commandBus->subscribe($app['saved_searches_command_handler']);
-
-        $commandBus->subscribe(
-            new \CultuurNet\UDB3\Place\CommandHandler(
-                $app['place_repository'],
-                $app['organizer_repository'],
-                $app['media_manager']
-            )
-        );
-
-        $commandBus->subscribe(
-            new \CultuurNet\UDB3\Role\CommandHandler($app['real_role_repository'])
-        );
-
-        $commandBus->subscribe($app['media_manager']);
-        $commandBus->subscribe($app['place_geocoordinates_command_handler']);
-        $commandBus->subscribe($app['event_geocoordinates_command_handler']);
-        $commandBus->subscribe($app['organizer_geocoordinates_command_handler']);
-        $commandBus->subscribe($app[ProductionCommandHandler::class]);
-
-        // Offer command handlers
-        // @todo can we auto-discover these and register them automatically?
-        // @see https://jira.uitdatabank.be/browse/III-4176
-        $commandBus->subscribe($app[UpdateTitleHandler::class]);
-        $commandBus->subscribe($app[UpdateAvailableFromHandler::class]);
-        $commandBus->subscribe($app[UpdateCalendarHandler::class]);
-        $commandBus->subscribe($app[UpdateStatusHandler::class]);
-        $commandBus->subscribe($app[UpdateBookingAvailabilityHandler::class]);
-        $commandBus->subscribe($app[UpdateTypeHandler::class]);
-        $commandBus->subscribe($app[UpdateFacilitiesHandler::class]);
-        $commandBus->subscribe($app[ChangeOwnerHandler::class]);
-        $commandBus->subscribe($app[AddLabelHandler::class]);
-        $commandBus->subscribe($app[RemoveLabelHandler::class]);
-        $commandBus->subscribe($app[ImportLabelsHandler::class]);
-        $commandBus->subscribe($app[AddVideoHandler::class]);
-        $commandBus->subscribe($app[UpdateVideoHandler::class]);
-        $commandBus->subscribe($app[DeleteVideoHandler::class]);
-        $commandBus->subscribe($app[ImportVideosHandler::class]);
-        $commandBus->subscribe($app[DeleteOfferHandler::class]);
-        $commandBus->subscribe($app[UpdatePriceInfoHandler::class]);
-        $commandBus->subscribe($app[UpdateOrganizerHandler::class]);
-        $commandBus->subscribe($app[DeleteOrganizerHandler::class]);
-
-        // Event command handlers
-        $commandBus->subscribe($app[UpdateSubEventsHandler::class]);
-        $commandBus->subscribe($app[UpdateThemeHandler::class]);
-        $commandBus->subscribe($app[RemoveThemeHandler::class]);
-        $commandBus->subscribe($app[UpdateAttendanceModeHandler::class]);
-        $commandBus->subscribe($app[UpdateOnlineUrlHandler::class]);
-        $commandBus->subscribe($app[DeleteOnlineUrlHandler::class]);
-        $commandBus->subscribe($app[UpdateAudienceHandler::class]);
-        $commandBus->subscribe($app[UpdateUiTPASPricesHandler::class]);
-        $commandBus->subscribe($app[CopyEventHandler::class]);
-
-        // Organizer command handlers
-        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler::class]);
-        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);
-        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler::class]);
-        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class]);
-        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler::class]);
-        $commandBus->subscribe($app[UpdateDescriptionHandler::class]);
-        $commandBus->subscribe($app[DeleteDescriptionHandler::class]);
-        $commandBus->subscribe($app[UpdateAddressHandler::class]);
-        $commandBus->subscribe($app[RemoveAddressHandler::class]);
-        $commandBus->subscribe($app[UpdateWebsiteHandler::class]);
-        $commandBus->subscribe($app[UpdateContactPointHandler::class]);
-        $commandBus->subscribe($app[AddImageHandler::class]);
-        $commandBus->subscribe($app[UpdateMainImageHandler::class]);
-        $commandBus->subscribe($app[UpdateImageHandler::class]);
-        $commandBus->subscribe($app[RemoveImageHandler::class]);
-        $commandBus->subscribe($app[ImportImagesHandler::class]);
-        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler::class]);
-
-        $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
-    };
-
-    if ($commandBus instanceof LazyLoadingCommandBus) {
-        $commandBus->beforeFirstDispatch($subscribe);
-    } else {
-        $subscribe($commandBus);
-    }
-
-    return $commandBus;
-};
-
-$app->extend('event_command_bus', $subscribeCoreCommandHandlers);
 
 /** Production */
 
@@ -842,16 +704,11 @@ $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
-    [
-        'media.upload_directory' => $app['config']['media']['upload_directory'],
-        'media.media_directory' => $app['config']['media']['media_directory'],
-        'media.file_size_limit' => $app['config']['media']['file_size_limit'] ?? 1000000
-     ],
+$container->addServiceProvider(
+    new \CultuurNet\UDB3\Media\MediaServiceProvider()
 );
 
-$app->register(new ImageStorageProvider());
+$container->addServiceProvider(new ImageStorageProvider());
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
@@ -893,9 +750,9 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServi
 $app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 
-$app->register(new CuratorsServiceProvider());
+$container->addServiceProvider(new CuratorsServiceProvider());
 
 $container->addServiceProvider(new Auth0ServiceProvider());
 

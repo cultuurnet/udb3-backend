@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Broadway\CommandHandling;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
-use CultuurNet\UDB3\Silex\CommandHandling\RetriedCommandFailed;
-use CultuurNet\UDB3\Silex\CommandHandling\RetryingCommandBus;
+use CultuurNet\UDB3\CommandHandling\RetriedCommandFailed;
+use CultuurNet\UDB3\CommandHandling\RetryingCommandBus;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

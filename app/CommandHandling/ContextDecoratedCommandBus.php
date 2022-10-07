@@ -2,32 +2,27 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\CommandHandling;
+namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\CommandHandling\CommandBusDecoratorBase;
-use CultuurNet\UDB3\CommandHandling\ContextAwareInterface;
-use Silex\Application;
+use Psr\Container\ContainerInterface;
 
 class ContextDecoratedCommandBus extends CommandBusDecoratorBase
 {
-    /**
-     * @var Application
-     */
-    private $application;
+    private ContainerInterface $container;
 
     public function __construct(
         CommandBus $decoratee,
-        Application $application
+        ContainerInterface $container
     ) {
         parent::__construct($decoratee);
-        $this->application = $application;
+        $this->container = $container;
     }
 
     public function dispatch($command): void
     {
         if ($this->decoratee instanceof ContextAwareInterface) {
-            $context = ContextFactory::createFromGlobals($this->application);
+            $context = ContextFactory::createFromGlobals($this->container);
             $this->decoratee->setContext($context);
         }
         $this->decoratee->dispatch($command);
