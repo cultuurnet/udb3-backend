@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
 use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
-use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use Psr\Container\ContainerInterface;
 
