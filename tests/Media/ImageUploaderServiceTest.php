@@ -16,6 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\StringLiteral;
 use Psr\Http\Message\UploadedFileInterface;
+use RuntimeException;
 use Zend\Diactoros\Stream;
 
 class ImageUploaderServiceTest extends TestCase
@@ -104,6 +105,11 @@ class ImageUploaderServiceTest extends TestCase
             ->expects($this->once())
             ->method('getStream')
             ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
+
+        $image
+            ->expects($this->once())
+            ->method('getSize')
+            ->willReturn(1000001);
 
         $description = new StringLiteral('file description');
         $copyrightHolder = new CopyrightHolder('Dude Man');
@@ -223,7 +229,7 @@ class ImageUploaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_the_file_size_is_limited_but_cannot_be_determined(): void
+    public function it_should_throw_an_exception_when_the_file_size_is_zero(): void
     {
         $uploader = new ImageUploaderService(
             $this->uuidGenerator,
@@ -255,6 +261,46 @@ class ImageUploaderServiceTest extends TestCase
         $language = new Language('en');
 
         $this->expectException(InvalidFileSize::class);
+        $this->expectExceptionMessage('The size of the uploaded image must not be 0 bytes.');
+
+        $uploader->upload($image, $description, $copyrightHolder, $language);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_when_the_file_size_cannot_be_determined(): void
+    {
+        $uploader = new ImageUploaderService(
+            $this->uuidGenerator,
+            $this->commandBus,
+            $this->filesystem,
+            $this->directory,
+            1000000
+        );
+
+        $image = $this->createMock(UploadedFileInterface::class);
+
+        $image
+            ->expects($this->once())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
+
+        $image
+            ->expects($this->once())
+            ->method('getClientMediaType')
+            ->willReturn('image/png');
+
+        $image
+            ->expects($this->once())
+            ->method('getSize')
+            ->willReturn(null);
+
+        $description = new StringLiteral('file description');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
+        $language = new Language('en');
+
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The size of the uploaded image could not be determined.');
 
         $uploader->upload($image, $description, $copyrightHolder, $language);
