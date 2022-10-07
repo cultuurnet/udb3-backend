@@ -141,8 +141,8 @@ final class ApiProblemFactory
     }
 
     /**
-     * Usually we will convert \Exception to a generic ApiProblem. However in some cases we want to convert generic
-     * exceptions thrown by external libraries to a more specific ApiProblem.
+     * Usually we will convert \Exception to the default ApiProblem. However in some cases we want to convert generic
+     * exceptions thrown by external libraries to a more specific ApiProblem based on e.g. their message.
      */
     private static function convertGenericExceptionToApiProblem(
         Exception $e,
