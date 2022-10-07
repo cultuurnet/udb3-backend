@@ -39,7 +39,7 @@ use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
+use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
@@ -704,16 +704,11 @@ $app->register(new UiTPASServiceLabelsServiceProvider());
 $app->register(new UiTPASServiceEventServiceProvider());
 $app->register(new UiTPASServiceOrganizerServiceProvider());
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
-    [
-        'media.upload_directory' => $app['config']['media']['upload_directory'],
-        'media.media_directory' => $app['config']['media']['media_directory'],
-        'media.file_size_limit' => $app['config']['media']['file_size_limit'] ?? 1000000
-     ],
+$container->addServiceProvider(
+    new \CultuurNet\UDB3\Media\MediaServiceProvider()
 );
 
-$app->register(new ImageStorageProvider());
+$container->addServiceProvider(new ImageStorageProvider());
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
@@ -755,7 +750,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServi
 $app->register(new EventHistoryServiceProvider());
 $app->register(new PlaceHistoryServiceProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
+$container->addServiceProvider(new \CultuurNet\UDB3\Media\MediaImportServiceProvider());
 
 $container->addServiceProvider(new CuratorsServiceProvider());
 
