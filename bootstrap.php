@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
+use CultuurNet\UDB3\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -45,7 +46,6 @@ use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Silex\Container\PimplePSRContainerBridge;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
-use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerRequestHandlerServiceProvider;
@@ -693,7 +693,7 @@ $container->addServiceProvider(
     new AMQPPublisherServiceProvider()
 );
 
-$app->register(new MetadataServiceProvider());
+$container->addServiceProvider(new MetadataServiceProvider());
 
 $container->addServiceProvider(new \CultuurNet\UDB3\Export\ExportServiceProvider());
 $container->addServiceProvider(new EventEditingServiceProvider());
