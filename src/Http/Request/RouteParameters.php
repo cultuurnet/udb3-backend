@@ -107,6 +107,11 @@ final class RouteParameters
         return $this->get('mediaId');
     }
 
+    public function hasMediaId(): bool
+    {
+        return $this->has('mediaId');
+    }
+
     public function getRoleId(): UUID
     {
         $roleId = $this->get('roleId');

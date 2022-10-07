@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\CommandHandling;
+namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\User\CurrentUser;
-use Silex\Application;
+use Psr\Container\ContainerInterface;
 
 final class ContextFactory
 {
@@ -55,17 +55,6 @@ final class ContextFactory
         return new Metadata($contextValues);
     }
 
-    public static function createFromGlobals(Application $application): Metadata
-    {
-        return self::createContext(
-            $application[CurrentUser::class]->getId(),
-            $application[JsonWebToken::class],
-            $application[ApiKey::class],
-            $application['api_name'],
-            $application[Consumer::class]
-        );
-    }
-
     public static function prepareForLogging(Metadata $metadata): Metadata
     {
         $metadata = $metadata->serialize();
@@ -79,5 +68,16 @@ final class ContextFactory
         }
 
         return new Metadata($metadata);
+    }
+
+    public static function createFromGlobals(ContainerInterface $container): Metadata
+    {
+        return self::createContext(
+            $container->get(CurrentUser::class)->getId(),
+            $container->get(JsonWebToken::class),
+            $container->get(ApiKey::class),
+            $container->get('api_name'),
+            $container->get(Consumer::class)
+        );
     }
 }
