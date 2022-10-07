@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Error;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemFactory;
+use PhpAmqpLib\Exception\AMQPConnectionClosedException;
+use PhpAmqpLib\Exception\AMQPIOException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Exception\RuntimeException as SymfonyConsoleRuntimeException;
 use Throwable;
@@ -13,6 +15,8 @@ final class ErrorLogger
 {
     private const CLI_RUNTIME_EXCEPTIONS = [
         SymfonyConsoleRuntimeException::class,
+        AMQPIOException::class,
+        AMQPConnectionClosedException::class,
     ];
 
     private LoggerInterface $logger;
