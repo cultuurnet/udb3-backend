@@ -12,11 +12,8 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
-use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 final class OrganizerGeoCoordinatesServiceProvider extends AbstractServiceProvider
 {
@@ -24,30 +21,34 @@ final class OrganizerGeoCoordinatesServiceProvider extends AbstractServiceProvid
     {
         return [
             'organizer_geocoordinates_command_handler',
-            'organizer_geocoordinates_process_manager'
+            'organizer_geocoordinates_process_manager',
         ];
     }
 
-    public function register(Application $app): void
+    public function register(): void
     {
-        $app[] = $app->share(
-            function (Application $app) {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            'organizer_geocoordinates_command_handler',
+            function () use ($container) {
                 return new UpdateGeoCoordinatesFromAddressCommandHandler(
-                    $app['organizer_repository'],
+                    $container->get('organizer_repository'),
                     new DefaultAddressFormatter(),
                     new LocalityAddressFormatter(),
-                    $app[GeocodingService::class]
+                    $container->get(GeocodingService::class)
                 );
             }
         );
 
-        $app['organizer_geocoordinates_process_manager'] = $app->share(
-            function (HybridContainerApplication $app) {
+        $container->addShared(
+            'organizer_geocoordinates_process_manager',
+            function () use ($container) {
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
-                        $app['event_command_bus'],
+                        $container->get('event_command_bus'),
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($app->getLeagueContainer(), LoggerName::forService('geo-coordinates', 'organizer'))
+                        LoggerFactory::create($container, LoggerName::forService('geo-coordinates', 'organizer'))
                     )
                 );
             }
