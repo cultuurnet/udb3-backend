@@ -9,7 +9,8 @@ use Broadway\EventDispatcher\CallableEventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
-use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
+use CultuurNet\UDB3\CommandHandling\ContextFactory;
+use CultuurNet\UDB3\Silex\Container\HybridContainerApplication;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -20,11 +21,12 @@ final class MetadataServiceProvider implements ServiceProviderInterface
         $app['context'] = null;
 
         $app['metadata_enricher'] = $app::share(
-            function (Application $app) {
+            function (HybridContainerApplication $app) {
                 return new LazyCallbackMetadataEnricher(
                     function () use ($app) {
                         // Create a default context from application globals.
-                        $context = ContextFactory::createFromGlobals($app);
+                        $container = $app->getLeagueContainer();
+                        $context = ContextFactory::createFromGlobals($container);
 
                         // Allow some processes to overwrite the context, like resque workers.
                         if ($app['context'] instanceof Metadata) {
