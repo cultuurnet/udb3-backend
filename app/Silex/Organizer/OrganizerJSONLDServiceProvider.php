@@ -17,8 +17,6 @@ use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnal
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
 {
@@ -32,55 +30,61 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
             self::PROJECTOR,
             self::JSONLD_PROJECTED_EVENT_FACTORY,
             'organizer_jsonld_repository',
-            'organizer_jsonld_cache'
+            'organizer_jsonld_cache',
         ];
     }
 
-    public function register(Application $app): void
+    public function register(): void
     {
-        $app[self::PROJECTOR] = $app->share(
-            function ($app) {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            self::PROJECTOR,
+            function () use ($container) {
                 return new OrganizerLDProjector(
-                    $app['organizer_jsonld_repository'],
-                    $app['organizer_iri_generator'],
+                    $container->get('organizer_jsonld_repository'),
+                    $$container->get('organizer_iri_generator'),
                     new JsonDocumentLanguageEnricher(
                         new OrganizerJsonDocumentLanguageAnalyzer()
                     ),
                     new ImageNormalizer(
-                        $app['media_object_repository'],
-                        $app['media_object_iri_generator']
+                        $container->get('media_object_repository'),
+                        $container->get('media_object_iri_generator')
                     ),
                     new CdbXMLImporter(
-                        $app[CdbXMLToJsonLDLabelImporter::class]
+                        $container->get(CdbXMLToJsonLDLabelImporter::class)
                     )
                 );
             }
         );
 
-        $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
-            function ($app) {
+        $container->addShared(
+            self::JSONLD_PROJECTED_EVENT_FACTORY,
+            function () use ($container) {
                 return new EventFactory(
-                    $app['organizer_iri_generator']
+                    $container->get('organizer_iri_generator')
                 );
             }
         );
 
-        $app['organizer_jsonld_repository'] = $app->share(
-            function ($app) {
-                $repository = new CacheDocumentRepository($app['organizer_jsonld_cache']);
-                $repository = new PropertyPolyfillRepository($repository, $app[LabelServiceProvider::JSON_READ_REPOSITORY]);
+        $container->addShared(
+            'organizer_jsonld_repository',
+            function () use ($container) {
+                $repository = new CacheDocumentRepository($container->get('organizer_jsonld_cache'));
+                $repository = new PropertyPolyfillRepository($repository, $container->get(LabelServiceProvider::JSON_READ_REPOSITORY));
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
-                    $app[EventBus::class],
-                    $app[self::JSONLD_PROJECTED_EVENT_FACTORY]
+                    $container->get(EventBus::class),
+                    $container->get(self::JSONLD_PROJECTED_EVENT_FACTORY)
                 );
             }
         );
 
-        $app['organizer_jsonld_cache'] = $app->share(
-            function ($app) {
-                return $app['cache']('organizer_jsonld');
+        $container->addShared(
+            'organizer_jsonld_cache',
+            function () use ($container) {
+                return $container->get('cache')('organizer_jsonld');
             }
         );
     }
