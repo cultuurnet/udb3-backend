@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Organizer;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\OrganizerLDProjector;
@@ -19,11 +20,21 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-final class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
+final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
 {
     public const PROJECTOR = 'organizer_jsonld_projector';
 
     public const JSONLD_PROJECTED_EVENT_FACTORY = 'organizer_jsonld_projected_event_factory';
+
+    protected function getProvidedServiceNames(): array
+    {
+        return [
+            self::PROJECTOR,
+            self::JSONLD_PROJECTED_EVENT_FACTORY,
+            'organizer_jsonld_repository',
+            'organizer_jsonld_cache'
+        ];
+    }
 
     public function register(Application $app): void
     {
@@ -72,9 +83,5 @@ final class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
                 return $app['cache']('organizer_jsonld');
             }
         );
-    }
-
-    public function boot(Application $app): void
-    {
     }
 }
