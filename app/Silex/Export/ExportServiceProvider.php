@@ -54,7 +54,36 @@ final class ExportServiceProvider implements ServiceProviderInterface
 
         $app['event_export_service'] = $app->share(
             function (HybridContainerApplication $app) {
-                return $this->createEventExportService($app);
+                $searchService = $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS];
+
+                $logger = LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export'));
+                if ($searchService instanceof LoggerAwareInterface) {
+                    $searchService = clone $searchService;
+                    $searchService->setLogger($logger);
+                }
+
+                return new EventExportService(
+                    $app['event_jsonld_repository'],
+                    new ItemIdentifierFactory($app['config']['item_url_regex']),
+                    $searchService,
+                    new Version4Generator(),
+                    realpath(__DIR__ . '/../../../web/downloads'),
+                    new CallableIriGenerator(
+                        function ($fileName) use ($app) {
+                            return $app['config']['url'] . '/downloads/' . $fileName;
+                        }
+                    ),
+                    new NotificationMailer(
+                        $app['mailer'],
+                        $app['event_export_notification_mail_factory']
+                    ),
+                    new ResultsGenerator(
+                        $searchService,
+                        null,
+                        (int) ($app['config']['export']['page_size'] ?? 100)
+                    ),
+                    $app['config']['export']['max_items']
+                );
             }
         );
 
@@ -111,38 +140,5 @@ final class ExportServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app): void
     {
-    }
-
-    private function createEventExportService(HybridContainerApplication $app): EventExportServiceInterface {
-        $searchService = $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS];
-
-        $logger = LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export'));
-        if ($searchService instanceof LoggerAwareInterface) {
-            $searchService = clone $searchService;
-            $searchService->setLogger($logger);
-        }
-
-        return new EventExportService(
-            $app['event_jsonld_repository'],
-            new ItemIdentifierFactory($app['config']['item_url_regex']),
-            $searchService,
-            new Version4Generator(),
-            realpath(__DIR__ . '/../../../web/downloads'),
-            new CallableIriGenerator(
-                function ($fileName) use ($app) {
-                    return $app['config']['url'] . '/downloads/' . $fileName;
-                }
-            ),
-            new NotificationMailer(
-                $app['mailer'],
-                $app['event_export_notification_mail_factory']
-            ),
-            new ResultsGenerator(
-                $searchService,
-                null,
-                (int) ($app['config']['export']['page_size'] ?? 100)
-            ),
-            $app['config']['export']['max_items']
-        );
     }
 }
