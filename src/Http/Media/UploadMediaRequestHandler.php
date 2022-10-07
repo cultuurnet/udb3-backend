@@ -49,12 +49,14 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "description" is required.');
         }
 
-        if (!$copyrightHolder) {
+        if ($copyrightHolder === null) {
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.');
         }
 
-        if (strlen($copyrightHolder) < 2) {
-            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" must be at least 2 characters long.');
+        try {
+            $copyrightHolder = new CopyrightHolder($copyrightHolder);
+        } catch (InvalidArgumentException $e) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: ' . $e->getMessage());
         }
 
         if (!$language) {
@@ -70,7 +72,7 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $imageId = $this->imageUploader->upload(
             $uploadedFile,
             new StringLiteral($description),
-            new CopyrightHolder($copyrightHolder),
+            $copyrightHolder,
             $language
         );
 

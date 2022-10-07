@@ -110,13 +110,29 @@ final class UploadMediaRequestHandlerTest extends TestCase
                 ],
                 ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.'),
             ],
-            'invalid copyright holder' => [
+            'copyright holder empty' => [
+                [
+                    'description' => 'Lenna',
+                    'language' => 'nl',
+                    'copyrightHolder' => '',
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: Given string should not be empty.'),
+            ],
+            'copyright holder too short' => [
                 [
                     'description' => 'Lenna',
                     'language' => 'nl',
                     'copyrightHolder' => 'a',
                 ],
-                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" must be at least 2 characters long.'),
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: CopyrightHolder \'a\' should not be shorter than 2 chars.'),
+            ],
+            'copyright holder too long' => [
+                [
+                    'description' => 'Lenna',
+                    'language' => 'nl',
+                    'copyrightHolder' => str_repeat('a', 251),
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is invalid: CopyrightHolder \'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\' should not be longer than 250 chars.'),
             ],
             'missing language' => [
                 [
