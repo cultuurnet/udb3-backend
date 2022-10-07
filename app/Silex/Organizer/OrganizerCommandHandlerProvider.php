@@ -29,7 +29,7 @@ use CultuurNet\UDB3\User\CurrentUser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class OrganizerCommandHandlerProvider implements ServiceProviderInterface
+final class OrganizerCommandHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {

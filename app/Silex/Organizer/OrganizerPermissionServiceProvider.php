@@ -10,7 +10,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\StringLiteral;
 
-class OrganizerPermissionServiceProvider implements ServiceProviderInterface
+final class OrganizerPermissionServiceProvider implements ServiceProviderInterface
 {
     public const PERMISSION_PROJECTOR = 'organizer_permission.projector';
     /**

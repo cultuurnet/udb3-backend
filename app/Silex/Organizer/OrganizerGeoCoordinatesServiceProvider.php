@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
+final class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
+final class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'organizer_jsonld_projector';
 
