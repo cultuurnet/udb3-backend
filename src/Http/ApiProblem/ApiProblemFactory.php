@@ -126,11 +126,14 @@ final class ApiProblemFactory
                 return self::convertGenericExceptionToApiProblem($e, $request);
 
             default:
-                return self::convertToGenericApiProblem($e);
+                return self::convertToDefaultApiProblem($e);
         }
     }
 
-    private static function convertToGenericApiProblem(Throwable $e): ApiProblem
+    /**
+     * Returns a default ApiProblem for Throwables that cannot be resolved to a specific type.
+     */
+    private static function convertToDefaultApiProblem(Throwable $e): ApiProblem
     {
         // Note: When we have improved the validation of most endpoints, we should make this return a plain
         // "Internal Server Error" instead.
@@ -158,7 +161,7 @@ final class ApiProblemFactory
             return ApiProblem::badGateway("Could not contact the {$service} servers. Please try again later.");
         }
 
-        return self::convertToGenericApiProblem($e);
+        return self::convertToDefaultApiProblem($e);
     }
 
     private static function convertCultureFeedExceptionToApiProblem(
