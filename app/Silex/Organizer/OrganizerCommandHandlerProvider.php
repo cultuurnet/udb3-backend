@@ -27,8 +27,6 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
 {
@@ -51,96 +49,145 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             UpdateImageHandler::class,
             RemoveImageHandler::class,
             ImportImagesHandler::class,
-            ChangeOwnerHandler::class
+            ChangeOwnerHandler::class,
         ];
     }
-    public function register(Application $app): void
+    public function register(): void
     {
-        $app[DeleteOrganizerHandler::class] = $app->share(
-            fn (Application $application) => new DeleteOrganizerHandler(
-                $app['organizer_repository'],
-                $app[EventOrganizerRelationService::class],
-                $app[PlaceOrganizerRelationService::class]
-            )
-        );
+        $container = $this->getContainer();
 
-        $app[AddLabelHandler::class] = $app->share(
-            function (Application $app) {
-                return new AddLabelHandler(
-                    $app['organizer_repository'],
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app['labels.constraint_aware_service']
+        $container->addShared(
+            DeleteOrganizerHandler::class,
+            function () use ($container) {
+                return new DeleteOrganizerHandler(
+                    $container->get('organizer_repository'),
+                    $container->get(EventOrganizerRelationService::class),
+                    $container->get(PlaceOrganizerRelationService::class)
                 );
             }
         );
 
-        $app[RemoveLabelHandler::class] = $app->share(
-            fn (Application $app) => new RemoveLabelHandler($app['organizer_repository'])
+        $container->addShared(
+            AddLabelHandler::class,
+            function () use ($container) {
+                return new AddLabelHandler(
+                    $container->get('organizer_repository'),
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                    $container->get('labels.constraint_aware_service')
+                );
+            }
         );
 
-        $app[ImportLabelsHandler::class] = $app->share(
-            function (Application $app) {
+        $container->addShared(
+            RemoveLabelHandler::class,
+            function () use ($container) {
+                return new RemoveLabelHandler($container->get('organizer_repository'));
+            }
+        );
+
+        $container->addShared(
+            ImportLabelsHandler::class,
+            function () use ($container) {
                 return new ImportLabelsHandler(
-                    $app['organizer_repository'],
+                    $container->get('organizer_repository'),
                     new LabelImportPreProcessor(
-                        $app['labels.constraint_aware_service'],
-                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                        $app[CurrentUser::class]->getId()
+                        $container->get('labels.constraint_aware_service'),
+                        $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                        $container->get(CurrentUser::class)->getId()
                     )
                 );
             }
         );
 
-        $app[UpdateTitleHandler::class] = $app->share(
-            fn (Application $application) => new UpdateTitleHandler($app['organizer_repository'])
+        $container->addShared(
+            UpdateTitleHandler::class,
+            function () use ($container) {
+                return new UpdateTitleHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[UpdateDescriptionHandler::class] = $app->share(
-            fn (Application $application) => new UpdateDescriptionHandler($app['organizer_repository'])
+        $container->addShared(
+            UpdateDescriptionHandler::class,
+            function () use ($container) {
+                return new UpdateDescriptionHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[DeleteDescriptionHandler::class] = $app->share(
-            fn (Application $application) => new DeleteDescriptionHandler($app['organizer_repository'])
+        $container->addShared(
+            DeleteDescriptionHandler::class,
+            function () use ($container) {
+                return new DeleteDescriptionHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[UpdateAddressHandler::class] = $app->share(
-            fn (Application $application) => new UpdateAddressHandler($app['organizer_repository'])
+        $container->addShared(
+            UpdateAddressHandler::class,
+            function () use ($container) {
+                return new UpdateAddressHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[RemoveAddressHandler::class] = $app->share(
-            fn (Application $application) => new RemoveAddressHandler($app['organizer_repository'])
+        $container->addShared(
+            RemoveAddressHandler::class,
+            function () use ($container) {
+                return new RemoveAddressHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[UpdateWebsiteHandler::class] = $app->share(
-            fn (Application $application) => new UpdateWebsiteHandler($app['organizer_repository'])
+        $container->addShared(
+            UpdateWebsiteHandler::class,
+            function () use ($container) {
+                return new UpdateWebsiteHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[UpdateContactPointHandler::class] = $app->share(
-            fn (Application $application) => new UpdateContactPointHandler($app['organizer_repository'])
+        $container->addShared(
+            UpdateContactPointHandler::class,
+            function () use ($container) {
+                return new UpdateContactPointHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[AddImageHandler::class] = $app->share(
-            fn (Application $application) => new AddImageHandler($app['organizer_repository'])
+        $container->addShared(
+            AddImageHandler::class,
+            function () use ($container) {
+                return new AddImageHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[UpdateMainImageHandler::class] = $app->share(
-            fn (Application $application) => new UpdateMainImageHandler($app['organizer_repository'])
+        $container->addShared(
+            UpdateMainImageHandler::class,
+            function () use ($container) {
+                return new UpdateMainImageHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[UpdateImageHandler::class] = $app->share(
-            fn (Application $application) => new UpdateImageHandler($app['organizer_repository'])
+        $container->addShared(
+            UpdateImageHandler::class,
+            function () use ($container) {
+                return new UpdateImageHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[RemoveImageHandler::class] = $app->share(
-            fn (Application $application) => new RemoveImageHandler($app['organizer_repository'])
+        $container->addShared(
+            RemoveImageHandler::class,
+            function () use ($container) {
+                return new RemoveImageHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[ImportImagesHandler::class] = $app->share(
-            fn (Application $application) => new ImportImagesHandler($app['organizer_repository'])
+        $container->addShared(
+            ImportImagesHandler::class,
+            function () use ($container) {
+                return new ImportImagesHandler($container->get('organizer_repository'));
+            }
         );
 
-        $app[ChangeOwnerHandler::class] = $app->share(
-            fn (Application $application) => new ChangeOwnerHandler($app['organizer_repository'])
+        $container->addShared(
+            ChangeOwnerHandler::class,
+            function () use ($container) {
+                return new ChangeOwnerHandler($container->get('organizer_repository'));
+            }
         );
     }
 }
