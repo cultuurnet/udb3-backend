@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\LocalPlaceService;
+use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
@@ -347,9 +348,10 @@ $app['places_locator_event_stream_decorator'] = $app->share(
     }
 );
 
+// @todo: remove usages of 'place_repository' with Class based share
 $app['place_repository'] = $app->share(
     function (Application $app) {
-        $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
+        $repository = new PlaceRepository(
             $app['place_store'],
             $app[EventBus::class],
             array(
@@ -359,6 +361,12 @@ $app['place_repository'] = $app->share(
         );
 
         return $repository;
+    }
+);
+$container->addShared(
+    PlaceRepository::class,
+    function () use ($container): PlaceRepository {
+        return $container->get('place_repository');
     }
 );
 
