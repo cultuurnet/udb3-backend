@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -38,6 +39,7 @@ use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Silex\EventBus\EventBusServiceProvider;
+use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
@@ -65,6 +67,13 @@ use Silex\Application;
 use SocketIO\Emitter;
 
 date_default_timezone_set('Europe/Brussels');
+
+/**
+ * Disable warnings for calling new SimpleXmlElement() with invalid XML.
+ * An exception will still be thrown, but no warnings will be generated (which are hard to catch/hide otherwise).
+ * We do this system-wide because we parse XML in various places (UiTPAS API responses, UiTID v1 responses, imported UDB2 XML, ...)
+ */
+libxml_use_internal_errors(true);
 
 /**
  * Set up a PSR-11 container using league/container. The goal is for this container to replace the Silex Application
@@ -128,7 +137,7 @@ $container->addServiceProvider(new SentryServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 
 $container->addServiceProvider(new CommandBusServiceProvider());
-$app->register(new EventBusServiceProvider());
+$container->addServiceProvider(new EventBusServiceProvider());
 
 /**
  * CultureFeed services.
