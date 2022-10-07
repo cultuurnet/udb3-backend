@@ -45,15 +45,15 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $language = $parsedBody['language'] ?? null;
 
         if (!$description) {
-            return new JsonResponse(['error' => 'description required'], 400);
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "description" is required.');
         }
 
         if (!$copyrightHolder) {
-            return new JsonResponse(['error' => 'copyright holder required'], 400);
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.');
         }
 
         if (!$language) {
-            return new JsonResponse(['error' => 'language required'], 400);
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is required.');
         }
 
         $imageId = $this->imageUploader->upload(

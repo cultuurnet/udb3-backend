@@ -81,7 +81,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
      * @test
      * @dataProvider incompleteRequestProvider
      */
-    public function it_returns_400_if_field_is_missing(array $body, JsonResponse $expectedResponse): void
+    public function it_throws_an_api_problem_if_a_field_is_missing(array $body, ApiProblem $apiProblem): void
     {
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
@@ -90,10 +90,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
             ->withFiles(['file' => $uploadedFile])
             ->build('POST');
 
-        $response = $this->uploadMediaRequestHandler->handle($request);
-
-        $this->assertEquals($expectedResponse->getStatusCode(), $response->getStatusCode());
-        $this->assertEquals($expectedResponse->getBody()->getContents(), $response->getBody()->getContents());
+        $this->assertCallableThrowsApiProblem($apiProblem, fn () => $this->uploadMediaRequestHandler->handle($request));
     }
 
     public function incompleteRequestProvider(): array
@@ -104,21 +101,21 @@ final class UploadMediaRequestHandlerTest extends TestCase
                     'copyrightHolder' => ' Dwight Hooker',
                     'language' => 'nl',
                 ],
-                new JsonResponse(['error' => 'description required'], 400),
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "description" is required.'),
             ],
             'missing copyright holder' => [
                 [
                     'description' => 'Lenna',
                     'language' => 'nl',
                 ],
-                new JsonResponse(['error' => 'copyright holder required'], 400),
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "copyrightHolder" is required.'),
             ],
             'missing language' => [
                 [
                     'description' => 'Lenna',
                     'copyrightHolder' => ' Dwight Hooker',
                 ],
-                new JsonResponse(['error' => 'language required'], 400),
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is required.'),
             ],
         ];
     }
