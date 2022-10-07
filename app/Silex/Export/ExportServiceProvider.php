@@ -54,10 +54,7 @@ final class ExportServiceProvider implements ServiceProviderInterface
 
         $app['event_export_service'] = $app->share(
             function (HybridContainerApplication $app) {
-                return $this->createEventExportService(
-                    $app,
-                    $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]
-                );
+                return $this->createEventExportService($app);
             }
         );
 
@@ -116,10 +113,9 @@ final class ExportServiceProvider implements ServiceProviderInterface
     {
     }
 
-    private function createEventExportService(
-        HybridContainerApplication $app,
-        SearchServiceInterface $searchService
-    ): EventExportServiceInterface {
+    private function createEventExportService(HybridContainerApplication $app): EventExportServiceInterface {
+        $searchService = $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS];
+
         $logger = LoggerFactory::create($app->getLeagueContainer(), LoggerName::forResqueWorker('event-export'));
         if ($searchService instanceof LoggerAwareInterface) {
             $searchService = clone $searchService;
